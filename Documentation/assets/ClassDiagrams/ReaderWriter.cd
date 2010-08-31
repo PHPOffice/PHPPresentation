@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Font Name="Tahoma" Size="8.25" />
+  <Class Name="ClassDiagrams.PHPPowerPoint_Writer_PowerPoint2007" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.5" Y="3.5" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>Classes\PHPPowerPoint_Writer_PowerPoint2007.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassDiagrams.PHPPowerPoint_Reader_Serialized" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="0.5" Y="3.5" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>Classes\PHPPowerPoint_Reader_Serialized.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassDiagrams.PHPPowerPoint_Writer_Serialized" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="3.5" Y="4.25" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>Classes\PHPPowerPoint_Writer_Serialized.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassDiagrams.PHPExcel_Writer_PDF" Collapsed="true">
+    <Position X="3.5" Y="7.25" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Classes\PHPPowerPoint.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ClassDiagrams.PHPPowerPoint_IOFactory">
+    <Position X="2.25" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <FileName>Classes\PHPPowerPoint_IOFactory.cs</FileName>
+      <HashCode>AIAAAAAAAAEAAAAAAQAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="createsReader" />
+      <Property Name="createsWriter" />
+    </ShowAsAssociation>
+    <AssociationLine Name="createsReader" Type="ClassDiagrams.PHPPowerPoint_Reader_IReader">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.11" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="createsWriter" Type="ClassDiagrams.PHPPowerPoint_Writer_IWriter">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.088" Y="0.081" />
+      </MemberNameLabel>
+    </AssociationLine>
+  </Class>
+  <Interface Name="ClassDiagrams.PHPPowerPoint_Writer_IWriter" Collapsed="true">
+    <Position X="3.5" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>Classes\IWriter.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="ClassDiagrams.PHPPowerPoint_Reader_IReader" Collapsed="true">
+    <Position X="0.5" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <FileName>Classes\IReader.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+    </TypeIdentifier>
+  </Interface>
+</ClassDiagram>

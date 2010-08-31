@@ -1,0 +1,48 @@
+**************************************************************************************
+* PHPPowerPoint
+*
+* Copyright (c) 2009 - 2010 PHPPowerPoint
+*
+* This library is free software; you can redistribute it and/or
+* modify it under the terms of the GNU Lesser General Public
+* License as published by the Free Software Foundation; either
+* version 2.1 of the License, or (at your option) any later version.
+*
+* This library is distributed in the hope that it will be useful,
+* but WITHOUT ANY WARRANTY; without even the implied warranty of
+* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+* Lesser General Public License for more details.
+*
+* You should have received a copy of the GNU Lesser General Public
+* License along with this library; if not, write to the Free Software
+* Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+*
+* @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+* @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+* @version    ##VERSION##, ##DATE##
+**************************************************************************************
+
+
+To be planned:
+- General:  (MB) Work item 1165 - Rename PHPPowerpoint.php to PHPPowerPoint.php
+- Feature:  (MB) Work item  815 - Provide fluent interfaces where possible
+- Feature:  (MB) Work item 1034 - Use existing presentation template when writing PPTX file
+- Feature:  (MB) Work item 1093 - Implement bullet and numeric lists
+- Feature:  (MB) Work item 1173 - getProperties: setCompany feature request
+- Feature:  (MB) Work item 1375 - New shape type: table
+- Feature:  (MB) Work item 2804 - Use of CDATA text when writing text
+- Feature:  (MB) Work item 1378 - Possibility to set borders on tables and table cells
+- Feature:  (MBaker) Implement autoloader
+- Bugfix:   (MBaker) Allow solid colour fill
+- Bugfix:   (MB) Work item 3910 - Table width setting Office 2007
+- Bugfix:   (MB) Work item 4598 - Bullet characters in Master Slide Layouts of template file become corrupted
+- Bugfix:   (MB) Work item 3424 - Generated files cannot be opened in Office 08 for Mac OSX
+
+
+Initial version:
+- Create a Presentation object
+- Add one or more Slide objects
+- Add one or more Shapes to Slide objects
+- Text Shapes
+- Image Shapes
+- Export Presentation object to PowerPoint 2007 OpenXML format
