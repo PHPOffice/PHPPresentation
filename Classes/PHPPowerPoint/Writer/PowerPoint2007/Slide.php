@@ -253,6 +253,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
 				$objWriter->endElement();
 
+				if ($shape->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+					$this->_writeBorder($objWriter,$shape->getBorder(),'');
+				}
+				
 				if ($shape->getShadow()->getVisible()) {
 					// a:effectLst
 					$objWriter->startElement('a:effectLst');
@@ -344,16 +348,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 				$objWriter->writeAttribute('prst', 'rect');
 				$objWriter->endElement();
 
-				if ($shape->getFill()->getFillType()==='solid') {
-					// a:solidFill
-					$objWriter->startElement('a:solidFill');
-					$objWriter->startElement('a:srgbClr');
-					$objWriter->writeAttribute('val', $shape->getFill()->getStartColor()->getRGB());
-					$objWriter->endElement();
-					$objWriter->endElement();
-				} else {
-					// a:noFill
-					$objWriter->writeElement('a:noFill', null);
+				$this->_writeFill($objWriter,$shape->getFill());
+
+				if ($shape->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+					$this->_writeBorder($objWriter,$shape->getBorder(),'');
 				}
 
 				if ($shape->getShadow()->getVisible()) {

@@ -78,6 +78,13 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
 	private $_fill;
 
 	/**
+	 * Border
+	 *
+	 * @var PHPPowerPoint_Style_Border
+	 */
+	private $_border;
+
+	/**
 	 * Rotation
 	 *
 	 * @var int
@@ -104,7 +111,10 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     	$this->_height				= 0;
     	$this->_rotation			= 0;
     	$this->_fill				= new PHPPowerPoint_Style_Fill();
+    	$this->_border				= new PHPPowerPoint_Style_Border();
     	$this->_shadow				= new PHPPowerPoint_Shape_Shadow();
+    	
+    	$this->_border->setLineStyle(PHPPowerPoint_Style_Border::LINE_NONE);
     }
 
     /**
@@ -272,6 +282,15 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      */
     public function getFill() {
 		return $this->_fill;
+    }
+
+    /**
+     * Get Border
+     *
+     * @return PHPPowerPoint_Style_Border
+     */
+    public function getBorder() {
+		return $this->_border;
     }
 
     /**
