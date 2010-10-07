@@ -55,7 +55,7 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
 	const DASH_SYSDASHDOT		= 'sysDashDot';
 	const DASH_SYSDASHDOTDOT	= 'sysDashDotDot';
 	const DASH_SYSDOT			= 'sysDot';
-
+	
 	/**
 	 * Line width
 	 *
@@ -191,6 +191,7 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
 	public function getHashCode() {
     	return md5(
     		  $this->_lineStyle
+    		. $this->_lineWidth
     		. $this->_dashStyle
     		. $this->_color->getHashCode()
     		. __CLASS__

@@ -505,6 +505,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 		                // Colspan / rowspan containers
 		                $colSpan = array();
 		                $rowSpan = array();
+		                
+		                // Default border style
+		                $defaultBorder = new PHPPowerPoint_Style_Border();
 
 		                // Write rows
 		                for ($row = 0; $row < count($shape->getRows()); $row++)
@@ -518,7 +521,21 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 								{
 									// Current cell
 									$currentCell = $shape->getRow($row)->getCell($cell);
-
+									
+									// Next cell right
+									$nextCellRight = null;
+									try {
+										$nextCellRight = $shape->getRow($row)->getCell($cell + 1);
+									} catch (Exception $ex) {
+									}
+									
+									// Next cell below
+									$nextCellBelow = null;
+									try {
+										$nextCellBelow = $shape->getRow($row + 1)->getCell($cell);
+									} catch (Exception $ex) {
+									}
+									
 					                // a:tc
 					                $objWriter->startElement('a:tc');
 					                	// Colspan
@@ -577,8 +594,35 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 						                		$objWriter->writeAttribute('anchor', $horizontalAlign);
 						                	}
 
+						                	
+						                	
+						                	
 						                	// Borders
-						                	$this->_writeBorders($objWriter, $currentCell->getBorders());
+						                	// - Left
+						                	$this->_writeBorder($objWriter, $currentCell->getBorders()->getLeft(), 		'L');
+
+						                	// - Right
+											$tempCell = $currentCell;
+											if (!is_null($nextCellRight) && $nextCellRight->getBorders()->getRight()->getHashCode() != $defaultBorder->getHashCode())
+											{
+												$tempCell = $nextCellRight;
+											}
+											$this->_writeBorder($objWriter, $tempCell->getBorders()->getRight(), 			'R');
+
+											// - Top
+											$this->_writeBorder($objWriter, $currentCell->getBorders()->getTop(), 		'T');
+
+											// - Bottom
+											$tempCell = $currentCell;
+											if (!is_null($nextCellBelow) && $nextCellBelow->getBorders()->getBottom()->getHashCode() != $defaultBorder->getHashCode())
+											{
+												$tempCell = $nextCellBelow;
+											}
+											$this->_writeBorder($objWriter, $tempCell->getBorders()->getBottom(), 			'B');
+											
+											// - Diagonals
+											$this->_writeBorder($objWriter, $currentCell->getBorders()->getDiagonalDown(), 	'TlToBr');
+											$this->_writeBorder($objWriter, $currentCell->getBorders()->getDiagonalUp(), 	'BlToTr');
 
 						                	// Fill
 						                	$this->_writeFill($objWriter, $currentCell->getFill());

@@ -37,6 +37,7 @@ To be planned:
 - Bugfix:   (MB) Work item 3910 - Table width setting Office 2007
 - Bugfix:   (MB) Work item 4598 - Bullet characters in Master Slide Layouts of template file become corrupted
 - Bugfix:   (MB) Work item 3424 - Generated files cannot be opened in Office 08 for Mac OSX
+- Bugfix:   (MB) Work item 2541 - Table Cell Borders Not Displaying Correctly
 
 
 Initial version:
