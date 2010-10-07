@@ -605,11 +605,11 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 						                	// Fix PowerPoint implementation
 											if (!is_null($nextCellRight) && $nextCellRight->getBorders()->getRight()->getHashCode() != $defaultBorder->getHashCode())
 											{
-												$borderRight = $nextCellRight->getBorders()->getRight();
+												$borderRight = $nextCellRight->getBorders()->getLeft();
 											}
 											if (!is_null($nextCellBelow) && $nextCellBelow->getBorders()->getBottom()->getHashCode() != $defaultBorder->getHashCode())
 											{
-												$borderBottom = $nextCellBelow->getBorders()->getBottom();
+												$borderBottom = $nextCellBelow->getBorders()->getTop();
 											}
 						                	
 						                	// Write borders
