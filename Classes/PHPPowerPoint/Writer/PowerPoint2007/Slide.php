@@ -594,36 +594,32 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 						                		$objWriter->writeAttribute('anchor', $horizontalAlign);
 						                	}
 
+						                	// Determine borders
+						                	$borderLeft = $currentCell->getBorders()->getLeft();
+						                	$borderRight = $currentCell->getBorders()->getRight();
+						                	$borderTop = $currentCell->getBorders()->getTop();
+						                	$borderBottom = $currentCell->getBorders()->getBottom();
+						                	$borderDiagonalDown = $currentCell->getBorders()->getDiagonalDown();
+						                	$borderDiagonalUp = $currentCell->getBorders()->getDiagonalUp();
 						                	
-						                	
-						                	
-						                	// Borders
-						                	// - Left
-						                	$this->_writeBorder($objWriter, $currentCell->getBorders()->getLeft(), 		'L');
-
-						                	// - Right
-											$tempCell = $currentCell;
+						                	// Fix PowerPoint implementation
 											if (!is_null($nextCellRight) && $nextCellRight->getBorders()->getRight()->getHashCode() != $defaultBorder->getHashCode())
 											{
-												$tempCell = $nextCellRight;
+												$borderRight = $nextCellRight->getBorders()->getRight();
 											}
-											$this->_writeBorder($objWriter, $tempCell->getBorders()->getRight(), 			'R');
-
-											// - Top
-											$this->_writeBorder($objWriter, $currentCell->getBorders()->getTop(), 		'T');
-
-											// - Bottom
-											$tempCell = $currentCell;
 											if (!is_null($nextCellBelow) && $nextCellBelow->getBorders()->getBottom()->getHashCode() != $defaultBorder->getHashCode())
 											{
-												$tempCell = $nextCellBelow;
+												$borderBottom = $nextCellBelow->getBorders()->getBottom();
 											}
-											$this->_writeBorder($objWriter, $tempCell->getBorders()->getBottom(), 			'B');
+						                	
+						                	// Write borders
+						                	$this->_writeBorder($objWriter, $borderLeft, 			'L');
+						                	$this->_writeBorder($objWriter, $borderRight, 			'R');
+						                	$this->_writeBorder($objWriter, $borderTop, 			'T');
+						                	$this->_writeBorder($objWriter, $borderBottom, 			'B');
+											$this->_writeBorder($objWriter, $borderDiagonalDown, 	'TlToBr');
+											$this->_writeBorder($objWriter, $borderDiagonalUp, 		'BlToTr');
 											
-											// - Diagonals
-											$this->_writeBorder($objWriter, $currentCell->getBorders()->getDiagonalDown(), 	'TlToBr');
-											$this->_writeBorder($objWriter, $currentCell->getBorders()->getDiagonalUp(), 	'BlToTr');
-
 						                	// Fill
 						                	$this->_writeFill($objWriter, $currentCell->getFill());
 
