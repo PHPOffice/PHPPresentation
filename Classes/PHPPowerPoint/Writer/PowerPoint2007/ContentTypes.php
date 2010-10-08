@@ -69,11 +69,14 @@ class PHPPowerPoint_Writer_PowerPoint2007_ContentTypes extends PHPPowerPoint_Wri
 				$objWriter, 'xml', 'application/xml'
 			);
 
-			// Theme
-			$this->_writeOverrideContentType(
-				$objWriter, '/ppt/theme/theme1.xml', 'application/vnd.openxmlformats-officedocument.theme+xml'
-			);
-
+			// Themes
+			$masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+			foreach ($masterSlides as $masterSlide) {
+				$this->_writeOverrideContentType(
+					$objWriter, '/ppt/theme/theme' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml'
+				);
+			}
+			
 			// Presentation
 			$this->_writeOverrideContentType(
 				$objWriter, '/ppt/presentation.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml'
@@ -88,10 +91,13 @@ class PHPPowerPoint_Writer_PowerPoint2007_ContentTypes extends PHPPowerPoint_Wri
 				$objWriter, '/docProps/core.xml', 'application/vnd.openxmlformats-package.core-properties+xml'
 			);
 
-			// Slide master
-			$this->_writeOverrideContentType(
-				$objWriter, '/ppt/slideMasters/slideMaster1.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml'
-			);
+			// Slide masters
+			$masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+			foreach ($masterSlides as $masterSlide) {
+				$this->_writeOverrideContentType(
+					$objWriter, '/ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml'
+				);
+			}
 
 			// Slide layouts
 			$slideLayouts = $this->getParentWriter()->getLayoutPack()->getLayouts();

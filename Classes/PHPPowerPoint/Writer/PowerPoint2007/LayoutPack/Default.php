@@ -40,8 +40,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 	 */
 	public function __construct() {
 		// Master slide
-		$this->_masterSlide = array(
-			'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		$this->_masterSlides = array(
+			array(
+				'masterid' => 1,
+				'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldMaster xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
 	<p:cSld>
 		<p:bg>
@@ -543,15 +545,18 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 			</a:lvl9pPr>
 		</p:otherStyle>
 	</p:txStyles>
-</p:sldMaster>');
+</p:sldMaster>'));
 
 		// Master slide relations
 		$this->_masterSlideRelations = array(
-			//array('id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
+			//array('masterid' => '', 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
 		);
 
 		// Theme
-		$this->_theme = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+		$this->_themes = array(
+			array(
+				'masterid' => 1,
+				'body'     => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="Office Theme">
  <a:themeElements>
   <a:clrScheme name="Office">
@@ -831,15 +836,16 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
  </a:themeElements>
  <a:objectDefaults/>
  <a:extraClrSchemeLst/>
-</a:theme>';
+</a:theme>'));
 
 		// Theme relations
 		$this->_themeRelations = array(
-			//array('id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
+			//array('masterid' => 1, 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
 		);
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TITLE_SLIDE
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TITLE_SLIDE,
 			'body' 		=> '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="title" preserve="1">
@@ -1079,6 +1085,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TITLE_AND_CONTENT
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TITLE_AND_CONTENT,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="obj" preserve="1">
@@ -1246,6 +1253,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::SECTION_HEADER
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::SECTION_HEADER,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="secHead" preserve="1">
@@ -1489,6 +1497,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TWO_CONTENT
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TWO_CONTENT,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="twoObj" preserve="1">
@@ -1774,6 +1783,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::COMPARISON
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::COMPARISON,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="twoTxTwoObj" preserve="1">
@@ -2193,6 +2203,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TITLE_ONLY
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TITLE_ONLY,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="titleOnly" preserve="1">
@@ -2308,6 +2319,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::BLANK
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::BLANK,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="blank" preserve="1">
@@ -2400,6 +2412,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::CONTENT_WITH_CAPTION
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::CONTENT_WITH_CAPTION,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="objTx" preserve="1">
@@ -2674,6 +2687,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::PICTURE_WITH_CAPTION
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::PICTURE_WITH_CAPTION,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="picTx" preserve="1">
@@ -2924,6 +2938,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TITLE_AND_VERTICAL_TEXT
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TITLE_AND_VERTICAL_TEXT,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="vertTx" preserve="1">
@@ -3091,6 +3106,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 
 		// Layouts - PHPPowerPoint_Slide_Layout::VERTICAL_TITLE_AND_TEXT
 		$this->_layouts[] = array(
+			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::VERTICAL_TITLE_AND_TEXT,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="vertTitleAndTx" preserve="1">

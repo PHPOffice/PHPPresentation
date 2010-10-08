@@ -67,14 +67,16 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
                 foreach ($presentationRelations->Relationship as $presRel) {
                     if ($presRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster") {
                         // Found slide master!
-                        $this->_masterSlide = array('body' => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . basename($presRel["Target"])) ));
-
+                        $slideMasterId = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));
+                        $this->_masterSlides[] = array('masterid' => $slideMasterId, 'body' => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . basename($presRel["Target"])) ));
+                        
                         // Search for theme & slide layouts
                         $masterRelations = simplexml_load_string($package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/_rels/" . basename($presRel["Target"]) . ".rels")) );
                         foreach ($masterRelations->Relationship as $masterRel) {
                             if ($masterRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                 // Found theme!
-                                $this->_theme = $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])) );
+                                $themeId = str_replace('theme', '', basename($masterRel["Target"], '.xml'));
+                                $this->_themes[$themeId - 1] = array('masterid' => $slideMasterId, 'body' => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])) ));
 
                                 // Search for theme relations
                                 $themeRelations = @simplexml_load_string($package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) .  "/_rels/" . basename($masterRel["Target"]) . ".rels")) );
@@ -85,6 +87,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
                                     		&& $themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                         	// Theme relation
                                         	$this->_themeRelations[] = array(
+                                        		'masterid'     => $slideMasterId, 
                                         		'id'           => $themeRel["Id"],
                                         		'type'         => $themeRel["Type"],
                                         		'contentType'  => '',
@@ -95,9 +98,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
                                     }
                                 }
                             } else if ($masterRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout") {
-                                // Found slide layout!
-                                ++$layoutId;
+                            	// Found slide layout!
+                                $layoutId = str_replace('slideLayout', '', basename($masterRel["Target"], '.xml'));
                                 $layout = array(
+											'masterid'  => $slideMasterId,
                                 			'name' 		=> '-unknown-',
                                 			'body' 		=> $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])) )
                                 );
@@ -109,7 +113,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
             					$layoutXml->registerXPathNamespace("p", "http://schemas.openxmlformats.org/presentationml/2006/main");
             					$slide = $layoutXml->xpath('/p:sldLayout/p:cSld');
             					$layout['name'] = (string)$slide[0]['name'];
-                                $this->_layouts[] = $layout;
+                                $this->_layouts[$layoutId] = $layout;
 
                                 // Search for slide layout relations
                                 $layoutRelations = @simplexml_load_string($package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) .  "/_rels/" . basename($masterRel["Target"]) . ".rels")) );
@@ -119,7 +123,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
                                         		&& $layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout"
                                         		&& $layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                         	// Layout relation
-                                        	$this->_themeRelations[] = array(
+                                        	$this->_layoutRelations[] = array(
                                         		'layoutId'     => $layoutId,
                                         		'id'           => $layoutRel["Id"],
                                         		'type'         => $layoutRel["Type"],
@@ -133,6 +137,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
                             } else {
                             	// Master slide relation
                             	$this->_masterSlideRelations[] = array(
+									'masterid'     => $slideMasterId,
                             		'id'           => $masterRel["Id"],
                             		'type'         => $masterRel["Type"],
                             		'contentType'  => '',
@@ -148,8 +153,24 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
             }
         }
 
+        // Sort master slides
+        usort($this->_masterSlides, array("PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased", "cmp_master"));
+        
 		// Close package
 		$package->close();
+	}
+	
+	/**
+	 * Compare master slides
+	 * 
+	 * @param array $a
+	 * @param array $b
+	 */
+	public static function cmp_master($a, $b) {
+		if ($a['masterid'] == $b['masterid']) {
+	        return 0;
+	    }
+	    return ($a['masterid'] < $b['masterid']) ? -1 : 1;	
 	}
 
     /**

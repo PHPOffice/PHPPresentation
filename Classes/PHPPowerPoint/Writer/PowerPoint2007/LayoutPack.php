@@ -36,16 +36,21 @@
 abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
 {
 	/**
-	 * Master slide
+	 * Master slides
+	 * 
+	 * Structure:
+	 * - masterid
+	 * - body
 	 * 
 	 * @var array
 	 */
-	protected $_masterSlide = array();
+	protected $_masterSlides = array();
 	
 	/**
 	 * Master slide relations
 	 * 
 	 * Structure:
+	 * - master id
 	 * - id (relation id)
 	 * - type
 	 * - contentType
@@ -57,16 +62,21 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
 	protected $_masterSlideRelations = array();
 	
 	/**
-	 * Theme
+	 * Themes
 	 *
-	 * @var string
+	 * Structure:
+	 * - masterid
+	 * - body
+	 *
+	 * @var array
 	 */
-	protected $_theme = '';
+	protected $_themes = '';
 	
 	/**
 	 * Theme relations
 	 * 
 	 * Structure:
+	 * - masterid
 	 * - id (relation id)
 	 * - type
 	 * - contentType
@@ -81,6 +91,7 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
 	 * Array of slide layouts.
 	 * 
 	 * These are all an array consisting of:
+	 * - masterid (int)
 	 * - name (string)
 	 * - body (string)
 	 * 
@@ -104,13 +115,13 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
 	protected $_layoutRelations = array();
 	
 	/**
-	 * Get master slide
+	 * Get master slides
 	 * 
 	 * @return array
 	 */
-	public function getMasterSlide()
+	public function getMasterSlides()
 	{
-		return $this->_masterSlide;
+		return $this->_masterSlides;
 	}
 	
 	/**
@@ -124,13 +135,13 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
 	}
 	
 	/**
-	 * Get theme
+	 * Get themes
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function getTheme()
+	public function getThemes()
 	{
-		return $this->_theme;
+		return $this->_themes;
 	}
 	
 	/**
@@ -167,17 +178,18 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
 	 * Find specific slide layout.
 	 * 
 	 * This is an array consisting of:
+	 * - masterid
 	 * - name (string)
 	 * - body (string)
 	 * 
 	 * @return array
 	 * @throws Exception
 	 */
-	public function findLayout($name = '')
+	public function findLayout($name = '', $masterId = 1)
 	{
 		foreach ($this->_layouts as $layout)
 		{
-			if ($layout['name'] == $name)
+			if ($layout['name'] == $name && $layout['masterid'] == $masterId)
 			{
 				return $layout;
 			}
@@ -192,12 +204,12 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
 	 * @return int
 	 * @throws Exception
 	 */
-	public function findLayoutIndex($name = '')
+	public function findLayoutIndex($name = '', $masterId = 1)
 	{
 		$i = 0;
 		foreach ($this->_layouts as $layout)
 		{
-			if ($layout['name'] == $name)
+			if ($layout['name'] == $name && $layout['masterid'] == $masterId)
 			{
 				return $i;
 			}

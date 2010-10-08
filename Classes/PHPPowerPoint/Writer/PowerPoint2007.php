@@ -174,22 +174,27 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
 			$objZip->addFromString('docProps/app.xml', 				$this->getWriterPart('DocProps')->writeDocPropsApp($this->_presentation));
 			$objZip->addFromString('docProps/core.xml', 			$this->getWriterPart('DocProps')->writeDocPropsCore($this->_presentation));
 
-			// Add theme to ZIP file
-			$objZip->addFromString('ppt/theme/_rels/theme1.xml.rels', 	$this->getWriterPart('Rels')->writeThemeRelationships());
-			$objZip->addFromString('ppt/theme/theme1.xml', 				utf8_encode($this->getWriterPart('Theme')->writeTheme($this->_presentation)));
-
-			// Add slide master to ZIP file
-			$masterSlide = $this->getLayoutPack()->getMasterSlide();
-			$objZip->addFromString('ppt/slideMasters/_rels/slideMaster1.xml.rels', 	$this->getWriterPart('Rels')->writeSlideMasterRelationships());
-			$objZip->addFromString('ppt/slideMasters/slideMaster1.xml', 			$masterSlide['body']);
-
+			// Add themes to ZIP file
+			$masterSlides = $this->getLayoutPack()->getMasterSlides();
+			foreach ($masterSlides as $masterSlide) {
+				$objZip->addFromString('ppt/theme/_rels/theme' . $masterSlide['masterid'] . '.xml.rels', 	$this->getWriterPart('Rels')->writeThemeRelationships( $masterSlide['masterid'] ));
+				$objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', 				utf8_encode($this->getWriterPart('Theme')->writeTheme($this->_presentation, $masterSlide['masterid'])));
+			}
+			
+			// Add slide masters to ZIP file
+			$masterSlides = $this->getLayoutPack()->getMasterSlides();
+			foreach ($masterSlides as $masterSlide) {
+				$objZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $masterSlide['masterid'] . '.xml.rels', 	$this->getWriterPart('Rels')->writeSlideMasterRelationships( $masterSlide['masterid'] ));
+				$objZip->addFromString('ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', 				$masterSlide['body']);
+			}
+			
 			// Add slide layouts to ZIP file
 			$slideLayouts = $this->getLayoutPack()->getLayouts();
-			for ($i = 0; $i < count($slideLayouts); ++$i) {
-				$objZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . ($i + 1) . '.xml.rels', 	$this->getWriterPart('Rels')->writeSlideLayoutRelationships($i));
-				$objZip->addFromString('ppt/slideLayouts/slideLayout' . ($i + 1) . '.xml', 				utf8_encode($slideLayouts[$i]['body']));
+			foreach ($slideLayouts as $key => $layout) {
+				$objZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $key . '.xml.rels', 	$this->getWriterPart('Rels')->writeSlideLayoutRelationships($key, $layout['masterid']));
+				$objZip->addFromString('ppt/slideLayouts/slideLayout' . $key . '.xml', 				utf8_encode($layout['body']));
 			}
-
+			
 			// Add layoutpack relations
 			$otherRelations = null;
 			$otherRelations = $this->getLayoutPack()->getMasterSlideRelations();

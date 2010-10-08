@@ -74,6 +74,13 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
 	 * @var string
 	 */
 	private $_slideLayout = PHPPowerPoint_Slide_Layout::BLANK;
+	
+	/**
+	 * Slide master id
+	 *
+	 * @var string
+	 */
+	private $_slideMasterId = 1;
 
 	/**
 	 * Create a new slide
@@ -191,6 +198,26 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      */
     public function setSlideLayout($layout = PHPPowerPoint_Slide_Layout::BLANK) {
     	$this->_slideLayout = $layout;
+    	return $this;
+    }
+    
+    /**
+     * Get slide master id
+     *
+     * @return int
+     */
+    public function getSlideMasterId() {
+    	return $this->_slideMasterId;
+    }
+
+    /**
+     * Set slide master id
+     *
+     * @param int $masterId
+     * @return PHPPowerPoint_Slide
+     */
+    public function setSlideMasterId($masterId = 1) {
+    	$this->_slideMasterId = $masterId;
     	return $this;
     }
 

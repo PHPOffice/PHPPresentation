@@ -64,17 +64,29 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
 			// p:sldMasterIdLst
 			$objWriter->startElement('p:sldMasterIdLst');
 
-				// p:sldMasterId
-				$objWriter->startElement('p:sldMasterId');
-				$objWriter->writeAttribute('id',	'2147483648');
-				$objWriter->writeAttribute('r:id',	'rId1');
-				$objWriter->endElement();
+				// Add slide masters
+				$relationId = 1;
+				$slideMasterId = 2147483648;
+				$masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+				foreach ($masterSlides as $masterSlide) {
+					// p:sldMasterId
+					$objWriter->startElement('p:sldMasterId');
+					$objWriter->writeAttribute('id',	$slideMasterId);
+					$objWriter->writeAttribute('r:id',	'rId' . $relationId++);
+					$objWriter->endElement();
+					
+					// Increase identifier
+					$slideMasterId += 12;
+				}
 
 			$objWriter->endElement();
 
+			// theme
+			$relationId++;
+			
 			// p:sldIdLst
 			$objWriter->startElement('p:sldIdLst');
-			$this->_writeSlides($objWriter, $pPHPPowerPoint);
+			$this->_writeSlides($objWriter, $pPHPPowerPoint, $relationId);
 			$objWriter->endElement();
 
 			// p:sldSz
@@ -100,9 +112,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
 	 *
 	 * @param 	PHPPowerPoint_Shared_XMLWriter 	$objWriter 		XML Writer
 	 * @param 	PHPPowerPoint					$pPHPPowerPoint
+	 * @param	int								$startRelationId
 	 * @throws 	Exception
 	 */
-	private function _writeSlides(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint $pPHPPowerPoint = null)
+	private function _writeSlides(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
 	{
 		// Write slides
 		$slideCount = $pPHPPowerPoint->getSlideCount();
@@ -111,7 +124,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
 			$this->_writeSlide(
 				$objWriter,
 				($i + 256),
-				($i + 1 + 2)
+				($i + $startRelationId)
 			);
 		}
 	}

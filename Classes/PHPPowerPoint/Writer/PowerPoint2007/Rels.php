@@ -113,18 +113,26 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 		$objWriter->startElement('Relationships');
 		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-			// Relationship slideMasters/slideMaster1.xml
-			$this->_writeRelationship(
-				$objWriter,
-				1,
-				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster',
-				'slideMasters/slideMaster1.xml'
-			);
-
+			// Relation id
+			$relationId = 1;
+			
+			// Add slide masters
+			$masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+			foreach ($masterSlides as $masterSlide) {
+				// Relationship slideMasters/slideMasterX.xml
+				$this->_writeRelationship(
+					$objWriter,
+					$relationId++,
+					'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster',
+					'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml'
+				);
+			}
+			
+			// Add slide theme (only one!)
 			// Relationship theme/theme1.xml
 			$this->_writeRelationship(
 				$objWriter,
-				2,
+				$relationId++,
 				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme',
 				'theme/theme1.xml'
 			);
@@ -134,7 +142,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 			for ($i = 0; $i < $slideCount; ++$i) {
 				$this->_writeRelationship(
 					$objWriter,
-					($i + 1 + 2),
+					($i + $relationId),
 					'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
 					'slides/slide' . ($i + 1) . '.xml'
 				);
@@ -149,10 +157,11 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 	/**
 	 * Write slide master relationships to XML format
 	 *
+	 * @param   int				$masterId			Master slide id
 	 * @return 	string 			XML Output
 	 * @throws 	Exception
 	 */
-	public function writeSlideMasterRelationships()
+	public function writeSlideMasterRelationships($masterId = 1)
 	{
 		// Create XML writer
 		$objWriter = null;
@@ -169,35 +178,48 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 		$objWriter->startElement('Relationships');
 		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
+			// Keep content id
+			$contentId = 0;
+			
+			// Lookup layouts
+			$layoutPack = $this->getParentWriter()->getLayoutPack();
+			$layouts = array();
+			foreach ($layoutPack->getLayouts() as $key => $layout) {
+				if ($layout['masterid'] == $masterId) {
+					$layouts[$key] = $layout;
+				}
+			}
+			
 			// Write slideLayout relationships
-			$layoutPack		= $this->getParentWriter()->getLayoutPack();
-			for ($i = 0; $i < count($layoutPack->getLayouts()); ++$i) {
+			foreach ($layouts as $key => $layout) {
 				$this->_writeRelationship(
 					$objWriter,
-					$i + 1,
+					++$contentId,
 					'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout',
-					'../slideLayouts/slideLayout' . ($i + 1) . '.xml'
+					'../slideLayouts/slideLayout' . $key . '.xml'
 				);
 			}
 
 			// Relationship theme/theme1.xml
 			$this->_writeRelationship(
 				$objWriter,
-				count($layoutPack->getLayouts()) + 1,
+				++$contentId,
 				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme',
-				'../theme/theme1.xml'
+				'../theme/theme' . $masterId . '.xml'
 			);
 
 			// Other relationships
 			$otherRelations = $layoutPack->getMasterSlideRelations();
 			foreach ($otherRelations as $otherRelation)
 			{
-				$this->_writeRelationship(
-					$objWriter,
-					$otherRelation['id'],
-					$otherRelation['type'],
-					$otherRelation['target']
-				);
+				if ($otherRelation['masterid'] == $masterId) {
+					$this->_writeRelationship(
+						$objWriter,
+						++$contentId,
+						$otherRelation['type'],
+						$otherRelation['target']
+					);
+				}
 			}
 
 		$objWriter->endElement();
@@ -209,10 +231,11 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 	/**
 	 * Write slide layout relationships to XML format
 	 *
+	 * @param	int				$masterId
 	 * @return 	string 			XML Output
 	 * @throws 	Exception
 	 */
-	public function writeSlideLayoutRelationships($slideLayoutIndex)
+	public function writeSlideLayoutRelationships($slideLayoutIndex, $masterId = 1)
 	{
 		// Create XML writer
 		$objWriter = null;
@@ -237,7 +260,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 				$objWriter,
 				1,
 				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster',
-				'../slideMasters/slideMaster1.xml'
+				'../slideMasters/slideMaster' . $masterId . '.xml'
 			);
 
 			// Other relationships
@@ -264,10 +287,11 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 	/**
 	 * Write theme relationships to XML format
 	 *
-	 * @return 	string 					XML Output
+	 * @param   int				$masterId			Master slide id
+	 * @return 	string 			XML Output
 	 * @throws 	Exception
 	 */
-	public function writeThemeRelationships()
+	public function writeThemeRelationships($masterId = 1)
 	{
 		// Create XML writer
 		$objWriter = null;
@@ -291,12 +315,14 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
     		$otherRelations = $layoutPack->getThemeRelations();
     		foreach ($otherRelations as $otherRelation)
     		{
-    			$this->_writeRelationship(
-    				$objWriter,
-    				$otherRelation['id'],
-    				$otherRelation['type'],
-    				$otherRelation['target']
-    			);
+    			if ($otherRelation['masterid'] == $masterId) {
+	    			$this->_writeRelationship(
+	    				$objWriter,
+	    				$otherRelation['id'],
+	    				$otherRelation['type'],
+	    				$otherRelation['target']
+	    			);
+    			}
     		}
 
 		$objWriter->endElement();
@@ -338,7 +364,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 
 			// Write slideLayout relationship
 			$layoutPack		= $this->getParentWriter()->getLayoutPack();
-			$layoutIndex	= $layoutPack->findlayoutIndex( $pSlide->getSlideLayout() );
+			$layoutIndex	= $layoutPack->findlayoutIndex( $pSlide->getSlideLayout(), $pSlide->getSlideMasterId() );
 
 			$this->_writeRelationship(
 				$objWriter,
