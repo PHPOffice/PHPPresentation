@@ -134,6 +134,23 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
 	}
 
 	/**
+	 * Create line shape
+	 *
+	 * @param int $fromX Starting point x offset
+	 * @param int $fromY Starting point y offset
+	 * @param int $toX Ending point x offset
+	 * @param int $toY Ending point y offset
+	 * @return PHPPowerPoint_Shape_Line
+	 */
+	public function createLineShape($fromX, $fromY, $toX, $toY)
+	{
+		$shape = new PHPPowerPoint_Shape_Line($fromX,$fromY,$toX,$toY);
+		$this->addShape($shape);
+		
+		return $shape;
+	}
+
+	/**
 	 * Create drawing shape
 	 *
 	 * @return PHPPowerPoint_Shape_Drawing

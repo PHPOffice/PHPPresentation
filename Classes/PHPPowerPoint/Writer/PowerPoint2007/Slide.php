@@ -140,6 +140,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
         				{
         					$this->_writeTable($objWriter, $shape, $shapeId);
         				}
+        				else if ($shape instanceof PHPPowerPoint_Shape_Line)
+        				{
+        					$this->_writeLineShape($objWriter, $shape, $shapeId);
+        				}
         				else if ($shape instanceof PHPPowerPoint_Shape_BaseDrawing)
         				{
         					// Picture --> $relationId
@@ -782,6 +786,112 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
 	    	$objWriter->endElement();
         }
+	}
+	
+ 	/**
+	 * Write Line Shape
+	 *
+	 * @param	PHPPowerPoint_Shared_XMLWriter		$objWriter		XML Writer
+	 * @param	PHPPowerPoint_Shape_RichText		$shape
+	 * @param	int									$shapeId
+	 * @throws	Exception
+	 */
+	private function _writeLineShape(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Shape_Line $shape = null,$shapeId)
+	{
+		// p:sp
+		$objWriter->startElement('p:cxnSp');
+
+			// p:nvSpPr
+			$objWriter->startElement('p:nvCxnSpPr');
+
+				// p:cNvPr
+				$objWriter->startElement('p:cNvPr');
+                $objWriter->writeAttribute('id', $shapeId);
+                $objWriter->writeAttribute('name', '');
+                $objWriter->endElement();
+
+	            // p:cNvCxnSpPr
+	            $objWriter->writeElement('p:cNvCxnSpPr', null);
+	
+	            // p:nvPr
+	        	$objWriter->writeElement('p:nvPr', null);
+        		
+         	$objWriter->endElement();
+        		
+			// p:spPr
+			$objWriter->startElement('p:spPr');
+	
+				// a:xfrm
+				$objWriter->startElement('a:xfrm');
+				
+				if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
+					// a:off
+					$objWriter->startElement('a:off');
+					$objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()));
+	            	$objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()));
+	            	$objWriter->endElement();
+	
+                	// a:ext
+                	$objWriter->startElement('a:ext');
+                	$objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getWidth()));
+                	$objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getHeight()));
+                	$objWriter->endElement();
+				} else if ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
+					// a:off
+					$objWriter->startElement('a:off');
+					$objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()+$shape->getWidth()));
+	            	$objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()+$shape->getHeight));
+	            	$objWriter->endElement();
+	
+                	// a:ext
+                	$objWriter->startElement('a:ext');
+                	$objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU(-$shape->getWidth()));
+                	$objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU(-$shape->getHeight()));
+                	$objWriter->endElement();
+				} else if ($shape->getHeight() < 0) {
+					$objWriter->writeAttribute('flipV', 1);
+					
+					// a:off
+					$objWriter->startElement('a:off');
+					$objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()));
+	            	$objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()+$shape->getHeight));
+	            	$objWriter->endElement();
+	
+                	// a:ext
+                	$objWriter->startElement('a:ext');
+                	$objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getWidth()));
+                	$objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU(-$shape->getHeight()));
+                	$objWriter->endElement();
+				} else if ($shape->getWidth() < 0) {
+					$objWriter->writeAttribute('flipV', 1);
+					
+					// a:off
+					$objWriter->startElement('a:off');
+					$objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()+$shape->getWidth()));
+	            	$objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()));
+	            	$objWriter->endElement();
+	
+                	// a:ext
+                	$objWriter->startElement('a:ext');
+                	$objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU(-$shape->getWidth()));
+                	$objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getHeight()));
+                	$objWriter->endElement();
+				}
+	
+	         	$objWriter->endElement();
+	
+				// a:prstGeom
+				$objWriter->startElement('a:prstGeom');
+				$objWriter->writeAttribute('prst', 'line');
+				$objWriter->endElement();
+	
+				if ($shape->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+					$this->_writeBorder($objWriter, $shape->getBorder(), '');
+				}
+	
+			$objWriter->endElement();
+			
+		$objWriter->endElement();
 	}
 
 	/**

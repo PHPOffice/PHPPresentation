@@ -80,6 +80,14 @@ $textRun = $shape->createTextRun('Thank you for using PHPPowerPoint!');
 $textRun->getFont()->setBold(true)
                    ->setSize(60)
                    ->setColor( new PHPPowerPoint_Style_Color( 'FFC00000' ) );
+                   
+// Create a shape (line)
+$shape = $currentSlide->createLineShape(170, 180, 770, 180);
+$shape->getBorder()->getColor()->setARGB('FFC00000');
+
+// Create a shape (line)
+$shape = $currentSlide->createLineShape(170, 580, 770, 580);
+$shape->getBorder()->getColor()->setARGB('FFC00000');
 
 // Save PowerPoint 2007 file
 echo date('H:i:s') . " Write to PowerPoint2007 format\n";
