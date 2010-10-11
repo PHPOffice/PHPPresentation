@@ -69,10 +69,12 @@ $shape->getShadow()->setVisible(true)
 // Create a shape (text)
 echo date('H:i:s') . " Create a shape (rich text)\n";
 $shape = $currentSlide->createRichTextShape()
-      ->setHeight(300)
+      ->setHeight(400)
       ->setWidth(600)
       ->setOffsetX(170)
-      ->setOffsetY(180);
+      ->setOffsetY(180)
+      ->setInsetTop(50)
+      ->setInsetBottom(50);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal( PHPPowerPoint_Style_Alignment::HORIZONTAL_CENTER );
 $textRun = $shape->createTextRun('Thank you for using PHPPowerPoint!');
 $textRun->getFont()->setBold(true)

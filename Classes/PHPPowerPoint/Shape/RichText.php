@@ -35,6 +35,20 @@
  */
 class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
 {
+	/** Wrapping */
+	const WRAP_NONE   = 'none';
+	const WRAP_SQUARE = 'square';
+	
+	/** Autofit */
+	const AUTOFIT_DEFAULT   = 'spAutoFit';
+	const AUTOFIT_SHAPE     = 'spAutoFit';
+	const AUTOFIT_NOAUTOFIT = 'noAutofit';
+	const AUTOFIT_NORMAL    = 'normAutoFit';
+	
+	/** Overflow */
+	const OVERFLOW_CLIP     = 'clip';
+	const OVERFLOW_OVERFLOW = 'overflow';
+	
 	/**
 	 * Rich text paragraphs
 	 *
@@ -48,6 +62,83 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
 	 * @var int
 	 */
 	private $_activeParagraph = 0;
+	
+	/**
+	 * Text wrapping
+	 * 
+	 * @var string
+	 */
+	private $_wrap = PHPPowerPoint_Shape_RichText::WRAP_SQUARE;
+	
+	/**
+	 * Autofit
+	 * 
+	 * @var string
+	 */
+	private $_autoFit = PHPPowerPoint_Shape_RichText::AUTOFIT_DEFAULT;
+	
+	/**
+	 * Horizontal overflow
+	 * 
+	 * @var string
+	 */
+	private $_horizontalOverflow = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW;
+	
+	/**
+	 * Vertical overflow
+	 * 
+	 * @var string
+	 */
+	private $_verticalOverflow = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW;
+
+	/**
+	 * Text upright?
+	 * 
+	 * @var boolean
+	 */
+	private $_upright = false;
+	
+	/**
+	 * Vertical text?
+	 * 
+	 * @var boolean
+	 */
+	private $_vertical = false;
+	
+	/**
+	 * Number of columns (1 - 16)
+	 * 
+	 * @var int
+	 */
+	private $_columns = 1;
+	
+	/**
+	 * Bottom inset (in pixels)
+	 * 
+	 * @var float
+	 */
+	private $_bottomInset = 4.8;
+	
+	/**
+	 * Left inset (in pixels)
+	 * 
+	 * @var float
+	 */
+	private $_leftInset = 9.6;
+	
+	/**
+	 * Right inset (in pixels)
+	 * 
+	 * @var float
+	 */
+	private $_rightInset = 9.6;
+	
+	/**
+	 * Top inset (in pixels)
+	 * 
+	 * @var float
+	 */
+	private $_topInset = 4.8;
 
     /**
      * Create a new PHPPowerPoint_Shape_RichText instance
@@ -236,6 +327,230 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
     	}
     	return $this;
     }
+    
+    /**
+     * Get text wrapping
+     * 
+     * @return string
+     */
+    public function getWrap() {
+    	return $this->_wrap;
+    }
+    
+    /**
+     * Set text wrapping
+     * 
+     * @param $value string
+     * @return PHPPowerPoint_Shape_RichText
+     */
+    public function setWrap($value = PHPPowerPoint_Shape_RichText::WRAP_SQUARE) {
+		$this->_wrap = $value;
+		return $this;
+    }
+    
+    /**
+     * Get autofit
+     * 
+     * @return string
+     */
+    public function getAutoFit() {
+    	return $this->_autoFit;
+    }
+    
+    /**
+     * Set autofit
+     * 
+     * @param $value string
+     * @return PHPPowerPoint_Shape_RichText
+     */
+    public function setAutoFit($value = PHPPowerPoint_Shape_RichText::AUTOFIT_DEFAULT) {
+		$this->_autoFit = $value;
+		return $this;
+    }
+    
+    /**
+     * Get horizontal overflow
+     * 
+     * @return string
+     */
+	public function getHorizontalOverflow() {
+    	return $this->_horizontalOverflow;
+    }
+    
+    /**
+     * Set horizontal overflow
+     * 
+     * @param $value string
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setHorizontalOverflow($value = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW) {
+    	$this->_horizontalOverflow = $value;
+    	return $this;
+    }
+    
+    /**
+     * Get vertical overflow
+     * 
+     * @return string
+     */
+	public function getVerticalOverflow() {
+    	return $this->_verticalOverflow;
+    }
+    
+    /**
+     * Set vertical overflow
+     * 
+     * @param $value string
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setVerticalOverflow($value = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW) {
+    	$this->_verticalOverflow = $value;
+    	return $this;
+    }
+    
+    /**
+     * Get upright
+     * 
+     * @return boolean
+     */
+	public function getUpright() {
+    	return $this->_upright;
+    }
+    
+    /**
+     * Set vertical
+     * 
+     * @param $value boolean
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setUpright($value = false) {
+    	$this->_upright = $value;
+    	return $this;
+    }
+    
+    /**
+     * Get vertical
+     * 
+     * @return boolean
+     */
+	public function getVertical() {
+    	return $this->_vertical;
+    }
+    
+    /**
+     * Set vertical
+     * 
+     * @param $value boolean
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setVertical($value = false) {
+    	$this->_vertical = $value;
+    	return $this;
+    }
+    
+    /**
+     * Get columns
+     * 
+     * @return int
+     */
+	public function getColumns() {
+    	return $this->_columns;
+    }
+    
+    /**
+     * Set columns
+     * 
+     * @param $value int
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setColumns($value = 1) {
+		if ($value > 16 || $value < 1) {
+			throw new Exception('Number of columns should be 1-16');
+		}
+		
+    	$this->_columns = $value;
+    	return $this;
+    }
+    
+    /**
+     * Get bottom inset
+     * 
+     * @return float
+     */
+	public function getInsetBottom() {
+    	return $this->_bottomInset;
+    }
+    
+    /**
+     * Set bottom inset
+     * 
+     * @param $value float
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setInsetBottom($value = 4.8) {
+    	$this->_bottomInset = $value;
+    	return $this;
+    }
+    
+    /**
+     * Get left inset
+     * 
+     * @return float
+     */
+	public function getInsetLeft() {
+    	return $this->_leftInset;
+    }
+    
+    /**
+     * Set left inset
+     * 
+     * @param $value float
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setInsetLeft($value = 9.6) {
+    	$this->_leftInset = $value;
+    	return $this;
+    }
+    
+    /**
+     * Get right inset
+     * 
+     * @return float
+     */
+	public function getInsetRight() {
+    	return $this->_rightInset;
+    }
+    
+    /**
+     * Set left inset
+     * 
+     * @param $value float
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setInsetRight($value = 9.6) {
+    	$this->_rightInset = $value;
+    	return $this;
+    }
+    
+    /**
+     * Get top inset
+     * 
+     * @return float
+     */
+	public function getInsetTop() {
+    	return $this->_topInset;
+    }
+    
+    /**
+     * Set top inset
+     * 
+     * @param $value float
+     * @return PHPPowerPoint_Shape_RichText
+     */
+	public function setInsetTop($value = 4.8) {
+    	$this->_topInset = $value;
+    	return $this;
+    }
 
 	/**
 	 * Get hash code
@@ -250,6 +565,18 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
 
     	return md5(
     		  $hashElements
+    		. $this->_wrap
+    		. $this->_autoFit
+    		. $this->_horizontalOverflow
+    		. $this->_verticalOverflow
+    		. ($this->_upright ? '1' : '0')
+    		. ($this->_vertical ? '1' : '0')
+    		. $this->_columns
+    		. $this->_bottomInset
+    		. $this->_leftInset
+    		. $this->_rightInset
+    		. $this->_topInset
+    		. parent::getHashCode()
     		. __CLASS__
     	);
     }

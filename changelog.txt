@@ -32,6 +32,7 @@ To be planned:
 - Feature:  (MB) Work item 1375 - New shape type: table
 - Feature:  (MB) Work item 2804 - Use of CDATA text when writing text
 - Feature:  (MB) Work item 1378 - Possibility to set borders on tables and table cells
+- Feature:  (MB) Work item 4921 - Access to additional properties of Text Boxes
 - Feature:  (MBaker) Implement autoloader
 - Bugfix:   (MBaker) Allow solid colour fill
 - Bugfix:   (MB) Work item 3910 - Table width setting Office 2007

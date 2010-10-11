@@ -389,11 +389,28 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
 				// a:bodyPr
 				$objWriter->startElement('a:bodyPr');
-                $objWriter->writeAttribute('wrap', 'square');
+                $objWriter->writeAttribute('wrap', $shape->getWrap());
                 $objWriter->writeAttribute('rtlCol', '0');
+                
+                $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
+                $objWriter->writeAttribute('vertOverflow', $shape->getVerticalOverflow());
+                
+				if ($shape->getUpright()) {
+                	$objWriter->writeAttribute('upright', '1');
+                }
+				if ($shape->getVertical()) {
+                	$objWriter->writeAttribute('vert', 'vert');
+                }
+                
+                $objWriter->writeAttribute('bIns', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getInsetBottom()));
+                $objWriter->writeAttribute('lIns', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getInsetLeft()));
+                $objWriter->writeAttribute('rIns', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getInsetRight()));
+                $objWriter->writeAttribute('tIns', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getInsetTop()));
+                
+                $objWriter->writeAttribute('numCol', $shape->getColumns());
 
-                    // a:spAutoFit
-            		$objWriter->writeElement('a:spAutoFit', null);
+                	// a:spAutoFit
+            		$objWriter->writeElement('a:' . $shape->getAutoFit(), null);
 
                 $objWriter->endElement();
 
