@@ -34,6 +34,7 @@ To be planned:
 - Feature:  (MB) Work item 1378 - Possibility to set borders on tables and table cells
 - Feature:  (MB) Work item 4921 - Access to additional properties of Text Boxes
 - Feature:  (MB) Applied patches 7010 and 7020
+- Feature:  (MB) Work item 1196 - Add a hyperlink to an image or textbox
 - Feature:  (MBaker) Implement autoloader
 - Bugfix:   (MBaker) Allow solid colour fill
 - Bugfix:   (MB) Work item 3910 - Table width setting Office 2007

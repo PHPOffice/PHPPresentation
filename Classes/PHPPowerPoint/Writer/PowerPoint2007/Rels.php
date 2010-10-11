@@ -334,9 +334,6 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 	/**
 	 * Write slide relationships to XML format
 	 *
-	 * Numbering is as follows:
-	 * 	rId1 				- Drawings
-	 *
 	 * @param 	PHPPowerPoint_Slide		$pSlide
 	 * @param 	int						$pSlideId
 	 * @return 	string 					XML Output
@@ -390,6 +387,77 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 
 						++$relId;
 					}
+
+					$iterator->next();
+				}
+			}
+			
+			// Write hyperlink relationships?
+			if ($pSlide->getShapeCollection()->count() > 0) {
+				// Loop trough hyperlinks and write relationships
+				$iterator = $pSlide->getShapeCollection()->getIterator();
+				while ($iterator->valid()) {
+					// Hyperlink on shape
+					if ($iterator->current()->hasHyperlink()) {
+						// Write relationship for hyperlink
+						$hyperlink = $iterator->current()->getHyperlink();
+						$hyperlink->__relationId = 'rId' . $relId;
+						
+						if (!$hyperlink->isInternal()) {
+							$this->_writeRelationship(
+								$objWriter,
+								$relId,
+								'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',
+								$hyperlink->getUrl(),
+								'External'
+							);
+						} else {
+							$this->_writeRelationship(
+								$objWriter,
+								$relId,
+								'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
+								'slide' . $hyperlink->getSlideNumber() . '.xml'
+							);
+						}
+
+						++$relId;
+					}
+					
+					// Hyperlink on rich text run
+					if ($iterator->current() instanceof PHPPowerPoint_Shape_RichText) {
+						foreach ($iterator->current()->getParagraphs() as $paragraph) {
+							foreach ($paragraph->getRichTextElements() as $element) {
+								if ($element instanceof PHPPowerPoint_Shape_RichText_Run
+		           					|| $element instanceof PHPPowerPoint_Shape_RichText_TextElement)
+				           		{
+				           			if ($element->hasHyperlink()) {
+										// Write relationship for hyperlink
+										$hyperlink = $element->getHyperlink();
+										$hyperlink->__relationId = 'rId' . $relId;
+										
+										if (!$hyperlink->isInternal()) {
+											$this->_writeRelationship(
+												$objWriter,
+												$relId,
+												'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',
+												$hyperlink->getUrl(),
+												'External'
+											);
+										} else {
+											$this->_writeRelationship(
+												$objWriter,
+												$relId,
+												'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
+												'slide' . $hyperlink->getSlideNumber() . '.xml'
+											);
+										}
+				
+										++$relId;
+									}
+								}
+							}
+						}
+	       			}
 
 					$iterator->next();
 				}

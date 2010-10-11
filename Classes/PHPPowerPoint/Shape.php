@@ -97,6 +97,13 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
 	 * @var PHPPowerPoint_Shape_Shadow
 	 */
 	protected $_shadow;
+	
+	/**
+	 * Hyperlink
+	 * 
+	 * @var PHPPowerPoint_Shape_Hyperlink
+	 */
+	protected $_hyperlink;
 
     /**
      * Create a new PHPPowerPoint_Shape
@@ -313,6 +320,42 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
    		$this->_shadow = $pValue;
    		return $this;
     }
+    
+	/**
+	 * Has Hyperlink?
+	 *
+	 * @return boolean
+	 */
+	public function hasHyperlink()
+	{
+		return !is_null($this->_hyperlink);
+	}
+    
+	/**
+	 * Get Hyperlink
+	 *
+	 * @return PHPPowerPoint_Shape_Hyperlink
+	 */
+	public function getHyperlink()
+	{
+		if (is_null($this->_hyperlink)) {
+			$this->_hyperlink = new PHPPowerPoint_Shape_Hyperlink();
+		}
+		return $this->_hyperlink;
+	}
+
+	/**
+	 * Set Hyperlink
+	 *
+	 * @param	PHPPowerPoint_Shape_Hyperlink	$pHyperlink
+	 * @throws	Exception
+	 * @return PHPPowerPoint_Shape
+	 */
+	public function setHyperlink(PHPExcel_Cell_Hyperlink $pHyperlink = null)
+	{
+		$this->_hyperlink = $pHyperlink;
+		return $this;
+	}
 
 	/**
 	 * Get hash code
@@ -329,6 +372,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     		. $this->_rotation
     		. $this->getFill()->getHashCode()
     		. $this->_shadow->getHashCode()
+    		. (is_null($this->_hyperlink) ? '' : $this->_hyperlink->getHashCode())
     		. __CLASS__
     	);
     }

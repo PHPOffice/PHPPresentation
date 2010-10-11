@@ -195,6 +195,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
                 $objWriter->writeAttribute('id', $shapeId);
                 $objWriter->writeAttribute('name', $shape->getName());
 				$objWriter->writeAttribute('descr', $shape->getDescription());
+				
+			        // a:hlinkClick
+	        		if ($shape->hasHyperlink()) {
+	        			$this->_writeHyperlink($objWriter, $shape);
+	        		}
+	        		
                 $objWriter->endElement();
 
                 // p:cNvPicPr
@@ -208,7 +214,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
                 $objWriter->endElement();
 
                 // p:nvPr
-        		$objWriter->writeElement('p:nvPr', null);
+        		$objWriter->writeElement('p:nvPr', null);        		
 
 			$objWriter->endElement();
 
@@ -314,6 +320,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 				$objWriter->startElement('p:cNvPr');
                 $objWriter->writeAttribute('id', $shapeId);
                 $objWriter->writeAttribute('name', '');
+                
+			        // a:hlinkClick
+	        		if ($shape->hasHyperlink()) {
+	        			$this->_writeHyperlink($objWriter, $shape);
+	        		}
+	        		
                 $objWriter->endElement();
 
                 // p:cNvSpPr
@@ -323,7 +335,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
                 // p:nvPr
         		$objWriter->writeElement('p:nvPr', null);
-
+        		
 			$objWriter->endElement();
 
 			// p:spPr
@@ -450,6 +462,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
                 $objWriter->writeAttribute('id', $shapeId);
                 $objWriter->writeAttribute('name', $shape->getName());
 				$objWriter->writeAttribute('descr', $shape->getDescription());
+				
+			        // a:hlinkClick
+	        		if ($shape->hasHyperlink()) {
+	        			$this->_writeHyperlink($objWriter, $shape);
+	        		}
+	        		
                 $objWriter->endElement();
 
                 // p:cNvGraphicFramePr
@@ -464,7 +482,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
                 // p:nvPr
         		$objWriter->writeElement('p:nvPr', null);
-
+        		
 			$objWriter->endElement();
 
 			// p:xfrm
@@ -771,6 +789,11 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 	           						$objWriter->startElement('a:latin');
 	           						$objWriter->writeAttribute('typeface', $element->getFont()->getName());
 	           						$objWriter->endElement();
+	           						     	
+	           						// a:hlinkClick
+					        		if ($element->hasHyperlink()) {
+					        			$this->_writeHyperlink($objWriter, $element);
+					        		}
 
 	           					$objWriter->endElement();
 	          				}
@@ -808,13 +831,19 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 				$objWriter->startElement('p:cNvPr');
                 $objWriter->writeAttribute('id', $shapeId);
                 $objWriter->writeAttribute('name', '');
+                
+		        	// a:hlinkClick
+	        		if ($shape->hasHyperlink()) {
+	        			$this->_writeHyperlink($objWriter, $shape);
+	        		}
+	        		
                 $objWriter->endElement();
 
 	            // p:cNvCxnSpPr
 	            $objWriter->writeElement('p:cNvCxnSpPr', null);
 	
-	            // p:nvPr
-	        	$objWriter->writeElement('p:nvPr', null);
+                // p:nvPr
+        		$objWriter->writeElement('p:nvPr', null);
         		
          	$objWriter->endElement();
         		
@@ -1086,5 +1115,23 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 			$objWriter->endElement();
 
 		$objWriter->endElement();
+	}
+	
+	/**
+	 * Write hyperlink
+	 *
+	 * @param	PHPPowerPoint_Shared_XMLWriter										$objWriter		XML Writer
+	 * @param	PHPPowerPoint_Shape|PHPPowerPoint_Shape_RichText_TextElement		$shape
+	 */
+	private function _writeHyperlink(PHPPowerPoint_Shared_XMLWriter $objWriter = null, $shape = null)
+	{
+		// a:hlinkClick
+	    $objWriter->startElement('a:hlinkClick');
+        $objWriter->writeAttribute('r:id', $shape->getHyperlink()->__relationId);
+        $objWriter->writeAttribute('tooltip', $shape->getHyperlink()->getTooltip());
+        if ($shape->getHyperlink()->isInternal()) {
+        	$objWriter->writeAttribute('action', $shape->getHyperlink()->getUrl());
+        }
+	    $objWriter->endElement();
 	}
 }

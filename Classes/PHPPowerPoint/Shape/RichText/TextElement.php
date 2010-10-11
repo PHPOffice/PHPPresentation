@@ -39,6 +39,13 @@ class PHPPowerPoint_Shape_RichText_TextElement implements PHPPowerPoint_Shape_Ri
 	 * @var string
 	 */
 	private $_text;
+	
+	/**
+	 * Hyperlink
+	 * 
+	 * @var PHPPowerPoint_Shape_Hyperlink
+	 */
+	protected $_hyperlink;
 
     /**
      * Create a new PHPPowerPoint_Shape_RichText_TextElement instance
@@ -79,6 +86,42 @@ class PHPPowerPoint_Shape_RichText_TextElement implements PHPPowerPoint_Shape_Ri
 	public function getFont() {
 		return null;
 	}
+	
+	/**
+	 * Has Hyperlink?
+	 *
+	 * @return boolean
+	 */
+	public function hasHyperlink()
+	{
+		return !is_null($this->_hyperlink);
+	}
+    
+	/**
+	 * Get Hyperlink
+	 *
+	 * @return PHPPowerPoint_Shape_Hyperlink
+	 */
+	public function getHyperlink()
+	{
+		if (is_null($this->_hyperlink)) {
+			$this->_hyperlink = new PHPPowerPoint_Shape_Hyperlink();
+		}
+		return $this->_hyperlink;
+	}
+
+	/**
+	 * Set Hyperlink
+	 *
+	 * @param	PHPPowerPoint_Shape_Hyperlink	$pHyperlink
+	 * @throws	Exception
+	 * @return PHPPowerPoint_Shape
+	 */
+	public function setHyperlink(PHPExcel_Cell_Hyperlink $pHyperlink = null)
+	{
+		$this->_hyperlink = $pHyperlink;
+		return $this;
+	}
 
 	/**
 	 * Get hash code
@@ -88,6 +131,7 @@ class PHPPowerPoint_Shape_RichText_TextElement implements PHPPowerPoint_Shape_Ri
 	public function getHashCode() {
     	return md5(
     		  $this->_text
+    		. (is_null($this->_hyperlink) ? '' : $this->_hyperlink->getHashCode())
     		. __CLASS__
     	);
     }

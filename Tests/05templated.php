@@ -80,6 +80,8 @@ $textRun = $shape->createTextRun('Thank you for using PHPPowerPoint!');
 $textRun->getFont()->setBold(true)
                    ->setSize(60)
                    ->setColor( new PHPPowerPoint_Style_Color( 'FFC00000' ) );
+$shape->getHyperlink()->setUrl("http://phppowerpoint.codeplex.com")
+                      ->setTooltip('PHPPowerPoint');
                    
 // Create a shape (line)
 $shape = $currentSlide->createLineShape(170, 180, 770, 180);

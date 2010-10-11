@@ -844,7 +844,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 		);
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TITLE_SLIDE
-		$this->_layouts[] = array(
+		$this->_layouts[1] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TITLE_SLIDE,
 			'body' 		=> '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1084,7 +1084,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TITLE_AND_CONTENT
-		$this->_layouts[] = array(
+		$this->_layouts[2] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TITLE_AND_CONTENT,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1252,7 +1252,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::SECTION_HEADER
-		$this->_layouts[] = array(
+		$this->_layouts[3] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::SECTION_HEADER,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1496,7 +1496,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TWO_CONTENT
-		$this->_layouts[] = array(
+		$this->_layouts[4] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TWO_CONTENT,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1782,7 +1782,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::COMPARISON
-		$this->_layouts[] = array(
+		$this->_layouts[5] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::COMPARISON,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2202,7 +2202,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TITLE_ONLY
-		$this->_layouts[] = array(
+		$this->_layouts[6] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TITLE_ONLY,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2318,7 +2318,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::BLANK
-		$this->_layouts[] = array(
+		$this->_layouts[7] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::BLANK,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2411,7 +2411,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::CONTENT_WITH_CAPTION
-		$this->_layouts[] = array(
+		$this->_layouts[8] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::CONTENT_WITH_CAPTION,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2686,7 +2686,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::PICTURE_WITH_CAPTION
-		$this->_layouts[] = array(
+		$this->_layouts[9] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::PICTURE_WITH_CAPTION,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2937,7 +2937,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::TITLE_AND_VERTICAL_TEXT
-		$this->_layouts[] = array(
+		$this->_layouts[10] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::TITLE_AND_VERTICAL_TEXT,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -3105,7 +3105,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
 </p:sldLayout>');
 
 		// Layouts - PHPPowerPoint_Slide_Layout::VERTICAL_TITLE_AND_TEXT
-		$this->_layouts[] = array(
+		$this->_layouts[11] = array(
 			'masterid'  => 1,
 			'name' 		=> PHPPowerPoint_Slide_Layout::VERTICAL_TITLE_AND_TEXT,
 			'body' 		=>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

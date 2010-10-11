@@ -203,9 +203,11 @@ $textRun->getFont()->setSize(36)
 
 $shape->createBreak();
 
-$textRun = $shape->createTextRun('    http://phppowerpoint.codeplex.com');
+$textRun = $shape->createTextRun('http://phppowerpoint.codeplex.com');
 $textRun->getFont()->setSize(36)
                    ->setColor( new PHPPowerPoint_Style_Color( 'FFFFFFFF' ) );
+$textRun->getHyperlink()->setUrl("http://phppowerpoint.codeplex.com")
+                        ->setTooltip('PHPPowerPoint');
 
 
 // Save PowerPoint 2007 file

@@ -222,16 +222,11 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
 			// Add presentation to ZIP file
 			$objZip->addFromString('ppt/presentation.xml', 			$this->getWriterPart('Presentation')->writePresentation($this->_presentation));
 
-			// Add slides (drawings, ...)
+			// Add slides (drawings, ...) and slide relationships (drawings, ...)
 			for ($i = 0; $i < $this->_presentation->getSlideCount(); ++$i) {
 				// Add slide
-				$objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', 	$this->getWriterPart('Slide')->writeSlide($this->_presentation->getSlide($i)));
-			}
-
-			// Add slide relationships (drawings, ...)
-			for ($i = 0; $i < $this->_presentation->getSlideCount(); ++$i) {
-				// Add relationships
 				$objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', 	$this->getWriterPart('Rels')->writeSlideRelationships($this->_presentation->getSlide($i), ($i + 1)));
+				$objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', 	$this->getWriterPart('Slide')->writeSlide($this->_presentation->getSlide($i)));
 			}
 
 			// Add media
