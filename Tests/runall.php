@@ -36,6 +36,7 @@ $aTests = array(
 	, '04inmemoryimage.php'
 	, '05templated.php'
 	, '06table.php'
+	, '07chart.php'
 );
 
 // First, clear all results

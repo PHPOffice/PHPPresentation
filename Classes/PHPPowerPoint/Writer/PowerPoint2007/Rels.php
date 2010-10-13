@@ -385,6 +385,20 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 							'../media/' . str_replace(' ', '', $iterator->current()->getIndexedFilename())
 						);
 
+						$iterator->current()->__relationId = 'rId' . $relId;
+						
+						++$relId;
+					} else if ($iterator->current() instanceof PHPPowerPoint_Shape_Chart) {
+						// Write relationship for chart drawing
+						$this->_writeRelationship(
+							$objWriter,
+							$relId,
+							'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart',
+							'../charts/' . $iterator->current()->getIndexedFilename()
+						);
+
+						$iterator->current()->__relationId = 'rId' . $relId;
+						
 						++$relId;
 					}
 

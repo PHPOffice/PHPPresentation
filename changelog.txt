@@ -37,6 +37,7 @@ To be planned:
 - Feature:  (MB) Applied patches 7010 and 7020
 - Feature:  (MB) Work item 1196 - Add a hyperlink to an image or textbox
 - Feature:  (MBaker) Implement autoloader
+- Feature:  (MB) Work item 4953 - PowerPoint Charts
 - Bugfix:   (MBaker) Allow solid colour fill
 - Bugfix:   (MB) Work item 3910 - Table width setting Office 2007
 - Bugfix:   (MB) Work item 4598 - Bullet characters in Master Slide Layouts of template file become corrupted

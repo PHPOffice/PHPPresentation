@@ -108,6 +108,7 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
 		$this->_writerParts['presentation'] 	= new PHPPowerPoint_Writer_PowerPoint2007_Presentation();
 		$this->_writerParts['slide'] 			= new PHPPowerPoint_Writer_PowerPoint2007_Slide();
 		$this->_writerParts['drawing'] 			= new PHPPowerPoint_Writer_PowerPoint2007_Drawing();
+		$this->_writerParts['chart'] 			= new PHPPowerPoint_Writer_PowerPoint2007_Chart();
 
 		// Assign parent IWriter
 		foreach ($this->_writerParts as $writer) {
@@ -227,8 +228,8 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
 				// Add slide
 				$objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', 	$this->getWriterPart('Rels')->writeSlideRelationships($this->_presentation->getSlide($i), ($i + 1)));
 				$objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', 	$this->getWriterPart('Slide')->writeSlide($this->_presentation->getSlide($i)));
-			}
-
+			}					
+					
 			// Add media
 			for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
 				if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
@@ -259,6 +260,8 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
 					ob_end_clean();
 
 					$objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
+				} else if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Chart) {
+					$objZip->addFromString('ppt/charts/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename(), $this->getWriterPart('Chart')->writeChart($this->getDrawingHashTable()->getByIndex($i)));
 				}
 			}
 

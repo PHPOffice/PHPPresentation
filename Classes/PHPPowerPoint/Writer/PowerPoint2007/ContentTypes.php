@@ -163,23 +163,29 @@ class PHPPowerPoint_Writer_PowerPoint2007_ContentTypes extends PHPPowerPoint_Wri
 				$extension 	= '';
 				$mimeType 	= '';
 
-				if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
-					$extension 	= strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
-					$mimeType 	= $this->_getImageMimeType( $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath() );
-				} else if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
-					$extension 	= strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
-					$extension 	= explode('/', $extension);
-					$extension 	= $extension[1];
-
-					$mimeType 	= $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType();
-				}
-
-				if (!isset( $aMediaContentTypes[$extension]) ) {
-						$aMediaContentTypes[$extension] = $mimeType;
-
-						$this->_writeDefaultContentType(
-							$objWriter, $extension, $mimeType
-						);
+				if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Chart) {
+    				$this->_writeOverrideContentType(
+						$objWriter, '/ppt/charts/chart' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml'
+					);
+				} else {
+					if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
+						$extension 	= strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+						$mimeType 	= $this->_getImageMimeType( $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath() );
+					} else if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
+						$extension 	= strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
+						$extension 	= explode('/', $extension);
+						$extension 	= $extension[1];
+	
+						$mimeType 	= $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType();
+					}
+	
+					if (!isset( $aMediaContentTypes[$extension]) ) {
+							$aMediaContentTypes[$extension] = $mimeType;
+	
+							$this->_writeDefaultContentType(
+								$objWriter, $extension, $mimeType
+							);
+					}
 				}
 			}
 

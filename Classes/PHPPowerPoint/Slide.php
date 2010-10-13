@@ -151,6 +151,18 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
 	}
 
 	/**
+	 * Create chart shape
+	 *
+	 * @return PHPPowerPoint_Shape_Chart
+	 */
+	public function createChartShape()
+	{
+		$shape = new PHPPowerPoint_Shape_Chart();
+		$this->addShape($shape);
+		return $shape;
+	}
+	
+	/**
 	 * Create drawing shape
 	 *
 	 * @return PHPPowerPoint_Shape_Drawing

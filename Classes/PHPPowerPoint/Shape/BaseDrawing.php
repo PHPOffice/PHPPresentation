@@ -69,6 +69,13 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
 	 * @var boolean
 	 */
 	protected $_resizeProportional;
+	
+    /**
+     * Slide relation ID (should not be used by user code!)
+     * 
+     * @var string
+     */
+    public $__relationId = null;
 
     /**
      * Create a new PHPPowerPoint_Slide_BaseDrawing
