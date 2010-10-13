@@ -25,6 +25,7 @@
 
 To be planned:
 - General:  (MB) Work item 1165 - Rename PHPPowerpoint.php to PHPPowerPoint.php
+- General:  (MB) Work item 5270 - Create build script using Phing
 - Feature:  (MB) Work item  815 - Provide fluent interfaces where possible
 - Feature:  (MB) Work item 1034 - Use existing presentation template when writing PPTX file
 - Feature:  (MB) Work item 1093 - Implement bullet and numeric lists
