@@ -85,12 +85,17 @@ class PHPPowerPoint_Shape_Table_Row implements PHPPowerPoint_IComparable
      * Get cell
      *
      * @param int $cell Cell number
+     * @param boolean $exceptionAsNull Return a null value instead of an exception?
      * @return PHPPowerPoint_Shape_Table_Cell
      */
-	public function getCell($cell = 0)
+	public function getCell($cell = 0, $exceptionAsNull = false)
     {
-    	if (!isset($this->_cells[$cell]))
+    	if (!isset($this->_cells[$cell])) {
+    		if ($exceptionAsNull) {
+    			return null;
+    		}
     		throw new Exception('Cell number out of bounds.');
+    	}
 
     	return $this->_cells[$cell];
     }

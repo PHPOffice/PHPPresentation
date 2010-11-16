@@ -71,13 +71,18 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
      * Get row
      *
      * @param int $row Row number
+     * @param boolean $exceptionAsNull Return a null value instead of an exception?
      * @return PHPPowerPoint_Shape_Table_Row
      */
-	public function getRow($row = 0)
+	public function getRow($row = 0, $exceptionAsNull = false)
     {
-    	if (!isset($this->_rows[$row]))
+    	if (!isset($this->_rows[$row])) {
+    	    if ($exceptionAsNull) {
+    			return null;
+    		}
     		throw new Exception('Row number out of bounds.');
-
+    	}
+    	
     	return $this->_rows[$row];
     }
 

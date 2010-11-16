@@ -121,7 +121,7 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @param string $pValue
      * @return PHPPowerPoint_Style_Alignment
      */
-    public function setHorizontal($pValue = PHPPowerPoint_Style_Alignment::HORIZONTAL_LEF) {
+    public function setHorizontal($pValue = PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT) {
         if ($pValue == '') {
     		$pValue = PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT;
     	}

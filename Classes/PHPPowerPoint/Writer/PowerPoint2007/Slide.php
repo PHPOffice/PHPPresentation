@@ -631,17 +631,13 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 									$currentCell = $shape->getRow($row)->getCell($cell);
 									
 									// Next cell right
-									$nextCellRight = null;
-									try {
-										$nextCellRight = $shape->getRow($row)->getCell($cell + 1);
-									} catch (Exception $ex) {
-									}
+									$nextCellRight = $shape->getRow($row)->getCell($cell + 1, true);
 									
 									// Next cell below
+									$nextRowBelow = $shape->getRow($row + 1, true);
 									$nextCellBelow = null;
-									try {
-										$nextCellBelow = $shape->getRow($row + 1)->getCell($cell);
-									} catch (Exception $ex) {
+									if ($nextRowBelow != null) {
+										$nextCellBelow = $nextRowBelow->getCell($cell, true);
 									}
 									
 					                // a:tc
