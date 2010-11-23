@@ -94,7 +94,11 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getRGB() {
-    	return substr($this->_argb, 2);
+    	if (strlen($this->_argb) == 6) {
+    		return $this->_argb;
+    	} else {
+    		return substr($this->_argb, 2);
+    	}
     }
 
     /**

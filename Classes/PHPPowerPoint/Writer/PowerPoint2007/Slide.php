@@ -1088,6 +1088,11 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 		// Is it a fill?
 		if ($pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_NONE)
 			return;
+			
+		// Is it a solid fill?
+		if ($pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_SOLID){
+			$this->_writeSolidFill($objWriter, $pFill);	
+		}
 
 		// Check if this is a pattern type or gradient type
 		if ($pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_GRADIENT_LINEAR
@@ -1100,6 +1105,26 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 		}
 	}
 
+	/**
+	 * Write Solid Fill
+	 *
+	 * @param 	PHPPowerPoint_Shared_XMLWriter 	$objWriter 		XML Writer
+	 * @param 	PHPPowerPoint_Style_Fill		$pFill			Fill style
+	 * @throws 	Exception
+	 */
+	protected function _writeSolidFill(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Style_Fill $pFill = null)
+	{
+		// a:gradFill
+		$objWriter->startElement('a:solidFill');
+		
+			// srgbClr
+			$objWriter->startElement('a:srgbClr');
+			$objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
+			$objWriter->endElement();
+
+		$objWriter->endElement();
+	}
+	
 	/**
 	 * Write Gradient Fill
 	 *
