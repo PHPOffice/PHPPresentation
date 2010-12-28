@@ -482,9 +482,52 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 		// Return
 		return $objWriter->getData();
 	}
+	
+	/**
+	 * Write chart relationships to XML format
+	 *
+	 * @param 	PHPPowerPoint_Shape_Chart	$pChart
+	 * @return 	string 						XML Output
+	 * @throws 	Exception
+	 */
+	public function writeChartRelationships(PHPPowerPoint_Shape_Chart $pChart = null)
+	{
+		// Create XML writer
+		$objWriter = null;
+		if ($this->getParentWriter()->getUseDiskCaching()) {
+			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+		} else {
+			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+		}
+
+		// XML header
+		$objWriter->startDocument('1.0','UTF-8','yes');
+
+		// Relationships
+		$objWriter->startElement('Relationships');
+		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+
+			// Starting relation id
+			$relId = 1;
+			
+			// Write spreadsheet relationship?
+			if ($pChart->getIncludeSpreadsheet()) {
+				$this->_writeRelationship(
+					$objWriter,
+					$relId++,
+					'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package',
+					'../embeddings/' . $pChart->getIndexedFilename() . '.xlsx'
+				);
+			}
+
+		$objWriter->endElement();
+
+		// Return
+		return $objWriter->getData();
+	}
 
 	/**
-	 * Write Override content type
+	 * Write relationship
 	 *
 	 * @param 	PHPPowerPoint_Shared_XMLWriter 	$objWriter 		XML Writer
 	 * @param 	int							$pId			Relationship ID. rId will be prepended!

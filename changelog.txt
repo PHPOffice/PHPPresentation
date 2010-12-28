@@ -38,6 +38,7 @@ To be planned:
 - Feature:  (MB) Work item 1196 - Add a hyperlink to an image or textbox
 - Feature:  (MBaker) Implement autoloader
 - Feature:  (MB) Work item 4953 - PowerPoint Charts
+- Feature:  (MB) Work item 5580 - Editing chart data
 - Feature:  (MB) Work item 5461 - Solid Fill support
 - Bugfix:   (MBaker) Allow solid colour fill
 - Bugfix:   (MB) Work item 3910 - Table width setting Office 2007

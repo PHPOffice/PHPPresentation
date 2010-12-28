@@ -262,6 +262,12 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
 					$objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
 				} else if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Chart) {
 					$objZip->addFromString('ppt/charts/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename(), $this->getWriterPart('Chart')->writeChart($this->getDrawingHashTable()->getByIndex($i)));
+					
+					// Chart relations?
+					if ($this->getDrawingHashTable()->getByIndex($i)->getIncludeSpreadsheet()) {
+						$objZip->addFromString('ppt/charts/_rels/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename() . '.rels', $this->getWriterPart('Rels')->writeChartRelationships($this->getDrawingHashTable()->getByIndex($i)));
+						$objZip->addFromString('ppt/embeddings/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename() . '.xlsx', $this->getWriterPart('Chart')->writeSpreadsheet($this->_presentation, $this->getDrawingHashTable()->getByIndex($i), $pFilename . '.xlsx'));
+					}
 				}
 			}
 

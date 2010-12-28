@@ -62,6 +62,13 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
 	 * @var PHPPowerPoint_Shape_Chart_View3D
 	 */
 	private $_view3D;
+	
+	/**
+	 * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
+	 * 
+	 * @var bool
+	 */
+	private $_includeSpreadsheet = false;
 
     /**
      * Create a new PHPPowerPoint_Slide_MemoryDrawing
@@ -113,6 +120,26 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
 	public function getView3D() {
 	        return $this->_view3D;
 	}
+	
+	/**
+	 * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
+	 * 
+	 * @return boolean
+	 */
+	public function getIncludeSpreadsheet() {
+		return $this->_includeSpreadsheet;
+	}
+	
+	/**
+	 * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
+	 * 
+	 * @param boolean $value
+	 * @return PHPPowerPoint_Shape_Chart
+	 */
+	public function setIncludeSpreadsheet($value = false) {	
+		$this->_includeSpreadsheet = $value;
+		return $this;
+	}
 
     /**
      * Get indexed filename (using image index)
@@ -135,6 +162,7 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
     		. $this->_legend->getHashCode()
     		. $this->_plotArea->getHashCode()
     		. $this->_view3D->getHashCode()
+    		. ($this->_includeSpreadsheet ? 1 : 0)
     		. __CLASS__
     	);
     }

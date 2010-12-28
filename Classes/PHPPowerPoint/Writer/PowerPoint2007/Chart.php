@@ -125,7 +125,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 				$objWriter->endElement();
 				
 				// Write plot area
-				$this->_writePlotArea($objWriter, $chart->getPlotArea());
+				$this->_writePlotArea($objWriter, $chart->getPlotArea(), $chart);
     
 				// Legend?
 				if ($chart->getLegend()->getVisible()) {
@@ -181,11 +181,184 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 				}
 				
 			$objWriter->endElement();
+			
+			// External data?
+			if ($chart->getIncludeSpreadsheet()) {
+				// c:externalData
+				$objWriter->startElement('c:externalData');
+				$objWriter->writeAttribute('r:id', 'rId1');
+				
+					// c:autoUpdate
+					$objWriter->startElement('c:autoUpdate');
+					$objWriter->writeAttribute('val', '0');
+					$objWriter->endElement();
+				
+				$objWriter->endElement();
+			}
 		
 		$objWriter->endElement();
 
 		// Return
 		return $objWriter->getData();
+	}
+	
+	/**
+	 * Write chart to XML format
+	 *
+	 * @param	PHPPowerPoint				$presentation
+	 * @param	PHPPowerPoint_Shape_Chart	$chart
+	 * @param	string						$tempName
+	 * @return	string						String output
+	 * @throws	Exception
+	 */
+	public function writeSpreadsheet(PHPPowerPoint $presentation, $chart, $tempName) {
+		// Need output?
+		if (!$chart->getIncludeSpreadsheet()) {
+			throw new Exception('No spreadsheet output is required for the given chart.');
+		}
+		
+		// Verify PHPExcel
+		if (!class_exists('PHPExcel')) {
+			throw new Exception('PHPExcel has not been loaded. Include PHPExcel.php in your script, e.g. require_once \'PHPExcel.php\'.');
+		}
+		
+		// Create new spreadsheet
+		$workbook = new PHPExcel();
+		
+		// Set properties
+		$title = $chart->getTitle()->getText();
+		if (strlen($title) == 0) {
+			$title = 'Chart';
+		}
+		$workbook->getProperties()->setCreator($presentation->getProperties()->getCreator())
+							 ->setLastModifiedBy($presentation->getProperties()->getLastModifiedBy())
+							 ->setTitle($title);
+							 			 
+		// Add chart data
+		$sheet = $workbook->setActiveSheetIndex(0);
+		$sheet->setTitle('Sheet1');
+
+		// Write series
+		$seriesIndex = 0;
+		foreach ($chart->getPlotArea()->getType()->getData() as $series) {
+			// Title
+			$sheet->setCellValueByColumnAndRow(1 + $seriesIndex, 1, $series->getTitle());
+			
+			// X-axis
+			$axisXData = array_keys($series->getValues());
+			for ($i = 0; $i < count($axisXData); $i++) {
+				$sheet->setCellValueByColumnAndRow(0, $i + 2, $axisXData[$i]);
+			}
+			
+			// Y-axis
+			$axisYData = array_values($series->getValues());
+			for ($i = 0; $i < count($axisYData); $i++) {
+				$sheet->setCellValueByColumnAndRow(1 + $seriesIndex, $i + 2, $axisYData[$i]);
+			}
+				
+			++$seriesIndex;
+		}
+		
+		// Save to string
+		$writer = PHPExcel_IOFactory::createWriter($workbook, 'Excel2007');
+		$writer->save($tempName);
+		
+		// Load file in memory
+		$returnValue = file_get_contents($tempName);
+		@unlink($tempName);
+		
+		return $returnValue;
+	}
+	
+	/**
+	 * Write single value or reference
+	 *
+	 * @param PHPPowerPoint_Shared_XMLWriter 		$objWriter 		XML Writer
+	 * @param boolean	$isReference
+	 * @param mixed $value
+	 * @param string $reference
+	 */
+	protected function _writeSingleValueOrReference($objWriter, $isReference, $value, $reference) {
+		if (!$isReference) {
+			// Value
+			$objWriter->writeElement('c:v', $value);
+		} else {
+			// Reference and cache
+			$objWriter->startElement('c:strRef');
+				$objWriter->writeElement('c:f', $reference);
+				$objWriter->startElement('c:strCache');
+					$objWriter->startElement('c:ptCount');
+					$objWriter->writeAttribute('val', '1');
+					$objWriter->endElement();
+								
+					$objWriter->startElement('c:pt');
+					$objWriter->writeAttribute('idx', '0');
+						$objWriter->writeElement('c:v', $value);
+					$objWriter->endElement();
+				$objWriter->endElement();
+			$objWriter->endElement();
+		}
+	}
+	
+	/**
+	 * Write series value or reference
+	 *
+	 * @param PHPPowerPoint_Shared_XMLWriter 		$objWriter 		XML Writer
+	 * @param boolean	$isReference
+	 * @param mixed $values
+	 * @param string $reference
+	 */
+	protected function _writeMultipleValuesOrReference($objWriter, $isReference, $values, $reference) {
+		// c:strLit / c:numLit
+		// c:strRef / c:numRef
+		$dataType = '';
+		$referenceType = ($isReference ? 'Ref' : 'Lit');
+		if (is_int($values[0]) || is_float($values[0])) {
+			$dataType = 'num';
+		} else {
+			$dataType = 'str';
+		}
+		$objWriter->startElement('c:' . $dataType . $referenceType);
+		
+		if (!$isReference) {
+			// Value
+						
+			// c:ptCount
+			$objWriter->startElement('c:ptCount');
+			$objWriter->writeAttribute('val', count($values));
+			$objWriter->endElement();
+
+			// Add points
+			for ($i = 0; $i < count($values); $i++) {
+				// c:pt
+				$objWriter->startElement('c:pt');
+				$objWriter->writeAttribute('idx', $i);
+				$objWriter->writeElement('c:v', $values[$i]);
+				$objWriter->endElement();
+			}
+		} else {
+			// Reference
+			$objWriter->writeElement('c:f', $reference);
+			$objWriter->startElement('c:' . $dataType . 'Cache');
+
+				// c:ptCount
+				$objWriter->startElement('c:ptCount');
+				$objWriter->writeAttribute('val', count($values));
+				$objWriter->endElement();
+	
+				// Add points
+				for ($i = 0; $i < count($values); $i++) {
+					// c:pt
+					$objWriter->startElement('c:pt');
+					$objWriter->writeAttribute('idx', $i);
+					$objWriter->writeElement('c:v', $values[$i]);
+					$objWriter->endElement();
+				}
+			
+			$objWriter->endElement();
+		}
+			
+		$objWriter->endElement();
 	}
 	
 	/**
@@ -264,9 +437,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 	 *
 	 * @param 	PHPPowerPoint_Shared_XMLWriter 		$objWriter 		XML Writer
 	 * @param 	PHPPowerPoint_Shape_Chart_PlotArea	$subject
+	 * @param	PHPPowerPoint_Shape_Chart 			$chart
 	 * @throws 	Exception
 	 */
-	protected function _writePlotArea(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_PlotArea $subject) {
+	protected function _writePlotArea(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_PlotArea $subject, PHPPowerPoint_Shape_Chart $chart) {
 		// c:plotArea
 		$objWriter->startElement('c:plotArea');
 					
@@ -276,9 +450,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 			// Write chart
 			$chartType = $subject->getType();
 			if ($chartType instanceof PHPPowerPoint_Shape_Chart_Type_Bar3D) {
-				$this->_writeTypeBar3D($objWriter, $chartType);
+				$this->_writeTypeBar3D($objWriter, $chartType, $chart->getIncludeSpreadsheet());
 			} else if ($chartType instanceof PHPPowerPoint_Shape_Chart_Type_Pie3D) {
-				$this->_writeTypePie3D($objWriter, $chartType);
+				$this->_writeTypePie3D($objWriter, $chartType, $chart->getIncludeSpreadsheet());
 			} else {
 				throw new Exception('The chart type provided could not be rendered.');
 			}	
@@ -585,9 +759,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 	 *
 	 * @param 	PHPPowerPoint_Shared_XMLWriter 			$objWriter 		XML Writer
 	 * @param 	PHPPowerPoint_Shape_Chart_Type_Bar3D	$subject
+	 * @param	boolean									$includeSheet
 	 * @throws 	Exception
 	 */
-	protected function _writeTypeBar3D(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Bar3D $subject) {
+	protected function _writeTypeBar3D(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Bar3D $subject, $includeSheet = false) {
 		// c:bar3DChart
 		$objWriter->startElement('c:bar3DChart');
 		
@@ -619,7 +794,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:tx
 					$objWriter->startElement('c:tx');
-					$objWriter->writeElement('c:v', $series->getTitle());
+					$this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1');
 					$objWriter->endElement();
 					
 					// c:spPr
@@ -635,30 +810,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:cat
 					$objWriter->startElement('c:cat');
-					
-						// c:strLit / c:numLit
-						if (is_int($axisXData[0]) || is_float($axisXData[0])) {
-							$objWriter->startElement('c:numLit');
-						} else {
-							$objWriter->startElement('c:strLit');
-						}
-						
-							// c:ptCount
-							$objWriter->startElement('c:ptCount');
-							$objWriter->writeAttribute('val', count($axisXData));
-							$objWriter->endElement();
-							
-							// Add points
-							for ($i = 0; $i < count($axisXData); $i++) {
-								// c:pt
-								$objWriter->startElement('c:pt');
-								$objWriter->writeAttribute('idx', $i);
-								$objWriter->writeElement('c:v', $axisXData[$i]);
-								$objWriter->endElement();
-							}
-			
-						$objWriter->endElement();
-					
+					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
 					$objWriter->endElement();
 					
 					// Write Y axis data
@@ -666,30 +818,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:val
 					$objWriter->startElement('c:val');
-					
-						// c:strLit / c:numLit
-						if (is_int($axisYData[0]) || is_float($axisYData[0])) {
-							$objWriter->startElement('c:numLit');
-						} else {
-							$objWriter->startElement('c:strLit');
-						}
-						
-							// c:ptCount
-							$objWriter->startElement('c:ptCount');
-							$objWriter->writeAttribute('val', count($axisYData));
-							$objWriter->endElement();
-							
-							// Add points
-							for ($i = 0; $i < count($axisYData); $i++) {
-								// c:pt
-								$objWriter->startElement('c:pt');
-								$objWriter->writeAttribute('idx', $i);
-								$objWriter->writeElement('c:v', $axisYData[$i]);
-								$objWriter->endElement();
-							}
-			
-						$objWriter->endElement();
-					
+					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)));
 					$objWriter->endElement();
 				
 				$objWriter->endElement();
@@ -740,9 +869,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 	 *
 	 * @param 	PHPPowerPoint_Shared_XMLWriter 			$objWriter 		XML Writer
 	 * @param 	PHPPowerPoint_Shape_Chart_Type_Pie3D	$subject
+	 * @param	boolean									$includeSheet
 	 * @throws 	Exception
 	 */
-	protected function _writeTypePie3D(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Pie3D $subject) {
+	protected function _writeTypePie3D(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Pie3D $subject, $includeSheet = false) {
 		// c:pie3DChart
 		$objWriter->startElement('c:pie3DChart');
 		
@@ -769,7 +899,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:tx
 					$objWriter->startElement('c:tx');
-					$objWriter->writeElement('c:v', $series->getTitle());
+					$this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1');
 					$objWriter->endElement();
 					
 					// c:explosion
@@ -797,30 +927,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:cat
 					$objWriter->startElement('c:cat');
-					
-						// c:strLit / c:numLit
-						if (is_int($axisXData[0]) || is_float($axisXData[0])) {
-							$objWriter->startElement('c:numLit');
-						} else {
-							$objWriter->startElement('c:strLit');
-						}
-						
-							// c:ptCount
-							$objWriter->startElement('c:ptCount');
-							$objWriter->writeAttribute('val', count($axisXData));
-							$objWriter->endElement();
-							
-							// Add points
-							for ($i = 0; $i < count($axisXData); $i++) {
-								// c:pt
-								$objWriter->startElement('c:pt');
-								$objWriter->writeAttribute('idx', $i);
-								$objWriter->writeElement('c:v', $axisXData[$i]);
-								$objWriter->endElement();
-							}
-			
-						$objWriter->endElement();
-					
+					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
 					$objWriter->endElement();
 					
 					// Write Y axis data
@@ -828,30 +935,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:val
 					$objWriter->startElement('c:val');
-					
-						// c:strLit / c:numLit
-						if (is_int($axisYData[0]) || is_float($axisYData[0])) {
-							$objWriter->startElement('c:numLit');
-						} else {
-							$objWriter->startElement('c:strLit');
-						}
-						
-							// c:ptCount
-							$objWriter->startElement('c:ptCount');
-							$objWriter->writeAttribute('val', count($axisYData));
-							$objWriter->endElement();
-							
-							// Add points
-							for ($i = 0; $i < count($axisYData); $i++) {
-								// c:pt
-								$objWriter->startElement('c:pt');
-								$objWriter->writeAttribute('idx', $i);
-								$objWriter->writeElement('c:v', $axisYData[$i]);
-								$objWriter->endElement();
-							}
-			
-						$objWriter->endElement();
-					
+					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)));
 					$objWriter->endElement();
 				
 				$objWriter->endElement();

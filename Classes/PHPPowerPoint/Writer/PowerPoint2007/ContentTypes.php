@@ -156,6 +156,11 @@ class PHPPowerPoint_Writer_PowerPoint2007_ContentTypes extends PHPPowerPoint_Wri
 			foreach ($aMediaContentTypes as $key => $value) {
 				$this->_writeDefaultContentType($objWriter, $key, $value);
 			}
+			
+			// XLSX
+			$this->_writeDefaultContentType(
+				$objWriter, 'xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+			);
 
 			// Other media content types
 			$mediaCount = $this->getParentWriter()->getDrawingHashTable()->count();
@@ -163,7 +168,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_ContentTypes extends PHPPowerPoint_Wri
 				$extension 	= '';
 				$mimeType 	= '';
 
-				if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Chart) {
+				if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Chart) {			
+					// Chart content type
     				$this->_writeOverrideContentType(
 						$objWriter, '/ppt/charts/chart' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml'
 					);

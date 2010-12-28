@@ -37,6 +37,7 @@ $aTests = array(
 	, '05templated.php'
 	, '06table.php'
 	, '07chart.php'
+	, '08chart.php'
 );
 
 // First, clear all results
