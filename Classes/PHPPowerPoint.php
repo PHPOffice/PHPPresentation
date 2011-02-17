@@ -52,6 +52,13 @@ class PHPPowerPoint
 	private $_properties;
 
 	/**
+	 * Document layout
+	 *
+	 * @var PHPPowerPoint_DocumentLayout
+	 */
+	private $_layout;
+
+	/**
 	 * Collection of Slide objects
 	 *
 	 * @var PHPPowerPoint_Slide[]
@@ -77,6 +84,7 @@ class PHPPowerPoint
 
 		// Create document properties
 		$this->_properties = new PHPPowerPoint_DocumentProperties();
+		$this->_layout = new PHPPowerPoint_DocumentLayout();
 	}
 
 	/**
@@ -98,6 +106,28 @@ class PHPPowerPoint
 	public function setProperties(PHPPowerPoint_DocumentProperties $value)
 	{
 		$this->_properties = $value;
+		return $this;
+	}
+
+	/**
+	 * Get layout
+	 *
+	 * @return PHPPowerPoint_DocumentLayout
+	 */
+	public function getLayout()
+	{
+		return $this->_layout;
+	}
+
+	/**
+	 * Set layout
+	 *
+	 * @param PHPPowerPoint_DocumentLayout	$value
+	 * @return PHPPowerPoint
+	 */
+	public function setLayout(PHPPowerPoint_DocumentLayout $value)
+	{
+		$this->_layout = $value;
 		return $this;
 	}
 

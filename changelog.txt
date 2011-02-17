@@ -40,13 +40,14 @@ To be planned:
 - Feature:  (MB) Work item 4953 - PowerPoint Charts
 - Feature:  (MB) Work item 5580 - Editing chart data
 - Feature:  (MB) Work item 5461 - Solid Fill support
+- Feature:  (MB) Applied patch 8375 
 - Bugfix:   (MBaker) Allow solid colour fill
 - Bugfix:   (MB) Work item 3910 - Table width setting Office 2007
 - Bugfix:   (MB) Work item 4598 - Bullet characters in Master Slide Layouts of template file become corrupted
 - Bugfix:   (MB) Work item 3424 - Generated files cannot be opened in Office 08 for Mac OSX
 - Bugfix:   (MB) Work item 2541 - Table Cell Borders Not Displaying Correctly
 - Bugfix:   (MB) Work item 4597 - Multiple Master Slides are not supported 
-- Bugfix:   (MB) Work item 4596 - Images in Layouts other than first Master Slide within Template file causes corrupted PPTX 
+- Bugfix:   (MB) Work item 4596 - Images in Layouts other than first Master Slide within Template file causes corrupted PPTX
 
 
 Initial version:

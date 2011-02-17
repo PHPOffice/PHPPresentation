@@ -91,8 +91,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
 
 			// p:sldSz
 			$objWriter->startElement('p:sldSz');
-			$objWriter->writeAttribute('cx', '9144000');
-			$objWriter->writeAttribute('cy', '6858000');
+			//$objWriter->writeAttribute('cx', '9144000');
+			//$objWriter->writeAttribute('cy', '6858000');
+			$objWriter->writeAttribute('cx', $pPHPPowerPoint->getLayout()->getCX());
+			$objWriter->writeAttribute('cy', $pPHPPowerPoint->getLayout()->getCY());
+			if( $pPHPPowerPoint->getLayout()->getDocumentLayout() != PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM )
+				$objWriter->writeAttribute('type', $pPHPPowerPoint->getLayout()->getDocumentLayout());
 			$objWriter->endElement();
 
 			// p:notesSz

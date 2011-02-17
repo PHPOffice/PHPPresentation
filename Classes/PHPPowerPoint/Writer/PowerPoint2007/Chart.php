@@ -794,7 +794,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:tx
 					$objWriter->startElement('c:tx');
-					$this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1');
+					$coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1'  : '');
+					$this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
 					$objWriter->endElement();
 					
 					// c:spPr
@@ -818,7 +819,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:val
 					$objWriter->startElement('c:val');
-					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)));
+					$coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData))  : '');
+					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
 					$objWriter->endElement();
 				
 				$objWriter->endElement();
@@ -899,7 +901,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:tx
 					$objWriter->startElement('c:tx');
-					$this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1');
+					$coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
+					$this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
 					$objWriter->endElement();
 					
 					// c:explosion
@@ -935,7 +938,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					
 					// c:val
 					$objWriter->startElement('c:val');
-					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)));
+					$coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
+					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
 					$objWriter->endElement();
 				
 				$objWriter->endElement();
