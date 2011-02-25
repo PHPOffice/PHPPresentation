@@ -1091,7 +1091,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 			
 		// Is it a solid fill?
 		if ($pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_SOLID){
-			$this->_writeSolidFill($objWriter, $pFill);	
+			$this->_writeSolidFill($objWriter, $pFill);
+			return;
 		}
 
 		// Check if this is a pattern type or gradient type
