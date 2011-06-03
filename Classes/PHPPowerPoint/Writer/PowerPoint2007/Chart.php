@@ -271,6 +271,19 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 	}
 	
 	/**
+	 * Write element with value attribute
+	 * 
+	 * @param PHPPowerPoint_Shared_XMLWriter 		$objWriter 		XML Writer
+	 * @param string $elementName
+	 * @param string $value
+	 */
+	protected function _writeElementWithValAttribute($objWriter, $elementName, $value) {
+		$objWriter->startElement($elementName);
+		$objWriter->writeAttribute('val', $value);
+		$objWriter->endElement();
+	}
+	
+	/**
 	 * Write single value or reference
 	 *
 	 * @param PHPPowerPoint_Shared_XMLWriter 		$objWriter 		XML Writer
@@ -386,9 +399,15 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 								
 					// a:p
 					$objWriter->startElement('a:p');
-								
+
 						// a:pPr
 						$objWriter->startElement('a:pPr');
+			        	$objWriter->writeAttribute('algn', 		$subject->getAlignment()->getHorizontal());
+			        	$objWriter->writeAttribute('fontAlgn', 	$subject->getAlignment()->getVertical());
+			        	$objWriter->writeAttribute('marL', 		PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getMarginLeft()));
+			        	$objWriter->writeAttribute('marR', 		PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getMarginRight()));
+			        	$objWriter->writeAttribute('indent', 	PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getIndent()));
+			        	$objWriter->writeAttribute('lvl', 		$subject->getAlignment()->getLevel());
 									
 							// a:defRPr
 							$objWriter->writeElement('a:defRPr', null);
@@ -402,6 +421,36 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 							$objWriter->startElement('a:rPr');
 							$objWriter->writeAttribute('lang', 'en-US');
 							$objWriter->writeAttribute('dirty', '0');
+							
+		               		$objWriter->writeAttribute('b', ($subject->getFont()->getBold() ? 'true' : 'false'));
+							$objWriter->writeAttribute('i', ($subject->getFont()->getItalic() ? 'true' : 'false'));
+							$objWriter->writeAttribute('strike', ($subject->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+							$objWriter->writeAttribute('sz', ($subject->getFont()->getSize() * 100));
+							$objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
+							
+							if ($subject->getFont()->getSuperScript() || $subject->getFont()->getSubScript()) {
+	               				if ($subject->getFont()->getSuperScript()) {
+	               					$objWriter->writeAttribute('baseline', '30000');
+	               				} else if ($subject->getFont()->getSubScript()) {
+	               					$objWriter->writeAttribute('baseline', '-25000');
+	               				}
+	               			}
+	               			
+		               			// Font - a:solidFill
+								$objWriter->startElement('a:solidFill');
+	
+									// a:srgbClr
+		               				$objWriter->startElement('a:srgbClr');
+		               				$objWriter->writeAttribute('val', $subject->getFont()->getColor()->getRGB());
+		               				$objWriter->endElement();
+	
+		           				$objWriter->endElement();
+	
+		           				// Font - a:latin
+		           				$objWriter->startElement('a:latin');
+		           				$objWriter->writeAttribute('typeface', $subject->getFont()->getName());
+		           				$objWriter->endElement();
+					        		
 							$objWriter->endElement();
 										
 							// a:t
@@ -694,7 +743,87 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 			$objWriter->startElement('c:overlay');
 			$objWriter->writeAttribute('val', '0');
 			$objWriter->endElement();
-					
+			
+			// c:spPr
+			$objWriter->startElement('c:spPr');
+			
+				// Fill
+				$this->_writeFill($objWriter, $subject->getFill());
+							
+				// Border
+				if ($subject->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+					$this->_writeBorder($objWriter,$subject->getBorder(),'');
+				}
+				
+			$objWriter->endElement();
+
+			// c:txPr
+			$objWriter->startElement('c:txPr');
+									
+				// a:bodyPr
+				$objWriter->writeElement('a:bodyPr', null);
+									
+				// a:lstStyle
+				$objWriter->writeElement('a:lstStyle', null);
+									
+				// a:p
+				$objWriter->startElement('a:p');
+							
+					// a:pPr
+					$objWriter->startElement('a:pPr');
+			        $objWriter->writeAttribute('algn', 		$subject->getAlignment()->getHorizontal());
+			        $objWriter->writeAttribute('fontAlgn', 	$subject->getAlignment()->getVertical());
+			        $objWriter->writeAttribute('marL', 		PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getMarginLeft()));
+			        $objWriter->writeAttribute('marR', 		PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getMarginRight()));
+			        $objWriter->writeAttribute('indent', 	PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getIndent()));
+			        $objWriter->writeAttribute('lvl', 		$subject->getAlignment()->getLevel());
+										
+						// a:defRPr
+						$objWriter->startElement('a:defRPr');
+						
+		               	$objWriter->writeAttribute('b', ($subject->getFont()->getBold() ? 'true' : 'false'));
+						$objWriter->writeAttribute('i', ($subject->getFont()->getItalic() ? 'true' : 'false'));
+						$objWriter->writeAttribute('strike', ($subject->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+						$objWriter->writeAttribute('sz', ($subject->getFont()->getSize() * 100));
+						$objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
+							
+						if ($subject->getFont()->getSuperScript() || $subject->getFont()->getSubScript()) {
+	               			if ($subject->getFont()->getSuperScript()) {
+	               				$objWriter->writeAttribute('baseline', '30000');
+	               			} else if ($subject->getFont()->getSubScript()) {
+	               				$objWriter->writeAttribute('baseline', '-25000');
+	               			}
+	               		}
+	               			
+		               		// Font - a:solidFill
+							$objWriter->startElement('a:solidFill');
+	
+								// a:srgbClr
+		               			$objWriter->startElement('a:srgbClr');
+		               			$objWriter->writeAttribute('val', $subject->getFont()->getColor()->getRGB());
+		               			$objWriter->endElement();
+	
+		           			$objWriter->endElement();
+	
+		           			// Font - a:latin
+		           			$objWriter->startElement('a:latin');
+		           			$objWriter->writeAttribute('typeface', $subject->getFont()->getName());
+		           			$objWriter->endElement();
+						
+						$objWriter->endElement();
+    
+					$objWriter->endElement();
+							
+					// a:endParaRPr
+					$objWriter->startElement('a:endParaRPr');
+					$objWriter->writeAttribute('lang', 'en-US');
+					$objWriter->writeAttribute('dirty', '0');
+					$objWriter->endElement();
+										
+				$objWriter->endElement();
+									
+			$objWriter->endElement();
+							
 		$objWriter->endElement();
 	}
 	
@@ -798,6 +927,107 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					$this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
 					$objWriter->endElement();
 					
+					// Fills for points?
+					$dataPointFills = $series->getDataPointFills();
+					foreach ($dataPointFills as $key => $value) {
+						// c:dPt
+						$objWriter->startElement('c:dPt');
+						
+							// c:idx
+							$this->_writeElementWithValAttribute($objWriter, 'c:idx', $key);
+							
+							// c:spPr
+							$objWriter->startElement('c:spPr');
+
+								// Write fill
+								$this->_writeFill($objWriter, $value);
+							
+							$objWriter->endElement();
+						
+						$objWriter->endElement();
+					}
+					
+					// c:dLbls
+					$objWriter->startElement('c:dLbls');
+			
+						// c:txPr
+						$objWriter->startElement('c:txPr');
+												
+							// a:bodyPr
+							$objWriter->writeElement('a:bodyPr', null);
+												
+							// a:lstStyle
+							$objWriter->writeElement('a:lstStyle', null);
+												
+							// a:p
+							$objWriter->startElement('a:p');
+										
+								// a:pPr
+								$objWriter->startElement('a:pPr');
+													
+									// a:defRPr
+									$objWriter->startElement('a:defRPr');
+									
+					               	$objWriter->writeAttribute('b', ($series->getFont()->getBold() ? 'true' : 'false'));
+									$objWriter->writeAttribute('i', ($series->getFont()->getItalic() ? 'true' : 'false'));
+									$objWriter->writeAttribute('strike', ($series->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+									$objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+									$objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+										
+									if ($series->getFont()->getSuperScript() || $series->getFont()->getSubScript()) {
+				               			if ($series->getFont()->getSuperScript()) {
+				               				$objWriter->writeAttribute('baseline', '30000');
+				               			} else if ($series->getFont()->getSubScript()) {
+				               				$objWriter->writeAttribute('baseline', '-25000');
+				               			}
+				               		}
+				               			
+					               		// Font - a:solidFill
+										$objWriter->startElement('a:solidFill');
+										
+											// a:srgbClr
+					               			$objWriter->startElement('a:srgbClr');
+					               			$objWriter->writeAttribute('val', $series->getFont()->getColor()->getRGB());
+					               			$objWriter->endElement();
+				
+					           			$objWriter->endElement();
+				
+					           			// Font - a:latin
+					           			$objWriter->startElement('a:latin');
+					           			$objWriter->writeAttribute('typeface', $series->getFont()->getName());
+					           			$objWriter->endElement();
+									
+									$objWriter->endElement();
+			    
+								$objWriter->endElement();
+										
+								// a:endParaRPr
+								$objWriter->startElement('a:endParaRPr');
+								$objWriter->writeAttribute('lang', 'en-US');
+								$objWriter->writeAttribute('dirty', '0');
+								$objWriter->endElement();
+													
+							$objWriter->endElement();
+												
+						$objWriter->endElement();			
+					
+						// c:showVal
+						$this->_writeElementWithValAttribute($objWriter, 'c:showVal', $series->getShowValue() ? '1' : '0');
+						
+						// c:showCatName
+						$this->_writeElementWithValAttribute($objWriter, 'c:showCatName', $series->getShowCategoryName() ? '1' : '0');
+						
+						// c:showSerName
+						$this->_writeElementWithValAttribute($objWriter, 'c:showSerName', $series->getShowSeriesName() ? '1' : '0');
+						
+						// c:showPercent
+						$this->_writeElementWithValAttribute($objWriter, 'c:showPercent', $series->getShowPercentage() ? '1' : '0');
+						
+						// c:showLeaderLines
+						$this->_writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->getShowLeaderLines() ? '1' : '0');
+						
+					$objWriter->endElement();
+					
 					// c:spPr
 					$objWriter->startElement('c:spPr');
 					
@@ -827,16 +1057,6 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 				
 				++$seriesIndex;
 			}
-
-			// c:dLbls
-			$objWriter->startElement('c:dLbls');
-			
-				// c:showVal
-				$objWriter->startElement('c:showVal');
-				$objWriter->writeAttribute('val', '1');
-				$objWriter->endElement();
-				
-			$objWriter->endElement();
 			
 			// c:gapWidth
 			$objWriter->startElement('c:gapWidth');
@@ -909,20 +1129,109 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					$objWriter->startElement('c:explosion');
 					$objWriter->writeAttribute('val', '20');
 					$objWriter->endElement();
+
+					// Fills for points?
+					$dataPointFills = $series->getDataPointFills();
+					foreach ($dataPointFills as $key => $value) {
+						// c:dPt
+						$objWriter->startElement('c:dPt');
+						
+							// c:idx
+							$this->_writeElementWithValAttribute($objWriter, 'c:idx', $key);
+							
+							// c:spPr
+							$objWriter->startElement('c:spPr');
+
+								// Write fill
+								$this->_writeFill($objWriter, $value);
+							
+							$objWriter->endElement();
+						
+						$objWriter->endElement();
+					}
 					
 					// c:dLbls
 					$objWriter->startElement('c:dLbls');
+			
+						// c:txPr
+						$objWriter->startElement('c:txPr');
+												
+							// a:bodyPr
+							$objWriter->writeElement('a:bodyPr', null);
+												
+							// a:lstStyle
+							$objWriter->writeElement('a:lstStyle', null);
+												
+							// a:p
+							$objWriter->startElement('a:p');
+										
+								// a:pPr
+								$objWriter->startElement('a:pPr');
+													
+									// a:defRPr
+									$objWriter->startElement('a:defRPr');
+									
+					               	$objWriter->writeAttribute('b', ($series->getFont()->getBold() ? 'true' : 'false'));
+									$objWriter->writeAttribute('i', ($series->getFont()->getItalic() ? 'true' : 'false'));
+									$objWriter->writeAttribute('strike', ($series->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+									$objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+									$objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+										
+									if ($series->getFont()->getSuperScript() || $series->getFont()->getSubScript()) {
+				               			if ($series->getFont()->getSuperScript()) {
+				               				$objWriter->writeAttribute('baseline', '30000');
+				               			} else if ($series->getFont()->getSubScript()) {
+				               				$objWriter->writeAttribute('baseline', '-25000');
+				               			}
+				               		}
+				               			
+					               		// Font - a:solidFill
+										$objWriter->startElement('a:solidFill');
+										
+											// a:srgbClr
+					               			$objWriter->startElement('a:srgbClr');
+					               			$objWriter->writeAttribute('val', $series->getFont()->getColor()->getRGB());
+					               			$objWriter->endElement();
+				
+					           			$objWriter->endElement();
+				
+					           			// Font - a:latin
+					           			$objWriter->startElement('a:latin');
+					           			$objWriter->writeAttribute('typeface', $series->getFont()->getName());
+					           			$objWriter->endElement();
+									
+									$objWriter->endElement();
+			    
+								$objWriter->endElement();
+										
+								// a:endParaRPr
+								$objWriter->startElement('a:endParaRPr');
+								$objWriter->writeAttribute('lang', 'en-US');
+								$objWriter->writeAttribute('dirty', '0');
+								$objWriter->endElement();
+													
+							$objWriter->endElement();
+												
+						$objWriter->endElement();			
 
+						// c:dLblPos
+						$this->_writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
+						
+						// c:showVal
+						$this->_writeElementWithValAttribute($objWriter, 'c:showVal', $series->getShowValue() ? '1' : '0');
+						
+						// c:showCatName
+						$this->_writeElementWithValAttribute($objWriter, 'c:showCatName', $series->getShowCategoryName() ? '1' : '0');
+						
+						// c:showSerName
+						$this->_writeElementWithValAttribute($objWriter, 'c:showSerName', $series->getShowSeriesName() ? '1' : '0');
+						
 						// c:showPercent
-						$objWriter->startElement('c:showPercent');
-						$objWriter->writeAttribute('val', '1');
-						$objWriter->endElement();		
+						$this->_writeElementWithValAttribute($objWriter, 'c:showPercent', $series->getShowPercentage() ? '1' : '0');
 						
 						// c:showLeaderLines
-						$objWriter->startElement('c:showLeaderLines');
-						$objWriter->writeAttribute('val', '1');
-						$objWriter->endElement();		
-					
+						$this->_writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->getShowLeaderLines() ? '1' : '0');
+						
 					$objWriter->endElement();
 					
 					// Write X axis data
@@ -946,16 +1255,6 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 				
 				++$seriesIndex;
 			}
-
-			// c:dLbls
-			$objWriter->startElement('c:dLbls');
-			
-				// c:showVal
-				$objWriter->startElement('c:showPercent');
-				$objWriter->writeAttribute('val', '1');
-				$objWriter->endElement();
-				
-			$objWriter->endElement();
 		
 		$objWriter->endElement();
 	}

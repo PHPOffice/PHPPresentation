@@ -76,12 +76,30 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
 	 * @var float
 	 */
 	private $_height = 0;
+	
+	/**
+	 * Alignment
+	 *
+	 * @var PHPPowerPoint_Style_Alignment
+	 */
+	private $_alignment;
+
+	/**
+	 * Font
+	 *
+	 * @var PHPPowerPoint_Style_Font
+	 */
+	private $_font;
     
     /**
      * Create a new PHPPowerPoint_Shape_Chart_Title instance
      */
     public function __construct()
     {
+    	$this->_alignment = new PHPPowerPoint_Style_Alignment();
+    	$this->_font = new PHPPowerPoint_Style_Font();
+    	$this->_font->setName('Calibri');
+    	$this->_font->setSize(18);
     }
     
 	/**
@@ -205,6 +223,49 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
 	}
 	
 	/**
+	 * Get font
+	 *
+	 * @return PHPPowerPoint_Style_Font
+	 */
+	public function getFont() {
+		return $this->_font;
+	}
+
+	/**
+	 * Set font
+	 *
+	 * @param	PHPPowerPoint_Style_Font		$pFont		Font
+	 * @throws 	Exception
+	 * @return PHPPowerPoint_Shape_RichText_Paragraph
+	 */
+	public function setFont(PHPPowerPoint_Style_Font $pFont = null) {
+		$this->_font = $pFont;
+		return $this;
+	}
+
+    /**
+     * Get alignment
+     *
+     * @return PHPPowerPoint_Style_Alignment
+     */
+    public function getAlignment()
+    {
+    	return $this->_alignment;
+    }
+
+    /**
+     * Set alignment
+     *
+     * @param PHPPowerPoint_Style_Alignment		$alignment
+     * @return PHPPowerPoint_Shape_Chart_Title
+     */
+    public function setAlignment(PHPPowerPoint_Style_Alignment $alignment)
+    {
+    	$this->_alignment = $alignment;
+    	return $this;
+    }
+	
+	/**
 	 * Get hash code
 	 *
 	 * @return string	Hash code
@@ -216,6 +277,8 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     		. $this->_offsetY
     		. $this->_width
     		. $this->_height
+    		. $this->_font->getHashCode()
+    		. $this->_alignment->getHashCode()
     		. ($this->_visible ? 't' : 'f')
     		. __CLASS__
     	);

@@ -89,12 +89,15 @@ $shape->getFill()->setFillType(PHPPowerPoint_Style_Fill::FILL_GRADIENT_LINEAR)
                  ->setRotation(270);
 $shape->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
 $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+$shape->getTitle()->getFont()->setItalic(true);
 $shape->getPlotArea()->getAxisX()->setTitle('Month');
 $shape->getPlotArea()->getAxisY()->setTitle('Downloads');
 $shape->getPlotArea()->setType($bar3DChart);
 $shape->getView3D()->setRightAngleAxes(true);
 $shape->getView3D()->setRotationX(20);
 $shape->getView3D()->setRotationY(20);
+$shape->getLegend()->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
+$shape->getLegend()->getFont()->setItalic(true);
 
 // Create templated slide
 echo date('H:i:s') . " Create templated slide\n";
@@ -128,9 +131,12 @@ $shape->getFill()->setFillType(PHPPowerPoint_Style_Fill::FILL_GRADIENT_LINEAR)
                  ->setRotation(270);
 $shape->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
 $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+$shape->getTitle()->getFont()->setItalic(true);
 $shape->getPlotArea()->setType($pie3DChart);
 $shape->getView3D()->setRotationX(30);
 $shape->getView3D()->setPerspective(30);
+$shape->getLegend()->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
+$shape->getLegend()->getFont()->setItalic(true);
 
 // Save PowerPoint 2007 file
 echo date('H:i:s') . " Write to PowerPoint2007 format\n";

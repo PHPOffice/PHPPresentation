@@ -382,7 +382,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
 							$objWriter,
 							$relId,
 							'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
-							'../media/' . str_replace(' ', '', $iterator->current()->getIndexedFilename())
+							'../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename())
 						);
 
 						$iterator->current()->__relationId = 'rId' . $relId;

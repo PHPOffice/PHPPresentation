@@ -64,8 +64,15 @@ $series2Data = array('Jan' => 266, 'Feb' => 198, 'Mar' => 271, 'Apr' => 305, 'Ma
 // Create a bar chart (that should be inserted in a shape)
 echo date('H:i:s') . " Create a bar chart (that should be inserted in a chart shape)\n";
 $bar3DChart = new PHPPowerPoint_Shape_Chart_Type_Bar3D();
-$bar3DChart->addSeries( new PHPPowerPoint_Shape_Chart_Series('2009', $series1Data) );
-$bar3DChart->addSeries( new PHPPowerPoint_Shape_Chart_Series('2010', $series2Data) );
+$series1 = new PHPPowerPoint_Shape_Chart_Series('2009', $series1Data);
+$series1->setShowSeriesName(true);
+$series1->getFont()->getColor()->setRGB('00FF00');
+$series1->getDataPointFill(2)->setFillType(PHPPowerPoint_Style_Fill::FILL_SOLID)->setStartColor(new PHPPowerPoint_Style_Color('FF00FF00'));
+$series2 = new PHPPowerPoint_Shape_Chart_Series('2010', $series2Data);
+$series2->setShowSeriesName(true);
+$series2->getFont()->getColor()->setRGB('FF0000');
+$bar3DChart->addSeries($series1);
+$bar3DChart->addSeries($series2);
 
 // Create a shape (chart)
 echo date('H:i:s') . " Create a shape (chart)\n";
@@ -85,12 +92,16 @@ $shape->getFill()->setFillType(PHPPowerPoint_Style_Fill::FILL_GRADIENT_LINEAR)
                  ->setRotation(270);
 $shape->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
 $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+$shape->getTitle()->getFont()->setItalic(true);
+$shape->getTitle()->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_RIGHT);
 $shape->getPlotArea()->getAxisX()->setTitle('Month');
 $shape->getPlotArea()->getAxisY()->setTitle('Downloads');
 $shape->getPlotArea()->setType($bar3DChart);
 $shape->getView3D()->setRightAngleAxes(true);
 $shape->getView3D()->setRotationX(20);
 $shape->getView3D()->setRotationY(20);
+$shape->getLegend()->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
+$shape->getLegend()->getFont()->setItalic(true);
 
 // Create templated slide
 echo date('H:i:s') . " Create templated slide\n";
@@ -103,7 +114,9 @@ $seriesData = array('Monday' => 12, 'Tuesday' => 15, 'Wednesday' => 13, 'Thursda
 // Create a pie chart (that should be inserted in a shape)
 echo date('H:i:s') . " Create a pie chart (that should be inserted in a chart shape)\n";
 $pie3DChart = new PHPPowerPoint_Shape_Chart_Type_Pie3D();
-$pie3DChart->addSeries( new PHPPowerPoint_Shape_Chart_Series('Downloads', $seriesData) );
+$series = new PHPPowerPoint_Shape_Chart_Series('Downloads', $seriesData);
+$series->setShowSeriesName(true);
+$pie3DChart->addSeries($series);
 
 // Create a shape (chart)
 echo date('H:i:s') . " Create a shape (chart)\n";
@@ -123,9 +136,12 @@ $shape->getFill()->setFillType(PHPPowerPoint_Style_Fill::FILL_GRADIENT_LINEAR)
                  ->setRotation(270);
 $shape->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
 $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+$shape->getTitle()->getFont()->setItalic(true);
 $shape->getPlotArea()->setType($pie3DChart);
 $shape->getView3D()->setRotationX(30);
 $shape->getView3D()->setPerspective(30);
+$shape->getLegend()->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
+$shape->getLegend()->getFont()->setItalic(true);
 
 // Save PowerPoint 2007 file
 echo date('H:i:s') . " Write to PowerPoint2007 format\n";
