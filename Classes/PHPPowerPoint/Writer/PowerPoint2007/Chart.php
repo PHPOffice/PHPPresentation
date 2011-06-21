@@ -502,6 +502,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 				$this->_writeTypeBar3D($objWriter, $chartType, $chart->getIncludeSpreadsheet());
 			} else if ($chartType instanceof PHPPowerPoint_Shape_Chart_Type_Pie3D) {
 				$this->_writeTypePie3D($objWriter, $chartType, $chart->getIncludeSpreadsheet());
+			} else if ($chartType instanceof PHPPowerPoint_Shape_Chart_Type_Line) {
+				$this->_writeTypeLine($objWriter, $chartType, $chart->getIncludeSpreadsheet());
 			} else {
 				throw new Exception('The chart type provided could not be rendered.');
 			}	
@@ -643,6 +645,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 					$objWriter->startElement('c:numFmt');
 					$objWriter->writeAttribute('formatCode', $subject->getAxisY()->getFormatCode());
 					$objWriter->writeAttribute('sourceLinked', '0');
+					$objWriter->endElement();
+
+					// c:majorGridlines
+					$objWriter->startElement('c:majorGridlines');
 					$objWriter->endElement();
 					
 					// c:majorTickMark
@@ -1255,6 +1261,209 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 				
 				++$seriesIndex;
 			}
+		
+		$objWriter->endElement();
+	}
+	
+	/**
+	 * Write Type Line
+	 *
+	 * @param 	PHPPowerPoint_Shared_XMLWriter 			$objWriter 		XML Writer
+	 * @param 	PHPPowerPoint_Shape_Chart_Type_Line 	$subject
+	 * @param	boolean									$includeSheet
+	 * @throws 	Exception
+	 */
+	protected function _writeTypeLine(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Line $subject, $includeSheet = false) {
+		// c:lineChart
+		$objWriter->startElement('c:lineChart');
+			
+			// c:grouping
+			$objWriter->startElement('c:grouping');
+			$objWriter->writeAttribute('val', 'standard');
+			$objWriter->endElement();
+			
+			// c:varyColors
+			$objWriter->startElement('c:varyColors');
+			$objWriter->writeAttribute('val', '0');
+			$objWriter->endElement();
+			
+			// Write series
+			$seriesIndex = 0;
+			foreach ($subject->getData() as $series) {
+				// c:ser
+				$objWriter->startElement('c:ser');
+				
+					// c:idx
+					$objWriter->startElement('c:idx');
+					$objWriter->writeAttribute('val', $seriesIndex);
+					$objWriter->endElement();
+					
+					// c:order
+					$objWriter->startElement('c:order');
+					$objWriter->writeAttribute('val', $seriesIndex);
+					$objWriter->endElement();
+					
+					// c:tx
+					$objWriter->startElement('c:tx');
+					$coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1'  : '');
+					$this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+					$objWriter->endElement();
+					
+					// Fills for points?
+					$dataPointFills = $series->getDataPointFills();
+					foreach ($dataPointFills as $key => $value) {
+						// c:dPt
+						$objWriter->startElement('c:dPt');
+						
+							// c:idx
+							$this->_writeElementWithValAttribute($objWriter, 'c:idx', $key);
+							
+							// c:spPr
+							$objWriter->startElement('c:spPr');
+
+								// Write fill
+								$this->_writeFill($objWriter, $value);
+							
+							$objWriter->endElement();
+						
+						$objWriter->endElement();
+					}
+					
+					// c:dLbls
+					$objWriter->startElement('c:dLbls');
+			
+						// c:txPr
+						$objWriter->startElement('c:txPr');
+												
+							// a:bodyPr
+							$objWriter->writeElement('a:bodyPr', null);
+												
+							// a:lstStyle
+							$objWriter->writeElement('a:lstStyle', null);
+												
+							// a:p
+							$objWriter->startElement('a:p');
+										
+								// a:pPr
+								$objWriter->startElement('a:pPr');
+													
+									// a:defRPr
+									$objWriter->startElement('a:defRPr');
+									
+					               	$objWriter->writeAttribute('b', ($series->getFont()->getBold() ? 'true' : 'false'));
+									$objWriter->writeAttribute('i', ($series->getFont()->getItalic() ? 'true' : 'false'));
+									$objWriter->writeAttribute('strike', ($series->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+									$objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+									$objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+										
+									if ($series->getFont()->getSuperScript() || $series->getFont()->getSubScript()) {
+				               			if ($series->getFont()->getSuperScript()) {
+				               				$objWriter->writeAttribute('baseline', '30000');
+				               			} else if ($series->getFont()->getSubScript()) {
+				               				$objWriter->writeAttribute('baseline', '-25000');
+				               			}
+				               		}
+				               			
+					               		// Font - a:solidFill
+										$objWriter->startElement('a:solidFill');
+										
+											// a:srgbClr
+					               			$objWriter->startElement('a:srgbClr');
+					               			$objWriter->writeAttribute('val', $series->getFont()->getColor()->getRGB());
+					               			$objWriter->endElement();
+				
+					           			$objWriter->endElement();
+				
+					           			// Font - a:latin
+					           			$objWriter->startElement('a:latin');
+					           			$objWriter->writeAttribute('typeface', $series->getFont()->getName());
+					           			$objWriter->endElement();
+									
+									$objWriter->endElement();
+			    
+								$objWriter->endElement();
+										
+								// a:endParaRPr
+								$objWriter->startElement('a:endParaRPr');
+								$objWriter->writeAttribute('lang', 'en-US');
+								$objWriter->writeAttribute('dirty', '0');
+								$objWriter->endElement();
+													
+							$objWriter->endElement();
+												
+						$objWriter->endElement();			
+					
+						// c:showVal
+						$this->_writeElementWithValAttribute($objWriter, 'c:showVal', $series->getShowValue() ? '1' : '0');
+						
+						// c:showCatName
+						$this->_writeElementWithValAttribute($objWriter, 'c:showCatName', $series->getShowCategoryName() ? '1' : '0');
+						
+						// c:showSerName
+						$this->_writeElementWithValAttribute($objWriter, 'c:showSerName', $series->getShowSeriesName() ? '1' : '0');
+						
+						// c:showPercent
+						$this->_writeElementWithValAttribute($objWriter, 'c:showPercent', $series->getShowPercentage() ? '1' : '0');
+						
+						// c:showLeaderLines
+						$this->_writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->getShowLeaderLines() ? '1' : '0');
+						
+					$objWriter->endElement();
+					
+					// c:spPr
+					$objWriter->startElement('c:spPr');
+					
+						// Write fill
+						$this->_writeFill($objWriter, $series->getFill());
+					
+					$objWriter->endElement();
+					
+					// Write X axis data
+					$axisXData = array_keys($series->getValues());
+					
+					// c:cat
+					$objWriter->startElement('c:cat');
+					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+					$objWriter->endElement();
+					
+					// Write Y axis data
+					$axisYData = array_values($series->getValues());
+					
+					// c:val
+					$objWriter->startElement('c:val');
+					$coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData))  : '');
+					$this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+					$objWriter->endElement();
+				
+				$objWriter->endElement();
+				
+				++$seriesIndex;
+			}
+			
+			// c:marker
+			$objWriter->startElement('c:marker');
+			$objWriter->writeAttribute('val', '1');
+			$objWriter->endElement();
+			
+			// c:smooth
+			$objWriter->startElement('c:smooth');
+			$objWriter->writeAttribute('val', '0');
+			$objWriter->endElement();
+			
+			// c:axId
+			$objWriter->startElement('c:axId');
+			$objWriter->writeAttribute('val', '52743552');
+			$objWriter->endElement();
+			
+			// c:axId
+			$objWriter->startElement('c:axId');
+			$objWriter->writeAttribute('val', '52749440');
+			$objWriter->endElement();
+			
+			// c:axId
+			$objWriter->startElement('c:axId');
+			$objWriter->writeAttribute('val', '0');
+			$objWriter->endElement();
 		
 		$objWriter->endElement();
 	}
