@@ -183,6 +183,48 @@ $shape->getView3D()->setPerspective(30);
 $shape->getLegend()->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
 $shape->getLegend()->getFont()->setItalic(true);
 
+
+// Create templated slide
+echo date('H:i:s') . " Create templated slide\n";
+$currentSlide = createTemplatedSlide($objPHPPowerPoint); // local function
+
+// Generate sample data for fourth chart
+echo date('H:i:s') . " Generate sample data for fourth chart\n";
+$seriesData = array('Monday' => 0.1, 'Tuesday' => 0.33333, 'Wednesday' => 0.4444, 'Thursday' => 0.5, 'Friday' => 0.4666, 'Saturday' => 0.3666, 'Sunday' => 0.1666);
+
+// Create a scatter chart (that should be inserted in a shape)
+echo date('H:i:s') . " Create a scatter chart (that should be inserted in a chart shape)\n";
+$lineChart = new PHPPowerPoint_Shape_Chart_Type_Scatter();
+$series = new PHPPowerPoint_Shape_Chart_Series('Downloads', $seriesData);
+$series->setShowSeriesName(true);
+$lineChart->addSeries($series);
+
+// Create a shape (chart)
+echo date('H:i:s') . " Create a shape (chart)\n";
+$shape = $currentSlide->createChartShape();
+$shape->setName('PHPPowerPoint Daily Download Distribution')
+      ->setResizeProportional(false)
+      ->setHeight(550)
+      ->setWidth(700)
+      ->setOffsetX(120)
+      ->setOffsetY(80);
+$shape->getShadow()->setVisible(true)
+                   ->setDirection(45)
+                   ->setDistance(10);
+$shape->getFill()->setFillType(PHPPowerPoint_Style_Fill::FILL_GRADIENT_LINEAR)
+                 ->setStartColor(new PHPPowerPoint_Style_Color('FFCCCCCC'))
+                 ->setEndColor(new PHPPowerPoint_Style_Color('FFFFFFFF'))
+                 ->setRotation(270);
+$shape->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
+$shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+$shape->getTitle()->getFont()->setItalic(true);
+$shape->getPlotArea()->setType($lineChart);
+$shape->getView3D()->setRotationX(30);
+$shape->getView3D()->setPerspective(30);
+$shape->getLegend()->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
+$shape->getLegend()->getFont()->setItalic(true);
+
+
 // Save PowerPoint 2007 file
 echo date('H:i:s') . " Write to PowerPoint2007 format\n";
 $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
