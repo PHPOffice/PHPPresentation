@@ -585,6 +585,35 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 		                $objWriter->startElement('a:tblPr');
 		                $objWriter->writeAttribute('firstRow', '1');
 		                $objWriter->writeAttribute('bandRow', '1');
+						
+						if ($shape->getShadow()->getVisible()) {
+							// a:effectLst
+							$objWriter->startElement('a:effectLst');
+
+								// a:outerShdw
+								$objWriter->startElement('a:outerShdw');
+								$objWriter->writeAttribute('blurRad', 		PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
+								$objWriter->writeAttribute('dist',			PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
+								$objWriter->writeAttribute('dir',			PHPPowerPoint_Shared_Drawing::degreesToAngle($shape->getShadow()->getDirection()));
+								$objWriter->writeAttribute('algn',			$shape->getShadow()->getAlignment());
+								$objWriter->writeAttribute('rotWithShape', 	'0');
+
+									// a:srgbClr
+									$objWriter->startElement('a:srgbClr');
+									$objWriter->writeAttribute('val',		$shape->getShadow()->getColor()->getRGB());
+
+										// a:alpha
+										$objWriter->startElement('a:alpha');
+										$objWriter->writeAttribute('val', 	$shape->getShadow()->getAlpha() * 1000);
+										$objWriter->endElement();
+
+									$objWriter->endElement();
+
+								$objWriter->endElement();
+
+							$objWriter->endElement();
+						}
+						
 		                $objWriter->endElement();
 
 						// a:tblGrid
