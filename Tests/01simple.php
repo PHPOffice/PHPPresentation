@@ -84,6 +84,10 @@ echo date('H:i:s') . " Write to PowerPoint2007 format\n";
 $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
 $objWriter->save(str_replace('.php', '.pptx', __FILE__));
 
+echo date('H:i:s') . " Write to OpenDocumentPresentation format<br />";
+$objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'ODPresentation');
+$objWriter->save(str_replace('.php', '.odp', __FILE__));
+
 // Echo memory peak usage
 echo date('H:i:s') . " Peak memory usage: " . (memory_get_peak_usage(true) / 1024 / 1024) . " MB\r\n";
 
