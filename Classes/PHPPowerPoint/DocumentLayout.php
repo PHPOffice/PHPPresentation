@@ -85,8 +85,8 @@ class PHPPowerPoint_DocumentLayout
     {
     	// Initialise values
     	$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4x3;
-	$this->_cx = $this->_dimension[$this->_layout]['cx'];
-	$this->_cy = $this->_dimension[$this->_layout]['cy'];
+		$this->_cx = $this->_dimension[$this->_layout]['cx'];
+		$this->_cy = $this->_dimension[$this->_layout]['cy'];
     }
 
     /**
@@ -178,8 +178,8 @@ class PHPPowerPoint_DocumentLayout
      * @return PHPPowerPoint_DocumentLayout
      */
     public function setLayoutXmilli(integer $pValue) {
-	$this->_cx = $pValue * 36000;
-	$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM;
+		$this->_cx = $pValue * 36000;
+		$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM;
     	return $this;
     }
     /**
@@ -189,8 +189,8 @@ class PHPPowerPoint_DocumentLayout
      * @return PHPPowerPoint_DocumentLayout
      */
     public function setLayoutYmilli(integer $pValue) {
-	$this->_cx = $pValue * 36000;
-	$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM;
+		$this->_cx = $pValue * 36000;
+		$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM;
     	return $this;
     }
 
