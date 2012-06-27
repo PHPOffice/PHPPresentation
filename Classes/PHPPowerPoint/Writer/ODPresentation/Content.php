@@ -89,6 +89,10 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 		$objWriter->writeAttribute('xmlns:field', 'urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0');
 		$objWriter->writeAttribute('office:version', '1.2');
 			
+			// Styles
+			$arrStyleBullet = array();
+			$arrStyleTextFont = array();
+		
 			// office:automatic-styles
 			$objWriter->startElement('office:automatic-styles');
 			
@@ -98,8 +102,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 				// Images
 				$shapes 	= 	$pSlide->getShapeCollection();
 				$shapeId 	= 	0;
-				foreach ($shapes as $shape)
-				{
+				foreach ($shapes as $shape) {
 					// Increment $shapeId
 					++$shapeId;
 			
@@ -126,7 +129,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 							
 							// style:style
 							$objWriter->startElement('style:style');
-							$objWriter->writeAttribute('style:name', 'P'.$shapeId.'_'.$paragraphId);
+							$objWriter->writeAttribute('style:name', 'P_'.$paragraph->getHashCode());
 							$objWriter->writeAttribute('style:family', 'paragraph');
 								// style:paragraph-properties
 								$objWriter->startElement('style:paragraph-properties');
@@ -142,27 +145,37 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 								$objWriter->endElement();
 							$objWriter->endElement();
 							
+							// Style des listes
+							if(!isset($arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()])){
+								$arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['oStyle'] = $paragraph->getBulletStyle();
+								$arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'] = '';
+							}
+							if(strpos($arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'], ';'.$paragraph->getAlignment()->getLevel()) === false){
+								$arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'] .= ';'.$paragraph->getAlignment()->getLevel();
+								$arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['oAlign_'.$paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
+							}
+							
 							$richtexts = $paragraph->getRichTextElements();
 							$richtextId = 0;
 							foreach ($richtexts as $richtext) {
 								++$richtextId;
 								
-								$elements = $paragraph->getRichTextElements();
-								$elementId = 0;
-								foreach ($elements as $element) {
-									// Not a line break
-									if ($element instanceof PHPPowerPoint_Shape_RichText_Run) {
+								// Not a line break
+								if ($richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
+									// Style des font text
+									if(!in_array($richtext->getFont()->getHashCode(), $arrStyleTextFont)){
+										$arrStyleTextFont[] = $richtext->getFont()->getHashCode();
 										// style:style
 										$objWriter->startElement('style:style');
-										$objWriter->writeAttribute('style:name', 'T'.$shapeId.'_'.$paragraphId.'_'.$richtextId.'_'.$elementId);
+										$objWriter->writeAttribute('style:name', 'T_'.$richtext->getFont()->getHashCode());
 										$objWriter->writeAttribute('style:family', 'text');
 											// style:text-properties
 											$objWriter->startElement('style:text-properties');
-											$objWriter->writeAttribute('fo:color', '#'.$element->getFont()->getColor()->getRGB());
-											$objWriter->writeAttribute('fo:font-family', $element->getFont()->getName());
-											$objWriter->writeAttribute('fo:font-size', $element->getFont()->getSize().'pt');
+											$objWriter->writeAttribute('fo:color', '#'.$richtext->getFont()->getColor()->getRGB());
+											$objWriter->writeAttribute('fo:font-family', $richtext->getFont()->getName());
+											$objWriter->writeAttribute('fo:font-size', $richtext->getFont()->getSize().'pt');
 											// @todo : fo:font-style
-											if($element->getFont()->getBold()){
+											if($richtext->getFont()->getBold()){
 												$objWriter->writeAttribute('fo:font-weight', 'bold');
 											}
 											// @todo : style:text-underline-style
@@ -219,7 +232,6 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 									$objWriter->writeAttribute('draw:shadow-offset-x', 	   PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()).'cm');
 									$objWriter->writeAttribute('draw:shadow-offset-y', '-'.PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()).'cm');
 								}
-								
 								$objWriter->writeAttribute('draw:shadow-opacity', (100 - $shape->getShadow()->getAlpha()).'%');
 								$objWriter->writeAttribute('style:mirror', 'none');
 								$objWriter->endElement();
@@ -230,8 +242,45 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 				}
 			}
 			
+			if(!empty($arrStyleBullet)){
+				foreach ($arrStyleBullet as $key => $item){
+					$oStyle = $item['oStyle'];
+					$arrLevel = explode(';', $item['level']);
+					// style:style
+					$objWriter->startElement('text:list-style');
+					$objWriter->writeAttribute('style:name', 'L_'.$key);
+						foreach ($arrLevel as $level){
+							if($level != ''){
+								$oAlign = $item['oAlign_'.$level];
+								// text:list-level-style-bullet
+								$objWriter->startElement('text:list-level-style-bullet');
+								$objWriter->writeAttribute('text:level', $level + 1);
+								$objWriter->writeAttribute('text:bullet-char', $oStyle->getBulletChar());
+									// style:list-level-properties
+									$objWriter->startElement('style:list-level-properties');
+									if($oAlign->getIndent() < 0){
+										$objWriter->writeAttribute('text:space-before', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent())).'cm');
+										$objWriter->writeAttribute('text:min-label-width', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters(-1 * $oAlign->getIndent()).'cm');
+									} else {
+										$objWriter->writeAttribute('text:space-before', (PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($oAlign->getMarginLeft() - $oAlign->getIndent())).'cm');
+										$objWriter->writeAttribute('text:min-label-width', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($oAlign->getIndent()).'cm');
+									}
+									
+									$objWriter->endElement();
+									// style:text-properties
+									$objWriter->startElement('style:text-properties');
+									$objWriter->writeAttribute('fo:font-family', $oStyle->getBulletFont());
+									$objWriter->writeAttribute('style:font-family-generic', 'swiss');
+									$objWriter->writeAttribute('style:use-window-font-color', 'true');
+									$objWriter->writeAttribute('fo:font-size', '100');
+									$objWriter->endElement();
+								$objWriter->endElement();
+							}
+						}
+					$objWriter->endElement();
+				}
+			}
 			$objWriter->endElement();
-			
 			// office:body
 			$objWriter->startElement('office:body');
 				// office:presentation
@@ -243,7 +292,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 					$pSlide = $pPHPPowerPoint->getSlide($i);
 					$objWriter->startElement('draw:page');
 					$objWriter->writeAttribute('draw:name', 'page'.$i);
-					$objWriter->writeAttribute('draw:master-page-name', 'Default');
+					$objWriter->writeAttribute('draw:master-page-name', 'Standard');
 					
 						// Images
 						$shapes 	= 	$pSlide->getShapeCollection();
@@ -269,25 +318,15 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 							else if ($shape instanceof PHPPowerPoint_Shape_Chart)
 							{
 								$this->_writeChart($objWriter, $shape, $shapeId);
-							}
-							else*/ if ($shape instanceof PHPPowerPoint_Shape_BaseDrawing)
+							}*/
+							else if ($shape instanceof PHPPowerPoint_Shape_BaseDrawing)
 							{
 								$this->_writePic($objWriter, $shape, $shapeId);
 							}
 						}
 						
-						
-						$objWriter->endElement();
 					$objWriter->endElement();
 				}
-				
-				/* 	<draw:page draw:name="page1" draw:style-name="dp1" draw:master-page-name="Default">
-						<presentation:notes draw:style-name="dp2"><draw:page-thumbnail draw:style-name="gr1" draw:layer="layout" svg:width="14.848cm" svg:height="11.136cm" svg:x="3.075cm" svg:y="2.257cm" draw:page-number="1" presentation:class="page"/>
-							<draw:frame presentation:style-name="pr1" draw:layer="layout" svg:width="16.799cm" svg:height="13.365cm" svg:x="2.1cm" svg:y="14.107cm" presentation:class="notes" presentation:placeholder="true">
-								<draw:text-box/>
-							</draw:frame>
-						</presentation:notes>
-					</draw:page>*/
 				$objWriter->endElement();
 			$objWriter->endElement();
 		$objWriter->endElement();
@@ -297,6 +336,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 	}
 	
 	function _writePic(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Shape_BaseDrawing $shape = null, $shapeId){
+		// draw:frame
 		$objWriter->startElement('draw:frame');
 		$objWriter->writeAttribute('draw:name', $shape->getName());
 		$objWriter->writeAttribute('svg:width', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getWidth()),3).'cm');
@@ -306,17 +346,14 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 		if ($shape->getShadow()->getVisible()) {
 			$objWriter->writeAttribute('draw:style-name', 'gr'.$shapeId);
 		}
-
+			// draw:image
 			$objWriter->startElement('draw:image');
 			$objWriter->writeAttribute('xlink:href', 'Pictures/'.str_replace(' ', '_', $shape->getIndexedFilename()));
 			$objWriter->writeAttribute('xlink:type', 'simple');
 			$objWriter->writeAttribute('xlink:show', 'embed');
 			$objWriter->writeAttribute('xlink:actuate', 'onLoad');
-			
-			$objWriter->writeElement('text:p');
-		
+				$objWriter->writeElement('text:p');
 			$objWriter->endElement();
-
 		$objWriter->endElement();
 	}
 
@@ -331,34 +368,144 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 		
 			$paragraphs = $shape->getParagraphs();
 			$paragraphId = 0;
+			$sCustomShapeLastBullet = '';
+			$iCustomShapeLastBulletLevel = 0;
+			$bCustomShapeHasBullet = false;
+			
 			foreach ($paragraphs as $paragraph){
-				++$paragraphId;
-				// text:p
-				$objWriter->startElement('text:p');
-				$objWriter->writeAttribute('text:style-name', 'P'.$shapeId.'_'.$paragraphId);
-					// Loop trough rich text elements
-					$richtexts = $paragraph->getRichTextElements();
-					$richtextId = 0;
-					foreach ($richtexts as $richtext) {
-						
-						++$richtextId;
-						
-						$elements = $paragraph->getRichTextElements();
-						$elementId = 0;
-						foreach ($elements as $element) {
-							// Not a line break
-							if ($element instanceof PHPPowerPoint_Shape_RichText_TextElement || $element instanceof PHPPowerPoint_Shape_RichText_Run) {
+				// Close the bullet list
+				if($sCustomShapeLastBullet != 'bullet' && $bCustomShapeHasBullet == true){
+					for($iInc = $iCustomShapeLastBulletLevel; $iInc >= 0; $iInc--){
+						// text:list-item
+						$objWriter->endElement();
+						// text:list
+						$objWriter->endElement();
+					}
+				}
+				// Paragraph
+				if($paragraph->getBulletStyle()->getBulletType() == 'none'){
+					++$paragraphId;
+					// text:p
+					$objWriter->startElement('text:p');
+					$objWriter->writeAttribute('text:style-name', 'P_'.$paragraph->getHashCode());
+	
+						// Loop trough rich text elements
+						$richtexts = $paragraph->getRichTextElements();
+						$richtextId = 0;
+						foreach ($richtexts as $richtext) {
+							++$richtextId;
+							if ($richtext instanceof PHPPowerPoint_Shape_RichText_TextElement || $richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
 								// text:span
 								$objWriter->startElement('text:span');
-								if($element instanceof PHPPowerPoint_Shape_RichText_Run){
-									$objWriter->writeAttribute('text:style-name', 'T'.$shapeId.'_'.$paragraphId.'_'.$richtextId.'_'.$elementId);
+								if($richtext instanceof PHPPowerPoint_Shape_RichText_Run){
+									$objWriter->writeAttribute('text:style-name', 'T_'.$richtext->getFont()->getHashCode());
 								}
-								$objWriter->text($richtext->getText());
+								if($richtext->hasHyperlink() == true && $richtext->getHyperlink()->getUrl() != ''){
+									// text:a
+									$objWriter->startElement('text:a');
+									$objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
+										$objWriter->text($richtext->getText());
+									$objWriter->endElement();
+								} else {
+									$objWriter->text($richtext->getText());
+								}
 								$objWriter->endElement();
 							}
+							elseif($richtext instanceof PHPPowerPoint_Shape_RichText_Break){
+								// text:span
+								$objWriter->startElement('text:span');
+									// text:line-break
+									$objWriter->startElement('text:line-break');
+									$objWriter->endElement();
+								$objWriter->endElement();
+							}
+							else {
+								//echo '<pre>'.print_r($richtext, true).'</pre>';
+							}
+						}
+					$objWriter->endElement();
+				} 
+				// Bullet list
+				elseif($paragraph->getBulletStyle()->getBulletType() == 'bullet'){
+					$bCustomShapeHasBullet = true;
+					// Open the bullet list
+					if($sCustomShapeLastBullet != 'bullet'
+						|| ($sCustomShapeLastBullet == $paragraph->getBulletStyle()->getBulletType()
+							&& $iCustomShapeLastBulletLevel < $paragraph->getAlignment()->getLevel())){
+						// text:list
+						$objWriter->startElement('text:list');
+						$objWriter->writeAttribute('text:style-name', 'L_'.$paragraph->getBulletStyle()->getHashCode());
+					}
+					if($sCustomShapeLastBullet == 'bullet'){
+						if($iCustomShapeLastBulletLevel == $paragraph->getAlignment()->getLevel()){
+							// text:list-item
+							$objWriter->endElement();
+						}
+						elseif($iCustomShapeLastBulletLevel > $paragraph->getAlignment()->getLevel()){
+							// text:list-item
+							$objWriter->endElement();
+							// text:list
+							$objWriter->endElement();
+							// text:list-item
+							$objWriter->endElement();
 						}
 					}
-				$objWriter->endElement();
+
+					// text:list-item
+					$objWriter->startElement('text:list-item');
+						++$paragraphId;
+						// text:p
+						$objWriter->startElement('text:p');
+						$objWriter->writeAttribute('text:style-name', 'P_'.$paragraph->getHashCode());
+		
+							// Loop trough rich text elements
+							$richtexts = $paragraph->getRichTextElements();
+							$richtextId = 0;
+							foreach ($richtexts as $richtext) {
+								++$richtextId;
+								if ($richtext instanceof PHPPowerPoint_Shape_RichText_TextElement || $richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
+									// text:span
+									$objWriter->startElement('text:span');
+									if($richtext instanceof PHPPowerPoint_Shape_RichText_Run){
+										$objWriter->writeAttribute('text:style-name', 'T_'.$richtext->getFont()->getHashCode());
+									}
+									if($richtext->hasHyperlink() == true && $richtext->getHyperlink()->getUrl() != ''){
+										// text:a
+										$objWriter->startElement('text:a');
+										$objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
+											$objWriter->text($richtext->getText());
+										$objWriter->endElement();
+									} else {
+										$objWriter->text($richtext->getText());
+									}
+									$objWriter->endElement();
+								}
+								elseif($richtext instanceof PHPPowerPoint_Shape_RichText_Break){
+									// text:span
+									$objWriter->startElement('text:span');
+										// text:line-break
+										$objWriter->startElement('text:line-break');
+										$objWriter->endElement();
+									$objWriter->endElement();
+								}
+								else {
+									//echo '<pre>'.print_r($richtext, true).'</pre>';
+								}
+							}
+						$objWriter->endElement();
+				}
+				$sCustomShapeLastBullet = $paragraph->getBulletStyle()->getBulletType();
+				$iCustomShapeLastBulletLevel = $paragraph->getAlignment()->getLevel();
+			}
+			
+			// Close the bullet list
+			if($sCustomShapeLastBullet == 'bullet' && $bCustomShapeHasBullet == true){
+				for($iInc = $iCustomShapeLastBulletLevel; $iInc >= 0; $iInc--){
+					// text:list-item
+					$objWriter->endElement();
+					// text:list
+					$objWriter->endElement();
+				}
 			}
 		$objWriter->endElement();
 	}

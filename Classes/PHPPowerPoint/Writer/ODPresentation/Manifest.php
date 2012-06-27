@@ -76,6 +76,11 @@ class PHPPowerPoint_Writer_ODPresentation_Manifest extends PHPPowerPoint_Writer_
 			$objWriter->writeAttribute('manifest:media-type', 'text/xml');
 			$objWriter->writeAttribute('manifest:full-path', 'meta.xml');
 			$objWriter->endElement();
+			// manifest:file-entry
+			$objWriter->startElement('manifest:file-entry');
+			$objWriter->writeAttribute('manifest:media-type', 'text/xml');
+			$objWriter->writeAttribute('manifest:full-path', 'styles.xml');
+			$objWriter->endElement();
 			
 			for ($i = 0; $i < $this->getParentWriter()->getDrawingHashTable()->count(); ++$i) {
 				if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {

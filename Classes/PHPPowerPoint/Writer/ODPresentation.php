@@ -80,6 +80,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
 		$this->_writerParts['manifest'] = new PHPPowerPoint_Writer_ODPresentation_Manifest();
 		$this->_writerParts['meta'] 	= new PHPPowerPoint_Writer_ODPresentation_Meta();
 		$this->_writerParts['mimetype'] = new PHPPowerPoint_Writer_ODPresentation_Mimetype();
+		$this->_writerParts['styles'] 	= new PHPPowerPoint_Writer_ODPresentation_Styles();
 		
 		$this->_writerParts['drawing'] 	= new PHPPowerPoint_Writer_ODPresentation_Drawing();
 		
@@ -132,6 +133,9 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
 
 			// Add meta.xml to ZIP file
 			$objZip->addFromString('meta.xml', $this->getWriterPart('meta')->writeMeta($this->_presentation));
+			
+			// Add styles.xml to ZIP file
+			$objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writeStyles($this->_presentation));
 			
 			// Add META-INF/manifest.xml
 			$objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writeManifest($this->_presentation));
