@@ -90,12 +90,32 @@ class PHPPowerPoint_Writer_ODPresentation_Styles extends PHPPowerPoint_Writer_OD
 		$objWriter->writeAttribute('xmlns:css3t', 'http://www.w3.org/TR/css3-text/');
 		$objWriter->writeAttribute('office:version', '1.2');
 			
+			// Variables
+			$stylePageLayout = $pPHPPowerPoint->getLayout()->getDocumentLayout();
 		
+			// office:styles
+			$objWriter->startElement('office:styles');
+				// style:style
+				$objWriter->startElement('style:style');
+				$objWriter->writeAttribute('style:name', 'sPres0');
+				$objWriter->writeAttribute('style:display-name', 'sPres0');
+				$objWriter->writeAttribute('style:family', 'presentation');
+					// style:graphic-properties
+					$objWriter->startElement('style:graphic-properties');
+					$objWriter->writeAttribute('draw:fill-color', '#ffffff');
+					$objWriter->endElement();
+				$objWriter->endElement();
+			$objWriter->endElement();
+			
 			// office:automatic-styles
 			$objWriter->startElement('office:automatic-styles');
 				// style:page-layout
 				$objWriter->startElement('style:page-layout');
-				$objWriter->writeAttribute('style:name', 'PM0');
+				if(empty($stylePageLayout)){
+					$objWriter->writeAttribute('style:name', 'sPL0');
+				} else {
+					$objWriter->writeAttribute('style:name', $stylePageLayout);
+				}
 					// style:page-layout-properties
 					$objWriter->startElement('style:page-layout-properties');
 					$objWriter->writeAttribute('fo:margin-top', '0cm');
@@ -110,21 +130,7 @@ class PHPPowerPoint_Writer_ODPresentation_Styles extends PHPPowerPoint_Writer_OD
 						$objWriter->writeAttribute('style:print-orientation', 'portrait');
 					}
 					$objWriter->endElement();
-				// style:page-layout
 				$objWriter->endElement();
-				
-				// style:style
-				$objWriter->startElement('style:style');
-				$objWriter->writeAttribute('style:name', 'Mdp1');
-				$objWriter->writeAttribute('style:family', 'drawing-page');
-					// style:master-page
-					$objWriter->startElement('style:drawing-page-properties');
-					$objWriter->writeAttribute('draw:background-size', 'border');
-					$objWriter->writeAttribute('draw:fill', 'solid');
-					$objWriter->writeAttribute('draw:fill-color', '#ffffff');
-					$objWriter->endElement();
-				$objWriter->endElement();
-			// office:automatic-styles
 			$objWriter->endElement();
 			
 			// office:master-styles
@@ -132,8 +138,13 @@ class PHPPowerPoint_Writer_ODPresentation_Styles extends PHPPowerPoint_Writer_OD
 				// style:master-page
 				$objWriter->startElement('style:master-page');
 				$objWriter->writeAttribute('style:name', 'Standard');
-				$objWriter->writeAttribute('style:page-layout-name', 'PM0');
-				$objWriter->writeAttribute('draw:style-name', 'Mdp1');
+				$objWriter->writeAttribute('style:display-name', 'Standard');
+				if(empty($stylePageLayout)){
+					$objWriter->writeAttribute('style:page-layout-name', 'sPL0');
+				} else {
+					$objWriter->writeAttribute('style:page-layout-name', $stylePageLayout);
+				}
+				$objWriter->writeAttribute('draw:style-name', 'sPres0');
 				$objWriter->endElement();
 			$objWriter->endElement();
 			
