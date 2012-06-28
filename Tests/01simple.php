@@ -34,27 +34,34 @@ set_include_path(get_include_path() . PATH_SEPARATOR . '../Classes/');
 /** PHPPowerPoint */
 include 'PHPPowerPoint.php';
 
+if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
+	define('EOL', PHP_EOL);
+}
+else {
+	define('EOL', '<br />');
+}
+
 
 // Create new PHPPowerPoint object
-echo date('H:i:s') . " Create new PHPPowerPoint object\n";
+echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
 $objPHPPowerPoint = new PHPPowerPoint();
 
 // Set properties
-echo date('H:i:s') . " Set properties\n";
-$objPHPPowerPoint->getProperties()->setCreator("Maarten Balliauw")
-								  ->setLastModifiedBy("Maarten Balliauw")
-								  ->setTitle("Office 2007 PPTX Test Document")
-								  ->setSubject("Office 2007 PPTX Test Document")
-								  ->setDescription("Test document for Office 2007 PPTX, generated using PHP classes.")
-								  ->setKeywords("office 2007 openxml php")
-								  ->setCategory("Test result file");
+echo date('H:i:s') . ' Set properties'.EOL;
+$objPHPPowerPoint->getProperties()->setCreator('Maarten Balliauw')
+								  ->setLastModifiedBy('Maarten Balliauw')
+								  ->setTitle('Office 2007 PPTX Test Document')
+								  ->setSubject('Office 2007 PPTX Test Document')
+								  ->setDescription('Test document for Office 2007 PPTX, generated using PHP classes.')
+								  ->setKeywords('office 2007 openxml php')
+								  ->setCategory('Test result file');
 
 // Create slide
-echo date('H:i:s') . " Create slide\n";
+echo date('H:i:s') . ' Create slide'.EOL;
 $currentSlide = $objPHPPowerPoint->getActiveSlide();
 
 // Create a shape (drawing)
-echo date('H:i:s') . " Create a shape (drawing)\n";
+echo date('H:i:s') . ' Create a shape (drawing)'.EOL;
 $shape = $currentSlide->createDrawingShape();
 $shape->setName('PHPPowerPoint logo')
       ->setDescription('PHPPowerPoint logo')
@@ -67,7 +74,7 @@ $shape->getShadow()->setVisible(true)
                    ->setDistance(10);
 
 // Create a shape (text)
-echo date('H:i:s') . " Create a shape (rich text)\n";
+echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
 $shape = $currentSlide->createRichTextShape()
       ->setHeight(300)
       ->setWidth(600)
@@ -80,16 +87,16 @@ $textRun->getFont()->setBold(true)
                    ->setColor( new PHPPowerPoint_Style_Color( 'FFC00000' ) );
 
 // Save PowerPoint 2007 file
-echo date('H:i:s') . " Write to PowerPoint2007 format\n";
+echo date('H:i:s') . ' Write to PowerPoint2007 format'.EOL;
 $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
 $objWriter->save(str_replace('.php', '.pptx', __FILE__));
 
-echo date('H:i:s') . " Write to OpenDocumentPresentation format<br />";
+echo date('H:i:s') . ' Write to OpenDocumentPresentation format'.EOL;
 $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'ODPresentation');
 $objWriter->save(str_replace('.php', '.odp', __FILE__));
 
 // Echo memory peak usage
-echo date('H:i:s') . " Peak memory usage: " . (memory_get_peak_usage(true) / 1024 / 1024) . " MB\r\n";
+echo date('H:i:s') . ' Peak memory usage: ' . (memory_get_peak_usage(true) / 1024 / 1024) . ' MB'.EOL;
 
 // Echo done
-echo date('H:i:s') . " Done writing file.\r\n";
+echo date('H:i:s') . ' Done writing file.'.EOL;
