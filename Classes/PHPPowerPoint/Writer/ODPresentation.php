@@ -141,35 +141,40 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
 			$objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writeManifest($this->_presentation));
 			
 			// Add media
+			$arrMedia = array();
 			for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
 				if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
-					$imageContents = null;
-					$imagePath = $this->getDrawingHashTable()->getByIndex($i)->getPath();
-			
-					if (strpos($imagePath, 'zip://') !== false) {
-						$imagePath = substr($imagePath, 6);
-						$imagePathSplitted = explode('#', $imagePath);
-			
-						$imageZip = new ZipArchive();
-						$imageZip->open($imagePathSplitted[0]);
-						$imageContents = $imageZip->getFromName($imagePathSplitted[1]);
-						$imageZip->close();
-						unset($imageZip);
-					} else {
-						$imageContents = file_get_contents($imagePath);
+					if(!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)){
+						$arrMedia[] = md5($this->getDrawingHashTable()->getByIndex($i)->getPath());
+						
+						$imageContents = null;
+						$imagePath = $this->getDrawingHashTable()->getByIndex($i)->getPath();
+				
+						if (strpos($imagePath, 'zip://') !== false) {
+							$imagePath = substr($imagePath, 6);
+							$imagePathSplitted = explode('#', $imagePath);
+				
+							$imageZip = new ZipArchive();
+							$imageZip->open($imagePathSplitted[0]);
+							$imageContents = $imageZip->getFromName($imagePathSplitted[1]);
+							$imageZip->close();
+							unset($imageZip);
+						} else {
+							$imageContents = file_get_contents($imagePath);
+						}
+				
+						$objZip->addFromString('Pictures/' . md5($this->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getDrawingHashTable()->getByIndex($i)->getExtension(), $imageContents);
 					}
-			
-					$objZip->addFromString('Pictures/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
 				} else if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
-					ob_start();
-					call_user_func(
-					$this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(),
-					$this->getDrawingHashTable()->getByIndex($i)->getImageResource()
-					);
-					$imageContents = ob_get_contents();
-					ob_end_clean();
-			
-					$objZip->addFromString('Pictures/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
+					if(!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)){
+						$arrMedia[] = md5($this->getDrawingHashTable()->getByIndex($i)->getPath());
+						ob_start();
+							call_user_func($this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(), $this->getDrawingHashTable()->getByIndex($i)->getImageResource());
+							$imageContents = ob_get_contents();
+						ob_end_clean();
+				
+						$objZip->addFromString('Pictures/' . md5($this->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getDrawingHashTable()->getByIndex($i)->getExtension(), $imageContents);
+					}
 				}
 			}
 			

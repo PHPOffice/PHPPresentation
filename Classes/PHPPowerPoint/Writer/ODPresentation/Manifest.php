@@ -82,26 +82,34 @@ class PHPPowerPoint_Writer_ODPresentation_Manifest extends PHPPowerPoint_Writer_
 			$objWriter->writeAttribute('manifest:full-path', 'styles.xml');
 			$objWriter->endElement();
 			
+			$arrMedia = array();
 			for ($i = 0; $i < $this->getParentWriter()->getDrawingHashTable()->count(); ++$i) {
 				if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
-					$extension 	= strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
-					$mimeType 	= $this->_getImageMimeType( $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath() );
-					
-					$objWriter->startElement('manifest:file-entry');
-					$objWriter->writeAttribute('manifest:media-type', $mimeType);
-					$objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()));
-					$objWriter->endElement();
+					if(!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)){
+						$arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
+						$extension 	= strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+						$mimeType 	= $this->_getImageMimeType( $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath() );
+						
+						$objWriter->startElement('manifest:file-entry');
+						$objWriter->writeAttribute('manifest:media-type', $mimeType);
+						$objWriter->writeAttribute('manifest:full-path', 'Pictures/' . md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+						$objWriter->endElement();
+					}
 				} else if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
-					$extension 	= strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
-					$extension 	= explode('/', $extension);
-					$extension 	= $extension[1];
+					if(!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)){
+						$arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
 					
-					$mimeType 	= $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType();
-					
-					$objWriter->startElement('manifest:file-entry');
-					$objWriter->writeAttribute('manifest:media-type', $mimeType);
-					$objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()));
-					$objWriter->endElement();
+						$extension 	= strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
+						$extension 	= explode('/', $extension);
+						$extension 	= $extension[1];
+						
+						$mimeType 	= $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType();
+						
+						$objWriter->startElement('manifest:file-entry');
+						$objWriter->writeAttribute('manifest:media-type', $mimeType);
+						$objWriter->writeAttribute('manifest:full-path', 'Pictures/' .  md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+						$objWriter->endElement();
+					}
 				}
 			}
 				

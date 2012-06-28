@@ -89,26 +89,28 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 		$objWriter->writeAttribute('xmlns:field', 'urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0');
 		$objWriter->writeAttribute('office:version', '1.2');
 			
+			//===============================================
 			// Styles
+			//===============================================
 			$arrStyleBullet = array();
+			$arrStyleParagraph = array();
 			$arrStyleTextFont = array();
 		
 			// office:automatic-styles
 			$objWriter->startElement('office:automatic-styles');
 			
 			$slideCount = $pPHPPowerPoint->getSlideCount();
+			$shapeId 	= 	0;
 			for ($i = 0; $i < $slideCount; ++$i) {
 				$pSlide = $pPHPPowerPoint->getSlide($i);
 				// Images
 				$shapes 	= 	$pSlide->getShapeCollection();
-				$shapeId 	= 	0;
 				foreach ($shapes as $shape) {
 					// Increment $shapeId
 					++$shapeId;
 			
 					// Check type
 					if ($shape instanceof PHPPowerPoint_Shape_RichText) {
-						
 						// style:style
 						$objWriter->startElement('style:style');
 						$objWriter->writeAttribute('style:name', 'gr'.$shapeId);
@@ -127,23 +129,10 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 						foreach ($paragraphs as $paragraph){
 							++$paragraphId;
 							
-							// style:style
-							$objWriter->startElement('style:style');
-							$objWriter->writeAttribute('style:name', 'P_'.$paragraph->getHashCode());
-							$objWriter->writeAttribute('style:family', 'paragraph');
-								// style:paragraph-properties
-								$objWriter->startElement('style:paragraph-properties');
-								switch ($paragraph->getAlignment()->getHorizontal()) {
-									case PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT:		$objWriter->writeAttribute('fo:text-align', 'left');	break;
-									case PHPPowerPoint_Style_Alignment::HORIZONTAL_RIGHT:		$objWriter->writeAttribute('fo:text-align', 'right');	break;
-									case PHPPowerPoint_Style_Alignment::HORIZONTAL_CENTER:		$objWriter->writeAttribute('fo:text-align', 'center');	break;
-									case PHPPowerPoint_Style_Alignment::HORIZONTAL_JUSTIFY:		$objWriter->writeAttribute('fo:text-align', 'justify');	break;
-									case PHPPowerPoint_Style_Alignment::HORIZONTAL_DISTRIBUTED:	$objWriter->writeAttribute('fo:text-align', 'justify');	break;
-									default:													$objWriter->writeAttribute('fo:text-align', 'left');	break;
-								}
-									
-								$objWriter->endElement();
-							$objWriter->endElement();
+							// Style des paragraphes
+							if(!isset($arrStyleParagraph[$paragraph->getHashCode()])){
+								$arrStyleParagraph[$paragraph->getHashCode()] = $paragraph;
+							}
 							
 							// Style des listes
 							if(!isset($arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()])){
@@ -159,28 +148,11 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 							$richtextId = 0;
 							foreach ($richtexts as $richtext) {
 								++$richtextId;
-								
 								// Not a line break
 								if ($richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
 									// Style des font text
-									if(!in_array($richtext->getFont()->getHashCode(), $arrStyleTextFont)){
-										$arrStyleTextFont[] = $richtext->getFont()->getHashCode();
-										// style:style
-										$objWriter->startElement('style:style');
-										$objWriter->writeAttribute('style:name', 'T_'.$richtext->getFont()->getHashCode());
-										$objWriter->writeAttribute('style:family', 'text');
-											// style:text-properties
-											$objWriter->startElement('style:text-properties');
-											$objWriter->writeAttribute('fo:color', '#'.$richtext->getFont()->getColor()->getRGB());
-											$objWriter->writeAttribute('fo:font-family', $richtext->getFont()->getName());
-											$objWriter->writeAttribute('fo:font-size', $richtext->getFont()->getSize().'pt');
-											// @todo : fo:font-style
-											if($richtext->getFont()->getBold()){
-												$objWriter->writeAttribute('fo:font-weight', 'bold');
-											}
-											// @todo : style:text-underline-style
-											$objWriter->endElement();
-										$objWriter->endElement();
+									if(!isset($arrStyleTextFont[$richtext->getFont()->getHashCode()])){
+										$arrStyleTextFont[$richtext->getFont()->getHashCode()] = $richtext->getFont();
 									}
 								}
 							}
@@ -241,7 +213,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 					}
 				}
 			}
-			
+			// Style : Bullet
 			if(!empty($arrStyleBullet)){
 				foreach ($arrStyleBullet as $key => $item){
 					$oStyle = $item['oStyle'];
@@ -280,7 +252,53 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 					$objWriter->endElement();
 				}
 			}
+			// Style : Paragraph
+			if(!empty($arrStyleParagraph)){
+				foreach($arrStyleParagraph as $key => $item){
+					// style:style
+					$objWriter->startElement('style:style');
+					$objWriter->writeAttribute('style:name', 'P_'.$key);
+					$objWriter->writeAttribute('style:family', 'paragraph');
+						// style:paragraph-properties
+						$objWriter->startElement('style:paragraph-properties');
+						switch ($item->getAlignment()->getHorizontal()) {
+							case PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT:		$objWriter->writeAttribute('fo:text-align', 'left');	break;
+							case PHPPowerPoint_Style_Alignment::HORIZONTAL_RIGHT:		$objWriter->writeAttribute('fo:text-align', 'right');	break;
+							case PHPPowerPoint_Style_Alignment::HORIZONTAL_CENTER:		$objWriter->writeAttribute('fo:text-align', 'center');	break;
+							case PHPPowerPoint_Style_Alignment::HORIZONTAL_JUSTIFY:		$objWriter->writeAttribute('fo:text-align', 'justify');	break;
+							case PHPPowerPoint_Style_Alignment::HORIZONTAL_DISTRIBUTED:	$objWriter->writeAttribute('fo:text-align', 'justify');	break;
+							default:													$objWriter->writeAttribute('fo:text-align', 'left');	break;
+						}
+						$objWriter->endElement();
+					$objWriter->endElement();
+				}
+			}
+			// Style : Text : Font
+			if(!empty($arrStyleTextFont)){
+				foreach ($arrStyleTextFont as $key => $item){
+					// style:style
+					$objWriter->startElement('style:style');
+					$objWriter->writeAttribute('style:name', 'T_'.$key);
+					$objWriter->writeAttribute('style:family', 'text');
+						// style:text-properties
+						$objWriter->startElement('style:text-properties');
+						$objWriter->writeAttribute('fo:color', '#'.$item->getColor()->getRGB());
+						$objWriter->writeAttribute('fo:font-family', $item->getName());
+						$objWriter->writeAttribute('fo:font-size', $item->getSize().'pt');
+						// @todo : fo:font-style
+						if($item->getBold()){
+							$objWriter->writeAttribute('fo:font-weight', 'bold');
+						}
+						// @todo : style:text-underline-style
+						$objWriter->endElement();
+					$objWriter->endElement();
+				}
+			}
 			$objWriter->endElement();
+			
+			//===============================================
+			// Body
+			//===============================================
 			// office:body
 			$objWriter->startElement('office:body');
 				// office:presentation
@@ -288,23 +306,20 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 			
 				// Write slides
 				$slideCount = $pPHPPowerPoint->getSlideCount();
+				$shapeId 	= 	0;
 				for ($i = 0; $i < $slideCount; ++$i) {
 					$pSlide = $pPHPPowerPoint->getSlide($i);
 					$objWriter->startElement('draw:page');
 					$objWriter->writeAttribute('draw:name', 'page'.$i);
 					$objWriter->writeAttribute('draw:master-page-name', 'Standard');
-					
 						// Images
 						$shapes 	= 	$pSlide->getShapeCollection();
-						$shapeId 	= 	0;
-						foreach ($shapes as $shape)
-						{
+						foreach ($shapes as $shape) {
 							// Increment $shapeId
 							++$shapeId;
 						
 							// Check type
-							if ($shape instanceof PHPPowerPoint_Shape_RichText)
-							{
+							if ($shape instanceof PHPPowerPoint_Shape_RichText) {
 								$this->_writeTxt($objWriter, $shape, $shapeId);
 							}
 							/*else if ($shape instanceof PHPPowerPoint_Shape_Table)
@@ -319,12 +334,10 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 							{
 								$this->_writeChart($objWriter, $shape, $shapeId);
 							}*/
-							else if ($shape instanceof PHPPowerPoint_Shape_BaseDrawing)
-							{
+							else if ($shape instanceof PHPPowerPoint_Shape_BaseDrawing) {
 								$this->_writePic($objWriter, $shape, $shapeId);
 							}
 						}
-						
 					$objWriter->endElement();
 				}
 				$objWriter->endElement();
@@ -348,7 +361,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 		}
 			// draw:image
 			$objWriter->startElement('draw:image');
-			$objWriter->writeAttribute('xlink:href', 'Pictures/'.str_replace(' ', '_', $shape->getIndexedFilename()));
+			$objWriter->writeAttribute('xlink:href', 'Pictures/'.md5($shape->getPath()).'.'.$shape->getExtension());
 			$objWriter->writeAttribute('xlink:type', 'simple');
 			$objWriter->writeAttribute('xlink:show', 'embed');
 			$objWriter->writeAttribute('xlink:actuate', 'onLoad');
@@ -382,7 +395,9 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 						$objWriter->endElement();
 					}
 				}
+				//===============================================
 				// Paragraph
+				//===============================================
 				if($paragraph->getBulletStyle()->getBulletType() == 'none'){
 					++$paragraphId;
 					// text:p
@@ -425,7 +440,9 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
 						}
 					$objWriter->endElement();
 				} 
+				//===============================================
 				// Bullet list
+				//===============================================
 				elseif($paragraph->getBulletStyle()->getBulletType() == 'bullet'){
 					$bCustomShapeHasBullet = true;
 					// Open the bullet list
