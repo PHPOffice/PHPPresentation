@@ -37,6 +37,7 @@ To be planned:
 - Feature:  (MB) Applied patches 7010 and 7020
 - Feature:  (MB) Work item 1196 - Add a hyperlink to an image or textbox
 - Feature:  (MBaker) Implement autoloader
+- Feature:  (Progi1984) Implement ODP Writer
 - Feature:  (MB) Work item 4953 - PowerPoint Charts
 - Feature:  (MB) Work item 5580 - Editing chart data
 - Feature:  (MB) Work item 5461 - Solid Fill support
@@ -48,7 +49,6 @@ To be planned:
 - Bugfix:   (MB) Work item 2541 - Table Cell Borders Not Displaying Correctly
 - Bugfix:   (MB) Work item 4597 - Multiple Master Slides are not supported 
 - Bugfix:   (MB) Work item 4596 - Images in Layouts other than first Master Slide within Template file causes corrupted PPTX
-
 
 Initial version:
 - Create a Presentation object
