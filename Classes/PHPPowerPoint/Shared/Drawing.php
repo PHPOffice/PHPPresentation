@@ -35,6 +35,9 @@
  */
 class PHPPowerPoint_Shared_Drawing
 {
+	
+	const DPI_96		= 96;
+	
 	/**
 	 * Convert pixels to EMU
 	 *
@@ -90,7 +93,8 @@ class PHPPowerPoint_Shared_Drawing
 	 * @return 	int			Value in centimeters
 	 */
 	public static function pixelsToCentimeters($pValue = 0) {
-		return $pValue * 0.028;
+		//return $pValue * 0.028;
+		return (($pValue / self::DPI_96) * 2.54);
 	}
 	
 	/**
@@ -101,7 +105,7 @@ class PHPPowerPoint_Shared_Drawing
 	 */
 	public static function centimetersToPixels($pValue = 0) {
 		if ($pValue != 0) {
-			return $pValue * 0.028;
+			return ($pValue / 2.54) * self::DPI_96;
 		} else {
 			return 0;
 		}
