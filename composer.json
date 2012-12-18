@@ -3,6 +3,6 @@
     "type": "library",
     "version": "0.1.0",
     "autoload": {
-        "psr-0": { "PHPPowerPoint_": "Classes" }
+        "psr-0": { "PHPPowerPoint_": "Classes/" }
     }
 }
