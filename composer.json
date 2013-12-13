@@ -1,8 +1,31 @@
 {
     "name": "phpoffice/phppowerpoint",
+    "description": "PHPPowerPoint - Read, Create and Write Presentations documents in PHP",
+    "keywords": ["PHP","PowerPoint","LibreOffice","pptx","ppt","odp","presentations"],
+    "homepage": "http://phpoffice.github.io",
     "type": "library",
+    "license": "LGPL",
     "version": "0.1.0",
+    "authors": [
+        {
+            "name": "Mark Baker"
+        },
+        {
+            "name": "Franck Lefevre",
+            "homepage": "http://blog.rootslabs.net"
+        }
+    ],
+    "require": {
+        "php": ">=5.2.0",
+        "ext-xml": "*"
+    },
+    "recommend": {
+        "ext-zip": "*",
+        "ext-gd2": "*"
+    },
     "autoload": {
-        "psr-0": { "PHPPowerPoint": "Classes/" }
+        "psr-0": {
+            "PHPPowerPoint": "Classes/"
+        }
     }
 }
