@@ -42,6 +42,7 @@ To be planned:
 - Feature:  (MB) Work item 5580 - Editing chart data
 - Feature:  (MB) Work item 5461 - Solid Fill support
 - Feature:  (MB) Applied patch 8375 
+- Feature: (Progi1984) Implement ODP Writer
 - Bugfix:   (MBaker) Allow solid colour fill
 - Bugfix:   (MB) Work item 3910 - Table width setting Office 2007
 - Bugfix:   (MB) Work item 4598 - Bullet characters in Master Slide Layouts of template file become corrupted

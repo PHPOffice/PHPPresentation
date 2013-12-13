@@ -25,16 +25,45 @@
  * @version    ##VERSION##, ##DATE##
  */
 
+PHPPowerPoint_Autoloader::Register();
+// check mbstring.func_overload
+if (ini_get('mbstring.func_overload') & 2) {
+    throw new Exception('Multibyte function overloading in PHP must be disabled for string functions (2).');
+}
+
+
+/**
+ * PHPPowerPoint_Autoloader
+ *
+ * @category	PHPPowerPoint
+ * @package		PHPPowerPoint
+ * @copyright	Copyright (c) 2006 - 2012 PHPPowerPoint (https://github.com/Progi1984/PHPPowerPoint)
+ */
 class PHPPowerPoint_Autoloader
 {
+	/**
+	 * Register the Autoloader with SPL
+	 *
+	 */
 	public static function Register() {
+		if (function_exists('__autoload')) {
+			//	Register any existing autoloader function with SPL, so we don't get any clashes
+			spl_autoload_register('__autoload');
+		}
+		//	Register ourselves with SPL
 		return spl_autoload_register(array('PHPPowerPoint_Autoloader', 'Load'));
 	}	//	function Register()
 
 
+	/**
+	 * Autoload a class identified by name
+	 *
+	 * @param	string	$pClassName		Name of the object to load
+	 */
 	public static function Load($pObjectName){
 		if ((class_exists($pObjectName)) || (strpos($pObjectName, 'PHPPowerPoint') === False)) {
-			return false;
+			//	Either already loaded, or not a PHPPowerPoint class request
+			return FALSE;
 		}
 
 		$pObjectFilePath =	PHPPOWERPOINT_ROOT.
@@ -42,7 +71,8 @@ class PHPPowerPoint_Autoloader
 							'.php';
 
 		if ((file_exists($pObjectFilePath) === false) || (is_readable($pObjectFilePath) === false)) {
-			return false;
+			//	Can't load
+			return FALSE;
 		}
 
 		require($pObjectFilePath);
