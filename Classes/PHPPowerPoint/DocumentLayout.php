@@ -55,17 +55,17 @@ class PHPPowerPoint_DocumentLayout
 	 * centimeter, 914400 EMUs per inch, 12700 EMUs per point.
 	 */
 	private $_dimension = array(
-		PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4x3   => array('cx' =>  9144000, 'cy' => 6858000),
-		PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_16x10 => array('cx' =>  9144000, 'cy' => 5715000),
-		PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_16x9  => array('cx' =>  9144000, 'cy' => 5143500),
-		PHPPowerPoint_DocumentLayout::LAYOUT_35mm         => array('cx' => 10287000, 'cy' => 6858000),
-		PHPPowerPoint_DocumentLayout::LAYOUT_A3           => array('cx' => 12801600, 'cy' => 9601200),
-		PHPPowerPoint_DocumentLayout::LAYOUT_A4           => array('cx' =>  9906000, 'cy' => 6858000),
-		PHPPowerPoint_DocumentLayout::LAYOUT_B4ISO        => array('cx' => 10826750, 'cy' => 8120063),
-		PHPPowerPoint_DocumentLayout::LAYOUT_B5ISO        => array('cx' =>  7169150, 'cy' => 5376863),
-		PHPPowerPoint_DocumentLayout::LAYOUT_BANNER       => array('cx' =>  7315200, 'cy' =>  914400),
-		PHPPowerPoint_DocumentLayout::LAYOUT_LETTER       => array('cx' =>  9144000, 'cy' => 6858000),
-		PHPPowerPoint_DocumentLayout::LAYOUT_OVERHEAD     => array('cx' =>  9144000, 'cy' => 6858000)
+		PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4x3   => array('cx' =>  9144000, 'cy' =>  6858000),
+		PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_16x10 => array('cx' =>  9144000, 'cy' =>  5715000),
+		PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_16x9  => array('cx' =>  9144000, 'cy' =>  5143500),
+		PHPPowerPoint_DocumentLayout::LAYOUT_35mm         => array('cx' => 10287000, 'cy' =>  6858000),
+		PHPPowerPoint_DocumentLayout::LAYOUT_A3           => array('cx' => 15120000, 'cy' => 10692000),
+		PHPPowerPoint_DocumentLayout::LAYOUT_A4           => array('cx' => 10692000, 'cy' =>  7560000),
+		PHPPowerPoint_DocumentLayout::LAYOUT_B4ISO        => array('cx' => 10826750, 'cy' =>  8120063),
+		PHPPowerPoint_DocumentLayout::LAYOUT_B5ISO        => array('cx' =>  7169150, 'cy' =>  5376863),
+		PHPPowerPoint_DocumentLayout::LAYOUT_BANNER       => array('cx' =>  7315200, 'cy' =>   914400),
+		PHPPowerPoint_DocumentLayout::LAYOUT_LETTER       => array('cx' =>  9144000, 'cy' =>  6858000),
+		PHPPowerPoint_DocumentLayout::LAYOUT_OVERHEAD     => array('cx' =>  9144000, 'cy' =>  6858000)
 	);
 
 
@@ -177,7 +177,7 @@ class PHPPowerPoint_DocumentLayout
      * @param integer $pValue	Layout width
      * @return PHPPowerPoint_DocumentLayout
      */
-    public function setLayoutXmilli(integer $pValue) {
+    public function setLayoutXmilli($pValue) {
 		$this->_cx = $pValue * 36000;
 		$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM;
     	return $this;
@@ -188,7 +188,7 @@ class PHPPowerPoint_DocumentLayout
      * @param integer $pValue	Layout height
      * @return PHPPowerPoint_DocumentLayout
      */
-    public function setLayoutYmilli(integer $pValue) {
+    public function setLayoutYmilli($pValue) {
 		$this->_cy = $pValue * 36000;
 		$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM;
     	return $this;
