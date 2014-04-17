@@ -24,32 +24,34 @@
 
 
 To be planned:
-- General:  (MB) Work item 1165 - Rename PHPPowerpoint.php to PHPPowerPoint.php
-- General:  (MB) Work item 5270 - Create build script using Phing
-- Feature:  (MB) Work item  815 - Provide fluent interfaces where possible
-- Feature:  (MB) Work item 1034 - Use existing presentation template when writing PPTX file
-- Feature:  (MB) Work item 1093 - Implement bullet and numeric lists
-- Feature:  (MB) Work item 1173 - getProperties: setCompany feature request
-- Feature:  (MB) Work item 1375 - New shape type: table
-- Feature:  (MB) Work item 2804 - Use of CDATA text when writing text
-- Feature:  (MB) Work item 1378 - Possibility to set borders on tables and table cells
-- Feature:  (MB) Work item 4921 - Access to additional properties of Text Boxes
-- Feature:  (MB) Applied patches 7010 and 7020
-- Feature:  (MB) Work item 1196 - Add a hyperlink to an image or textbox
+- General:  (MB) CP-1165 - Rename PHPPowerpoint.php to PHPPowerPoint.php
+- General:  (MB) CP-5270 - Create build script using Phing
+- Feature:  (MB) CP- 815 - Provide fluent interfaces where possible
+- Feature:  (MB) CP-1034 - Use existing presentation template when writing PPTX file
+- Feature:  (MB) CP-1093 - Implement bullet and numeric lists
+- Feature:  (MB) CP-1173 - getProperties: setCompany feature request
+- Feature:  (MB) CP-1375 - New shape type: table
+- Feature:  (MB) CP-2804 - Use of CDATA text when writing text
+- Feature:  (MB) CP-1378 - Possibility to set borders on tables and table cells
+- Feature:  (MB) CP-4921 - Access to additional properties of Text Boxes
+- Feature:  (MB) CP-7010 - Applied patch 7010
+- Feature:  (MB) CP-7020 - Applied patch 7020
+- Feature:  (MB) CP-1196 - Add a hyperlink to an image or textbox
 - Feature:  (MBaker) Implement autoloader
 - Feature:  (Progi1984) Implement ODP Writer
-- Feature:  (MB) Work item 4953 - PowerPoint Charts
-- Feature:  (MB) Work item 5580 - Editing chart data
-- Feature:  (MB) Work item 5461 - Solid Fill support
-- Feature:  (MB) Applied patch 8375 
-- Feature: (Progi1984) Implement ODP Writer
+- Feature:  (MB) CP-4953 - PowerPoint Charts
+- Feature:  (MB) CP-5580 - Editing chart data
+- Feature:  (MB) CP-5461 - Solid Fill support
+- Feature:  (MB) CP-8375 - Applied patch 8375
+- Feature:  (Progi1984) Implement ODP Writer
 - Bugfix:   (MBaker) Allow solid colour fill
-- Bugfix:   (MB) Work item 3910 - Table width setting Office 2007
-- Bugfix:   (MB) Work item 4598 - Bullet characters in Master Slide Layouts of template file become corrupted
-- Bugfix:   (MB) Work item 3424 - Generated files cannot be opened in Office 08 for Mac OSX
-- Bugfix:   (MB) Work item 2541 - Table Cell Borders Not Displaying Correctly
-- Bugfix:   (MB) Work item 4597 - Multiple Master Slides are not supported 
-- Bugfix:   (MB) Work item 4596 - Images in Layouts other than first Master Slide within Template file causes corrupted PPTX
+- Bugfix:   (MB) CP-3910 - Table width setting Office 2007
+- Bugfix:   (MB) CP-4598 - Bullet characters in Master Slide Layouts of template file become corrupted
+- Bugfix:   (MB) CP-3424 - Generated files cannot be opened in Office 08 for Mac OSX
+- Bugfix:   (MB) CP-2541 - Table Cell Borders Not Displaying Correctly
+- Bugfix:   (MB) CP-4597 - Multiple Master Slides are not supported 
+- Bugfix:   (MB) CP-4596 - Images in Layouts other than first Master Slide within Template file causes corrupted PPTX
+- Bugfix :  (delphiki) GH-16 - Fixed A3 and A4 formats dimensions 
 
 Initial version:
 - Create a Presentation object
