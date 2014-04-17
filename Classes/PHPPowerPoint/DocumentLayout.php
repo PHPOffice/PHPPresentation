@@ -101,36 +101,39 @@ class PHPPowerPoint_DocumentLayout
     /**
      * Set Document Layout
      *
-     * @param string $pValue	PHPPowerPoint_DocumentLayout document layout
+     * @param array $pValue PHPPowerPoint_DocumentLayout document layout
      * @return PHPPowerPoint_DocumentLayout
      */
     public function setDocumentLayout($pValue = PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4x3, $isLandscape = true) {
-	switch($pValue) {
-		case PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4x3:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_16x10:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_16x9:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_35mm:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_A3:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_A4:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_B4ISO:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_B5ISO:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_BANNER:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_LETTER:
-		case PHPPowerPoint_DocumentLayout::LAYOUT_OVERHEAD:
-			$this->_layout = $pValue;
-			if( $isLandscape ) {
-				$this->_cx = $this->_dimension[$this->_layout]['cx'];
-				$this->_cy = $this->_dimension[$this->_layout]['cy'];
-			} else {
-				$this->_cx = $this->_dimension[$this->_layout]['cy'];
-				$this->_cy = $this->_dimension[$this->_layout]['cx'];
-			}
-			break;
-		case PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM:
-		default:
-			$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM;
-			break;
-	}
+    	switch($pValue) {
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4x3:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_16x10:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_16x9:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_35mm:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_A3:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_A4:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_B4ISO:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_B5ISO:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_BANNER:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_LETTER:
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_OVERHEAD:
+    			$this->_layout = $pValue;
+    			$this->_cx = $this->_dimension[$this->_layout]['cy'];
+    			$this->_cy = $this->_dimension[$this->_layout]['cx'];
+    			break;
+    		case PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM:
+    		default:
+                $this->_cx = $pValue['cx'];
+                $this->_cy = $pValue['cy'];
+    			$this->_layout = PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM;
+    			break;
+    	}
+
+        if (!$isLandscape) {
+            $tmp = $this->_cx;
+            $this->_cx = $this->_cy;
+            $this->_cy = $tmp;
+        }
 
     	return $this;
     }
