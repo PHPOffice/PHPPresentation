@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Style
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,101 +35,101 @@
  */
 class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
 {
-	/* Bullet types */
-	const TYPE_NONE							= 'none';
-	const TYPE_BULLET						= 'bullet';
-	const TYPE_NUMERIC						= 'numeric';
+    /* Bullet types */
+    const TYPE_NONE                         = 'none';
+    const TYPE_BULLET                       = 'bullet';
+    const TYPE_NUMERIC                      = 'numeric';
 
-	/* Numeric bullet styles */
-	const NUMERIC_DEFAULT					= 'arabicPeriod';
-	const NUMERIC_ALPHALCPARENBOTH 			= 'alphaLcParenBoth';
-	const NUMERIC_ALPHAUCPARENBOTH			= 'alphaUcParenBoth';
-	const NUMERIC_ALPHALCPARENR 			= 'alphaLcParenR';
-	const NUMERIC_ALPHAUCPARENR 			= 'alphaUcParenR';
-	const NUMERIC_ALPHALCPERIOD 			= 'alphaLcPeriod';
-	const NUMERIC_ALPHAUCPERIOD 			= 'alphaUcPeriod';
-	const NUMERIC_ARABICPARENBOTH 			= 'arabicParenBoth';
-	const NUMERIC_ARABICPARENR 				= 'arabicParenR';
-	const NUMERIC_ARABICPERIOD 				= 'arabicPeriod';
-	const NUMERIC_ARABICPLAIN 				= 'arabicPlain';
-	const NUMERIC_ROMANLCPARENBOTH			= 'romanLcParenBoth';
-	const NUMERIC_ROMANUCPARENBOTH 			= 'romanUcParenBoth';
-	const NUMERIC_ROMANLCPARENR 			= 'romanLcParenR';
-	const NUMERIC_ROMANUCPARENR 			= 'romanUcParenR';
-	const NUMERIC_ROMANLCPERIOD 			= 'romanLcPeriod';
-	const NUMERIC_ROMANUCPERIOD 			= 'romanUcPeriod';
-	const NUMERIC_CIRCLENUMDBPLAIN 			= 'circleNumDbPlain';
-	const NUMERIC_CIRCLENUMWDBLACKPLAIN 	= 'circleNumWdBlackPlain';
-	const NUMERIC_CIRCLENUMWDWHITEPLAIN 	= 'circleNumWdWhitePlain';
-	const NUMERIC_ARABICDBPERIOD 			= 'arabicDbPeriod';
-	const NUMERIC_ARABICDBPLAIN 			= 'arabicDbPlain';
-	const NUMERIC_EA1CHSPERIOD 				= 'ea1ChsPeriod';
-	const NUMERIC_EA1CHSPLAIN 				= 'ea1ChsPlain';
-	const NUMERIC_EA1CHTPERIOD 				= 'ea1ChtPeriod';
-	const NUMERIC_EA1CHTPLAIN 				= 'ea1ChtPlain';
-	const NUMERIC_EA1JPNCHSDBPERIOD 		= 'ea1JpnChsDbPeriod';
-	const NUMERIC_EA1JPNKORPLAIN 			= 'ea1JpnKorPlain';
-	const NUMERIC_EA1JPNKORPERIOD 			= 'ea1JpnKorPeriod';
-	const NUMERIC_ARABIC1MINUS 				= 'arabic1Minus';
-	const NUMERIC_ARABIC2MINUS 				= 'arabic2Minus';
-	const NUMERIC_HEBREW2MINUS 				= 'hebrew2Minus';
-	const NUMERIC_THAIALPHAPERIOD 			= 'thaiAlphaPeriod';
-	const NUMERIC_THAIALPHAPARENR 			= 'thaiAlphaParenR';
-	const NUMERIC_THAIALPHAPARENBOTH 		= 'thaiAlphaParenBoth';
-	const NUMERIC_THAINUMPERIOD 			= 'thaiNumPeriod';
-	const NUMERIC_THAINUMPARENR 			= 'thaiNumParenR';
-	const NUMERIC_THAINUMPARENBOTH			= 'thaiNumParenBoth';
-	const NUMERIC_HINDIALPHAPERIOD			= 'hindiAlphaPeriod';
-	const NUMERIC_HINDINUMPERIOD 			= 'hindiNumPeriod';
-	const NUMERIC_HINDINUMPARENR 			= 'hindiNumParenR';
-	const NUMERIC_HINDIALPHA1PERIOD 		= 'hindiAlpha1Period';
+    /* Numeric bullet styles */
+    const NUMERIC_DEFAULT                   = 'arabicPeriod';
+    const NUMERIC_ALPHALCPARENBOTH          = 'alphaLcParenBoth';
+    const NUMERIC_ALPHAUCPARENBOTH          = 'alphaUcParenBoth';
+    const NUMERIC_ALPHALCPARENR             = 'alphaLcParenR';
+    const NUMERIC_ALPHAUCPARENR             = 'alphaUcParenR';
+    const NUMERIC_ALPHALCPERIOD             = 'alphaLcPeriod';
+    const NUMERIC_ALPHAUCPERIOD             = 'alphaUcPeriod';
+    const NUMERIC_ARABICPARENBOTH           = 'arabicParenBoth';
+    const NUMERIC_ARABICPARENR              = 'arabicParenR';
+    const NUMERIC_ARABICPERIOD              = 'arabicPeriod';
+    const NUMERIC_ARABICPLAIN               = 'arabicPlain';
+    const NUMERIC_ROMANLCPARENBOTH          = 'romanLcParenBoth';
+    const NUMERIC_ROMANUCPARENBOTH          = 'romanUcParenBoth';
+    const NUMERIC_ROMANLCPARENR             = 'romanLcParenR';
+    const NUMERIC_ROMANUCPARENR             = 'romanUcParenR';
+    const NUMERIC_ROMANLCPERIOD             = 'romanLcPeriod';
+    const NUMERIC_ROMANUCPERIOD             = 'romanUcPeriod';
+    const NUMERIC_CIRCLENUMDBPLAIN          = 'circleNumDbPlain';
+    const NUMERIC_CIRCLENUMWDBLACKPLAIN     = 'circleNumWdBlackPlain';
+    const NUMERIC_CIRCLENUMWDWHITEPLAIN     = 'circleNumWdWhitePlain';
+    const NUMERIC_ARABICDBPERIOD            = 'arabicDbPeriod';
+    const NUMERIC_ARABICDBPLAIN             = 'arabicDbPlain';
+    const NUMERIC_EA1CHSPERIOD              = 'ea1ChsPeriod';
+    const NUMERIC_EA1CHSPLAIN               = 'ea1ChsPlain';
+    const NUMERIC_EA1CHTPERIOD              = 'ea1ChtPeriod';
+    const NUMERIC_EA1CHTPLAIN               = 'ea1ChtPlain';
+    const NUMERIC_EA1JPNCHSDBPERIOD         = 'ea1JpnChsDbPeriod';
+    const NUMERIC_EA1JPNKORPLAIN            = 'ea1JpnKorPlain';
+    const NUMERIC_EA1JPNKORPERIOD           = 'ea1JpnKorPeriod';
+    const NUMERIC_ARABIC1MINUS              = 'arabic1Minus';
+    const NUMERIC_ARABIC2MINUS              = 'arabic2Minus';
+    const NUMERIC_HEBREW2MINUS              = 'hebrew2Minus';
+    const NUMERIC_THAIALPHAPERIOD           = 'thaiAlphaPeriod';
+    const NUMERIC_THAIALPHAPARENR           = 'thaiAlphaParenR';
+    const NUMERIC_THAIALPHAPARENBOTH        = 'thaiAlphaParenBoth';
+    const NUMERIC_THAINUMPERIOD             = 'thaiNumPeriod';
+    const NUMERIC_THAINUMPARENR             = 'thaiNumParenR';
+    const NUMERIC_THAINUMPARENBOTH          = 'thaiNumParenBoth';
+    const NUMERIC_HINDIALPHAPERIOD          = 'hindiAlphaPeriod';
+    const NUMERIC_HINDINUMPERIOD            = 'hindiNumPeriod';
+    const NUMERIC_HINDINUMPARENR            = 'hindiNumParenR';
+    const NUMERIC_HINDIALPHA1PERIOD         = 'hindiAlpha1Period';
 
-	/**
-	 * Bullet type
-	 *
-	 * @var string
-	 */
-	private $_bulletType = self::TYPE_NONE;
+    /**
+     * Bullet type
+     *
+     * @var string
+     */
+    private $_bulletType = self::TYPE_NONE;
 
-	/**
-	 * Bullet font
-	 *
-	 * @var string
-	 */
-	private $_bulletFont;
+    /**
+     * Bullet font
+     *
+     * @var string
+     */
+    private $_bulletFont;
 
-	/**
-	 * Bullet char
-	 *
-	 * @var string
-	 */
-	private $_bulletChar = '-';
+    /**
+     * Bullet char
+     *
+     * @var string
+     */
+    private $_bulletChar = '-';
 
-	/**
-	 * Bullet numeric style
-	 *
-	 * @var string
-	 */
-	private $_bulletNumericStyle = self::NUMERIC_DEFAULT;
+    /**
+     * Bullet numeric style
+     *
+     * @var string
+     */
+    private $_bulletNumericStyle = self::NUMERIC_DEFAULT;
 
-	/**
-	 * Bullet numeric start at
-	 *
-	 * @var int
-	 */
-	private $_bulletNumericStartAt = 1;
+    /**
+     * Bullet numeric start at
+     *
+     * @var int
+     */
+    private $_bulletNumericStartAt = 1;
 
-	/**
+    /**
      * Create a new PHPPowerPoint_Style_Bullet
      */
     public function __construct()
     {
-    	// Initialise values
-    	$this->_bulletType				= self::TYPE_NONE;
-    	$this->_bulletFont				= 'Calibri';
-    	$this->_bulletChar				= '-';
-    	$this->_bulletNumericStyle		= self::NUMERIC_DEFAULT;
-    	$this->_bulletNumericStartAt 	= 1;
+        // Initialise values
+        $this->_bulletType              = self::TYPE_NONE;
+        $this->_bulletFont              = 'Calibri';
+        $this->_bulletChar              = '-';
+        $this->_bulletNumericStyle      = self::NUMERIC_DEFAULT;
+        $this->_bulletNumericStartAt    = 1;
     }
 
     /**
@@ -138,7 +138,7 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getBulletType() {
-    	return $this->_bulletType;
+        return $this->_bulletType;
     }
 
     /**
@@ -148,8 +148,8 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Bullet
      */
     public function setBulletType($pValue = self::TYPE_NONE) {
-    	$this->_bulletType = $pValue;
-    	return $this;
+        $this->_bulletType = $pValue;
+        return $this;
     }
 
     /**
@@ -158,7 +158,7 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getBulletFont() {
-    	return $this->_bulletFont;
+        return $this->_bulletFont;
     }
 
     /**
@@ -168,11 +168,11 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Bullet
      */
     public function setBulletFont($pValue = 'Calibri') {
-   		if ($pValue == '') {
-    		$pValue = 'Calibri';
-    	}
-    	$this->_bulletFont = $pValue;
-    	return $this;
+        if ($pValue == '') {
+            $pValue = 'Calibri';
+        }
+        $this->_bulletFont = $pValue;
+        return $this;
     }
 
     /**
@@ -181,7 +181,7 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getBulletChar() {
-    	return $this->_bulletChar;
+        return $this->_bulletChar;
     }
 
     /**
@@ -191,8 +191,8 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Bullet
      */
     public function setBulletChar($pValue = '-') {
-    	$this->_bulletChar = $pValue;
-    	return $this;
+        $this->_bulletChar = $pValue;
+        return $this;
     }
 
     /**
@@ -201,7 +201,7 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getBulletNumericStyle() {
-    	return $this->_bulletNumericStyle;
+        return $this->_bulletNumericStyle;
     }
 
     /**
@@ -211,8 +211,8 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Bullet
      */
     public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT) {
-    	$this->_bulletNumericStyle = $pValue;
-    	return $this;
+        $this->_bulletNumericStyle = $pValue;
+        return $this;
     }
 
     /**
@@ -221,7 +221,7 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getBulletNumericStartAt() {
-    	return $this->_bulletNumericStartAt;
+        return $this->_bulletNumericStartAt;
     }
 
     /**
@@ -231,24 +231,24 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Bullet
      */
     public function setBulletNumericStartAt($pValue = 1) {
-    	$this->_bulletNumericStartAt = $pValue;
-    	return $this;
+        $this->_bulletNumericStartAt = $pValue;
+        return $this;
     }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->_bulletType
-    		. $this->_bulletFont
-    		. $this->_bulletChar
-    		. $this->_bulletNumericStyle
-    		. $this->_bulletNumericStartAt
-    		. __CLASS__
-    	);
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->_bulletType
+            . $this->_bulletFont
+            . $this->_bulletChar
+            . $this->_bulletNumericStyle
+            . $this->_bulletNumericStartAt
+            . __CLASS__
+        );
     }
 
     /**
@@ -258,41 +258,41 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

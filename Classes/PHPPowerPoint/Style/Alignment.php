@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Style
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,75 +35,75 @@
  */
 class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
 {
-	/* Horizontal alignment styles */
-	const HORIZONTAL_GENERAL				= 'l';
-	const HORIZONTAL_LEFT					= 'l';
-	const HORIZONTAL_RIGHT					= 'r';
-	const HORIZONTAL_CENTER					= 'ctr';
-	const HORIZONTAL_JUSTIFY				= 'just';
-	const HORIZONTAL_DISTRIBUTED			= 'dist';
+    /* Horizontal alignment styles */
+    const HORIZONTAL_GENERAL                = 'l';
+    const HORIZONTAL_LEFT                   = 'l';
+    const HORIZONTAL_RIGHT                  = 'r';
+    const HORIZONTAL_CENTER                 = 'ctr';
+    const HORIZONTAL_JUSTIFY                = 'just';
+    const HORIZONTAL_DISTRIBUTED            = 'dist';
 
-	/* Vertical alignment styles */
-	const VERTICAL_BASE						= 'base';
-	const VERTICAL_AUTO						= 'auto';
-	const VERTICAL_BOTTOM					= 'b';
-	const VERTICAL_TOP						= 't';
-	const VERTICAL_CENTER					= 'ctr';
+    /* Vertical alignment styles */
+    const VERTICAL_BASE                     = 'base';
+    const VERTICAL_AUTO                     = 'auto';
+    const VERTICAL_BOTTOM                   = 'b';
+    const VERTICAL_TOP                      = 't';
+    const VERTICAL_CENTER                   = 'ctr';
 
-	/**
-	 * Horizontal
-	 *
-	 * @var string
-	 */
-	private $_horizontal;
+    /**
+     * Horizontal
+     *
+     * @var string
+     */
+    private $_horizontal;
 
-	/**
-	 * Vertical
-	 *
-	 * @var string
-	 */
-	private $_vertical;
+    /**
+     * Vertical
+     *
+     * @var string
+     */
+    private $_vertical;
 
-	/**
-	 * Level
-	 *
-	 * @var int
-	 */
-	private $_level;
+    /**
+     * Level
+     *
+     * @var int
+     */
+    private $_level;
 
-	/**
-	 * Indent - only possible with horizontal alignment left and right
-	 *
-	 * @var int
-	 */
-	private $_indent;
+    /**
+     * Indent - only possible with horizontal alignment left and right
+     *
+     * @var int
+     */
+    private $_indent;
 
-	/**
-	 * Margin left - only possible with horizontal alignment left and right
-	 *
-	 * @var int
-	 */
-	private $_marginLeft;
+    /**
+     * Margin left - only possible with horizontal alignment left and right
+     *
+     * @var int
+     */
+    private $_marginLeft;
 
-	/**
-	 * Margin right - only possible with horizontal alignment left and right
-	 *
-	 * @var int
-	 */
-	private $_marginRight;
+    /**
+     * Margin right - only possible with horizontal alignment left and right
+     *
+     * @var int
+     */
+    private $_marginRight;
 
     /**
      * Create a new PHPPowerPoint_Style_Alignment
      */
     public function __construct()
     {
-    	// Initialise values
-    	$this->_horizontal			= PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT;
-    	$this->_vertical			= PHPPowerPoint_Style_Alignment::VERTICAL_BASE;
-    	$this->_level				= 0;
-		$this->_indent				= 0;
-		$this->_marginLeft			= 0;
-		$this->_marginRight			= 0;
+        // Initialise values
+        $this->_horizontal          = PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT;
+        $this->_vertical            = PHPPowerPoint_Style_Alignment::VERTICAL_BASE;
+        $this->_level               = 0;
+        $this->_indent              = 0;
+        $this->_marginLeft          = 0;
+        $this->_marginRight         = 0;
     }
 
     /**
@@ -112,7 +112,7 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getHorizontal() {
-    	return $this->_horizontal;
+        return $this->_horizontal;
     }
 
     /**
@@ -123,10 +123,10 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      */
     public function setHorizontal($pValue = PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT) {
         if ($pValue == '') {
-    		$pValue = PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT;
-    	}
-    	$this->_horizontal = $pValue;
-    	return $this;
+            $pValue = PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT;
+        }
+        $this->_horizontal = $pValue;
+        return $this;
     }
 
     /**
@@ -135,7 +135,7 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getVertical() {
-    	return $this->_vertical;
+        return $this->_vertical;
     }
 
     /**
@@ -145,11 +145,11 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Alignment
      */
     public function setVertical($pValue = PHPPowerPoint_Style_Alignment::VERTICAL_BASE) {
-    	if ($pValue == '') {
-    		$pValue = PHPPowerPoint_Style_Alignment::VERTICAL_BASE;
-    	}
-    	$this->_vertical = $pValue;
-    	return $this;
+        if ($pValue == '') {
+            $pValue = PHPPowerPoint_Style_Alignment::VERTICAL_BASE;
+        }
+        $this->_vertical = $pValue;
+        return $this;
     }
 
     /**
@@ -158,7 +158,7 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getLevel() {
-    	return $this->_level;
+        return $this->_level;
     }
 
     /**
@@ -169,11 +169,11 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Alignment
      */
     public function setLevel($pValue = 0) {
-    	if ($pValue < 0 || $pValue > 8) {
-    		throw new Exception("Invalid value: shoul be range 0 - 8.");
-    	}
-    	$this->_level = $pValue;
-    	return $this;
+        if ($pValue < 0 || $pValue > 8) {
+            throw new Exception("Invalid value: shoul be range 0 - 8.");
+        }
+        $this->_level = $pValue;
+        return $this;
     }
 
     /**
@@ -182,7 +182,7 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getIndent() {
-    	return $this->_indent;
+        return $this->_indent;
     }
 
     /**
@@ -192,14 +192,14 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Alignment
      */
     public function setIndent($pValue = 0) {
-		if ($pValue > 0) {
-			if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
-				$pValue = 0; // indent not supported
-			}
-		}
+        if ($pValue > 0) {
+            if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
+                $pValue = 0; // indent not supported
+            }
+        }
 
-		$this->_indent = $pValue;
-		return $this;
+        $this->_indent = $pValue;
+        return $this;
     }
 
     /**
@@ -208,7 +208,7 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getMarginLeft() {
-    	return $this->_marginLeft;
+        return $this->_marginLeft;
     }
 
     /**
@@ -218,14 +218,14 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Alignment
      */
     public function setMarginLeft($pValue = 0) {
-		if ($pValue > 0) {
-			if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
-				$pValue = 0; // margin left not supported
-			}
-		}
+        if ($pValue > 0) {
+            if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
+                $pValue = 0; // margin left not supported
+            }
+        }
 
-		$this->_marginLeft = $pValue;
-		return $this;
+        $this->_marginLeft = $pValue;
+        return $this;
     }
 
     /**
@@ -234,7 +234,7 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getMarginRight() {
-    	return $this->_marginRight;
+        return $this->_marginRight;
     }
 
     /**
@@ -244,31 +244,31 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Alignment
      */
     public function setMarginRight($pValue = 0) {
-		if ($pValue > 0) {
-			if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
-				$pValue = 0; // margin left not supported
-			}
-		}
+        if ($pValue > 0) {
+            if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
+                $pValue = 0; // margin left not supported
+            }
+        }
 
-		$this->_marginRight = $pValue;
-		return $this;
+        $this->_marginRight = $pValue;
+        return $this;
     }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->_horizontal
-    		. $this->_vertical
-    		. $this->_level
-			. $this->_indent
-			. $this->_marginLeft
-			. $this->_marginRight
-    		. __CLASS__
-    	);
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->_horizontal
+            . $this->_vertical
+            . $this->_level
+            . $this->_indent
+            . $this->_marginLeft
+            . $this->_marginRight
+            . __CLASS__
+        );
     }
 
     /**
@@ -278,41 +278,41 @@ class PHPPowerPoint_Style_Alignment implements PHPPowerPoint_IComparable
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

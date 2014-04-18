@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="./Tests/bootstrap.php"
+    backupGlobals="true"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    processIsolation="false"
+    syntaxCheck="true"
+    verbose="true"
+    strict="true"
+    stopOnError="false"
+    stopOnFailure="false"
+    stopOnIncomplete="false"
+    stopOnSkipped="false">
+    <testsuite name="PHPPowerPoint Unit Test Suite">
+        <directory>./Tests/PHPPowerPoint</directory>
+    </testsuite>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./Classes</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="./Tests/results" charset="UTF-8" yui="true" highlight="true" lowUpperBound="35" highLowerBound="70"/>
+        <log type="coverage-clover" target="./Tests/results/codeCoverage.xml"/>
+    </logging>
+</phpunit>

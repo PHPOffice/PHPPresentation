@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Writer_ODPresentation
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,17 +35,17 @@
  */
 class PHPPowerPoint_Writer_ODPresentation_Mimetype extends PHPPowerPoint_Writer_ODPresentation_WriterPart
 {
-	/**
-	 * Write Mimetype to Text format
-	 *
-	 * @param 	PHPPowerPoint $pPHPPowerPoint
-	 * @return 	string 						Text Output
-	 * @throws 	Exception
-	 */
-	public function writeMimetype(PHPPowerPoint $pPHPPowerPoint = null)
-	{
-		
-		return 'application/vnd.oasis.opendocument.presentation';
-	}
+    /**
+     * Write Mimetype to Text format
+     *
+     * @param   PHPPowerPoint $pPHPPowerPoint
+     * @return  string                      Text Output
+     * @throws  Exception
+     */
+    public function writeMimetype(PHPPowerPoint $pPHPPowerPoint = null)
+    {
+
+        return 'application/vnd.oasis.opendocument.presentation';
+    }
 
 }

@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint
  * @copyright  Copyright (c) 2006 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,47 +35,47 @@ if (ini_get('mbstring.func_overload') & 2) {
 /**
  * PHPPowerPoint_Autoloader
  *
- * @category	PHPPowerPoint
- * @package		PHPPowerPoint
- * @copyright	Copyright (c) 2006 - 2012 PHPPowerPoint (https://github.com/Progi1984/PHPPowerPoint)
+ * @category    PHPPowerPoint
+ * @package     PHPPowerPoint
+ * @copyright   Copyright (c) 2006 - 2012 PHPPowerPoint (https://github.com/Progi1984/PHPPowerPoint)
  */
 class PHPPowerPoint_Autoloader
 {
-	/**
-	 * Register the Autoloader with SPL
-	 *
-	 */
-	public static function Register() {
-		if (function_exists('__autoload')) {
-			//	Register any existing autoloader function with SPL, so we don't get any clashes
-			spl_autoload_register('__autoload');
-		}
-		//	Register ourselves with SPL
-		return spl_autoload_register(array('PHPPowerPoint_Autoloader', 'Load'));
-	}	//	function Register()
+    /**
+     * Register the Autoloader with SPL
+     *
+     */
+    public static function Register() {
+        if (function_exists('__autoload')) {
+            //  Register any existing autoloader function with SPL, so we don't get any clashes
+            spl_autoload_register('__autoload');
+        }
+        //  Register ourselves with SPL
+        return spl_autoload_register(array('PHPPowerPoint_Autoloader', 'Load'));
+    }   //  function Register()
 
 
-	/**
-	 * Autoload a class identified by name
-	 *
-	 * @param	string	$pClassName		Name of the object to load
-	 */
-	public static function Load($pObjectName){
-		if ((class_exists($pObjectName)) || (strpos($pObjectName, 'PHPPowerPoint') === False)) {
-			//	Either already loaded, or not a PHPPowerPoint class request
-			return FALSE;
-		}
+    /**
+     * Autoload a class identified by name
+     *
+     * @param   string  $pClassName     Name of the object to load
+     */
+    public static function Load($pObjectName){
+        if ((class_exists($pObjectName)) || (strpos($pObjectName, 'PHPPowerPoint') === False)) {
+            //  Either already loaded, or not a PHPPowerPoint class request
+            return FALSE;
+        }
 
-		$pObjectFilePath =	PHPPOWERPOINT_ROOT.
-							str_replace('_',DIRECTORY_SEPARATOR,$pObjectName).
-							'.php';
+        $pObjectFilePath =  PHPPOWERPOINT_ROOT.
+                            str_replace('_',DIRECTORY_SEPARATOR,$pObjectName).
+                            '.php';
 
-		if ((file_exists($pObjectFilePath) === false) || (is_readable($pObjectFilePath) === false)) {
-			//	Can't load
-			return FALSE;
-		}
+        if ((file_exists($pObjectFilePath) === false) || (is_readable($pObjectFilePath) === false)) {
+            //  Can't load
+            return FALSE;
+        }
 
-		require($pObjectFilePath);
-	}	//	function Load()
+        require($pObjectFilePath);
+    }   //  function Load()
 
 }

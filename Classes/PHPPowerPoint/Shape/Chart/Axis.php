@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Shape_Chart
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -34,82 +34,82 @@
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
 class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
-{	
-	/**
-	 * Title
-	 *
-	 * @var string
-	 */
-	private $_title = 'Axis Title';
-	
-	/**
-	 * Format code
-	 *
-	 * @var string
-	 */
-	private $_formatCode = '';
+{
+    /**
+     * Title
+     *
+     * @var string
+     */
+    private $_title = 'Axis Title';
+
+    /**
+     * Format code
+     *
+     * @var string
+     */
+    private $_formatCode = '';
 
     /**
      * Create a new PHPPowerPoint_Shape_Chart_Axis instance
-     * 
+     *
      * @param string $title Title
      */
     public function __construct($title = 'Axis Title')
     {
-    	$this->_title = $title;
+        $this->_title = $title;
     }
-    
-	/**
-	 * Get Title
-	 *
-	 * @return string
-	 */
-	public function getTitle() {
-	        return $this->_title;
-	}
-	
-	/**
-	 * Set Title
-	 *
-	 * @param string $value
-	 * @return PHPPowerPoint_Shape_Chart_Axis
-	 */
-	public function setTitle($value = 'Axis Title') {
-	        $this->_title = $value;
-	        return $this;
-	}
-	
-	/**
-	 * Get Format Code
-	 *
-	 * @return string
-	 */
-	public function getFormatCode() {
-	        return $this->_formatCode;
-	}
-	
-	/**
-	 * Set Format Code
-	 *
-	 * @param string $value
-	 * @return PHPPowerPoint_Shape_Chart_Axis
-	 */
-	public function setFormatCode($value = '') {
-	        $this->_formatCode = $value;
-	        return $this;
-	}
-	
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->_title
-    		. $this->_formatCode
-    		. __CLASS__
-    	);
+
+    /**
+     * Get Title
+     *
+     * @return string
+     */
+    public function getTitle() {
+            return $this->_title;
+    }
+
+    /**
+     * Set Title
+     *
+     * @param string $value
+     * @return PHPPowerPoint_Shape_Chart_Axis
+     */
+    public function setTitle($value = 'Axis Title') {
+            $this->_title = $value;
+            return $this;
+    }
+
+    /**
+     * Get Format Code
+     *
+     * @return string
+     */
+    public function getFormatCode() {
+            return $this->_formatCode;
+    }
+
+    /**
+     * Set Format Code
+     *
+     * @param string $value
+     * @return PHPPowerPoint_Shape_Chart_Axis
+     */
+    public function setFormatCode($value = '') {
+            $this->_formatCode = $value;
+            return $this;
+    }
+
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->_title
+            . $this->_formatCode
+            . __CLASS__
+        );
     }
 
     /**
@@ -119,41 +119,41 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

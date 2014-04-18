@@ -21,20 +21,20 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Reader
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
 
 /** PHPPowerPoint root directory */
 if (!defined('PHPPOWERPOINT_ROOT')) {
-	/**
-	 * @ignore
-	 */
-	define('PHPPOWERPOINT_ROOT', dirname(__FILE__) . '/../../');
-	require(PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php');
-	PHPPowerPoint_Autoloader::Register();
-	PHPPowerPoint_Shared_ZipStreamWrapper::register();
+    /**
+     * @ignore
+     */
+    define('PHPPOWERPOINT_ROOT', dirname(__FILE__) . '/../../');
+    require(PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php');
+    PHPPowerPoint_Autoloader::Register();
+    PHPPowerPoint_Shared_ZipStreamWrapper::register();
 }
 
 
@@ -47,81 +47,81 @@ if (!defined('PHPPOWERPOINT_ROOT')) {
  */
 class PHPPowerPoint_Reader_Serialized implements PHPPowerPoint_Reader_IReader
 {
-	/**
-	 * Can the current PHPPowerPoint_Reader_IReader read the file?
-	 *
-	 * @param 	string 		$pFileName
-	 * @return 	boolean
-	 */
-	public function canRead($pFilename)
-	{
-		// Check if file exists
-		if (!file_exists($pFilename)) {
-			throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
-		}
+    /**
+     * Can the current PHPPowerPoint_Reader_IReader read the file?
+     *
+     * @param   string      $pFileName
+     * @return  boolean
+     */
+    public function canRead($pFilename)
+    {
+        // Check if file exists
+        if (!file_exists($pFilename)) {
+            throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+        }
 
-		return $this->fileSupportsUnserializePHPPowerPoint($pFilename);
-	}
+        return $this->fileSupportsUnserializePHPPowerPoint($pFilename);
+    }
 
-	/**
-	 * Loads PHPPowerPoint Serialized file
-	 *
-	 * @param 	string 		$pFilename
-	 * @return 	PHPPowerPoint
-	 * @throws 	Exception
-	 */
-	public function load($pFilename)
-	{
-		// Check if file exists
-		if (!file_exists($pFilename)) {
-			throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
-		}
+    /**
+     * Loads PHPPowerPoint Serialized file
+     *
+     * @param   string      $pFilename
+     * @return  PHPPowerPoint
+     * @throws  Exception
+     */
+    public function load($pFilename)
+    {
+        // Check if file exists
+        if (!file_exists($pFilename)) {
+            throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+        }
 
-		// Unserialize... First make sure the file supports it!
-		if (!$this->fileSupportsUnserializePHPPowerPoint($pFilename)) {
-			throw new Exception("Invalid file format for PHPPowerPoint_Reader_Serialized: " . $pFilename . ".");
-		}
+        // Unserialize... First make sure the file supports it!
+        if (!$this->fileSupportsUnserializePHPPowerPoint($pFilename)) {
+            throw new Exception("Invalid file format for PHPPowerPoint_Reader_Serialized: " . $pFilename . ".");
+        }
 
-		return $this->_loadSerialized($pFilename);
-	}
+        return $this->_loadSerialized($pFilename);
+    }
 
-	/**
-	 * Load PHPPowerPoint Serialized file
-	 *
-	 * @param 	string 		$pFilename
-	 * @return 	PHPPowerPoint
-	 */
-	private function _loadSerialized($pFilename) {
-		$xmlData = simplexml_load_string(file_get_contents("zip://$pFilename#PHPPowerPoint.xml"));
-		$excel = unserialize(base64_decode((string)$xmlData->data));
+    /**
+     * Load PHPPowerPoint Serialized file
+     *
+     * @param   string      $pFilename
+     * @return  PHPPowerPoint
+     */
+    private function _loadSerialized($pFilename) {
+        $xmlData = simplexml_load_string(file_get_contents("zip://$pFilename#PHPPowerPoint.xml"));
+        $excel = unserialize(base64_decode((string)$xmlData->data));
 
-		// Update media links
-		for ($i = 0; $i < $excel->getSlideCount(); ++$i) {
-			for ($j = 0; $j < $excel->getSlide($i)->getShapeCollection()->count(); ++$j) {
-				if ($excel->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof PHPExcl_Shape_BaseDrawing) {
-					$imgTemp =& $excel->getSlide($i)->getShapeCollection()->offsetGet($j);
-					$imgTemp->setPath('zip://' . $pFilename . '#media/' . $imgTemp->getFilename(), false);
-				}
-			}
-		}
+        // Update media links
+        for ($i = 0; $i < $excel->getSlideCount(); ++$i) {
+            for ($j = 0; $j < $excel->getSlide($i)->getShapeCollection()->count(); ++$j) {
+                if ($excel->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof PHPExcl_Shape_BaseDrawing) {
+                    $imgTemp =& $excel->getSlide($i)->getShapeCollection()->offsetGet($j);
+                    $imgTemp->setPath('zip://' . $pFilename . '#media/' . $imgTemp->getFilename(), false);
+                }
+            }
+        }
 
-		return $excel;
-	}
+        return $excel;
+    }
 
-	/**
-	 * Does a file support UnserializePHPPowerPoint ?
-	 *
-	 * @param 	string 		$pFilename
-	 * @throws 	Exception
-	 * @return 	boolean
-	 */
-	public function fileSupportsUnserializePHPPowerPoint($pFilename = '') {
-		// Check if file exists
-		if (!file_exists($pFilename)) {
-			throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
-		}
+    /**
+     * Does a file support UnserializePHPPowerPoint ?
+     *
+     * @param   string      $pFilename
+     * @throws  Exception
+     * @return  boolean
+     */
+    public function fileSupportsUnserializePHPPowerPoint($pFilename = '') {
+        // Check if file exists
+        if (!file_exists($pFilename)) {
+            throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+        }
 
-		// File exists, does it contain PHPPowerPoint.xml?
-		return PHPPowerPoint_Shared_File::file_exists("zip://$pFilename#PHPPowerPoint.xml");
-	}
+        // File exists, does it contain PHPPowerPoint.xml?
+        return PHPPowerPoint_Shared_File::file_exists("zip://$pFilename#PHPPowerPoint.xml");
+    }
 }

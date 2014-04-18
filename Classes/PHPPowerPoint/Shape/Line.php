@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -42,27 +42,27 @@ class PHPPowerPoint_Shape_Line extends PHPPowerPoint_Shape implements PHPPowerPo
      */
     public function __construct($fromX,$fromY,$toX,$toY)
     {
-    	parent::__construct();
-    	$this->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
-    	
-    	$this->setOffsetX($fromX);
-		$this->setOffsetY($fromY);
-		$this->setWidth($toX-$fromX);
-		$this->setHeight($toY-$fromY);
-    	
+        parent::__construct();
+        $this->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
+
+        $this->setOffsetX($fromX);
+        $this->setOffsetY($fromY);
+        $this->setWidth($toX-$fromX);
+        $this->setHeight($toY-$fromY);
+
     }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->getBorder()->getLineStyle()
-    		. parent::getHashCode()
-    		. __CLASS__
-    	);
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->getBorder()->getLineStyle()
+            . parent::getHashCode()
+            . __CLASS__
+        );
     }
 
     /**
@@ -72,43 +72,43 @@ class PHPPowerPoint_Shape_Line extends PHPPowerPoint_Shape implements PHPPowerPo
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if ($key == '_parent') continue;
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if ($key == '_parent') continue;
 
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

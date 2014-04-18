@@ -21,20 +21,20 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Slide
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
 
 /** PHPPowerPoint root directory */
 if (!defined('PHPPOWERPOINT_ROOT')) {
-	/**
-	 * @ignore
-	 */
-	define('PHPPOWERPOINT_ROOT', dirname(__FILE__) . '/../');
-	require(PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php');
-	PHPPowerPoint_Autoloader::Register();
-	PHPPowerPoint_Shared_ZipStreamWrapper::register();
+    /**
+     * @ignore
+     */
+    define('PHPPOWERPOINT_ROOT', dirname(__FILE__) . '/../');
+    require(PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php');
+    PHPPowerPoint_Autoloader::Register();
+    PHPPowerPoint_Shared_ZipStreamWrapper::register();
 }
 
 
@@ -47,145 +47,145 @@ if (!defined('PHPPOWERPOINT_ROOT')) {
  */
 class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
 {
-	/**
-	 * Parent presentation
-	 *
-	 * @var PHPPowerPoint
-	 */
-	private $_parent;
+    /**
+     * Parent presentation
+     *
+     * @var PHPPowerPoint
+     */
+    private $_parent;
 
-	/**
-	 * Collection of shapes
-	 *
-	 * @var PHPPowerPoint_Shape[]
-	 */
-	private $_shapeCollection = null;
+    /**
+     * Collection of shapes
+     *
+     * @var PHPPowerPoint_Shape[]
+     */
+    private $_shapeCollection = null;
 
-	/**
-	 * Slide identifier
-	 *
-	 * @var string
-	 */
-	private $_identifier;
+    /**
+     * Slide identifier
+     *
+     * @var string
+     */
+    private $_identifier;
 
-	/**
-	 * Slide layout
-	 *
-	 * @var string
-	 */
-	private $_slideLayout = PHPPowerPoint_Slide_Layout::BLANK;
-	
-	/**
-	 * Slide master id
-	 *
-	 * @var string
-	 */
-	private $_slideMasterId = 1;
+    /**
+     * Slide layout
+     *
+     * @var string
+     */
+    private $_slideLayout = PHPPowerPoint_Slide_Layout::BLANK;
 
-	/**
-	 * Create a new slide
-	 *
-	 * @param PHPPowerPoint 		$pParent
-	 */
-	public function __construct(PHPPowerPoint $pParent = null)
-	{
-		// Set parent
-		$this->_parent = $pParent;
+    /**
+     * Slide master id
+     *
+     * @var string
+     */
+    private $_slideMasterId = 1;
 
-    	// Shape collection
-    	$this->_shapeCollection = new ArrayObject();
+    /**
+     * Create a new slide
+     *
+     * @param PHPPowerPoint         $pParent
+     */
+    public function __construct(PHPPowerPoint $pParent = null)
+    {
+        // Set parent
+        $this->_parent = $pParent;
 
-    	// Set identifier
-    	$this->_identifier = md5(rand(0,9999) . time());
-	}
+        // Shape collection
+        $this->_shapeCollection = new ArrayObject();
 
-	/**
-	 * Get collection of shapes
-	 *
-	 * @return PHPPowerPoint_Shape[]
-	 */
-	public function getShapeCollection()
-	{
-		return $this->_shapeCollection;
-	}
+        // Set identifier
+        $this->_identifier = md5(rand(0,9999) . time());
+    }
 
-	/**
-	 * Add shape to slide
-	 *
-	 * @param PHPPowerPoint_Shape $shape
-	 * @return PHPPowerPoint_Shape
-	 */
-	public function addShape(PHPPowerPoint_Shape $shape)
-	{
-		$shape->setSlide($this);
-		return $shape;
-	}
+    /**
+     * Get collection of shapes
+     *
+     * @return PHPPowerPoint_Shape[]
+     */
+    public function getShapeCollection()
+    {
+        return $this->_shapeCollection;
+    }
 
-	/**
-	 * Create rich text shape
-	 *
-	 * @return PHPPowerPoint_Shape_RichText
-	 */
-	public function createRichTextShape()
-	{
-		$shape = new PHPPowerPoint_Shape_RichText();
-		$this->addShape($shape);
-		return $shape;
-	}
+    /**
+     * Add shape to slide
+     *
+     * @param PHPPowerPoint_Shape $shape
+     * @return PHPPowerPoint_Shape
+     */
+    public function addShape(PHPPowerPoint_Shape $shape)
+    {
+        $shape->setSlide($this);
+        return $shape;
+    }
 
-	/**
-	 * Create line shape
-	 *
-	 * @param int $fromX Starting point x offset
-	 * @param int $fromY Starting point y offset
-	 * @param int $toX Ending point x offset
-	 * @param int $toY Ending point y offset
-	 * @return PHPPowerPoint_Shape_Line
-	 */
-	public function createLineShape($fromX, $fromY, $toX, $toY)
-	{
-		$shape = new PHPPowerPoint_Shape_Line($fromX,$fromY,$toX,$toY);
-		$this->addShape($shape);
-		
-		return $shape;
-	}
+    /**
+     * Create rich text shape
+     *
+     * @return PHPPowerPoint_Shape_RichText
+     */
+    public function createRichTextShape()
+    {
+        $shape = new PHPPowerPoint_Shape_RichText();
+        $this->addShape($shape);
+        return $shape;
+    }
 
-	/**
-	 * Create chart shape
-	 *
-	 * @return PHPPowerPoint_Shape_Chart
-	 */
-	public function createChartShape()
-	{
-		$shape = new PHPPowerPoint_Shape_Chart();
-		$this->addShape($shape);
-		return $shape;
-	}
-	
-	/**
-	 * Create drawing shape
-	 *
-	 * @return PHPPowerPoint_Shape_Drawing
-	 */
-	public function createDrawingShape()
-	{
-		$shape = new PHPPowerPoint_Shape_Drawing();
-		$this->addShape($shape);
-		return $shape;
-	}
+    /**
+     * Create line shape
+     *
+     * @param int $fromX Starting point x offset
+     * @param int $fromY Starting point y offset
+     * @param int $toX Ending point x offset
+     * @param int $toY Ending point y offset
+     * @return PHPPowerPoint_Shape_Line
+     */
+    public function createLineShape($fromX, $fromY, $toX, $toY)
+    {
+        $shape = new PHPPowerPoint_Shape_Line($fromX,$fromY,$toX,$toY);
+        $this->addShape($shape);
 
-	/**
-	 * Create table shape
-	 *
-	 * @param int $columns Number of columns
-	 * @return PHPPowerPoint_Shape_Table
-	 */
-	public function createTableShape($columns = 1)
-	{
-		$shape = new PHPPowerPoint_Shape_Table($columns);
-		$this->addShape($shape);
-		return $shape;
-	}
+        return $shape;
+    }
+
+    /**
+     * Create chart shape
+     *
+     * @return PHPPowerPoint_Shape_Chart
+     */
+    public function createChartShape()
+    {
+        $shape = new PHPPowerPoint_Shape_Chart();
+        $this->addShape($shape);
+        return $shape;
+    }
+
+    /**
+     * Create drawing shape
+     *
+     * @return PHPPowerPoint_Shape_Drawing
+     */
+    public function createDrawingShape()
+    {
+        $shape = new PHPPowerPoint_Shape_Drawing();
+        $this->addShape($shape);
+        return $shape;
+    }
+
+    /**
+     * Create table shape
+     *
+     * @param int $columns Number of columns
+     * @return PHPPowerPoint_Shape_Table
+     */
+    public function createTableShape($columns = 1)
+    {
+        $shape = new PHPPowerPoint_Shape_Table($columns);
+        $this->addShape($shape);
+        return $shape;
+    }
 
     /**
      * Get parent
@@ -193,7 +193,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint
      */
     public function getParent() {
-    	return $this->_parent;
+        return $this->_parent;
     }
 
     /**
@@ -203,11 +203,11 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Slide
      */
     public function rebindParent(PHPPowerPoint $parent) {
-		$this->_parent->removeSlideByIndex(
-			$this->_parent->getIndex($this)
-		);
-		$this->_parent = $parent;
-		return $this;
+        $this->_parent->removeSlideByIndex(
+            $this->_parent->getIndex($this)
+        );
+        $this->_parent = $parent;
+        return $this;
     }
 
     /**
@@ -216,7 +216,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getSlideLayout() {
-    	return $this->_slideLayout;
+        return $this->_slideLayout;
     }
 
     /**
@@ -226,17 +226,17 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Slide
      */
     public function setSlideLayout($layout = PHPPowerPoint_Slide_Layout::BLANK) {
-    	$this->_slideLayout = $layout;
-    	return $this;
+        $this->_slideLayout = $layout;
+        return $this;
     }
-    
+
     /**
      * Get slide master id
      *
      * @return int
      */
     public function getSlideMasterId() {
-    	return $this->_slideMasterId;
+        return $this->_slideMasterId;
     }
 
     /**
@@ -246,20 +246,20 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Slide
      */
     public function setSlideMasterId($masterId = 1) {
-    	$this->_slideMasterId = $masterId;
-    	return $this;
+        $this->_slideMasterId = $masterId;
+        return $this;
     }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->_identifier
-    		. __CLASS__
-    	);
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->_identifier
+            . __CLASS__
+        );
     }
 
     /**
@@ -269,49 +269,49 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Copy slide (!= clone!)
-	 *
-	 * @return PHPPowerPoint_Slide
-	 */
-	public function copy() {
-		$copied = clone $this;
+    /**
+     * Copy slide (!= clone!)
+     *
+     * @return PHPPowerPoint_Slide
+     */
+    public function copy() {
+        $copied = clone $this;
 
-		return $copied;
-	}
+        return $copied;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		foreach ($this as $key => $val) {
-			if (is_object($val) || (is_array($val))) {
-				$this->{$key} = unserialize(serialize($val));
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        foreach ($this as $key => $val) {
+            if (is_object($val) || (is_array($val))) {
+                $this->{$key} = unserialize(serialize($val));
+            }
+        }
+    }
 }

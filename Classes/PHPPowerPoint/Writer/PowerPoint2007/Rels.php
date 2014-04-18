@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,527 +35,527 @@
  */
 class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_PowerPoint2007_WriterPart
 {
-	/**
-	 * Write relationships to XML format
-	 *
-	 * @param 	PHPPowerPoint	$pPHPPowerPoint
-	 * @return 	string 		XML Output
-	 * @throws 	Exception
-	 */
-	public function writeRelationships(PHPPowerPoint $pPHPPowerPoint = null)
-	{
-		// Create XML writer
-		$objWriter = null;
-		if ($this->getParentWriter()->getUseDiskCaching()) {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-		} else {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
-		}
+    /**
+     * Write relationships to XML format
+     *
+     * @param   PHPPowerPoint   $pPHPPowerPoint
+     * @return  string      XML Output
+     * @throws  Exception
+     */
+    public function writeRelationships(PHPPowerPoint $pPHPPowerPoint = null)
+    {
+        // Create XML writer
+        $objWriter = null;
+        if ($this->getParentWriter()->getUseDiskCaching()) {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        } else {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+        }
 
-		// XML header
-		$objWriter->startDocument('1.0','UTF-8','yes');
+        // XML header
+        $objWriter->startDocument('1.0','UTF-8','yes');
 
-		// Relationships
-		$objWriter->startElement('Relationships');
-		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-			// Relationship docProps/app.xml
-			$this->_writeRelationship(
-				$objWriter,
-				3,
-				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties',
-				'docProps/app.xml'
-			);
+            // Relationship docProps/app.xml
+            $this->_writeRelationship(
+                $objWriter,
+                3,
+                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties',
+                'docProps/app.xml'
+            );
 
-			// Relationship docProps/core.xml
-			$this->_writeRelationship(
-				$objWriter,
-				2,
-				'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties',
-				'docProps/core.xml'
-			);
+            // Relationship docProps/core.xml
+            $this->_writeRelationship(
+                $objWriter,
+                2,
+                'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties',
+                'docProps/core.xml'
+            );
 
-			// Relationship ppt/presentation.xml
-			$this->_writeRelationship(
-				$objWriter,
-				1,
-				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument',
-				'ppt/presentation.xml'
-			);
+            // Relationship ppt/presentation.xml
+            $this->_writeRelationship(
+                $objWriter,
+                1,
+                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument',
+                'ppt/presentation.xml'
+            );
 
-		$objWriter->endElement();
+        $objWriter->endElement();
 
-		// Return
-		return $objWriter->getData();
-	}
+        // Return
+        return $objWriter->getData();
+    }
 
-	/**
-	 * Write presentation relationships to XML format
-	 *
-	 * @param 	PHPPowerPoint	$pPHPPowerPoint
-	 * @return 	string 		XML Output
-	 * @throws 	Exception
-	 */
-	public function writePresentationRelationships(PHPPowerPoint $pPHPPowerPoint = null)
-	{
-		// Create XML writer
-		$objWriter = null;
-		if ($this->getParentWriter()->getUseDiskCaching()) {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-		} else {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
-		}
+    /**
+     * Write presentation relationships to XML format
+     *
+     * @param   PHPPowerPoint   $pPHPPowerPoint
+     * @return  string      XML Output
+     * @throws  Exception
+     */
+    public function writePresentationRelationships(PHPPowerPoint $pPHPPowerPoint = null)
+    {
+        // Create XML writer
+        $objWriter = null;
+        if ($this->getParentWriter()->getUseDiskCaching()) {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        } else {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+        }
 
-		// XML header
-		$objWriter->startDocument('1.0','UTF-8','yes');
+        // XML header
+        $objWriter->startDocument('1.0','UTF-8','yes');
 
-		// Relationships
-		$objWriter->startElement('Relationships');
-		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-			// Relation id
-			$relationId = 1;
-			
-			// Add slide masters
-			$masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
-			foreach ($masterSlides as $masterSlide) {
-				// Relationship slideMasters/slideMasterX.xml
-				$this->_writeRelationship(
-					$objWriter,
-					$relationId++,
-					'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster',
-					'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml'
-				);
-			}
-			
-			// Add slide theme (only one!)
-			// Relationship theme/theme1.xml
-			$this->_writeRelationship(
-				$objWriter,
-				$relationId++,
-				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme',
-				'theme/theme1.xml'
-			);
+            // Relation id
+            $relationId = 1;
 
-			// Relationships with slides
-			$slideCount = $pPHPPowerPoint->getSlideCount();
-			for ($i = 0; $i < $slideCount; ++$i) {
-				$this->_writeRelationship(
-					$objWriter,
-					($i + $relationId),
-					'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
-					'slides/slide' . ($i + 1) . '.xml'
-				);
-			}
+            // Add slide masters
+            $masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+            foreach ($masterSlides as $masterSlide) {
+                // Relationship slideMasters/slideMasterX.xml
+                $this->_writeRelationship(
+                    $objWriter,
+                    $relationId++,
+                    'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster',
+                    'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml'
+                );
+            }
 
-		$objWriter->endElement();
+            // Add slide theme (only one!)
+            // Relationship theme/theme1.xml
+            $this->_writeRelationship(
+                $objWriter,
+                $relationId++,
+                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme',
+                'theme/theme1.xml'
+            );
 
-		// Return
-		return $objWriter->getData();
-	}
+            // Relationships with slides
+            $slideCount = $pPHPPowerPoint->getSlideCount();
+            for ($i = 0; $i < $slideCount; ++$i) {
+                $this->_writeRelationship(
+                    $objWriter,
+                    ($i + $relationId),
+                    'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
+                    'slides/slide' . ($i + 1) . '.xml'
+                );
+            }
 
-	/**
-	 * Write slide master relationships to XML format
-	 *
-	 * @param   int				$masterId			Master slide id
-	 * @return 	string 			XML Output
-	 * @throws 	Exception
-	 */
-	public function writeSlideMasterRelationships($masterId = 1)
-	{
-		// Create XML writer
-		$objWriter = null;
-		if ($this->getParentWriter()->getUseDiskCaching()) {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-		} else {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
-		}
+        $objWriter->endElement();
 
-		// XML header
-		$objWriter->startDocument('1.0','UTF-8','yes');
+        // Return
+        return $objWriter->getData();
+    }
 
-		// Relationships
-		$objWriter->startElement('Relationships');
-		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+    /**
+     * Write slide master relationships to XML format
+     *
+     * @param   int             $masterId           Master slide id
+     * @return  string          XML Output
+     * @throws  Exception
+     */
+    public function writeSlideMasterRelationships($masterId = 1)
+    {
+        // Create XML writer
+        $objWriter = null;
+        if ($this->getParentWriter()->getUseDiskCaching()) {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        } else {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+        }
 
-			// Keep content id
-			$contentId = 0;
-			
-			// Lookup layouts
-			$layoutPack = $this->getParentWriter()->getLayoutPack();
-			$layouts = array();
-			foreach ($layoutPack->getLayouts() as $key => $layout) {
-				if ($layout['masterid'] == $masterId) {
-					$layouts[$key] = $layout;
-				}
-			}
-			
-			// Write slideLayout relationships
-			foreach ($layouts as $key => $layout) {
-				$this->_writeRelationship(
-					$objWriter,
-					++$contentId,
-					'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout',
-					'../slideLayouts/slideLayout' . $key . '.xml'
-				);
-			}
+        // XML header
+        $objWriter->startDocument('1.0','UTF-8','yes');
 
-			// Relationship theme/theme1.xml
-			$this->_writeRelationship(
-				$objWriter,
-				++$contentId,
-				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme',
-				'../theme/theme' . $masterId . '.xml'
-			);
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-			// Other relationships
-			$otherRelations = $layoutPack->getMasterSlideRelations();
-			foreach ($otherRelations as $otherRelation)
-			{
-				if ($otherRelation['masterid'] == $masterId) {
-					$this->_writeRelationship(
-						$objWriter,
-						++$contentId,
-						$otherRelation['type'],
-						$otherRelation['target']
-					);
-				}
-			}
+            // Keep content id
+            $contentId = 0;
 
-		$objWriter->endElement();
+            // Lookup layouts
+            $layoutPack = $this->getParentWriter()->getLayoutPack();
+            $layouts = array();
+            foreach ($layoutPack->getLayouts() as $key => $layout) {
+                if ($layout['masterid'] == $masterId) {
+                    $layouts[$key] = $layout;
+                }
+            }
 
-		// Return
-		return $objWriter->getData();
-	}
+            // Write slideLayout relationships
+            foreach ($layouts as $key => $layout) {
+                $this->_writeRelationship(
+                    $objWriter,
+                    ++$contentId,
+                    'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout',
+                    '../slideLayouts/slideLayout' . $key . '.xml'
+                );
+            }
 
-	/**
-	 * Write slide layout relationships to XML format
-	 *
-	 * @param	int				$masterId
-	 * @return 	string 			XML Output
-	 * @throws 	Exception
-	 */
-	public function writeSlideLayoutRelationships($slideLayoutIndex, $masterId = 1)
-	{
-		// Create XML writer
-		$objWriter = null;
-		if ($this->getParentWriter()->getUseDiskCaching()) {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-		} else {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
-		}
+            // Relationship theme/theme1.xml
+            $this->_writeRelationship(
+                $objWriter,
+                ++$contentId,
+                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme',
+                '../theme/theme' . $masterId . '.xml'
+            );
 
-		// Layout pack
-		$layoutPack		= $this->getParentWriter()->getLayoutPack();
+            // Other relationships
+            $otherRelations = $layoutPack->getMasterSlideRelations();
+            foreach ($otherRelations as $otherRelation)
+            {
+                if ($otherRelation['masterid'] == $masterId) {
+                    $this->_writeRelationship(
+                        $objWriter,
+                        ++$contentId,
+                        $otherRelation['type'],
+                        $otherRelation['target']
+                    );
+                }
+            }
 
-		// XML header
-		$objWriter->startDocument('1.0','UTF-8','yes');
+        $objWriter->endElement();
 
-		// Relationships
-		$objWriter->startElement('Relationships');
-		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+        // Return
+        return $objWriter->getData();
+    }
 
-			// Write slideMaster relationship
-			$this->_writeRelationship(
-				$objWriter,
-				1,
-				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster',
-				'../slideMasters/slideMaster' . $masterId . '.xml'
-			);
+    /**
+     * Write slide layout relationships to XML format
+     *
+     * @param   int             $masterId
+     * @return  string          XML Output
+     * @throws  Exception
+     */
+    public function writeSlideLayoutRelationships($slideLayoutIndex, $masterId = 1)
+    {
+        // Create XML writer
+        $objWriter = null;
+        if ($this->getParentWriter()->getUseDiskCaching()) {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        } else {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+        }
 
-			// Other relationships
-			$otherRelations = $layoutPack->getLayoutRelations();
-			foreach ($otherRelations as $otherRelation)
-			{
-				if ($otherRelation['layoutId'] == $slideLayoutIndex)
-				{
-					$this->_writeRelationship(
-						$objWriter,
-						$otherRelation['id'],
-						$otherRelation['type'],
-						$otherRelation['target']
-					);
-				}
-			}
+        // Layout pack
+        $layoutPack     = $this->getParentWriter()->getLayoutPack();
 
-		$objWriter->endElement();
+        // XML header
+        $objWriter->startDocument('1.0','UTF-8','yes');
 
-		// Return
-		return $objWriter->getData();
-	}
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-	/**
-	 * Write theme relationships to XML format
-	 *
-	 * @param   int				$masterId			Master slide id
-	 * @return 	string 			XML Output
-	 * @throws 	Exception
-	 */
-	public function writeThemeRelationships($masterId = 1)
-	{
-		// Create XML writer
-		$objWriter = null;
-		if ($this->getParentWriter()->getUseDiskCaching()) {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-		} else {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
-		}
+            // Write slideMaster relationship
+            $this->_writeRelationship(
+                $objWriter,
+                1,
+                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster',
+                '../slideMasters/slideMaster' . $masterId . '.xml'
+            );
 
-		// Layout pack
-		$layoutPack		= $this->getParentWriter()->getLayoutPack();
+            // Other relationships
+            $otherRelations = $layoutPack->getLayoutRelations();
+            foreach ($otherRelations as $otherRelation)
+            {
+                if ($otherRelation['layoutId'] == $slideLayoutIndex)
+                {
+                    $this->_writeRelationship(
+                        $objWriter,
+                        $otherRelation['id'],
+                        $otherRelation['type'],
+                        $otherRelation['target']
+                    );
+                }
+            }
 
-		// XML header
-		$objWriter->startDocument('1.0','UTF-8','yes');
+        $objWriter->endElement();
 
-		// Relationships
-		$objWriter->startElement('Relationships');
-		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+        // Return
+        return $objWriter->getData();
+    }
 
-    		// Other relationships
-    		$otherRelations = $layoutPack->getThemeRelations();
-    		foreach ($otherRelations as $otherRelation)
-    		{
-    			if ($otherRelation['masterid'] == $masterId) {
-	    			$this->_writeRelationship(
-	    				$objWriter,
-	    				$otherRelation['id'],
-	    				$otherRelation['type'],
-	    				$otherRelation['target']
-	    			);
-    			}
-    		}
+    /**
+     * Write theme relationships to XML format
+     *
+     * @param   int             $masterId           Master slide id
+     * @return  string          XML Output
+     * @throws  Exception
+     */
+    public function writeThemeRelationships($masterId = 1)
+    {
+        // Create XML writer
+        $objWriter = null;
+        if ($this->getParentWriter()->getUseDiskCaching()) {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        } else {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+        }
 
-		$objWriter->endElement();
+        // Layout pack
+        $layoutPack     = $this->getParentWriter()->getLayoutPack();
 
-		// Return
-		return $objWriter->getData();
-	}
+        // XML header
+        $objWriter->startDocument('1.0','UTF-8','yes');
 
-	/**
-	 * Write slide relationships to XML format
-	 *
-	 * @param 	PHPPowerPoint_Slide		$pSlide
-	 * @param 	int						$pSlideId
-	 * @return 	string 					XML Output
-	 * @throws 	Exception
-	 */
-	public function writeSlideRelationships(PHPPowerPoint_Slide $pSlide = null, $pSlideId = 1)
-	{
-		// Create XML writer
-		$objWriter = null;
-		if ($this->getParentWriter()->getUseDiskCaching()) {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-		} else {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
-		}
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-		// XML header
-		$objWriter->startDocument('1.0','UTF-8','yes');
+            // Other relationships
+            $otherRelations = $layoutPack->getThemeRelations();
+            foreach ($otherRelations as $otherRelation)
+            {
+                if ($otherRelation['masterid'] == $masterId) {
+                    $this->_writeRelationship(
+                        $objWriter,
+                        $otherRelation['id'],
+                        $otherRelation['type'],
+                        $otherRelation['target']
+                    );
+                }
+            }
 
-		// Relationships
-		$objWriter->startElement('Relationships');
-		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+        $objWriter->endElement();
 
-			// Starting relation id
-			$relId = 1;
+        // Return
+        return $objWriter->getData();
+    }
 
-			// Write slideLayout relationship
-			$layoutPack		= $this->getParentWriter()->getLayoutPack();
-			$layoutIndex	= $layoutPack->findlayoutIndex( $pSlide->getSlideLayout(), $pSlide->getSlideMasterId() );
+    /**
+     * Write slide relationships to XML format
+     *
+     * @param   PHPPowerPoint_Slide     $pSlide
+     * @param   int                     $pSlideId
+     * @return  string                  XML Output
+     * @throws  Exception
+     */
+    public function writeSlideRelationships(PHPPowerPoint_Slide $pSlide = null, $pSlideId = 1)
+    {
+        // Create XML writer
+        $objWriter = null;
+        if ($this->getParentWriter()->getUseDiskCaching()) {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        } else {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+        }
 
-			$this->_writeRelationship(
-				$objWriter,
-				$relId++,
-				'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout',
-				'../slideLayouts/slideLayout' . ($layoutIndex + 1) . '.xml'
-			);
+        // XML header
+        $objWriter->startDocument('1.0','UTF-8','yes');
 
-			// Write drawing relationships?
-			if ($pSlide->getShapeCollection()->count() > 0) {
-				// Loop trough images and write relationships
-				$iterator = $pSlide->getShapeCollection()->getIterator();
-				while ($iterator->valid()) {
-					if ($iterator->current() instanceof PHPPowerPoint_Shape_Drawing
-						|| $iterator->current() instanceof PHPPowerPoint_Shape_MemoryDrawing) {
-						// Write relationship for image drawing
-						$this->_writeRelationship(
-							$objWriter,
-							$relId,
-							'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
-							'../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename())
-						);
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-						$iterator->current()->__relationId = 'rId' . $relId;
-						
-						++$relId;
-					} else if ($iterator->current() instanceof PHPPowerPoint_Shape_Chart) {
-						// Write relationship for chart drawing
-						$this->_writeRelationship(
-							$objWriter,
-							$relId,
-							'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart',
-							'../charts/' . $iterator->current()->getIndexedFilename()
-						);
+            // Starting relation id
+            $relId = 1;
 
-						$iterator->current()->__relationId = 'rId' . $relId;
-						
-						++$relId;
-					}
+            // Write slideLayout relationship
+            $layoutPack     = $this->getParentWriter()->getLayoutPack();
+            $layoutIndex    = $layoutPack->findlayoutIndex( $pSlide->getSlideLayout(), $pSlide->getSlideMasterId() );
 
-					$iterator->next();
-				}
-			}
-			
-			// Write hyperlink relationships?
-			if ($pSlide->getShapeCollection()->count() > 0) {
-				// Loop trough hyperlinks and write relationships
-				$iterator = $pSlide->getShapeCollection()->getIterator();
-				while ($iterator->valid()) {
-					// Hyperlink on shape
-					if ($iterator->current()->hasHyperlink()) {
-						// Write relationship for hyperlink
-						$hyperlink = $iterator->current()->getHyperlink();
-						$hyperlink->__relationId = 'rId' . $relId;
-						
-						if (!$hyperlink->isInternal()) {
-							$this->_writeRelationship(
-								$objWriter,
-								$relId,
-								'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',
-								$hyperlink->getUrl(),
-								'External'
-							);
-						} else {
-							$this->_writeRelationship(
-								$objWriter,
-								$relId,
-								'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
-								'slide' . $hyperlink->getSlideNumber() . '.xml'
-							);
-						}
+            $this->_writeRelationship(
+                $objWriter,
+                $relId++,
+                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout',
+                '../slideLayouts/slideLayout' . ($layoutIndex + 1) . '.xml'
+            );
 
-						++$relId;
-					}
-					
-					// Hyperlink on rich text run
-					if ($iterator->current() instanceof PHPPowerPoint_Shape_RichText) {
-						foreach ($iterator->current()->getParagraphs() as $paragraph) {
-							foreach ($paragraph->getRichTextElements() as $element) {
-								if ($element instanceof PHPPowerPoint_Shape_RichText_Run
-		           					|| $element instanceof PHPPowerPoint_Shape_RichText_TextElement)
-				           		{
-				           			if ($element->hasHyperlink()) {
-										// Write relationship for hyperlink
-										$hyperlink = $element->getHyperlink();
-										$hyperlink->__relationId = 'rId' . $relId;
-										
-										if (!$hyperlink->isInternal()) {
-											$this->_writeRelationship(
-												$objWriter,
-												$relId,
-												'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',
-												$hyperlink->getUrl(),
-												'External'
-											);
-										} else {
-											$this->_writeRelationship(
-												$objWriter,
-												$relId,
-												'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
-												'slide' . $hyperlink->getSlideNumber() . '.xml'
-											);
-										}
-				
-										++$relId;
-									}
-								}
-							}
-						}
-	       			}
+            // Write drawing relationships?
+            if ($pSlide->getShapeCollection()->count() > 0) {
+                // Loop trough images and write relationships
+                $iterator = $pSlide->getShapeCollection()->getIterator();
+                while ($iterator->valid()) {
+                    if ($iterator->current() instanceof PHPPowerPoint_Shape_Drawing
+                        || $iterator->current() instanceof PHPPowerPoint_Shape_MemoryDrawing) {
+                        // Write relationship for image drawing
+                        $this->_writeRelationship(
+                            $objWriter,
+                            $relId,
+                            'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
+                            '../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename())
+                        );
 
-					$iterator->next();
-				}
-			}
+                        $iterator->current()->__relationId = 'rId' . $relId;
 
-		$objWriter->endElement();
+                        ++$relId;
+                    } else if ($iterator->current() instanceof PHPPowerPoint_Shape_Chart) {
+                        // Write relationship for chart drawing
+                        $this->_writeRelationship(
+                            $objWriter,
+                            $relId,
+                            'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart',
+                            '../charts/' . $iterator->current()->getIndexedFilename()
+                        );
 
-		// Return
-		return $objWriter->getData();
-	}
-	
-	/**
-	 * Write chart relationships to XML format
-	 *
-	 * @param 	PHPPowerPoint_Shape_Chart	$pChart
-	 * @return 	string 						XML Output
-	 * @throws 	Exception
-	 */
-	public function writeChartRelationships(PHPPowerPoint_Shape_Chart $pChart = null)
-	{
-		// Create XML writer
-		$objWriter = null;
-		if ($this->getParentWriter()->getUseDiskCaching()) {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-		} else {
-			$objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
-		}
+                        $iterator->current()->__relationId = 'rId' . $relId;
 
-		// XML header
-		$objWriter->startDocument('1.0','UTF-8','yes');
+                        ++$relId;
+                    }
 
-		// Relationships
-		$objWriter->startElement('Relationships');
-		$objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+                    $iterator->next();
+                }
+            }
 
-			// Starting relation id
-			$relId = 1;
-			
-			// Write spreadsheet relationship?
-			if ($pChart->getIncludeSpreadsheet()) {
-				$this->_writeRelationship(
-					$objWriter,
-					$relId++,
-					'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package',
-					'../embeddings/' . $pChart->getIndexedFilename() . '.xlsx'
-				);
-			}
+            // Write hyperlink relationships?
+            if ($pSlide->getShapeCollection()->count() > 0) {
+                // Loop trough hyperlinks and write relationships
+                $iterator = $pSlide->getShapeCollection()->getIterator();
+                while ($iterator->valid()) {
+                    // Hyperlink on shape
+                    if ($iterator->current()->hasHyperlink()) {
+                        // Write relationship for hyperlink
+                        $hyperlink = $iterator->current()->getHyperlink();
+                        $hyperlink->__relationId = 'rId' . $relId;
 
-		$objWriter->endElement();
+                        if (!$hyperlink->isInternal()) {
+                            $this->_writeRelationship(
+                                $objWriter,
+                                $relId,
+                                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',
+                                $hyperlink->getUrl(),
+                                'External'
+                            );
+                        } else {
+                            $this->_writeRelationship(
+                                $objWriter,
+                                $relId,
+                                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
+                                'slide' . $hyperlink->getSlideNumber() . '.xml'
+                            );
+                        }
 
-		// Return
-		return $objWriter->getData();
-	}
+                        ++$relId;
+                    }
 
-	/**
-	 * Write relationship
-	 *
-	 * @param 	PHPPowerPoint_Shared_XMLWriter 	$objWriter 		XML Writer
-	 * @param 	int							$pId			Relationship ID. rId will be prepended!
-	 * @param 	string						$pType			Relationship type
-	 * @param 	string 						$pTarget		Relationship target
-	 * @param 	string 						$pTargetMode	Relationship target mode
-	 * @throws 	Exception
-	 */
-	private function _writeRelationship(PHPPowerPoint_Shared_XMLWriter $objWriter = null, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
-	{
-		if ($pType != '' && $pTarget != '') {
-			if (strpos($pId, 'rId') === false) {
-				$pId = 'rId' . $pId;
-			}
+                    // Hyperlink on rich text run
+                    if ($iterator->current() instanceof PHPPowerPoint_Shape_RichText) {
+                        foreach ($iterator->current()->getParagraphs() as $paragraph) {
+                            foreach ($paragraph->getRichTextElements() as $element) {
+                                if ($element instanceof PHPPowerPoint_Shape_RichText_Run
+                                    || $element instanceof PHPPowerPoint_Shape_RichText_TextElement)
+                                {
+                                    if ($element->hasHyperlink()) {
+                                        // Write relationship for hyperlink
+                                        $hyperlink = $element->getHyperlink();
+                                        $hyperlink->__relationId = 'rId' . $relId;
 
-			// Write relationship
-			$objWriter->startElement('Relationship');
-			$objWriter->writeAttribute('Id', 		$pId);
-			$objWriter->writeAttribute('Type', 		$pType);
-			$objWriter->writeAttribute('Target',	$pTarget);
+                                        if (!$hyperlink->isInternal()) {
+                                            $this->_writeRelationship(
+                                                $objWriter,
+                                                $relId,
+                                                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',
+                                                $hyperlink->getUrl(),
+                                                'External'
+                                            );
+                                        } else {
+                                            $this->_writeRelationship(
+                                                $objWriter,
+                                                $relId,
+                                                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide',
+                                                'slide' . $hyperlink->getSlideNumber() . '.xml'
+                                            );
+                                        }
 
-			if ($pTargetMode != '') {
-				$objWriter->writeAttribute('TargetMode',	$pTargetMode);
-			}
+                                        ++$relId;
+                                    }
+                                }
+                            }
+                        }
+                    }
 
-			$objWriter->endElement();
-		} else {
-			throw new Exception("Invalid parameters passed.");
-		}
-	}
+                    $iterator->next();
+                }
+            }
+
+        $objWriter->endElement();
+
+        // Return
+        return $objWriter->getData();
+    }
+
+    /**
+     * Write chart relationships to XML format
+     *
+     * @param   PHPPowerPoint_Shape_Chart   $pChart
+     * @return  string                      XML Output
+     * @throws  Exception
+     */
+    public function writeChartRelationships(PHPPowerPoint_Shape_Chart $pChart = null)
+    {
+        // Create XML writer
+        $objWriter = null;
+        if ($this->getParentWriter()->getUseDiskCaching()) {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        } else {
+            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+        }
+
+        // XML header
+        $objWriter->startDocument('1.0','UTF-8','yes');
+
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+
+            // Starting relation id
+            $relId = 1;
+
+            // Write spreadsheet relationship?
+            if ($pChart->getIncludeSpreadsheet()) {
+                $this->_writeRelationship(
+                    $objWriter,
+                    $relId++,
+                    'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package',
+                    '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx'
+                );
+            }
+
+        $objWriter->endElement();
+
+        // Return
+        return $objWriter->getData();
+    }
+
+    /**
+     * Write relationship
+     *
+     * @param   PHPPowerPoint_Shared_XMLWriter  $objWriter      XML Writer
+     * @param   int                         $pId            Relationship ID. rId will be prepended!
+     * @param   string                      $pType          Relationship type
+     * @param   string                      $pTarget        Relationship target
+     * @param   string                      $pTargetMode    Relationship target mode
+     * @throws  Exception
+     */
+    private function _writeRelationship(PHPPowerPoint_Shared_XMLWriter $objWriter = null, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
+    {
+        if ($pType != '' && $pTarget != '') {
+            if (strpos($pId, 'rId') === false) {
+                $pId = 'rId' . $pId;
+            }
+
+            // Write relationship
+            $objWriter->startElement('Relationship');
+            $objWriter->writeAttribute('Id',        $pId);
+            $objWriter->writeAttribute('Type',      $pType);
+            $objWriter->writeAttribute('Target',    $pTarget);
+
+            if ($pTargetMode != '') {
+                $objWriter->writeAttribute('TargetMode',    $pTargetMode);
+            }
+
+            $objWriter->endElement();
+        } else {
+            throw new Exception("Invalid parameters passed.");
+        }
+    }
 }

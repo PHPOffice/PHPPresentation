@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Shared
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -34,11 +34,11 @@
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
 class PHPPowerPoint_Shared_ZipStreamWrapper {
-	/**
-	 * Internal ZipAcrhive
-	 *
-	 * @var ZipAcrhive
-	 */
+    /**
+     * Internal ZipAcrhive
+     *
+     * @var ZipAcrhive
+     */
     private $_archive;
 
     /**
@@ -66,8 +66,8 @@ class PHPPowerPoint_Shared_ZipStreamWrapper {
      * Register wrapper
      */
     public static function register() {
-		@stream_wrapper_unregister("zip");
-		@stream_wrapper_register("zip", __CLASS__);
+        @stream_wrapper_unregister("zip");
+        @stream_wrapper_register("zip", __CLASS__);
     }
 
     /**
@@ -83,20 +83,20 @@ class PHPPowerPoint_Shared_ZipStreamWrapper {
         $url = @parse_url($path);
 
         // Fix URL
-		if (!is_array($url)) {
+        if (!is_array($url)) {
             $url['host'] = substr($path, strlen('zip://'));
             $url['path'] = '';
         }
         if (strpos($url['host'], '#') !== false) {
             if (!isset($url['fragment'])) {
-                $url['fragment']	= substr($url['host'], strpos($url['host'], '#') + 1) . $url['path'];
-                $url['host']		= substr($url['host'], 0, strpos($url['host'], '#'));
+                $url['fragment']    = substr($url['host'], strpos($url['host'], '#') + 1) . $url['path'];
+                $url['host']        = substr($url['host'], 0, strpos($url['host'], '#'));
                 unset($url['path']);
             }
         } else {
-            $url['host']		= $url['host'] . $url['path'];
+            $url['host']        = $url['host'] . $url['path'];
             unset($url['path']);
-		}
+        }
 
         // Open archive
         $this->_archive = new ZipArchive();

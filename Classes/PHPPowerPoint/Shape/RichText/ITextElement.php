@@ -19,7 +19,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -33,32 +33,32 @@
  */
 interface PHPPowerPoint_Shape_RichText_ITextElement
 {
-	/**
-	 * Get text
-	 *
-	 * @return string	Text
-	 */
-	public function getText();
+    /**
+     * Get text
+     *
+     * @return string   Text
+     */
+    public function getText();
 
-	/**
-	 * Set text
-	 *
-	 * @param 	$pText string	Text
-	 * @return PHPPowerPoint_Shape_RichText_ITextElement
-	 */
-	public function setText($pText = '');
+    /**
+     * Set text
+     *
+     * @param   $pText string   Text
+     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     */
+    public function setText($pText = '');
 
-	/**
-	 * Get font
-	 *
-	 * @return PHPPowerPoint_Style_Font
-	 */
-	public function getFont();
+    /**
+     * Get font
+     *
+     * @return PHPPowerPoint_Style_Font
+     */
+    public function getFont();
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode();
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode();
 }

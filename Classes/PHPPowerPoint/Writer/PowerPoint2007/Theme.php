@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,23 +35,23 @@
  */
 class PHPPowerPoint_Writer_PowerPoint2007_Theme extends PHPPowerPoint_Writer_PowerPoint2007_WriterPart
 {
-	/**
-	 * Write theme to XML format
-	 *
-	 * @param 	PHPPowerPoint	$pPHPPowerPoint
-	 * @param	int				$masterId
-	 * @return 	string 			XML Output
-	 * @throws 	Exception
-	 */
-	public function writeTheme(PHPPowerPoint $pPHPPowerPoint = null, $masterId = 1)
-	{
-		// Write theme from layout pack
-		$layoutPack		= $this->getParentWriter()->getLayoutPack();
-		foreach ($layoutPack->getThemes() as $theme) {
-			if ($theme['masterid'] == $masterId) {
-				return $theme['body'];
-			}
-		}
-		throw new Exception('No theme has been found!');
-	}
+    /**
+     * Write theme to XML format
+     *
+     * @param   PHPPowerPoint   $pPHPPowerPoint
+     * @param   int             $masterId
+     * @return  string          XML Output
+     * @throws  Exception
+     */
+    public function writeTheme(PHPPowerPoint $pPHPPowerPoint = null, $masterId = 1)
+    {
+        // Write theme from layout pack
+        $layoutPack     = $this->getParentWriter()->getLayoutPack();
+        foreach ($layoutPack->getThemes() as $theme) {
+            if ($theme['masterid'] == $masterId) {
+                return $theme['body'];
+            }
+        }
+        throw new Exception('No theme has been found!');
+    }
 }

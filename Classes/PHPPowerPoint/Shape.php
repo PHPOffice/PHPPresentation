@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,93 +35,93 @@
  */
 abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
 {
-	/**
-	 * Slide
-	 *
-	 * @var PHPPowerPoint_Slide
-	 */
-	protected $_slide;
+    /**
+     * Slide
+     *
+     * @var PHPPowerPoint_Slide
+     */
+    protected $_slide;
 
-	/**
-	 * Offset X
-	 *
-	 * @var int
-	 */
-	protected $_offsetX;
+    /**
+     * Offset X
+     *
+     * @var int
+     */
+    protected $_offsetX;
 
-	/**
-	 * Offset Y
-	 *
-	 * @var int
-	 */
-	protected $_offsetY;
+    /**
+     * Offset Y
+     *
+     * @var int
+     */
+    protected $_offsetY;
 
-	/**
-	 * Width
-	 *
-	 * @var int
-	 */
-	protected $_width;
+    /**
+     * Width
+     *
+     * @var int
+     */
+    protected $_width;
 
-	/**
-	 * Height
-	 *
-	 * @var int
-	 */
-	protected $_height;
+    /**
+     * Height
+     *
+     * @var int
+     */
+    protected $_height;
 
-	/**
-	 * Fill
-	 *
-	 * @var PHPPowerPoint_Style_Fill
-	 */
-	private $_fill;
+    /**
+     * Fill
+     *
+     * @var PHPPowerPoint_Style_Fill
+     */
+    private $_fill;
 
-	/**
-	 * Border
-	 *
-	 * @var PHPPowerPoint_Style_Border
-	 */
-	private $_border;
+    /**
+     * Border
+     *
+     * @var PHPPowerPoint_Style_Border
+     */
+    private $_border;
 
-	/**
-	 * Rotation
-	 *
-	 * @var int
-	 */
-	protected $_rotation;
+    /**
+     * Rotation
+     *
+     * @var int
+     */
+    protected $_rotation;
 
-	/**
-	 * Shadow
-	 *
-	 * @var PHPPowerPoint_Shape_Shadow
-	 */
-	protected $_shadow;
-	
-	/**
-	 * Hyperlink
-	 * 
-	 * @var PHPPowerPoint_Shape_Hyperlink
-	 */
-	protected $_hyperlink;
+    /**
+     * Shadow
+     *
+     * @var PHPPowerPoint_Shape_Shadow
+     */
+    protected $_shadow;
+
+    /**
+     * Hyperlink
+     *
+     * @var PHPPowerPoint_Shape_Hyperlink
+     */
+    protected $_hyperlink;
 
     /**
      * Create a new PHPPowerPoint_Shape
      */
     public function __construct()
     {
-    	// Initialise values
-    	$this->_slide				= null;
-    	$this->_offsetX				= 0;
-    	$this->_offsetY				= 0;
-    	$this->_width				= 0;
-    	$this->_height				= 0;
-    	$this->_rotation			= 0;
-    	$this->_fill				= new PHPPowerPoint_Style_Fill();
-    	$this->_border				= new PHPPowerPoint_Style_Border();
-    	$this->_shadow				= new PHPPowerPoint_Shape_Shadow();
-    	
-    	$this->_border->setLineStyle(PHPPowerPoint_Style_Border::LINE_NONE);
+        // Initialise values
+        $this->_slide               = null;
+        $this->_offsetX             = 0;
+        $this->_offsetY             = 0;
+        $this->_width               = 0;
+        $this->_height              = 0;
+        $this->_rotation            = 0;
+        $this->_fill                = new PHPPowerPoint_Style_Fill();
+        $this->_border              = new PHPPowerPoint_Style_Border();
+        $this->_shadow              = new PHPPowerPoint_Shape_Shadow();
+
+        $this->_border->setLineStyle(PHPPowerPoint_Style_Border::LINE_NONE);
     }
 
     /**
@@ -130,42 +130,42 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Slide
      */
     public function getSlide() {
-    	return $this->_slide;
+        return $this->_slide;
     }
 
     /**
      * Set Slide
      *
-     * @param 	PHPPowerPoint_Slide 	$pValue
-     * @param 	bool					$pOverrideOld	If a Slide has already been assigned, overwrite it and remove image from old Slide?
-     * @throws 	Exception
+     * @param   PHPPowerPoint_Slide     $pValue
+     * @param   bool                    $pOverrideOld   If a Slide has already been assigned, overwrite it and remove image from old Slide?
+     * @throws  Exception
      * @return PHPPowerPoint_Shape
      */
     public function setSlide(PHPPowerPoint_slide $pValue = null, $pOverrideOld = false) {
-    	if (is_null($this->_slide)) {
-    		// Add drawing to PHPPowerPoint_Slide
-	    	$this->_slide = $pValue;
-	    	$this->_slide->getShapeCollection()->append($this);
-    	} else {
-    		if ($pOverrideOld) {
-    			// Remove drawing from old PHPPowerPoint_Slide
-    			$iterator = $this->_slide->getShapeCollection()->getIterator();
+        if (is_null($this->_slide)) {
+            // Add drawing to PHPPowerPoint_Slide
+            $this->_slide = $pValue;
+            $this->_slide->getShapeCollection()->append($this);
+        } else {
+            if ($pOverrideOld) {
+                // Remove drawing from old PHPPowerPoint_Slide
+                $iterator = $this->_slide->getShapeCollection()->getIterator();
 
-    			while ($iterator->valid()) {
-    				if ($iterator->current()->getHashCode() == $this->getHashCode()) {
-    					$this->_slide->getShapeCollection()->offsetUnset( $iterator->key() );
-    					$this->_slide = null;
-    					break;
-    				}
-    			}
+                while ($iterator->valid()) {
+                    if ($iterator->current()->getHashCode() == $this->getHashCode()) {
+                        $this->_slide->getShapeCollection()->offsetUnset( $iterator->key() );
+                        $this->_slide = null;
+                        break;
+                    }
+                }
 
-    			// Set new PHPPowerPoint_Slide
-    			$this->setSlide($pValue);
-    		} else {
-    			throw new Exception("A PHPPowerPoint_Slide has already been assigned. Shapes can only exist on one PHPPowerPoint_Slide.");
-    		}
-    	}
-    	return $this;
+                // Set new PHPPowerPoint_Slide
+                $this->setSlide($pValue);
+            } else {
+                throw new Exception("A PHPPowerPoint_Slide has already been assigned. Shapes can only exist on one PHPPowerPoint_Slide.");
+            }
+        }
+        return $this;
     }
 
     /**
@@ -174,7 +174,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getOffsetX() {
-    	return $this->_offsetX;
+        return $this->_offsetX;
     }
 
     /**
@@ -184,8 +184,8 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Shape
      */
     public function setOffsetX($pValue = 0) {
-    	$this->_offsetX = $pValue;
-    	return $this;
+        $this->_offsetX = $pValue;
+        return $this;
     }
 
     /**
@@ -194,7 +194,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getOffsetY() {
-    	return $this->_offsetY;
+        return $this->_offsetY;
     }
 
     /**
@@ -204,8 +204,8 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Shape
      */
     public function setOffsetY($pValue = 0) {
-    	$this->_offsetY = $pValue;
-    	return $this;
+        $this->_offsetY = $pValue;
+        return $this;
     }
 
     /**
@@ -214,7 +214,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getWidth() {
-    	return $this->_width;
+        return $this->_width;
     }
 
     /**
@@ -224,8 +224,8 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Shape
      */
     public function setWidth($pValue = 0) {
-    	$this->_width = $pValue;
-    	return $this;
+        $this->_width = $pValue;
+        return $this;
     }
 
     /**
@@ -234,7 +234,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getHeight() {
-    	return $this->_height;
+        return $this->_height;
     }
 
     /**
@@ -244,8 +244,8 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Shape
      */
     public function setHeight($pValue = 0) {
-    	$this->_height = $pValue;
-    	return $this;
+        $this->_height = $pValue;
+        return $this;
     }
 
     /**
@@ -256,11 +256,11 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @example $objDrawing->setWidthAndHeight(160,120);
      * @return PHPPowerPoint_Shape
      */
-	public function setWidthAndHeight($width = 0, $height = 0) {
-		$this->_width  = $width;
-		$this->_height	= $height;
-		return $this;
-	}
+    public function setWidthAndHeight($width = 0, $height = 0) {
+        $this->_width  = $width;
+        $this->_height  = $height;
+        return $this;
+    }
 
     /**
      * Get Rotation
@@ -268,7 +268,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return int
      */
     public function getRotation() {
-    	return $this->_rotation;
+        return $this->_rotation;
     }
 
     /**
@@ -278,8 +278,8 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Shape
      */
     public function setRotation($pValue = 0) {
-    	$this->_rotation = $pValue;
-    	return $this;
+        $this->_rotation = $pValue;
+        return $this;
     }
 
     /**
@@ -288,7 +288,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Fill
      */
     public function getFill() {
-		return $this->_fill;
+        return $this->_fill;
     }
 
     /**
@@ -297,7 +297,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Border
      */
     public function getBorder() {
-		return $this->_border;
+        return $this->_border;
     }
 
     /**
@@ -306,75 +306,75 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Shape_Shadow
      */
     public function getShadow() {
-    	return $this->_shadow;
+        return $this->_shadow;
     }
 
     /**
      * Set Shadow
      *
-     * @param 	PHPPowerPoint_Shape_Shadow $pValue
-     * @throws 	Exception
+     * @param   PHPPowerPoint_Shape_Shadow $pValue
+     * @throws  Exception
      * @return PHPPowerPoint_Shape
      */
     public function setShadow(PHPPowerPoint_Shape_Shadow $pValue = null) {
-   		$this->_shadow = $pValue;
-   		return $this;
+        $this->_shadow = $pValue;
+        return $this;
     }
-    
-	/**
-	 * Has Hyperlink?
-	 *
-	 * @return boolean
-	 */
-	public function hasHyperlink()
-	{
-		return !is_null($this->_hyperlink);
-	}
-    
-	/**
-	 * Get Hyperlink
-	 *
-	 * @return PHPPowerPoint_Shape_Hyperlink
-	 */
-	public function getHyperlink()
-	{
-		if (is_null($this->_hyperlink)) {
-			$this->_hyperlink = new PHPPowerPoint_Shape_Hyperlink();
-		}
-		return $this->_hyperlink;
-	}
 
-	/**
-	 * Set Hyperlink
-	 *
-	 * @param	PHPPowerPoint_Shape_Hyperlink	$pHyperlink
-	 * @throws	Exception
-	 * @return PHPPowerPoint_Shape
-	 */
-	public function setHyperlink(PHPExcel_Cell_Hyperlink $pHyperlink = null)
-	{
-		$this->_hyperlink = $pHyperlink;
-		return $this;
-	}
+    /**
+     * Has Hyperlink?
+     *
+     * @return boolean
+     */
+    public function hasHyperlink()
+    {
+        return !is_null($this->_hyperlink);
+    }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->_slide->getHashCode()
-    		. $this->_offsetX
-    		. $this->_offsetY
-    		. $this->_width
-    		. $this->_height
-    		. $this->_rotation
-    		. $this->getFill()->getHashCode()
-    		. $this->_shadow->getHashCode()
-    		. (is_null($this->_hyperlink) ? '' : $this->_hyperlink->getHashCode())
-    		. __CLASS__
-    	);
+    /**
+     * Get Hyperlink
+     *
+     * @return PHPPowerPoint_Shape_Hyperlink
+     */
+    public function getHyperlink()
+    {
+        if (is_null($this->_hyperlink)) {
+            $this->_hyperlink = new PHPPowerPoint_Shape_Hyperlink();
+        }
+        return $this->_hyperlink;
+    }
+
+    /**
+     * Set Hyperlink
+     *
+     * @param   PHPPowerPoint_Shape_Hyperlink   $pHyperlink
+     * @throws  Exception
+     * @return PHPPowerPoint_Shape
+     */
+    public function setHyperlink(PHPExcel_Cell_Hyperlink $pHyperlink = null)
+    {
+        $this->_hyperlink = $pHyperlink;
+        return $this;
+    }
+
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->_slide->getHashCode()
+            . $this->_offsetX
+            . $this->_offsetY
+            . $this->_width
+            . $this->_height
+            . $this->_rotation
+            . $this->getFill()->getHashCode()
+            . $this->_shadow->getHashCode()
+            . (is_null($this->_hyperlink) ? '' : $this->_hyperlink->getHashCode())
+            . __CLASS__
+        );
     }
 
     /**
@@ -384,41 +384,41 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

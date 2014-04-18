@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,111 +35,111 @@
  */
 class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implements PHPPowerPoint_IComparable
 {
-	/**
-	 * Title
-	 *
-	 * @var PHPPowerPoint_Shape_Chart_Title
-	 */
-	private $_title;
-	
-	/**
-	 * Legend
-	 *
-	 * @var PHPPowerPoint_Shape_Chart_Legend
-	 */
-	private $_legend;
-	
-	/**
-	 * Plot area
-	 *
-	 * @var PHPPowerPoint_Shape_Chart_PlotArea
-	 */
-	private $_plotArea;
-	
-	/**
-	 * View 3D
-	 *
-	 * @var PHPPowerPoint_Shape_Chart_View3D
-	 */
-	private $_view3D;
-	
-	/**
-	 * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
-	 * 
-	 * @var bool
-	 */
-	private $_includeSpreadsheet = false;
+    /**
+     * Title
+     *
+     * @var PHPPowerPoint_Shape_Chart_Title
+     */
+    private $_title;
+
+    /**
+     * Legend
+     *
+     * @var PHPPowerPoint_Shape_Chart_Legend
+     */
+    private $_legend;
+
+    /**
+     * Plot area
+     *
+     * @var PHPPowerPoint_Shape_Chart_PlotArea
+     */
+    private $_plotArea;
+
+    /**
+     * View 3D
+     *
+     * @var PHPPowerPoint_Shape_Chart_View3D
+     */
+    private $_view3D;
+
+    /**
+     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
+     *
+     * @var bool
+     */
+    private $_includeSpreadsheet = false;
 
     /**
      * Create a new PHPPowerPoint_Slide_MemoryDrawing
      */
     public function __construct()
     {
-    	// Initialize
-    	$this->_title    = new PHPPowerPoint_Shape_Chart_Title();
-    	$this->_legend   = new PHPPowerPoint_Shape_Chart_Legend();
-    	$this->_plotArea = new PHPPowerPoint_Shape_Chart_PlotArea();
-    	$this->_view3D   = new PHPPowerPoint_Shape_Chart_View3D();
-    	
-    	// Initialize parent
-    	parent::__construct();
+        // Initialize
+        $this->_title    = new PHPPowerPoint_Shape_Chart_Title();
+        $this->_legend   = new PHPPowerPoint_Shape_Chart_Legend();
+        $this->_plotArea = new PHPPowerPoint_Shape_Chart_PlotArea();
+        $this->_view3D   = new PHPPowerPoint_Shape_Chart_View3D();
+
+        // Initialize parent
+        parent::__construct();
     }
-    
-	/**
-	 * Get Title
-	 *
-	 * @return PHPPowerPoint_Shape_Chart_Title
-	 */
-	public function getTitle() {
-	        return $this->_title;
-	}
-	
-	/**
-	 * Get Legend
-	 *
-	 * @return PHPPowerPoint_Shape_Chart_Legend
-	 */
-	public function getLegend() {
-	        return $this->_legend;
-	}
-	
-	/**
-	 * Get PlotArea
-	 *
-	 * @return PHPPowerPoint_Shape_Chart_PlotArea
-	 */
-	public function getPlotArea() {
-	        return $this->_plotArea;
-	}
-	
-	/**
-	 * Get View3D
-	 *
-	 * @return PHPPowerPoint_Shape_Chart_View3D
-	 */
-	public function getView3D() {
-	        return $this->_view3D;
-	}
-	
-	/**
-	 * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
-	 * 
-	 * @return boolean
-	 */
-	public function getIncludeSpreadsheet() {
-		return $this->_includeSpreadsheet;
-	}
-	
-	/**
-	 * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
-	 * 
-	 * @param boolean $value
-	 * @return PHPPowerPoint_Shape_Chart
-	 */
-	public function setIncludeSpreadsheet($value = false) {	
-		$this->_includeSpreadsheet = $value;
-		return $this;
-	}
+
+    /**
+     * Get Title
+     *
+     * @return PHPPowerPoint_Shape_Chart_Title
+     */
+    public function getTitle() {
+            return $this->_title;
+    }
+
+    /**
+     * Get Legend
+     *
+     * @return PHPPowerPoint_Shape_Chart_Legend
+     */
+    public function getLegend() {
+            return $this->_legend;
+    }
+
+    /**
+     * Get PlotArea
+     *
+     * @return PHPPowerPoint_Shape_Chart_PlotArea
+     */
+    public function getPlotArea() {
+            return $this->_plotArea;
+    }
+
+    /**
+     * Get View3D
+     *
+     * @return PHPPowerPoint_Shape_Chart_View3D
+     */
+    public function getView3D() {
+            return $this->_view3D;
+    }
+
+    /**
+     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
+     *
+     * @return boolean
+     */
+    public function getIncludeSpreadsheet() {
+        return $this->_includeSpreadsheet;
+    }
+
+    /**
+     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
+     *
+     * @param boolean $value
+     * @return PHPPowerPoint_Shape_Chart
+     */
+    public function setIncludeSpreadsheet($value = false) {
+        $this->_includeSpreadsheet = $value;
+        return $this;
+    }
 
     /**
      * Get indexed filename (using image index)
@@ -147,24 +147,24 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      * @return string
      */
     public function getIndexedFilename() {
-    	return 'chart' . $this->getImageIndex() . '.xml';
+        return 'chart' . $this->getImageIndex() . '.xml';
     }
-    
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  parent::getHashCode()
-    		. $this->_title->getHashCode()
-    		. $this->_legend->getHashCode()
-    		. $this->_plotArea->getHashCode()
-    		. $this->_view3D->getHashCode()
-    		. ($this->_includeSpreadsheet ? 1 : 0)
-    		. __CLASS__
-    	);
+
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              parent::getHashCode()
+            . $this->_title->getHashCode()
+            . $this->_legend->getHashCode()
+            . $this->_plotArea->getHashCode()
+            . $this->_view3D->getHashCode()
+            . ($this->_includeSpreadsheet ? 1 : 0)
+            . __CLASS__
+        );
     }
 
     /**
@@ -174,41 +174,41 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

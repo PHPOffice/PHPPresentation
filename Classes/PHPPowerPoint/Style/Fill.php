@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Style
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,67 +35,67 @@
  */
 class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
 {
-	/* Fill types */
-	const FILL_NONE							= 'none';
-	const FILL_SOLID						= 'solid';
-	const FILL_GRADIENT_LINEAR				= 'linear';
-	const FILL_GRADIENT_PATH				= 'path';
-	const FILL_PATTERN_DARKDOWN				= 'darkDown';
-	const FILL_PATTERN_DARKGRAY				= 'darkGray';
-	const FILL_PATTERN_DARKGRID				= 'darkGrid';
-	const FILL_PATTERN_DARKHORIZONTAL		= 'darkHorizontal';
-	const FILL_PATTERN_DARKTRELLIS			= 'darkTrellis';
-	const FILL_PATTERN_DARKUP				= 'darkUp';
-	const FILL_PATTERN_DARKVERTICAL			= 'darkVertical';
-	const FILL_PATTERN_GRAY0625				= 'gray0625';
-	const FILL_PATTERN_GRAY125				= 'gray125';
-	const FILL_PATTERN_LIGHTDOWN			= 'lightDown';
-	const FILL_PATTERN_LIGHTGRAY			= 'lightGray';
-	const FILL_PATTERN_LIGHTGRID			= 'lightGrid';
-	const FILL_PATTERN_LIGHTHORIZONTAL		= 'lightHorizontal';
-	const FILL_PATTERN_LIGHTTRELLIS			= 'lightTrellis';
-	const FILL_PATTERN_LIGHTUP				= 'lightUp';
-	const FILL_PATTERN_LIGHTVERTICAL		= 'lightVertical';
-	const FILL_PATTERN_MEDIUMGRAY			= 'mediumGray';
+    /* Fill types */
+    const FILL_NONE                         = 'none';
+    const FILL_SOLID                        = 'solid';
+    const FILL_GRADIENT_LINEAR              = 'linear';
+    const FILL_GRADIENT_PATH                = 'path';
+    const FILL_PATTERN_DARKDOWN             = 'darkDown';
+    const FILL_PATTERN_DARKGRAY             = 'darkGray';
+    const FILL_PATTERN_DARKGRID             = 'darkGrid';
+    const FILL_PATTERN_DARKHORIZONTAL       = 'darkHorizontal';
+    const FILL_PATTERN_DARKTRELLIS          = 'darkTrellis';
+    const FILL_PATTERN_DARKUP               = 'darkUp';
+    const FILL_PATTERN_DARKVERTICAL         = 'darkVertical';
+    const FILL_PATTERN_GRAY0625             = 'gray0625';
+    const FILL_PATTERN_GRAY125              = 'gray125';
+    const FILL_PATTERN_LIGHTDOWN            = 'lightDown';
+    const FILL_PATTERN_LIGHTGRAY            = 'lightGray';
+    const FILL_PATTERN_LIGHTGRID            = 'lightGrid';
+    const FILL_PATTERN_LIGHTHORIZONTAL      = 'lightHorizontal';
+    const FILL_PATTERN_LIGHTTRELLIS         = 'lightTrellis';
+    const FILL_PATTERN_LIGHTUP              = 'lightUp';
+    const FILL_PATTERN_LIGHTVERTICAL        = 'lightVertical';
+    const FILL_PATTERN_MEDIUMGRAY           = 'mediumGray';
 
-	/**
-	 * Fill type
-	 *
-	 * @var string
-	 */
-	private $_fillType;
+    /**
+     * Fill type
+     *
+     * @var string
+     */
+    private $_fillType;
 
-	/**
-	 * Rotation
-	 *
-	 * @var double
-	 */
-	private $_rotation;
+    /**
+     * Rotation
+     *
+     * @var double
+     */
+    private $_rotation;
 
-	/**
-	 * Start color
-	 *
-	 * @var PHPPowerPoint_Style_Color
-	 */
-	private $_startColor;
+    /**
+     * Start color
+     *
+     * @var PHPPowerPoint_Style_Color
+     */
+    private $_startColor;
 
-	/**
-	 * End color
-	 *
-	 * @var PHPPowerPoint_Style_Color
-	 */
-	private $_endColor;
+    /**
+     * End color
+     *
+     * @var PHPPowerPoint_Style_Color
+     */
+    private $_endColor;
 
     /**
      * Create a new PHPPowerPoint_Style_Fill
      */
     public function __construct()
     {
-    	// Initialise values
-    	$this->_fillType			= PHPPowerPoint_Style_Fill::FILL_NONE;
-    	$this->_rotation			= 0;
-		$this->_startColor			= new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_WHITE);
-		$this->_endColor			= new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_BLACK);
+        // Initialise values
+        $this->_fillType            = PHPPowerPoint_Style_Fill::FILL_NONE;
+        $this->_rotation            = 0;
+        $this->_startColor          = new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_WHITE);
+        $this->_endColor            = new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_BLACK);
     }
 
     /**
@@ -104,18 +104,18 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getFillType() {
-    	return $this->_fillType;
+        return $this->_fillType;
     }
 
     /**
      * Set Fill Type
      *
-     * @param string $pValue	PHPPowerPoint_Style_Fill fill type
+     * @param string $pValue    PHPPowerPoint_Style_Fill fill type
      * @return PHPPowerPoint_Style_Fill
      */
     public function setFillType($pValue = PHPPowerPoint_Style_Fill::FILL_NONE) {
-    	$this->_fillType = $pValue;
-    	return $this;
+        $this->_fillType = $pValue;
+        return $this;
     }
 
     /**
@@ -124,7 +124,7 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      * @return double
      */
     public function getRotation() {
-    	return $this->_rotation;
+        return $this->_rotation;
     }
 
     /**
@@ -134,8 +134,8 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Fill
      */
     public function setRotation($pValue = 0) {
-    	$this->_rotation = $pValue;
-    	return $this;
+        $this->_rotation = $pValue;
+        return $this;
     }
 
     /**
@@ -144,21 +144,21 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Color
      */
     public function getStartColor() {
-    	// It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
-    	// So bind as an assurance.
-    	return $this->_startColor;
+        // It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
+        // So bind as an assurance.
+        return $this->_startColor;
     }
 
     /**
      * Set Start Color
      *
-     * @param 	PHPPowerPoint_Style_Color $pValue
-     * @throws 	Exception
+     * @param   PHPPowerPoint_Style_Color $pValue
+     * @throws  Exception
      * @return PHPPowerPoint_Style_Fill
      */
     public function setStartColor(PHPPowerPoint_Style_Color $pValue = null) {
-   		$this->_startColor = $pValue;
-   		return $this;
+        $this->_startColor = $pValue;
+        return $this;
     }
 
     /**
@@ -167,36 +167,36 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Color
      */
     public function getEndColor() {
-    	// It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
-    	// So bind as an assurance.
-    	return $this->_endColor;
+        // It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
+        // So bind as an assurance.
+        return $this->_endColor;
     }
 
     /**
      * Set End Color
      *
-     * @param 	PHPPowerPoint_Style_Color $pValue
-     * @throws 	Exception
+     * @param   PHPPowerPoint_Style_Color $pValue
+     * @throws  Exception
      * @return PHPPowerPoint_Style_Fill
      */
     public function setEndColor(PHPPowerPoint_Style_Color $pValue = null) {
-   		$this->_endColor = $pValue;
-   		return $this;
+        $this->_endColor = $pValue;
+        return $this;
     }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->getFillType()
-    		. $this->getRotation()
-    		. $this->getStartColor()->getHashCode()
-    		. $this->getEndColor()->getHashCode()
-    		. __CLASS__
-    	);
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->getFillType()
+            . $this->getRotation()
+            . $this->getStartColor()->getHashCode()
+            . $this->getEndColor()->getHashCode()
+            . __CLASS__
+        );
     }
 
     /**
@@ -206,41 +206,41 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

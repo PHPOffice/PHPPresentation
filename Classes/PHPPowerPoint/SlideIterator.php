@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -37,40 +37,40 @@
  */
 class PHPPowerPoint_SlideIterator extends IteratorIterator
 {
-	/**
-	 * Presentation to iterate
-	 *
-	 * @var PHPPowerPoint
-	 */
-	private $_subject;
+    /**
+     * Presentation to iterate
+     *
+     * @var PHPPowerPoint
+     */
+    private $_subject;
 
-	/**
-	 * Current iterator position
-	 *
-	 * @var int
-	 */
-	private $_position = 0;
+    /**
+     * Current iterator position
+     *
+     * @var int
+     */
+    private $_position = 0;
 
-	/**
-	 * Create a new slide iterator
-	 *
-	 * @param PHPPowerPoint 		$subject
-	 */
-	public function __construct(PHPPowerPoint $subject = null) {
-		// Set subject
-		$this->_subject = $subject;
-	}
+    /**
+     * Create a new slide iterator
+     *
+     * @param PHPPowerPoint         $subject
+     */
+    public function __construct(PHPPowerPoint $subject = null) {
+        // Set subject
+        $this->_subject = $subject;
+    }
 
-	/**
-	 * Destructor
-	 */
-	public function __destruct() {
-		unset($this->_subject);
-	}
+    /**
+     * Destructor
+     */
+    public function __destruct() {
+        unset($this->_subject);
+    }
 
-	/**
-	 * Rewind iterator
-	 */
+    /**
+     * Rewind iterator
+     */
     public function rewind() {
         $this->_position = 0;
     }
@@ -81,7 +81,7 @@ class PHPPowerPoint_SlideIterator extends IteratorIterator
      * @return PHPPowerPoint_Slide
      */
     public function current() {
-    	return $this->_subject->getSlide($this->_position);
+        return $this->_subject->getSlide($this->_position);
     }
 
     /**

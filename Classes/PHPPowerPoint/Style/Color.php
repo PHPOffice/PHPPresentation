@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Style
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,24 +35,24 @@
  */
 class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
 {
-	/* Colors */
-	const COLOR_BLACK						= 'FF000000';
-	const COLOR_WHITE						= 'FFFFFFFF';
-	const COLOR_RED							= 'FFFF0000';
-	const COLOR_DARKRED						= 'FF800000';
-	const COLOR_BLUE						= 'FF0000FF';
-	const COLOR_DARKBLUE					= 'FF000080';
-	const COLOR_GREEN						= 'FF00FF00';
-	const COLOR_DARKGREEN					= 'FF008000';
-	const COLOR_YELLOW						= 'FFFFFF00';
-	const COLOR_DARKYELLOW					= 'FF808000';
+    /* Colors */
+    const COLOR_BLACK                       = 'FF000000';
+    const COLOR_WHITE                       = 'FFFFFFFF';
+    const COLOR_RED                         = 'FFFF0000';
+    const COLOR_DARKRED                     = 'FF800000';
+    const COLOR_BLUE                        = 'FF0000FF';
+    const COLOR_DARKBLUE                    = 'FF000080';
+    const COLOR_GREEN                       = 'FF00FF00';
+    const COLOR_DARKGREEN                   = 'FF008000';
+    const COLOR_YELLOW                      = 'FFFFFF00';
+    const COLOR_DARKYELLOW                  = 'FF808000';
 
-	/**
-	 * ARGB - Alpha RGB
-	 *
-	 * @var string
-	 */
-	private $_argb;
+    /**
+     * ARGB - Alpha RGB
+     *
+     * @var string
+     */
+    private $_argb;
 
     /**
      * Create a new PHPPowerPoint_Style_Color
@@ -61,8 +61,8 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      */
     public function __construct($pARGB = PHPPowerPoint_Style_Color::COLOR_BLACK)
     {
-    	// Initialise values
-    	$this->_argb			= $pARGB;
+        // Initialise values
+        $this->_argb            = $pARGB;
     }
 
     /**
@@ -71,7 +71,7 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getARGB() {
-    	return $this->_argb;
+        return $this->_argb;
     }
 
     /**
@@ -81,11 +81,11 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Style_Color
      */
     public function setARGB($pValue = PHPPowerPoint_Style_Color::COLOR_BLACK) {
-    	if ($pValue == '') {
-    		$pValue = PHPPowerPoint_Style_Color::COLOR_BLACK;
-    	}
-    	$this->_argb = $pValue;
-    	return $this;
+        if ($pValue == '') {
+            $pValue = PHPPowerPoint_Style_Color::COLOR_BLACK;
+        }
+        $this->_argb = $pValue;
+        return $this;
     }
 
     /**
@@ -94,11 +94,11 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      * @return string
      */
     public function getRGB() {
-    	if (strlen($this->_argb) == 6) {
-    		return $this->_argb;
-    	} else {
-    		return substr($this->_argb, 2);
-    	}
+        if (strlen($this->_argb) == 6) {
+            return $this->_argb;
+        } else {
+            return substr($this->_argb, 2);
+        }
     }
 
     /**
@@ -109,22 +109,22 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      */
     public function setRGB($pValue = '000000') {
         if ($pValue == '') {
-    		$pValue = '000000';
-    	}
-    	$this->_argb = 'FF' . $pValue;
-    	return $this;
+            $pValue = '000000';
+        }
+        $this->_argb = 'FF' . $pValue;
+        return $this;
     }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->_argb
-    		. __CLASS__
-    	);
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->_argb
+            . __CLASS__
+        );
     }
 
     /**
@@ -134,41 +134,41 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

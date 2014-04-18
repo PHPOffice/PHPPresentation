@@ -19,7 +19,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_RichText
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -40,44 +40,44 @@ class PHPPowerPoint_Shape_RichText_Break implements PHPPowerPoint_Shape_RichText
     {
     }
 
-	/**
-	 * Get text
-	 *
-	 * @return string	Text
-	 */
-	public function getText()
-	{
-		return "\r\n";
-	}
+    /**
+     * Get text
+     *
+     * @return string   Text
+     */
+    public function getText()
+    {
+        return "\r\n";
+    }
 
-	/**
-	 * Set text
-	 *
-	 * @param 	$pText string	Text
-	 * @return PHPPowerPoint_Shape_RichText_ITextElement
-	 */
-	public function setText($pText = '')
-	{
-		return $this;
-	}
+    /**
+     * Set text
+     *
+     * @param   $pText string   Text
+     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     */
+    public function setText($pText = '')
+    {
+        return $this;
+    }
 
-	/**
-	 * Get font
-	 *
-	 * @return PHPPowerPoint_Style_Font
-	 */
-	public function getFont() {
-		return null;
-	}
+    /**
+     * Get font
+     *
+     * @return PHPPowerPoint_Style_Font
+     */
+    public function getFont() {
+        return null;
+    }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  __CLASS__
-    	);
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              __CLASS__
+        );
     }
 }

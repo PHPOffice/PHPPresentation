@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,23 +35,23 @@
  */
 class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implements PHPPowerPoint_IComparable
 {
-	/**
-	 * Path
-	 *
-	 * @var string
-	 */
-	private $_path;
+    /**
+     * Path
+     *
+     * @var string
+     */
+    private $_path;
 
     /**
      * Create a new PHPPowerPoint_Slide_Drawing
      */
     public function __construct()
     {
-    	// Initialise values
-    	$this->_path				= '';
+        // Initialise values
+        $this->_path                = '';
 
-    	// Initialize parent
-    	parent::__construct();
+        // Initialize parent
+        parent::__construct();
     }
 
     /**
@@ -60,7 +60,7 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      * @return string
      */
     public function getFilename() {
-    	return basename($this->_path);
+        return basename($this->_path);
     }
 
     /**
@@ -69,7 +69,7 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      * @return string
      */
     public function getIndexedFilename() {
-    	return str_replace('.' . $this->getExtension(), '', $this->getFilename()) . $this->getImageIndex() . '.' . $this->getExtension();
+        return str_replace('.' . $this->getExtension(), '', $this->getFilename()) . $this->getImageIndex() . '.' . $this->getExtension();
     }
 
     /**
@@ -78,8 +78,8 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      * @return string
      */
     public function getExtension() {
-    	$exploded = explode(".", basename($this->_path));
-    	return $exploded[count($exploded) - 1];
+        $exploded = explode(".", basename($this->_path));
+        return $exploded[count($exploded) - 1];
     }
 
     /**
@@ -88,46 +88,46 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      * @return string
      */
     public function getPath() {
-    	return $this->_path;
+        return $this->_path;
     }
 
     /**
      * Set Path
      *
-     * @param 	string 		$pValue			File path
-     * @param 	boolean		$pVerifyFile	Verify file
-     * @throws 	Exception
+     * @param   string      $pValue         File path
+     * @param   boolean     $pVerifyFile    Verify file
+     * @throws  Exception
      * @return PHPPowerPoint_Shape_Drawing
      */
     public function setPath($pValue = '', $pVerifyFile = true) {
-    	if ($pVerifyFile) {
-	    	if (file_exists($pValue)) {
-	    		$this->_path = $pValue;
+        if ($pVerifyFile) {
+            if (file_exists($pValue)) {
+                $this->_path = $pValue;
 
-	    		if ($this->_width == 0 && $this->_height == 0) {
-	    			// Get width/height
-	    			list($this->_width, $this->_height) = getimagesize($pValue);
-	    		}
-	    	} else {
-	    		throw new Exception("File $pValue not found!");
-	    	}
-    	} else {
-    		$this->_path = $pValue;
-    	}
-    	return $this;
+                if ($this->_width == 0 && $this->_height == 0) {
+                    // Get width/height
+                    list($this->_width, $this->_height) = getimagesize($pValue);
+                }
+            } else {
+                throw new Exception("File $pValue not found!");
+            }
+        } else {
+            $this->_path = $pValue;
+        }
+        return $this;
     }
 
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->_path
-    		. parent::getHashCode()
-    		. __CLASS__
-    	);
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->_path
+            . parent::getHashCode()
+            . __CLASS__
+        );
     }
 
     /**
@@ -137,41 +137,41 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      */
     private $_hashIndex;
 
-	/**
-	 * Get hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @return string	Hash index
-	 */
-	public function getHashIndex() {
-		return $this->_hashIndex;
-	}
+    /**
+     * Get hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @return string   Hash index
+     */
+    public function getHashIndex() {
+        return $this->_hashIndex;
+    }
 
-	/**
-	 * Set hash index
-	 *
-	 * Note that this index may vary during script execution! Only reliable moment is
-	 * while doing a write of a workbook and when changes are not allowed.
-	 *
-	 * @param string	$value	Hash index
-	 */
-	public function setHashIndex($value) {
-		$this->_hashIndex = $value;
-	}
+    /**
+     * Set hash index
+     *
+     * Note that this index may vary during script execution! Only reliable moment is
+     * while doing a write of a workbook and when changes are not allowed.
+     *
+     * @param string    $value  Hash index
+     */
+    public function setHashIndex($value) {
+        $this->_hashIndex = $value;
+    }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

@@ -19,7 +19,10 @@
         "php": ">=5.2.0",
         "ext-xml": "*"
     },
-    "recommend": {
+    "require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+    "suggest": {
         "ext-zip": "*",
         "ext-gd2": "*"
     },

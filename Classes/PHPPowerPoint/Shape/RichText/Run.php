@@ -19,7 +19,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -33,70 +33,70 @@
  */
 class PHPPowerPoint_Shape_RichText_Run extends PHPPowerPoint_Shape_RichText_TextElement implements PHPPowerPoint_Shape_RichText_ITextElement
 {
-	/**
-	 * Font
-	 *
-	 * @var PHPPowerPoint_Style_Font
-	 */
-	private $_font;
+    /**
+     * Font
+     *
+     * @var PHPPowerPoint_Style_Font
+     */
+    private $_font;
 
     /**
      * Create a new PHPPowerPoint_Shape_RichText_Run instance
      *
-     * @param 	string		$pText		Text
+     * @param   string      $pText      Text
      */
     public function __construct($pText = '')
     {
-    	// Initialise variables
-    	$this->setText($pText);
-    	$this->_font = new PHPPowerPoint_Style_Font();
+        // Initialise variables
+        $this->setText($pText);
+        $this->_font = new PHPPowerPoint_Style_Font();
     }
 
-	/**
-	 * Get font
-	 *
-	 * @return PHPPowerPoint_Style_Font
-	 */
-	public function getFont() {
-		return $this->_font;
-	}
-
-	/**
-	 * Set font
-	 *
-	 * @param	PHPPowerPoint_Style_Font		$pFont		Font
-	 * @throws 	Exception
-	 * @return PHPPowerPoint_Shape_RichText_ITextElement
-	 */
-	public function setFont(PHPPowerPoint_Style_Font $pFont = null) {
-		$this->_font = $pFont;
-		return $this;
-	}
-
-	/**
-	 * Get hash code
-	 *
-	 * @return string	Hash code
-	 */
-	public function getHashCode() {
-    	return md5(
-    		  $this->getText()
-    		. $this->_font->getHashCode()
-    		. __CLASS__
-    	);
+    /**
+     * Get font
+     *
+     * @return PHPPowerPoint_Style_Font
+     */
+    public function getFont() {
+        return $this->_font;
     }
 
-	/**
-	 * Implement PHP __clone to create a deep clone, not just a shallow copy.
-	 */
-	public function __clone() {
-		$vars = get_object_vars($this);
-		foreach ($vars as $key => $value) {
-			if (is_object($value)) {
-				$this->$key = clone $value;
-			} else {
-				$this->$key = $value;
-			}
-		}
-	}
+    /**
+     * Set font
+     *
+     * @param   PHPPowerPoint_Style_Font        $pFont      Font
+     * @throws  Exception
+     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     */
+    public function setFont(PHPPowerPoint_Style_Font $pFont = null) {
+        $this->_font = $pFont;
+        return $this;
+    }
+
+    /**
+     * Get hash code
+     *
+     * @return string   Hash code
+     */
+    public function getHashCode() {
+        return md5(
+              $this->getText()
+            . $this->_font->getHashCode()
+            . __CLASS__
+        );
+    }
+
+    /**
+     * Implement PHP __clone to create a deep clone, not just a shallow copy.
+     */
+    public function __clone() {
+        $vars = get_object_vars($this);
+        foreach ($vars as $key => $value) {
+            if (is_object($value)) {
+                $this->$key = clone $value;
+            } else {
+                $this->$key = $value;
+            }
+        }
+    }
 }

@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,34 +35,34 @@
  */
 abstract class PHPPowerPoint_Writer_PowerPoint2007_WriterPart
 {
-	/**
-	 * Parent IWriter object
-	 *
-	 * @var PHPPowerPoint_Writer_IWriter
-	 */
-	private $_parentWriter;
+    /**
+     * Parent IWriter object
+     *
+     * @var PHPPowerPoint_Writer_IWriter
+     */
+    private $_parentWriter;
 
-	/**
-	 * Set parent IWriter object
-	 *
-	 * @param PHPPowerPoint_Writer_IWriter	$pWriter
-	 * @throws Exception
-	 */
-	public function setParentWriter(PHPPowerPoint_Writer_IWriter $pWriter = null) {
-		$this->_parentWriter = $pWriter;
-	}
+    /**
+     * Set parent IWriter object
+     *
+     * @param PHPPowerPoint_Writer_IWriter  $pWriter
+     * @throws Exception
+     */
+    public function setParentWriter(PHPPowerPoint_Writer_IWriter $pWriter = null) {
+        $this->_parentWriter = $pWriter;
+    }
 
-	/**
-	 * Get parent IWriter object
-	 *
-	 * @return PHPPowerPoint_Writer_IWriter
-	 * @throws Exception
-	 */
-	public function getParentWriter() {
-		if (!is_null($this->_parentWriter)) {
-			return $this->_parentWriter;
-		} else {
-			throw new Exception("No parent PHPPowerPoint_Writer_IWriter assigned.");
-		}
-	}
+    /**
+     * Get parent IWriter object
+     *
+     * @return PHPPowerPoint_Writer_IWriter
+     * @throws Exception
+     */
+    public function getParentWriter() {
+        if (!is_null($this->_parentWriter)) {
+            return $this->_parentWriter;
+        } else {
+            throw new Exception("No parent PHPPowerPoint_Writer_IWriter assigned.");
+        }
+    }
 }
