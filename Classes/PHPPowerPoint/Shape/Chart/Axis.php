@@ -64,8 +64,9 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getTitle() {
-            return $this->_title;
+    public function getTitle()
+    {
+        return $this->_title;
     }
 
     /**
@@ -74,9 +75,10 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      * @param string $value
      * @return PHPPowerPoint_Shape_Chart_Axis
      */
-    public function setTitle($value = 'Axis Title') {
-            $this->_title = $value;
-            return $this;
+    public function setTitle($value = 'Axis Title')
+    {
+        $this->_title = $value;
+        return $this;
     }
 
     /**
@@ -84,8 +86,9 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getFormatCode() {
-            return $this->_formatCode;
+    public function getFormatCode()
+    {
+        return $this->_formatCode;
     }
 
     /**
@@ -94,9 +97,10 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      * @param string $value
      * @return PHPPowerPoint_Shape_Chart_Axis
      */
-    public function setFormatCode($value = '') {
-            $this->_formatCode = $value;
-            return $this;
+    public function setFormatCode($value = '')
+    {
+        $this->_formatCode = $value;
+        return $this;
     }
 
     /**
@@ -104,12 +108,9 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_title
-            . $this->_formatCode
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_title . $this->_formatCode . __CLASS__);
     }
 
     /**
@@ -127,7 +128,8 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -139,14 +141,16 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

@@ -96,7 +96,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
         $this->_shapeCollection = new ArrayObject();
 
         // Set identifier
-        $this->_identifier = md5(rand(0,9999) . time());
+        $this->_identifier = md5(rand(0, 9999) . time());
     }
 
     /**
@@ -144,7 +144,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      */
     public function createLineShape($fromX, $fromY, $toX, $toY)
     {
-        $shape = new PHPPowerPoint_Shape_Line($fromX,$fromY,$toX,$toY);
+        $shape = new PHPPowerPoint_Shape_Line($fromX, $fromY, $toX, $toY);
         $this->addShape($shape);
 
         return $shape;
@@ -192,7 +192,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint
      */
-    public function getParent() {
+    public function getParent()
+    {
         return $this->_parent;
     }
 
@@ -202,10 +203,9 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @param PHPPowerPoint $parent
      * @return PHPPowerPoint_Slide
      */
-    public function rebindParent(PHPPowerPoint $parent) {
-        $this->_parent->removeSlideByIndex(
-            $this->_parent->getIndex($this)
-        );
+    public function rebindParent(PHPPowerPoint $parent)
+    {
+        $this->_parent->removeSlideByIndex($this->_parent->getIndex($this));
         $this->_parent = $parent;
         return $this;
     }
@@ -215,7 +215,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getSlideLayout() {
+    public function getSlideLayout()
+    {
         return $this->_slideLayout;
     }
 
@@ -225,7 +226,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @param string $layout
      * @return PHPPowerPoint_Slide
      */
-    public function setSlideLayout($layout = PHPPowerPoint_Slide_Layout::BLANK) {
+    public function setSlideLayout($layout = PHPPowerPoint_Slide_Layout::BLANK)
+    {
         $this->_slideLayout = $layout;
         return $this;
     }
@@ -235,7 +237,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getSlideMasterId() {
+    public function getSlideMasterId()
+    {
         return $this->_slideMasterId;
     }
 
@@ -245,7 +248,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @param int $masterId
      * @return PHPPowerPoint_Slide
      */
-    public function setSlideMasterId($masterId = 1) {
+    public function setSlideMasterId($masterId = 1)
+    {
         $this->_slideMasterId = $masterId;
         return $this;
     }
@@ -255,11 +259,9 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_identifier
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_identifier . __CLASS__);
     }
 
     /**
@@ -277,7 +279,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -289,7 +292,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
@@ -298,7 +302,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Slide
      */
-    public function copy() {
+    public function copy()
+    {
         $copied = clone $this;
 
         return $copied;
@@ -307,7 +312,8 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         foreach ($this as $key => $val) {
             if (is_object($val) || (is_array($val))) {
                 $this->{$key} = unserialize(serialize($val));

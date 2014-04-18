@@ -89,7 +89,8 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getRotationX() {
+    public function getRotationX()
+    {
         return $this->_rotationX;
     }
 
@@ -99,7 +100,8 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      * @param int $pValue
      * @return PHPPowerPoint_Shape_Chart_View3D
      */
-    public function setRotationX($pValue = 0) {
+    public function setRotationX($pValue = 0)
+    {
         $this->_rotationX = $pValue;
         return $this;
     }
@@ -109,7 +111,8 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getRotationY() {
+    public function getRotationY()
+    {
         return $this->_rotationY;
     }
 
@@ -119,7 +122,8 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      * @param int $pValue
      * @return PHPPowerPoint_Shape_Chart_View3D
      */
-    public function setRotationY($pValue = 0) {
+    public function setRotationY($pValue = 0)
+    {
         $this->_rotationY = $pValue;
         return $this;
     }
@@ -129,8 +133,9 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getRightAngleAxes() {
-            return $this->_rightAngleAxes;
+    public function getRightAngleAxes()
+    {
+        return $this->_rightAngleAxes;
     }
 
     /**
@@ -139,9 +144,10 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      * @param boolean $value
      * @return PHPPowerPoint_Shape_Chart_View3D
      */
-    public function setRightAngleAxes($value = true) {
-            $this->_rightAngleAxes = $value;
-            return $this;
+    public function setRightAngleAxes($value = true)
+    {
+        $this->_rightAngleAxes = $value;
+        return $this;
     }
 
     /**
@@ -149,8 +155,9 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getPerspective() {
-            return $this->_perspective;
+    public function getPerspective()
+    {
+        return $this->_perspective;
     }
 
     /**
@@ -159,9 +166,10 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      * @param int $value
      * @return PHPPowerPoint_Shape_Chart_View3D
      */
-    public function setPerspective($value = 30) {
-            $this->_perspective = $value;
-            return $this;
+    public function setPerspective($value = 30)
+    {
+        $this->_perspective = $value;
+        return $this;
     }
 
     /**
@@ -169,8 +177,9 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getHeightPercent() {
-            return $this->_heightPercent;
+    public function getHeightPercent()
+    {
+        return $this->_heightPercent;
     }
 
     /**
@@ -179,9 +188,10 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      * @param int $value
      * @return TODO
      */
-    public function setHeightPercent($value = 100) {
-            $this->_heightPercent = $value;
-            return $this;
+    public function setHeightPercent($value = 100)
+    {
+        $this->_heightPercent = $value;
+        return $this;
     }
 
     /**
@@ -189,8 +199,9 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getDepthPercent() {
-            return $this->_depthPercent;
+    public function getDepthPercent()
+    {
+        return $this->_depthPercent;
     }
 
     /**
@@ -199,9 +210,10 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      * @param int $value
      * @return TODO
      */
-    public function setDepthPercent($value = 100) {
-            $this->_depthPercent = $value;
-            return $this;
+    public function setDepthPercent($value = 100)
+    {
+        $this->_depthPercent = $value;
+        return $this;
     }
 
     /**
@@ -209,16 +221,9 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_rotationX
-            . $this->_rotationY
-            . ($this->_rightAngleAxes ? 't' : 'f')
-            . $this->_perspective
-            . $this->_heightPercent
-            . $this->_depthPercent
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_rotationX . $this->_rotationY . ($this->_rightAngleAxes ? 't' : 'f') . $this->_perspective . $this->_heightPercent . $this->_depthPercent . __CLASS__);
     }
 
     /**
@@ -236,7 +241,8 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -248,14 +254,16 @@ class PHPPowerPoint_Shape_Chart_View3D implements PHPPowerPoint_IComparable
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /** PHPExcel root directory */
 if (!defined('PHPPOWERPOINT_ROOT')) {
     define('PHPPOWERPOINT_ROOT', dirname(__FILE__) . '/');
@@ -33,7 +32,6 @@ if (!defined('PHPPOWERPOINT_ROOT')) {
     PHPPowerPoint_Autoloader::Register();
     PHPPowerPoint_Shared_ZipStreamWrapper::register();
 }
-
 
 /**
  * PHPPowerPoint
@@ -78,13 +76,13 @@ class PHPPowerPoint
     public function __construct()
     {
         // Initialise slide collection and add one slide
-        $this->_slideCollection = array();
+        $this->_slideCollection   = array();
         $this->_slideCollection[] = new PHPPowerPoint_Slide($this);
-        $this->_activeSlideIndex = 0;
+        $this->_activeSlideIndex  = 0;
 
         // Create document properties
         $this->_properties = new PHPPowerPoint_DocumentProperties();
-        $this->_layout = new PHPPowerPoint_DocumentLayout();
+        $this->_layout     = new PHPPowerPoint_DocumentLayout();
     }
 
     /**
@@ -271,7 +269,8 @@ class PHPPowerPoint
      * @throws Exception
      * @return PHPPowerPoint_Slide
      */
-    public function addExternalSheet(PHPPowerPoint_Slide $slide) {
+    public function addExternalSheet(PHPPowerPoint_Slide $slide)
+    {
         $slide->rebindParent($this);
         return $this->addSheet($slide);
     }
@@ -281,7 +280,8 @@ class PHPPowerPoint
      *
      * @return PHPPowerPoint_SlideIterator
      */
-    public function getSlideIterator() {
+    public function getSlideIterator()
+    {
         return new PHPPowerPoint_SlideIterator($this);
     }
 
@@ -290,7 +290,8 @@ class PHPPowerPoint
      *
      * @return PHPPowerPoint
      */
-    public function copy() {
+    public function copy()
+    {
         $copied = clone $this;
 
         $slideCount = count($this->_slideCollection);
@@ -305,7 +306,8 @@ class PHPPowerPoint
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

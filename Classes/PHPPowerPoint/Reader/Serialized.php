@@ -91,9 +91,10 @@ class PHPPowerPoint_Reader_Serialized implements PHPPowerPoint_Reader_IReader
      * @param   string      $pFilename
      * @return  PHPPowerPoint
      */
-    private function _loadSerialized($pFilename) {
+    private function _loadSerialized($pFilename)
+    {
         $xmlData = simplexml_load_string(file_get_contents("zip://$pFilename#PHPPowerPoint.xml"));
-        $excel = unserialize(base64_decode((string)$xmlData->data));
+        $excel   = unserialize(base64_decode((string) $xmlData->data));
 
         // Update media links
         for ($i = 0; $i < $excel->getSlideCount(); ++$i) {
@@ -115,7 +116,8 @@ class PHPPowerPoint_Reader_Serialized implements PHPPowerPoint_Reader_IReader
      * @throws  Exception
      * @return  boolean
      */
-    public function fileSupportsUnserializePHPPowerPoint($pFilename = '') {
+    public function fileSupportsUnserializePHPPowerPoint($pFilename = '')
+    {
         // Check if file exists
         if (!file_exists($pFilename)) {
             throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");

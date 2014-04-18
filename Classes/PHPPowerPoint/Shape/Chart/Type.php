@@ -54,7 +54,8 @@ abstract class PHPPowerPoint_Shape_Chart_Type implements PHPPowerPoint_IComparab
      *
      * @return boolean
      */
-    public function hasAxisX() {
+    public function hasAxisX()
+    {
         return $this->_hasAxisX;
     }
 
@@ -63,7 +64,8 @@ abstract class PHPPowerPoint_Shape_Chart_Type implements PHPPowerPoint_IComparab
      *
      * @return boolean
      */
-    public function hasAxisY() {
+    public function hasAxisY()
+    {
         return $this->_hasAxisY;
     }
 
@@ -72,10 +74,9 @@ abstract class PHPPowerPoint_Shape_Chart_Type implements PHPPowerPoint_IComparab
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5(__CLASS__);
     }
 
     /**
@@ -93,7 +94,8 @@ abstract class PHPPowerPoint_Shape_Chart_Type implements PHPPowerPoint_IComparab
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -105,14 +107,16 @@ abstract class PHPPowerPoint_Shape_Chart_Type implements PHPPowerPoint_IComparab
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

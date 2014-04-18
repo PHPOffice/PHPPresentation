@@ -97,7 +97,7 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     public function __construct()
     {
         $this->_alignment = new PHPPowerPoint_Style_Alignment();
-        $this->_font = new PHPPowerPoint_Style_Font();
+        $this->_font      = new PHPPowerPoint_Style_Font();
         $this->_font->setName('Calibri');
         $this->_font->setSize(18);
     }
@@ -107,8 +107,9 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getVisible() {
-            return $this->_visible;
+    public function getVisible()
+    {
+        return $this->_visible;
     }
 
     /**
@@ -117,9 +118,10 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * @param boolean $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setVisible($value = true) {
-            $this->_visible = $value;
-            return $this;
+    public function setVisible($value = true)
+    {
+        $this->_visible = $value;
+        return $this;
     }
 
     /**
@@ -127,8 +129,9 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getText() {
-            return $this->_text;
+    public function getText()
+    {
+        return $this->_text;
     }
 
     /**
@@ -137,9 +140,10 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * @param string $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setText($value = null) {
-            $this->_text = $value;
-            return $this;
+    public function setText($value = null)
+    {
+        $this->_text = $value;
+        return $this;
     }
 
     /**
@@ -147,8 +151,9 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getOffsetX() {
-            return $this->_offsetX;
+    public function getOffsetX()
+    {
+        return $this->_offsetX;
     }
 
     /**
@@ -157,9 +162,10 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setOffsetX($value = 0.01) {
-            $this->_offsetX = $value;
-            return $this;
+    public function setOffsetX($value = 0.01)
+    {
+        $this->_offsetX = $value;
+        return $this;
     }
 
     /**
@@ -167,8 +173,9 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getOffsetY() {
-            return $this->_offsetY;
+    public function getOffsetY()
+    {
+        return $this->_offsetY;
     }
 
     /**
@@ -177,9 +184,10 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setOffsetY($value = 0.01) {
-            $this->_offsetY = $value;
-            return $this;
+    public function setOffsetY($value = 0.01)
+    {
+        $this->_offsetY = $value;
+        return $this;
     }
 
     /**
@@ -187,8 +195,9 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getWidth() {
-            return $this->_width;
+    public function getWidth()
+    {
+        return $this->_width;
     }
 
     /**
@@ -197,9 +206,10 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setWidth($value = 0) {
-            $this->_width = $value;
-            return $this;
+    public function setWidth($value = 0)
+    {
+        $this->_width = $value;
+        return $this;
     }
 
     /**
@@ -207,8 +217,9 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getHeight() {
-            return $this->_height;
+    public function getHeight()
+    {
+        return $this->_height;
     }
 
     /**
@@ -217,9 +228,10 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setHeight($value = 0) {
-            $this->_height = $value;
-            return $this;
+    public function setHeight($value = 0)
+    {
+        $this->_height = $value;
+        return $this;
     }
 
     /**
@@ -227,7 +239,8 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Font
      */
-    public function getFont() {
+    public function getFont()
+    {
         return $this->_font;
     }
 
@@ -238,7 +251,8 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * @throws  Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
-    public function setFont(PHPPowerPoint_Style_Font $pFont = null) {
+    public function setFont(PHPPowerPoint_Style_Font $pFont = null)
+    {
         $this->_font = $pFont;
         return $this;
     }
@@ -270,18 +284,9 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_text
-            . $this->_offsetX
-            . $this->_offsetY
-            . $this->_width
-            . $this->_height
-            . $this->_font->getHashCode()
-            . $this->_alignment->getHashCode()
-            . ($this->_visible ? 't' : 'f')
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_text . $this->_offsetX . $this->_offsetY . $this->_width . $this->_height . $this->_font->getHashCode() . $this->_alignment->getHashCode() . ($this->_visible ? 't' : 'f') . __CLASS__);
     }
 
     /**
@@ -299,7 +304,8 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -311,14 +317,16 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

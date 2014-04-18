@@ -100,7 +100,8 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Shape_Chart_Type
      * @throws Exception
      */
-    public function getType() {
+    public function getType()
+    {
         if (is_null($this->_type)) {
             throw new Exception('Chart type has not been set.');
         }
@@ -114,7 +115,8 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      * @return PHPPowerPoint_Shape_Chart_PlotArea
      * @throws Exception
      */
-    public function setType(PHPPowerPoint_Shape_Chart_Type $value) {
+    public function setType(PHPPowerPoint_Shape_Chart_Type $value)
+    {
         $this->_type = $value;
         return $this;
     }
@@ -124,7 +126,8 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Shape_Chart_Axis
      */
-    public function getAxisX() {
+    public function getAxisX()
+    {
         return $this->_axisX;
     }
 
@@ -133,7 +136,8 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Shape_Chart_Axis
      */
-    public function getAxisY() {
+    public function getAxisY()
+    {
         return $this->_axisY;
     }
 
@@ -142,8 +146,9 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getOffsetX() {
-            return $this->_offsetX;
+    public function getOffsetX()
+    {
+        return $this->_offsetX;
     }
 
     /**
@@ -152,9 +157,10 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setOffsetX($value = 0) {
-            $this->_offsetX = $value;
-            return $this;
+    public function setOffsetX($value = 0)
+    {
+        $this->_offsetX = $value;
+        return $this;
     }
 
     /**
@@ -162,8 +168,9 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getOffsetY() {
-            return $this->_offsetY;
+    public function getOffsetY()
+    {
+        return $this->_offsetY;
     }
 
     /**
@@ -172,9 +179,10 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setOffsetY($value = 0) {
-            $this->_offsetY = $value;
-            return $this;
+    public function setOffsetY($value = 0)
+    {
+        $this->_offsetY = $value;
+        return $this;
     }
 
     /**
@@ -182,8 +190,9 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getWidth() {
-            return $this->_width;
+    public function getWidth()
+    {
+        return $this->_width;
     }
 
     /**
@@ -192,9 +201,10 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setWidth($value = 0) {
-            $this->_width = $value;
-            return $this;
+    public function setWidth($value = 0)
+    {
+        $this->_width = $value;
+        return $this;
     }
 
     /**
@@ -202,8 +212,9 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getHeight() {
-            return $this->_height;
+    public function getHeight()
+    {
+        return $this->_height;
     }
 
     /**
@@ -212,9 +223,10 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setHeight($value = 0) {
-            $this->_height = $value;
-            return $this;
+    public function setHeight($value = 0)
+    {
+        $this->_height = $value;
+        return $this;
     }
 
     /**
@@ -222,17 +234,9 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              (is_null($this->_type) ? 'null' : $this->_type->getHashCode())
-            . $this->_axisX->getHashCode()
-            . $this->_axisY->getHashCode()
-            . $this->_offsetX
-            . $this->_offsetY
-            . $this->_width
-            . $this->_height
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5((is_null($this->_type) ? 'null' : $this->_type->getHashCode()) . $this->_axisX->getHashCode() . $this->_axisY->getHashCode() . $this->_offsetX . $this->_offsetY . $this->_width . $this->_height . __CLASS__);
     }
 
     /**
@@ -250,7 +254,8 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -262,14 +267,16 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

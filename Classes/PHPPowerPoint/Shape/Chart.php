@@ -90,8 +90,9 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function getTitle() {
-            return $this->_title;
+    public function getTitle()
+    {
+        return $this->_title;
     }
 
     /**
@@ -99,8 +100,9 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return PHPPowerPoint_Shape_Chart_Legend
      */
-    public function getLegend() {
-            return $this->_legend;
+    public function getLegend()
+    {
+        return $this->_legend;
     }
 
     /**
@@ -108,8 +110,9 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return PHPPowerPoint_Shape_Chart_PlotArea
      */
-    public function getPlotArea() {
-            return $this->_plotArea;
+    public function getPlotArea()
+    {
+        return $this->_plotArea;
     }
 
     /**
@@ -117,8 +120,9 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return PHPPowerPoint_Shape_Chart_View3D
      */
-    public function getView3D() {
-            return $this->_view3D;
+    public function getView3D()
+    {
+        return $this->_view3D;
     }
 
     /**
@@ -126,7 +130,8 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return boolean
      */
-    public function getIncludeSpreadsheet() {
+    public function getIncludeSpreadsheet()
+    {
         return $this->_includeSpreadsheet;
     }
 
@@ -136,7 +141,8 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      * @param boolean $value
      * @return PHPPowerPoint_Shape_Chart
      */
-    public function setIncludeSpreadsheet($value = false) {
+    public function setIncludeSpreadsheet($value = false)
+    {
         $this->_includeSpreadsheet = $value;
         return $this;
     }
@@ -146,7 +152,8 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return string
      */
-    public function getIndexedFilename() {
+    public function getIndexedFilename()
+    {
         return 'chart' . $this->getImageIndex() . '.xml';
     }
 
@@ -155,16 +162,9 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              parent::getHashCode()
-            . $this->_title->getHashCode()
-            . $this->_legend->getHashCode()
-            . $this->_plotArea->getHashCode()
-            . $this->_view3D->getHashCode()
-            . ($this->_includeSpreadsheet ? 1 : 0)
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5(parent::getHashCode() . $this->_title->getHashCode() . $this->_legend->getHashCode() . $this->_plotArea->getHashCode() . $this->_view3D->getHashCode() . ($this->_includeSpreadsheet ? 1 : 0) . __CLASS__);
     }
 
     /**
@@ -182,7 +182,8 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -194,14 +195,16 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

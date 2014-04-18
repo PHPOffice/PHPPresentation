@@ -69,7 +69,8 @@ class PHPPowerPoint_HashTable
      * @param   PHPPowerPoint_IComparable[] $pSource    Source array to create HashTable from
      * @throws  Exception
      */
-    public function addFromSource($pSource = null) {
+    public function addFromSource($pSource = null)
+    {
         // Check if an array was passed
         if ($pSource == null) {
             return;
@@ -88,26 +89,27 @@ class PHPPowerPoint_HashTable
      * @param   PHPPowerPoint_IComparable $pSource  Item to add
      * @throws  Exception
      */
-    public function add(PHPPowerPoint_IComparable $pSource = null) {
+    public function add(PHPPowerPoint_IComparable $pSource = null)
+    {
         // Determine hashcode
-        $hashCode   = null;
+        $hashCode  = null;
         $hashIndex = $pSource->getHashIndex();
-        if ( is_null ( $hashIndex ) ) {
+        if (is_null($hashIndex)) {
             $hashCode = $pSource->getHashCode();
-        } else if ( isset ( $this->_keyMap[$hashIndex] ) ) {
+        } else if (isset($this->_keyMap[$hashIndex])) {
             $hashCode = $this->_keyMap[$hashIndex];
         } else {
             $hashCode = $pSource->getHashCode();
         }
 
         // Add value
-        if (!isset($this->_items[ $hashCode ])) {
-            $this->_items[ $hashCode ] = $pSource;
-            $index = count($this->_items) - 1;
-            $this->_keyMap[ $index  ] = $hashCode;
-            $pSource->setHashIndex( $index );
+        if (!isset($this->_items[$hashCode])) {
+            $this->_items[$hashCode] = $pSource;
+            $index                   = count($this->_items) - 1;
+            $this->_keyMap[$index]   = $hashCode;
+            $pSource->setHashIndex($index);
         } else {
-            $pSource->setHashIndex( $this->_items[ $hashCode ]->getHashIndex() );
+            $pSource->setHashIndex($this->_items[$hashCode]->getHashIndex());
         }
     }
 
@@ -117,9 +119,10 @@ class PHPPowerPoint_HashTable
      * @param   PHPPowerPoint_IComparable $pSource  Item to remove
      * @throws  Exception
      */
-    public function remove(PHPPowerPoint_IComparable $pSource = null) {
-        if (isset($this->_items[  $pSource->getHashCode()  ])) {
-            unset($this->_items[  $pSource->getHashCode()  ]);
+    public function remove(PHPPowerPoint_IComparable $pSource = null)
+    {
+        if (isset($this->_items[$pSource->getHashCode()])) {
+            unset($this->_items[$pSource->getHashCode()]);
 
             $deleteKey = -1;
             foreach ($this->_keyMap as $key => $value) {
@@ -131,7 +134,7 @@ class PHPPowerPoint_HashTable
                     $deleteKey = $key;
                 }
             }
-            unset($this->_keyMap[ count($this->_keyMap) - 1 ]);
+            unset($this->_keyMap[count($this->_keyMap) - 1]);
         }
     }
 
@@ -139,8 +142,9 @@ class PHPPowerPoint_HashTable
      * Clear HashTable
      *
      */
-    public function clear() {
-        $this->_items = array();
+    public function clear()
+    {
+        $this->_items  = array();
         $this->_keyMap = array();
     }
 
@@ -149,7 +153,8 @@ class PHPPowerPoint_HashTable
      *
      * @return int
      */
-    public function count() {
+    public function count()
+    {
         return count($this->_items);
     }
 
@@ -159,7 +164,8 @@ class PHPPowerPoint_HashTable
      * @param   string  $pHashCode
      * @return  int     Index
      */
-    public function getIndexForHashCode($pHashCode = '') {
+    public function getIndexForHashCode($pHashCode = '')
+    {
         return array_search($pHashCode, $this->_keyMap);
     }
 
@@ -170,9 +176,10 @@ class PHPPowerPoint_HashTable
      * @return  PHPPowerPoint_IComparable
      *
      */
-    public function getByIndex($pIndex = 0) {
+    public function getByIndex($pIndex = 0)
+    {
         if (isset($this->_keyMap[$pIndex])) {
-            return $this->getByHashCode( $this->_keyMap[$pIndex] );
+            return $this->getByHashCode($this->_keyMap[$pIndex]);
         }
 
         return null;
@@ -185,7 +192,8 @@ class PHPPowerPoint_HashTable
      * @return  PHPPowerPoint_IComparable
      *
      */
-    public function getByHashCode($pHashCode = '') {
+    public function getByHashCode($pHashCode = '')
+    {
         if (isset($this->_items[$pHashCode])) {
             return $this->_items[$pHashCode];
         }
@@ -198,14 +206,16 @@ class PHPPowerPoint_HashTable
      *
      * @return PHPPowerPoint_IComparable[]
      */
-    public function toArray() {
+    public function toArray()
+    {
         return $this->_items;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

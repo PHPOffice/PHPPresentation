@@ -83,13 +83,13 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
     public function __construct()
     {
         // Initialise values
-        $this->_name                = '';
-        $this->_description         = '';
-        $this->_resizeProportional  = true;
+        $this->_name               = '';
+        $this->_description        = '';
+        $this->_resizeProportional = true;
 
         // Set image index
         self::$_imageCounter++;
-        $this->_imageIndex          = self::$_imageCounter;
+        $this->_imageIndex = self::$_imageCounter;
 
         // Initialize parent
         parent::__construct();
@@ -100,7 +100,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      *
      * @return int
      */
-    public function getImageIndex() {
+    public function getImageIndex()
+    {
         return $this->_imageIndex;
     }
 
@@ -109,7 +110,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->_name;
     }
 
@@ -119,7 +121,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      * @param string $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
-    public function setName($pValue = '') {
+    public function setName($pValue = '')
+    {
         $this->_name = $pValue;
         return $this;
     }
@@ -129,7 +132,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      *
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->_description;
     }
 
@@ -139,7 +143,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      * @param string $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
-    public function setDescription($pValue = '') {
+    public function setDescription($pValue = '')
+    {
         $this->_description = $pValue;
         return $this;
     }
@@ -150,10 +155,11 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      * @param int $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
-    public function setWidth($pValue = 0) {
+    public function setWidth($pValue = 0)
+    {
         // Resize proportional?
         if ($this->_resizeProportional && $pValue != 0) {
-            $ratio = $this->_height / $this->_width;
+            $ratio         = $this->_height / $this->_width;
             $this->_height = round($ratio * $pValue);
         }
 
@@ -169,10 +175,11 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      * @param int $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
-    public function setHeight($pValue = 0) {
+    public function setHeight($pValue = 0)
+    {
         // Resize proportional?
         if ($this->_resizeProportional && $pValue != 0) {
-            $ratio = $this->_width / $this->_height;
+            $ratio        = $this->_width / $this->_height;
             $this->_width = round($ratio * $pValue);
         }
 
@@ -191,7 +198,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      * @example $objDrawing->setWidthAndHeight(160,120);
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
-    public function setWidthAndHeight($width = 0, $height = 0) {
+    public function setWidthAndHeight($width = 0, $height = 0)
+    {
         $xratio = $width / $this->_width;
         $yratio = $height / $this->_height;
         if ($this->_resizeProportional && !($width == 0 || $height == 0)) {
@@ -199,8 +207,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
                 $this->_height = ceil($xratio * $this->_height);
                 $this->_width  = $width;
             } else {
-                $this->_width   = ceil($yratio * $this->_width);
-                $this->_height  = $height;
+                $this->_width  = ceil($yratio * $this->_width);
+                $this->_height = $height;
             }
         }
         return $this;
@@ -211,7 +219,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      *
      * @return boolean
      */
-    public function getResizeProportional() {
+    public function getResizeProportional()
+    {
         return $this->_resizeProportional;
     }
 
@@ -221,7 +230,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      * @param boolean $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
-    public function setResizeProportional($pValue = true) {
+    public function setResizeProportional($pValue = true)
+    {
         $this->_resizeProportional = $pValue;
         return $this;
     }
@@ -231,13 +241,9 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_name
-            . $this->_description
-            . parent::getHashCode()
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_name . $this->_description . parent::getHashCode() . __CLASS__);
     }
 
     /**
@@ -255,7 +261,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -267,14 +274,16 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

@@ -36,10 +36,10 @@
 class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
 {
     /** Legend positions */
-    const POSITION_BOTTOM   = 'b';
-    const POSITION_LEFT     = 'l';
-    const POSITION_RIGHT    = 'r';
-    const POSITION_TOP      = 't';
+    const POSITION_BOTTOM = 'b';
+    const POSITION_LEFT = 'l';
+    const POSITION_RIGHT = 'r';
+    const POSITION_TOP = 't';
     const POSITION_TOPRIGHT = 'tr';
 
     /**
@@ -117,9 +117,9 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      */
     public function __construct()
     {
-        $this->_font = new PHPPowerPoint_Style_Font();
-        $this->_border = new PHPPowerPoint_Style_Border();
-        $this->_fill = new PHPPowerPoint_Style_Fill();
+        $this->_font      = new PHPPowerPoint_Style_Font();
+        $this->_border    = new PHPPowerPoint_Style_Border();
+        $this->_fill      = new PHPPowerPoint_Style_Fill();
         $this->_alignment = new PHPPowerPoint_Style_Alignment();
     }
 
@@ -128,8 +128,9 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getVisible() {
-            return $this->_visible;
+    public function getVisible()
+    {
+        return $this->_visible;
     }
 
     /**
@@ -138,9 +139,10 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      * @param boolean $value
      * @return PHPPowerPoint_Shape_Chart_Legend
      */
-    public function setVisible($value = true) {
-            $this->_visible = $value;
-            return $this;
+    public function setVisible($value = true)
+    {
+        $this->_visible = $value;
+        return $this;
     }
 
     /**
@@ -148,8 +150,9 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getPosition() {
-            return $this->_position;
+    public function getPosition()
+    {
+        return $this->_position;
     }
 
     /**
@@ -158,9 +161,10 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      * @param string $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
-    public function setPosition($value = PHPPowerPoint_Shape_Chart_Legend::POSITION_RIGHT) {
-            $this->_position = $value;
-            return $this;
+    public function setPosition($value = PHPPowerPoint_Shape_Chart_Legend::POSITION_RIGHT)
+    {
+        $this->_position = $value;
+        return $this;
     }
 
     /**
@@ -168,8 +172,9 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getOffsetX() {
-            return $this->_offsetX;
+    public function getOffsetX()
+    {
+        return $this->_offsetX;
     }
 
     /**
@@ -178,9 +183,10 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Legend
      */
-    public function setOffsetX($value = 0) {
-            $this->_offsetX = $value;
-            return $this;
+    public function setOffsetX($value = 0)
+    {
+        $this->_offsetX = $value;
+        return $this;
     }
 
     /**
@@ -188,8 +194,9 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getOffsetY() {
-            return $this->_offsetY;
+    public function getOffsetY()
+    {
+        return $this->_offsetY;
     }
 
     /**
@@ -198,9 +205,10 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Legend
      */
-    public function setOffsetY($value = 0) {
-            $this->_offsetY = $value;
-            return $this;
+    public function setOffsetY($value = 0)
+    {
+        $this->_offsetY = $value;
+        return $this;
     }
 
     /**
@@ -208,8 +216,9 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getWidth() {
-            return $this->_width;
+    public function getWidth()
+    {
+        return $this->_width;
     }
 
     /**
@@ -218,9 +227,10 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Legend
      */
-    public function setWidth($value = 0) {
-            $this->_width = $value;
-            return $this;
+    public function setWidth($value = 0)
+    {
+        $this->_width = $value;
+        return $this;
     }
 
     /**
@@ -228,8 +238,9 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return float
      */
-    public function getHeight() {
-            return $this->_height;
+    public function getHeight()
+    {
+        return $this->_height;
     }
 
     /**
@@ -238,9 +249,10 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      * @param float $value
      * @return PHPPowerPoint_Shape_Chart_Legend
      */
-    public function setHeight($value = 0) {
-            $this->_height = $value;
-            return $this;
+    public function setHeight($value = 0)
+    {
+        $this->_height = $value;
+        return $this;
     }
 
     /**
@@ -248,7 +260,8 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Font
      */
-    public function getFont() {
+    public function getFont()
+    {
         return $this->_font;
     }
 
@@ -259,7 +272,8 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      * @throws  Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
-    public function setFont(PHPPowerPoint_Style_Font $pFont = null) {
+    public function setFont(PHPPowerPoint_Style_Font $pFont = null)
+    {
         $this->_font = $pFont;
         return $this;
     }
@@ -269,7 +283,8 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Border
      */
-    public function getBorder() {
+    public function getBorder()
+    {
         return $this->_border;
     }
 
@@ -278,7 +293,8 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Fill
      */
-    public function getFill() {
+    public function getFill()
+    {
         return $this->_fill;
     }
 
@@ -309,20 +325,9 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_position
-            . $this->_offsetX
-            . $this->_offsetY
-            . $this->_width
-            . $this->_height
-            . $this->_font->getHashCode()
-            . $this->_border->getHashCode()
-            . $this->_fill->getHashCode()
-            . $this->_alignment->getHashCode()
-            . ($this->_visible ? 't' : 'f')
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_position . $this->_offsetX . $this->_offsetY . $this->_width . $this->_height . $this->_font->getHashCode() . $this->_border->getHashCode() . $this->_fill->getHashCode() . $this->_alignment->getHashCode() . ($this->_visible ? 't' : 'f') . __CLASS__);
     }
 
     /**
@@ -340,7 +345,8 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -352,14 +358,16 @@ class PHPPowerPoint_Shape_Chart_Legend implements PHPPowerPoint_IComparable
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

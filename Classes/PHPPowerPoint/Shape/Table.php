@@ -57,14 +57,14 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
     public function __construct($columns = 1)
     {
         // Initialise variables
-        $this->_rows = array();
+        $this->_rows        = array();
         $this->_columnCount = $columns;
 
         // Initialize parent
         parent::__construct();
 
         // No resize proportional
-        $this->_resizeProportional  = false;
+        $this->_resizeProportional = false;
     }
 
     /**
@@ -103,7 +103,7 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
      */
     public function createRow()
     {
-        $row = new PHPPowerPoint_Shape_Table_Row($this->_columnCount);
+        $row           = new PHPPowerPoint_Shape_Table_Row($this->_columnCount);
         $this->_rows[] = $row;
         return $row;
     }
@@ -113,16 +113,14 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         $hashElements = '';
         foreach ($this->_rows as $row) {
             $hashElements .= $row->getHashCode();
         }
 
-        return md5(
-              $hashElements
-            . __CLASS__
-        );
+        return md5($hashElements . __CLASS__);
     }
 
     /**
@@ -140,7 +138,8 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -152,17 +151,20 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ($key == '_parent') continue;
+            if ($key == '_parent')
+                continue;
 
             if (is_object($value)) {
                 $this->$key = clone $value;

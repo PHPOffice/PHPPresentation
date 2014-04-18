@@ -48,7 +48,7 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
     public function __construct()
     {
         // Initialise values
-        $this->_path                = '';
+        $this->_path = '';
 
         // Initialize parent
         parent::__construct();
@@ -59,7 +59,8 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      *
      * @return string
      */
-    public function getFilename() {
+    public function getFilename()
+    {
         return basename($this->_path);
     }
 
@@ -68,7 +69,8 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      *
      * @return string
      */
-    public function getIndexedFilename() {
+    public function getIndexedFilename()
+    {
         return str_replace('.' . $this->getExtension(), '', $this->getFilename()) . $this->getImageIndex() . '.' . $this->getExtension();
     }
 
@@ -77,7 +79,8 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      *
      * @return string
      */
-    public function getExtension() {
+    public function getExtension()
+    {
         $exploded = explode(".", basename($this->_path));
         return $exploded[count($exploded) - 1];
     }
@@ -87,7 +90,8 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      *
      * @return string
      */
-    public function getPath() {
+    public function getPath()
+    {
         return $this->_path;
     }
 
@@ -99,7 +103,8 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      * @throws  Exception
      * @return PHPPowerPoint_Shape_Drawing
      */
-    public function setPath($pValue = '', $pVerifyFile = true) {
+    public function setPath($pValue = '', $pVerifyFile = true)
+    {
         if ($pVerifyFile) {
             if (file_exists($pValue)) {
                 $this->_path = $pValue;
@@ -122,12 +127,9 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_path
-            . parent::getHashCode()
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_path . parent::getHashCode() . __CLASS__);
     }
 
     /**
@@ -145,7 +147,8 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -157,14 +160,16 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

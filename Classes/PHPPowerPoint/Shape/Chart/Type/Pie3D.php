@@ -56,8 +56,9 @@ class PHPPowerPoint_Shape_Chart_Type_Pie3D extends PHPPowerPoint_Shape_Chart_Typ
      *
      * @return array
      */
-    public function getData() {
-            return $this->_data;
+    public function getData()
+    {
+        return $this->_data;
     }
 
     /**
@@ -66,9 +67,10 @@ class PHPPowerPoint_Shape_Chart_Type_Pie3D extends PHPPowerPoint_Shape_Chart_Typ
      * @param array $value Array of PHPPowerPoint_Shape_Chart_Series
      * @return PHPPowerPoint_Shape_Chart_Type_Pie3D
      */
-    public function setData($value = array()) {
-            $this->_data = $value;
-            return $this;
+    public function setData($value = array())
+    {
+        $this->_data = $value;
+        return $this;
     }
 
     /**
@@ -77,9 +79,10 @@ class PHPPowerPoint_Shape_Chart_Type_Pie3D extends PHPPowerPoint_Shape_Chart_Typ
      * @param PHPPowerPoint_Shape_Chart_Series $value
      * @return PHPPowerPoint_Shape_Chart_Type_Pie3D
      */
-    public function addSeries(PHPPowerPoint_Shape_Chart_Series $value) {
-            $this->_data[] = $value;
-            return $this;
+    public function addSeries(PHPPowerPoint_Shape_Chart_Series $value)
+    {
+        $this->_data[] = $value;
+        return $this;
     }
 
     /**
@@ -87,16 +90,14 @@ class PHPPowerPoint_Shape_Chart_Type_Pie3D extends PHPPowerPoint_Shape_Chart_Typ
      *
      * @return string   Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         $hash = '';
         foreach ($this->_data as $series) {
             $hash .= $series->getHashCode();
         }
 
-        return md5(
-              $hash
-            . __CLASS__
-        );
+        return md5($hash . __CLASS__);
     }
 
     /**
@@ -114,7 +115,8 @@ class PHPPowerPoint_Shape_Chart_Type_Pie3D extends PHPPowerPoint_Shape_Chart_Typ
      *
      * @return string   Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -126,14 +128,16 @@ class PHPPowerPoint_Shape_Chart_Type_Pie3D extends PHPPowerPoint_Shape_Chart_Typ
      *
      * @param string    $value  Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

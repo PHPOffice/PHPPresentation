@@ -111,16 +111,16 @@ class PHPPowerPoint_DocumentProperties
     public function __construct()
     {
         // Initialise values
-        $this->_creator         = 'Unknown Creator';
-        $this->_lastModifiedBy  = $this->_creator;
-        $this->_created         = time();
-        $this->_modified        = time();
-        $this->_title           = "Untitled Presentation";
-        $this->_subject         = '';
-        $this->_description     = '';
-        $this->_keywords        = '';
-        $this->_category        = '';
-        $this->_company         = 'Microsoft Corporation';
+        $this->_creator        = 'Unknown Creator';
+        $this->_lastModifiedBy = $this->_creator;
+        $this->_created        = time();
+        $this->_modified       = time();
+        $this->_title          = "Untitled Presentation";
+        $this->_subject        = '';
+        $this->_description    = '';
+        $this->_keywords       = '';
+        $this->_category       = '';
+        $this->_company        = 'Microsoft Corporation';
     }
 
     /**
@@ -128,7 +128,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return string
      */
-    public function getCreator() {
+    public function getCreator()
+    {
         return $this->_creator;
     }
 
@@ -138,7 +139,8 @@ class PHPPowerPoint_DocumentProperties
      * @param string $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setCreator($pValue = '') {
+    public function setCreator($pValue = '')
+    {
         $this->_creator = $pValue;
         return $this;
     }
@@ -148,7 +150,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return string
      */
-    public function getLastModifiedBy() {
+    public function getLastModifiedBy()
+    {
         return $this->_lastModifiedBy;
     }
 
@@ -158,7 +161,8 @@ class PHPPowerPoint_DocumentProperties
      * @param string $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setLastModifiedBy($pValue = '') {
+    public function setLastModifiedBy($pValue = '')
+    {
         $this->_lastModifiedBy = $pValue;
         return $this;
     }
@@ -168,7 +172,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return datetime
      */
-    public function getCreated() {
+    public function getCreated()
+    {
         return $this->_created;
     }
 
@@ -178,7 +183,8 @@ class PHPPowerPoint_DocumentProperties
      * @param datetime $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setCreated($pValue = null) {
+    public function setCreated($pValue = null)
+    {
         if (is_null($pValue)) {
             $pValue = time();
         }
@@ -191,7 +197,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return datetime
      */
-    public function getModified() {
+    public function getModified()
+    {
         return $this->_modified;
     }
 
@@ -201,7 +208,8 @@ class PHPPowerPoint_DocumentProperties
      * @param datetime $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setModified($pValue = null) {
+    public function setModified($pValue = null)
+    {
         if (is_null($pValue)) {
             $pValue = time();
         }
@@ -214,7 +222,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return string
      */
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->_title;
     }
 
@@ -224,7 +233,8 @@ class PHPPowerPoint_DocumentProperties
      * @param string $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setTitle($pValue = '') {
+    public function setTitle($pValue = '')
+    {
         $this->_title = $pValue;
         return $this;
     }
@@ -234,7 +244,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return string
      */
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->_description;
     }
 
@@ -244,7 +255,8 @@ class PHPPowerPoint_DocumentProperties
      * @param string $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setDescription($pValue = '') {
+    public function setDescription($pValue = '')
+    {
         $this->_description = $pValue;
         return $this;
     }
@@ -254,7 +266,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return string
      */
-    public function getSubject() {
+    public function getSubject()
+    {
         return $this->_subject;
     }
 
@@ -264,7 +277,8 @@ class PHPPowerPoint_DocumentProperties
      * @param string $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setSubject($pValue = '') {
+    public function setSubject($pValue = '')
+    {
         $this->_subject = $pValue;
         return $this;
     }
@@ -274,7 +288,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return string
      */
-    public function getKeywords() {
+    public function getKeywords()
+    {
         return $this->_keywords;
     }
 
@@ -284,7 +299,8 @@ class PHPPowerPoint_DocumentProperties
      * @param string $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setKeywords($pValue = '') {
+    public function setKeywords($pValue = '')
+    {
         $this->_keywords = $pValue;
         return $this;
     }
@@ -294,7 +310,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return string
      */
-    public function getCategory() {
+    public function getCategory()
+    {
         return $this->_category;
     }
 
@@ -304,7 +321,8 @@ class PHPPowerPoint_DocumentProperties
      * @param string $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setCategory($pValue = '') {
+    public function setCategory($pValue = '')
+    {
         $this->_category = $pValue;
         return $this;
     }
@@ -314,7 +332,8 @@ class PHPPowerPoint_DocumentProperties
      *
      * @return string
      */
-    public function getCompany() {
+    public function getCompany()
+    {
         return $this->_company;
     }
 
@@ -324,7 +343,8 @@ class PHPPowerPoint_DocumentProperties
      * @param string $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
-    public function setCompany($pValue = '') {
+    public function setCompany($pValue = '')
+    {
         $this->_company = $pValue;
         return $this;
     }
@@ -332,7 +352,8 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

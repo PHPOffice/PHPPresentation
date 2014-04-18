@@ -52,31 +52,29 @@ class PHPPowerPoint_IOFactory
      *
      * @var array
      */
-    private static $_searchLocations = array(
-        array( 'type' => 'IWriter', 'path' => 'PHPPowerPoint/Writer/{0}.php', 'class' => 'PHPPowerPoint_Writer_{0}' ),
-        array( 'type' => 'IReader', 'path' => 'PHPPowerPoint/Reader/{0}.php', 'class' => 'PHPPowerPoint_Reader_{0}' )
-    );
+    private static $_searchLocations = array(array('type' => 'IWriter', 'path' => 'PHPPowerPoint/Writer/{0}.php', 'class' => 'PHPPowerPoint_Writer_{0}'), array('type' => 'IReader', 'path' => 'PHPPowerPoint/Reader/{0}.php', 'class' => 'PHPPowerPoint_Reader_{0}'));
 
     /**
      * Autoresolve classes
      *
      * @var array
      */
-    private static $_autoResolveClasses = array(
-        'Serialized'
-    );
+    private static $_autoResolveClasses = array('Serialized');
 
     /**
      * Private constructor for PHPPowerPoint_IOFactory
      */
-    private function __construct() { }
+    private function __construct()
+    {
+    }
 
     /**
      * Get search locations
      *
      * @return array
      */
-    public static function getSearchLocations() {
+    public static function getSearchLocations()
+    {
         return self::$_searchLocations;
     }
 
@@ -86,7 +84,8 @@ class PHPPowerPoint_IOFactory
      * @param array $value
      * @throws Exception
      */
-    public static function setSearchLocations($value) {
+    public static function setSearchLocations($value)
+    {
         if (is_array($value)) {
             self::$_searchLocations = $value;
         } else {
@@ -101,8 +100,13 @@ class PHPPowerPoint_IOFactory
      * @param string $location      Example: PHPPowerPoint/Writer/{0}.php
      * @param string $classname     Example: PHPPowerPoint_Writer_{0}
      */
-    public static function addSearchLocation($type = '', $location = '', $classname = '') {
-        self::$_searchLocations[] = array( 'type' => $type, 'path' => $location, 'class' => $classname );
+    public static function addSearchLocation($type = '', $location = '', $classname = '')
+    {
+        self::$_searchLocations[] = array(
+            'type' => $type,
+            'path' => $location,
+            'class' => $classname
+        );
     }
 
     /**
@@ -112,7 +116,8 @@ class PHPPowerPoint_IOFactory
      * @param string  $writerType   Example: PowerPoint2007
      * @return PHPPowerPoint_Writer_IWriter
      */
-    public static function createWriter(PHPPowerPoint $PHPPowerPoint, $writerType = '') {
+    public static function createWriter(PHPPowerPoint $PHPPowerPoint, $writerType = '')
+    {
         // Search type
         $searchType = 'IWriter';
 
@@ -143,7 +148,8 @@ class PHPPowerPoint_IOFactory
      * @param string $readerType    Example: PowerPoint2007
      * @return PHPPowerPoint_Reader_IReader
      */
-    public static function createReader($readerType = '') {
+    public static function createReader($readerType = '')
+    {
         // Search type
         $searchType = 'IReader';
 
@@ -175,7 +181,8 @@ class PHPPowerPoint_IOFactory
      * @return  PHPPowerPoint
      * @throws  Exception
      */
-    public static function load($pFilename) {
+    public static function load($pFilename)
+    {
         // Try loading using self::$_autoResolveClasses
         foreach (self::$_autoResolveClasses as $autoResolveClass) {
             $reader = self::createReader($autoResolveClass);
