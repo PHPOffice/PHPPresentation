@@ -52,6 +52,7 @@ To be planned:
 - Bugfix:   (MB) CP-4597 - Multiple Master Slides are not supported 
 - Bugfix:   (MB) CP-4596 - Images in Layouts other than first Master Slide within Template file causes corrupted PPTX
 - Bugfix :  (delphiki) GH-16 - Fixed A3 and A4 formats dimensions 
+- Bugfix :  (delphiki) GH-18 - Fixed custom document layout
 
 Initial version:
 - Create a Presentation object
