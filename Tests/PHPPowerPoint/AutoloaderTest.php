@@ -12,11 +12,17 @@
  */
 class AutoloaderTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Test register
+     */
     public function testRegister()
     {
         $this->assertTrue(PHPPowerPoint_Autoloader::Register());
     }
 
+    /**
+     * Test load
+     */
     public function testAutoloaderNonPHPPowerPointClass()
     {
         $className = 'InvalidClass';
@@ -28,6 +34,9 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 
+    /**
+     * Test load
+     */
     public function testAutoloaderInvalidPHPPowerPointClass()
     {
         $className = 'PHPPowerPoint_Invalid_Class';
@@ -39,6 +48,9 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $this->assertFalse($result);
     }
 
+    /**
+     * Test load
+     */
     public function testAutoloadValidPHPPowerPointClass()
     {
         $className = 'PHPPowerPoint_IOFactory';
@@ -48,6 +60,9 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(class_exists($className));
     }
 
+    /**
+     * Test load
+     */
     public function testAutoloadInstantiateSuccess()
     {
         $result = new PHPPowerPoint();

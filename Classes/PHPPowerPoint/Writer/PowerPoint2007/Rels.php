@@ -184,6 +184,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
     /**
      * Write slide layout relationships to XML format
      *
+     * @param  int       $slideLayoutIndex
      * @param  int       $masterId
      * @return string    XML Output
      * @throws Exception

@@ -141,6 +141,7 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Get paragraph
      *
+     * @param  int $index
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function getParagraph($index = 0)

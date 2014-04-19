@@ -48,7 +48,7 @@ class PHPPowerPoint_Reader_Serialized implements PHPPowerPoint_Reader_IReader
     /**
      * Can the current PHPPowerPoint_Reader_IReader read the file?
      *
-     * @param  string  $pFileName
+     * @param  string  $pFilename
      * @return boolean
      */
     public function canRead($pFilename)

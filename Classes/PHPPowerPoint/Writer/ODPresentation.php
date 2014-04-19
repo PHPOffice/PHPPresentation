@@ -25,6 +25,9 @@
  * @version    ##VERSION##, ##DATE##
  */
 
+/**
+ * ODPresentation writer
+ */
 class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWriter
 {
     /**
@@ -96,7 +99,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
     /**
      * Save PHPPowerPoint to file
      *
-     * @param  string    $pFileName
+     * @param  string    $pFilename
      * @throws Exception
      */
     public function save($pFilename = null)

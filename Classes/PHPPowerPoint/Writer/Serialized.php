@@ -55,7 +55,7 @@ class PHPPowerPoint_Writer_Serialized implements PHPPowerPoint_Writer_IWriter
     /**
      * Save PHPPowerPoint to file
      *
-     * @param  string    $pFileName
+     * @param  string    $pFilename
      * @throws Exception
      */
     public function save($pFilename = null)

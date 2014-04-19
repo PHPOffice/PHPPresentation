@@ -55,7 +55,9 @@ class PHPPowerPoint_DocumentLayout
     const LAYOUT_35mm = '35mm';
     // @codingStandardsIgnoreEnd
 
-    /*
+    /**
+     * Dimension types
+     *
      * 1 px = 9525 EMU @ 96dpi (which is seems to be the default)
      * Absolute distances are specified in English Metric Units (EMUs),
      * occasionally referred to as A units; there are 360000 EMUs per
@@ -80,12 +82,24 @@ class PHPPowerPoint_DocumentLayout
     );
 
     /**
-     * Fill type
+     * Layout name
      *
      * @var string
      */
     private $_layout;
+
+    /**
+     * Layout x dimension
+     *
+     * @var integer
+     */
     private $_cx;
+
+    /**
+     * Layout y dimension
+     *
+     * @var integer
+     */
     private $_cy;
 
     /**
@@ -112,10 +126,11 @@ class PHPPowerPoint_DocumentLayout
     /**
      * Set Document Layout
      *
-     * @param  array                        $pValue PHPPowerPoint_DocumentLayout document layout
+     * @param  array $pValue PHPPowerPoint_DocumentLayout document layout
+     * @param  boolean $isLandscape
      * @return PHPPowerPoint_DocumentLayout
      */
-    public function setDocumentLayout($pValue = PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4x3, $isLandscape = true)
+    public function setDocumentLayout($pValue = PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4X3, $isLandscape = true)
     {
         switch ($pValue) {
             case PHPPowerPoint_DocumentLayout::LAYOUT_SCREEN_4X3:

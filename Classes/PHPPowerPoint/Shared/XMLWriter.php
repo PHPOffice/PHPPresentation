@@ -100,6 +100,24 @@ class PHPPowerPoint_Shared_XMLWriter
     }
 
     /**
+     * Catch function calls (and pass them to internal XMLWriter)
+     *
+     * @param mixed $function
+     * @param mixed $args
+     */
+    public function __call($function, $args)
+    {
+        try {
+            @call_user_func_array(array(
+                $this->_xmlWriter,
+                $function
+            ), $args);
+        } catch (Exception $ex) {
+            // Do nothing!
+        }
+    }
+
+    /**
      * Get written data
      *
      * @return $data
@@ -112,24 +130,6 @@ class PHPPowerPoint_Shared_XMLWriter
             $this->_xmlWriter->flush();
 
             return file_get_contents($this->_tempFileName);
-        }
-    }
-
-    /**
-     * Catch function calls (and pass them to internal XMLWriter)
-     *
-     * @param unknown_type $function
-     * @param unknown_type $args
-     */
-    public function __call($function, $args)
-    {
-        try {
-            @call_user_func_array(array(
-                $this->_xmlWriter,
-                $function
-            ), $args);
-        } catch (Exception $ex) {
-            // Do nothing!
         }
     }
 

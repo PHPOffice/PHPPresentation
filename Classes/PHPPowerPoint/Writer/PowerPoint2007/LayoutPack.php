@@ -181,6 +181,8 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
      * - name (string)
      * - body (string)
      *
+     * @param string $name
+     * @param int $masterId
      * @return array
      * @throws Exception
      */
@@ -198,6 +200,8 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
     /**
      * Find specific slide layout index.
      *
+     * @param string $name
+     * @param int $masterId
      * @return int
      * @throws Exception
      */

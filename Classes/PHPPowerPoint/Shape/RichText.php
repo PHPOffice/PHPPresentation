@@ -194,6 +194,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
     /**
      * Get paragraph
      *
+     * @param  int $index
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function getParagraph($index = 0)

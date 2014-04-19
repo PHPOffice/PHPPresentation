@@ -175,7 +175,7 @@ class PHPPowerPoint_IOFactory
     /**
      * Loads PHPPowerPoint from file using automatic PHPPowerPoint_Reader_IReader resolution
      *
-     * @param  string        $pFileName
+     * @param  string        $pFilename
      * @return PHPPowerPoint
      * @throws Exception
      */

@@ -73,6 +73,11 @@ class PHPPowerPoint_Shared_ZipStreamWrapper
 
     /**
      * Open stream
+     *
+     * @param string $path
+     * @param string $mode
+     * @param array $options
+     * @param string $opened_path
      */
     public function stream_open($path, $mode, $options, &$opened_path)
     {
@@ -121,6 +126,8 @@ class PHPPowerPoint_Shared_ZipStreamWrapper
 
     /**
      * Read stream
+     *
+     * @param int $count
      */
     public function stream_read($count)
     {
@@ -148,6 +155,9 @@ class PHPPowerPoint_Shared_ZipStreamWrapper
 
     /**
      * Seek stream
+     *
+     * @param int $offset
+     * @param int $whence
      */
     public function stream_seek($offset, $whence)
     {

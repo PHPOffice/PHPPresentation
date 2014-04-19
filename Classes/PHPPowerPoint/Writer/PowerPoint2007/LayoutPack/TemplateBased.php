@@ -36,6 +36,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
 {
     /**
      * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased
+     *
+     * @param string $fileName
      */
     public function __construct($fileName = '')
     {

@@ -348,6 +348,11 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
         return $objWriter->getData();
     }
 
+    /**
+     * Write picture
+     *
+     * @param int $shapeId
+     */
     public function _writePic(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_BaseDrawing $shape, $shapeId)
     {
         // draw:frame
@@ -371,6 +376,11 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
         $objWriter->endElement();
     }
 
+    /**
+     * Write text
+     *
+     * @param int $shapeId
+     */
     public function _writeTxt(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_RichText $shape, $shapeId)
     {
         // draw:custom-shape

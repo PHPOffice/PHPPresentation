@@ -37,7 +37,10 @@ class PHPPowerPoint_Shape_Line extends PHPPowerPoint_Shape implements PHPPowerPo
     /**
      * Create a new PHPPowerPoint_Shape_Line instance
      *
-     * @param int $columns Number of columns
+     * @param int $fromX
+     * @param int $fromY
+     * @param int $toX
+     * @param int $toY
      */
     public function __construct($fromX, $fromY, $toX, $toY)
     {

@@ -37,7 +37,7 @@ interface PHPPowerPoint_Reader_IReader
     /**
      * Can the current PHPPowerPoint_Reader_IReader read the file?
      *
-     * @param  string  $pFileName
+     * @param  string  $pFilename
      * @return boolean
      */
     public function canRead($pFilename);
@@ -45,7 +45,7 @@ interface PHPPowerPoint_Reader_IReader
     /**
      * Loads PHPPowerPoint from file
      *
-     * @param  string    $pFileName
+     * @param  string    $pFilename
      * @throws Exception
      */
     public function load($pFilename);
