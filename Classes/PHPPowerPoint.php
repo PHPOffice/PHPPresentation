@@ -25,13 +25,15 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-/** PHPExcel root directory */
+/** PHPPowerPoint root directory */
+// @codeCoverageIgnoreStart
 if (!defined('PHPPOWERPOINT_ROOT')) {
     define('PHPPOWERPOINT_ROOT', dirname(__FILE__) . '/');
     require(PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php');
     PHPPowerPoint_Autoloader::Register();
     PHPPowerPoint_Shared_ZipStreamWrapper::register();
 }
+// @codeCoverageIgnoreEnd
 
 /**
  * PHPPowerPoint
@@ -76,13 +78,12 @@ class PHPPowerPoint
     public function __construct()
     {
         // Initialise slide collection and add one slide
-        $this->_slideCollection   = array();
-        $this->_slideCollection[] = new PHPPowerPoint_Slide($this);
-        $this->_activeSlideIndex  = 0;
+        $this->createSlide();
+        $this->setActiveSlideIndex();
 
-        // Create document properties
-        $this->_properties = new PHPPowerPoint_DocumentProperties();
-        $this->_layout     = new PHPPowerPoint_DocumentLayout();
+        // Set initial document properties & layout
+        $this->setProperties(new PHPPowerPoint_DocumentProperties());
+        $this->setLayout(new PHPPowerPoint_DocumentLayout());
     }
 
     /**
@@ -222,11 +223,14 @@ class PHPPowerPoint
      */
     public function getIndex(PHPPowerPoint_Slide $slide)
     {
+        $index = null;
         foreach ($this->_slideCollection as $key => $value) {
             if ($value->getHashCode() == $slide->getHashCode()) {
-                return $key;
+                $index = $key;
+                break;
             }
         }
+        return $index;
     }
 
     /**
@@ -274,11 +278,11 @@ class PHPPowerPoint
      * @throws Exception
      * @return PHPPowerPoint_Slide
      */
-    public function addExternalSheet(PHPPowerPoint_Slide $slide)
+    public function addExternalSlide(PHPPowerPoint_Slide $slide)
     {
         $slide->rebindParent($this);
 
-        return $this->addSheet($slide);
+        return $this->addSlide($slide);
     }
 
     /**

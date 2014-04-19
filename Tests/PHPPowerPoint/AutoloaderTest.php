@@ -1,18 +1,17 @@
 <?php
+/**
+ * PHPPowerPoint
+ *
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2014 PHPPowerPoint
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
+ */
 
-
+/**
+ * Test class for PHPPowerPoint_Autoloader
+ */
 class AutoloaderTest extends PHPUnit_Framework_TestCase
 {
-
-    public function setUp()
-    {
-        if (!defined('PHPPOWERPOINT_ROOT'))
-        {
-            define('PHPPOWERPOINT_ROOT', APPLICATION_PATH . '/');
-        }
-        require_once(PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php');
-    }
-
     public function testAutoloaderNonPHPPowerPointClass()
     {
         $className = 'InvalidClass';
@@ -46,7 +45,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
 
     public function testAutoloadInstantiateSuccess()
     {
-        $result = new PHPPowerPoint(1,2,3);
+        $result = new PHPPowerPoint();
         //    Must return an object...
         $this->assertTrue(is_object($result));
         //    ... of the correct type

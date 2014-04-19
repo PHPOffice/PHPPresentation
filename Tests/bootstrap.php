@@ -8,8 +8,7 @@
  * @author      Mark Baker
  */
 
-// PHP 5.3 Compat
-date_default_timezone_set('Europe/London');
+date_default_timezone_set('UTC');
 
 // Define path to application directory
 defined('APPLICATION_PATH')
@@ -22,13 +21,13 @@ defined('APPLICATION_TESTS_PATH')
 // Define application environment
 defined('APPLICATION_ENV') || define('APPLICATION_ENV', 'ci');
 
-// Ensure library/ is on include_path
-set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/../Classes'),
-    './',
-    get_include_path(),
-)));
-
+// Register autoloader
+if (!defined('PHPPOWERPOINT_ROOT'))
+{
+    define('PHPPOWERPOINT_ROOT', APPLICATION_PATH . '/');
+}
+require_once PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php';
+PHPPowerPoint_Autoloader::Register();
 
 /**
  * @todo Sort out xdebug in vagrant so that this works in all sandboxes
@@ -36,7 +35,7 @@ set_include_path(implode(PATH_SEPARATOR, array(
  */
 echo "PHPPowerPoint tests beginning\n";
 
-if(extension_loaded('xdebug')) {
+if (extension_loaded('xdebug')) {
     echo "Xdebug extension loaded and running\n";
     xdebug_enable();
 } else {
