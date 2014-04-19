@@ -325,15 +325,16 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                 // Check type
                 if ($shape instanceof PHPPowerPoint_Shape_RichText) {
                     $this->_writeTxt($objWriter, $shape, $shapeId);
-                }
-                /*else if ($shape instanceof PHPPowerPoint_Shape_Table) {
-                $this->_writeTable($objWriter, $shape, $shapeId);
+                /*
+                elseif ($shape instanceof PHPPowerPoint_Shape_Table) {
+                    $this->_writeTable($objWriter, $shape, $shapeId);
                 } elseif ($shape instanceof PHPPowerPoint_Shape_Line) {
-                $this->_writeLineShape($objWriter, $shape, $shapeId);
+                    $this->_writeLineShape($objWriter, $shape, $shapeId);
                 } elseif ($shape instanceof PHPPowerPoint_Shape_Chart) {
-                $this->_writeChart($objWriter, $shape, $shapeId);
-                }*/
-                else if ($shape instanceof PHPPowerPoint_Shape_BaseDrawing) {
+                    $this->_writeChart($objWriter, $shape, $shapeId);
+                }
+                */
+                } elseif ($shape instanceof PHPPowerPoint_Shape_BaseDrawing) {
                     $this->_writePic($objWriter, $shape, $shapeId);
                 }
             }
@@ -438,11 +439,10 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                     }
                 }
                 $objWriter->endElement();
-            }
             //===============================================
             // Bullet list
             //===============================================
-            elseif ($paragraph->getBulletStyle()->getBulletType() == 'bullet') {
+            } elseif ($paragraph->getBulletStyle()->getBulletType() == 'bullet') {
                 $bCustomShapeHasBullet = true;
                 // Open the bullet list
                 if ($sCustomShapeLastBullet != 'bullet' || ($sCustomShapeLastBullet == $paragraph->getBulletStyle()->getBulletType() && $iCustomShapeLastBulletLevel < $paragraph->getAlignment()->getLevel())) {

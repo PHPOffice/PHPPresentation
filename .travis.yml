@@ -39,13 +39,13 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - phpcs --standard=PSR2 -n Classes/
-  - phpcs --standard=PSR2 -n Tests/PHPPowerPoint
-  ## PHP Copy/Paste Detector
-  - php phpcpd.phar --verbose Classes/
-  ## PHP Mess Detector
-  - phpmd Classes/ text codesize,unusedcode,naming,design
-  ## PHPLOC
-  - php phploc.phar Classes/
+  - phpcs --standard=phpcs.xml -n Classes/
+  - phpcs --standard=phpcs.xml -n Tests/PHPPowerPoint
   ## PHPUnit
   - phpunit -c ./ --coverage-text
+  ## PHP Copy/Paste Detector
+  # - php phpcpd.phar Classes/
+  ## PHP Mess Detector
+  # - phpmd Classes/ text codesize,unusedcode,naming,design
+  ## PHPLOC
+  - php phploc.phar Classes/
