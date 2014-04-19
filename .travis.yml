@@ -31,7 +31,7 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - phpcs --standard=PSR2 Classes/
+  - phpcs --standard=PSR2 -n Classes/
   ## PHP Copy/Paste Detector
   - php phpcpd.phar --verbose Classes/
   ## PHP Mess Detector
