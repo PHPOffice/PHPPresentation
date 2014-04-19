@@ -171,7 +171,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                            $shapeId
      * @throws Exception
      */
-    private function _writeChart(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Shape_Chart $shape = null, $shapeId)
+    private function _writeChart(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -241,7 +241,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                             $shapeId
      * @throws Exception
      */
-    private function _writePic(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Shape_BaseDrawing $shape = null, $shapeId)
+    private function _writePic(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_BaseDrawing $shape, $shapeId)
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -367,7 +367,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                            $shapeId
      * @throws Exception
      */
-    private function _writeTxt(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Shape_RichText $shape = null, $shapeId)
+    private function _writeTxt(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_RichText $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:sp');
@@ -508,7 +508,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                            $shapeId
      * @throws Exception
      */
-    private function _writeTable(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Shape_Table $shape = null, $shapeId)
+    private function _writeTable(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Table $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -881,7 +881,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                            $shapeId
      * @throws Exception
      */
-    private function _writeLineShape(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Shape_Line $shape = null, $shapeId)
+    private function _writeLineShape(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Line $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:cxnSp');
@@ -992,7 +992,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Borders    $pBorders  Borders
      * @throws Exception
      */
-    protected function _writeBorders(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Style_Borders $pBorders = null)
+    protected function _writeBorders(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Borders $pBorders)
     {
         $this->_writeBorder($objWriter, $pBorders->getLeft(), 'L');
         $this->_writeBorder($objWriter, $pBorders->getRight(), 'R');
@@ -1010,7 +1010,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  string                         $pElementName Element name
      * @throws Exception
      */
-    protected function _writeBorder(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Style_Border $pBorder = null, $pElementName = 'L')
+    protected function _writeBorder(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Border $pBorder, $pElementName = 'L')
     {
         // Line style
         $lineStyle = $pBorder->getLineStyle();
@@ -1076,7 +1076,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws Exception
      */
-    protected function _writeFill(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Style_Fill $pFill = null)
+    protected function _writeFill(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Fill $pFill)
     {
         // Is it a fill?
         if ($pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_NONE) {
@@ -1106,7 +1106,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws Exception
      */
-    protected function _writeSolidFill(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Style_Fill $pFill = null)
+    protected function _writeSolidFill(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Fill $pFill)
     {
         // a:gradFill
         $objWriter->startElement('a:solidFill');
@@ -1126,7 +1126,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws Exception
      */
-    protected function _writeGradientFill(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Style_Fill $pFill = null)
+    protected function _writeGradientFill(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Fill $pFill)
     {
         // a:gradFill
         $objWriter->startElement('a:gradFill');
@@ -1173,7 +1173,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws Exception
      */
-    protected function _writePatternFill(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint_Style_Fill $pFill = null)
+    protected function _writePatternFill(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Fill $pFill)
     {
         // a:pattFill
         $objWriter->startElement('a:pattFill');
@@ -1207,7 +1207,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param PHPPowerPoint_Shared_XMLWriter                               $objWriter XML Writer
      * @param PHPPowerPoint_Shape|PHPPowerPoint_Shape_RichText_TextElement $shape
      */
-    private function _writeHyperlink(PHPPowerPoint_Shared_XMLWriter $objWriter = null, $shape = null)
+    private function _writeHyperlink(PHPPowerPoint_Shared_XMLWriter $objWriter, $shape)
     {
         // a:hlinkClick
         $objWriter->startElement('a:hlinkClick');
