@@ -1,19 +1,27 @@
 language: php
 
-php:
+php:  
   - 5.3.3
   - 5.3
   - 5.4
   - 5.5
+  - 5.6
+  - hhvm
+
+
 
 matrix:
   allow_failures:
     - php: 5.3.3
+    - php: 5.6
+    - php: hhvm
 
 before_script:
   ## Composer
-  - curl -s http://getcomposer.org/installer | php
-  - php composer.phar install
+  # - curl -s http://getcomposer.org/installer | php
+  # - php composer.phar install --prefer-source
+  - composer self-update
+  - composer install --prefer-source
   ## PHP_CodeSniffer
   - pyrus install pear/PHP_CodeSniffer
   - phpenv rehash
@@ -31,7 +39,8 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - phpcs --standard=PSR2 -n Classes/
+  - phpcs --standard=PSR2 -n src/
+  - phpcs --standard=PSR2 -n tests/
   ## PHP Copy/Paste Detector
   - php phpcpd.phar --verbose Classes/
   ## PHP Mess Detector
@@ -40,7 +49,3 @@ script:
   - php phploc.phar Classes/
   ## PHPUnit
   - phpunit -c ./ --coverage-text
-
-notifications:
-  email:
-    - progi1984@gmail.com
