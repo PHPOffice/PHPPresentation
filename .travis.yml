@@ -1,6 +1,6 @@
 language: php
 
-php:  
+php:
   - 5.3.3
   - 5.3
   - 5.4
@@ -39,8 +39,8 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - phpcs --standard=PSR2 -n src/
-  - phpcs --standard=PSR2 -n tests/
+  - phpcs --standard=PSR2 -n Classes/
+  - phpcs --standard=PSR2 -n Tests/PHPPowerPoint
   ## PHP Copy/Paste Detector
   - php phpcpd.phar --verbose Classes/
   ## PHP Mess Detector

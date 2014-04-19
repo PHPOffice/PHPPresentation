@@ -12,6 +12,11 @@
  */
 class AutoloaderTest extends PHPUnit_Framework_TestCase
 {
+    public function testRegister()
+    {
+        $this->assertTrue(PHPPowerPoint_Autoloader::Register());
+    }
+
     public function testAutoloaderNonPHPPowerPointClass()
     {
         $className = 'InvalidClass';
@@ -49,7 +54,6 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
         //    Must return an object...
         $this->assertTrue(is_object($result));
         //    ... of the correct type
-        $this->assertTrue(is_a($result,'PHPPowerPoint'));
+        $this->assertTrue(is_a($result, 'PHPPowerPoint'));
     }
-
 }
