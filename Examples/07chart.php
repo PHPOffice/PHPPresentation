@@ -256,7 +256,7 @@ function createTemplatedSlide(PHPPowerPoint $objPHPPowerPoint)
     $slide->createDrawingShape()
           ->setName('PHPPowerPoint logo')
           ->setDescription('PHPPowerPoint logo')
-          ->setPath('./images/phppowerpoint_logo.gif')
+          ->setPath('./resources/phppowerpoint_logo.gif')
           ->setHeight(40)
           ->setOffsetX(10)
           ->setOffsetY(720 - 10 - 40);

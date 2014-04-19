@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -44,12 +44,12 @@ $objPHPPowerPoint = new PHPPowerPoint();
 // Set properties
 echo date('H:i:s') . " Set properties\n";
 $objPHPPowerPoint->getProperties()->setCreator("Maarten Balliauw")
-								  ->setLastModifiedBy("Maarten Balliauw")
-								  ->setTitle("Office 2007 PPTX Test Document")
-								  ->setSubject("Office 2007 PPTX Test Document")
-								  ->setDescription("Test document for Office 2007 PPTX, generated using PHP classes.")
-								  ->setKeywords("office 2007 openxml php")
-								  ->setCategory("Test result file");
+                                  ->setLastModifiedBy("Maarten Balliauw")
+                                  ->setTitle("Office 2007 PPTX Test Document")
+                                  ->setSubject("Office 2007 PPTX Test Document")
+                                  ->setDescription("Test document for Office 2007 PPTX, generated using PHP classes.")
+                                  ->setKeywords("office 2007 openxml php")
+                                  ->setCategory("Test result file");
 
 // Remove first slide
 echo date('H:i:s') . " Remove first slide\n";
@@ -159,14 +159,14 @@ echo date('H:i:s') . " Done writing file.\r\n";
  */
 function createTemplatedSlide(PHPPowerPoint $objPHPPowerPoint)
 {
-	// Create slide
-	$slide = $objPHPPowerPoint->createSlide();
+    // Create slide
+    $slide = $objPHPPowerPoint->createSlide();
 
     // Add logo
     $slide->createDrawingShape()
           ->setName('PHPPowerPoint logo')
           ->setDescription('PHPPowerPoint logo')
-          ->setPath('./images/phppowerpoint_logo.gif')
+          ->setPath('./resources/phppowerpoint_logo.gif')
           ->setHeight(40)
           ->setOffsetX(10)
           ->setOffsetY(720 - 10 - 40);
