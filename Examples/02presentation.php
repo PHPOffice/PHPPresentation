@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -35,10 +35,10 @@ set_include_path(get_include_path() . PATH_SEPARATOR . '../Classes/');
 include 'PHPPowerPoint.php';
 
 if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
-	define('EOL', PHP_EOL);
+    define('EOL', PHP_EOL);
 }
 else {
-	define('EOL', '<br />');
+    define('EOL', '<br />');
 }
 
 // Create new PHPPowerPoint object
@@ -48,12 +48,12 @@ $objPHPPowerPoint = new PHPPowerPoint();
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
 $objPHPPowerPoint->getProperties()->setCreator('Maarten Balliauw')
-								  ->setLastModifiedBy('Maarten Balliauw')
-								  ->setTitle('Office 2007 PPTX Test Document')
-								  ->setSubject('Office 2007 PPTX Test Document')
-								  ->setDescription('Test document for Office 2007 PPTX, generated using PHP classes.')
-								  ->setKeywords('office 2007 openxml php')
-								  ->setCategory('Test result file');
+                                  ->setLastModifiedBy('Maarten Balliauw')
+                                  ->setTitle('Office 2007 PPTX Test Document')
+                                  ->setSubject('Office 2007 PPTX Test Document')
+                                  ->setDescription('Test document for Office 2007 PPTX, generated using PHP classes.')
+                                  ->setKeywords('office 2007 openxml php')
+                                  ->setCategory('Test result file');
 
 // Remove first slide
 echo date('H:i:s') . ' Remove first slide'.EOL;
@@ -112,10 +112,10 @@ $shape = $currentSlide->createRichTextShape()
       ->setOffsetX(10)
       ->setOffsetY(100);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT)
-											->setMarginLeft(25)
-											->setIndent(-25);
+                                            ->setMarginLeft(25)
+                                            ->setIndent(-25);
 $shape->getActiveParagraph()->getFont()->setSize(36)
-                   					   ->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
+                                       ->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
 $shape->getActiveParagraph()->getBulletStyle()->setBulletType(PHPPowerPoint_Style_Bullet::TYPE_BULLET);
 
 $shape->createTextRun('A class library');
@@ -150,27 +150,27 @@ $shape->setHeight(600)
       ->setOffsetX(10)
       ->setOffsetY(100);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT)
-											->setMarginLeft(25)
-											->setIndent(-25);
+                                            ->setMarginLeft(25)
+                                            ->setIndent(-25);
 $shape->getActiveParagraph()->getFont()->setSize(36)
-                   					   ->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
+                                       ->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
 $shape->getActiveParagraph()->getBulletStyle()->setBulletType(PHPPowerPoint_Style_Bullet::TYPE_BULLET);
 
 $shape->createTextRun('Generate slide decks');
 $shape->createParagraph()->getAlignment()->setLevel(1)
-										 ->setMarginLeft(75)
-										 ->setIndent(-25);
+                                         ->setMarginLeft(75)
+                                         ->setIndent(-25);
 $shape->createTextRun('Represent business data');
 $shape->createParagraph()->createTextRun('Show a family slide show');
 $shape->createParagraph()->createTextRun('...');
 
 $shape->createParagraph()->getAlignment()->setLevel(0)
-										 ->setMarginLeft(25)
-										 ->setIndent(-25);
+                                         ->setMarginLeft(25)
+                                         ->setIndent(-25);
 $shape->createTextRun('Export these to different formats');
 $shape->createParagraph()->getAlignment()->setLevel(1)
-										 ->setMarginLeft(75)
-										 ->setIndent(-25);
+                                         ->setMarginLeft(75)
+                                         ->setIndent(-25);
 $shape->createTextRun('PowerPoint 2007');
 $shape->createParagraph()->createTextRun('Serialized');
 $shape->createParagraph()->createTextRun('... (more to come) ...');
@@ -215,15 +215,14 @@ $textRun->getFont()->setSize(36)
 $textRun->getHyperlink()->setUrl('http://phppowerpoint.codeplex.com')
                         ->setTooltip('PHPPowerPoint');
 
-
-// Save PowerPoint 2007 file
-echo date('H:i:s') . ' Write to PowerPoint2007 format'.EOL;
-$objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
-$objWriter->save(str_replace('.php', '.pptx', __FILE__));
-
-echo date('H:i:s') . ' Write to OpenDocumentPresentation format'.EOL;
-$objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'ODPresentation');
-$objWriter->save(str_replace('.php', '.odp', __FILE__));
+// Save files
+$basename = basename(__FILE__, '.php');
+$formats = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
+foreach ($formats as $format => $extension) {
+    echo date('H:i:s') . " Write to {$format} format".EOL;
+    $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, $format);
+    $objWriter->save("results/{$basename}.{$extension}");
+}
 
 // Echo memory peak usage
 echo date('H:i:s') . ' Peak memory usage: ' . (memory_get_peak_usage(true) / 1024 / 1024) . ' MB'.EOL;
@@ -238,10 +237,10 @@ echo date('H:i:s') . ' Done writing file.'.EOL;
  * @return PHPPowerPoint_Slide
  */
 function createTemplatedSlide(PHPPowerPoint $objPHPPowerPoint){
-	// Create slide
-	$slide = $objPHPPowerPoint->createSlide();
+    // Create slide
+    $slide = $objPHPPowerPoint->createSlide();
 
-	// Add background image
+    // Add background image
     $slide->createDrawingShape()
           ->setName('Background')
           ->setDescription('Background')

@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -42,12 +42,12 @@ $objPHPPowerPoint = new PHPPowerPoint();
 // Set properties
 echo date('H:i:s') . " Set properties\n";
 $objPHPPowerPoint->getProperties()->setCreator("Maarten Balliauw")
-								  ->setLastModifiedBy("Maarten Balliauw")
-								  ->setTitle("Office 2007 PPTX Test Document")
-								  ->setSubject("Office 2007 PPTX Test Document")
-								  ->setDescription("Test document for Office 2007 PPTX, generated using PHP classes.")
-								  ->setKeywords("office 2007 openxml php")
-								  ->setCategory("Test result file");
+                                  ->setLastModifiedBy("Maarten Balliauw")
+                                  ->setTitle("Office 2007 PPTX Test Document")
+                                  ->setSubject("Office 2007 PPTX Test Document")
+                                  ->setDescription("Test document for Office 2007 PPTX, generated using PHP classes.")
+                                  ->setKeywords("office 2007 openxml php")
+                                  ->setCategory("Test result file");
 
 // Create slide
 echo date('H:i:s') . " Create slide\n";
@@ -80,18 +80,19 @@ $textRun->getFont()->setBold(true)
                    ->setColor( new PHPPowerPoint_Style_Color( 'FFC00000' ) );
 
 // Save serialized file
+$basename = basename(__FILE__, '.php');
 echo date('H:i:s') . " Write to serialized format\n";
 $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'Serialized');
-$objWriter->save(str_replace('.php', '.phppt', __FILE__));
+$objWriter->save("results/{$basename}.phppt");
 
 // Read from serialized file
 echo date('H:i:s') . " Read from serialized format\n";
-$objPHPPowerPoint = PHPPowerPoint_IOFactory::load(str_replace('.php', '.phppt', __FILE__));
+$objPHPPowerPoint = PHPPowerPoint_IOFactory::load("results/{$basename}.phppt");
 
 // Save PowerPoint 2007 file
 echo date('H:i:s') . " Write to PowerPoint2007 format\n";
 $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
-$objWriter->save(str_replace('.php', '.pptx', __FILE__));
+$objWriter->save("results/{$basename}.pptx");
 
 // Echo memory peak usage
 echo date('H:i:s') . " Peak memory usage: " . (memory_get_peak_usage(true) / 1024 / 1024) . " MB\r\n";

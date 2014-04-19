@@ -21,7 +21,7 @@
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
+ * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
@@ -42,12 +42,12 @@ $objPHPPowerPoint = new PHPPowerPoint();
 // Set properties
 echo date('H:i:s') . " Set properties\n";
 $objPHPPowerPoint->getProperties()->setCreator("Maarten Balliauw")
-								  ->setLastModifiedBy("Maarten Balliauw")
-								  ->setTitle("Office 2007 PPTX Test Document")
-								  ->setSubject("Office 2007 PPTX Test Document")
-								  ->setDescription("Test document for Office 2007 PPTX, generated using PHP classes.")
-								  ->setKeywords("office 2007 openxml php")
-								  ->setCategory("Test result file");
+                                  ->setLastModifiedBy("Maarten Balliauw")
+                                  ->setTitle("Office 2007 PPTX Test Document")
+                                  ->setSubject("Office 2007 PPTX Test Document")
+                                  ->setDescription("Test document for Office 2007 PPTX, generated using PHP classes.")
+                                  ->setKeywords("office 2007 openxml php")
+                                  ->setCategory("Test result file");
 
 // Create slide
 echo date('H:i:s') . " Create slide\n";
@@ -72,11 +72,15 @@ $shape->setName('Sample image')
       ->setOffsetY(10);
 $currentSlide->addShape($shape);
 
-
-// Save PowerPoint 2007 file
-echo date('H:i:s') . " Write to PowerPoint2007 format\n";
-$objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
-$objWriter->save(str_replace('.php', '.pptx', __FILE__));
+// Save files
+// @todo Error in ODT getPath
+$basename = basename(__FILE__, '.php');
+$formats = array('PowerPoint2007' => 'pptx');
+foreach ($formats as $format => $extension) {
+    echo date('H:i:s') . " Write to {$format} format\r\n";
+    $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, $format);
+    $objWriter->save("results/{$basename}.{$extension}");
+}
 
 // Echo memory peak usage
 echo date('H:i:s') . " Peak memory usage: " . (memory_get_peak_usage(true) / 1024 / 1024) . " MB\r\n";
