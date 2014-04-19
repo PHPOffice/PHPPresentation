@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /** PHPPowerPoint root directory */
 if (!defined('PHPPOWERPOINT_ROOT')) {
     /**
@@ -36,7 +35,6 @@ if (!defined('PHPPOWERPOINT_ROOT')) {
     PHPPowerPoint_Autoloader::Register();
     PHPPowerPoint_Shared_ZipStreamWrapper::register();
 }
-
 
 /**
  * PHPPowerPoint_Slide
@@ -85,7 +83,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     /**
      * Create a new slide
      *
-     * @param PHPPowerPoint         $pParent
+     * @param PHPPowerPoint $pParent
      */
     public function __construct(PHPPowerPoint $pParent = null)
     {
@@ -112,12 +110,13 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     /**
      * Add shape to slide
      *
-     * @param PHPPowerPoint_Shape $shape
+     * @param  PHPPowerPoint_Shape $shape
      * @return PHPPowerPoint_Shape
      */
     public function addShape(PHPPowerPoint_Shape $shape)
     {
         $shape->setSlide($this);
+
         return $shape;
     }
 
@@ -130,16 +129,17 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     {
         $shape = new PHPPowerPoint_Shape_RichText();
         $this->addShape($shape);
+
         return $shape;
     }
 
     /**
      * Create line shape
      *
-     * @param int $fromX Starting point x offset
-     * @param int $fromY Starting point y offset
-     * @param int $toX Ending point x offset
-     * @param int $toY Ending point y offset
+     * @param  int                      $fromX Starting point x offset
+     * @param  int                      $fromY Starting point y offset
+     * @param  int                      $toX   Ending point x offset
+     * @param  int                      $toY   Ending point y offset
      * @return PHPPowerPoint_Shape_Line
      */
     public function createLineShape($fromX, $fromY, $toX, $toY)
@@ -159,6 +159,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     {
         $shape = new PHPPowerPoint_Shape_Chart();
         $this->addShape($shape);
+
         return $shape;
     }
 
@@ -171,19 +172,21 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     {
         $shape = new PHPPowerPoint_Shape_Drawing();
         $this->addShape($shape);
+
         return $shape;
     }
 
     /**
      * Create table shape
      *
-     * @param int $columns Number of columns
+     * @param  int                       $columns Number of columns
      * @return PHPPowerPoint_Shape_Table
      */
     public function createTableShape($columns = 1)
     {
         $shape = new PHPPowerPoint_Shape_Table($columns);
         $this->addShape($shape);
+
         return $shape;
     }
 
@@ -200,13 +203,14 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     /**
      * Re-bind parent
      *
-     * @param PHPPowerPoint $parent
+     * @param  PHPPowerPoint       $parent
      * @return PHPPowerPoint_Slide
      */
     public function rebindParent(PHPPowerPoint $parent)
     {
         $this->_parent->removeSlideByIndex($this->_parent->getIndex($this));
         $this->_parent = $parent;
+
         return $this;
     }
 
@@ -223,12 +227,13 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     /**
      * Set slide layout
      *
-     * @param string $layout
+     * @param  string              $layout
      * @return PHPPowerPoint_Slide
      */
     public function setSlideLayout($layout = PHPPowerPoint_Slide_Layout::BLANK)
     {
         $this->_slideLayout = $layout;
+
         return $this;
     }
 
@@ -245,19 +250,20 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     /**
      * Set slide master id
      *
-     * @param int $masterId
+     * @param  int                 $masterId
      * @return PHPPowerPoint_Slide
      */
     public function setSlideMasterId($masterId = 1)
     {
         $this->_slideMasterId = $masterId;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -277,7 +283,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -290,7 +296,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

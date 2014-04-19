@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Shadow
  *
@@ -36,14 +35,14 @@
 class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
 {
     /* Shadow alignment */
-    const SHADOW_BOTTOM                         = 'b';
-    const SHADOW_BOTTOM_LEFT                    = 'bl';
-    const SHADOW_BOTTOM_RIGHT                   = 'br';
-    const SHADOW_CENTER                         = 'ctr';
-    const SHADOW_LEFT                           = 'l';
-    const SHADOW_TOP                            = 't';
-    const SHADOW_TOP_LEFT                       = 'tl';
-    const SHADOW_TOP_RIGHT                      = 'tr';
+    const SHADOW_BOTTOM = 'b';
+    const SHADOW_BOTTOM_LEFT = 'bl';
+    const SHADOW_BOTTOM_RIGHT = 'br';
+    const SHADOW_CENTER = 'ctr';
+    const SHADOW_LEFT = 'l';
+    const SHADOW_TOP = 't';
+    const SHADOW_TOP_LEFT = 'tl';
+    const SHADOW_TOP_RIGHT = 'tr';
 
     /**
      * Visible
@@ -104,13 +103,13 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_visible             = false;
-        $this->_blurRadius          = 6;
-        $this->_distance            = 2;
-        $this->_direction           = 0;
-        $this->_alignment           = self::SHADOW_BOTTOM_RIGHT;
-        $this->_color               = new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_BLACK);
-        $this->_alpha               = 50;
+        $this->_visible    = false;
+        $this->_blurRadius = 6;
+        $this->_distance   = 2;
+        $this->_direction  = 0;
+        $this->_alignment  = self::SHADOW_BOTTOM_RIGHT;
+        $this->_color      = new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_BLACK);
+        $this->_alpha      = 50;
     }
 
     /**
@@ -118,18 +117,21 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getVisible() {
+    public function getVisible()
+    {
         return $this->_visible;
     }
 
     /**
      * Set Visible
      *
-     * @param boolean $pValue
+     * @param  boolean                    $pValue
      * @return PHPPowerPoint_Shape_Shadow
      */
-    public function setVisible($pValue = false) {
+    public function setVisible($pValue = false)
+    {
         $this->_visible = $pValue;
+
         return $this;
     }
 
@@ -138,18 +140,21 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getBlurRadius() {
+    public function getBlurRadius()
+    {
         return $this->_blurRadius;
     }
 
     /**
      * Set Blur radius
      *
-     * @param int $pValue
+     * @param  int                        $pValue
      * @return PHPPowerPoint_Shape_Shadow
      */
-    public function setBlurRadius($pValue = 6) {
+    public function setBlurRadius($pValue = 6)
+    {
         $this->_blurRadius = $pValue;
+
         return $this;
     }
 
@@ -158,18 +163,21 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getDistance() {
+    public function getDistance()
+    {
         return $this->_distance;
     }
 
     /**
      * Set Shadow distance
      *
-     * @param int $pValue
+     * @param  int                        $pValue
      * @return PHPPowerPoint_Shape_Shadow
      */
-    public function setDistance($pValue = 2) {
+    public function setDistance($pValue = 2)
+    {
         $this->_distance = $pValue;
+
         return $this;
     }
 
@@ -178,98 +186,102 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getDirection() {
+    public function getDirection()
+    {
         return $this->_direction;
     }
 
     /**
      * Set Shadow direction (in degrees)
      *
-     * @param int $pValue
+     * @param  int                        $pValue
      * @return PHPPowerPoint_Shape_Shadow
      */
-    public function setDirection($pValue = 0) {
+    public function setDirection($pValue = 0)
+    {
         $this->_direction = $pValue;
+
         return $this;
     }
 
-   /**
+    /**
      * Get Shadow alignment
      *
      * @return int
      */
-    public function getAlignment() {
+    public function getAlignment()
+    {
         return $this->_alignment;
     }
 
     /**
      * Set Shadow alignment
      *
-     * @param int $pValue
+     * @param  int                        $pValue
      * @return PHPPowerPoint_Shape_Shadow
      */
-    public function setAlignment($pValue = 0) {
+    public function setAlignment($pValue = 0)
+    {
         $this->_alignment = $pValue;
+
         return $this;
     }
 
-   /**
+    /**
      * Get Color
      *
      * @return PHPPowerPoint_Style_Color
      */
-    public function getColor() {
+    public function getColor()
+    {
         return $this->_color;
     }
 
     /**
      * Set Color
      *
-     * @param   PHPPowerPoint_Style_Color $pValue
-     * @throws  Exception
+     * @param  PHPPowerPoint_Style_Color  $pValue
+     * @throws Exception
      * @return PHPPowerPoint_Shape_Shadow
      */
-    public function setColor(PHPPowerPoint_Style_Color $pValue = null) {
+    public function setColor(PHPPowerPoint_Style_Color $pValue = null)
+    {
         $this->_color = $pValue;
+
         return $this;
     }
 
-   /**
+    /**
      * Get Alpha
      *
      * @return int
      */
-    public function getAlpha() {
+    public function getAlpha()
+    {
         return $this->_alpha;
     }
 
     /**
      * Set Alpha
      *
-     * @param int $pValue
+     * @param  int                        $pValue
      * @return PHPPowerPoint_Shape_Shadow
      */
-    public function setAlpha($pValue = 0) {
+    public function setAlpha($pValue = 0)
+    {
         $this->_alpha = $pValue;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
-        return md5(
-              ($this->_visible ? 't' : 'f')
-            . $this->_blurRadius
-            . $this->_distance
-            . $this->_direction
-            . $this->_alignment
-            . $this->_color->getHashCode()
-            . $this->_alpha
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5(($this->_visible ? 't' : 'f') . $this->_blurRadius . $this->_distance . $this->_direction . $this->_alignment . $this->_color->getHashCode() . $this->_alpha . __CLASS__);
     }
 
     /**
@@ -285,9 +297,10 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -297,16 +310,18 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

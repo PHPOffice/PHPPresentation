@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Style_Bullet
  *
@@ -137,18 +136,21 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getBulletType() {
+    public function getBulletType()
+    {
         return $this->_bulletType;
     }
 
     /**
      * Set bullet type
      *
-     * @param string $pValue
+     * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Bullet
      */
-    public function setBulletType($pValue = self::TYPE_NONE) {
+    public function setBulletType($pValue = self::TYPE_NONE)
+    {
         $this->_bulletType = $pValue;
+
         return $this;
     }
 
@@ -157,21 +159,24 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getBulletFont() {
+    public function getBulletFont()
+    {
         return $this->_bulletFont;
     }
 
     /**
      * Set bullet font
      *
-     * @param string $pValue
+     * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Bullet
      */
-    public function setBulletFont($pValue = 'Calibri') {
+    public function setBulletFont($pValue = 'Calibri')
+    {
         if ($pValue == '') {
             $pValue = 'Calibri';
         }
         $this->_bulletFont = $pValue;
+
         return $this;
     }
 
@@ -180,18 +185,21 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getBulletChar() {
+    public function getBulletChar()
+    {
         return $this->_bulletChar;
     }
 
     /**
      * Set bullet char
      *
-     * @param string $pValue
+     * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Bullet
      */
-    public function setBulletChar($pValue = '-') {
+    public function setBulletChar($pValue = '-')
+    {
         $this->_bulletChar = $pValue;
+
         return $this;
     }
 
@@ -200,18 +208,21 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getBulletNumericStyle() {
+    public function getBulletNumericStyle()
+    {
         return $this->_bulletNumericStyle;
     }
 
     /**
      * Set bullet numeric style
      *
-     * @param string $pValue
+     * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Bullet
      */
-    public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT) {
+    public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT)
+    {
         $this->_bulletNumericStyle = $pValue;
+
         return $this;
     }
 
@@ -220,29 +231,33 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getBulletNumericStartAt() {
+    public function getBulletNumericStartAt()
+    {
         return $this->_bulletNumericStartAt;
     }
 
     /**
      * Set bullet numeric start at
      *
-     * @param string $pValue
+     * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Bullet
      */
-    public function setBulletNumericStartAt($pValue = 1) {
+    public function setBulletNumericStartAt($pValue = 1)
+    {
         $this->_bulletNumericStartAt = $pValue;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         return md5(
-              $this->_bulletType
+            $this->_bulletType
             . $this->_bulletFont
             . $this->_bulletChar
             . $this->_bulletNumericStyle
@@ -264,9 +279,10 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -276,16 +292,18 @@ class PHPPowerPoint_Style_Bullet implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

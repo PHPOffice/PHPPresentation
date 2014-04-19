@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default
  *
@@ -38,7 +37,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default extends PHPPowerPoi
     /**
      * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default
      */
-    public function __construct() {
+    public function __construct()
+    {
         // Master slide
         $this->_masterSlides = array(
             array(

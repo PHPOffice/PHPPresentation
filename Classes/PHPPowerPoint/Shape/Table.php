@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Table
  *
@@ -70,8 +69,8 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
     /**
      * Get row
      *
-     * @param int $row Row number
-     * @param boolean $exceptionAsNull Return a null value instead of an exception?
+     * @param  int                           $row             Row number
+     * @param  boolean                       $exceptionAsNull Return a null value instead of an exception?
      * @return PHPPowerPoint_Shape_Table_Row
      */
     public function getRow($row = 0, $exceptionAsNull = false)
@@ -105,13 +104,14 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
     {
         $row           = new PHPPowerPoint_Shape_Table_Row($this->_columnCount);
         $this->_rows[] = $row;
+
         return $row;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -136,7 +136,7 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -149,7 +149,7 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {
@@ -163,8 +163,9 @@ class PHPPowerPoint_Shape_Table extends PHPPowerPoint_Shape_BaseDrawing implemen
     {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ($key == '_parent')
+            if ($key == '_parent') {
                 continue;
+            }
 
             if (is_object($value)) {
                 $this->$key = clone $value;

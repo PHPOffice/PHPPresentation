@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Chart_PlotArea
  *
@@ -105,19 +104,21 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
         if (is_null($this->_type)) {
             throw new Exception('Chart type has not been set.');
         }
+
         return $this->_type;
     }
 
     /**
      * Set type
      *
-     * @param PHPPowerPoint_Shape_Chart_Type $value
+     * @param  PHPPowerPoint_Shape_Chart_Type     $value
      * @return PHPPowerPoint_Shape_Chart_PlotArea
      * @throws Exception
      */
     public function setType(PHPPowerPoint_Shape_Chart_Type $value)
     {
         $this->_type = $value;
+
         return $this;
     }
 
@@ -154,12 +155,13 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
     /**
      * Set OffsetX (as a fraction of the chart)
      *
-     * @param float $value
+     * @param  float                           $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setOffsetX($value = 0)
     {
         $this->_offsetX = $value;
+
         return $this;
     }
 
@@ -176,12 +178,13 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
     /**
      * Set OffsetY (as a fraction of the chart)
      *
-     * @param float $value
+     * @param  float                           $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setOffsetY($value = 0)
     {
         $this->_offsetY = $value;
+
         return $this;
     }
 
@@ -198,12 +201,13 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param float $value
+     * @param  float                           $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setWidth($value = 0)
     {
         $this->_width = $value;
+
         return $this;
     }
 
@@ -220,19 +224,20 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param float $value
+     * @param  float                           $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setHeight($value = 0)
     {
         $this->_height = $value;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -252,7 +257,7 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -265,7 +270,7 @@ class PHPPowerPoint_Shape_Chart_PlotArea implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

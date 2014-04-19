@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Style_Fill
  *
@@ -103,18 +102,21 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getFillType() {
+    public function getFillType()
+    {
         return $this->_fillType;
     }
 
     /**
      * Set Fill Type
      *
-     * @param string $pValue    PHPPowerPoint_Style_Fill fill type
+     * @param  string                   $pValue PHPPowerPoint_Style_Fill fill type
      * @return PHPPowerPoint_Style_Fill
      */
-    public function setFillType($pValue = PHPPowerPoint_Style_Fill::FILL_NONE) {
+    public function setFillType($pValue = PHPPowerPoint_Style_Fill::FILL_NONE)
+    {
         $this->_fillType = $pValue;
+
         return $this;
     }
 
@@ -123,18 +125,21 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      *
      * @return double
      */
-    public function getRotation() {
+    public function getRotation()
+    {
         return $this->_rotation;
     }
 
     /**
      * Set Rotation
      *
-     * @param double $pValue
+     * @param  double                   $pValue
      * @return PHPPowerPoint_Style_Fill
      */
-    public function setRotation($pValue = 0) {
+    public function setRotation($pValue = 0)
+    {
         $this->_rotation = $pValue;
+
         return $this;
     }
 
@@ -143,7 +148,8 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Color
      */
-    public function getStartColor() {
+    public function getStartColor()
+    {
         // It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
         // So bind as an assurance.
         return $this->_startColor;
@@ -152,12 +158,14 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
     /**
      * Set Start Color
      *
-     * @param   PHPPowerPoint_Style_Color $pValue
-     * @throws  Exception
+     * @param  PHPPowerPoint_Style_Color $pValue
+     * @throws Exception
      * @return PHPPowerPoint_Style_Fill
      */
-    public function setStartColor(PHPPowerPoint_Style_Color $pValue = null) {
+    public function setStartColor(PHPPowerPoint_Style_Color $pValue = null)
+    {
         $this->_startColor = $pValue;
+
         return $this;
     }
 
@@ -166,7 +174,8 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Color
      */
-    public function getEndColor() {
+    public function getEndColor()
+    {
         // It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
         // So bind as an assurance.
         return $this->_endColor;
@@ -175,23 +184,26 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
     /**
      * Set End Color
      *
-     * @param   PHPPowerPoint_Style_Color $pValue
-     * @throws  Exception
+     * @param  PHPPowerPoint_Style_Color $pValue
+     * @throws Exception
      * @return PHPPowerPoint_Style_Fill
      */
-    public function setEndColor(PHPPowerPoint_Style_Color $pValue = null) {
+    public function setEndColor(PHPPowerPoint_Style_Color $pValue = null)
+    {
         $this->_endColor = $pValue;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         return md5(
-              $this->getFillType()
+            $this->getFillType()
             . $this->getRotation()
             . $this->getStartColor()->getHashCode()
             . $this->getEndColor()->getHashCode()
@@ -212,9 +224,10 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -224,16 +237,18 @@ class PHPPowerPoint_Style_Fill implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

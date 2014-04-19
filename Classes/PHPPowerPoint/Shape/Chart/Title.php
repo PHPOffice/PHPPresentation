@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Chart_Title
  *
@@ -115,12 +114,13 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     /**
      * Set Visible
      *
-     * @param boolean $value
+     * @param  boolean                         $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setVisible($value = true)
     {
         $this->_visible = $value;
+
         return $this;
     }
 
@@ -137,12 +137,13 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     /**
      * Set Text
      *
-     * @param string $value
+     * @param  string                          $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setText($value = null)
     {
         $this->_text = $value;
+
         return $this;
     }
 
@@ -159,12 +160,13 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     /**
      * Set OffsetX (as a fraction of the chart)
      *
-     * @param float $value
+     * @param  float                           $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setOffsetX($value = 0.01)
     {
         $this->_offsetX = $value;
+
         return $this;
     }
 
@@ -181,12 +183,13 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     /**
      * Set OffsetY (as a fraction of the chart)
      *
-     * @param float $value
+     * @param  float                           $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setOffsetY($value = 0.01)
     {
         $this->_offsetY = $value;
+
         return $this;
     }
 
@@ -203,12 +206,13 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param float $value
+     * @param  float                           $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setWidth($value = 0)
     {
         $this->_width = $value;
+
         return $this;
     }
 
@@ -225,12 +229,13 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param float $value
+     * @param  float                           $value
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setHeight($value = 0)
     {
         $this->_height = $value;
+
         return $this;
     }
 
@@ -247,13 +252,14 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     /**
      * Set font
      *
-     * @param   PHPPowerPoint_Style_Font        $pFont      Font
-     * @throws  Exception
+     * @param  PHPPowerPoint_Style_Font               $pFont Font
+     * @throws Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function setFont(PHPPowerPoint_Style_Font $pFont = null)
     {
         $this->_font = $pFont;
+
         return $this;
     }
 
@@ -270,19 +276,20 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
     /**
      * Set alignment
      *
-     * @param PHPPowerPoint_Style_Alignment     $alignment
+     * @param  PHPPowerPoint_Style_Alignment   $alignment
      * @return PHPPowerPoint_Shape_Chart_Title
      */
     public function setAlignment(PHPPowerPoint_Style_Alignment $alignment)
     {
         $this->_alignment = $alignment;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -302,7 +309,7 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -315,7 +322,7 @@ class PHPPowerPoint_Shape_Chart_Title implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

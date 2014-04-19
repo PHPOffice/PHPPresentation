@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Chart_Type
  *
@@ -72,7 +71,7 @@ abstract class PHPPowerPoint_Shape_Chart_Type implements PHPPowerPoint_IComparab
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -92,7 +91,7 @@ abstract class PHPPowerPoint_Shape_Chart_Type implements PHPPowerPoint_IComparab
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -105,7 +104,7 @@ abstract class PHPPowerPoint_Shape_Chart_Type implements PHPPowerPoint_IComparab
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Chart_Series
  *
@@ -152,12 +151,13 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set Title
      *
-     * @param string $value
+     * @param  string                           $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function setTitle($value = 'Series Title')
     {
         $this->_title = $value;
+
         return $this;
     }
 
@@ -174,7 +174,7 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Get DataPointFill
      *
-     * @param int $dataPointIndex Data point index.
+     * @param  int                      $dataPointIndex Data point index.
      * @return PHPPowerPoint_Style_Fill
      */
     public function getDataPointFill($dataPointIndex)
@@ -182,6 +182,7 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
         if (!isset($this->_dataPointFills[$dataPointIndex])) {
             $this->_dataPointFills[$dataPointIndex] = new PHPPowerPoint_Style_Fill();
         }
+
         return $this->_dataPointFills[$dataPointIndex];
     }
 
@@ -208,25 +209,27 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set Values
      *
-     * @param array $value
+     * @param  array                            $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function setValues($value = array())
     {
         $this->_values = $value;
+
         return $this;
     }
 
     /**
      * Add Value
      *
-     * @param mixed $key
-     * @param mixed $value
+     * @param  mixed                            $key
+     * @param  mixed                            $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function addValue($key, $value)
     {
         $this->_values[$key] = $value;
+
         return $this;
     }
 
@@ -243,12 +246,13 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set ShowSeriesName
      *
-     * @param boolean $value
+     * @param  boolean                          $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function setShowSeriesName($value)
     {
         $this->_showSeriesName = $value;
+
         return $this;
     }
 
@@ -265,12 +269,13 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set ShowCategoryName
      *
-     * @param boolean $value
+     * @param  boolean                          $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function setShowCategoryName($value)
     {
         $this->_showCategoryName = $value;
+
         return $this;
     }
 
@@ -287,12 +292,13 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set ShowValue
      *
-     * @param boolean $value
+     * @param  boolean                          $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function setShowValue($value)
     {
         $this->_showValue = $value;
+
         return $this;
     }
 
@@ -309,12 +315,13 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set ShowPercentage
      *
-     * @param boolean $value
+     * @param  boolean                          $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function setShowPercentage($value)
     {
         $this->_showPercentage = $value;
+
         return $this;
     }
 
@@ -331,12 +338,13 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set ShowLeaderLines
      *
-     * @param boolean $value
+     * @param  boolean                          $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function setShowLeaderLines($value)
     {
         $this->_showLeaderLines = $value;
+
         return $this;
     }
 
@@ -353,13 +361,14 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set font
      *
-     * @param   PHPPowerPoint_Style_Font        $pFont      Font
-     * @throws  Exception
+     * @param  PHPPowerPoint_Style_Font               $pFont Font
+     * @throws Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function setFont(PHPPowerPoint_Style_Font $pFont = null)
     {
         $this->_font = $pFont;
+
         return $this;
     }
 
@@ -376,19 +385,20 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
     /**
      * Set label position
      *
-     * @param string $value
+     * @param  string                           $value
      * @return PHPPowerPoint_Shape_Chart_Series
      */
     public function setLabelPosition($value)
     {
         $this->_labelPosition = $value;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -408,7 +418,7 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -421,7 +431,7 @@ class PHPPowerPoint_Shape_Chart_Series implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_RichText
  *
@@ -36,17 +35,17 @@
 class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
 {
     /** Wrapping */
-    const WRAP_NONE   = 'none';
+    const WRAP_NONE = 'none';
     const WRAP_SQUARE = 'square';
 
     /** Autofit */
-    const AUTOFIT_DEFAULT   = 'spAutoFit';
-    const AUTOFIT_SHAPE     = 'spAutoFit';
+    const AUTOFIT_DEFAULT = 'spAutoFit';
+    const AUTOFIT_SHAPE = 'spAutoFit';
     const AUTOFIT_NOAUTOFIT = 'noAutofit';
-    const AUTOFIT_NORMAL    = 'normAutoFit';
+    const AUTOFIT_NORMAL = 'normAutoFit';
 
     /** Overflow */
-    const OVERFLOW_CLIP     = 'clip';
+    const OVERFLOW_CLIP = 'clip';
     const OVERFLOW_OVERFLOW = 'overflow';
 
     /**
@@ -149,7 +148,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
         $this->_richTextParagraphs = array(
             new PHPPowerPoint_Shape_RichText_Paragraph()
         );
-        $this->_activeParagraph = 0;
+        $this->_activeParagraph    = 0;
 
         // Initialize parent
         parent::__construct();
@@ -178,15 +177,17 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
     /**
      * Set active paragraph
      *
-     * @param int $index
+     * @param  int                                    $index
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function setActiveParagraph($index = 0)
     {
-        if ($index >= count($this->_richTextParagraphs))
+        if ($index >= count($this->_richTextParagraphs)) {
             throw new Exception("Invalid paragraph count.");
+        }
 
         $this->_activeParagraph = $index;
+
         return $this->getActiveParagraph();
     }
 
@@ -197,8 +198,9 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      */
     public function getParagraph($index = 0)
     {
-        if ($index >= count($this->_richTextParagraphs))
+        if ($index >= count($this->_richTextParagraphs)) {
             throw new Exception("Invalid paragraph count.");
+        }
 
         return $this->_richTextParagraphs[$index];
     }
@@ -210,12 +212,12 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      */
     public function createParagraph()
     {
-        $alignment = clone $this->getActiveParagraph()->getAlignment();
-        $font = clone $this->getActiveParagraph()->getFont();
+        $alignment   = clone $this->getActiveParagraph()->getAlignment();
+        $font        = clone $this->getActiveParagraph()->getFont();
         $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
 
         $this->_richTextParagraphs[] = new PHPPowerPoint_Shape_RichText_Paragraph();
-        $this->_activeParagraph = count($this->_richTextParagraphs) - 1;
+        $this->_activeParagraph      = count($this->_richTextParagraphs) - 1;
 
         $this->getActiveParagraph()->setAlignment($alignment);
         $this->getActiveParagraph()->setFont($font);
@@ -227,22 +229,23 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
     /**
      * Add text
      *
-     * @param   PHPPowerPoint_Shape_RichText_ITextElement       $pText      Rich text element
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shape_RichText_ITextElement $pText Rich text element
+     * @throws Exception
      * @return PHPPowerPoint_Shape_RichText
      */
     public function addText(PHPPowerPoint_Shape_RichText_ITextElement $pText = null)
     {
         $this->_richTextParagraphs[$this->_activeParagraph]->addText($pText);
+
         return $this;
     }
 
     /**
      * Create text (can not be formatted !)
      *
-     * @param   string  $pText  Text
-     * @return  PHPPowerPoint_Shape_RichText_TextElement
-     * @throws  Exception
+     * @param  string                                   $pText Text
+     * @return PHPPowerPoint_Shape_RichText_TextElement
+     * @throws Exception
      */
     public function createText($pText = '')
     {
@@ -252,8 +255,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
     /**
      * Create break
      *
-     * @return  PHPPowerPoint_Shape_RichText_Break
-     * @throws  Exception
+     * @return PHPPowerPoint_Shape_RichText_Break
+     * @throws Exception
      */
     public function createBreak()
     {
@@ -263,9 +266,9 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
     /**
      * Create text run (can be formatted)
      *
-     * @param   string  $pText  Text
-     * @return  PHPPowerPoint_Shape_RichText_Run
-     * @throws  Exception
+     * @param  string                           $pText Text
+     * @return PHPPowerPoint_Shape_RichText_Run
+     * @throws Exception
      */
     public function createTextRun($pText = '')
     {
@@ -296,7 +299,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getPlainText();
     }
 
@@ -313,18 +317,19 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
     /**
      * Set paragraphs
      *
-     * @param   PHPPowerPoint_Shape_RichText_Paragraphs[]   $paragraphs     Array of paragraphs
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shape_RichText_Paragraphs[] $paragraphs Array of paragraphs
+     * @throws Exception
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setParagraphs($paragraphs = null)
     {
         if (is_array($paragraphs)) {
             $this->_richTextParagraphs = $paragraphs;
-            $this->_activeParagraph = count($this->_richTextParagraphs) - 1;
+            $this->_activeParagraph    = count($this->_richTextParagraphs) - 1;
         } else {
             throw new Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
         }
+
         return $this;
     }
 
@@ -333,7 +338,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return string
      */
-    public function getWrap() {
+    public function getWrap()
+    {
         return $this->_wrap;
     }
 
@@ -343,8 +349,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value string
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setWrap($value = PHPPowerPoint_Shape_RichText::WRAP_SQUARE) {
+    public function setWrap($value = PHPPowerPoint_Shape_RichText::WRAP_SQUARE)
+    {
         $this->_wrap = $value;
+
         return $this;
     }
 
@@ -353,7 +361,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return string
      */
-    public function getAutoFit() {
+    public function getAutoFit()
+    {
         return $this->_autoFit;
     }
 
@@ -363,8 +372,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value string
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setAutoFit($value = PHPPowerPoint_Shape_RichText::AUTOFIT_DEFAULT) {
+    public function setAutoFit($value = PHPPowerPoint_Shape_RichText::AUTOFIT_DEFAULT)
+    {
         $this->_autoFit = $value;
+
         return $this;
     }
 
@@ -373,7 +384,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return string
      */
-    public function getHorizontalOverflow() {
+    public function getHorizontalOverflow()
+    {
         return $this->_horizontalOverflow;
     }
 
@@ -383,8 +395,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value string
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setHorizontalOverflow($value = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW) {
+    public function setHorizontalOverflow($value = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW)
+    {
         $this->_horizontalOverflow = $value;
+
         return $this;
     }
 
@@ -393,7 +407,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return string
      */
-    public function getVerticalOverflow() {
+    public function getVerticalOverflow()
+    {
         return $this->_verticalOverflow;
     }
 
@@ -403,8 +418,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value string
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setVerticalOverflow($value = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW) {
+    public function setVerticalOverflow($value = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW)
+    {
         $this->_verticalOverflow = $value;
+
         return $this;
     }
 
@@ -413,7 +430,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return boolean
      */
-    public function getUpright() {
+    public function getUpright()
+    {
         return $this->_upright;
     }
 
@@ -423,8 +441,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value boolean
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setUpright($value = false) {
+    public function setUpright($value = false)
+    {
         $this->_upright = $value;
+
         return $this;
     }
 
@@ -433,7 +453,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return boolean
      */
-    public function getVertical() {
+    public function getVertical()
+    {
         return $this->_vertical;
     }
 
@@ -443,8 +464,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value boolean
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setVertical($value = false) {
+    public function setVertical($value = false)
+    {
         $this->_vertical = $value;
+
         return $this;
     }
 
@@ -453,7 +476,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return int
      */
-    public function getColumns() {
+    public function getColumns()
+    {
         return $this->_columns;
     }
 
@@ -463,12 +487,14 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value int
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setColumns($value = 1) {
+    public function setColumns($value = 1)
+    {
         if ($value > 16 || $value < 1) {
             throw new Exception('Number of columns should be 1-16');
         }
 
         $this->_columns = $value;
+
         return $this;
     }
 
@@ -477,7 +503,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return float
      */
-    public function getInsetBottom() {
+    public function getInsetBottom()
+    {
         return $this->_bottomInset;
     }
 
@@ -487,8 +514,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value float
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setInsetBottom($value = 4.8) {
+    public function setInsetBottom($value = 4.8)
+    {
         $this->_bottomInset = $value;
+
         return $this;
     }
 
@@ -497,7 +526,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return float
      */
-    public function getInsetLeft() {
+    public function getInsetLeft()
+    {
         return $this->_leftInset;
     }
 
@@ -507,8 +537,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value float
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setInsetLeft($value = 9.6) {
+    public function setInsetLeft($value = 9.6)
+    {
         $this->_leftInset = $value;
+
         return $this;
     }
 
@@ -517,7 +549,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return float
      */
-    public function getInsetRight() {
+    public function getInsetRight()
+    {
         return $this->_rightInset;
     }
 
@@ -527,8 +560,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value float
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setInsetRight($value = 9.6) {
+    public function setInsetRight($value = 9.6)
+    {
         $this->_rightInset = $value;
+
         return $this;
     }
 
@@ -537,7 +572,8 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @return float
      */
-    public function getInsetTop() {
+    public function getInsetTop()
+    {
         return $this->_topInset;
     }
 
@@ -547,38 +583,26 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value float
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setInsetTop($value = 4.8) {
+    public function setInsetTop($value = 4.8)
+    {
         $this->_topInset = $value;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         $hashElements = '';
         foreach ($this->_richTextParagraphs as $element) {
             $hashElements .= $element->getHashCode();
         }
 
-        return md5(
-              $hashElements
-            . $this->_wrap
-            . $this->_autoFit
-            . $this->_horizontalOverflow
-            . $this->_verticalOverflow
-            . ($this->_upright ? '1' : '0')
-            . ($this->_vertical ? '1' : '0')
-            . $this->_columns
-            . $this->_bottomInset
-            . $this->_leftInset
-            . $this->_rightInset
-            . $this->_topInset
-            . parent::getHashCode()
-            . __CLASS__
-        );
+        return md5($hashElements . $this->_wrap . $this->_autoFit . $this->_horizontalOverflow . $this->_verticalOverflow . ($this->_upright ? '1' : '0') . ($this->_vertical ? '1' : '0') . $this->_columns . $this->_bottomInset . $this->_leftInset . $this->_rightInset . $this->_topInset . parent::getHashCode() . __CLASS__);
     }
 
     /**
@@ -594,9 +618,10 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -606,19 +631,23 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ($key == '_parent') continue;
+            if ($key == '_parent') {
+                continue;
+            }
 
             if (is_object($value)) {
                 $this->$key = clone $value;

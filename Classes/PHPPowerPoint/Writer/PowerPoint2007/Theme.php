@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Theme
  *
@@ -38,10 +37,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Theme extends PHPPowerPoint_Writer_Pow
     /**
      * Write theme to XML format
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint
-     * @param   int             $masterId
-     * @return  string          XML Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @param  int           $masterId
+     * @return string        XML Output
+     * @throws Exception
      */
     public function writeTheme(PHPPowerPoint $pPHPPowerPoint = null, $masterId = 1)
     {

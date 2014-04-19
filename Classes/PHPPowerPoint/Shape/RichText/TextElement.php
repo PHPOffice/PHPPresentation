@@ -23,7 +23,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_RichText_TextElement
  *
@@ -50,7 +49,7 @@ class PHPPowerPoint_Shape_RichText_TextElement implements PHPPowerPoint_Shape_Ri
     /**
      * Create a new PHPPowerPoint_Shape_RichText_TextElement instance
      *
-     * @param   string      $pText      Text
+     * @param string $pText Text
      */
     public function __construct($pText = '')
     {
@@ -61,20 +60,23 @@ class PHPPowerPoint_Shape_RichText_TextElement implements PHPPowerPoint_Shape_Ri
     /**
      * Get text
      *
-     * @return string   Text
+     * @return string Text
      */
-    public function getText() {
+    public function getText()
+    {
         return $this->_text;
     }
 
     /**
      * Set text
      *
-     * @param   $pText string   Text
+     * @param                                            $pText string   Text
      * @return PHPPowerPoint_Shape_RichText_ITextElement
      */
-    public function setText($pText = '') {
+    public function setText($pText = '')
+    {
         $this->_text = $pText;
+
         return $this;
     }
 
@@ -83,7 +85,8 @@ class PHPPowerPoint_Shape_RichText_TextElement implements PHPPowerPoint_Shape_Ri
      *
      * @return PHPPowerPoint_Style_Font
      */
-    public function getFont() {
+    public function getFont()
+    {
         return null;
     }
 
@@ -107,39 +110,39 @@ class PHPPowerPoint_Shape_RichText_TextElement implements PHPPowerPoint_Shape_Ri
         if (is_null($this->_hyperlink)) {
             $this->_hyperlink = new PHPPowerPoint_Shape_Hyperlink();
         }
+
         return $this->_hyperlink;
     }
 
     /**
      * Set Hyperlink
      *
-     * @param   PHPPowerPoint_Shape_Hyperlink   $pHyperlink
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shape_Hyperlink $pHyperlink
+     * @throws Exception
      * @return PHPPowerPoint_Shape
      */
     public function setHyperlink(PHPExcel_Cell_Hyperlink $pHyperlink = null)
     {
         $this->_hyperlink = $pHyperlink;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_text
-            . (is_null($this->_hyperlink) ? '' : $this->_hyperlink->getHashCode())
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_text . (is_null($this->_hyperlink) ? '' : $this->_hyperlink->getHashCode()) . __CLASS__);
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

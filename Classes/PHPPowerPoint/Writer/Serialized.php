@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_Serialized
  *
@@ -45,7 +44,7 @@ class PHPPowerPoint_Writer_Serialized implements PHPPowerPoint_Writer_IWriter
     /**
      * Create a new PHPPowerPoint_Writer_Serialized
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint
+     * @param PHPPowerPoint $pPHPPowerPoint
      */
     public function __construct(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -56,8 +55,8 @@ class PHPPowerPoint_Writer_Serialized implements PHPPowerPoint_Writer_IWriter
     /**
      * Save PHPPowerPoint to file
      *
-     * @param   string      $pFileName
-     * @throws  Exception
+     * @param  string    $pFileName
+     * @throws Exception
      */
     public function save($pFilename = null)
     {
@@ -101,7 +100,8 @@ class PHPPowerPoint_Writer_Serialized implements PHPPowerPoint_Writer_IWriter
      * @return PHPPowerPoint
      * @throws Exception
      */
-    public function getPHPPowerPoint() {
+    public function getPHPPowerPoint()
+    {
         if (!is_null($this->_presentation)) {
             return $this->_presentation;
         } else {
@@ -112,22 +112,24 @@ class PHPPowerPoint_Writer_Serialized implements PHPPowerPoint_Writer_IWriter
     /**
      * Get PHPPowerPoint object
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint PHPPowerPoint object
-     * @throws  Exception
+     * @param  PHPPowerPoint                   $pPHPPowerPoint PHPPowerPoint object
+     * @throws Exception
      * @return PHPPowerPoint_Writer_Serialized
      */
-    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null) {
+    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
+    {
         $this->_presentation = $pPHPPowerPoint;
+
         return $this;
     }
 
     /**
      * Serialize PHPPowerPoint object to XML
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint
-     * @param   string      $pFilename
-     * @return  string      XML Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @param  string        $pFilename
+     * @return string        XML Output
+     * @throws Exception
      */
     private function _writeSerialized(PHPPowerPoint $pPHPPowerPoint = null, $pFilename = '')
     {
@@ -151,19 +153,19 @@ class PHPPowerPoint_Writer_Serialized implements PHPPowerPoint_Writer_IWriter
         $objWriter->setIndent(true);
 
         // XML header
-        $objWriter->startDocument('1.0','UTF-8','yes');
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
 
         // PHPPowerPoint
         $objWriter->startElement('PHPPowerPoint');
         $objWriter->writeAttribute('version', '##VERSION##');
 
-            // Comment
-            $objWriter->writeComment('This file has been generated using PHPPowerPoint v##VERSION## (http://www.codeplex.com/PHPPowerPoint). It contains a base64 encoded serialized version of the PHPPowerPoint internal object.');
+        // Comment
+        $objWriter->writeComment('This file has been generated using PHPPowerPoint v##VERSION## (http://www.codeplex.com/PHPPowerPoint). It contains a base64 encoded serialized version of the PHPPowerPoint internal object.');
 
-            // Data
-            $objWriter->startElement('data');
-                $objWriter->writeCData( base64_encode(serialize($pPHPPowerPoint)) );
-            $objWriter->endElement();
+        // Data
+        $objWriter->startElement('data');
+        $objWriter->writeCData(base64_encode(serialize($pPHPPowerPoint)));
+        $objWriter->endElement();
 
         $objWriter->endElement();
 

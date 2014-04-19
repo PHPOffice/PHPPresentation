@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /** PHPPowerPoint root directory */
 if (!defined('PHPPOWERPOINT_ROOT')) {
     /**
@@ -36,7 +35,6 @@ if (!defined('PHPPOWERPOINT_ROOT')) {
     PHPPowerPoint_Autoloader::Register();
     PHPPowerPoint_Shared_ZipStreamWrapper::register();
 }
-
 
 /**
  * PHPPowerPoint_IOFactory
@@ -81,7 +79,7 @@ class PHPPowerPoint_IOFactory
     /**
      * Set search locations
      *
-     * @param array $value
+     * @param  array     $value
      * @throws Exception
      */
     public static function setSearchLocations($value)
@@ -96,9 +94,9 @@ class PHPPowerPoint_IOFactory
     /**
      * Add search location
      *
-     * @param string $type          Example: IWriter
-     * @param string $location      Example: PHPPowerPoint/Writer/{0}.php
-     * @param string $classname     Example: PHPPowerPoint_Writer_{0}
+     * @param string $type      Example: IWriter
+     * @param string $location  Example: PHPPowerPoint/Writer/{0}.php
+     * @param string $classname Example: PHPPowerPoint_Writer_{0}
      */
     public static function addSearchLocation($type = '', $location = '', $classname = '')
     {
@@ -112,8 +110,8 @@ class PHPPowerPoint_IOFactory
     /**
      * Create PHPPowerPoint_Writer_IWriter
      *
-     * @param PHPPowerPoint $PHPPowerPoint
-     * @param string  $writerType   Example: PowerPoint2007
+     * @param  PHPPowerPoint                $PHPPowerPoint
+     * @param  string                       $writerType    Example: PowerPoint2007
      * @return PHPPowerPoint_Writer_IWriter
      */
     public static function createWriter(PHPPowerPoint $PHPPowerPoint, $writerType = '')
@@ -145,7 +143,7 @@ class PHPPowerPoint_IOFactory
     /**
      * Create PHPPowerPoint_Reader_IReader
      *
-     * @param string $readerType    Example: PowerPoint2007
+     * @param  string                       $readerType Example: PowerPoint2007
      * @return PHPPowerPoint_Reader_IReader
      */
     public static function createReader($readerType = '')
@@ -177,9 +175,9 @@ class PHPPowerPoint_IOFactory
     /**
      * Loads PHPPowerPoint from file using automatic PHPPowerPoint_Reader_IReader resolution
      *
-     * @param   string      $pFileName
-     * @return  PHPPowerPoint
-     * @throws  Exception
+     * @param  string        $pFileName
+     * @return PHPPowerPoint
+     * @throws Exception
      */
     public static function load($pFilename)
     {

@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Reader_IReader
  *
@@ -38,16 +37,16 @@ interface PHPPowerPoint_Reader_IReader
     /**
      * Can the current PHPPowerPoint_Reader_IReader read the file?
      *
-     * @param   string      $pFileName
-     * @return  boolean
+     * @param  string  $pFileName
+     * @return boolean
      */
     public function canRead($pFilename);
 
     /**
      * Loads PHPPowerPoint from file
      *
-     * @param   string      $pFileName
-     * @throws  Exception
+     * @param  string    $pFileName
+     * @throws Exception
      */
     public function load($pFilename);
 }

@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape
  *
@@ -137,9 +136,9 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Set Slide
      *
-     * @param   PHPPowerPoint_Slide     $pValue
-     * @param   bool                    $pOverrideOld   If a Slide has already been assigned, overwrite it and remove image from old Slide?
-     * @throws  Exception
+     * @param  PHPPowerPoint_Slide $pValue
+     * @param  bool                $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
+     * @throws Exception
      * @return PHPPowerPoint_Shape
      */
     public function setSlide(PHPPowerPoint_slide $pValue = null, $pOverrideOld = false)
@@ -167,6 +166,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
                 throw new Exception("A PHPPowerPoint_Slide has already been assigned. Shapes can only exist on one PHPPowerPoint_Slide.");
             }
         }
+
         return $this;
     }
 
@@ -183,12 +183,13 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Set OffsetX
      *
-     * @param int $pValue
+     * @param  int                 $pValue
      * @return PHPPowerPoint_Shape
      */
     public function setOffsetX($pValue = 0)
     {
         $this->_offsetX = $pValue;
+
         return $this;
     }
 
@@ -205,12 +206,13 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Set OffsetY
      *
-     * @param int $pValue
+     * @param  int                 $pValue
      * @return PHPPowerPoint_Shape
      */
     public function setOffsetY($pValue = 0)
     {
         $this->_offsetY = $pValue;
+
         return $this;
     }
 
@@ -227,12 +229,13 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Set Width
      *
-     * @param int $pValue
+     * @param  int                 $pValue
      * @return PHPPowerPoint_Shape
      */
     public function setWidth($pValue = 0)
     {
         $this->_width = $pValue;
+
         return $this;
     }
 
@@ -249,20 +252,21 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Set Height
      *
-     * @param int $pValue
+     * @param  int                 $pValue
      * @return PHPPowerPoint_Shape
      */
     public function setHeight($pValue = 0)
     {
         $this->_height = $pValue;
+
         return $this;
     }
 
     /**
      * Set width and height with proportional resize
      *
-     * @param int $width
-     * @param int $height
+     * @param  int                 $width
+     * @param  int                 $height
      * @example $objDrawing->setWidthAndHeight(160,120);
      * @return PHPPowerPoint_Shape
      */
@@ -270,6 +274,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     {
         $this->_width  = $width;
         $this->_height = $height;
+
         return $this;
     }
 
@@ -286,12 +291,13 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Set Rotation
      *
-     * @param int $pValue
+     * @param  int                 $pValue
      * @return PHPPowerPoint_Shape
      */
     public function setRotation($pValue = 0)
     {
         $this->_rotation = $pValue;
+
         return $this;
     }
 
@@ -328,13 +334,14 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Set Shadow
      *
-     * @param   PHPPowerPoint_Shape_Shadow $pValue
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shape_Shadow $pValue
+     * @throws Exception
      * @return PHPPowerPoint_Shape
      */
     public function setShadow(PHPPowerPoint_Shape_Shadow $pValue = null)
     {
         $this->_shadow = $pValue;
+
         return $this;
     }
 
@@ -358,26 +365,28 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
         if (is_null($this->_hyperlink)) {
             $this->_hyperlink = new PHPPowerPoint_Shape_Hyperlink();
         }
+
         return $this->_hyperlink;
     }
 
     /**
      * Set Hyperlink
      *
-     * @param   PHPPowerPoint_Shape_Hyperlink   $pHyperlink
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shape_Hyperlink $pHyperlink
+     * @throws Exception
      * @return PHPPowerPoint_Shape
      */
     public function setHyperlink(PHPExcel_Cell_Hyperlink $pHyperlink = null)
     {
         $this->_hyperlink = $pHyperlink;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -397,7 +406,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -410,7 +419,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

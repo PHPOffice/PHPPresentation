@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shared_File
  *
@@ -36,24 +35,26 @@
 class PHPPowerPoint_Shared_File
 {
     /**
-      * Verify if a file exists
-      *
-      * @param  string  $pFilename  Filename
-      * @return bool
-      */
-    public static function file_exists($pFilename) {
+     * Verify if a file exists
+     *
+     * @param  string $pFilename Filename
+     * @return bool
+     */
+    public static function file_exists($pFilename)
+    {
         // Sick construction, but it seems that
         // file_exists returns strange values when
         // doing the original file_exists on ZIP archives...
-        if ( strtolower(substr($pFilename, 0, 3)) == 'zip' ) {
+        if (strtolower(substr($pFilename, 0, 3)) == 'zip') {
             // Open ZIP file and verify if the file exists
-            $zipFile        = substr($pFilename, 6, strpos($pFilename, '#') - 6);
-            $archiveFile    = substr($pFilename, strpos($pFilename, '#') + 1);
+            $zipFile     = substr($pFilename, 6, strpos($pFilename, '#') - 6);
+            $archiveFile = substr($pFilename, strpos($pFilename, '#') + 1);
 
             $zip = new ZipArchive();
             if ($zip->open($zipFile) === true) {
                 $returnValue = ($zip->getFromName($archiveFile) !== false);
                 $zip->close();
+
                 return $returnValue;
             } else {
                 return false;
@@ -67,10 +68,11 @@ class PHPPowerPoint_Shared_File
     /**
      * Returns canonicalized absolute pathname, also for ZIP archives
      *
-     * @param string $pFilename
+     * @param  string $pFilename
      * @return string
      */
-    public static function realpath($pFilename) {
+    public static function realpath($pFilename)
+    {
         // Returnvalue
         $returnValue = '';
 
@@ -79,8 +81,8 @@ class PHPPowerPoint_Shared_File
 
         // Found something?
         if ($returnValue == '' || is_null($returnValue)) {
-            $pathArray = split('/' , $pFilename);
-            while(in_array('..', $pathArray) && $pathArray[0] != '..') {
+            $pathArray = split('/', $pFilename);
+            while (in_array('..', $pathArray) && $pathArray[0] != '..') {
                 for ($i = 0; $i < count($pathArray); ++$i) {
                     if ($pathArray[$i] == '..' && $i > 0) {
                         unset($pathArray[$i]);

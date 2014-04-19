@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_IWriter
  *
@@ -38,8 +37,8 @@ interface PHPPowerPoint_Writer_IWriter
     /**
      * Save PHPPowerPoint to file
      *
-     * @param   string      $pFileName
-     * @throws  Exception
+     * @param  string    $pFileName
+     * @throws Exception
      */
     public function save($pFilename = null);
 }

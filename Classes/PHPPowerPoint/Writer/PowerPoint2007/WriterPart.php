@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_WriterPart
  *
@@ -45,10 +44,11 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_WriterPart
     /**
      * Set parent IWriter object
      *
-     * @param PHPPowerPoint_Writer_IWriter  $pWriter
+     * @param  PHPPowerPoint_Writer_IWriter $pWriter
      * @throws Exception
      */
-    public function setParentWriter(PHPPowerPoint_Writer_IWriter $pWriter = null) {
+    public function setParentWriter(PHPPowerPoint_Writer_IWriter $pWriter = null)
+    {
         $this->_parentWriter = $pWriter;
     }
 
@@ -58,7 +58,8 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_WriterPart
      * @return PHPPowerPoint_Writer_IWriter
      * @throws Exception
      */
-    public function getParentWriter() {
+    public function getParentWriter()
+    {
         if (!is_null($this->_parentWriter)) {
             return $this->_parentWriter;
         } else {

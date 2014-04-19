@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_ODPresentation_Meta
  *
@@ -38,9 +37,9 @@ class PHPPowerPoint_Writer_ODPresentation_Meta extends PHPPowerPoint_Writer_ODPr
     /**
      * Write Meta file to XML format
      *
-     * @param   PHPPowerPoint $pPHPPowerPoint
-     * @return  string                      XML Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @return string        XML Output
+     * @throws Exception
      */
     public function writeMeta(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -53,7 +52,7 @@ class PHPPowerPoint_Writer_ODPresentation_Meta extends PHPPowerPoint_Writer_ODPr
         }
 
         // XML header
-        $objWriter->startDocument('1.0','UTF-8');
+        $objWriter->startDocument('1.0', 'UTF-8');
 
         // office:document-meta
         $objWriter->startElement('office:document-meta');
@@ -70,36 +69,35 @@ class PHPPowerPoint_Writer_ODPresentation_Meta extends PHPPowerPoint_Writer_ODPr
         $objWriter->writeAttribute('xmlns:drawooo', 'http://openoffice.org/2010/draw');
         $objWriter->writeAttribute('office:version', '1.2');
 
-            // office:meta
-            $objWriter->startElement('office:meta');
+        // office:meta
+        $objWriter->startElement('office:meta');
 
-                // dc:creator
-                $objWriter->writeElement('dc:creator', $pPHPPowerPoint->getProperties()->getLastModifiedBy());
-                // dc:date
-                $objWriter->writeElement('dc:date', gmdate('Y-m-d\TH:i:s.000' ,$pPHPPowerPoint->getProperties()->getModified()));
-                // dc:description
-                $objWriter->writeElement('dc:description', $pPHPPowerPoint->getProperties()->getDescription());
-                // dc:subject
-                $objWriter->writeElement('dc:subject', $pPHPPowerPoint->getProperties()->getSubject());
-                // dc:title
-                $objWriter->writeElement('dc:title', $pPHPPowerPoint->getProperties()->getTitle());
-                // meta:creation-date
-                $objWriter->writeElement('meta:creation-date', gmdate('Y-m-d\TH:i:s.000' ,$pPHPPowerPoint->getProperties()->getCreated()));
-                // meta:initial-creator
-                $objWriter->writeElement('meta:initial-creator', $pPHPPowerPoint->getProperties()->getCreator());
-                // meta:keyword
-                $objWriter->writeElement('meta:keyword', $pPHPPowerPoint->getProperties()->getKeywords());
+        // dc:creator
+        $objWriter->writeElement('dc:creator', $pPHPPowerPoint->getProperties()->getLastModifiedBy());
+        // dc:date
+        $objWriter->writeElement('dc:date', gmdate('Y-m-d\TH:i:s.000', $pPHPPowerPoint->getProperties()->getModified()));
+        // dc:description
+        $objWriter->writeElement('dc:description', $pPHPPowerPoint->getProperties()->getDescription());
+        // dc:subject
+        $objWriter->writeElement('dc:subject', $pPHPPowerPoint->getProperties()->getSubject());
+        // dc:title
+        $objWriter->writeElement('dc:title', $pPHPPowerPoint->getProperties()->getTitle());
+        // meta:creation-date
+        $objWriter->writeElement('meta:creation-date', gmdate('Y-m-d\TH:i:s.000', $pPHPPowerPoint->getProperties()->getCreated()));
+        // meta:initial-creator
+        $objWriter->writeElement('meta:initial-creator', $pPHPPowerPoint->getProperties()->getCreator());
+        // meta:keyword
+        $objWriter->writeElement('meta:keyword', $pPHPPowerPoint->getProperties()->getKeywords());
 
-                // @todo : Where these properties are written ?
-                // $pPHPPowerPoint->getProperties()->getCategory()
-                // $pPHPPowerPoint->getProperties()->getCompany()
+        // @todo : Where these properties are written ?
+        // $pPHPPowerPoint->getProperties()->getCategory()
+        // $pPHPPowerPoint->getProperties()->getCompany()
 
-            $objWriter->endElement();
+        $objWriter->endElement();
 
         $objWriter->endElement();
 
         // Return
         return $objWriter->getData();
     }
-
 }

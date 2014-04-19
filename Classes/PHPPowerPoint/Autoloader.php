@@ -61,7 +61,7 @@ class PHPPowerPoint_Autoloader
     /**
      * Autoload a class identified by name
      *
-     * @param   string  $pClassName     Name of the object to load
+     * @param string $pClassName Name of the object to load
      */
     public static function Load($pObjectName)
     {

@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shared_String
  *
@@ -59,11 +58,12 @@ class PHPPowerPoint_Shared_String
     /**
      * Build control characters array
      */
-    private static function _buildControlCharacters() {
+    private static function _buildControlCharacters()
+    {
         for ($i = 0; $i <= 19; ++$i) {
             if ($i != 9 && $i != 10 && $i != 13) {
-                $find = '_x' . sprintf('%04s' , strtoupper(dechex($i))) . '_';
-                $replace = chr($i);
+                $find                            = '_x' . sprintf('%04s', strtoupper(dechex($i))) . '_';
+                $replace                         = chr($i);
                 self::$_controlCharacters[$find] = $replace;
             }
         }
@@ -80,8 +80,7 @@ class PHPPowerPoint_Shared_String
             return self::$_isMbstringEnabled;
         }
 
-        self::$_isMbstringEnabled = function_exists('mb_convert_encoding') ?
-            true : false;
+        self::$_isMbstringEnabled = function_exists('mb_convert_encoding') ? true : false;
 
         return self::$_isMbstringEnabled;
     }
@@ -97,8 +96,7 @@ class PHPPowerPoint_Shared_String
             return self::$_isIconvEnabled;
         }
 
-        self::$_isIconvEnabled = function_exists('iconv') ?
-            true : false;
+        self::$_isIconvEnabled = function_exists('iconv') ? true : false;
 
         return self::$_isIconvEnabled;
     }
@@ -114,15 +112,16 @@ class PHPPowerPoint_Shared_String
      * So you could end up with something like _x0008_ in a string (either in a cell value (<v>)
      * element or in the shared string <t> element.
      *
-     * @param   string  $value  Value to unescape
-     * @return  string
+     * @param  string $value Value to unescape
+     * @return string
      */
-    public static function ControlCharacterOOXML2PHP($value = '') {
-        if(empty(self::$_controlCharacters)) {
+    public static function ControlCharacterOOXML2PHP($value = '')
+    {
+        if (empty(self::$_controlCharacters)) {
             self::_buildControlCharacters();
         }
 
-        return str_replace( array_keys(self::$_controlCharacters), array_values(self::$_controlCharacters), $value );
+        return str_replace(array_keys(self::$_controlCharacters), array_values(self::$_controlCharacters), $value);
     }
 
     /**
@@ -136,34 +135,37 @@ class PHPPowerPoint_Shared_String
      * So you could end up with something like _x0008_ in a string (either in a cell value (<v>)
      * element or in the shared string <t> element.
      *
-     * @param   string  $value  Value to escape
-     * @return  string
+     * @param  string $value Value to escape
+     * @return string
      */
-    public static function ControlCharacterPHP2OOXML($value = '') {
-        if(empty(self::$_controlCharacters)) {
+    public static function ControlCharacterPHP2OOXML($value = '')
+    {
+        if (empty(self::$_controlCharacters)) {
             self::_buildControlCharacters();
         }
 
-        return str_replace( array_values(self::$_controlCharacters), array_keys(self::$_controlCharacters), $value );
+        return str_replace(array_values(self::$_controlCharacters), array_keys(self::$_controlCharacters), $value);
     }
 
     /**
      * Check if a string contains UTF8 data
      *
-     * @param string $value
+     * @param  string  $value
      * @return boolean
      */
-    public static function IsUTF8($value = '') {
+    public static function IsUTF8($value = '')
+    {
         return utf8_encode(utf8_decode($value)) === $value;
     }
 
     /**
      * Formats a numeric value as a string for output in various output writers
      *
-     * @param mixed $value
+     * @param  mixed  $value
      * @return string
      */
-    public static function FormatNumber($value) {
+    public static function FormatNumber($value)
+    {
         return number_format($value, 2, '.', '');
     }
 
@@ -174,7 +176,7 @@ class PHPPowerPoint_Shared_String
      * although this will give wrong results for non-ASCII strings
      * see OpenOffice.org's Documentation of the Microsoft Excel File Format, sect. 2.5.3
      *
-     * @param string $value UTF-8 encoded string
+     * @param  string $value UTF-8 encoded string
      * @return string
      */
     public static function UTF8toBIFF8UnicodeShort($value)
@@ -183,13 +185,13 @@ class PHPPowerPoint_Shared_String
         $ln = self::CountCharacters($value, 'UTF-8');
 
         // option flags
-        $opt = (self::getIsMbstringEnabled() || self::getIsIconvEnabled()) ?
-            0x0001 : 0x0000;
+        $opt = (self::getIsMbstringEnabled() || self::getIsIconvEnabled()) ? 0x0001 : 0x0000;
 
         // characters
         $chars = self::ConvertEncoding($value, 'UTF-16LE', 'UTF-8');
 
         $data = pack('CC', $ln, $opt) . $chars;
+
         return $data;
     }
 
@@ -200,7 +202,7 @@ class PHPPowerPoint_Shared_String
      * although this will give wrong results for non-ASCII strings
      * see OpenOffice.org's Documentation of the Microsoft Excel File Format, sect. 2.5.3
      *
-     * @param string $value UTF-8 encoded string
+     * @param  string $value UTF-8 encoded string
      * @return string
      */
     public static function UTF8toBIFF8UnicodeLong($value)
@@ -209,33 +211,35 @@ class PHPPowerPoint_Shared_String
         $ln = self::CountCharacters($value, 'UTF-8');
 
         // option flags
-        $opt = (self::getIsMbstringEnabled() || self::getIsIconvEnabled()) ?
-            0x0001 : 0x0000;
+        $opt = (self::getIsMbstringEnabled() || self::getIsIconvEnabled()) ? 0x0001 : 0x0000;
 
         // characters
         $chars = self::ConvertEncoding($value, 'UTF-16LE', 'UTF-8');
 
         $data = pack('vC', $ln, $opt) . $chars;
+
         return $data;
     }
 
     /**
      * Convert string from one encoding to another. First try mbstring, then iconv, or no convertion
      *
-     * @param string $value
-     * @param string $to Encoding to convert to, e.g. 'UTF-8'
-     * @param string $from Encoding to convert from, e.g. 'UTF-16LE'
+     * @param  string $value
+     * @param  string $to    Encoding to convert to, e.g. 'UTF-8'
+     * @param  string $from  Encoding to convert from, e.g. 'UTF-16LE'
      * @return string
      */
     public static function ConvertEncoding($value, $to, $from)
     {
         if (self::getIsMbstringEnabled()) {
             $value = mb_convert_encoding($value, $to, $from);
+
             return $value;
         }
 
         if (self::getIsIconvEnabled()) {
             $value = iconv($from, $to, $value);
+
             return $value;
         }
 
@@ -246,25 +250,27 @@ class PHPPowerPoint_Shared_String
     /**
      * Get character count. First try mbstring, then iconv, finally strlen
      *
-     * @param string $value
-     * @param string $enc Encoding
-     * @return int Character count
+     * @param  string $value
+     * @param  string $enc   Encoding
+     * @return int    Character count
      */
     public static function CountCharacters($value, $enc = 'UTF-8')
     {
         if (self::getIsMbstringEnabled()) {
             $count = mb_strlen($value, $enc);
+
             return $count;
         }
 
         if (self::getIsIconvEnabled()) {
             $count = iconv_strlen($value, $enc);
+
             return $count;
         }
 
         // else strlen
         $count = strlen($value);
+
         return $count;
     }
-
 }

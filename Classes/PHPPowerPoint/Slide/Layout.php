@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Slide_Layout
  *
@@ -36,15 +35,15 @@
 class PHPPowerPoint_Slide_Layout
 {
     /** Layout constants */
-    const TITLE_SLIDE               = 'Title Slide';
-    const TITLE_AND_CONTENT         = 'Title and Content';
-    const SECTION_HEADER            = 'Section Header';
-    const TWO_CONTENT               = 'Two Content';
-    const COMPARISON                = 'Comparison';
-    const TITLE_ONLY                = 'Title Only';
-    const BLANK                     = 'Blank';
-    const CONTENT_WITH_CAPTION      = 'Content with Caption';
-    const PICTURE_WITH_CAPTION      = 'Picture with Caption';
-    const TITLE_AND_VERTICAL_TEXT   = 'Title and Vertical Text';
-    const VERTICAL_TITLE_AND_TEXT   = 'Vertical Title and Text';
+    const TITLE_SLIDE = 'Title Slide';
+    const TITLE_AND_CONTENT = 'Title and Content';
+    const SECTION_HEADER = 'Section Header';
+    const TWO_CONTENT = 'Two Content';
+    const COMPARISON = 'Comparison';
+    const TITLE_ONLY = 'Title Only';
+    const BLANK = 'Blank';
+    const CONTENT_WITH_CAPTION = 'Content with Caption';
+    const PICTURE_WITH_CAPTION = 'Picture with Caption';
+    const TITLE_AND_VERTICAL_TEXT = 'Title and Vertical Text';
+    const VERTICAL_TITLE_AND_TEXT = 'Vertical Title and Text';
 }

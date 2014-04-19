@@ -65,7 +65,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
     /**
      * Create a new PHPPowerPoint_Writer_ODPresentation
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint
+     * @param PHPPowerPoint $pPHPPowerPoint
      */
     public function __construct(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -96,8 +96,8 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
     /**
      * Save PHPPowerPoint to file
      *
-     * @param   string      $pFileName
-     * @throws  Exception
+     * @param  string    $pFileName
+     * @throws Exception
      */
     public function save($pFilename = null)
     {
@@ -144,7 +144,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
             $arrMedia = array();
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
                 if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
-                    if(!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)){
+                    if (!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
                         $arrMedia[] = md5($this->getDrawingHashTable()->getByIndex($i)->getPath());
 
                         $imageContents = null;
@@ -165,8 +165,8 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
 
                         $objZip->addFromString('Pictures/' . md5($this->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getDrawingHashTable()->getByIndex($i)->getExtension(), $imageContents);
                     }
-                } else if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
-                    if(!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)){
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
+                    if (!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
                         $arrMedia[] = md5($this->getDrawingHashTable()->getByIndex($i)->getPath());
                         ob_start();
                             call_user_func($this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(), $this->getDrawingHashTable()->getByIndex($i)->getImageResource());
@@ -202,7 +202,8 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
      * @return PHPPowerPoint
      * @throws Exception
      */
-    public function getPHPPowerPoint() {
+    public function getPHPPowerPoint()
+    {
         if (!is_null($this->_presentation)) {
             return $this->_presentation;
         } else {
@@ -213,12 +214,14 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
     /**
      * Get PHPPowerPoint object
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint PHPPowerPoint object
-     * @throws  Exception
+     * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
+     * @throws Exception
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
-    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null) {
+    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
+    {
         $this->_presentation = $pPHPPowerPoint;
+
         return $this;
     }
 
@@ -227,17 +230,19 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
      *
      * @return PHPPowerPoint_HashTable
      */
-    public function getDrawingHashTable() {
+    public function getDrawingHashTable()
+    {
         return $this->_drawingHashTable;
     }
 
     /**
      * Get writer part
      *
-     * @param   string  $pPartName      Writer part name
-     * @return  PHPPowerPoint_Writer_ODPresentation_WriterPart
+     * @param  string                                         $pPartName Writer part name
+     * @return PHPPowerPoint_Writer_ODPresentation_WriterPart
      */
-    function getWriterPart($pPartName = '') {
+    public function getWriterPart($pPartName = '')
+    {
         if ($pPartName != '' && isset($this->_writerParts[strtolower($pPartName)])) {
             return $this->_writerParts[strtolower($pPartName)];
         } else {
@@ -250,19 +255,21 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
      *
      * @return boolean
      */
-    public function getUseDiskCaching() {
+    public function getUseDiskCaching()
+    {
         return $this->_useDiskCaching;
     }
 
     /**
      * Set use disk caching where possible?
      *
-     * @param   boolean     $pValue
-     * @param   string      $pDirectory     Disk caching directory
-     * @throws  Exception   Exception when directory does not exist
+     * @param  boolean                             $pValue
+     * @param  string                              $pDirectory Disk caching directory
+     * @throws Exception                           Exception when directory does not exist
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
-    public function setUseDiskCaching($pValue = false, $pDirectory = null) {
+    public function setUseDiskCaching($pValue = false, $pDirectory = null)
+    {
         $this->_useDiskCaching = $pValue;
 
         if (!is_null($pDirectory)) {
@@ -281,7 +288,8 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
      *
      * @return string
      */
-    public function getDiskCachingDirectory() {
+    public function getDiskCachingDirectory()
+    {
         return $this->_diskCachingDirectory;
     }
 }

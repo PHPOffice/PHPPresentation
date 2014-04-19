@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Style_Border
  *
@@ -101,18 +100,21 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      *
      * @return int
      */
-    public function getLineWidth() {
+    public function getLineWidth()
+    {
         return $this->_lineWidth;
     }
 
     /**
      * Set line width
      *
-     * @param int $pValue
+     * @param  int                        $pValue
      * @return PHPPowerPoint_Style_Border
      */
-    public function setLineWidth($pValue = 1) {
+    public function setLineWidth($pValue = 1)
+    {
         $this->_lineWidth = $pValue;
+
         return $this;
     }
 
@@ -121,21 +123,24 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getLineStyle() {
+    public function getLineStyle()
+    {
         return $this->_lineStyle;
     }
 
     /**
      * Set line style
      *
-     * @param string $pValue
+     * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Border
      */
-    public function setLineStyle($pValue = PHPPowerPoint_Style_Border::LINE_SINGLE) {
+    public function setLineStyle($pValue = PHPPowerPoint_Style_Border::LINE_SINGLE)
+    {
         if ($pValue == '') {
             $pValue = PHPPowerPoint_Style_Border::LINE_SINGLE;
         }
         $this->_lineStyle = $pValue;
+
         return $this;
     }
 
@@ -144,21 +149,24 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getDashStyle() {
+    public function getDashStyle()
+    {
         return $this->_dashStyle;
     }
 
     /**
      * Set dash style
      *
-     * @param string $pValue
+     * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Border
      */
-    public function setDashStyle($pValue = PHPPowerPoint_Style_Border::DASH_SOLID) {
+    public function setDashStyle($pValue = PHPPowerPoint_Style_Border::DASH_SOLID)
+    {
         if ($pValue == '') {
             $pValue = PHPPowerPoint_Style_Border::DASH_SOLID;
         }
         $this->_dashStyle = $pValue;
+
         return $this;
     }
 
@@ -167,30 +175,34 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Color
      */
-    public function getColor() {
+    public function getColor()
+    {
         return $this->_color;
     }
 
     /**
      * Set Border Color
      *
-     * @param   PHPPowerPoint_Style_Color $color
-     * @throws  Exception
+     * @param  PHPPowerPoint_Style_Color  $color
+     * @throws Exception
      * @return PHPPowerPoint_Style_Border
      */
-    public function setColor(PHPPowerPoint_Style_Color $color = null) {
+    public function setColor(PHPPowerPoint_Style_Color $color = null)
+    {
         $this->_color = $color;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         return md5(
-              $this->_lineStyle
+            $this->_lineStyle
             . $this->_lineWidth
             . $this->_dashStyle
             . $this->_color->getHashCode()
@@ -211,9 +223,10 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -223,16 +236,18 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

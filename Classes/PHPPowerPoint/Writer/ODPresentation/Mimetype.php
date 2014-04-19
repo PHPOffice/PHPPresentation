@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_ODPresentation_Mimetype
  *
@@ -38,14 +37,12 @@ class PHPPowerPoint_Writer_ODPresentation_Mimetype extends PHPPowerPoint_Writer_
     /**
      * Write Mimetype to Text format
      *
-     * @param   PHPPowerPoint $pPHPPowerPoint
-     * @return  string                      Text Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @return string        Text Output
+     * @throws Exception
      */
     public function writeMimetype(PHPPowerPoint $pPHPPowerPoint = null)
     {
-
         return 'application/vnd.oasis.opendocument.presentation';
     }
-
 }

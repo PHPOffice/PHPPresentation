@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Hyperlink
  *
@@ -66,15 +65,15 @@ class PHPPowerPoint_Shape_Hyperlink
     /**
      * Create a new PHPPowerPoint_Shape_Hyperlink
      *
-     * @param   string              $pUrl       Url to link the shape to
-     * @param   string              $pTooltip   Tooltip to display on the hyperlink
-     * @throws  Exception
+     * @param  string    $pUrl     Url to link the shape to
+     * @param  string    $pTooltip Tooltip to display on the hyperlink
+     * @throws Exception
      */
     public function __construct($pUrl = '', $pTooltip = '')
     {
         // Initialise member variables
-        $this->_url         = $pUrl;
-        $this->_tooltip     = $pTooltip;
+        $this->_url     = $pUrl;
+        $this->_tooltip = $pTooltip;
     }
 
     /**
@@ -82,18 +81,21 @@ class PHPPowerPoint_Shape_Hyperlink
      *
      * @return string
      */
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->_url;
     }
 
     /**
      * Set URL
      *
-     * @param   string  $value
+     * @param  string                        $value
      * @return PHPPowerPoint_Shape_Hyperlink
      */
-    public function setUrl($value = '') {
+    public function setUrl($value = '')
+    {
         $this->_url = $value;
+
         return $this;
     }
 
@@ -102,19 +104,22 @@ class PHPPowerPoint_Shape_Hyperlink
      *
      * @return int
      */
-    public function getSlideNumber() {
+    public function getSlideNumber()
+    {
         return $this->_slideNumber;
     }
 
     /**
      * Set slide number
      *
-     * @param   int $value
+     * @param  int                           $value
      * @return PHPPowerPoint_Shape_Hyperlink
      */
-    public function setSlideNumber($value = 1) {
-        $this->_url = 'ppaction://hlinksldjump';
+    public function setSlideNumber($value = 1)
+    {
+        $this->_url         = 'ppaction://hlinksldjump';
         $this->_slideNumber = $value;
+
         return $this;
     }
 
@@ -123,18 +128,21 @@ class PHPPowerPoint_Shape_Hyperlink
      *
      * @return string
      */
-    public function getTooltip() {
+    public function getTooltip()
+    {
         return $this->_tooltip;
     }
 
     /**
      * Set tooltip
      *
-     * @param   string  $value
+     * @param  string                        $value
      * @return PHPPowerPoint_Shape_Hyperlink
      */
-    public function setTooltip($value = '') {
+    public function setTooltip($value = '')
+    {
         $this->_tooltip = $value;
+
         return $this;
     }
 
@@ -143,21 +151,19 @@ class PHPPowerPoint_Shape_Hyperlink
      *
      * @return boolean
      */
-    public function isInternal() {
+    public function isInternal()
+    {
         return strpos($this->_url, 'ppaction://') !== false;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_url
-            . $this->_tooltip
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_url . $this->_tooltip . __CLASS__);
     }
 
     /**
@@ -173,9 +179,10 @@ class PHPPowerPoint_Shape_Hyperlink
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -185,9 +192,10 @@ class PHPPowerPoint_Shape_Hyperlink
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 }

@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shared_Drawing
  *
@@ -36,25 +35,27 @@
 class PHPPowerPoint_Shared_Drawing
 {
 
-    const DPI_96        = 96;
+    const DPI_96 = 96;
 
     /**
      * Convert pixels to EMU
      *
-     * @param   int $pValue Value in pixels
-     * @return  int         Value in EMU
+     * @param  int $pValue Value in pixels
+     * @return int Value in EMU
      */
-    public static function pixelsToEMU($pValue = 0) {
+    public static function pixelsToEMU($pValue = 0)
+    {
         return round($pValue * 9525);
     }
 
     /**
      * Convert EMU to pixels
      *
-     * @param   int $pValue Value in EMU
-     * @return  int         Value in pixels
+     * @param  int $pValue Value in EMU
+     * @return int Value in pixels
      */
-    public static function EMUToPixels($pValue = 0) {
+    public static function EMUToPixels($pValue = 0)
+    {
         if ($pValue != 0) {
             return round($pValue / 9525);
         } else {
@@ -65,20 +66,22 @@ class PHPPowerPoint_Shared_Drawing
     /**
      * Convert pixels to points
      *
-     * @param   int $pValue Value in pixels
-     * @return  int         Value in points
+     * @param  int $pValue Value in pixels
+     * @return int Value in points
      */
-    public static function pixelsToPoints($pValue = 0) {
+    public static function pixelsToPoints($pValue = 0)
+    {
         return $pValue * 0.67777777;
     }
 
     /**
      * Convert points width to pixels
      *
-     * @param   int $pValue Value in points
-     * @return  int         Value in pixels
+     * @param  int $pValue Value in points
+     * @return int Value in pixels
      */
-    public static function pointsToPixels($pValue = 0) {
+    public static function pointsToPixels($pValue = 0)
+    {
         if ($pValue != 0) {
             return $pValue * 1.333333333;
         } else {
@@ -89,10 +92,11 @@ class PHPPowerPoint_Shared_Drawing
     /**
      * Convert pixels to centimeters
      *
-     * @param   int $pValue Value in pixels
-     * @return  int         Value in centimeters
+     * @param  int $pValue Value in pixels
+     * @return int Value in centimeters
      */
-    public static function pixelsToCentimeters($pValue = 0) {
+    public static function pixelsToCentimeters($pValue = 0)
+    {
         //return $pValue * 0.028;
         return (($pValue / self::DPI_96) * 2.54);
     }
@@ -100,10 +104,11 @@ class PHPPowerPoint_Shared_Drawing
     /**
      * Convert centimeters width to pixels
      *
-     * @param   int $pValue Value in centimeters
-     * @return  int         Value in pixels
+     * @param  int $pValue Value in centimeters
+     * @return int Value in pixels
      */
-    public static function centimetersToPixels($pValue = 0) {
+    public static function centimetersToPixels($pValue = 0)
+    {
         if ($pValue != 0) {
             return ($pValue / 2.54) * self::DPI_96;
         } else {
@@ -114,20 +119,22 @@ class PHPPowerPoint_Shared_Drawing
     /**
      * Convert degrees to angle
      *
-     * @param   int $pValue Degrees
-     * @return  int         Angle
+     * @param  int $pValue Degrees
+     * @return int Angle
      */
-    public static function degreesToAngle($pValue = 0) {
-        return (int)round($pValue * 60000);
+    public static function degreesToAngle($pValue = 0)
+    {
+        return (int) round($pValue * 60000);
     }
 
     /**
      * Convert angle to degrees
      *
-     * @param   int $pValue Angle
-     * @return  int         Degrees
+     * @param  int $pValue Angle
+     * @return int Degrees
      */
-    public static function angleToDegrees($pValue = 0) {
+    public static function angleToDegrees($pValue = 0)
+    {
         if ($pValue != 0) {
             return round($pValue / 60000);
         } else {

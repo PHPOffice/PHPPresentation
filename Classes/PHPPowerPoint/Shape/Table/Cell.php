@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Table_Cell
  *
@@ -93,7 +92,7 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
         $this->_richTextParagraphs = array(
             new PHPPowerPoint_Shape_RichText_Paragraph()
         );
-        $this->_activeParagraph = 0;
+        $this->_activeParagraph    = 0;
 
         // Set fill
         $this->_fill = new PHPPowerPoint_Style_Fill();
@@ -125,15 +124,17 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Set active paragraph
      *
-     * @param int $index
+     * @param  int                                    $index
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function setActiveParagraph($index = 0)
     {
-        if ($index >= count($this->_richTextParagraphs))
+        if ($index >= count($this->_richTextParagraphs)) {
             throw new Exception("Invalid paragraph count.");
+        }
 
         $this->_activeParagraph = $index;
+
         return $this->getActiveParagraph();
     }
 
@@ -144,8 +145,9 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
      */
     public function getParagraph($index = 0)
     {
-        if ($index >= count($this->_richTextParagraphs))
+        if ($index >= count($this->_richTextParagraphs)) {
             throw new Exception("Invalid paragraph count.");
+        }
 
         return $this->_richTextParagraphs[$index];
     }
@@ -157,12 +159,12 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
      */
     public function createParagraph()
     {
-        $alignment = clone $this->getActiveParagraph()->getAlignment();
-        $font = clone $this->getActiveParagraph()->getFont();
+        $alignment   = clone $this->getActiveParagraph()->getAlignment();
+        $font        = clone $this->getActiveParagraph()->getFont();
         $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
 
         $this->_richTextParagraphs[] = new PHPPowerPoint_Shape_RichText_Paragraph();
-        $this->_activeParagraph = count($this->_richTextParagraphs) - 1;
+        $this->_activeParagraph      = count($this->_richTextParagraphs) - 1;
 
         $this->getActiveParagraph()->setAlignment($alignment);
         $this->getActiveParagraph()->setFont($font);
@@ -174,22 +176,23 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Add text
      *
-     * @param   PHPPowerPoint_Shape_RichText_ITextElement       $pText      Rich text element
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shape_RichText_ITextElement $pText Rich text element
+     * @throws Exception
      * @return PHPPowerPoint_Shape_RichText
      */
     public function addText(PHPPowerPoint_Shape_RichText_ITextElement $pText = null)
     {
         $this->_richTextParagraphs[$this->_activeParagraph]->addText($pText);
+
         return $this;
     }
 
     /**
      * Create text (can not be formatted !)
      *
-     * @param   string  $pText  Text
-     * @return  PHPPowerPoint_Shape_RichText_TextElement
-     * @throws  Exception
+     * @param  string                                   $pText Text
+     * @return PHPPowerPoint_Shape_RichText_TextElement
+     * @throws Exception
      */
     public function createText($pText = '')
     {
@@ -199,8 +202,8 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Create break
      *
-     * @return  PHPPowerPoint_Shape_RichText_Break
-     * @throws  Exception
+     * @return PHPPowerPoint_Shape_RichText_Break
+     * @throws Exception
      */
     public function createBreak()
     {
@@ -210,9 +213,9 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Create text run (can be formatted)
      *
-     * @param   string  $pText  Text
-     * @return  PHPPowerPoint_Shape_RichText_Run
-     * @throws  Exception
+     * @param  string                           $pText Text
+     * @return PHPPowerPoint_Shape_RichText_Run
+     * @throws Exception
      */
     public function createTextRun($pText = '')
     {
@@ -243,7 +246,8 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getPlainText();
     }
 
@@ -260,18 +264,19 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Set paragraphs
      *
-     * @param   PHPPowerPoint_Shape_RichText_Paragraphs[]   $paragraphs     Array of paragraphs
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shape_RichText_Paragraphs[] $paragraphs Array of paragraphs
+     * @throws Exception
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setParagraphs($paragraphs = null)
     {
         if (is_array($paragraphs)) {
             $this->_richTextParagraphs = $paragraphs;
-            $this->_activeParagraph = count($this->_richTextParagraphs) - 1;
+            $this->_activeParagraph    = count($this->_richTextParagraphs) - 1;
         } else {
             throw new Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
         }
+
         return $this;
     }
 
@@ -288,12 +293,13 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Set fill
      *
-     * @param PHPPowerPoint_Style_Fill $fill
+     * @param  PHPPowerPoint_Style_Fill     $fill
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setFill(PHPPowerPoint_Style_Fill $fill)
     {
         $this->_fill = $fill;
+
         return $this;
     }
 
@@ -310,12 +316,13 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Set borders
      *
-     * @param PHPPowerPoint_Style_Borders $borders
+     * @param  PHPPowerPoint_Style_Borders  $borders
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setBorders(PHPPowerPoint_Style_Borders $borders)
     {
         $this->_borders = $borders;
+
         return $this;
     }
 
@@ -332,12 +339,13 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Set width
      *
-     * @param int $value
+     * @param  int                          $value
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setWidth($value = 0)
     {
         $this->_width = $value;
+
         return $this;
     }
 
@@ -354,12 +362,13 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Set colSpan
      *
-     * @param int $value
+     * @param  int                          $value
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setColSpan($value = 0)
     {
         $this->_colSpan = $value;
+
         return $this;
     }
 
@@ -376,33 +385,29 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     /**
      * Set rowSpan
      *
-     * @param int $value
+     * @param  int                          $value
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setRowSpan($value = 0)
     {
         $this->_rowSpan = $value;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         $hashElements = '';
         foreach ($this->_richTextParagraphs as $element) {
             $hashElements .= $element->getHashCode();
         }
 
-        return md5(
-              $hashElements
-            . $this->_fill->getHashCode()
-            . $this->_borders->getHashCode()
-            . $this->_width
-            . __CLASS__
-        );
+        return md5($hashElements . $this->_fill->getHashCode() . $this->_borders->getHashCode() . $this->_width . __CLASS__);
     }
 
     /**
@@ -418,9 +423,10 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -430,19 +436,23 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ($key == '_parent') continue;
+            if ($key == '_parent') {
+                continue;
+            }
 
             if (is_object($value)) {
                 $this->$key = clone $value;

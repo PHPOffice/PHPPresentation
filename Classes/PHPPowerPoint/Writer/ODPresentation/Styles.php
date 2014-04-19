@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_ODPresentation_Styles
  *
@@ -38,9 +37,9 @@ class PHPPowerPoint_Writer_ODPresentation_Styles extends PHPPowerPoint_Writer_OD
     /**
      * Write Meta file to XML format
      *
-     * @param   PHPPowerPoint $pPHPPowerPoint
-     * @return  string                      XML Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @return string        XML Output
+     * @throws Exception
      */
     public function writeStyles(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -53,7 +52,7 @@ class PHPPowerPoint_Writer_ODPresentation_Styles extends PHPPowerPoint_Writer_OD
         }
 
         // XML header
-        $objWriter->startDocument('1.0','UTF-8');
+        $objWriter->startDocument('1.0', 'UTF-8');
 
         // office:document-meta
         $objWriter->startElement('office:document-styles');
@@ -90,68 +89,67 @@ class PHPPowerPoint_Writer_ODPresentation_Styles extends PHPPowerPoint_Writer_OD
         $objWriter->writeAttribute('xmlns:css3t', 'http://www.w3.org/TR/css3-text/');
         $objWriter->writeAttribute('office:version', '1.2');
 
-            // Variables
-            $stylePageLayout = $pPHPPowerPoint->getLayout()->getDocumentLayout();
+        // Variables
+        $stylePageLayout = $pPHPPowerPoint->getLayout()->getDocumentLayout();
 
-            // office:styles
-            $objWriter->startElement('office:styles');
-                // style:style
-                $objWriter->startElement('style:style');
-                $objWriter->writeAttribute('style:name', 'sPres0');
-                $objWriter->writeAttribute('style:display-name', 'sPres0');
-                $objWriter->writeAttribute('style:family', 'presentation');
-                    // style:graphic-properties
-                    $objWriter->startElement('style:graphic-properties');
-                    $objWriter->writeAttribute('draw:fill-color', '#ffffff');
-                    $objWriter->endElement();
-                $objWriter->endElement();
-            $objWriter->endElement();
+        // office:styles
+        $objWriter->startElement('office:styles');
+        // style:style
+        $objWriter->startElement('style:style');
+        $objWriter->writeAttribute('style:name', 'sPres0');
+        $objWriter->writeAttribute('style:display-name', 'sPres0');
+        $objWriter->writeAttribute('style:family', 'presentation');
+        // style:graphic-properties
+        $objWriter->startElement('style:graphic-properties');
+        $objWriter->writeAttribute('draw:fill-color', '#ffffff');
+        $objWriter->endElement();
+        $objWriter->endElement();
+        $objWriter->endElement();
 
-            // office:automatic-styles
-            $objWriter->startElement('office:automatic-styles');
-                // style:page-layout
-                $objWriter->startElement('style:page-layout');
-                if(empty($stylePageLayout)){
-                    $objWriter->writeAttribute('style:name', 'sPL0');
-                } else {
-                    $objWriter->writeAttribute('style:name', $stylePageLayout);
-                }
-                    // style:page-layout-properties
-                    $objWriter->startElement('style:page-layout-properties');
-                    $objWriter->writeAttribute('fo:margin-top', '0cm');
-                    $objWriter->writeAttribute('fo:margin-bottom', '0cm');
-                    $objWriter->writeAttribute('fo:margin-left', '0cm');
-                    $objWriter->writeAttribute('fo:margin-right', '0cm');
-                    $objWriter->writeAttribute('fo:page-width', round(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters(PHPPowerPoint_Shared_Drawing::EMUToPixels($pPHPPowerPoint->getLayout()->getCX())), 1).'cm');
-                    $objWriter->writeAttribute('fo:page-height', round(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters(PHPPowerPoint_Shared_Drawing::EMUToPixels($pPHPPowerPoint->getLayout()->getCY())), 1).'cm');
-                    if($pPHPPowerPoint->getLayout()->getCX() > $pPHPPowerPoint->getLayout()->getCY()){
-                        $objWriter->writeAttribute('style:print-orientation', 'landscape');
-                    } else {
-                        $objWriter->writeAttribute('style:print-orientation', 'portrait');
-                    }
-                    $objWriter->endElement();
-                $objWriter->endElement();
-            $objWriter->endElement();
+        // office:automatic-styles
+        $objWriter->startElement('office:automatic-styles');
+        // style:page-layout
+        $objWriter->startElement('style:page-layout');
+        if (empty($stylePageLayout)) {
+            $objWriter->writeAttribute('style:name', 'sPL0');
+        } else {
+            $objWriter->writeAttribute('style:name', $stylePageLayout);
+        }
+        // style:page-layout-properties
+        $objWriter->startElement('style:page-layout-properties');
+        $objWriter->writeAttribute('fo:margin-top', '0cm');
+        $objWriter->writeAttribute('fo:margin-bottom', '0cm');
+        $objWriter->writeAttribute('fo:margin-left', '0cm');
+        $objWriter->writeAttribute('fo:margin-right', '0cm');
+        $objWriter->writeAttribute('fo:page-width', round(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters(PHPPowerPoint_Shared_Drawing::EMUToPixels($pPHPPowerPoint->getLayout()->getCX())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-height', round(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters(PHPPowerPoint_Shared_Drawing::EMUToPixels($pPHPPowerPoint->getLayout()->getCY())), 1) . 'cm');
+        if ($pPHPPowerPoint->getLayout()->getCX() > $pPHPPowerPoint->getLayout()->getCY()) {
+            $objWriter->writeAttribute('style:print-orientation', 'landscape');
+        } else {
+            $objWriter->writeAttribute('style:print-orientation', 'portrait');
+        }
+        $objWriter->endElement();
+        $objWriter->endElement();
+        $objWriter->endElement();
 
-            // office:master-styles
-            $objWriter->startElement('office:master-styles');
-                // style:master-page
-                $objWriter->startElement('style:master-page');
-                $objWriter->writeAttribute('style:name', 'Standard');
-                $objWriter->writeAttribute('style:display-name', 'Standard');
-                if(empty($stylePageLayout)){
-                    $objWriter->writeAttribute('style:page-layout-name', 'sPL0');
-                } else {
-                    $objWriter->writeAttribute('style:page-layout-name', $stylePageLayout);
-                }
-                $objWriter->writeAttribute('draw:style-name', 'sPres0');
-                $objWriter->endElement();
-            $objWriter->endElement();
+        // office:master-styles
+        $objWriter->startElement('office:master-styles');
+        // style:master-page
+        $objWriter->startElement('style:master-page');
+        $objWriter->writeAttribute('style:name', 'Standard');
+        $objWriter->writeAttribute('style:display-name', 'Standard');
+        if (empty($stylePageLayout)) {
+            $objWriter->writeAttribute('style:page-layout-name', 'sPL0');
+        } else {
+            $objWriter->writeAttribute('style:page-layout-name', $stylePageLayout);
+        }
+        $objWriter->writeAttribute('draw:style-name', 'sPres0');
+        $objWriter->endElement();
+        $objWriter->endElement();
 
         $objWriter->endElement();
 
         // Return
         return $objWriter->getData();
     }
-
 }

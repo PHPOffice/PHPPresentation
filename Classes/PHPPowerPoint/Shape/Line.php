@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Line
  *
@@ -40,29 +39,26 @@ class PHPPowerPoint_Shape_Line extends PHPPowerPoint_Shape implements PHPPowerPo
      *
      * @param int $columns Number of columns
      */
-    public function __construct($fromX,$fromY,$toX,$toY)
+    public function __construct($fromX, $fromY, $toX, $toY)
     {
         parent::__construct();
         $this->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
 
         $this->setOffsetX($fromX);
         $this->setOffsetY($fromY);
-        $this->setWidth($toX-$fromX);
-        $this->setHeight($toY-$fromY);
+        $this->setWidth($toX - $fromX);
+        $this->setHeight($toY - $fromY);
 
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->getBorder()->getLineStyle()
-            . parent::getHashCode()
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->getBorder()->getLineStyle() . parent::getHashCode() . __CLASS__);
     }
 
     /**
@@ -78,9 +74,10 @@ class PHPPowerPoint_Shape_Line extends PHPPowerPoint_Shape implements PHPPowerPo
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -90,19 +87,23 @@ class PHPPowerPoint_Shape_Line extends PHPPowerPoint_Shape implements PHPPowerPo
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ($key == '_parent') continue;
+            if ($key == '_parent') {
+                continue;
+            }
 
             if (is_object($value)) {
                 $this->$key = clone $value;

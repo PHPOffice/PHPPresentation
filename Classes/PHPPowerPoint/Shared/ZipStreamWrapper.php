@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shared_ZipStreamWrapper
  *
@@ -33,7 +32,8 @@
  * @package    PHPPowerPoint_Shared
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shared_ZipStreamWrapper {
+class PHPPowerPoint_Shared_ZipStreamWrapper
+{
     /**
      * Internal ZipAcrhive
      *
@@ -65,7 +65,8 @@ class PHPPowerPoint_Shared_ZipStreamWrapper {
     /**
      * Register wrapper
      */
-    public static function register() {
+    public static function register()
+    {
         @stream_wrapper_unregister("zip");
         @stream_wrapper_register("zip", __CLASS__);
     }
@@ -73,7 +74,8 @@ class PHPPowerPoint_Shared_ZipStreamWrapper {
     /**
      * Open stream
      */
-    public function stream_open($path, $mode, $options, &$opened_path) {
+    public function stream_open($path, $mode, $options, &$opened_path)
+    {
         // Check for mode
         if ($mode{0} != 'r') {
             throw new Exception('Mode ' . $mode . ' is not supported. Only read mode is supported.');
@@ -89,12 +91,12 @@ class PHPPowerPoint_Shared_ZipStreamWrapper {
         }
         if (strpos($url['host'], '#') !== false) {
             if (!isset($url['fragment'])) {
-                $url['fragment']    = substr($url['host'], strpos($url['host'], '#') + 1) . $url['path'];
-                $url['host']        = substr($url['host'], 0, strpos($url['host'], '#'));
+                $url['fragment'] = substr($url['host'], strpos($url['host'], '#') + 1) . $url['path'];
+                $url['host']     = substr($url['host'], 0, strpos($url['host'], '#'));
                 unset($url['path']);
             }
         } else {
-            $url['host']        = $url['host'] . $url['path'];
+            $url['host'] = $url['host'] . $url['path'];
             unset($url['path']);
         }
 
@@ -103,8 +105,8 @@ class PHPPowerPoint_Shared_ZipStreamWrapper {
         $this->_archive->open($url['host']);
 
         $this->_fileNameInArchive = $url['fragment'];
-        $this->_position = 0;
-        $this->_data = $this->_archive->getFromName( $this->_fileNameInArchive );
+        $this->_position          = 0;
+        $this->_data              = $this->_archive->getFromName($this->_fileNameInArchive);
 
         return true;
     }
@@ -112,62 +114,71 @@ class PHPPowerPoint_Shared_ZipStreamWrapper {
     /**
      * Stat stream
      */
-    public function stream_stat() {
-        return $this->_archive->statName( $this->_fileNameInArchive );
+    public function stream_stat()
+    {
+        return $this->_archive->statName($this->_fileNameInArchive);
     }
 
     /**
      * Read stream
      */
-    function stream_read($count) {
+    public function stream_read($count)
+    {
         $ret = substr($this->_data, $this->_position, $count);
         $this->_position += strlen($ret);
+
         return $ret;
     }
 
     /**
      * Tell stream
      */
-    public function stream_tell() {
+    public function stream_tell()
+    {
         return $this->_position;
     }
 
     /**
      * EOF stream
      */
-    public function stream_eof() {
+    public function stream_eof()
+    {
         return $this->_position >= strlen($this->_data);
     }
 
     /**
      * Seek stream
      */
-    public function stream_seek($offset, $whence) {
+    public function stream_seek($offset, $whence)
+    {
         switch ($whence) {
             case SEEK_SET:
                 if ($offset < strlen($this->_data) && $offset >= 0) {
-                     $this->_position = $offset;
-                     return true;
+                    $this->_position = $offset;
+
+                    return true;
                 } else {
-                     return false;
+                    return false;
                 }
                 break;
 
             case SEEK_CUR:
                 if ($offset >= 0) {
-                     $this->_position += $offset;
-                     return true;
+                    $this->_position += $offset;
+
+                    return true;
                 } else {
-                     return false;
+                    return false;
                 }
                 break;
 
             case SEEK_END:
                 if (strlen($this->_data) + $offset >= 0) {
-                     $this->_position = strlen($this->_data) + $offset;
-                     return true;
+                    $this->_position = strlen($this->_data) + $offset;
+
+                    return true;
                 } else {
-                     return false;
+                    return false;
                 }
                 break;
 

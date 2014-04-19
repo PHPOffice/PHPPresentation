@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Workbook
  *
@@ -38,9 +37,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
     /**
      * Write presentation to XML format
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint
-     * @return  string      XML Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @return string        XML Output
+     * @throws Exception
      */
     public function writePresentation(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -53,7 +52,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
         }
 
         // XML header
-        $objWriter->startDocument('1.0','UTF-8','yes');
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
 
         // p:presentation
         $objWriter->startElement('p:presentation');
@@ -61,49 +60,50 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
         $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
 
-            // p:sldMasterIdLst
-            $objWriter->startElement('p:sldMasterIdLst');
+        // p:sldMasterIdLst
+        $objWriter->startElement('p:sldMasterIdLst');
 
-                // Add slide masters
-                $relationId = 1;
-                $slideMasterId = 2147483648;
-                $masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
-                foreach ($masterSlides as $masterSlide) {
-                    // p:sldMasterId
-                    $objWriter->startElement('p:sldMasterId');
-                    $objWriter->writeAttribute('id',    $slideMasterId);
-                    $objWriter->writeAttribute('r:id',  'rId' . $relationId++);
-                    $objWriter->endElement();
-
-                    // Increase identifier
-                    $slideMasterId += 12;
-                }
-
+        // Add slide masters
+        $relationId    = 1;
+        $slideMasterId = 2147483648;
+        $masterSlides  = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+        foreach ($masterSlides as $masterSlide) {
+            // p:sldMasterId
+            $objWriter->startElement('p:sldMasterId');
+            $objWriter->writeAttribute('id', $slideMasterId);
+            $objWriter->writeAttribute('r:id', 'rId' . $relationId++);
             $objWriter->endElement();
 
-            // theme
-            $relationId++;
+            // Increase identifier
+            $slideMasterId += 12;
+        }
 
-            // p:sldIdLst
-            $objWriter->startElement('p:sldIdLst');
-            $this->_writeSlides($objWriter, $pPHPPowerPoint, $relationId);
-            $objWriter->endElement();
+        $objWriter->endElement();
 
-            // p:sldSz
-            $objWriter->startElement('p:sldSz');
-            //$objWriter->writeAttribute('cx', '9144000');
-            //$objWriter->writeAttribute('cy', '6858000');
-            $objWriter->writeAttribute('cx', $pPHPPowerPoint->getLayout()->getCX());
-            $objWriter->writeAttribute('cy', $pPHPPowerPoint->getLayout()->getCY());
-            if( $pPHPPowerPoint->getLayout()->getDocumentLayout() != PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM )
-                $objWriter->writeAttribute('type', $pPHPPowerPoint->getLayout()->getDocumentLayout());
-            $objWriter->endElement();
+        // theme
+        $relationId++;
 
-            // p:notesSz
-            $objWriter->startElement('p:notesSz');
-            $objWriter->writeAttribute('cx', '6858000');
-            $objWriter->writeAttribute('cy', '9144000');
-            $objWriter->endElement();
+        // p:sldIdLst
+        $objWriter->startElement('p:sldIdLst');
+        $this->_writeSlides($objWriter, $pPHPPowerPoint, $relationId);
+        $objWriter->endElement();
+
+        // p:sldSz
+        $objWriter->startElement('p:sldSz');
+        //$objWriter->writeAttribute('cx', '9144000');
+        //$objWriter->writeAttribute('cy', '6858000');
+        $objWriter->writeAttribute('cx', $pPHPPowerPoint->getLayout()->getCX());
+        $objWriter->writeAttribute('cy', $pPHPPowerPoint->getLayout()->getCY());
+        if ($pPHPPowerPoint->getLayout()->getDocumentLayout() != PHPPowerPoint_DocumentLayout::LAYOUT_CUSTOM) {
+            $objWriter->writeAttribute('type', $pPHPPowerPoint->getLayout()->getDocumentLayout());
+        }
+        $objWriter->endElement();
+
+        // p:notesSz
+        $objWriter->startElement('p:notesSz');
+        $objWriter->writeAttribute('cx', '6858000');
+        $objWriter->writeAttribute('cy', '9144000');
+        $objWriter->endElement();
 
         $objWriter->endElement();
 
@@ -114,10 +114,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
     /**
      * Write slides
      *
-     * @param   PHPPowerPoint_Shared_XMLWriter  $objWriter      XML Writer
-     * @param   PHPPowerPoint                   $pPHPPowerPoint
-     * @param   int                             $startRelationId
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter       XML Writer
+     * @param  PHPPowerPoint                  $pPHPPowerPoint
+     * @param  int                            $startRelationId
+     * @throws Exception
      */
     private function _writeSlides(PHPPowerPoint_Shared_XMLWriter $objWriter = null, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
     {
@@ -125,28 +125,24 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
             // p:sldId
-            $this->_writeSlide(
-                $objWriter,
-                ($i + 256),
-                ($i + $startRelationId)
-            );
+            $this->_writeSlide($objWriter, ($i + 256), ($i + $startRelationId));
         }
     }
 
     /**
      * Write slide
      *
-     * @param   PHPPowerPoint_Shared_XMLWriter  $objWriter      XML Writer
-     * @param   int                         $pSlideId           Slide id
-     * @param   int                         $pRelId             Relationship ID
-     * @throws  Exception
+     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
+     * @param  int                            $pSlideId  Slide id
+     * @param  int                            $pRelId    Relationship ID
+     * @throws Exception
      */
     private function _writeSlide(PHPPowerPoint_Shared_XMLWriter $objWriter = null, $pSlideId = 1, $pRelId = 1)
     {
         // p:sldId
         $objWriter->startElement('p:sldId');
-        $objWriter->writeAttribute('id',    $pSlideId);
-        $objWriter->writeAttribute('r:id',  'rId' . $pRelId);
+        $objWriter->writeAttribute('id', $pSlideId);
+        $objWriter->writeAttribute('r:id', 'rId' . $pRelId);
         $objWriter->endElement();
     }
 }

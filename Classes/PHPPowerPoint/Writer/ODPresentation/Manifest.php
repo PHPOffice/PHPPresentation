@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_ODPresentation_Manifest
  *
@@ -38,9 +37,9 @@ class PHPPowerPoint_Writer_ODPresentation_Manifest extends PHPPowerPoint_Writer_
     /**
      * Write Manifest file to XML format
      *
-     * @param   PHPPowerPoint $pPHPPowerPoint
-     * @return  string                      XML Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @return string        XML Output
+     * @throws Exception
      */
     public function writeManifest(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -53,65 +52,65 @@ class PHPPowerPoint_Writer_ODPresentation_Manifest extends PHPPowerPoint_Writer_
         }
 
         // XML header
-        $objWriter->startDocument('1.0','UTF-8');
+        $objWriter->startDocument('1.0', 'UTF-8');
 
         // manifest:manifest
         $objWriter->startElement('manifest:manifest');
         $objWriter->writeAttribute('xmlns:manifest', 'urn:oasis:names:tc:opendocument:xmlns:manifest:1.0');
         $objWriter->writeAttribute('manifest:version', '1.2');
 
-            // manifest:file-entry
-            $objWriter->startElement('manifest:file-entry');
-            $objWriter->writeAttribute('manifest:media-type', 'application/vnd.oasis.opendocument.presentation');
-            $objWriter->writeAttribute('manifest:version', '1.2');
-            $objWriter->writeAttribute('manifest:full-path', '/');
-            $objWriter->endElement();
-            // manifest:file-entry
-            $objWriter->startElement('manifest:file-entry');
-            $objWriter->writeAttribute('manifest:media-type', 'text/xml');
-            $objWriter->writeAttribute('manifest:full-path', 'content.xml');
-            $objWriter->endElement();
-            // manifest:file-entry
-            $objWriter->startElement('manifest:file-entry');
-            $objWriter->writeAttribute('manifest:media-type', 'text/xml');
-            $objWriter->writeAttribute('manifest:full-path', 'meta.xml');
-            $objWriter->endElement();
-            // manifest:file-entry
-            $objWriter->startElement('manifest:file-entry');
-            $objWriter->writeAttribute('manifest:media-type', 'text/xml');
-            $objWriter->writeAttribute('manifest:full-path', 'styles.xml');
-            $objWriter->endElement();
+        // manifest:file-entry
+        $objWriter->startElement('manifest:file-entry');
+        $objWriter->writeAttribute('manifest:media-type', 'application/vnd.oasis.opendocument.presentation');
+        $objWriter->writeAttribute('manifest:version', '1.2');
+        $objWriter->writeAttribute('manifest:full-path', '/');
+        $objWriter->endElement();
+        // manifest:file-entry
+        $objWriter->startElement('manifest:file-entry');
+        $objWriter->writeAttribute('manifest:media-type', 'text/xml');
+        $objWriter->writeAttribute('manifest:full-path', 'content.xml');
+        $objWriter->endElement();
+        // manifest:file-entry
+        $objWriter->startElement('manifest:file-entry');
+        $objWriter->writeAttribute('manifest:media-type', 'text/xml');
+        $objWriter->writeAttribute('manifest:full-path', 'meta.xml');
+        $objWriter->endElement();
+        // manifest:file-entry
+        $objWriter->startElement('manifest:file-entry');
+        $objWriter->writeAttribute('manifest:media-type', 'text/xml');
+        $objWriter->writeAttribute('manifest:full-path', 'styles.xml');
+        $objWriter->endElement();
 
-            $arrMedia = array();
-            for ($i = 0; $i < $this->getParentWriter()->getDrawingHashTable()->count(); ++$i) {
-                if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
-                    if(!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)){
-                        $arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
-                        $extension  = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
-                        $mimeType   = $this->_getImageMimeType( $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath() );
+        $arrMedia = array();
+        for ($i = 0; $i < $this->getParentWriter()->getDrawingHashTable()->count(); ++$i) {
+            if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
+                if (!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
+                    $arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
+                    $extension  = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+                    $mimeType   = $this->_getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
 
-                        $objWriter->startElement('manifest:file-entry');
-                        $objWriter->writeAttribute('manifest:media-type', $mimeType);
-                        $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
-                        $objWriter->endElement();
-                    }
-                } else if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
-                    if(!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)){
-                        $arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
+                    $objWriter->startElement('manifest:file-entry');
+                    $objWriter->writeAttribute('manifest:media-type', $mimeType);
+                    $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()) . '.' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+                    $objWriter->endElement();
+                }
+            } elseif ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
+                if (!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
+                    $arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
 
-                        $extension  = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
-                        $extension  = explode('/', $extension);
-                        $extension  = $extension[1];
+                    $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
+                    $extension = explode('/', $extension);
+                    $extension = $extension[1];
 
-                        $mimeType   = $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType();
+                    $mimeType = $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType();
 
-                        $objWriter->startElement('manifest:file-entry');
-                        $objWriter->writeAttribute('manifest:media-type', $mimeType);
-                        $objWriter->writeAttribute('manifest:full-path', 'Pictures/' .  md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
-                        $objWriter->endElement();
-                    }
+                    $objWriter->startElement('manifest:file-entry');
+                    $objWriter->writeAttribute('manifest:media-type', $mimeType);
+                    $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()) . '.' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+                    $objWriter->endElement();
                 }
             }
+        }
 
         $objWriter->endElement();
 
@@ -119,18 +118,18 @@ class PHPPowerPoint_Writer_ODPresentation_Manifest extends PHPPowerPoint_Writer_
         return $objWriter->getData();
     }
 
-
     /**
      * Get image mime type
      *
-     * @param   string  $pFile  Filename
-     * @return  string  Mime Type
-     * @throws  Exception
+     * @param  string    $pFile Filename
+     * @return string    Mime Type
+     * @throws Exception
      */
     private function _getImageMimeType($pFile = '')
     {
         if (PHPPowerPoint_Shared_File::file_exists($pFile)) {
             $image = getimagesize($pFile);
+
             return image_type_to_mime_type($image[2]);
         } else {
             throw new Exception("File $pFile does not exist");

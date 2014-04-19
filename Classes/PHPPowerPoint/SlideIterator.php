@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_SlideIterator
  *
@@ -54,7 +53,7 @@ class PHPPowerPoint_SlideIterator extends IteratorIterator
     /**
      * Create a new slide iterator
      *
-     * @param PHPPowerPoint         $subject
+     * @param PHPPowerPoint $subject
      */
     public function __construct(PHPPowerPoint $subject = null)
     {

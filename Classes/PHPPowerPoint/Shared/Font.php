@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shared_Font
  *
@@ -38,30 +37,33 @@ class PHPPowerPoint_Shared_Font
     /**
      * Calculate an (approximate) pixel size, based on a font points size
      *
-     * @param   int     $fontSizeInPoints   Font size (in points)
-     * @return  int     Font size (in pixels)
+     * @param  int $fontSizeInPoints Font size (in points)
+     * @return int Font size (in pixels)
      */
-    public static function fontSizeToPixels($fontSizeInPoints = 12) {
+    public static function fontSizeToPixels($fontSizeInPoints = 12)
+    {
         return ((16 / 12) * $fontSizeInPoints);
     }
 
     /**
      * Calculate an (approximate) pixel size, based on inch size
      *
-     * @param   int     $sizeInInch Font size (in inch)
-     * @return  int     Size (in pixels)
+     * @param  int $sizeInInch Font size (in inch)
+     * @return int Size (in pixels)
      */
-    public static function inchSizeToPixels($sizeInInch = 1) {
+    public static function inchSizeToPixels($sizeInInch = 1)
+    {
         return ($sizeInInch * 96);
     }
 
     /**
      * Calculate an (approximate) pixel size, based on centimeter size
      *
-     * @param   int     $sizeInCm   Font size (in centimeters)
-     * @return  int     Size (in pixels)
+     * @param  int $sizeInCm Font size (in centimeters)
+     * @return int Size (in pixels)
      */
-    public static function centimeterSizeToPixels($sizeInCm = 1) {
+    public static function centimeterSizeToPixels($sizeInCm = 1)
+    {
         return ($sizeInCm * 37.795275591);
     }
 }

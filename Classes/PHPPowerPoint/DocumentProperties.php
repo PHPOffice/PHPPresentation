@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_DocumentProperties
  *
@@ -136,12 +135,13 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Creator
      *
-     * @param string $pValue
+     * @param  string                           $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setCreator($pValue = '')
     {
         $this->_creator = $pValue;
+
         return $this;
     }
 
@@ -158,12 +158,13 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Last Modified By
      *
-     * @param string $pValue
+     * @param  string                           $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setLastModifiedBy($pValue = '')
     {
         $this->_lastModifiedBy = $pValue;
+
         return $this;
     }
 
@@ -180,7 +181,7 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Created
      *
-     * @param datetime $pValue
+     * @param  datetime                         $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setCreated($pValue = null)
@@ -189,6 +190,7 @@ class PHPPowerPoint_DocumentProperties
             $pValue = time();
         }
         $this->_created = $pValue;
+
         return $this;
     }
 
@@ -205,7 +207,7 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Modified
      *
-     * @param datetime $pValue
+     * @param  datetime                         $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setModified($pValue = null)
@@ -214,6 +216,7 @@ class PHPPowerPoint_DocumentProperties
             $pValue = time();
         }
         $this->_modified = $pValue;
+
         return $this;
     }
 
@@ -230,12 +233,13 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Title
      *
-     * @param string $pValue
+     * @param  string                           $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setTitle($pValue = '')
     {
         $this->_title = $pValue;
+
         return $this;
     }
 
@@ -252,12 +256,13 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Description
      *
-     * @param string $pValue
+     * @param  string                           $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setDescription($pValue = '')
     {
         $this->_description = $pValue;
+
         return $this;
     }
 
@@ -274,12 +279,13 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Subject
      *
-     * @param string $pValue
+     * @param  string                           $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setSubject($pValue = '')
     {
         $this->_subject = $pValue;
+
         return $this;
     }
 
@@ -296,12 +302,13 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Keywords
      *
-     * @param string $pValue
+     * @param  string                           $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setKeywords($pValue = '')
     {
         $this->_keywords = $pValue;
+
         return $this;
     }
 
@@ -318,12 +325,13 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Category
      *
-     * @param string $pValue
+     * @param  string                           $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setCategory($pValue = '')
     {
         $this->_category = $pValue;
+
         return $this;
     }
 
@@ -340,12 +348,13 @@ class PHPPowerPoint_DocumentProperties
     /**
      * Set Company
      *
-     * @param string $pValue
+     * @param  string                           $pValue
      * @return PHPPowerPoint_DocumentProperties
      */
     public function setCompany($pValue = '')
     {
         $this->_company = $pValue;
+
         return $this;
     }
 

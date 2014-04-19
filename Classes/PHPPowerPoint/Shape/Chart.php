@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Chart
  *
@@ -138,12 +137,13 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
     /**
      * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
      *
-     * @param boolean $value
+     * @param  boolean                   $value
      * @return PHPPowerPoint_Shape_Chart
      */
     public function setIncludeSpreadsheet($value = false)
     {
         $this->_includeSpreadsheet = $value;
+
         return $this;
     }
 
@@ -160,7 +160,7 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -180,7 +180,7 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -193,7 +193,7 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

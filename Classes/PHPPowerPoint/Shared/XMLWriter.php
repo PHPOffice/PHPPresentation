@@ -26,7 +26,7 @@
  */
 
 if (!defined('DATE_W3C')) {
-  define('DATE_W3C', 'Y-m-d\TH:i:sP');
+    define('DATE_W3C', 'Y-m-d\TH:i:sP');
 }
 
 /**
@@ -36,10 +36,11 @@ if (!defined('DATE_W3C')) {
  * @package    PHPPowerPoint_Shared
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shared_XMLWriter {
+class PHPPowerPoint_Shared_XMLWriter
+{
     /** Temporary storage method */
-    const STORAGE_MEMORY    = 1;
-    const STORAGE_DISK      = 2;
+    const STORAGE_MEMORY = 1;
+    const STORAGE_DISK = 2;
 
     /**
      * Internal XMLWriter
@@ -58,10 +59,11 @@ class PHPPowerPoint_Shared_XMLWriter {
     /**
      * Create a new PHPPowerPoint_Shared_XMLWriter instance
      *
-     * @param int       $pTemporaryStorage          Temporary storage location
-     * @param string    $pTemporaryStorageFolder    Temporary storage folder
+     * @param int    $pTemporaryStorage       Temporary storage location
+     * @param string $pTemporaryStorageFolder Temporary storage folder
      */
-    public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageFolder = './') {
+    public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageFolder = './')
+    {
         // Create internal XMLWriter
         $this->_xmlWriter = new XMLWriter();
 
@@ -86,7 +88,8 @@ class PHPPowerPoint_Shared_XMLWriter {
     /**
      * Destructor
      */
-    public function __destruct() {
+    public function __destruct()
+    {
         // Desctruct XMLWriter
         unset($this->_xmlWriter);
 
@@ -101,11 +104,13 @@ class PHPPowerPoint_Shared_XMLWriter {
      *
      * @return $data
      */
-    public function getData() {
+    public function getData()
+    {
         if ($this->_tempFileName == '') {
             return $this->_xmlWriter->outputMemory(true);
         } else {
             $this->_xmlWriter->flush();
+
             return file_get_contents($this->_tempFileName);
         }
     }
@@ -116,9 +121,13 @@ class PHPPowerPoint_Shared_XMLWriter {
      * @param unknown_type $function
      * @param unknown_type $args
      */
-    public function __call($function, $args) {
+    public function __call($function, $args)
+    {
         try {
-            @call_user_func_array(array($this->_xmlWriter, $function), $args);
+            @call_user_func_array(array(
+                $this->_xmlWriter,
+                $function
+            ), $args);
         } catch (Exception $ex) {
             // Do nothing!
         }
@@ -127,7 +136,7 @@ class PHPPowerPoint_Shared_XMLWriter {
     /**
      * Fallback method for writeRaw, introduced in PHP 5.2
      *
-     * @param string $text
+     * @param  string $text
      * @return string
      */
     public function writeRaw($text)

@@ -23,7 +23,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_RichText_Break
  *
@@ -43,7 +42,7 @@ class PHPPowerPoint_Shape_RichText_Break implements PHPPowerPoint_Shape_RichText
     /**
      * Get text
      *
-     * @return string   Text
+     * @return string Text
      */
     public function getText()
     {
@@ -53,7 +52,7 @@ class PHPPowerPoint_Shape_RichText_Break implements PHPPowerPoint_Shape_RichText
     /**
      * Set text
      *
-     * @param   $pText string   Text
+     * @param                                            $pText string   Text
      * @return PHPPowerPoint_Shape_RichText_ITextElement
      */
     public function setText($pText = '')
@@ -66,18 +65,18 @@ class PHPPowerPoint_Shape_RichText_Break implements PHPPowerPoint_Shape_RichText
      *
      * @return PHPPowerPoint_Style_Font
      */
-    public function getFont() {
+    public function getFont()
+    {
         return null;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
-        return md5(
-              __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5(__CLASS__);
     }
 }

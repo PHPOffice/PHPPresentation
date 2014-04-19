@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Drawing
  *
@@ -38,9 +37,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Drawing extends PHPPowerPoint_Writer_P
     /**
      * Get an array of all drawings
      *
-     * @param   PHPPowerPoint                           $pPHPPowerPoint
-     * @return  PHPPowerPoint_Slide_Drawing[]       All drawings in PHPPowerPoint
-     * @throws  Exception
+     * @param  PHPPowerPoint                 $pPHPPowerPoint
+     * @return PHPPowerPoint_Slide_Drawing[] All drawings in PHPPowerPoint
+     * @throws Exception
      */
     public function allDrawings(PHPPowerPoint $pPHPPowerPoint = null)
     {

@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Style_Borders
  *
@@ -98,7 +97,8 @@ class PHPPowerPoint_Style_Borders implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Border
      */
-    public function getLeft() {
+    public function getLeft()
+    {
         return $this->_left;
     }
 
@@ -107,7 +107,8 @@ class PHPPowerPoint_Style_Borders implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Border
      */
-    public function getRight() {
+    public function getRight()
+    {
         return $this->_right;
     }
 
@@ -116,7 +117,8 @@ class PHPPowerPoint_Style_Borders implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Border
      */
-    public function getTop() {
+    public function getTop()
+    {
         return $this->_top;
     }
 
@@ -125,7 +127,8 @@ class PHPPowerPoint_Style_Borders implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Border
      */
-    public function getBottom() {
+    public function getBottom()
+    {
         return $this->_bottom;
     }
 
@@ -134,7 +137,8 @@ class PHPPowerPoint_Style_Borders implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Border
      */
-    public function getDiagonalUp() {
+    public function getDiagonalUp()
+    {
         return $this->_diagonalUp;
     }
 
@@ -143,18 +147,20 @@ class PHPPowerPoint_Style_Borders implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Border
      */
-    public function getDiagonalDown() {
+    public function getDiagonalDown()
+    {
         return $this->_diagonalDown;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         return md5(
-              $this->getLeft()->getHashCode()
+            $this->getLeft()->getHashCode()
             . $this->getRight()->getHashCode()
             . $this->getTop()->getHashCode()
             . $this->getBottom()->getHashCode()
@@ -177,9 +183,10 @@ class PHPPowerPoint_Style_Borders implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -189,16 +196,18 @@ class PHPPowerPoint_Style_Borders implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

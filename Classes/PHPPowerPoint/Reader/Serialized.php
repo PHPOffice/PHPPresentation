@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /** PHPPowerPoint root directory */
 if (!defined('PHPPOWERPOINT_ROOT')) {
     /**
@@ -36,7 +35,6 @@ if (!defined('PHPPOWERPOINT_ROOT')) {
     PHPPowerPoint_Autoloader::Register();
     PHPPowerPoint_Shared_ZipStreamWrapper::register();
 }
-
 
 /**
  * PHPPowerPoint_Reader_Serialized
@@ -50,8 +48,8 @@ class PHPPowerPoint_Reader_Serialized implements PHPPowerPoint_Reader_IReader
     /**
      * Can the current PHPPowerPoint_Reader_IReader read the file?
      *
-     * @param   string      $pFileName
-     * @return  boolean
+     * @param  string  $pFileName
+     * @return boolean
      */
     public function canRead($pFilename)
     {
@@ -66,9 +64,9 @@ class PHPPowerPoint_Reader_Serialized implements PHPPowerPoint_Reader_IReader
     /**
      * Loads PHPPowerPoint Serialized file
      *
-     * @param   string      $pFilename
-     * @return  PHPPowerPoint
-     * @throws  Exception
+     * @param  string        $pFilename
+     * @return PHPPowerPoint
+     * @throws Exception
      */
     public function load($pFilename)
     {
@@ -88,8 +86,8 @@ class PHPPowerPoint_Reader_Serialized implements PHPPowerPoint_Reader_IReader
     /**
      * Load PHPPowerPoint Serialized file
      *
-     * @param   string      $pFilename
-     * @return  PHPPowerPoint
+     * @param  string        $pFilename
+     * @return PHPPowerPoint
      */
     private function _loadSerialized($pFilename)
     {
@@ -112,9 +110,9 @@ class PHPPowerPoint_Reader_Serialized implements PHPPowerPoint_Reader_IReader
     /**
      * Does a file support UnserializePHPPowerPoint ?
      *
-     * @param   string      $pFilename
-     * @throws  Exception
-     * @return  boolean
+     * @param  string    $pFilename
+     * @throws Exception
+     * @return boolean
      */
     public function fileSupportsUnserializePHPPowerPoint($pFilename = '')
     {

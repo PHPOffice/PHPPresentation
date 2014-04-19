@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased
  *
@@ -38,7 +37,8 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
     /**
      * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased
      */
-    public function __construct($fileName = '') {
+    public function __construct($fileName = '')
+    {
         // Check if file exists
         if (!file_exists($fileName)) {
             throw new Exception("Could not open " . $fileName . " for reading! File does not exist.");
@@ -58,78 +58,81 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
         $package->open($fileName);
 
         // Read relations and search for officeDocument
-        $layoutId = -1;
+        $layoutId  = -1;
         $relations = simplexml_load_string($package->getFromName("_rels/.rels"));
         foreach ($relations->Relationship as $rel) {
             if ($rel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument") {
                 // Found office document! Search for master slide...
-                $presentationRelations = simplexml_load_string($package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/_rels/" . basename($rel["Target"]) . ".rels")) );
+                $presentationRelations = simplexml_load_string($package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/_rels/" . basename($rel["Target"]) . ".rels")));
                 foreach ($presentationRelations->Relationship as $presRel) {
                     if ($presRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster") {
                         // Found slide master!
-                        $slideMasterId = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));
-                        $this->_masterSlides[] = array('masterid' => $slideMasterId, 'body' => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . basename($presRel["Target"])) ));
+                        $slideMasterId         = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));
+                        $this->_masterSlides[] = array(
+                            'masterid' => $slideMasterId,
+                            'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . basename($presRel["Target"])))
+                        );
 
                         // Search for theme & slide layouts
-                        $masterRelations = simplexml_load_string($package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/_rels/" . basename($presRel["Target"]) . ".rels")) );
+                        $masterRelations = simplexml_load_string($package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/_rels/" . basename($presRel["Target"]) . ".rels")));
                         foreach ($masterRelations->Relationship as $masterRel) {
                             if ($masterRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                 // Found theme!
-                                $themeId = str_replace('theme', '', basename($masterRel["Target"], '.xml'));
-                                $this->_themes[$themeId - 1] = array('masterid' => $slideMasterId, 'body' => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])) ));
+                                $themeId                     = str_replace('theme', '', basename($masterRel["Target"], '.xml'));
+                                $this->_themes[$themeId - 1] = array(
+                                    'masterid' => $slideMasterId,
+                                    'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
+                                );
 
                                 // Search for theme relations
-                                $themeRelations = @simplexml_load_string($package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) .  "/_rels/" . basename($masterRel["Target"]) . ".rels")) );
+                                $themeRelations = @simplexml_load_string($package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/_rels/" . basename($masterRel["Target"]) . ".rels")));
                                 if ($themeRelations && $themeRelations->Relationship) {
                                     foreach ($themeRelations->Relationship as $themeRel) {
-                                        if ($themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster"
-                                            && $themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout"
-                                            && $themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
+                                        if ($themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" && $themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" && $themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                             // Theme relation
                                             $this->_themeRelations[] = array(
-                                                'masterid'     => $slideMasterId,
-                                                'id'           => $themeRel["Id"],
-                                                'type'         => $themeRel["Type"],
-                                                'contentType'  => '',
-                                                'target'       => $themeRel["Target"],
-                                                'contents'     => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . dirname($themeRel["Target"]) . "/" . basename($themeRel["Target"])) )
+                                                'masterid' => $slideMasterId,
+                                                'id' => $themeRel["Id"],
+                                                'type' => $themeRel["Type"],
+                                                'contentType' => '',
+                                                'target' => $themeRel["Target"],
+                                                'contents' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . dirname($themeRel["Target"]) . "/" . basename($themeRel["Target"])))
                                             );
                                         }
                                     }
                                 }
-                            } else if ($masterRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout") {
+                            } elseif ($masterRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout") {
                                 // Found slide layout!
-                                $layoutId = str_replace('slideLayout', '', basename($masterRel["Target"], '.xml'));
-                                $layout = array(
-                                            'masterid'  => $slideMasterId,
-                                            'name'      => '-unknown-',
-                                            'body'      => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])) )
+                                $layoutId  = str_replace('slideLayout', '', basename($masterRel["Target"], '.xml'));
+                                $layout    = array(
+                                    'masterid' => $slideMasterId,
+                                    'name' => '-unknown-',
+                                    'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
                                 );
                                 $layoutXml = null;
-                                if(utf8_encode(utf8_decode($layout['body'])) == $layout['body'])
+                                if (utf8_encode(utf8_decode($layout['body'])) == $layout['body']) {
                                     $layoutXml = simplexml_load_string($layout['body']);
-                                else
+                                } else {
                                     $layoutXml = simplexml_load_string(utf8_encode($layout['body']));
+                                }
                                 $layoutXml->registerXPathNamespace("p", "http://schemas.openxmlformats.org/presentationml/2006/main");
-                                $slide = $layoutXml->xpath('/p:sldLayout/p:cSld');
-                                $layout['name'] = (string)$slide[0]['name'];
+                                $slide                     = $layoutXml->xpath('/p:sldLayout/p:cSld');
+                                $layout['name']            = (string) $slide[0]['name'];
                                 $this->_layouts[$layoutId] = $layout;
 
                                 // Search for slide layout relations
-                                $layoutRelations = @simplexml_load_string($package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) .  "/_rels/" . basename($masterRel["Target"]) . ".rels")) );
+                                $layoutRelations = @simplexml_load_string($package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/_rels/" . basename($masterRel["Target"]) . ".rels")));
                                 if ($layoutRelations && $layoutRelations->Relationship) {
                                     foreach ($layoutRelations->Relationship as $layoutRel) {
-                                        if ($layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster"
-                                                && $layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout"
-                                                && $layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
+                                        if ($layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" && $layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" && $layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                             // Layout relation
                                             $this->_layoutRelations[] = array(
-                                                'layoutId'     => $layoutId,
-                                                'id'           => $layoutRel["Id"],
-                                                'type'         => $layoutRel["Type"],
-                                                'contentType'  => '',
-                                                'target'       => $layoutRel["Target"],
-                                                'contents'     => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . dirname($layoutRel["Target"]) . "/" . basename($layoutRel["Target"])) )
+                                                'layoutId' => $layoutId,
+                                                'id' => $layoutRel["Id"],
+                                                'type' => $layoutRel["Type"],
+                                                'contentType' => '',
+                                                'target' => $layoutRel["Target"],
+                                                'contents' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . dirname($layoutRel["Target"]) . "/" . basename($layoutRel["Target"])))
                                             );
                                         }
                                     }
@@ -137,12 +140,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
                             } else {
                                 // Master slide relation
                                 $this->_masterSlideRelations[] = array(
-                                    'masterid'     => $slideMasterId,
-                                    'id'           => $masterRel["Id"],
-                                    'type'         => $masterRel["Type"],
-                                    'contentType'  => '',
-                                    'target'       => $masterRel["Target"],
-                                    'contents'     => $package->getFromName( $this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])) )
+                                    'masterid' => $slideMasterId,
+                                    'id' => $masterRel["Id"],
+                                    'type' => $masterRel["Type"],
+                                    'contentType' => '',
+                                    'target' => $masterRel["Target"],
+                                    'contents' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
                                 );
                             }
                         }
@@ -154,7 +157,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
         }
 
         // Sort master slides
-        usort($this->_masterSlides, array("PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased", "cmp_master"));
+        usort($this->_masterSlides, array(
+            "PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased",
+            "cmp_master"
+        ));
 
         // Close package
         $package->close();
@@ -166,31 +172,39 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
      * @param array $a
      * @param array $b
      */
-    public static function cmp_master($a, $b) {
+    public static function cmp_master($a, $b)
+    {
         if ($a['masterid'] == $b['masterid']) {
             return 0;
         }
+
         return ($a['masterid'] < $b['masterid']) ? -1 : 1;
     }
 
     /**
      * Determine absolute zip path
      *
-     * @param string $path
+     * @param  string $path
      * @return string
      */
-    protected function absoluteZipPath($path) {
-        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
-        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+    protected function absoluteZipPath($path)
+    {
+        $path      = str_replace(array(
+            '/',
+            '\\'
+        ), DIRECTORY_SEPARATOR, $path);
+        $parts     = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
         $absolutes = array();
         foreach ($parts as $part) {
-            if ('.' == $part) continue;
+            if ('.' == $part)
+                continue;
             if ('..' == $part) {
                 array_pop($absolutes);
             } else {
                 $absolutes[] = $part;
             }
         }
+
         return implode('/', $absolutes);
     }
 }

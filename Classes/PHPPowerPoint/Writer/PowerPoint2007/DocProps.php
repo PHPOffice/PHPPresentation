@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_DocProps
  *
@@ -35,12 +34,12 @@
  */
 class PHPPowerPoint_Writer_PowerPoint2007_DocProps extends PHPPowerPoint_Writer_PowerPoint2007_WriterPart
 {
-/**
+    /**
      * Write docProps/app.xml to XML format
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint
-     * @return  string      XML Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @return string        XML Output
+     * @throws Exception
      */
     public function writeDocPropsApp(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -53,82 +52,82 @@ class PHPPowerPoint_Writer_PowerPoint2007_DocProps extends PHPPowerPoint_Writer_
         }
 
         // XML header
-        $objWriter->startDocument('1.0','UTF-8','yes');
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
 
         // Properties
         $objWriter->startElement('Properties');
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/officeDocument/2006/extended-properties');
         $objWriter->writeAttribute('xmlns:vt', 'http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes');
 
-            // Application
-            $objWriter->writeElement('Application',     'Microsoft Office PowerPoint');
+        // Application
+        $objWriter->writeElement('Application', 'Microsoft Office PowerPoint');
 
-            // Slides
-            $objWriter->writeElement('Slides',  $pPHPPowerPoint->getSlideCount());
+        // Slides
+        $objWriter->writeElement('Slides', $pPHPPowerPoint->getSlideCount());
 
-            // ScaleCrop
-            $objWriter->writeElement('ScaleCrop',       'false');
+        // ScaleCrop
+        $objWriter->writeElement('ScaleCrop', 'false');
 
-            // HeadingPairs
-            $objWriter->startElement('HeadingPairs');
+        // HeadingPairs
+        $objWriter->startElement('HeadingPairs');
 
-                // Vector
-                $objWriter->startElement('vt:vector');
-                $objWriter->writeAttribute('size',      '4');
-                $objWriter->writeAttribute('baseType',  'variant');
+        // Vector
+        $objWriter->startElement('vt:vector');
+        $objWriter->writeAttribute('size', '4');
+        $objWriter->writeAttribute('baseType', 'variant');
 
-                    // Variant
-                    $objWriter->startElement('vt:variant');
-                        $objWriter->writeElement('vt:lpstr',    'Theme');
-                    $objWriter->endElement();
+        // Variant
+        $objWriter->startElement('vt:variant');
+        $objWriter->writeElement('vt:lpstr', 'Theme');
+        $objWriter->endElement();
 
-                    // Variant
-                    $objWriter->startElement('vt:variant');
-                        $objWriter->writeElement('vt:i4',       '1');
-                    $objWriter->endElement();
+        // Variant
+        $objWriter->startElement('vt:variant');
+        $objWriter->writeElement('vt:i4', '1');
+        $objWriter->endElement();
 
-                    // Variant
-                    $objWriter->startElement('vt:variant');
-                        $objWriter->writeElement('vt:lpstr',    'Slide Titles');
-                    $objWriter->endElement();
+        // Variant
+        $objWriter->startElement('vt:variant');
+        $objWriter->writeElement('vt:lpstr', 'Slide Titles');
+        $objWriter->endElement();
 
-                    // Variant
-                    $objWriter->startElement('vt:variant');
-                        $objWriter->writeElement('vt:i4',       '1');
-                    $objWriter->endElement();
+        // Variant
+        $objWriter->startElement('vt:variant');
+        $objWriter->writeElement('vt:i4', '1');
+        $objWriter->endElement();
 
-                $objWriter->endElement();
+        $objWriter->endElement();
 
-            $objWriter->endElement();
+        $objWriter->endElement();
 
-            // TitlesOfParts
-            $objWriter->startElement('TitlesOfParts');
+        // TitlesOfParts
+        $objWriter->startElement('TitlesOfParts');
 
-                // Vector
-                $objWriter->startElement('vt:vector');
-                $objWriter->writeAttribute('size',      '1');
-                $objWriter->writeAttribute('baseType',  'lpstr');
+        // Vector
+        $objWriter->startElement('vt:vector');
+        $objWriter->writeAttribute('size', '1');
+        $objWriter->writeAttribute('baseType', 'lpstr');
 
-                    $objWriter->writeElement('vt:lpstr',    'Office Theme');
+        $objWriter->writeElement('vt:lpstr', 'Office Theme');
 
-                $objWriter->endElement();
+        $objWriter->endElement();
 
-            $objWriter->endElement();
+        $objWriter->endElement();
 
-            // Company
-            $objWriter->writeElement('Company',             $pPHPPowerPoint->getProperties()->getCompany());
+        // Company
+        $objWriter->writeElement('Company', $pPHPPowerPoint->getProperties()->getCompany());
 
-            // LinksUpToDate
-            $objWriter->writeElement('LinksUpToDate',       'false');
+        // LinksUpToDate
+        $objWriter->writeElement('LinksUpToDate', 'false');
 
-            // SharedDoc
-            $objWriter->writeElement('SharedDoc',           'false');
+        // SharedDoc
+        $objWriter->writeElement('SharedDoc', 'false');
 
-            // HyperlinksChanged
-            $objWriter->writeElement('HyperlinksChanged',   'false');
+        // HyperlinksChanged
+        $objWriter->writeElement('HyperlinksChanged', 'false');
 
-            // AppVersion
-            $objWriter->writeElement('AppVersion',          '12.0000');
+        // AppVersion
+        $objWriter->writeElement('AppVersion', '12.0000');
 
         $objWriter->endElement();
 
@@ -139,9 +138,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_DocProps extends PHPPowerPoint_Writer_
     /**
      * Write docProps/core.xml to XML format
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint
-     * @return  string      XML Output
-     * @throws  Exception
+     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @return string        XML Output
+     * @throws Exception
      */
     public function writeDocPropsCore(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -154,7 +153,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_DocProps extends PHPPowerPoint_Writer_
         }
 
         // XML header
-        $objWriter->startDocument('1.0','UTF-8','yes');
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
 
         // cp:coreProperties
         $objWriter->startElement('cp:coreProperties');
@@ -164,38 +163,38 @@ class PHPPowerPoint_Writer_PowerPoint2007_DocProps extends PHPPowerPoint_Writer_
         $objWriter->writeAttribute('xmlns:dcmitype', 'http://purl.org/dc/dcmitype/');
         $objWriter->writeAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
 
-            // dc:creator
-            $objWriter->writeElement('dc:creator',          $pPHPPowerPoint->getProperties()->getCreator());
+        // dc:creator
+        $objWriter->writeElement('dc:creator', $pPHPPowerPoint->getProperties()->getCreator());
 
-            // cp:lastModifiedBy
-            $objWriter->writeElement('cp:lastModifiedBy',   $pPHPPowerPoint->getProperties()->getLastModifiedBy());
+        // cp:lastModifiedBy
+        $objWriter->writeElement('cp:lastModifiedBy', $pPHPPowerPoint->getProperties()->getLastModifiedBy());
 
-            // dcterms:created
-            $objWriter->startElement('dcterms:created');
-            $objWriter->writeAttribute('xsi:type', 'dcterms:W3CDTF');
-            $objWriter->writeRaw(gmdate("Y-m-d\TH:i:s\Z",   $pPHPPowerPoint->getProperties()->getCreated()));
-            $objWriter->endElement();
+        // dcterms:created
+        $objWriter->startElement('dcterms:created');
+        $objWriter->writeAttribute('xsi:type', 'dcterms:W3CDTF');
+        $objWriter->writeRaw(gmdate("Y-m-d\TH:i:s\Z", $pPHPPowerPoint->getProperties()->getCreated()));
+        $objWriter->endElement();
 
-            // dcterms:modified
-            $objWriter->startElement('dcterms:modified');
-            $objWriter->writeAttribute('xsi:type', 'dcterms:W3CDTF');
-            $objWriter->writeRaw(gmdate("Y-m-d\TH:i:s\Z",   $pPHPPowerPoint->getProperties()->getModified()));
-            $objWriter->endElement();
+        // dcterms:modified
+        $objWriter->startElement('dcterms:modified');
+        $objWriter->writeAttribute('xsi:type', 'dcterms:W3CDTF');
+        $objWriter->writeRaw(gmdate("Y-m-d\TH:i:s\Z", $pPHPPowerPoint->getProperties()->getModified()));
+        $objWriter->endElement();
 
-            // dc:title
-            $objWriter->writeElement('dc:title',            $pPHPPowerPoint->getProperties()->getTitle());
+        // dc:title
+        $objWriter->writeElement('dc:title', $pPHPPowerPoint->getProperties()->getTitle());
 
-            // dc:description
-            $objWriter->writeElement('dc:description',      $pPHPPowerPoint->getProperties()->getDescription());
+        // dc:description
+        $objWriter->writeElement('dc:description', $pPHPPowerPoint->getProperties()->getDescription());
 
-            // dc:subject
-            $objWriter->writeElement('dc:subject',          $pPHPPowerPoint->getProperties()->getSubject());
+        // dc:subject
+        $objWriter->writeElement('dc:subject', $pPHPPowerPoint->getProperties()->getSubject());
 
-            // cp:keywords
-            $objWriter->writeElement('cp:keywords',         $pPHPPowerPoint->getProperties()->getKeywords());
+        // cp:keywords
+        $objWriter->writeElement('cp:keywords', $pPHPPowerPoint->getProperties()->getKeywords());
 
-            // cp:category
-            $objWriter->writeElement('cp:category',         $pPHPPowerPoint->getProperties()->getCategory());
+        // cp:category
+        $objWriter->writeElement('cp:category', $pPHPPowerPoint->getProperties()->getCategory());
 
         $objWriter->endElement();
 

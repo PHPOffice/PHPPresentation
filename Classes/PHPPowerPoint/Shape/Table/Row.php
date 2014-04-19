@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Table_Row
  *
@@ -72,8 +71,7 @@ class PHPPowerPoint_Shape_Table_Row implements PHPPowerPoint_IComparable
     {
         // Initialise variables
         $this->_cells = array();
-        for ($i = 0; $i < $columns; $i++)
-        {
+        for ($i = 0; $i < $columns; $i++) {
             $this->_cells[] = new PHPPowerPoint_Shape_Table_Cell();
         }
 
@@ -84,8 +82,8 @@ class PHPPowerPoint_Shape_Table_Row implements PHPPowerPoint_IComparable
     /**
      * Get cell
      *
-     * @param int $cell Cell number
-     * @param boolean $exceptionAsNull Return a null value instead of an exception?
+     * @param  int                            $cell            Cell number
+     * @param  boolean                        $exceptionAsNull Return a null value instead of an exception?
      * @return PHPPowerPoint_Shape_Table_Cell
      */
     public function getCell($cell = 0, $exceptionAsNull = false)
@@ -119,13 +117,11 @@ class PHPPowerPoint_Shape_Table_Row implements PHPPowerPoint_IComparable
     public function nextCell()
     {
         $this->_activeCellIndex++;
-        if (isset($this->_cells[$this->_activeCellIndex]))
-        {
+        if (isset($this->_cells[$this->_activeCellIndex])) {
             $this->_cells[$this->_activeCellIndex]->setFill(clone $this->getFill());
+
             return $this->_cells[$this->_activeCellIndex];
-        }
-        else
-        {
+        } else {
             throw new Exception("Cell count out of bounds.");
         }
     }
@@ -143,12 +139,13 @@ class PHPPowerPoint_Shape_Table_Row implements PHPPowerPoint_IComparable
     /**
      * Set fill
      *
-     * @param PHPPowerPoint_Style_Fill $fill
+     * @param  PHPPowerPoint_Style_Fill      $fill
      * @return PHPPowerPoint_Shape_Table_Row
      */
     public function setFill(PHPPowerPoint_Style_Fill $fill)
     {
         $this->_fill = $fill;
+
         return $this;
     }
 
@@ -165,32 +162,29 @@ class PHPPowerPoint_Shape_Table_Row implements PHPPowerPoint_IComparable
     /**
      * Set height
      *
-     * @param int $value
+     * @param  int                          $value
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setHeight($value = 0)
     {
         $this->_height = $value;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         $hashElements = '';
         foreach ($this->_cells as $cell) {
             $hashElements .= $cell->getHashCode();
         }
 
-        return md5(
-              $hashElements
-            . $this->_fill->getHashCode()
-            . $this->_height
-            . __CLASS__
-        );
+        return md5($hashElements . $this->_fill->getHashCode() . $this->_height . __CLASS__);
     }
 
     /**
@@ -206,9 +200,10 @@ class PHPPowerPoint_Shape_Table_Row implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -218,19 +213,23 @@ class PHPPowerPoint_Shape_Table_Row implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
-            if ($key == '_parent') continue;
+            if ($key == '_parent') {
+                continue;
+            }
 
             if (is_object($value)) {
                 $this->$key = clone $value;

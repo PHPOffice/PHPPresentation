@@ -23,7 +23,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_RichText_Run
  *
@@ -43,7 +42,7 @@ class PHPPowerPoint_Shape_RichText_Run extends PHPPowerPoint_Shape_RichText_Text
     /**
      * Create a new PHPPowerPoint_Shape_RichText_Run instance
      *
-     * @param   string      $pText      Text
+     * @param string $pText Text
      */
     public function __construct($pText = '')
     {
@@ -57,39 +56,40 @@ class PHPPowerPoint_Shape_RichText_Run extends PHPPowerPoint_Shape_RichText_Text
      *
      * @return PHPPowerPoint_Style_Font
      */
-    public function getFont() {
+    public function getFont()
+    {
         return $this->_font;
     }
 
     /**
      * Set font
      *
-     * @param   PHPPowerPoint_Style_Font        $pFont      Font
-     * @throws  Exception
+     * @param  PHPPowerPoint_Style_Font                  $pFont Font
+     * @throws Exception
      * @return PHPPowerPoint_Shape_RichText_ITextElement
      */
-    public function setFont(PHPPowerPoint_Style_Font $pFont = null) {
+    public function setFont(PHPPowerPoint_Style_Font $pFont = null)
+    {
         $this->_font = $pFont;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->getText()
-            . $this->_font->getHashCode()
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->getText() . $this->_font->getHashCode() . __CLASS__);
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

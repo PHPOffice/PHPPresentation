@@ -98,12 +98,13 @@ class PHPPowerPoint
     /**
      * Set properties
      *
-     * @param PHPPowerPoint_DocumentProperties  $value
+     * @param  PHPPowerPoint_DocumentProperties $value
      * @return PHPPowerPoint
      */
     public function setProperties(PHPPowerPoint_DocumentProperties $value)
     {
         $this->_properties = $value;
+
         return $this;
     }
 
@@ -120,12 +121,13 @@ class PHPPowerPoint
     /**
      * Set layout
      *
-     * @param PHPPowerPoint_DocumentLayout  $value
+     * @param  PHPPowerPoint_DocumentLayout $value
      * @return PHPPowerPoint
      */
     public function setLayout(PHPPowerPoint_DocumentLayout $value)
     {
         $this->_layout = $value;
+
         return $this;
     }
 
@@ -156,20 +158,21 @@ class PHPPowerPoint
     /**
      * Add slide
      *
-     * @param PHPPowerPoint_Slide $slide
+     * @param  PHPPowerPoint_Slide $slide
      * @throws Exception
      * @return PHPPowerPoint_Slide
      */
     public function addSlide(PHPPowerPoint_Slide $slide = null)
     {
         $this->_slideCollection[] = $slide;
+
         return $slide;
     }
 
     /**
      * Remove slide by index
      *
-     * @param int $index Slide index
+     * @param  int           $index Slide index
      * @throws Exception
      * @return PHPPowerPoint
      */
@@ -180,13 +183,14 @@ class PHPPowerPoint
         } else {
             array_splice($this->_slideCollection, $index, 1);
         }
+
         return $this;
     }
 
     /**
      * Get slide by index
      *
-     * @param int $index Slide index
+     * @param  int                 $index Slide index
      * @return PHPPowerPoint_Slide
      * @throws Exception
      */
@@ -212,8 +216,8 @@ class PHPPowerPoint
     /**
      * Get index for slide
      *
-     * @param PHPPowerPoint_Slide $slide
-     * @return Slide index
+     * @param  PHPPowerPoint_Slide $slide
+     * @return Slide               index
      * @throws Exception
      */
     public function getIndex(PHPPowerPoint_Slide $slide)
@@ -248,7 +252,7 @@ class PHPPowerPoint
     /**
      * Set active slide index
      *
-     * @param int $index Active slide index
+     * @param  int                 $index Active slide index
      * @throws Exception
      * @return PHPPowerPoint_Slide
      */
@@ -259,19 +263,21 @@ class PHPPowerPoint
         } else {
             $this->_activeSlideIndex = $index;
         }
+
         return $this->getActiveSlide();
     }
 
     /**
      * Add external slide
      *
-     * @param PHPPowerPoint_Slide $slide External slide to add
+     * @param  PHPPowerPoint_Slide $slide External slide to add
      * @throws Exception
      * @return PHPPowerPoint_Slide
      */
     public function addExternalSheet(PHPPowerPoint_Slide $slide)
     {
         $slide->rebindParent($this);
+
         return $this->addSheet($slide);
     }
 

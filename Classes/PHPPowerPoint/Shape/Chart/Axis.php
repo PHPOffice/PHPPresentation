@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Chart_Axis
  *
@@ -72,12 +71,13 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
     /**
      * Set Title
      *
-     * @param string $value
+     * @param  string                         $value
      * @return PHPPowerPoint_Shape_Chart_Axis
      */
     public function setTitle($value = 'Axis Title')
     {
         $this->_title = $value;
+
         return $this;
     }
 
@@ -94,19 +94,20 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
     /**
      * Set Format Code
      *
-     * @param string $value
+     * @param  string                         $value
      * @return PHPPowerPoint_Shape_Chart_Axis
      */
     public function setFormatCode($value = '')
     {
         $this->_formatCode = $value;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -126,7 +127,7 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -139,7 +140,7 @@ class PHPPowerPoint_Shape_Chart_Axis implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

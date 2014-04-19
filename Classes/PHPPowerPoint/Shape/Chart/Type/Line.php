@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Chart_Type_Line
  *
@@ -62,31 +61,33 @@ class PHPPowerPoint_Shape_Chart_Type_Line extends PHPPowerPoint_Shape_Chart_Type
     /**
      * Set Data
      *
-     * @param array $value Array of PHPPowerPoint_Shape_Chart_Series
+     * @param  array                          $value Array of PHPPowerPoint_Shape_Chart_Series
      * @return PHPPowerPoint_Shape_Type_Bar3D
      */
     public function setData($value = array())
     {
         $this->_data = $value;
+
         return $this;
     }
 
     /**
      * Add Series
      *
-     * @param PHPPowerPoint_Shape_Chart_Series $value
+     * @param  PHPPowerPoint_Shape_Chart_Series $value
      * @return PHPPowerPoint_Shape_Type_Bar3D
      */
     public function addSeries(PHPPowerPoint_Shape_Chart_Series $value)
     {
         $this->_data[] = $value;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -111,7 +112,7 @@ class PHPPowerPoint_Shape_Chart_Type_Line extends PHPPowerPoint_Shape_Chart_Type
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -124,7 +125,7 @@ class PHPPowerPoint_Shape_Chart_Type_Line extends PHPPowerPoint_Shape_Chart_Type
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

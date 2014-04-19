@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Style_Color
  *
@@ -70,21 +69,24 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getARGB() {
+    public function getARGB()
+    {
         return $this->_argb;
     }
 
     /**
      * Set ARGB
      *
-     * @param string $pValue
+     * @param  string                    $pValue
      * @return PHPPowerPoint_Style_Color
      */
-    public function setARGB($pValue = PHPPowerPoint_Style_Color::COLOR_BLACK) {
+    public function setARGB($pValue = PHPPowerPoint_Style_Color::COLOR_BLACK)
+    {
         if ($pValue == '') {
             $pValue = PHPPowerPoint_Style_Color::COLOR_BLACK;
         }
         $this->_argb = $pValue;
+
         return $this;
     }
 
@@ -93,7 +95,8 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getRGB() {
+    public function getRGB()
+    {
         if (strlen($this->_argb) == 6) {
             return $this->_argb;
         } else {
@@ -104,25 +107,28 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
     /**
      * Set RGB
      *
-     * @param string $pValue
+     * @param  string                    $pValue
      * @return PHPPowerPoint_Style_Color
      */
-    public function setRGB($pValue = '000000') {
+    public function setRGB($pValue = '000000')
+    {
         if ($pValue == '') {
             $pValue = '000000';
         }
         $this->_argb = 'FF' . $pValue;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
+    public function getHashCode()
+    {
         return md5(
-              $this->_argb
+            $this->_argb
             . __CLASS__
         );
     }
@@ -140,9 +146,10 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -152,16 +159,18 @@ class PHPPowerPoint_Style_Color implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

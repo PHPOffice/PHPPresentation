@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_BaseDrawing
  *
@@ -118,12 +117,13 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
     /**
      * Set Name
      *
-     * @param string $pValue
+     * @param  string                          $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
     public function setName($pValue = '')
     {
         $this->_name = $pValue;
+
         return $this;
     }
 
@@ -140,19 +140,20 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
     /**
      * Set Description
      *
-     * @param string $pValue
+     * @param  string                          $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
     public function setDescription($pValue = '')
     {
         $this->_description = $pValue;
+
         return $this;
     }
 
     /**
      * Set Width
      *
-     * @param int $pValue
+     * @param  int                             $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
     public function setWidth($pValue = 0)
@@ -172,7 +173,7 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
     /**
      * Set Height
      *
-     * @param int $pValue
+     * @param  int                             $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
     public function setHeight($pValue = 0)
@@ -192,8 +193,8 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
     /**
      * Set width and height with proportional resize
      * @author Vincent@luo MSN:kele_100@hotmail.com
-     * @param int $width
-     * @param int $height
+     * @param  int                             $width
+     * @param  int                             $height
      * @example $objDrawing->setResizeProportional(true);
      * @example $objDrawing->setWidthAndHeight(160,120);
      * @return PHPPowerPoint_Shape_BaseDrawing
@@ -211,6 +212,7 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
                 $this->_height = $height;
             }
         }
+
         return $this;
     }
 
@@ -227,19 +229,20 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
     /**
      * Set ResizeProportional
      *
-     * @param boolean $pValue
+     * @param  boolean                         $pValue
      * @return PHPPowerPoint_Shape_BaseDrawing
      */
     public function setResizeProportional($pValue = true)
     {
         $this->_resizeProportional = $pValue;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -259,7 +262,7 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -272,7 +275,7 @@ abstract class PHPPowerPoint_Shape_BaseDrawing extends PHPPowerPoint_Shape imple
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

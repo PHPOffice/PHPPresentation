@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Shape_Drawing
  *
@@ -82,6 +81,7 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
     public function getExtension()
     {
         $exploded = explode(".", basename($this->_path));
+
         return $exploded[count($exploded) - 1];
     }
 
@@ -98,9 +98,9 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
     /**
      * Set Path
      *
-     * @param   string      $pValue         File path
-     * @param   boolean     $pVerifyFile    Verify file
-     * @throws  Exception
+     * @param  string                      $pValue      File path
+     * @param  boolean                     $pVerifyFile Verify file
+     * @throws Exception
      * @return PHPPowerPoint_Shape_Drawing
      */
     public function setPath($pValue = '', $pVerifyFile = true)
@@ -119,13 +119,14 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
         } else {
             $this->_path = $pValue;
         }
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
     public function getHashCode()
     {
@@ -145,7 +146,7 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
     public function getHashIndex()
     {
@@ -158,7 +159,7 @@ class PHPPowerPoint_Shape_Drawing extends PHPPowerPoint_Shape_BaseDrawing implem
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
     public function setHashIndex($value)
     {

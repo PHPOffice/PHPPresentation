@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Style_Font
  *
@@ -36,24 +35,24 @@
 class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
 {
     /* Underline types */
-    const UNDERLINE_NONE                    = 'none';
-    const UNDERLINE_DASH                    = 'dash';
-    const UNDERLINE_DASHHEAVY               = 'dashHeavy';
-    const UNDERLINE_DASHLONG                = 'dashLong';
-    const UNDERLINE_DASHLONGHEAVY           = 'dashLongHeavy';
-    const UNDERLINE_DOUBLE                  = 'dbl';
-    const UNDERLINE_DOTHASH                 = 'dotDash';
-    const UNDERLINE_DOTHASHHEAVY            = 'dotDashHeavy';
-    const UNDERLINE_DOTDOTDASH              = 'dotDotDash';
-    const UNDERLINE_DOTDOTDASHHEAVY         = 'dotDotDashHeavy';
-    const UNDERLINE_DOTTED                  = 'dotted';
-    const UNDERLINE_DOTTEDHEAVY             = 'dottedHeavy';
-    const UNDERLINE_HEAVY                   = 'heavy';
-    const UNDERLINE_SINGLE                  = 'sng';
-    const UNDERLINE_WAVY                    = 'wavy';
-    const UNDERLINE_WAVYDOUBLE              = 'wavyDbl';
-    const UNDERLINE_WAVYHEAVY               = 'wavyHeavy';
-    const UNDERLINE_WORDS                   = 'words';
+    const UNDERLINE_NONE = 'none';
+    const UNDERLINE_DASH = 'dash';
+    const UNDERLINE_DASHHEAVY = 'dashHeavy';
+    const UNDERLINE_DASHLONG = 'dashLong';
+    const UNDERLINE_DASHLONGHEAVY = 'dashLongHeavy';
+    const UNDERLINE_DOUBLE = 'dbl';
+    const UNDERLINE_DOTHASH = 'dotDash';
+    const UNDERLINE_DOTHASHHEAVY = 'dotDashHeavy';
+    const UNDERLINE_DOTDOTDASH = 'dotDotDash';
+    const UNDERLINE_DOTDOTDASHHEAVY = 'dotDotDashHeavy';
+    const UNDERLINE_DOTTED = 'dotted';
+    const UNDERLINE_DOTTEDHEAVY = 'dottedHeavy';
+    const UNDERLINE_HEAVY = 'heavy';
+    const UNDERLINE_SINGLE = 'sng';
+    const UNDERLINE_WAVY = 'wavy';
+    const UNDERLINE_WAVYDOUBLE = 'wavyDbl';
+    const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
+    const UNDERLINE_WORDS = 'words';
 
     /**
      * Name
@@ -117,15 +116,15 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_name                = 'Calibri';
-        $this->_size                = 10;
-        $this->_bold                = false;
-        $this->_italic              = false;
-        $this->_superScript         = false;
-        $this->_subScript           = false;
-        $this->_underline           = PHPPowerPoint_Style_Font::UNDERLINE_NONE;
-        $this->_strikethrough       = false;
-        $this->_color               = new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_BLACK);
+        $this->_name          = 'Calibri';
+        $this->_size          = 10;
+        $this->_bold          = false;
+        $this->_italic        = false;
+        $this->_superScript   = false;
+        $this->_subScript     = false;
+        $this->_underline     = PHPPowerPoint_Style_Font::UNDERLINE_NONE;
+        $this->_strikethrough = false;
+        $this->_color         = new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_BLACK);
     }
 
     /**
@@ -133,21 +132,24 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getName() {
+    public function getName()
+    {
         return $this->_name;
     }
 
     /**
      * Set Name
      *
-     * @param string $pValue
+     * @param  string                   $pValue
      * @return PHPPowerPoint_Style_Font
      */
-    public function setName($pValue = 'Calibri') {
+    public function setName($pValue = 'Calibri')
+    {
         if ($pValue == '') {
             $pValue = 'Calibri';
         }
         $this->_name = $pValue;
+
         return $this;
     }
 
@@ -156,21 +158,24 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return double
      */
-    public function getSize() {
+    public function getSize()
+    {
         return $this->_size;
     }
 
     /**
      * Set Size
      *
-     * @param double $pValue
+     * @param  double                   $pValue
      * @return PHPPowerPoint_Style_Font
      */
-    public function setSize($pValue = 10) {
+    public function setSize($pValue = 10)
+    {
         if ($pValue == '') {
             $pValue = 10;
         }
         $this->_size = $pValue;
+
         return $this;
     }
 
@@ -179,21 +184,24 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getBold() {
+    public function getBold()
+    {
         return $this->_bold;
     }
 
     /**
      * Set Bold
      *
-     * @param boolean $pValue
+     * @param  boolean                  $pValue
      * @return PHPPowerPoint_Style_Font
      */
-    public function setBold($pValue = false) {
+    public function setBold($pValue = false)
+    {
         if ($pValue == '') {
             $pValue = false;
         }
         $this->_bold = $pValue;
+
         return $this;
     }
 
@@ -202,21 +210,24 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getItalic() {
+    public function getItalic()
+    {
         return $this->_italic;
     }
 
     /**
      * Set Italic
      *
-     * @param boolean $pValue
+     * @param  boolean                  $pValue
      * @return PHPPowerPoint_Style_Font
      */
-    public function setItalic($pValue = false) {
+    public function setItalic($pValue = false)
+    {
         if ($pValue == '') {
             $pValue = false;
         }
         $this->_italic = $pValue;
+
         return $this;
     }
 
@@ -225,22 +236,25 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getSuperScript() {
+    public function getSuperScript()
+    {
         return $this->_superScript;
     }
 
     /**
      * Set SuperScript
      *
-     * @param boolean $pValue
+     * @param  boolean                  $pValue
      * @return PHPPowerPoint_Style_Font
      */
-    public function setSuperScript($pValue = false) {
+    public function setSuperScript($pValue = false)
+    {
         if ($pValue == '') {
             $pValue = false;
         }
         $this->_superScript = $pValue;
-        $this->_subScript = !$pValue;
+        $this->_subScript   = !$pValue;
+
         return $this;
     }
 
@@ -249,22 +263,25 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getSubScript() {
+    public function getSubScript()
+    {
         return $this->_subScript;
     }
 
     /**
      * Set SubScript
      *
-     * @param boolean $pValue
+     * @param  boolean                  $pValue
      * @return PHPPowerPoint_Style_Font
      */
-    public function setSubScript($pValue = false) {
+    public function setSubScript($pValue = false)
+    {
         if ($pValue == '') {
             $pValue = false;
         }
-        $this->_subScript = $pValue;
+        $this->_subScript   = $pValue;
         $this->_superScript = !$pValue;
+
         return $this;
     }
 
@@ -273,21 +290,24 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return string
      */
-    public function getUnderline() {
+    public function getUnderline()
+    {
         return $this->_underline;
     }
 
     /**
      * Set Underline
      *
-     * @param string $pValue    PHPPowerPoint_Style_Font underline type
+     * @param  string                   $pValue PHPPowerPoint_Style_Font underline type
      * @return PHPPowerPoint_Style_Font
      */
-    public function setUnderline($pValue = PHPPowerPoint_Style_Font::UNDERLINE_NONE) {
+    public function setUnderline($pValue = PHPPowerPoint_Style_Font::UNDERLINE_NONE)
+    {
         if ($pValue == '') {
             $pValue = PHPPowerPoint_Style_Font::UNDERLINE_NONE;
         }
         $this->_underline = $pValue;
+
         return $this;
     }
 
@@ -297,7 +317,8 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      * @deprecated Use getStrikethrough() instead.
      * @return boolean
      */
-    public function getStriketrough() {
+    public function getStriketrough()
+    {
         return $this->getStrikethrough();
     }
 
@@ -305,10 +326,11 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      * Set Striketrough
      *
      * @deprecated Use setStrikethrough() instead.
-     * @param boolean $pValue
+     * @param  boolean                  $pValue
      * @return PHPPowerPoint_Style_Font
      */
-    public function setStriketrough($pValue = false) {
+    public function setStriketrough($pValue = false)
+    {
         return $this->setStrikethrough($pValue);
     }
 
@@ -317,21 +339,24 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return boolean
      */
-    public function getStrikethrough() {
+    public function getStrikethrough()
+    {
         return $this->_strikethrough;
     }
 
     /**
      * Set Strikethrough
      *
-     * @param boolean $pValue
+     * @param  boolean                  $pValue
      * @return PHPPowerPoint_Style_Font
      */
-    public function setStrikethrough($pValue = false) {
+    public function setStrikethrough($pValue = false)
+    {
         if ($pValue == '') {
             $pValue = false;
         }
         $this->_strikethrough = $pValue;
+
         return $this;
     }
 
@@ -340,40 +365,33 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      *
      * @return PHPPowerPoint_Style_Color
      */
-    public function getColor() {
+    public function getColor()
+    {
         return $this->_color;
     }
 
     /**
      * Set Color
      *
-     * @param   PHPPowerPoint_Style_Color $pValue
-     * @throws  Exception
+     * @param  PHPPowerPoint_Style_Color $pValue
+     * @throws Exception
      * @return PHPPowerPoint_Style_Font
      */
-    public function setColor(PHPPowerPoint_Style_Color $pValue = null) {
+    public function setColor(PHPPowerPoint_Style_Color $pValue = null)
+    {
         $this->_color = $pValue;
+
         return $this;
     }
 
     /**
      * Get hash code
      *
-     * @return string   Hash code
+     * @return string Hash code
      */
-    public function getHashCode() {
-        return md5(
-              $this->_name
-            . $this->_size
-            . ($this->_bold ? 't' : 'f')
-            . ($this->_italic ? 't' : 'f')
-            . ($this->_superScript ? 't' : 'f')
-            . ($this->_subScript ? 't' : 'f')
-            . $this->_underline
-            . ($this->_strikethrough ? 't' : 'f')
-            . $this->_color->getHashCode()
-            . __CLASS__
-        );
+    public function getHashCode()
+    {
+        return md5($this->_name . $this->_size . ($this->_bold ? 't' : 'f') . ($this->_italic ? 't' : 'f') . ($this->_superScript ? 't' : 'f') . ($this->_subScript ? 't' : 'f') . $this->_underline . ($this->_strikethrough ? 't' : 'f') . $this->_color->getHashCode() . __CLASS__);
     }
 
     /**
@@ -389,9 +407,10 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string   Hash index
+     * @return string Hash index
      */
-    public function getHashIndex() {
+    public function getHashIndex()
+    {
         return $this->_hashIndex;
     }
 
@@ -401,16 +420,18 @@ class PHPPowerPoint_Style_Font implements PHPPowerPoint_IComparable
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string    $value  Hash index
+     * @param string $value Hash index
      */
-    public function setHashIndex($value) {
+    public function setHashIndex($value)
+    {
         $this->_hashIndex = $value;
     }
 
     /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
-    public function __clone() {
+    public function __clone()
+    {
         $vars = get_object_vars($this);
         foreach ($vars as $key => $value) {
             if (is_object($value)) {

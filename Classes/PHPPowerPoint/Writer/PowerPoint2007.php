@@ -25,7 +25,6 @@
  * @version    ##VERSION##, ##DATE##
  */
 
-
 /**
  * PHPPowerPoint_Writer_PowerPoint2007
  *
@@ -87,7 +86,7 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
     /**
      * Create a new PHPPowerPoint_Writer_PowerPoint2007
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint
+     * @param PHPPowerPoint $pPHPPowerPoint
      */
     public function __construct(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -101,14 +100,14 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
         $this->_layoutPack = new PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default();
 
         // Initialise writer parts
-        $this->_writerParts['contenttypes']     = new PHPPowerPoint_Writer_PowerPoint2007_ContentTypes();
-        $this->_writerParts['docprops']         = new PHPPowerPoint_Writer_PowerPoint2007_DocProps();
-        $this->_writerParts['rels']             = new PHPPowerPoint_Writer_PowerPoint2007_Rels();
-        $this->_writerParts['theme']            = new PHPPowerPoint_Writer_PowerPoint2007_Theme();
-        $this->_writerParts['presentation']     = new PHPPowerPoint_Writer_PowerPoint2007_Presentation();
-        $this->_writerParts['slide']            = new PHPPowerPoint_Writer_PowerPoint2007_Slide();
-        $this->_writerParts['drawing']          = new PHPPowerPoint_Writer_PowerPoint2007_Drawing();
-        $this->_writerParts['chart']            = new PHPPowerPoint_Writer_PowerPoint2007_Chart();
+        $this->_writerParts['contenttypes'] = new PHPPowerPoint_Writer_PowerPoint2007_ContentTypes();
+        $this->_writerParts['docprops']     = new PHPPowerPoint_Writer_PowerPoint2007_DocProps();
+        $this->_writerParts['rels']         = new PHPPowerPoint_Writer_PowerPoint2007_Rels();
+        $this->_writerParts['theme']        = new PHPPowerPoint_Writer_PowerPoint2007_Theme();
+        $this->_writerParts['presentation'] = new PHPPowerPoint_Writer_PowerPoint2007_Presentation();
+        $this->_writerParts['slide']        = new PHPPowerPoint_Writer_PowerPoint2007_Slide();
+        $this->_writerParts['drawing']      = new PHPPowerPoint_Writer_PowerPoint2007_Drawing();
+        $this->_writerParts['chart']        = new PHPPowerPoint_Writer_PowerPoint2007_Chart();
 
         // Assign parent IWriter
         foreach ($this->_writerParts as $writer) {
@@ -116,16 +115,17 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
         }
 
         // Set HashTable variables
-        $this->_drawingHashTable            = new PHPPowerPoint_HashTable();
+        $this->_drawingHashTable = new PHPPowerPoint_HashTable();
     }
 
     /**
      * Get writer part
      *
-     * @param   string  $pPartName      Writer part name
-     * @return  PHPPowerPoint_Writer_PowerPoint2007_WriterPart
+     * @param  string                                         $pPartName Writer part name
+     * @return PHPPowerPoint_Writer_PowerPoint2007_WriterPart
      */
-    function getWriterPart($pPartName = '') {
+    public function getWriterPart($pPartName = '')
+    {
         if ($pPartName != '' && isset($this->_writerParts[strtolower($pPartName)])) {
             return $this->_writerParts[strtolower($pPartName)];
         } else {
@@ -136,8 +136,8 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
     /**
      * Save PHPPowerPoint to file
      *
-     * @param   string      $pFileName
-     * @throws  Exception
+     * @param  string    $pFileName
+     * @throws Exception
      */
     public function save($pFilename = null)
     {
@@ -152,7 +152,7 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
             }
 
             // Create drawing dictionary
-            $this->_drawingHashTable->addFromSource(            $this->getWriterPart('Drawing')->allDrawings($this->_presentation)      );
+            $this->_drawingHashTable->addFromSource($this->getWriterPart('Drawing')->allDrawings($this->_presentation));
 
             // Create new ZIP file and open it for writing
             $objZip = new ZipArchive();
@@ -165,79 +165,76 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
             }
 
             // Add [Content_Types].xml to ZIP file
-            $objZip->addFromString('[Content_Types].xml',           $this->getWriterPart('ContentTypes')->writeContentTypes($this->_presentation));
+            $objZip->addFromString('[Content_Types].xml', $this->getWriterPart('ContentTypes')->writeContentTypes($this->_presentation));
 
             // Add relationships to ZIP file
-            $objZip->addFromString('_rels/.rels',                       $this->getWriterPart('Rels')->writeRelationships($this->_presentation));
-            $objZip->addFromString('ppt/_rels/presentation.xml.rels',   $this->getWriterPart('Rels')->writePresentationRelationships($this->_presentation));
+            $objZip->addFromString('_rels/.rels', $this->getWriterPart('Rels')->writeRelationships($this->_presentation));
+            $objZip->addFromString('ppt/_rels/presentation.xml.rels', $this->getWriterPart('Rels')->writePresentationRelationships($this->_presentation));
 
             // Add document properties to ZIP file
-            $objZip->addFromString('docProps/app.xml',              $this->getWriterPart('DocProps')->writeDocPropsApp($this->_presentation));
-            $objZip->addFromString('docProps/core.xml',             $this->getWriterPart('DocProps')->writeDocPropsCore($this->_presentation));
+            $objZip->addFromString('docProps/app.xml', $this->getWriterPart('DocProps')->writeDocPropsApp($this->_presentation));
+            $objZip->addFromString('docProps/core.xml', $this->getWriterPart('DocProps')->writeDocPropsCore($this->_presentation));
 
             // Add themes to ZIP file
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {
-                $objZip->addFromString('ppt/theme/_rels/theme' . $masterSlide['masterid'] . '.xml.rels',    $this->getWriterPart('Rels')->writeThemeRelationships( $masterSlide['masterid'] ));
-                $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml',               utf8_encode($this->getWriterPart('Theme')->writeTheme($this->_presentation, $masterSlide['masterid'])));
+                $objZip->addFromString('ppt/theme/_rels/theme' . $masterSlide['masterid'] . '.xml.rels', $this->getWriterPart('Rels')->writeThemeRelationships($masterSlide['masterid']));
+                $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', utf8_encode($this->getWriterPart('Theme')->writeTheme($this->_presentation, $masterSlide['masterid'])));
             }
 
             // Add slide masters to ZIP file
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {
-                $objZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $masterSlide['masterid'] . '.xml.rels',   $this->getWriterPart('Rels')->writeSlideMasterRelationships( $masterSlide['masterid'] ));
-                $objZip->addFromString('ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml',              $masterSlide['body']);
+                $objZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $masterSlide['masterid'] . '.xml.rels', $this->getWriterPart('Rels')->writeSlideMasterRelationships($masterSlide['masterid']));
+                $objZip->addFromString('ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', $masterSlide['body']);
             }
 
             // Add slide layouts to ZIP file
             $slideLayouts = $this->getLayoutPack()->getLayouts();
             foreach ($slideLayouts as $key => $layout) {
-                $objZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $key . '.xml.rels',   $this->getWriterPart('Rels')->writeSlideLayoutRelationships($key, $layout['masterid']));
-                $objZip->addFromString('ppt/slideLayouts/slideLayout' . $key . '.xml',              utf8_encode($layout['body']));
+                $objZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $key . '.xml.rels', $this->getWriterPart('Rels')->writeSlideLayoutRelationships($key, $layout['masterid']));
+                $objZip->addFromString('ppt/slideLayouts/slideLayout' . $key . '.xml', utf8_encode($layout['body']));
             }
 
             // Add layoutpack relations
             $otherRelations = null;
             $otherRelations = $this->getLayoutPack()->getMasterSlideRelations();
-            foreach ($otherRelations as $otherRelations)
-            {
+            foreach ($otherRelations as $otherRelations) {
                 if (strpos($otherRelations['target'], 'http://') !== 0) {
                     $objZip->addFromString($this->absoluteZipPath('ppt/slideMasters/' . $otherRelations['target']), $otherRelations['contents']);
                 }
             }
             $otherRelations = $this->getLayoutPack()->getThemeRelations();
-            foreach ($otherRelations as $otherRelations)
-            {
+            foreach ($otherRelations as $otherRelations) {
                 if (strpos($otherRelations['target'], 'http://') !== 0) {
                     $objZip->addFromString($this->absoluteZipPath('ppt/theme/' . $otherRelations['target']), $otherRelations['contents']);
                 }
             }
             $otherRelations = $this->getLayoutPack()->getLayoutRelations();
-            foreach ($otherRelations as $otherRelations)
-            {
+            foreach ($otherRelations as $otherRelations) {
                 if (strpos($otherRelations['target'], 'http://') !== 0) {
                     $objZip->addFromString($this->absoluteZipPath('ppt/slideLayouts/' . $otherRelations['target']), $otherRelations['contents']);
                 }
             }
 
             // Add presentation to ZIP file
-            $objZip->addFromString('ppt/presentation.xml',          $this->getWriterPart('Presentation')->writePresentation($this->_presentation));
+            $objZip->addFromString('ppt/presentation.xml', $this->getWriterPart('Presentation')->writePresentation($this->_presentation));
 
             // Add slides (drawings, ...) and slide relationships (drawings, ...)
             for ($i = 0; $i < $this->_presentation->getSlideCount(); ++$i) {
                 // Add slide
-                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels',   $this->getWriterPart('Rels')->writeSlideRelationships($this->_presentation->getSlide($i), ($i + 1)));
-                $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml',  $this->getWriterPart('Slide')->writeSlide($this->_presentation->getSlide($i)));
+                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $this->getWriterPart('Rels')->writeSlideRelationships($this->_presentation->getSlide($i), ($i + 1)));
+                $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $this->getWriterPart('Slide')->writeSlide($this->_presentation->getSlide($i)));
             }
 
             // Add media
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
                 if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
                     $imageContents = null;
-                    $imagePath = $this->getDrawingHashTable()->getByIndex($i)->getPath();
+                    $imagePath     = $this->getDrawingHashTable()->getByIndex($i)->getPath();
 
                     if (strpos($imagePath, 'zip://') !== false) {
-                        $imagePath = substr($imagePath, 6);
+                        $imagePath         = substr($imagePath, 6);
                         $imagePathSplitted = explode('#', $imagePath);
 
                         $imageZip = new ZipArchive();
@@ -250,17 +247,14 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
                     }
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } else if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
                     ob_start();
-                    call_user_func(
-                        $this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(),
-                        $this->getDrawingHashTable()->getByIndex($i)->getImageResource()
-                    );
+                    call_user_func($this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(), $this->getDrawingHashTable()->getByIndex($i)->getImageResource());
                     $imageContents = ob_get_contents();
                     ob_end_clean();
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } else if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Chart) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Chart) {
                     $objZip->addFromString('ppt/charts/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename(), $this->getWriterPart('Chart')->writeChart($this->getDrawingHashTable()->getByIndex($i)));
 
                     // Chart relations?
@@ -294,7 +288,8 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
      * @return PHPPowerPoint
      * @throws Exception
      */
-    public function getPHPPowerPoint() {
+    public function getPHPPowerPoint()
+    {
         if (!is_null($this->_presentation)) {
             return $this->_presentation;
         } else {
@@ -305,12 +300,14 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
     /**
      * Get PHPPowerPoint object
      *
-     * @param   PHPPowerPoint   $pPHPPowerPoint PHPPowerPoint object
-     * @throws  Exception
+     * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
+     * @throws Exception
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
-    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null) {
+    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
+    {
         $this->_presentation = $pPHPPowerPoint;
+
         return $this;
     }
 
@@ -319,7 +316,8 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
      *
      * @return PHPPowerPoint_HashTable
      */
-    public function getDrawingHashTable() {
+    public function getDrawingHashTable()
+    {
         return $this->_drawingHashTable;
     }
 
@@ -328,18 +326,21 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
      *
      * @return boolean
      */
-    public function getOffice2003Compatibility() {
+    public function getOffice2003Compatibility()
+    {
         return $this->_office2003compatibility;
     }
 
     /**
      * Set Pre-Calculate Formulas
      *
-     * @param boolean $pValue   Office2003 compatibility?
+     * @param  boolean                             $pValue Office2003 compatibility?
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
-    public function setOffice2003Compatibility($pValue = false) {
+    public function setOffice2003Compatibility($pValue = false)
+    {
         $this->_office2003compatibility = $pValue;
+
         return $this;
     }
 
@@ -348,19 +349,21 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
      *
      * @return boolean
      */
-    public function getUseDiskCaching() {
+    public function getUseDiskCaching()
+    {
         return $this->_useDiskCaching;
     }
 
     /**
      * Set use disk caching where possible?
      *
-     * @param   boolean     $pValue
-     * @param   string      $pDirectory     Disk caching directory
-     * @throws  Exception   Exception when directory does not exist
+     * @param  boolean                             $pValue
+     * @param  string                              $pDirectory Disk caching directory
+     * @throws Exception                           Exception when directory does not exist
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
-    public function setUseDiskCaching($pValue = false, $pDirectory = null) {
+    public function setUseDiskCaching($pValue = false, $pDirectory = null)
+    {
         $this->_useDiskCaching = $pValue;
 
         if (!is_null($pDirectory)) {
@@ -379,7 +382,8 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
      *
      * @return string
      */
-    public function getDiskCachingDirectory() {
+    public function getDiskCachingDirectory()
+    {
         return $this->_diskCachingDirectory;
     }
 
@@ -388,39 +392,49 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
      *
      * @return PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
      */
-    public function getLayoutPack() {
+    public function getLayoutPack()
+    {
         return $this->_layoutPack;
     }
 
     /**
      * Set layout pack to use
      *
-     * @param   PHPPowerPoint_Writer_PowerPoint2007_LayoutPack  $pValue
+     * @param  PHPPowerPoint_Writer_PowerPoint2007_LayoutPack $pValue
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
-    public function setLayoutPack(PHPPowerPoint_Writer_PowerPoint2007_LayoutPack $pValue = null) {
+    public function setLayoutPack(PHPPowerPoint_Writer_PowerPoint2007_LayoutPack $pValue = null)
+    {
         $this->_layoutPack = $pValue;
+
         return $this;
     }
 
     /**
      * Determine absolute zip path
      *
-     * @param string $path
+     * @param  string $path
      * @return string
      */
-    protected function absoluteZipPath($path) {
-        $path = str_replace(array('/', '\\'), DIRECTORY_SEPARATOR, $path);
-        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+    protected function absoluteZipPath($path)
+    {
+        $path      = str_replace(array(
+            '/',
+            '\\'
+        ), DIRECTORY_SEPARATOR, $path);
+        $parts     = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
         $absolutes = array();
         foreach ($parts as $part) {
-            if ('.' == $part) continue;
+            if ('.' == $part) {
+                continue;
+            }
             if ('..' == $part) {
                 array_pop($absolutes);
             } else {
                 $absolutes[] = $part;
             }
         }
+
         return implode('/', $absolutes);
     }
 }
