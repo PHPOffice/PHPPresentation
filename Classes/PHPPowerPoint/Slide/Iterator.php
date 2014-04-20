@@ -19,22 +19,22 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   PHPPowerPoint
- * @package    PHPPowerPoint
+ * @package    PHPPowerPoint_Slide
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
 /**
- * PHPPowerPoint_SlideIterator
+ * PHPPowerPoint_Slide_Iterator
  *
  * Used to iterate slides in PHPPowerPoint
  *
  * @category   PHPPowerPoint
- * @package    PHPPowerPoint
+ * @package    PHPPowerPoint_Slide
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_SlideIterator extends IteratorIterator
+class PHPPowerPoint_Slide_Iterator extends IteratorIterator
 {
     /**
      * Presentation to iterate

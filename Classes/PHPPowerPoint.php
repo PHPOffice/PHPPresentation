@@ -288,11 +288,11 @@ class PHPPowerPoint
     /**
      * Get slide iterator
      *
-     * @return PHPPowerPoint_SlideIterator
+     * @return PHPPowerPoint_Slide_Iterator
      */
     public function getSlideIterator()
     {
-        return new PHPPowerPoint_SlideIterator($this);
+        return new PHPPowerPoint_Slide_Iterator($this);
     }
 
     /**

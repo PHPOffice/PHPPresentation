@@ -29,7 +29,7 @@ class PHPPowerPointTest extends PHPUnit_Framework_TestCase
         $this->assertEquals(0, $object->getIndex($slide));
         $this->assertEquals(1, $object->getSlideCount());
         $this->assertEquals(0, $object->getActiveSlideIndex());
-        $this->assertInstanceOf('PHPPowerPoint_SlideIterator', $object->getSlideIterator());
+        $this->assertInstanceOf('PHPPowerPoint_Slide_Iterator', $object->getSlideIterator());
     }
 
     /**
