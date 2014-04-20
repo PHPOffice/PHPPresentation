@@ -1,4 +1,8 @@
-# PHPPowerPoint Manual
+![PHPPowerPoint](https://github.com/PHPOffice/PHPPowerPoint/raw/master/Documentation/assets/PHPPowerPointLogo.png "PHPPowerPoint")
+
+# Developer Documentation
+
+***Version 0.2.0***
 
 PHPPowerPoint is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. OpenXML (.pptx) and OpenDocument (.odp). PHPPowerPoint is an open source project licensed under LGPL.
 
@@ -287,18 +291,44 @@ Properties:
 
 #### Color
 
-To be completed.
+Colors can be applied to different objects, e.g. font or border.
+
+```php
+$textRun = $shape->createTextRun('Text');
+$textRun->getFont()->setColor(new PHPPowerPoint_Style_Color('C00000'));
+```
 
 ## Writers
 
+Use the `IOFactory` object to write resulting presentation to a file.
+
+```php
+$writer = PHPPowerPoint_IOFactory::createWriter($phpPowerPoint, $writerName);
+$writer->save('/path/to/result.document');
+```
+
 ### OOXML
 
-To be completed.
+Use `PowerPoint2007` for `$writerName`.
+
+```php
+$writer = PHPPowerPoint_IOFactory::createWriter($phpPowerPoint, 'PowerPoint2007');
+$writer->save('/path/to/result.pptx');
+```
 
 ### OpenDocument
 
-To be completed.
+Use `ODPresentation` for `$writerName`.
+
+```php
+$writer = PHPPowerPoint_IOFactory::createWriter($phpPowerPoint, 'ODPresentation');
+$writer->save('/path/to/result.odp');
+```
 
 ## References
 
-To be completed.
+* [ISO/IEC 29500-1 Office Open XML File Formats](http://standards.iso.org/ittf/PubliclyAvailableStandards/c061750_ISO_IEC_29500-1_2012.zip) (2012)
+* [Open Document Format for Office Applications (OpenDocument) Version 1.2](https://www.oasis-open.org/standards#opendocumentv1.2) (2011)
+* [Ecma TC45 Office Open XML File Formats Standard](http://www.ecma-international.org/news/TC45_current_work/TC45_available_docs.htm) (2006)
+* [OpenXML Explained](http://openxmldeveloper.org/blog/b/openxmldeveloper/archive/2007/08/13/1970.aspx) (2007)
+* [OASIS OpenDocument Essentials](http://books.evc-cit.info/odbook/book.html) (2005)
