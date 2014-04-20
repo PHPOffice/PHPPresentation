@@ -334,7 +334,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                     $this->_writeChart($objWriter, $shape, $shapeId);
                 }
                 */
-                } elseif ($shape instanceof PHPPowerPoint_Shape_BaseDrawing) {
+                } elseif ($shape instanceof PHPPowerPoint_Shape_Drawing) {
                     $this->_writePic($objWriter, $shape, $shapeId);
                 }
             }
