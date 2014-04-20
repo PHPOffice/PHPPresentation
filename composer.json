@@ -13,6 +13,10 @@
         {
             "name": "Franck Lefevre",
             "homepage": "http://blog.rootslabs.net"
+        },
+        {
+            "name": "Ivan Lanin",
+            "homepage": "http://ivan.lanin.org"
         }
     ],
     "require": {

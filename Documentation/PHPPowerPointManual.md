@@ -1,6 +1,33 @@
 # PHPPowerPoint Manual
 
-PHPPowerPoint is a library written in pure PHP that provides a set of classes to write to and read from different presentation file formats, i.e. OpenXML (.pptx) and OpenDocument (.odp). PHPPowerPoint is an open source project licensed under LGPL.
+PHPPowerPoint is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. OpenXML (.pptx) and OpenDocument (.odp). PHPPowerPoint is an open source project licensed under LGPL.
+
+## Contents
+
+- [Overview](#overview)
+    - [Features](#features)
+    - [Requirements](#requirements)
+    - [Installation](#installation)
+- [Objects](#objects)
+    - [Document properties](#document-properties)
+    - [Slides](#slides)
+    - [Shapes](#shapes)
+        - [Rich text](#rich-text)
+        - [Line](#line)
+        - [Chart](#chart)
+        - [Drawing](#drawing)
+        - [Table](#table)
+    - [Styles](#styles)
+        - [Fill](#fill)
+        - [Border](#border)
+        - [Alignment](#alignment)
+        - [Font](#font)
+        - [Bullet](#bullet)
+        - [Color](#color)
+- [Writers](#writers)
+    - [OOXML](#ooxml)
+    - [OpenDocument](#opendocument)
+- [References](#references)
 
 ## Overview
 
@@ -39,7 +66,7 @@ After that, you can use the library by creating a new instance of the class.
 $phpPowerPoint = new PHPPowerPoint();
 ```
 
-## Usages
+## Objects
 
 ### Document properties
 
@@ -75,22 +102,7 @@ $shape = $slide->createRichTextShape();
 
 ### Shapes
 
-Shapes are objects that can be added to a slide. There are five types of shapes that can be used, i.e. rich text, line, chart, drawing, and table.
-
-To create a shape, use the following methods of a slide.
-
-- `createRichTextShape`
-- `createLineShape`
-- `createChartShape`
-- `createDrawingShape`
-- `createTableShape`
-
-Example:
-
-```php
-$richText = $slide->createRichTextShape();
-$line = $slide->createLineShape();
-```
+Shapes are objects that can be added to a slide. There are five types of shapes that can be used, i.e. [rich text](#rich-text), [line](#line), [chart](#chart), [drawing](#drawing), and [table](#table). Read the corresponding section of this manual for detail information of each shape.
 
 Every shapes have common properties that you can set by using fluent interface.
 
@@ -99,9 +111,9 @@ Every shapes have common properties that you can set by using fluent interface.
 - `offsetX` in pixels
 - `offsetY` in pixels
 - `rotation` in degrees
-- `fill`
-- `border`
-- `shadow`
+- `fill` see *[Fill](#fill)*
+- `border` see *[Border](#border)*
+- `shadow` see *[Shadow](#shadow)*
 - `hyperlink`
 
 Example:
@@ -116,7 +128,13 @@ $richtext = $slide->createRichTextShape()
 
 #### Rich text
 
-Rich text shapes contain paragraphs of texts. Below are the properties that you can set for a rich text shape.
+Rich text shapes contain paragraphs of texts. To create a rich text shape, use `createRichTextShape` method of slide.
+
+```php
+$richtext = $slide->createRichTextShape()
+```
+
+Below are the properties that you can set for a rich text shape.
 
 - `wrap`
 - `autoFit`
@@ -140,21 +158,60 @@ $richtext = $slide->createRichTextShape()
 
 Properties that can be set for each paragraphs are as follow.
 
-- `alignment`
-- `font`
-- `bulletStyle`
+- `alignment` see *[Alignment](#alignment)*
+- `font` see *[Font](#font)*
+- `bulletStyle` see *[Bullet](#bullet)*
 
 #### Line
 
+To create a line, use `createLineShape` method of slide.
+
+```php
+$line = $slide->createLineShape($fromX, $fromY, $toX, $toY);
+```
+
 #### Chart
+
+To create a chart, use `createChartShape` method of slide.
+
+```php
+$chart = $slide->createChartShape();
+```
 
 #### Drawing
 
+To create a drawing, use `createDrawingShape` method of slide.
+
+```php
+$drawing = $slide->createDrawingShape();
+$drawing->setName('Unique name')
+    ->setDescription('Description of the drawing')
+    ->setPath('/path/to/drawing.filename');
+```
+
 #### Table
+
+To create a table, use `createTableShape` method of slide.
+
+```php
+$table = $slide->createTableShape($columns);
+```
 
 ### Styles
 
 #### Fill
+
+Use this style to define fill of a shape as example below.
+
+```php
+$shape->getFill()
+    ->setFillType(PHPPowerPoint_Style_Fill::FILL_GRADIENT_LINEAR)
+    ->setRotation(270)
+    ->setStartColor(new PHPPowerPoint_Style_Color('FFCCCCCC'))
+    ->setEndColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
+```
+
+Properties:
 
 - `fillType`
 - `rotation`
@@ -163,10 +220,42 @@ Properties that can be set for each paragraphs are as follow.
 
 #### Border
 
+Use this style to define border of a shape as example below.
+
+```php
+$shape->getBorder()
+    ->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE)
+    ->setLineWidth(4)
+    ->getColor()->setARGB('FFC00000');
+```
+
+Properties:
+
 - `lineWidth`
 - `lineStyle`
 - `dashStyle`
 - `color`
+
+#### Shadow
+
+Use this style to define shadow of a shape as example below.
+
+```php
+$shape->getShadow()
+    ->setVisible(true)
+    ->setDirection(45)
+    ->setDistance(10);
+```
+
+Properties:
+
+- `visible`
+- `blurRadius`
+- `distance`
+- `direction`
+- `alignment`
+- `color`
+- `alpha`
 
 #### Alignment
 
@@ -197,3 +286,19 @@ Properties that can be set for each paragraphs are as follow.
 - `bulletNumericStartAt`
 
 #### Color
+
+To be completed.
+
+## Writers
+
+### OOXML
+
+To be completed.
+
+### OpenDocument
+
+To be completed.
+
+## References
+
+To be completed.

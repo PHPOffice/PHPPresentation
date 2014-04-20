@@ -42,7 +42,7 @@ $phpPowerPoint = new PHPPowerPoint();
 
 ### Want to learn more?
 
-[Read the manual](Documentation/PHPPowerPoint Manual.md).
+[Read the manual](Documentation/PHPPowerPointManual.md).
 
 ### Want to contribute?
 
