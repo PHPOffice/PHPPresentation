@@ -1,32 +1,49 @@
-# PHPPowerPoint - OpenXML - Read, Write and Create PowerPoint documents in PHP
+# ![PHPPowerPoint](https://github.com/PHPOffice/PHPPowerPoint/raw/master/Documentation/assets/PHPPowerPointLogo.png "PHPPowerPoint")
 
-Project providing a set of classes for the PHP programming language, which allow you to write to and read from different file formats, like PowerPoint 2007, ... This project is built around Microsoft's OpenXML standard and PHP.
-Checkout the Features this class set provides, such as setting presentation meta data (author, title, description, ...), adding slides, adding images to your presentation and much, much more!
+[![Build Status](https://travis-ci.org/PHPOffice/PHPPowerPoint.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPowerPoint)
 
-## Want to contribute?
 
-Fork us!
+PHPPowerPoint is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. OpenXML (.pptx) and OpenDocument (.odp). PHPPowerPoint is an open source project licensed under [LGPL](LICENSE.md).
 
-## Requirements
+### Features
+
+- Create an in-memory presentation representation
+- Set presentation meta data (author, title, description, etc)
+- Add slides from scratch or from existing one
+- Supports different fonts and font styles
+- Supports different formatting, styles, fills, gradients
+- Supports hyperlinks and rich-text strings
+- Add images with different styles (positioning, rotation, shadow)
+- Set printing options (header, footer, page margins, paper size, orientation)
+- Output to different file formats: PowerPoint 2007 (.pptx), OpenDocument Presentation (.odp), Serialized Spreadsheet)
+- ... and lots of other things!
+
+### Requirements
 
 The following requirements should be met prior to using PHPPowerPoint:
 
-* PHP version 5.2 or higher
-* PHP extension php_zip enabled
-* PHP extension php_xml enabled
+- PHP version 5.2 or higher
+- PHP extension php_zip enabled
+- PHP extension php_xml enabled
 
-## Installation
+### Installation
 
-Installation is quite easy: copy the contents of the Classes folder to any location
-in your application required.
-
-Afterwards, make sure you can include all PHPPowerPoint files. This can be achieved by
-respecting a base folder structure, or by setting the PHP include path, for example:
+To install and use PHPPowerPoint, copy the contents of the `Classes` folder and include `PHPPowerPoint.php` somewhere in your code like below.
 
 ```php
-set_include_path(get_include_path() . PATH_SEPARATOR . '/path/to/PHPPowerPoint/');
+include_once '/path/to/Classes/PHPPowerPoint.php';
 ```
 
-## License
+After that, you can use the library by creating a new instance of the class.
 
-PHPPowerPoint is licensed under [LGPL (GNU LESSER GENERAL PUBLIC LICENSE)](LICENSE.md)
+```php
+$phpPowerPoint = new PHPPowerPoint();
+```
+
+### Want to learn more?
+
+[Read the manual](Documentation/PHPPowerPoint Manual.md).
+
+### Want to contribute?
+
+[Fork us on GitHub](https://github.com/PHPOffice/PHPPowerPoint)!

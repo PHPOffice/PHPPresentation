@@ -1,6 +1,8 @@
-# PHPPowerPoint
+# PHPPowerPoint Manual
 
-PHPPowerPoint is a library written in pure PHP that provides a set of classes to write to and read from different presentation file formats. PHPPowerPoint is an open source project licensed under LGPL.
+PHPPowerPoint is a library written in pure PHP that provides a set of classes to write to and read from different presentation file formats, i.e. OpenXML (.pptx) and OpenDocument (.odp). PHPPowerPoint is an open source project licensed under LGPL.
+
+## Overview
 
 ### Features
 
@@ -75,12 +77,7 @@ $shape = $slide->createRichTextShape();
 
 Shapes are objects that can be added to a slide. There are five types of shapes that can be used, i.e. rich text, line, chart, drawing, and table.
 
-```php
-$richText = $slide->createRichTextShape();
-$line = $slide->createLineShape();
-```
-
-Below are the methods of slide that can be used to create shapes.
+To create a shape, use the following methods of a slide.
 
 - `createRichTextShape`
 - `createLineShape`
@@ -88,7 +85,64 @@ Below are the methods of slide that can be used to create shapes.
 - `createDrawingShape`
 - `createTableShape`
 
+Example:
+
+```php
+$richText = $slide->createRichTextShape();
+$line = $slide->createLineShape();
+```
+
+Every shapes have common properties that you can set by using fluent interface.
+
+- `width` in pixels
+- `height` in pixels
+- `offsetX` in pixels
+- `offsetY` in pixels
+- `rotation` in degrees
+- `fill`
+- `border`
+- `shadow`
+- `hyperlink`
+
+Example:
+
+```php
+$richtext = $slide->createRichTextShape()
+    ->setHeight(300)
+    ->setWidth(600)
+    ->setOffsetX(170)
+    ->setOffsetY(180);
+```
+
 #### Rich text
+
+Rich text shapes contain paragraphs of texts. Below are the properties that you can set for a rich text shape.
+
+- `wrap`
+- `autoFit`
+- `horizontalOverflow`
+- `verticalOverflow`
+- `upright`
+- `vertical`
+- `columns`
+- `bottomInset` in pixels
+- `leftInset` in pixels
+- `rightInset` in pixels
+- `topInset` in pixels
+
+Example:
+
+```php
+$richtext = $slide->createRichTextShape()
+    ->setWrap(PHPPowerPoint_Shape_RichText::WRAP_SQUARE)
+    ->setBottomInset(600);
+```
+
+Properties that can be set for each paragraphs are as follow.
+
+- `alignment`
+- `font`
+- `bulletStyle`
 
 #### Line
 
@@ -100,9 +154,46 @@ Below are the methods of slide that can be used to create shapes.
 
 ### Styles
 
-- Alignment
-- Border
-- Bullet
-- Color
-- Fill
-- Font
+#### Fill
+
+- `fillType`
+- `rotation`
+- `startColor`
+- `endColor`
+
+#### Border
+
+- `lineWidth`
+- `lineStyle`
+- `dashStyle`
+- `color`
+
+#### Alignment
+
+- `horizontal`
+- `vertical`
+- `level`
+- `indent`
+- `marginLeft`
+- `marginRight`
+
+#### Font
+
+- `name`
+- `bold`
+- `italic`
+- `superScript`
+- `subScript`
+- `underline`
+- `strikethrough`
+- `color`
+
+#### Bullet
+
+- `bulletType`
+- `bulletFont`
+- `bulletChar`
+- `bulletNumericStyle`
+- `bulletNumericStartAt`
+
+#### Color
