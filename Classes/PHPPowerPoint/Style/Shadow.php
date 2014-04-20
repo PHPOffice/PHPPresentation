@@ -19,20 +19,20 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  *
  * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
+ * @package    PHPPowerPoint_Style
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
  * @version    ##VERSION##, ##DATE##
  */
 
 /**
- * PHPPowerPoint_Shape_Shadow
+ * PHPPowerPoint_Style_Shadow
  *
  * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
+ * @package    PHPPowerPoint_Style
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
+class PHPPowerPoint_Style_Shadow implements PHPPowerPoint_IComparable
 {
     /* Shadow alignment */
     const SHADOW_BOTTOM = 'b';
@@ -98,7 +98,7 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
     private $_alpha;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Shadow
+     * Create a new PHPPowerPoint_Style_Shadow
      */
     public function __construct()
     {
@@ -126,7 +126,7 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      * Set Visible
      *
      * @param  boolean                    $pValue
-     * @return PHPPowerPoint_Shape_Shadow
+     * @return self
      */
     public function setVisible($pValue = false)
     {
@@ -149,7 +149,7 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      * Set Blur radius
      *
      * @param  int                        $pValue
-     * @return PHPPowerPoint_Shape_Shadow
+     * @return self
      */
     public function setBlurRadius($pValue = 6)
     {
@@ -172,7 +172,7 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      * Set Shadow distance
      *
      * @param  int                        $pValue
-     * @return PHPPowerPoint_Shape_Shadow
+     * @return self
      */
     public function setDistance($pValue = 2)
     {
@@ -195,7 +195,7 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      * Set Shadow direction (in degrees)
      *
      * @param  int                        $pValue
-     * @return PHPPowerPoint_Shape_Shadow
+     * @return self
      */
     public function setDirection($pValue = 0)
     {
@@ -218,7 +218,7 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      * Set Shadow alignment
      *
      * @param  int                        $pValue
-     * @return PHPPowerPoint_Shape_Shadow
+     * @return self
      */
     public function setAlignment($pValue = 0)
     {
@@ -242,7 +242,7 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      *
      * @param  PHPPowerPoint_Style_Color  $pValue
      * @throws Exception
-     * @return PHPPowerPoint_Shape_Shadow
+     * @return self
      */
     public function setColor(PHPPowerPoint_Style_Color $pValue = null)
     {
@@ -265,7 +265,7 @@ class PHPPowerPoint_Shape_Shadow implements PHPPowerPoint_IComparable
      * Set Alpha
      *
      * @param  int                        $pValue
-     * @return PHPPowerPoint_Shape_Shadow
+     * @return self
      */
     public function setAlpha($pValue = 0)
     {

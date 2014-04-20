@@ -93,7 +93,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Shadow
      *
-     * @var PHPPowerPoint_Shape_Shadow
+     * @var PHPPowerPoint_Style_Shadow
      */
     protected $_shadow;
 
@@ -118,7 +118,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
         $this->_rotation = 0;
         $this->_fill     = new PHPPowerPoint_Style_Fill();
         $this->_border   = new PHPPowerPoint_Style_Border();
-        $this->_shadow   = new PHPPowerPoint_Shape_Shadow();
+        $this->_shadow   = new PHPPowerPoint_Style_Shadow();
 
         $this->_border->setLineStyle(PHPPowerPoint_Style_Border::LINE_NONE);
     }
@@ -324,7 +324,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Get Shadow
      *
-     * @return PHPPowerPoint_Shape_Shadow
+     * @return PHPPowerPoint_Style_Shadow
      */
     public function getShadow()
     {
@@ -334,11 +334,11 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     /**
      * Set Shadow
      *
-     * @param  PHPPowerPoint_Shape_Shadow $pValue
+     * @param  PHPPowerPoint_Style_Shadow $pValue
      * @throws Exception
      * @return PHPPowerPoint_Shape
      */
-    public function setShadow(PHPPowerPoint_Shape_Shadow $pValue = null)
+    public function setShadow(PHPPowerPoint_Style_Shadow $pValue = null)
     {
         $this->_shadow = $pValue;
 

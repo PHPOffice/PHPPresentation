@@ -42,6 +42,7 @@
 - QA: Initiate unit tests - @Progi1984 @ivanlanin
 - QA: Cleanup source code for PSR dan PHPDoc compatibility - @ivanlanin
 - Doc: Initiate documentation - @ivanlanin
+- Refactor: Change PHPPowerPoint_Shape_Shadow to PHPPowerPoint_Style_Shadow because it's a style, not a shape - @ivanlanin
 
 ## 0.1.0
 
