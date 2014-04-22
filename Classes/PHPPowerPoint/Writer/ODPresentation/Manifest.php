@@ -37,11 +37,10 @@ class PHPPowerPoint_Writer_ODPresentation_Manifest extends PHPPowerPoint_Writer_
     /**
      * Write Manifest file to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
      * @throws Exception
      */
-    public function writeManifest(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writeManifest()
     {
         // Create XML writer
         $objWriter = null;

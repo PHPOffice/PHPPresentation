@@ -171,16 +171,16 @@ class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased extends PHPPo
     /**
      * Compare master slides
      *
-     * @param array $a
-     * @param array $b
+     * @param array $firstSlide
+     * @param array $secondSlide
      */
-    public static function cmp_master($a, $b)
+    public static function cmp_master($firstSlide, $secondSlide)
     {
-        if ($a['masterid'] == $b['masterid']) {
+        if ($firstSlide['masterid'] == $secondSlide['masterid']) {
             return 0;
         }
 
-        return ($a['masterid'] < $b['masterid']) ? -1 : 1;
+        return ($firstSlide['masterid'] < $secondSlide['masterid']) ? -1 : 1;
     }
 
     /**

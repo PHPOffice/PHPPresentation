@@ -74,12 +74,12 @@ class PHPPowerPoint_Shared_ZipStreamWrapper
     /**
      * Open stream
      *
+     * Original param array $options and string $opened_path aren't used
+     *
      * @param string $path
      * @param string $mode
-     * @param array $options
-     * @param string $opened_path
      */
-    public function stream_open($path, $mode, $options, &$opened_path)
+    public function stream_open($path, $mode)
     {
         // Check for mode
         if ($mode{0} != 'r') {

@@ -37,11 +37,10 @@ class PHPPowerPoint_Writer_ODPresentation_Mimetype extends PHPPowerPoint_Writer_
     /**
      * Write Mimetype to Text format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        Text Output
      * @throws Exception
      */
-    public function writeMimetype(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writeMimetype()
     {
         return 'application/vnd.oasis.opendocument.presentation';
     }

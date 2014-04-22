@@ -168,7 +168,7 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
             $objZip->addFromString('[Content_Types].xml', $this->getWriterPart('ContentTypes')->writeContentTypes($this->_presentation));
 
             // Add relationships to ZIP file
-            $objZip->addFromString('_rels/.rels', $this->getWriterPart('Rels')->writeRelationships($this->_presentation));
+            $objZip->addFromString('_rels/.rels', $this->getWriterPart('Rels')->writeRelationships());
             $objZip->addFromString('ppt/_rels/presentation.xml.rels', $this->getWriterPart('Rels')->writePresentationRelationships($this->_presentation));
 
             // Add document properties to ZIP file
@@ -179,7 +179,7 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {
                 $objZip->addFromString('ppt/theme/_rels/theme' . $masterSlide['masterid'] . '.xml.rels', $this->getWriterPart('Rels')->writeThemeRelationships($masterSlide['masterid']));
-                $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', utf8_encode($this->getWriterPart('Theme')->writeTheme($this->_presentation, $masterSlide['masterid'])));
+                $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', utf8_encode($this->getWriterPart('Theme')->writeTheme($masterSlide['masterid'])));
             }
 
             // Add slide masters to ZIP file
@@ -223,7 +223,9 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
             // Add slides (drawings, ...) and slide relationships (drawings, ...)
             for ($i = 0; $i < $this->_presentation->getSlideCount(); ++$i) {
                 // Add slide
-                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $this->getWriterPart('Rels')->writeSlideRelationships($this->_presentation->getSlide($i), ($i + 1)));
+                $objZip->addFromString(
+                    'ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $this->getWriterPart('Rels')->writeSlideRelationships($this->_presentation->getSlide($i))
+                );
                 $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $this->getWriterPart('Slide')->writeSlide($this->_presentation->getSlide($i)));
             }
 

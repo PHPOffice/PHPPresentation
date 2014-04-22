@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ruleset name="PHPPowerPoint">
-    <description>PHPCS ruleset file based on PSR2</description>
+    <description>PHPPowerPoint code sniffer ruleset file based on PSR2</description>
     <rule ref="PSR2"/>
     <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
         <severity>0</severity>

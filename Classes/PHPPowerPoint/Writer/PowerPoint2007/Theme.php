@@ -42,7 +42,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Theme extends PHPPowerPoint_Writer_Pow
      * @return string        XML Output
      * @throws Exception
      */
-    public function writeTheme(PHPPowerPoint $pPHPPowerPoint = null, $masterId = 1)
+    public function writeTheme($masterId = 1)
     {
         // Write theme from layout pack
         $layoutPack     = $this->getParentWriter()->getLayoutPack();

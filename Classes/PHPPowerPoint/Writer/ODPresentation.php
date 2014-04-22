@@ -129,7 +129,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
 
             // Add mimetype to ZIP file
             //@todo Not in ZIPARCHIVE::CM_STORE mode
-            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writeMimetype($this->_presentation));
+            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writeMimetype());
 
             // Add content.xml to ZIP file
             $objZip->addFromString('content.xml', $this->getWriterPart('content')->writeContent($this->_presentation));
@@ -141,7 +141,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
             $objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writeStyles($this->_presentation));
 
             // Add META-INF/manifest.xml
-            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writeManifest($this->_presentation));
+            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writeManifest());
 
             // Add media
             $arrMedia = array();

@@ -37,11 +37,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
     /**
      * Write relationships to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
      * @throws Exception
      */
-    public function writeRelationships(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writeRelationships()
     {
         // Create XML writer
         $objWriter = null;
@@ -271,11 +270,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Rels extends PHPPowerPoint_Writer_Powe
      * Write slide relationships to XML format
      *
      * @param  PHPPowerPoint_Slide $pSlide
-     * @param  int                 $pSlideId
      * @return string              XML Output
      * @throws Exception
      */
-    public function writeSlideRelationships(PHPPowerPoint_Slide $pSlide = null, $pSlideId = 1)
+    public function writeSlideRelationships(PHPPowerPoint_Slide $pSlide = null)
     {
         // Create XML writer
         $objWriter = null;

@@ -207,13 +207,12 @@ abstract class PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
      */
     public function findLayoutIndex($name = '', $masterId = 1)
     {
-        $i = 0;
+        $index = 0;
         foreach ($this->_layouts as $layout) {
             if ($layout['name'] == $name && $layout['masterid'] == $masterId) {
-                return $i;
+                return $index;
             }
-
-            ++$i;
+            ++$index;
         }
 
         throw new Exception("Could not find slide layout $name in current layout pack.");

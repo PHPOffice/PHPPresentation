@@ -67,7 +67,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Presentation extends PHPPowerPoint_Wri
         $relationId    = 1;
         $slideMasterId = 2147483648;
         $masterSlides  = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
-        foreach ($masterSlides as $masterSlide) {
+        $masterSlidesCount = count($masterSlides);
+        // @todo foreach ($masterSlides as $masterSlide)
+        for ($i = 0; $i < $masterSlidesCount; $i++) {
             // p:sldMasterId
             $objWriter->startElement('p:sldMasterId');
             $objWriter->writeAttribute('id', $slideMasterId);
