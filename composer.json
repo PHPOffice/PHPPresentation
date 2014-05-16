@@ -21,14 +21,16 @@
     ],
     "require": {
         "php": ">=5.2.0",
-        "ext-xml": "*"
+        "ext-xml": "*",
+        "ext-zip": "*",
     },
     "require-dev": {
-        "phpunit/phpunit": "3.7.*"
+        "phpdocumentor/phpdocumentor":"2.*",
+        "phpunit/phpunit": "3.7.*",
+        "squizlabs/php_codesniffer": "1.*"
     },
     "suggest": {
-        "ext-zip": "*",
-        "ext-gd2": "*"
+        "ext-gd2": "Required to add images"
     },
     "autoload": {
         "psr-0": {
