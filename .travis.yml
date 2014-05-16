@@ -8,8 +8,6 @@ php:
   - 5.6
   - hhvm
 
-
-
 matrix:
   allow_failures:
     - php: 5.3.3
@@ -17,14 +15,14 @@ matrix:
     - php: hhvm
 
 before_script:
+  ## Packages
+  - sudo apt-get -qq update > /dev/null
+  - sudo apt-get -qq install graphviz > /dev/null
   ## Composer
-  # - curl -s http://getcomposer.org/installer | php
-  # - php composer.phar install --prefer-source
   - composer self-update
-  - composer install --prefer-source
-  ## PHP_CodeSniffer
-  - pyrus install pear/PHP_CodeSniffer
-  - phpenv rehash
+  - composer require dompdf/dompdf:0.6.*
+  - composer update --prefer-source --dev
+  - composer install --prefer-source --dev
   ## PHP Copy/Paste Detector
   - curl -o phpcpd.phar https://phar.phpunit.de/phpcpd.phar
   ## PHP Mess Detector
@@ -39,8 +37,7 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - phpcs --standard=phpcs.xml -n Classes/
-  - phpcs --standard=phpcs.xml -n Tests/PHPPowerPoint
+  - ./vendor/bin/phpcs Classes/ Tests/ --standard=PSR2 -n
   ## PHPUnit
   - phpunit -c ./ --coverage-text
   ## PHP Copy/Paste Detector
