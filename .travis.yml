@@ -37,12 +37,13 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - ./vendor/bin/phpcs src/ tests/ --standard=PSR2 -n
+  ## Custom xml is used until namespaces implemented. Use PSR2 after that
+  - ./vendor/bin/phpcs src/ tests/ --standard=phpcs.xml -n
   ## PHPUnit
   - phpunit -c ./ --coverage-text
   ## PHP Copy/Paste Detector
   # - php phpcpd.phar src/
   ## PHP Mess Detector
-  # - phpmd Classes/ text codesize,unusedcode,naming,design
+  # - phpmd src/ text codesize,unusedcode,naming,design
   ## PHPLOC
   - php phploc.phar src/
