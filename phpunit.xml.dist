@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./Tests/bootstrap.php"
+<phpunit bootstrap="./tests/bootstrap.php"
     backupGlobals="true"
     colors="true"
     convertErrorsToExceptions="true"
@@ -14,11 +14,11 @@
     stopOnIncomplete="false"
     stopOnSkipped="false">
     <testsuite name="PHPPowerPoint Unit Test Suite">
-        <directory>./Tests/PHPPowerPoint</directory>
+        <directory>./tests/PHPPowerPoint</directory>
     </testsuite>
     <filter>
         <whitelist>
-            <directory suffix=".php">./Classes</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
 </phpunit>

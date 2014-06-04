@@ -34,7 +34,7 @@
     },
     "autoload": {
         "psr-0": {
-            "PHPPowerPoint": "Classes/"
+            "PHPPowerPoint": "src/"
         }
     }
 }

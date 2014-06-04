@@ -37,12 +37,12 @@ before_script:
 
 script:
   ## PHP_CodeSniffer
-  - ./vendor/bin/phpcs Classes/ Tests/ --standard=PSR2 -n
+  - ./vendor/bin/phpcs src/ tests/ --standard=PSR2 -n
   ## PHPUnit
   - phpunit -c ./ --coverage-text
   ## PHP Copy/Paste Detector
-  # - php phpcpd.phar Classes/
+  # - php phpcpd.phar src/
   ## PHP Mess Detector
   # - phpmd Classes/ text codesize,unusedcode,naming,design
   ## PHPLOC
-  - php phploc.phar Classes/
+  - php phploc.phar src/
