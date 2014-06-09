@@ -39,49 +39,49 @@ class PHPPowerPoint_Writer_PowerPoint2007 implements PHPPowerPoint_Writer_IWrite
      *
      * @var boolean
      */
-    private $_office2003compatibility = false;
+    protected $_office2003compatibility = false;
 
     /**
      * Private writer parts
      *
      * @var PHPPowerPoint_Writer_PowerPoint2007_WriterPart[]
      */
-    private $_writerParts;
+    protected $_writerParts;
 
     /**
      * Private PHPPowerPoint
      *
      * @var PHPPowerPoint
      */
-    private $_presentation;
+    protected $_presentation;
 
     /**
      * Private unique PHPPowerPoint_Worksheet_BaseDrawing HashTable
      *
      * @var PHPPowerPoint_HashTable
      */
-    private $_drawingHashTable;
+    protected $_drawingHashTable;
 
     /**
      * Use disk caching where possible?
      *
      * @var boolean
      */
-    private $_useDiskCaching = false;
+    protected $_useDiskCaching = false;
 
     /**
      * Disk caching directory
      *
      * @var string
      */
-    private $_diskCachingDirectory;
+    protected $_diskCachingDirectory;
 
     /**
      * Layout pack to use
      *
      * @var PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
      */
-    private $_layoutPack;
+    protected $_layoutPack;
 
     /**
      * Create a new PHPPowerPoint_Writer_PowerPoint2007
