@@ -17,22 +17,20 @@
 
 date_default_timezone_set('UTC');
 
-// defining base dir for tests
-if (!defined('PHPPOWERPOINT_TESTS_BASE_DIR')) {
-	define('PHPPOWERPOINT_TESTS_BASE_DIR', realpath(__DIR__));
-}
+// Define path to application directory
+defined('APPLICATION_PATH')
+    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../src'));
 
-$vendor = realpath(__DIR__ . '/../vendor');
+// Define path to application tests directory
+defined('APPLICATION_TESTS_PATH')
+    || define('APPLICATION_TESTS_PATH', realpath(dirname(__FILE__)));
 
-if (file_exists($vendor . "/autoload.php")) {
-	require $vendor . "/autoload.php";
-} else {
-	$vendor = realpath(__DIR__ . '/../../../');
-	if (file_exists($vendor . "/autoload.php")) {
-		require $vendor . "/autoload.php";
-	} else {
-		throw new Exception("Unable to load dependencies");
-	}
+// Define application environment
+defined('APPLICATION_ENV') || define('APPLICATION_ENV', 'ci');
+
+// Register autoloader
+if (!defined('PHPPOWERPOINT_ROOT')) {
+    define('PHPPOWERPOINT_ROOT', APPLICATION_PATH . '/');
 }
 
 spl_autoload_register(function ($class) {
