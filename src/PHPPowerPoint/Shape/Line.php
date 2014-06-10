@@ -1,29 +1,25 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Shape;
+
+use PhpOffice\PhpPowerpoint\Shape;
+use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\Style\Border;
 
 /**
  * PHPPowerPoint_Shape_Line
@@ -32,7 +28,7 @@
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shape_Line extends PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
+class Line extends Shape implements IComparable
 {
     /**
      * Create a new PHPPowerPoint_Shape_Line instance
@@ -45,7 +41,7 @@ class PHPPowerPoint_Shape_Line extends PHPPowerPoint_Shape implements PHPPowerPo
     public function __construct($fromX, $fromY, $toX, $toY)
     {
         parent::__construct();
-        $this->getBorder()->setLineStyle(PHPPowerPoint_Style_Border::LINE_SINGLE);
+        $this->getBorder()->setLineStyle(Border::LINE_SINGLE);
 
         $this->setOffsetX($fromX);
         $this->setOffsetY($fromY);

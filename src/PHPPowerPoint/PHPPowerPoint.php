@@ -1,39 +1,24 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-/** PHPPowerPoint root directory */
-// @codeCoverageIgnoreStart
-if (!defined('PHPPOWERPOINT_ROOT')) {
-    define('PHPPOWERPOINT_ROOT', dirname(__FILE__) . '/');
-    require(PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php');
-    PHPPowerPoint_Autoloader::Register();
-    PHPPowerPoint_Shared_ZipStreamWrapper::register();
-}
-// @codeCoverageIgnoreEnd
+namespace PhpOffice\PhpPowerpoint;
+
+use PhpOffice\PhpPowerpoint\Slide;
+use PhpOffice\PhpPowerpoint\Slide\Iterator;
 
 /**
  * PHPPowerPoint
@@ -42,7 +27,7 @@ if (!defined('PHPPOWERPOINT_ROOT')) {
  * @package    PHPPowerPoint
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint
+class PhpPowerpoint
 {
     /**
      * Document properties
@@ -82,8 +67,8 @@ class PHPPowerPoint
         $this->setActiveSlideIndex();
 
         // Set initial document properties & layout
-        $this->setProperties(new PHPPowerPoint_DocumentProperties());
-        $this->setLayout(new PHPPowerPoint_DocumentLayout());
+        $this->setProperties(new DocumentProperties());
+        $this->setLayout(new DocumentLayout());
     }
 
     /**
@@ -102,7 +87,7 @@ class PHPPowerPoint
      * @param  PHPPowerPoint_DocumentProperties $value
      * @return PHPPowerPoint
      */
-    public function setProperties(PHPPowerPoint_DocumentProperties $value)
+    public function setProperties(DocumentProperties $value)
     {
         $this->_properties = $value;
 
@@ -125,7 +110,7 @@ class PHPPowerPoint
      * @param  PHPPowerPoint_DocumentLayout $value
      * @return PHPPowerPoint
      */
-    public function setLayout(PHPPowerPoint_DocumentLayout $value)
+    public function setLayout(DocumentLayout $value)
     {
         $this->_layout = $value;
 
@@ -145,14 +130,12 @@ class PHPPowerPoint
     /**
      * Create slide and add it to this presentation
      *
-     * @return PHPPowerPoint_Slide
+     * @return PhpOffice\PhpPowerpoint\Slide
      */
     public function createSlide()
     {
-        $newSlide = new PHPPowerPoint_Slide($this);
-
+        $newSlide = new Slide($this);
         $this->addSlide($newSlide);
-
         return $newSlide;
     }
 
@@ -163,7 +146,7 @@ class PHPPowerPoint
      * @throws Exception
      * @return PHPPowerPoint_Slide
      */
-    public function addSlide(PHPPowerPoint_Slide $slide = null)
+    public function addSlide(Slide $slide = null)
     {
         $this->_slideCollection[] = $slide;
 
@@ -221,7 +204,7 @@ class PHPPowerPoint
      * @return Slide               index
      * @throws Exception
      */
-    public function getIndex(PHPPowerPoint_Slide $slide)
+    public function getIndex(Slide $slide)
     {
         $index = null;
         foreach ($this->_slideCollection as $key => $value) {
@@ -278,7 +261,7 @@ class PHPPowerPoint
      * @throws Exception
      * @return PHPPowerPoint_Slide
      */
-    public function addExternalSlide(PHPPowerPoint_Slide $slide)
+    public function addExternalSlide(Slide $slide)
     {
         $slide->rebindParent($this);
 
@@ -292,7 +275,7 @@ class PHPPowerPoint
      */
     public function getSlideIterator()
     {
-        return new PHPPowerPoint_Slide_Iterator($this);
+        return new Iterator($this);
     }
 
     /**

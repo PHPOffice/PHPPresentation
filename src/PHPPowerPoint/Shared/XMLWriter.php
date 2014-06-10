@@ -1,29 +1,21 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shared
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Shared;
 
 if (!defined('DATE_W3C')) {
     define('DATE_W3C', 'Y-m-d\TH:i:sP');
@@ -31,12 +23,8 @@ if (!defined('DATE_W3C')) {
 
 /**
  * PHPPowerPoint_Shared_XMLWriter
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shared
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shared_XMLWriter
+class XMLWriter
 {
     /** Temporary storage method */
     const STORAGE_MEMORY = 1;
@@ -65,7 +53,7 @@ class PHPPowerPoint_Shared_XMLWriter
     public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageFolder = './')
     {
         // Create internal XMLWriter
-        $this->_xmlWriter = new XMLWriter();
+        $this->_xmlWriter = new \XMLWriter();
 
         // Open temporary storage
         if ($pTemporaryStorage == self::STORAGE_MEMORY) {

@@ -7,12 +7,16 @@
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
  */
 
+namespace PhpOffice\PhpPowerpoint\Tests;
+
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+
 /**
  * Test class for PHPPowerPoint
  *
  * @coversDefaultClass PHPPowerPoint
  */
-class PHPPowerPointTest extends PHPUnit_Framework_TestCase
+class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test create new instance

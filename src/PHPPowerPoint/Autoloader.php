@@ -1,35 +1,21 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2006 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2006 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-PHPPowerPoint_Autoloader::Register();
-// check mbstring.func_overload
-if (ini_get('mbstring.func_overload') & 2) {
-    throw new Exception('Multibyte function overloading in PHP must be disabled for string functions (2).');
-}
+namespace PhpOffice\PhpPowerpoint;
 
 /**
  * PHPPowerPoint_Autoloader
@@ -38,45 +24,36 @@ if (ini_get('mbstring.func_overload') & 2) {
  * @package     PHPPowerPoint
  * @copyright   Copyright (c) 2006 - 2012 PHPPowerPoint (https://github.com/Progi1984/PHPPowerPoint)
  */
-class PHPPowerPoint_Autoloader
+class Autoloader
 {
-    /**
-     * Register the Autoloader with SPL
-     *
-     */
-    public static function Register()
-    {
-        if (function_exists('__autoload')) {
-            //  Register any existing autoloader function with SPL, so we don't get any clashes
-            spl_autoload_register('__autoload');
-        }
-        //  Register ourselves with SPL
-        return spl_autoload_register(array(
-            'PHPPowerPoint_Autoloader',
-            'Load'
-        ));
-    } //  function Register()
-
-
-    /**
-     * Autoload a class identified by name
-     *
-     * @param string $pObjectName Name of the object to load
-     */
-    public static function Load($pObjectName)
-    {
-        if ((class_exists($pObjectName)) || (strpos($pObjectName, 'PHPPowerPoint') === false)) {
-            //  Either already loaded, or not a PHPPowerPoint class request
-            return false;
-        }
-
-        $pObjectFilePath = PHPPOWERPOINT_ROOT . str_replace('_', DIRECTORY_SEPARATOR, $pObjectName) . '.php';
-
-        if ((file_exists($pObjectFilePath) === false) || (is_readable($pObjectFilePath) === false)) {
-            //  Can't load
-            return false;
-        }
-
-        require($pObjectFilePath);
-    } //  function Load()
+	/** @const string */
+	const NAMESPACE_PREFIX = 'PhpOffice\\PhpPowerpoint\\';
+	
+	/**
+	 * Register
+	 *
+	 * @return void
+	 */
+	public static function register()
+	{
+		spl_autoload_register(array(new self, 'autoload'));
+	}
+	
+	/**
+	 * Autoload
+	 *
+	 * @param string $class
+	 */
+	public static function autoload($class)
+	{
+		$prefixLength = strlen(self::NAMESPACE_PREFIX);
+		if (0 === strncmp(self::NAMESPACE_PREFIX, $class, $prefixLength)) {
+			$file = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, $prefixLength));
+			$file = realpath(__DIR__ . (empty($file) ? '' : DIRECTORY_SEPARATOR) . $file . '.php');
+			if (file_exists($file)) {
+				/** @noinspection PhpIncludeInspection Dynamic includes */
+				require_once $file;
+			}
+		}
+	}
 }

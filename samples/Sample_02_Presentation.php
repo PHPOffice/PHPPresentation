@@ -1,49 +1,15 @@
 <?php
-/**
- * PHPPowerPoint
- *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
- *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
- *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
- */
 
-/** Error reporting */
-error_reporting(E_ALL);
+include_once 'Sample_Header.php';
 
-/** Include path **/
-set_include_path(get_include_path() . PATH_SEPARATOR . '../Classes/');
-
-/** PHPPowerPoint */
-include 'PHPPowerPoint.php';
-
-if(php_sapi_name() == 'cli' && empty($_SERVER['REMOTE_ADDR'])) {
-    define('EOL', PHP_EOL);
-}
-else {
-    define('EOL', '<br />');
-}
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Style\Bullet;
+use PhpOffice\PhpPowerpoint\Style\Color;
 
 // Create new PHPPowerPoint object
 echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
-$objPHPPowerPoint = new PHPPowerPoint();
+$objPHPPowerPoint = new \PhpOffice\PhpPowerpoint\PHPPowerPoint();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
@@ -71,19 +37,19 @@ $shape->setHeight(200);
 $shape->setWidth(600);
 $shape->setOffsetX(10);
 $shape->setOffsetY(400);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
 
 $textRun = $shape->createTextRun('Introduction to');
 $textRun->getFont()->setBold(true);
 $textRun->getFont()->setSize(28);
-$textRun->getFont()->setColor( new PHPPowerPoint_Style_Color( 'FFFFFFFF' ) );
+$textRun->getFont()->setColor( new Color( 'FFFFFFFF' ) );
 
 $shape->createBreak();
 
 $textRun = $shape->createTextRun('PHPPowerPoint');
 $textRun->getFont()->setBold(true);
 $textRun->getFont()->setSize(60);
-$textRun->getFont()->setColor( new PHPPowerPoint_Style_Color( 'FFFFFFFF' ) );
+$textRun->getFont()->setColor( new Color( 'FFFFFFFF' ) );
 
 
 // Create templated slide
@@ -97,12 +63,12 @@ $shape->setHeight(100)
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(10);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
 
 $textRun = $shape->createTextRun('What is PHPPowerPoint?');
 $textRun->getFont()->setBold(true)
                    ->setSize(48)
-                   ->setColor( new PHPPowerPoint_Style_Color( 'FFFFFFFF' ) );
+                   ->setColor( new Color( 'FFFFFFFF' ) );
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -111,12 +77,12 @@ $shape = $currentSlide->createRichTextShape()
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(100);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT)
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
                                             ->setMarginLeft(25)
                                             ->setIndent(-25);
 $shape->getActiveParagraph()->getFont()->setSize(36)
-                                       ->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
-$shape->getActiveParagraph()->getBulletStyle()->setBulletType(PHPPowerPoint_Style_Bullet::TYPE_BULLET);
+                                       ->setColor(new Color('FFFFFFFF'));
+$shape->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
 
 $shape->createTextRun('A class library');
 $shape->createParagraph()->createTextRun('Written in PHP');
@@ -135,12 +101,12 @@ $shape = $currentSlide->createRichTextShape()
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(10);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT );
 
 $textRun = $shape->createTextRun('What\'s the point?');
 $textRun->getFont()->setBold(true)
                    ->setSize(48)
-                   ->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
+                   ->setColor(new Color('FFFFFFFF'));
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -149,12 +115,12 @@ $shape->setHeight(600)
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(100);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal(PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT)
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
                                             ->setMarginLeft(25)
                                             ->setIndent(-25);
 $shape->getActiveParagraph()->getFont()->setSize(36)
-                                       ->setColor(new PHPPowerPoint_Style_Color('FFFFFFFF'));
-$shape->getActiveParagraph()->getBulletStyle()->setBulletType(PHPPowerPoint_Style_Bullet::TYPE_BULLET);
+                                       ->setColor(new Color('FFFFFFFF'));
+$shape->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
 
 $shape->createTextRun('Generate slide decks');
 $shape->createParagraph()->getAlignment()->setLevel(1)
@@ -187,12 +153,12 @@ $shape->setHeight(100)
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(10);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
 
 $textRun = $shape->createTextRun('Need more info?');
 $textRun->getFont()->setBold(true)
                    ->setSize(48)
-                   ->setColor( new PHPPowerPoint_Style_Color( 'FFFFFFFF' ) );
+                   ->setColor( new Color( 'FFFFFFFF' ) );
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -201,34 +167,25 @@ $shape->setHeight(600)
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(100);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
 
 $textRun = $shape->createTextRun('Check the project site on CodePlex:');
 $textRun->getFont()->setSize(36)
-                   ->setColor( new PHPPowerPoint_Style_Color( 'FFFFFFFF' ) );
+                   ->setColor( new Color( 'FFFFFFFF' ) );
 
 $shape->createBreak();
 
 $textRun = $shape->createTextRun('http://phppowerpoint.codeplex.com');
 $textRun->getFont()->setSize(36)
-                   ->setColor( new PHPPowerPoint_Style_Color( 'FFFFFFFF' ) );
+                   ->setColor( new Color( 'FFFFFFFF' ) );
 $textRun->getHyperlink()->setUrl('http://phppowerpoint.codeplex.com')
                         ->setTooltip('PHPPowerPoint');
 
-// Save files
-$basename = basename(__FILE__, '.php');
-$formats = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
-foreach ($formats as $format => $extension) {
-    echo date('H:i:s') . " Write to {$format} format".EOL;
-    $objWriter = PHPPowerPoint_IOFactory::createWriter($objPHPPowerPoint, $format);
-    $objWriter->save("results/{$basename}.{$extension}");
+// Save file
+echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
+if (!CLI) {
+	include_once 'Sample_Footer.php';
 }
-
-// Echo memory peak usage
-echo date('H:i:s') . ' Peak memory usage: ' . (memory_get_peak_usage(true) / 1024 / 1024) . ' MB'.EOL;
-
-// Echo done
-echo date('H:i:s') . ' Done writing file.'.EOL;
 
 /**
  * Creates a templated slide
@@ -236,7 +193,7 @@ echo date('H:i:s') . ' Done writing file.'.EOL;
  * @param PHPPowerPoint $objPHPPowerPoint
  * @return PHPPowerPoint_Slide
  */
-function createTemplatedSlide(PHPPowerPoint $objPHPPowerPoint){
+function createTemplatedSlide(PhpPowerpoint $objPHPPowerPoint){
     // Create slide
     $slide = $objPHPPowerPoint->createSlide();
 

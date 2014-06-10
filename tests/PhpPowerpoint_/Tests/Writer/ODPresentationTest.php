@@ -6,37 +6,38 @@
  * @copyright   2014 PHPPowerPoint
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
  */
+namespace PhpOffice\PhpPowerpoint\Tests\Writer;
+
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 /**
- * Test class for PHPPowerPoint_Writer_PowerPoint2007
+ * Test class for PHPPowerPoint_Writer_ODPresentation
  *
- * @coversDefaultClass PHPPowerPoint_Writer_PowerPoint2007
+ * @coversDefaultClass PHPPowerPoint_Writer_ODPresentation
  */
-class PHPPowerPoint_Writer_PowerPoint2007Test extends PHPUnit_Framework_TestCase
+class ODPresentationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test create new instance
      */
     public function testConstruct()
     {
-        $objectPrefix = 'PHPPowerPoint_Writer_PowerPoint2007_';
+        $objectPrefix = 'PHPPowerPoint_Writer_ODPresentation_';
         $parts = array(
-            'contenttypes' => 'ContentTypes',
-            'docprops'     => 'DocProps',
-            'rels'         => 'Rels',
-            'theme'        => 'Theme',
-            'presentation' => 'Presentation',
-            'slide'        => 'Slide',
-            'drawing'      => 'Drawing',
-            'chart'        => 'Chart',
+            'content'  => 'Content',
+            'manifest' => 'Manifest',
+            'meta'     => 'Meta',
+            'mimetype' => 'Mimetype',
+            'styles'   => 'Styles',
+            'drawing'  => 'Drawing',
         );
 
         $phpPowerPoint = new PHPPowerPoint();
-        $object = new PHPPowerPoint_Writer_PowerPoint2007($phpPowerPoint);
+        $phpPowerPoint->getActiveSlide()->createDrawingShape();
+        $object = new PHPPowerPoint_Writer_ODPresentation($phpPowerPoint);
 
         $this->assertInstanceOf('PHPPowerPoint', $object->getPHPPowerPoint());
         $this->assertEquals('./', $object->getDiskCachingDirectory());
-        $this->assertInstanceOf("{$objectPrefix}LayoutPack_Default", $object->getLayoutPack());
         foreach ($parts as $partName => $objectName) {
             $this->assertInstanceOf($objectPrefix . $objectName, $object->getWriterPart($partName));
         }
@@ -59,7 +60,7 @@ class PHPPowerPoint_Writer_PowerPoint2007Test extends PHPUnit_Framework_TestCase
         $slide->createDrawingShape()->setName('Drawing')->setPath($imageFile);
         $slide->createTableShape()->createRow();
 
-        $object = new PHPPowerPoint_Writer_PowerPoint2007($phpPowerPoint);
+        $object = new PHPPowerPoint_Writer_ODPresentation($phpPowerPoint);
         $object->save($filename);
 
         $this->assertTrue(file_exists($filename));
@@ -72,7 +73,7 @@ class PHPPowerPoint_Writer_PowerPoint2007Test extends PHPUnit_Framework_TestCase
      */
     public function testGetWriterPartNull()
     {
-        $object = new PHPPowerPoint_Writer_PowerPoint2007(new PHPPowerPoint());
+        $object = new PHPPowerPoint_Writer_ODPresentation(new PHPPowerPoint());
 
         $this->assertNull($object->getWriterPart('foo'));
     }
@@ -85,20 +86,8 @@ class PHPPowerPoint_Writer_PowerPoint2007Test extends PHPUnit_Framework_TestCase
      */
     public function testGetPHPPowerPointException()
     {
-        $object = new PHPPowerPoint_Writer_PowerPoint2007();
+        $object = new PHPPowerPoint_Writer_ODPresentation();
         $object->getPHPPowerPoint();
-    }
-
-    /**
-     * Test set/get Office 2003 compatibility
-     */
-    public function testSetGetOffice2003Compatibility()
-    {
-        $object = new PHPPowerPoint_Writer_PowerPoint2007(new PHPPowerPoint());
-        $this->assertFalse($object->getOffice2003Compatibility());
-
-        $object->setOffice2003Compatibility(true);
-        $this->assertTrue($object->getOffice2003Compatibility());
     }
 
     /**
@@ -106,7 +95,7 @@ class PHPPowerPoint_Writer_PowerPoint2007Test extends PHPUnit_Framework_TestCase
      */
     public function testSetGetUseDiskCaching()
     {
-        $object = new PHPPowerPoint_Writer_PowerPoint2007(new PHPPowerPoint());
+        $object = new PHPPowerPoint_Writer_ODPresentation(new PHPPowerPoint());
         $this->assertFalse($object->getUseDiskCaching());
 
         $object->setUseDiskCaching(true, sys_get_temp_dir());
@@ -121,7 +110,7 @@ class PHPPowerPoint_Writer_PowerPoint2007Test extends PHPUnit_Framework_TestCase
      */
     public function testSetUseDiskCachingException()
     {
-        $object = new PHPPowerPoint_Writer_PowerPoint2007(new PHPPowerPoint());
+        $object = new PHPPowerPoint_Writer_ODPresentation(new PHPPowerPoint());
         $object->setUseDiskCaching(true, 'foo');
     }
 }

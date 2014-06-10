@@ -1,29 +1,27 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Shape\Table;
+
+use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph;
+use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Style\Borders;
+use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
 
 /**
  * PHPPowerPoint_Shape_Table_Cell
@@ -32,7 +30,7 @@
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
+class Cell implements IComparable
 {
     /**
      * Rich text paragraphs
@@ -90,15 +88,15 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
     {
         // Initialise variables
         $this->_richTextParagraphs = array(
-            new PHPPowerPoint_Shape_RichText_Paragraph()
+            new Paragraph()
         );
         $this->_activeParagraph    = 0;
 
         // Set fill
-        $this->_fill = new PHPPowerPoint_Style_Fill();
+        $this->_fill = new Fill();
 
         // Set borders
-        $this->_borders = new PHPPowerPoint_Style_Borders();
+        $this->_borders = new Borders();
     }
 
     /**
@@ -164,7 +162,7 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
         $font        = clone $this->getActiveParagraph()->getFont();
         $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
 
-        $this->_richTextParagraphs[] = new PHPPowerPoint_Shape_RichText_Paragraph();
+        $this->_richTextParagraphs[] = new Paragraph();
         $this->_activeParagraph      = count($this->_richTextParagraphs) - 1;
 
         $this->getActiveParagraph()->setAlignment($alignment);
@@ -181,7 +179,7 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
      * @throws Exception
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function addText(PHPPowerPoint_Shape_RichText_ITextElement $pText = null)
+    public function addText(ITextElement $pText = null)
     {
         $this->_richTextParagraphs[$this->_activeParagraph]->addText($pText);
 
@@ -297,7 +295,7 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
      * @param  PHPPowerPoint_Style_Fill     $fill
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setFill(PHPPowerPoint_Style_Fill $fill)
+    public function setFill(Fill $fill)
     {
         $this->_fill = $fill;
 
@@ -320,7 +318,7 @@ class PHPPowerPoint_Shape_Table_Cell implements PHPPowerPoint_IComparable
      * @param  PHPPowerPoint_Style_Borders  $borders
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setBorders(PHPPowerPoint_Style_Borders $borders)
+    public function setBorders(Borders $borders)
     {
         $this->_borders = $borders;
 

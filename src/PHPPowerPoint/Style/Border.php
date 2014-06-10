@@ -1,38 +1,29 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Style
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Style;
+
+use \PhpOffice\PhpPowerpoint\IComparable;
+use \PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
  * PHPPowerPoint_Style_Border
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Style
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
+class Border implements IComparable
 {
     /* Line style */
     const LINE_NONE             = 'none';
@@ -92,7 +83,7 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
         $this->_lineWidth = 1;
         $this->_lineStyle = self::LINE_SINGLE;
         $this->_dashStyle = self::DASH_SOLID;
-        $this->_color     = new PHPPowerPoint_Style_Color(PHPPowerPoint_Style_Color::COLOR_BLACK);
+        $this->_color     = new Color(Color::COLOR_BLACK);
     }
 
     /**
@@ -134,10 +125,10 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Border
      */
-    public function setLineStyle($pValue = PHPPowerPoint_Style_Border::LINE_SINGLE)
+    public function setLineStyle($pValue = self::LINE_SINGLE)
     {
         if ($pValue == '') {
-            $pValue = PHPPowerPoint_Style_Border::LINE_SINGLE;
+            $pValue = self::LINE_SINGLE;
         }
         $this->_lineStyle = $pValue;
 
@@ -160,10 +151,10 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      * @param  string                     $pValue
      * @return PHPPowerPoint_Style_Border
      */
-    public function setDashStyle($pValue = PHPPowerPoint_Style_Border::DASH_SOLID)
+    public function setDashStyle($pValue = self::DASH_SOLID)
     {
         if ($pValue == '') {
-            $pValue = PHPPowerPoint_Style_Border::DASH_SOLID;
+            $pValue = self::DASH_SOLID;
         }
         $this->_dashStyle = $pValue;
 
@@ -187,7 +178,7 @@ class PHPPowerPoint_Style_Border implements PHPPowerPoint_IComparable
      * @throws Exception
      * @return PHPPowerPoint_Style_Border
      */
-    public function setColor(PHPPowerPoint_Style_Color $color = null)
+    public function setColor(Color $color = null)
     {
         $this->_color = $color;
 

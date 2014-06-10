@@ -1,29 +1,26 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Shape;
+
+use PhpOffice\PhpPowerpoint\Shape;
+use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph;
+use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
 
 /**
  * PHPPowerPoint_Shape_RichText
@@ -32,7 +29,7 @@
  * @package    PHPPowerPoint_RichText
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
+class RichText extends Shape implements IComparable
 {
     /** Wrapping */
     const WRAP_NONE = 'none';
@@ -67,28 +64,28 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      *
      * @var string
      */
-    private $_wrap = PHPPowerPoint_Shape_RichText::WRAP_SQUARE;
+    private $_wrap = self::WRAP_SQUARE;
 
     /**
      * Autofit
      *
      * @var string
      */
-    private $_autoFit = PHPPowerPoint_Shape_RichText::AUTOFIT_DEFAULT;
+    private $_autoFit = self::AUTOFIT_DEFAULT;
 
     /**
      * Horizontal overflow
      *
      * @var string
      */
-    private $_horizontalOverflow = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW;
+    private $_horizontalOverflow = self::OVERFLOW_OVERFLOW;
 
     /**
      * Vertical overflow
      *
      * @var string
      */
-    private $_verticalOverflow = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW;
+    private $_verticalOverflow = self::OVERFLOW_OVERFLOW;
 
     /**
      * Text upright?
@@ -146,7 +143,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
     {
         // Initialise variables
         $this->_richTextParagraphs = array(
-            new PHPPowerPoint_Shape_RichText_Paragraph()
+            new Paragraph()
         );
         $this->_activeParagraph    = 0;
 
@@ -217,7 +214,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
         $font        = clone $this->getActiveParagraph()->getFont();
         $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
 
-        $this->_richTextParagraphs[] = new PHPPowerPoint_Shape_RichText_Paragraph();
+        $this->_richTextParagraphs[] = new Paragraph();
         $this->_activeParagraph      = count($this->_richTextParagraphs) - 1;
 
         $this->getActiveParagraph()->setAlignment($alignment);
@@ -234,7 +231,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @throws Exception
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function addText(PHPPowerPoint_Shape_RichText_ITextElement $pText = null)
+    public function addText(ITextElement $pText = null)
     {
         $this->_richTextParagraphs[$this->_activeParagraph]->addText($pText);
 
@@ -350,7 +347,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value string
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setWrap($value = PHPPowerPoint_Shape_RichText::WRAP_SQUARE)
+    public function setWrap($value = self::WRAP_SQUARE)
     {
         $this->_wrap = $value;
 
@@ -373,7 +370,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value string
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setAutoFit($value = PHPPowerPoint_Shape_RichText::AUTOFIT_DEFAULT)
+    public function setAutoFit($value = self::AUTOFIT_DEFAULT)
     {
         $this->_autoFit = $value;
 
@@ -396,7 +393,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value string
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setHorizontalOverflow($value = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW)
+    public function setHorizontalOverflow($value = self::OVERFLOW_OVERFLOW)
     {
         $this->_horizontalOverflow = $value;
 
@@ -419,7 +416,7 @@ class PHPPowerPoint_Shape_RichText extends PHPPowerPoint_Shape implements PHPPow
      * @param $value string
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function setVerticalOverflow($value = PHPPowerPoint_Shape_RichText::OVERFLOW_OVERFLOW)
+    public function setVerticalOverflow($value = self::OVERFLOW_OVERFLOW)
     {
         $this->_verticalOverflow = $value;
 

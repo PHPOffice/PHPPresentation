@@ -1,29 +1,28 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Shape\RichText;
+
+use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Style\Font;
+use PhpOffice\PhpPowerpoint\Style\Bullet;
+use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
+use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
 
 /**
  * PHPPowerPoint_Shape_RichText_Paragraph
@@ -32,7 +31,7 @@
  * @package    PHPPowerPoint_RichText
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparable
+class Paragraph implements IComparable
 {
     /**
      * Rich text elements
@@ -69,9 +68,9 @@ class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparabl
     {
         // Initialise variables
         $this->_richTextElements = array();
-        $this->_alignment        = new PHPPowerPoint_Style_Alignment();
-        $this->_font             = new PHPPowerPoint_Style_Font();
-        $this->_bulletStyle      = new PHPPowerPoint_Style_Bullet();
+        $this->_alignment        = new Alignment();
+        $this->_font             = new Font();
+        $this->_bulletStyle      = new Bullet();
     }
 
     /**
@@ -90,7 +89,7 @@ class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparabl
      * @param  PHPPowerPoint_Style_Alignment          $alignment
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
-    public function setAlignment(PHPPowerPoint_Style_Alignment $alignment)
+    public function setAlignment(Alignment $alignment)
     {
         $this->_alignment = $alignment;
 
@@ -114,7 +113,7 @@ class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparabl
      * @throws Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
-    public function setFont(PHPPowerPoint_Style_Font $pFont = null)
+    public function setFont(Font $pFont = null)
     {
         $this->_font = $pFont;
 
@@ -138,7 +137,7 @@ class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparabl
      * @throws Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
-    public function setBulletStyle(PHPPowerPoint_Style_Bullet $style = null)
+    public function setBulletStyle(Bullet $style = null)
     {
         $this->_bulletStyle = $style;
 
@@ -152,7 +151,7 @@ class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparabl
      * @throws Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
-    public function addText(PHPPowerPoint_Shape_RichText_ITextElement $pText = null)
+    public function addText(ITextElement $pText = null)
     {
         $this->_richTextElements[] = $pText;
 
@@ -168,7 +167,7 @@ class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparabl
      */
     public function createText($pText = '')
     {
-        $objText = new PHPPowerPoint_Shape_RichText_TextElement($pText);
+        $objText = new TextElement($pText);
         $this->addText($objText);
 
         return $objText;
@@ -182,7 +181,7 @@ class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparabl
      */
     public function createBreak()
     {
-        $objText = new PHPPowerPoint_Shape_RichText_Break();
+        $objText = new BreakElement();
         $this->addText($objText);
 
         return $objText;
@@ -197,7 +196,7 @@ class PHPPowerPoint_Shape_RichText_Paragraph implements PHPPowerPoint_IComparabl
      */
     public function createTextRun($pText = '')
     {
-        $objText = new PHPPowerPoint_Shape_RichText_Run($pText);
+        $objText = new Run($pText);
         $objText->setFont(clone $this->_font);
         $this->addText($objText);
 

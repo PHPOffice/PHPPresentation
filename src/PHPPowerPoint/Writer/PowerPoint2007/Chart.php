@@ -1,29 +1,36 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
+
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Legend;
+use PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
+use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
+use PhpOffice\PhpPowerpoint\Style\Border;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
 
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Chart
@@ -32,7 +39,7 @@
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_PowerPoint2007_Slide
+class Chart extends Slide
 {
     /**
      * Write chart to XML format
@@ -41,7 +48,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @return string                    XML Output
      * @throws Exception
      */
-    public function writeChart(PHPPowerPoint_Shape_Chart $chart = null)
+    public function writeChart(ShapeChart $chart = null)
     {
         // Check slide
         if (is_null($chart)) {
@@ -51,9 +58,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
         // Create XML writer
         $objWriter = null;
         if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
-            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
         }
 
         // XML header
@@ -147,7 +154,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
         $this->_writeFill($objWriter, $chart->getFill());
 
         // Border
-        if ($chart->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+        if ($chart->getBorder()->getLineStyle() != Border::LINE_NONE) {
             $this->_writeBorder($objWriter, $chart->getBorder(), '');
         }
 
@@ -158,9 +165,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', PHPPowerPoint_Shared_Drawing::pixelsToEMU($chart->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', PHPPowerPoint_Shared_Drawing::pixelsToEMU($chart->getShadow()->getDistance()));
-            $objWriter->writeAttribute('dir', PHPPowerPoint_Shared_Drawing::degreesToAngle($chart->getShadow()->getDirection()));
+            $objWriter->writeAttribute('blurRad', SharedDrawing::pixelsToEMU($chart->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', SharedDrawing::pixelsToEMU($chart->getShadow()->getDistance()));
+            $objWriter->writeAttribute('dir', SharedDrawing::degreesToAngle($chart->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $chart->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
 
@@ -215,12 +222,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
     {
         // Need output?
         if (!$chart->getIncludeSpreadsheet()) {
-            throw new Exception('No spreadsheet output is required for the given chart.');
+            throw new \Exception('No spreadsheet output is required for the given chart.');
         }
 
         // Verify PHPExcel
         if (!class_exists('PHPExcel')) {
-            throw new Exception('PHPExcel has not been loaded. Include PHPExcel.php in your script, e.g. require_once \'PHPExcel.php\'.');
+            throw new \Exception('PHPExcel has not been loaded. Include PHPExcel.php in your script, e.g. require_once \'PHPExcel.php\'.');
         }
 
         // Create new spreadsheet
@@ -383,7 +390,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Shape_Chart_Title $subject
      * @throws Exception
      */
-    protected function _writeTitle(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Title $subject)
+    protected function _writeTitle(XMLWriter $objWriter, Title $subject)
     {
         // c:title
         $objWriter->startElement('c:title');
@@ -407,9 +414,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $subject->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEMU($subject->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEMU($subject->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEMU($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr
@@ -492,7 +499,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Shape_Chart          $chart
      * @throws Exception
      */
-    protected function _writePlotArea(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_PlotArea $subject, PHPPowerPoint_Shape_Chart $chart)
+    protected function _writePlotArea(XMLWriter $objWriter, PlotArea $subject, ShapeChart $chart)
     {
         // c:plotArea
         $objWriter->startElement('c:plotArea');
@@ -502,13 +509,13 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
 
         // Write chart
         $chartType = $subject->getType();
-        if ($chartType instanceof PHPPowerPoint_Shape_Chart_Type_Bar3D) {
+        if ($chartType instanceof Bar3D) {
             $this->_writeTypeBar3D($objWriter, $chartType, $chart->getIncludeSpreadsheet());
-        } elseif ($chartType instanceof PHPPowerPoint_Shape_Chart_Type_Pie3D) {
+        } elseif ($chartType instanceof Pie3D) {
             $this->_writeTypePie3D($objWriter, $chartType, $chart->getIncludeSpreadsheet());
-        } elseif ($chartType instanceof PHPPowerPoint_Shape_Chart_Type_Line) {
+        } elseif ($chartType instanceof Line) {
             $this->_writeTypeLine($objWriter, $chartType, $chart->getIncludeSpreadsheet());
-        } elseif ($chartType instanceof PHPPowerPoint_Shape_Chart_Type_Scatter) {
+        } elseif ($chartType instanceof Scatter) {
             $this->_writeTypeScatter($objWriter, $chartType, $chart->getIncludeSpreadsheet());
         } else {
             throw new Exception('The chart type provided could not be rendered.');
@@ -739,7 +746,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Shape_Chart_Legend $subject
      * @throws Exception
      */
-    protected function _writeLegend(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Legend $subject)
+    protected function _writeLegend(XMLWriter $objWriter, Legend $subject)
     {
         // c:legend
         $objWriter->startElement('c:legend');
@@ -764,7 +771,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
         $this->_writeFill($objWriter, $subject->getFill());
 
         // Border
-        if ($subject->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+        if ($subject->getBorder()->getLineStyle() != Border::LINE_NONE) {
             $this->_writeBorder($objWriter, $subject->getBorder(), '');
         }
 
@@ -786,9 +793,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $subject->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', PHPPowerPoint_Shared_Drawing::pixelsToEMU($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEMU($subject->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEMU($subject->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEMU($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr
@@ -847,7 +854,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @param  mixed                          $subject
      * @throws Exception
      */
-    protected function _writeLayout(PHPPowerPoint_Shared_XMLWriter $objWriter, $subject)
+    protected function _writeLayout(XMLWriter $objWriter, $subject)
     {
         // c:layout
         $objWriter->startElement('c:layout');
@@ -905,7 +912,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @param  boolean                              $includeSheet
      * @throws Exception
      */
-    protected function _writeTypeBar3D(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Bar3D $subject, $includeSheet = false)
+    protected function _writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, $includeSheet = false)
     {
         // c:bar3DChart
         $objWriter->startElement('c:bar3DChart');
@@ -937,10 +944,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
             $objWriter->endElement();
 
             // c:tx
-            $objWriter->startElement('c:tx');
-            $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
-            $this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
-            $objWriter->endElement();
+            if(class_exists('PHPExcel_Cell')){
+	            $objWriter->startElement('c:tx');
+	            $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
+	            $this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+	            $objWriter->endElement();
+            }
 
             // Fills for points?
             $dataPointFills = $series->getDataPointFills();
@@ -1063,11 +1072,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
             $axisYData = array_values($series->getValues());
 
             // c:val
-            $objWriter->startElement('c:val');
-            $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
-            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
-            $objWriter->endElement();
-
+            if(class_exists('PHPExcel_Cell')){
+	            $objWriter->startElement('c:val');
+	            $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
+	            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+	            $objWriter->endElement();
+            }
             $objWriter->endElement();
 
             ++$seriesIndex;
@@ -1109,7 +1119,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @param  boolean                              $includeSheet
      * @throws Exception
      */
-    protected function _writeTypePie3D(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Pie3D $subject, $includeSheet = false)
+    protected function _writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, $includeSheet = false)
     {
         // c:pie3DChart
         $objWriter->startElement('c:pie3DChart');
@@ -1283,7 +1293,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @param  boolean                             $includeSheet
      * @throws Exception
      */
-    protected function _writeTypeLine(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Line $subject, $includeSheet = false)
+    protected function _writeTypeLine(XMLWriter $objWriter, Line $subject, $includeSheet = false)
     {
         // c:lineChart
         $objWriter->startElement('c:lineChart');
@@ -1487,7 +1497,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Chart extends PHPPowerPoint_Writer_Pow
      * @param  boolean                                $includeSheet
      * @throws Exception
      */
-    protected function _writeTypeScatter(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart_Type_Scatter $subject, $includeSheet = false)
+    protected function _writeTypeScatter(XMLWriter $objWriter, Scatter $subject, $includeSheet = false)
     {
         // c:scatterChart
         $objWriter->startElement('c:scatterChart');

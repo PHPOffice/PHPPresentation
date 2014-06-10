@@ -7,17 +7,21 @@
  * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
  */
 
+namespace PhpOffice\PhpPowerpoint\Tests;
+
+use PhpOffice\PhpPowerpoint\Autoloader;
+
 /**
- * Test class for PHPPowerPoint_Autoloader
+ * Test class for Autoloader
  */
-class AutoloaderTest extends PHPUnit_Framework_TestCase
+class AutoloaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test register
      */
     public function testRegister()
     {
-        $this->assertTrue(PHPPowerPoint_Autoloader::Register());
+        $this->assertTrue(Autoloader::Register());
     }
 
     /**
@@ -27,7 +31,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     {
         $className = 'InvalidClass';
 
-        $result = PHPPowerPoint_Autoloader::Load($className);
+        $result = Autoloader::Load($className);
         //    Must return a boolean...
         $this->assertTrue(is_bool($result));
         //    ... indicating failure
@@ -41,7 +45,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     {
         $className = 'PHPPowerPoint_Invalid_Class';
 
-        $result = PHPPowerPoint_Autoloader::Load($className);
+        $result = Autoloader::Load($className);
         //    Must return a boolean...
         $this->assertTrue(is_bool($result));
         //    ... indicating failure
@@ -55,7 +59,7 @@ class AutoloaderTest extends PHPUnit_Framework_TestCase
     {
         $className = 'PHPPowerPoint_IOFactory';
 
-        $result = PHPPowerPoint_Autoloader::Load($className);
+        $result = Autoloader::Load($className);
         //    Check that class has been loaded
         $this->assertTrue(class_exists($className));
     }

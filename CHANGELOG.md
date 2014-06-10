@@ -33,6 +33,7 @@
 - Images in Layouts other than first Master Slide within Template file causes corrupted PPTX - @maartenba CP-4596
 - Fixed A3 and A4 formats dimensions - @delphiki GH-16
 - Fixed custom document layout - @delphiki GH-18
+- Filename parameter is required for IWriter::save method - @sapfeer0k GH-19
 
 ### Miscellaneous
 

@@ -1,29 +1,40 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt   LGPL
- * @version ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
+
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Slide as SlideElement;
+use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\Chart;
+use PhpOffice\PhpPowerpoint\Shape\Line;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
+use PhpOffice\PhpPowerpoint\Shape\Table;
+use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
+use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
+use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
+use PhpOffice\PhpPowerpoint\Shared\Drawing;
+use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Shared\String;
+use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Style\Border;
+use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Style\Bullet;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
 
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Slide
@@ -32,7 +43,7 @@
  * @package PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2006 - 2009 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_PowerPoint2007_WriterPart
+class Slide extends WriterPart
 {
     /**
      * Write slide to XML format
@@ -41,7 +52,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @return string              XML Output
      * @throws Exception
      */
-    public function writeSlide(PHPPowerPoint_Slide $pSlide = null)
+    public function writeSlide(SlideElement $pSlide = null)
     {
         // Check slide
         if (is_null($pSlide)) {
@@ -51,9 +62,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
         // Create XML writer
         $objWriter = null;
         if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
-            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
         }
 
         // XML header
@@ -130,15 +141,15 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
             ++$shapeId;
 
             // Check type
-            if ($shape instanceof PHPPowerPoint_Shape_RichText) {
+            if ($shape instanceof RichText) {
                 $this->_writeTxt($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof PHPPowerPoint_Shape_Table) {
+            } elseif ($shape instanceof Table) {
                 $this->_writeTable($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof PHPPowerPoint_Shape_Line) {
+            } elseif ($shape instanceof Line) {
                 $this->_writeLineShape($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof PHPPowerPoint_Shape_Chart) {
+            } elseif ($shape instanceof Chart) {
                 $this->_writeChart($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof PHPPowerPoint_Shape_BaseDrawing) {
+            } elseif ($shape instanceof BaseDrawing) {
                 $this->_writePic($objWriter, $shape, $shapeId);
             }
         }
@@ -171,7 +182,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                            $shapeId
      * @throws Exception
      */
-    private function _writeChart(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Chart $shape, $shapeId)
+    private function _writeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -196,18 +207,18 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
         // p:xfrm
         $objWriter->startElement('p:xfrm');
-        $objWriter->writeAttribute('rot', PHPPowerPoint_Shared_Drawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttribute('rot', Drawing::degreesToAngle($shape->getRotation()));
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getWidth()));
-        $objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getHeight()));
+        $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
+        $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -241,7 +252,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                             $shapeId
      * @throws Exception
      */
-    private function _writePic(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_BaseDrawing $shape, $shapeId)
+    private function _writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -297,18 +308,18 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
         // a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttribute('rot', PHPPowerPoint_Shared_Drawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttribute('rot', Drawing::degreesToAngle($shape->getRotation()));
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getWidth()));
-        $objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getHeight()));
+        $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
+        $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -322,7 +333,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
         $objWriter->endElement();
 
-        if ($shape->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
             $this->_writeBorder($objWriter, $shape->getBorder(), '');
         }
 
@@ -332,9 +343,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
-            $objWriter->writeAttribute('dir', PHPPowerPoint_Shared_Drawing::degreesToAngle($shape->getShadow()->getDirection()));
+            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
+            $objWriter->writeAttribute('dir', Drawing::degreesToAngle($shape->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
 
@@ -367,7 +378,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                            $shapeId
      * @throws Exception
      */
-    private function _writeTxt(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_RichText $shape, $shapeId)
+    private function _writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:sp');
@@ -402,18 +413,18 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
         // a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttribute('rot', PHPPowerPoint_Shared_Drawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttribute('rot', Drawing::degreesToAngle($shape->getRotation()));
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getWidth()));
-        $objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getHeight()));
+        $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
+        $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -425,7 +436,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
         $this->_writeFill($objWriter, $shape->getFill());
 
-        if ($shape->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
             $this->_writeBorder($objWriter, $shape->getBorder(), '');
         }
 
@@ -435,9 +446,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
-            $objWriter->writeAttribute('dir', PHPPowerPoint_Shared_Drawing::degreesToAngle($shape->getShadow()->getDirection()));
+            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
+            $objWriter->writeAttribute('dir', Drawing::degreesToAngle($shape->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
 
@@ -477,10 +488,10 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
             $objWriter->writeAttribute('vert', 'vert');
         }
 
-        $objWriter->writeAttribute('bIns', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getInsetBottom()));
-        $objWriter->writeAttribute('lIns', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getInsetLeft()));
-        $objWriter->writeAttribute('rIns', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getInsetRight()));
-        $objWriter->writeAttribute('tIns', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getInsetTop()));
+        $objWriter->writeAttribute('bIns', Drawing::pixelsToEMU($shape->getInsetBottom()));
+        $objWriter->writeAttribute('lIns', Drawing::pixelsToEMU($shape->getInsetLeft()));
+        $objWriter->writeAttribute('rIns', Drawing::pixelsToEMU($shape->getInsetRight()));
+        $objWriter->writeAttribute('tIns', Drawing::pixelsToEMU($shape->getInsetTop()));
 
         $objWriter->writeAttribute('numCol', $shape->getColumns());
 
@@ -508,7 +519,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                            $shapeId
      * @throws Exception
      */
-    private function _writeTable(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Table $shape, $shapeId)
+    private function _writeTable(XMLWriter $objWriter, Table $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -549,14 +560,14 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getWidth()));
-        $objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getHeight()));
+        $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
+        $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -582,9 +593,9 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
-            $objWriter->writeAttribute('dir', PHPPowerPoint_Shared_Drawing::degreesToAngle($shape->getShadow()->getDirection()));
+            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
+            $objWriter->writeAttribute('dir', Drawing::degreesToAngle($shape->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
 
@@ -622,7 +633,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
                 $width      = $totalWidth / $colCount;
             }
 
-            $objWriter->writeAttribute('w', PHPPowerPoint_Shared_Drawing::pixelsToEMU($width));
+            $objWriter->writeAttribute('w', Drawing::pixelsToEMU($width));
             $objWriter->endElement();
         }
 
@@ -633,13 +644,13 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
         $rowSpan = array();
 
         // Default border style
-        $defaultBorder = new PHPPowerPoint_Style_Border();
+        $defaultBorder = new Border();
 
         // Write rows
         for ($row = 0; $row < count($shape->getRows()); $row++) {
             // a:tr
             $objWriter->startElement('a:tr');
-            $objWriter->writeAttribute('h', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getRow($row)->getHeight()));
+            $objWriter->writeAttribute('h', Drawing::pixelsToEMU($shape->getRow($row)->getHeight()));
 
             // Write cells
             for ($cell = 0; $cell < count($shape->getRow($row)->getCells()); $cell++) {
@@ -702,7 +713,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
                 // Alignment (horizontal)
                 $firstParagraph  = $currentCell->getParagraph(0);
                 $horizontalAlign = $firstParagraph->getAlignment()->getVertical();
-                if ($horizontalAlign != PHPPowerPoint_Style_Alignment::VERTICAL_BASE && $horizontalAlign != PHPPowerPoint_Style_Alignment::VERTICAL_AUTO) {
+                if ($horizontalAlign != Alignment::VERTICAL_BASE && $horizontalAlign != Alignment::VERTICAL_AUTO) {
                     $objWriter->writeAttribute('anchor', $horizontalAlign);
                 }
 
@@ -757,7 +768,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Shape_RichText_Paragraph[] $paragraphs
      * @throws Exception
      */
-    private function _writeParagraphs(PHPPowerPoint_Shared_XMLWriter $objWriter, $paragraphs)
+    private function _writeParagraphs(XMLWriter $objWriter, $paragraphs)
     {
         // Loop trough paragraphs
         foreach ($paragraphs as $paragraph) {
@@ -768,24 +779,24 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
             $objWriter->startElement('a:pPr');
             $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
             $objWriter->writeAttribute('fontAlgn', $paragraph->getAlignment()->getVertical());
-            $objWriter->writeAttribute('marL', PHPPowerPoint_Shared_Drawing::pixelsToEMU($paragraph->getAlignment()->getMarginLeft()));
-            $objWriter->writeAttribute('marR', PHPPowerPoint_Shared_Drawing::pixelsToEMU($paragraph->getAlignment()->getMarginRight()));
-            $objWriter->writeAttribute('indent', PHPPowerPoint_Shared_Drawing::pixelsToEMU($paragraph->getAlignment()->getIndent()));
+            $objWriter->writeAttribute('marL', Drawing::pixelsToEMU($paragraph->getAlignment()->getMarginLeft()));
+            $objWriter->writeAttribute('marR', Drawing::pixelsToEMU($paragraph->getAlignment()->getMarginRight()));
+            $objWriter->writeAttribute('indent', Drawing::pixelsToEMU($paragraph->getAlignment()->getIndent()));
             $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
             // Bullet type specified?
-            if ($paragraph->getBulletStyle()->getBulletType() != PHPPowerPoint_Style_Bullet::TYPE_NONE) {
+            if ($paragraph->getBulletStyle()->getBulletType() != Bullet::TYPE_NONE) {
                 // a:buFont
                 $objWriter->startElement('a:buFont');
                 $objWriter->writeAttribute('typeface', $paragraph->getBulletStyle()->getBulletFont());
                 $objWriter->endElement();
 
-                if ($paragraph->getBulletStyle()->getBulletType() == PHPPowerPoint_Style_Bullet::TYPE_BULLET) {
+                if ($paragraph->getBulletStyle()->getBulletType() == Bullet::TYPE_BULLET) {
                     // a:buChar
                     $objWriter->startElement('a:buChar');
                     $objWriter->writeAttribute('char', $paragraph->getBulletStyle()->getBulletChar());
                     $objWriter->endElement();
-                } elseif ($paragraph->getBulletStyle()->getBulletType() == PHPPowerPoint_Style_Bullet::TYPE_NUMERIC) {
+                } elseif ($paragraph->getBulletStyle()->getBulletType() == Bullet::TYPE_NUMERIC) {
                     // a:buAutoNum
                     $objWriter->startElement('a:buAutoNum');
                     $objWriter->writeAttribute('type', $paragraph->getBulletStyle()->getBulletNumericStyle());
@@ -801,15 +812,15 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
             // Loop trough rich text elements
             $elements = $paragraph->getRichTextElements();
             foreach ($elements as $element) {
-                if ($element instanceof PHPPowerPoint_Shape_RichText_Break) {
+                if ($element instanceof BreakElement) {
                     // a:br
                     $objWriter->writeElement('a:br', null);
-                } elseif ($element instanceof PHPPowerPoint_Shape_RichText_Run || $element instanceof PHPPowerPoint_Shape_RichText_TextElement) {
+                } elseif ($element instanceof Run || $element instanceof TextElement) {
                     // a:r
                     $objWriter->startElement('a:r');
 
                     // a:rPr
-                    if ($element instanceof PHPPowerPoint_Shape_RichText_Run) {
+                    if ($element instanceof Run) {
                         // a:rPr
                         $objWriter->startElement('a:rPr');
 
@@ -862,7 +873,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
                     // t
                     $objWriter->startElement('a:t');
-                    $objWriter->writeCData(PHPPowerPoint_Shared_String::ControlCharacterPHP2OOXML($element->getText()));
+                    $objWriter->writeCData(String::ControlCharacterPHP2OOXML($element->getText()));
                     $objWriter->endElement();
 
                     $objWriter->endElement();
@@ -881,7 +892,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  int                            $shapeId
      * @throws Exception
      */
-    private function _writeLineShape(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_Line $shape, $shapeId)
+    private function _writeLineShape(XMLWriter $objWriter, Line $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:cxnSp');
@@ -918,54 +929,54 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
         if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getWidth()));
-            $objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getHeight()));
+            $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
+            $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY() + $shape->getHeight));
+            $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY() + $shape->getHeight));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', Drawing::pixelsToEMU(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', Drawing::pixelsToEMU(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getHeight() < 0) {
             $objWriter->writeAttribute('flipV', 1);
 
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY() + $shape->getHeight));
+            $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY() + $shape->getHeight));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getWidth()));
-            $objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
+            $objWriter->writeAttribute('cy', Drawing::pixelsToEMU(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0) {
             $objWriter->writeAttribute('flipV', 1);
 
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', PHPPowerPoint_Shared_Drawing::pixelsToEMU(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', PHPPowerPoint_Shared_Drawing::pixelsToEMU($shape->getHeight()));
+            $objWriter->writeAttribute('cx', Drawing::pixelsToEMU(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
             $objWriter->endElement();
         }
 
@@ -976,7 +987,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
         $objWriter->writeAttribute('prst', 'line');
         $objWriter->endElement();
 
-        if ($shape->getBorder()->getLineStyle() != PHPPowerPoint_Style_Border::LINE_NONE) {
+        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
             $this->_writeBorder($objWriter, $shape->getBorder(), '');
         }
 
@@ -992,7 +1003,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Borders    $pBorders  Borders
      * @throws Exception
      */
-    protected function _writeBorders(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Borders $pBorders)
+    protected function _writeBorders(XMLWriter $objWriter, Borders $pBorders)
     {
         $this->_writeBorder($objWriter, $pBorders->getLeft(), 'L');
         $this->_writeBorder($objWriter, $pBorders->getRight(), 'R');
@@ -1010,12 +1021,12 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  string                         $pElementName Element name
      * @throws Exception
      */
-    protected function _writeBorder(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Border $pBorder, $pElementName = 'L')
+    protected function _writeBorder(XMLWriter $objWriter, Border $pBorder, $pElementName = 'L')
     {
         // Line style
         $lineStyle = $pBorder->getLineStyle();
-        if ($lineStyle == PHPPowerPoint_Style_Border::LINE_NONE) {
-            $lineStyle = PHPPowerPoint_Style_Border::LINE_SINGLE;
+        if ($lineStyle == Border::LINE_NONE) {
+            $lineStyle = Border::LINE_SINGLE;
         }
 
         // Line width
@@ -1029,7 +1040,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
         $objWriter->writeAttribute('algn', 'ctr');
 
         // Fill?
-        if ($pBorder->getLineStyle() == PHPPowerPoint_Style_Border::LINE_NONE) {
+        if ($pBorder->getLineStyle() == Border::LINE_NONE) {
             // a:noFill
             $objWriter->writeElement('a:noFill', null);
         } else {
@@ -1076,21 +1087,21 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws Exception
      */
-    protected function _writeFill(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Fill $pFill)
+    protected function _writeFill(XMLWriter $objWriter, Fill $pFill)
     {
         // Is it a fill?
-        if ($pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_NONE) {
+        if ($pFill->getFillType() == Fill::FILL_NONE) {
             return;
         }
 
         // Is it a solid fill?
-        if ($pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_SOLID) {
+        if ($pFill->getFillType() == Fill::FILL_SOLID) {
             $this->_writeSolidFill($objWriter, $pFill);
             return;
         }
 
         // Check if this is a pattern type or gradient type
-        if ($pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_GRADIENT_LINEAR || $pFill->getFillType() == PHPPowerPoint_Style_Fill::FILL_GRADIENT_PATH) {
+        if ($pFill->getFillType() == Fill::FILL_GRADIENT_LINEAR || $pFill->getFillType() == Fill::FILL_GRADIENT_PATH) {
             // Gradient fill
             $this->_writeGradientFill($objWriter, $pFill);
         } else {
@@ -1106,7 +1117,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws Exception
      */
-    protected function _writeSolidFill(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Fill $pFill)
+    protected function _writeSolidFill(XMLWriter $objWriter, Fill $pFill)
     {
         // a:gradFill
         $objWriter->startElement('a:solidFill');
@@ -1126,7 +1137,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws Exception
      */
-    protected function _writeGradientFill(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Fill $pFill)
+    protected function _writeGradientFill(XMLWriter $objWriter, Fill $pFill)
     {
         // a:gradFill
         $objWriter->startElement('a:gradFill');
@@ -1159,7 +1170,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
 
         // a:lin
         $objWriter->startElement('a:lin');
-        $objWriter->writeAttribute('ang', PHPPowerPoint_Shared_Drawing::degreesToAngle($pFill->getRotation()));
+        $objWriter->writeAttribute('ang', Drawing::degreesToAngle($pFill->getRotation()));
         $objWriter->writeAttribute('scaled', '0');
         $objWriter->endElement();
 
@@ -1173,7 +1184,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws Exception
      */
-    protected function _writePatternFill(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Style_Fill $pFill)
+    protected function _writePatternFill(XMLWriter $objWriter, Fill $pFill)
     {
         // a:pattFill
         $objWriter->startElement('a:pattFill');
@@ -1207,7 +1218,7 @@ class PHPPowerPoint_Writer_PowerPoint2007_Slide extends PHPPowerPoint_Writer_Pow
      * @param PHPPowerPoint_Shared_XMLWriter                               $objWriter XML Writer
      * @param PHPPowerPoint_Shape|PHPPowerPoint_Shape_RichText_TextElement $shape
      */
-    private function _writeHyperlink(PHPPowerPoint_Shared_XMLWriter $objWriter, $shape)
+    private function _writeHyperlink(XMLWriter $objWriter, $shape)
     {
         // a:hlinkClick
         $objWriter->startElement('a:hlinkClick');

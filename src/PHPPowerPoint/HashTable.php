@@ -1,29 +1,23 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint;
+
+use PhpOffice\PhpPowerpoint\IComparable;
 
 /**
  * PHPPowerPoint_HashTable
@@ -32,7 +26,7 @@
  * @package    PHPPowerPoint
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_HashTable
+class HashTable
 {
     /**
      * HashTable elements
@@ -51,7 +45,7 @@ class PHPPowerPoint_HashTable
     /**
      * Create a new PHPPowerPoint_HashTable
      *
-     * @param  PHPPowerPoint_IComparable[] $pSource Optional source array to create HashTable from
+     * @param  PhpOffice\PhpPowerpoint\IComparable[] $pSource Optional source array to create HashTable from
      * @throws Exception
      */
     public function __construct($pSource = null)
@@ -65,7 +59,7 @@ class PHPPowerPoint_HashTable
     /**
      * Add HashTable items from source
      *
-     * @param  PHPPowerPoint_IComparable[] $pSource Source array to create HashTable from
+     * @param  PhpOffice\PhpPowerpoint\IComparable[] $pSource Source array to create HashTable from
      * @throws Exception
      */
     public function addFromSource($pSource = null)
@@ -85,10 +79,10 @@ class PHPPowerPoint_HashTable
     /**
      * Add HashTable item
      *
-     * @param  PHPPowerPoint_IComparable $pSource Item to add
+     * @param  PhpOffice\PhpPowerpoint\IComparable $pSource Item to add
      * @throws Exception
      */
-    public function add(PHPPowerPoint_IComparable $pSource = null)
+    public function add(IComparable $pSource = null)
     {
         // Determine hashcode
         $hashCode  = null;
@@ -115,10 +109,10 @@ class PHPPowerPoint_HashTable
     /**
      * Remove HashTable item
      *
-     * @param  PHPPowerPoint_IComparable $pSource Item to remove
+     * @param  PhpOffice\PhpPowerpoint\IComparable $pSource Item to remove
      * @throws Exception
      */
-    public function remove(PHPPowerPoint_IComparable $pSource = null)
+    public function remove(IComparable $pSource = null)
     {
         if (isset($this->_items[$pSource->getHashCode()])) {
             unset($this->_items[$pSource->getHashCode()]);
@@ -172,7 +166,7 @@ class PHPPowerPoint_HashTable
      * Get by index
      *
      * @param  int                       $pIndex
-     * @return PHPPowerPoint_IComparable
+     * @return PhpOffice\PhpPowerpoint\IComparable
      *
      */
     public function getByIndex($pIndex = 0)
@@ -188,7 +182,7 @@ class PHPPowerPoint_HashTable
      * Get by hashcode
      *
      * @param  string                    $pHashCode
-     * @return PHPPowerPoint_IComparable
+     * @return PhpOffice\PhpPowerpoint\IComparable
      *
      */
     public function getByHashCode($pHashCode = '')
@@ -203,7 +197,7 @@ class PHPPowerPoint_HashTable
     /**
      * HashTable to array
      *
-     * @return PHPPowerPoint_IComparable[]
+     * @return PhpOffice\PhpPowerpoint\IComparable[]
      */
     public function toArray()
     {

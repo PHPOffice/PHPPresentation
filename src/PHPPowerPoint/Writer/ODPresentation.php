@@ -1,34 +1,38 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Writer;
+
+use PhpOffice\PhpPowerpoint\Writer\IWriter;
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Meta;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing;
+use PhpOffice\PhpPowerpoint\HashTable;
+use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 
 /**
  * ODPresentation writer
  */
-class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWriter
+class ODPresentation implements IWriter
 {
     /**
     * Private PHPPowerPoint
@@ -79,13 +83,13 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
         $this->_diskCachingDirectory = './';
 
         // Initialise writer parts
-        $this->_writerParts['content']  = new PHPPowerPoint_Writer_ODPresentation_Content();
-        $this->_writerParts['manifest'] = new PHPPowerPoint_Writer_ODPresentation_Manifest();
-        $this->_writerParts['meta']     = new PHPPowerPoint_Writer_ODPresentation_Meta();
-        $this->_writerParts['mimetype'] = new PHPPowerPoint_Writer_ODPresentation_Mimetype();
-        $this->_writerParts['styles']   = new PHPPowerPoint_Writer_ODPresentation_Styles();
+        $this->_writerParts['content']  = new Content();
+        $this->_writerParts['manifest'] = new Manifest();
+        $this->_writerParts['meta']     = new Meta();
+        $this->_writerParts['mimetype'] = new Mimetype();
+        $this->_writerParts['styles']   = new Styles();
 
-        $this->_writerParts['drawing']  = new PHPPowerPoint_Writer_ODPresentation_Drawing();
+        $this->_writerParts['drawing']  = new Drawing();
 
         // Assign parent IWriter
         foreach ($this->_writerParts as $writer) {
@@ -93,7 +97,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
         }
 
         // Set HashTable variables
-        $this->_drawingHashTable            = new PHPPowerPoint_HashTable();
+        $this->_drawingHashTable            = new HashTable();
     }
 
     /**
@@ -102,8 +106,11 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
      * @param  string    $pFilename
      * @throws Exception
      */
-    public function save($pFilename = null)
+    public function save($pFilename)
     {
+    	if (empty($pFilename)) {
+    		throw new Exception("Filename is empty");
+    	}
         if (!is_null($this->_presentation)) {
             // If $pFilename is php://output or php://stdout, make it a temporary file...
             $originalFilename = $pFilename;
@@ -118,11 +125,11 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
             $this->_drawingHashTable->addFromSource($this->getWriterPart('Drawing')->allDrawings($this->_presentation));
 
             // Create new ZIP file and open it for writing
-            $objZip = new ZipArchive();
+            $objZip = new \ZipArchive();
 
             // Try opening the ZIP file
-            if ($objZip->open($pFilename, ZIPARCHIVE::OVERWRITE) !== true) {
-                if ($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== true) {
+            if ($objZip->open($pFilename, \ZIPARCHIVE::OVERWRITE) !== true) {
+                if ($objZip->open($pFilename, \ZIPARCHIVE::CREATE) !== true) {
                     throw new Exception("Could not open " . $pFilename . " for writing.");
                 }
             }
@@ -146,7 +153,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
             // Add media
             $arrMedia = array();
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
-                if ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_Drawing) {
+                if ($this->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
                     if (!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
                         $arrMedia[] = md5($this->getDrawingHashTable()->getByIndex($i)->getPath());
 
@@ -168,7 +175,7 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
 
                         $objZip->addFromString('Pictures/' . md5($this->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getDrawingHashTable()->getByIndex($i)->getExtension(), $imageContents);
                     }
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof PHPPowerPoint_Shape_MemoryDrawing) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
                     if (!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
                         $arrMedia[] = md5($this->getDrawingHashTable()->getByIndex($i)->getPath());
                         ob_start();

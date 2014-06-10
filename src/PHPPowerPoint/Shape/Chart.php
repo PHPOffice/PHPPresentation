@@ -1,29 +1,28 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Shape;
+
+use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Legend;
+use PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea;
+use PhpOffice\PhpPowerpoint\Shape\Chart\View3D;
 
 /**
  * PHPPowerPoint_Shape_Chart
@@ -32,7 +31,7 @@
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implements PHPPowerPoint_IComparable
+class Chart extends BaseDrawing implements IComparable
 {
     /**
      * Title
@@ -75,10 +74,10 @@ class PHPPowerPoint_Shape_Chart extends PHPPowerPoint_Shape_BaseDrawing implemen
     public function __construct()
     {
         // Initialize
-        $this->_title    = new PHPPowerPoint_Shape_Chart_Title();
-        $this->_legend   = new PHPPowerPoint_Shape_Chart_Legend();
-        $this->_plotArea = new PHPPowerPoint_Shape_Chart_PlotArea();
-        $this->_view3D   = new PHPPowerPoint_Shape_Chart_View3D();
+        $this->_title    = new Title();
+        $this->_legend   = new Legend();
+        $this->_plotArea = new PlotArea();
+        $this->_view3D   = new View3D();
 
         // Initialize parent
         parent::__construct();

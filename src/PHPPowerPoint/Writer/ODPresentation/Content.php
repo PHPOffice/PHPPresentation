@@ -1,38 +1,41 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_ODPresentation
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
+
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\WriterPart;
+use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\Chart;
+use PhpOffice\PhpPowerpoint\Shape\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\Line;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
+use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
+use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
+use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
+use PhpOffice\PhpPowerpoint\Shape\Table;
+use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
+use PhpOffice\PhpPowerpoint\Style\Alignment;
 
 /**
  * PHPPowerPoint_Writer_ODPresentation_Content
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_ODPresentation
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_ODPresentation_WriterPart
+class Content extends WriterPart
 {
     /**
      * Write content file to XML format
@@ -46,9 +49,9 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
         // Create XML writer
         $objWriter = null;
         if ($this->getParentWriter()->getUseDiskCaching()) {
-            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
-            $objWriter = new PHPPowerPoint_Shared_XMLWriter(PHPPowerPoint_Shared_XMLWriter::STORAGE_MEMORY);
+            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
         }
 
         // XML header
@@ -109,7 +112,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                 ++$shapeId;
 
                 // Check type
-                if ($shape instanceof PHPPowerPoint_Shape_RichText) {
+                if ($shape instanceof RichText) {
                     // style:style
                     $objWriter->startElement('style:style');
                     $objWriter->writeAttribute('style:name', 'gr' . $shapeId);
@@ -148,7 +151,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                         foreach ($richtexts as $richtext) {
                             ++$richtextId;
                             // Not a line break
-                            if ($richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
+                            if ($richtext instanceof Run) {
                                 // Style des font text
                                 if (!isset($arrStyleTextFont[$richtext->getFont()->getHashCode()])) {
                                     $arrStyleTextFont[$richtext->getFont()->getHashCode()] = $richtext->getFont();
@@ -157,7 +160,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                         }
                     }
                 }
-                if ($shape instanceof PHPPowerPoint_Shape_BaseDrawing) {
+                if ($shape instanceof BaseDrawing) {
                     if ($shape->getShadow()->getVisible()) {
                         // style:style
                         $objWriter->startElement('style:style');
@@ -172,29 +175,29 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                         $objWriter->writeAttribute('draw:shadow', 'visible');
                         $objWriter->writeAttribute('draw:shadow-color', '#' . $shape->getShadow()->getColor()->getRGB());
                         if ($shape->getShadow()->getDirection() == 0 || $shape->getShadow()->getDirection() == 360) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
                             $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
                         } elseif ($shape->getShadow()->getDirection() == 45) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
                         } elseif ($shape->getShadow()->getDirection() == 90) {
                             $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
                         } elseif ($shape->getShadow()->getDirection() == 135) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
                         } elseif ($shape->getShadow()->getDirection() == 180) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
                             $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
                         } elseif ($shape->getShadow()->getDirection() == 225) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
                         } elseif ($shape->getShadow()->getDirection() == 270) {
                             $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
                         } elseif ($shape->getShadow()->getDirection() == 315) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
                         }
                         $objWriter->writeAttribute('draw:shadow-opacity', (100 - $shape->getShadow()->getAlpha()) . '%');
                         $objWriter->writeAttribute('style:mirror', 'none');
@@ -223,11 +226,11 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                         // style:list-level-properties
                         $objWriter->startElement('style:list-level-properties');
                         if ($oAlign->getIndent() < 0) {
-                            $objWriter->writeAttribute('text:space-before', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent())) . 'cm');
-                            $objWriter->writeAttribute('text:min-label-width', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters(-1 * $oAlign->getIndent()) . 'cm');
+                            $objWriter->writeAttribute('text:space-before', SharedDrawing::pixelsToCentimeters($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent())) . 'cm');
+                            $objWriter->writeAttribute('text:min-label-width', SharedDrawing::pixelsToCentimeters(-1 * $oAlign->getIndent()) . 'cm');
                         } else {
-                            $objWriter->writeAttribute('text:space-before', (PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($oAlign->getMarginLeft() - $oAlign->getIndent())) . 'cm');
-                            $objWriter->writeAttribute('text:min-label-width', PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($oAlign->getIndent()) . 'cm');
+                            $objWriter->writeAttribute('text:space-before', (SharedDrawing::pixelsToCentimeters($oAlign->getMarginLeft() - $oAlign->getIndent())) . 'cm');
+                            $objWriter->writeAttribute('text:min-label-width', SharedDrawing::pixelsToCentimeters($oAlign->getIndent()) . 'cm');
                         }
 
                         $objWriter->endElement();
@@ -254,19 +257,19 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                 // style:paragraph-properties
                 $objWriter->startElement('style:paragraph-properties');
                 switch ($item->getAlignment()->getHorizontal()) {
-                    case PHPPowerPoint_Style_Alignment::HORIZONTAL_LEFT:
+                    case Alignment::HORIZONTAL_LEFT:
                         $objWriter->writeAttribute('fo:text-align', 'left');
                         break;
-                    case PHPPowerPoint_Style_Alignment::HORIZONTAL_RIGHT:
+                    case Alignment::HORIZONTAL_RIGHT:
                         $objWriter->writeAttribute('fo:text-align', 'right');
                         break;
-                    case PHPPowerPoint_Style_Alignment::HORIZONTAL_CENTER:
+                    case Alignment::HORIZONTAL_CENTER:
                         $objWriter->writeAttribute('fo:text-align', 'center');
                         break;
-                    case PHPPowerPoint_Style_Alignment::HORIZONTAL_JUSTIFY:
+                    case Alignment::HORIZONTAL_JUSTIFY:
                         $objWriter->writeAttribute('fo:text-align', 'justify');
                         break;
-                    case PHPPowerPoint_Style_Alignment::HORIZONTAL_DISTRIBUTED:
+                    case Alignment::HORIZONTAL_DISTRIBUTED:
                         $objWriter->writeAttribute('fo:text-align', 'justify');
                         break;
                     default:
@@ -323,18 +326,18 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                 ++$shapeId;
 
                 // Check type
-                if ($shape instanceof PHPPowerPoint_Shape_RichText) {
+                if ($shape instanceof RichText) {
                     $this->_writeTxt($objWriter, $shape, $shapeId);
                 /*
-                elseif ($shape instanceof PHPPowerPoint_Shape_Table) {
+                elseif ($shape instanceof Table) {
                     $this->_writeTable($objWriter, $shape, $shapeId);
-                } elseif ($shape instanceof PHPPowerPoint_Shape_Line) {
+                } elseif ($shape instanceof Line) {
                     $this->_writeLineShape($objWriter, $shape, $shapeId);
-                } elseif ($shape instanceof PHPPowerPoint_Shape_Chart) {
+                } elseif ($shape instanceof Chart) {
                     $this->_writeChart($objWriter, $shape, $shapeId);
                 }
                 */
-                } elseif ($shape instanceof PHPPowerPoint_Shape_Drawing) {
+                } elseif ($shape instanceof Drawing) {
                     $this->_writePic($objWriter, $shape, $shapeId);
                 }
             }
@@ -353,15 +356,15 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
      *
      * @param int $shapeId
      */
-    public function _writePic(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_BaseDrawing $shape, $shapeId)
+    public function _writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:name', $shape->getName());
-        $objWriter->writeAttribute('svg:width', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', number_format(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', number_format(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         if ($shape->getShadow()->getVisible()) {
             $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
         }
@@ -381,15 +384,15 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
      *
      * @param int $shapeId
      */
-    public function _writeTxt(PHPPowerPoint_Shared_XMLWriter $objWriter, PHPPowerPoint_Shape_RichText $shape, $shapeId)
+    public function _writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
     {
         // draw:custom-shape
         $objWriter->startElement('draw:custom-shape');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
-        $objWriter->writeAttribute('svg:width', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', number_format(PHPPowerPoint_Shared_Drawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', number_format(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', number_format(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
 
         $paragraphs                  = $shape->getParagraphs();
         $paragraphId                 = 0;
@@ -421,10 +424,10 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                 $richtextId = 0;
                 foreach ($richtexts as $richtext) {
                     ++$richtextId;
-                    if ($richtext instanceof PHPPowerPoint_Shape_RichText_TextElement || $richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
+                    if ($richtext instanceof TextElement || $richtext instanceof Run) {
                         // text:span
                         $objWriter->startElement('text:span');
-                        if ($richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
+                        if ($richtext instanceof Run) {
                             $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getFont()->getHashCode());
                         }
                         if ($richtext->hasHyperlink() == true && $richtext->getHyperlink()->getUrl() != '') {
@@ -437,7 +440,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                             $objWriter->text($richtext->getText());
                         }
                         $objWriter->endElement();
-                    } elseif ($richtext instanceof PHPPowerPoint_Shape_RichText_Break) {
+                    } elseif ($richtext instanceof BreakElement) {
                         // text:span
                         $objWriter->startElement('text:span');
                         // text:line-break
@@ -486,10 +489,10 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                 $richtextId = 0;
                 foreach ($richtexts as $richtext) {
                     ++$richtextId;
-                    if ($richtext instanceof PHPPowerPoint_Shape_RichText_TextElement || $richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
+                    if ($richtext instanceof TextElement || $richtext instanceof Run) {
                         // text:span
                         $objWriter->startElement('text:span');
-                        if ($richtext instanceof PHPPowerPoint_Shape_RichText_Run) {
+                        if ($richtext instanceof Run) {
                             $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getFont()->getHashCode());
                         }
                         if ($richtext->hasHyperlink() == true && $richtext->getHyperlink()->getUrl() != '') {
@@ -502,7 +505,7 @@ class PHPPowerPoint_Writer_ODPresentation_Content extends PHPPowerPoint_Writer_O
                             $objWriter->text($richtext->getText());
                         }
                         $objWriter->endElement();
-                    } elseif ($richtext instanceof PHPPowerPoint_Shape_RichText_Break) {
+                    } elseif ($richtext instanceof BreakElement) {
                         // text:span
                         $objWriter->startElement('text:span');
                         // text:line-break

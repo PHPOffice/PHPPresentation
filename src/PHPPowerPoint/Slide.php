@@ -1,40 +1,29 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Slide
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-/** PHPPowerPoint root directory */
-if (!defined('PHPPOWERPOINT_ROOT')) {
-    /**
-     * @ignore
-     */
-    define('PHPPOWERPOINT_ROOT', dirname(__FILE__) . '/../');
-    require(PHPPOWERPOINT_ROOT . 'PHPPowerPoint/Autoloader.php');
-    PHPPowerPoint_Autoloader::Register();
-    PHPPowerPoint_Shared_ZipStreamWrapper::register();
-}
+namespace PhpOffice\PhpPowerpoint;
+
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Chart;
+use PhpOffice\PhpPowerpoint\Shape\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\Line;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
+use PhpOffice\PhpPowerpoint\Shape\Table;
+use PhpOffice\PhpPowerpoint\Slide\Layout;
 
 /**
  * PHPPowerPoint_Slide
@@ -43,7 +32,7 @@ if (!defined('PHPPOWERPOINT_ROOT')) {
  * @package    PHPPowerPoint_Slide
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
+class Slide implements IComparable
 {
     /**
      * Parent presentation
@@ -71,7 +60,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @var string
      */
-    private $_slideLayout = PHPPowerPoint_Slide_Layout::BLANK;
+    private $_slideLayout;
 
     /**
      * Slide master id
@@ -85,13 +74,15 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      *
      * @param PHPPowerPoint $pParent
      */
-    public function __construct(PHPPowerPoint $pParent = null)
+    public function __construct(PhpPowerpoint $pParent = null)
     {
         // Set parent
         $this->_parent = $pParent;
+        
+        $this->_slideLayout = Slide\Layout::BLANK;
 
         // Shape collection
-        $this->_shapeCollection = new ArrayObject();
+        $this->_shapeCollection = new \ArrayObject();
 
         // Set identifier
         $this->_identifier = md5(rand(0, 9999) . time());
@@ -113,7 +104,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @param  PHPPowerPoint_Shape $shape
      * @return PHPPowerPoint_Shape
      */
-    public function addShape(PHPPowerPoint_Shape $shape)
+    public function addShape(Shape $shape)
     {
         $shape->setSlide($this);
 
@@ -123,11 +114,11 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
     /**
      * Create rich text shape
      *
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PHPPowerPoint\Shape\RichText
      */
     public function createRichTextShape()
     {
-        $shape = new PHPPowerPoint_Shape_RichText();
+        $shape = new RichText();
         $this->addShape($shape);
 
         return $shape;
@@ -144,7 +135,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      */
     public function createLineShape($fromX, $fromY, $toX, $toY)
     {
-        $shape = new PHPPowerPoint_Shape_Line($fromX, $fromY, $toX, $toY);
+        $shape = new Line($fromX, $fromY, $toX, $toY);
         $this->addShape($shape);
 
         return $shape;
@@ -157,7 +148,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      */
     public function createChartShape()
     {
-        $shape = new PHPPowerPoint_Shape_Chart();
+        $shape = new Chart();
         $this->addShape($shape);
 
         return $shape;
@@ -170,7 +161,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      */
     public function createDrawingShape()
     {
-        $shape = new PHPPowerPoint_Shape_Drawing();
+        $shape = new Drawing();
         $this->addShape($shape);
 
         return $shape;
@@ -184,7 +175,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      */
     public function createTableShape($columns = 1)
     {
-        $shape = new PHPPowerPoint_Shape_Table($columns);
+        $shape = new Table($columns);
         $this->addShape($shape);
 
         return $shape;
@@ -230,7 +221,7 @@ class PHPPowerPoint_Slide implements PHPPowerPoint_IComparable
      * @param  string              $layout
      * @return PHPPowerPoint_Slide
      */
-    public function setSlideLayout($layout = PHPPowerPoint_Slide_Layout::BLANK)
+    public function setSlideLayout($layout = Layout::BLANK)
     {
         $this->_slideLayout = $layout;
 

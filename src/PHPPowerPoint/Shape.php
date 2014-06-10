@@ -1,29 +1,25 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Copyright (c) 2009 - 2010 PHPPowerPoint
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
- * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt    LGPL
- * @version    ##VERSION##, ##DATE##
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+namespace PhpOffice\PhpPowerpoint;
+
+use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
+use PhpOffice\PhpPowerpoint\Style\Shadow;
 
 /**
  * PHPPowerPoint_Shape
@@ -32,7 +28,7 @@
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
+abstract class Shape implements IComparable
 {
     /**
      * Slide
@@ -116,11 +112,11 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
         $this->_width    = 0;
         $this->_height   = 0;
         $this->_rotation = 0;
-        $this->_fill     = new PHPPowerPoint_Style_Fill();
-        $this->_border   = new PHPPowerPoint_Style_Border();
-        $this->_shadow   = new PHPPowerPoint_Style_Shadow();
+        $this->_fill     = new Style\Fill();
+        $this->_border   = new Style\Border();
+        $this->_shadow   = new Style\Shadow();
 
-        $this->_border->setLineStyle(PHPPowerPoint_Style_Border::LINE_NONE);
+        $this->_border->setLineStyle(Style\Border::LINE_NONE);
     }
 
     /**
@@ -141,7 +137,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @throws Exception
      * @return PHPPowerPoint_Shape
      */
-    public function setSlide(PHPPowerPoint_slide $pValue = null, $pOverrideOld = false)
+    public function setSlide(Slide $pValue = null, $pOverrideOld = false)
     {
         if (is_null($this->_slide)) {
             // Add drawing to PHPPowerPoint_Slide
@@ -338,7 +334,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @throws Exception
      * @return PHPPowerPoint_Shape
      */
-    public function setShadow(PHPPowerPoint_Style_Shadow $pValue = null)
+    public function setShadow(Shadow $pValue = null)
     {
         $this->_shadow = $pValue;
 
@@ -363,7 +359,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
     public function getHyperlink()
     {
         if (is_null($this->_hyperlink)) {
-            $this->_hyperlink = new PHPPowerPoint_Shape_Hyperlink();
+            $this->_hyperlink = new Hyperlink();
         }
 
         return $this->_hyperlink;
@@ -376,7 +372,7 @@ abstract class PHPPowerPoint_Shape implements PHPPowerPoint_IComparable
      * @throws Exception
      * @return PHPPowerPoint_Shape
      */
-    public function setHyperlink(PHPExcel_Cell_Hyperlink $pHyperlink = null)
+    public function setHyperlink(Hyperlink $pHyperlink = null)
     {
         $this->_hyperlink = $pHyperlink;
 

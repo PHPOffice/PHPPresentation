@@ -14,3 +14,4 @@ vendor
 *.project
 *.buildpath
 Tests/results
+/samples/results
