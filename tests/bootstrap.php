@@ -38,7 +38,7 @@ spl_autoload_register(function ($class) {
 	$prefix = 'PhpOffice\\PhpPowerpoint\\Tests';
 	if (strpos($class, $prefix) === 0) {
 		$class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-		$class = join(DIRECTORY_SEPARATOR, array('PhpPowerpoint', 'Tests', '_includes')) .
+		$class = join(DIRECTORY_SEPARATOR, array('PHPPowerPoint', 'Tests', '_includes')) .
 		substr($class, strlen($prefix));
 		$file = __DIR__ . DIRECTORY_SEPARATOR . $class . '.php';
 		if (file_exists($file)) {
@@ -47,5 +47,5 @@ spl_autoload_register(function ($class) {
 	}
 });
 
-	require_once __DIR__ . "/../src/PhpPowerpoint/Autoloader.php";
+	require_once __DIR__ . "/../src/PHPPowerPoint/Autoloader.php";
 	\PhpOffice\PhpPowerpoint\Autoloader::register();
