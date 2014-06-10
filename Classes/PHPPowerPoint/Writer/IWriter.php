@@ -40,5 +40,5 @@ interface PHPPowerPoint_Writer_IWriter
      * @param  string    $pFilename
      * @throws Exception
      */
-    public function save($pFilename = null);
+    public function save($pFilename);
 }

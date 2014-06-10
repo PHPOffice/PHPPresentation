@@ -58,8 +58,11 @@ class PHPPowerPoint_Writer_Serialized implements PHPPowerPoint_Writer_IWriter
      * @param  string    $pFilename
      * @throws Exception
      */
-    public function save($pFilename = null)
+    public function save($pFilename)
     {
+        if (empty($pFilename)) {
+            throw new Exception("Filename is empty");
+        }
         if (!is_null($this->_presentation)) {
             // Create new ZIP file and open it for writing
             $objZip = new ZipArchive();

@@ -102,8 +102,11 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
      * @param  string    $pFilename
      * @throws Exception
      */
-    public function save($pFilename = null)
+    public function save($pFilename)
     {
+        if (empty($pFilename)) {
+            throw new Exception("Filename is empty");
+        }
         if (!is_null($this->_presentation)) {
             // If $pFilename is php://output or php://stdout, make it a temporary file...
             $originalFilename = $pFilename;
