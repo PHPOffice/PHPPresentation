@@ -108,9 +108,9 @@ class ODPresentation implements IWriter
      */
     public function save($pFilename)
     {
-    	if (empty($pFilename)) {
-    		throw new Exception("Filename is empty");
-    	}
+        if (empty($pFilename)) {
+            throw new Exception("Filename is empty");
+        }
         if (!is_null($this->_presentation)) {
             // If $pFilename is php://output or php://stdout, make it a temporary file...
             $originalFilename = $pFilename;

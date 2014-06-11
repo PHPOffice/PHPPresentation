@@ -37,17 +37,17 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase
         $declaredCount = count($declared);
         Autoloader::autoload('Foo');
         $this->assertEquals(
-                $declaredCount,
-                count(get_declared_classes()),
-                'PhpOffice\\PhpPowerpoint\\Autoloader::autoload() is trying to load ' .
-                'classes outside of the PhpOffice\\PhpPowerpoint namespace'
+            $declaredCount,
+            count(get_declared_classes()),
+            'PhpOffice\\PhpPowerpoint\\Autoloader::autoload() is trying to load ' .
+            'classes outside of the PhpOffice\\PhpPowerpoint namespace'
         );
         // TODO change this class to the main PhpPowerpoint class when it is namespaced
         Autoloader::autoload('PhpOffice\\PhpPowerpoint\\Exception\\InvalidStyleException');
         $this->assertTrue(
-                in_array('PhpOffice\\PhpPowerpoint\\Exception\\InvalidStyleException', get_declared_classes()),
-                'PhpOffice\\PhpPowerpoint\\Autoloader::autoload() failed to autoload the ' .
-                'PhpOffice\\PhpPowerpoint\\Exception\\InvalidStyleException class'
+            in_array('PhpOffice\\PhpPowerpoint\\Exception\\InvalidStyleException', get_declared_classes()),
+            'PhpOffice\\PhpPowerpoint\\Autoloader::autoload() failed to autoload the ' .
+            'PhpOffice\\PhpPowerpoint\\Exception\\InvalidStyleException class'
         );
     }
 }

@@ -141,8 +141,7 @@ class Serialized implements IWriter
         for ($i = 0; $i < $slideCount; ++$i) {
             for ($j = 0; $j < $pPHPPowerPoint->getSlide($i)->getShapeCollection()->count(); ++$j) {
                 if ($pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
-                    $pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename
-                        . '#media/' . $pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
+                    $pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
                 }
             }
         }
