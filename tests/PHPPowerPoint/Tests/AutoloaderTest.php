@@ -23,8 +23,8 @@ class AutoloaderTest extends \PHPUnit_Framework_TestCase
     {
         Autoloader::register();
         $this->assertContains(
-                array('PhpOffice\\PhpPowerpoint\\Autoloader', 'autoload'),
-                spl_autoload_functions()
+            array('PhpOffice\\PhpPowerpoint\\Autoloader', 'autoload'),
+            spl_autoload_functions()
         );
     }
     
