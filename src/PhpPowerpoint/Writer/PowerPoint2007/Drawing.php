@@ -36,7 +36,7 @@ class Drawing extends WriterPart
      *
      * @param  PHPPowerPoint                 $pPHPPowerPoint
      * @return PHPPowerPoint_Slide_Drawing[] All drawings in PHPPowerPoint
-     * @throws Exception
+     * @throws \Exception
      */
     public function allDrawings(PHPPowerPoint $pPHPPowerPoint = null)
     {

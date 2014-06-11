@@ -38,7 +38,7 @@ class ContentTypes extends WriterPart
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeContentTypes(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -171,7 +171,7 @@ class ContentTypes extends WriterPart
      *
      * @param  string    $pFile Filename
      * @return string    Mime Type
-     * @throws Exception
+     * @throws \Exception
      */
     private function _getImageMimeType($pFile = '')
     {
@@ -180,7 +180,7 @@ class ContentTypes extends WriterPart
 
             return image_type_to_mime_type($image[2]);
         } else {
-            throw new Exception("File $pFile does not exist");
+            throw new \Exception("File $pFile does not exist");
         }
     }
 
@@ -190,7 +190,7 @@ class ContentTypes extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeDefaultContentType(XMLWriter $objWriter = null, $pPartname = '', $pContentType = '')
     {
@@ -201,7 +201,7 @@ class ContentTypes extends WriterPart
             $objWriter->writeAttribute('ContentType', $pContentType);
             $objWriter->endElement();
         } else {
-            throw new Exception("Invalid parameters passed.");
+            throw new \Exception("Invalid parameters passed.");
         }
     }
 
@@ -211,7 +211,7 @@ class ContentTypes extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeOverrideContentType(XMLWriter $objWriter = null, $pPartname = '', $pContentType = '')
     {
@@ -222,7 +222,7 @@ class ContentTypes extends WriterPart
             $objWriter->writeAttribute('ContentType', $pContentType);
             $objWriter->endElement();
         } else {
-            throw new Exception("Invalid parameters passed.");
+            throw new \Exception("Invalid parameters passed.");
         }
     }
 }

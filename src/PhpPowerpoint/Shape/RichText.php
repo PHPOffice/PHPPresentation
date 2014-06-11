@@ -180,7 +180,7 @@ class RichText extends Shape implements IComparable
     public function setActiveParagraph($index = 0)
     {
         if ($index >= count($this->_richTextParagraphs)) {
-            throw new Exception("Invalid paragraph count.");
+            throw new \Exception("Invalid paragraph count.");
         }
 
         $this->_activeParagraph = $index;
@@ -197,7 +197,7 @@ class RichText extends Shape implements IComparable
     public function getParagraph($index = 0)
     {
         if ($index >= count($this->_richTextParagraphs)) {
-            throw new Exception("Invalid paragraph count.");
+            throw new \Exception("Invalid paragraph count.");
         }
 
         return $this->_richTextParagraphs[$index];
@@ -228,7 +228,7 @@ class RichText extends Shape implements IComparable
      * Add text
      *
      * @param  PHPPowerPoint_Shape_RichText_ITextElement $pText Rich text element
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText
      */
     public function addText(ITextElement $pText = null)
@@ -243,7 +243,7 @@ class RichText extends Shape implements IComparable
      *
      * @param  string                                   $pText Text
      * @return PHPPowerPoint_Shape_RichText_TextElement
-     * @throws Exception
+     * @throws \Exception
      */
     public function createText($pText = '')
     {
@@ -254,7 +254,7 @@ class RichText extends Shape implements IComparable
      * Create break
      *
      * @return PHPPowerPoint_Shape_RichText_Break
-     * @throws Exception
+     * @throws \Exception
      */
     public function createBreak()
     {
@@ -266,7 +266,7 @@ class RichText extends Shape implements IComparable
      *
      * @param  string                           $pText Text
      * @return PHPPowerPoint_Shape_RichText_Run
-     * @throws Exception
+     * @throws \Exception
      */
     public function createTextRun($pText = '')
     {
@@ -316,7 +316,7 @@ class RichText extends Shape implements IComparable
      * Set paragraphs
      *
      * @param  PHPPowerPoint_Shape_RichText_Paragraphs[] $paragraphs Array of paragraphs
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText
      */
     public function setParagraphs($paragraphs = null)
@@ -325,7 +325,7 @@ class RichText extends Shape implements IComparable
             $this->_richTextParagraphs = $paragraphs;
             $this->_activeParagraph    = count($this->_richTextParagraphs) - 1;
         } else {
-            throw new Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
+            throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
         }
 
         return $this;
@@ -488,7 +488,7 @@ class RichText extends Shape implements IComparable
     public function setColumns($value = 1)
     {
         if ($value > 16 || $value < 1) {
-            throw new Exception('Number of columns should be 1-16');
+            throw new \Exception('Number of columns should be 1-16');
         }
 
         $this->_columns = $value;

@@ -37,7 +37,7 @@ class Serialized implements IWriter
      * @var PHPPowerPoint
      */
     private $_presentation;
-    
+
     /**
      * Create a new PHPPowerPoint_Writer_Serialized
      *
@@ -48,29 +48,29 @@ class Serialized implements IWriter
         // Assign PHPPowerPoint
         $this->setPHPPowerPoint($pPHPPowerPoint);
     }
-    
+
     /**
      * Save PHPPowerPoint to file
      *
      * @param  string    $pFilename
-     * @throws Exception
+     * @throws \Exception
      */
     public function save ($pFilename)
     {
         if (empty($pFilename)) {
-            throw new Exception("Filename is empty");
+            throw new \Exception("Filename is empty");
         }
         if (!is_null($this->_presentation)) {
             // Create new ZIP file and open it for writing
             $objZip = new \ZipArchive();
-            
+
             // Try opening the ZIP file
             if ($objZip->open($pFilename, \ZIPARCHIVE::OVERWRITE) !== true) {
                 if ($objZip->open($pFilename, \ZIPARCHIVE::CREATE) !== true) {
-                    throw new Exception("Could not open " . $pFilename . " for writing.");
+                    throw new \Exception("Could not open " . $pFilename . " for writing.");
                 }
             }
-            
+
             // Add media
             $slideCount = $this->_presentation->getSlideCount();
             for ($i = 0; $i < $slideCount; ++$i) {
@@ -81,61 +81,61 @@ class Serialized implements IWriter
                     }
                 }
             }
-            
+
             // Add PHPPowerPoint.xml to the document, which represents a PHP serialized PHPPowerPoint object
             $objZip->addFromString('PHPPowerPoint.xml', $this->_writeSerialized($this->_presentation, $pFilename));
-            
+
             // Close file
             if ($objZip->close() === false) {
-                throw new Exception("Could not close zip file $pFilename.");
+                throw new \Exception("Could not close zip file $pFilename.");
             }
         } else {
-            throw new Exception("PHPPowerPoint object unassigned.");
+            throw new \Exception("PHPPowerPoint object unassigned.");
         }
     }
-    
+
     /**
      * Get PHPPowerPoint object
      *
      * @return PHPPowerPoint
-     * @throws Exception
+     * @throws \Exception
      */
     public function getPHPPowerPoint ()
     {
         if (!is_null($this->_presentation)) {
             return $this->_presentation;
         } else {
-            throw new Exception("No PHPPowerPoint assigned.");
+            throw new \Exception("No PHPPowerPoint assigned.");
         }
     }
-    
+
     /**
      * Get PHPPowerPoint object
      *
      * @param  PHPPowerPoint                   $pPHPPowerPoint PHPPowerPoint object
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Writer_Serialized
      */
     public function setPHPPowerPoint (PHPPowerPoint $pPHPPowerPoint = null)
     {
         $this->_presentation = $pPHPPowerPoint;
-        
+
         return $this;
     }
-    
+
     /**
      * Serialize PHPPowerPoint object to XML
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @param  string        $pFilename
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeSerialized (PHPPowerPoint $pPHPPowerPoint = null, $pFilename = '')
     {
         // Clone $pPHPPowerPoint
         $pPHPPowerPoint = clone $pPHPPowerPoint;
-        
+
         // Update media links
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
@@ -145,29 +145,29 @@ class Serialized implements IWriter
                 }
             }
         }
-        
+
         // Create XML writer
         $objWriter = new XMLWriter();
         $objWriter->openMemory();
         $objWriter->setIndent(true);
-        
+
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');
-        
+
         // PHPPowerPoint
         $objWriter->startElement('PHPPowerPoint');
         $objWriter->writeAttribute('version', '##VERSION##');
-        
+
         // Comment
         $objWriter->writeComment('This file has been generated using PHPPowerPoint v##VERSION## (http://www.codeplex.com/PHPPowerPoint). It contains a base64 encoded serialized version of the PHPPowerPoint internal object.');
-        
+
         // Data
         $objWriter->startElement('data');
         $objWriter->writeCData(base64_encode(serialize($pPHPPowerPoint)));
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
-        
+
         // Return
         return $objWriter->outputMemory(true);
     }

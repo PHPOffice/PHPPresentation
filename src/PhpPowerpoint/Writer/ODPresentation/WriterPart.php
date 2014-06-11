@@ -39,7 +39,7 @@ abstract class WriterPart
      * Set parent IWriter object
      *
      * @param  PHPPowerPoint_Writer_IWriter $pWriter
-     * @throws Exception
+     * @throws \Exception
      */
     public function setParentWriter(IWriter $pWriter = null)
     {
@@ -50,14 +50,14 @@ abstract class WriterPart
      * Get parent IWriter object
      *
      * @return PHPPowerPoint_Writer_IWriter
-     * @throws Exception
+     * @throws \Exception
      */
     public function getParentWriter()
     {
         if (!is_null($this->_parentWriter)) {
             return $this->_parentWriter;
         } else {
-            throw new Exception("No parent PHPPowerPoint_Writer_IWriter assigned.");
+            throw new \Exception("No parent PHPPowerPoint_Writer_IWriter assigned.");
         }
     }
 }

@@ -26,12 +26,12 @@ interface IReader
      * @return boolean
      */
     public function canRead($pFilename);
-    
+
     /**
      * Loads PHPPowerPoint from file
      *
      * @param  string    $pFilename
-     * @throws Exception
+     * @throws \Exception
      */
     public function load($pFilename);
 }

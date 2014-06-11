@@ -134,7 +134,7 @@ abstract class Shape implements IComparable
      *
      * @param  PHPPowerPoint_Slide $pValue
      * @param  bool                $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape
      */
     public function setSlide(Slide $pValue = null, $pOverrideOld = false)
@@ -159,7 +159,7 @@ abstract class Shape implements IComparable
                 // Set new PHPPowerPoint_Slide
                 $this->setSlide($pValue);
             } else {
-                throw new Exception("A PHPPowerPoint_Slide has already been assigned. Shapes can only exist on one PHPPowerPoint_Slide.");
+                throw new \Exception("A PHPPowerPoint_Slide has already been assigned. Shapes can only exist on one PHPPowerPoint_Slide.");
             }
         }
 
@@ -331,7 +331,7 @@ abstract class Shape implements IComparable
      * Set Shadow
      *
      * @param  PHPPowerPoint_Style_Shadow $pValue
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape
      */
     public function setShadow(Shadow $pValue = null)
@@ -369,7 +369,7 @@ abstract class Shape implements IComparable
      * Set Hyperlink
      *
      * @param  PHPPowerPoint_Shape_Hyperlink $pHyperlink
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape
      */
     public function setHyperlink(Hyperlink $pHyperlink = null)

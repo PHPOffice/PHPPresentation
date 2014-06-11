@@ -59,7 +59,7 @@ class Hyperlink
      *
      * @param  string    $pUrl     Url to link the shape to
      * @param  string    $pTooltip Tooltip to display on the hyperlink
-     * @throws Exception
+     * @throws \Exception
      */
     public function __construct($pUrl = '', $pTooltip = '')
     {

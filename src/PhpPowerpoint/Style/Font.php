@@ -365,7 +365,7 @@ class Font implements IComparable
      * Set Color
      *
      * @param  PHPPowerPoint_Style_Color $pValue
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Style_Font
      */
     public function setColor(Color $pValue = null)

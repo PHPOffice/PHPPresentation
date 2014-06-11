@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Slide;
 
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+
 /**
  * PHPPowerPoint_Slide_Iterator
  *
@@ -43,7 +45,7 @@ class Iterator extends \IteratorIterator
      *
      * @param PHPPowerPoint $subject
      */
-    public function __construct(PHPPowerPoint $subject = null)
+    public function __construct(PhpPowerpoint $subject = null)
     {
         // Set subject
         $this->_subject = $subject;

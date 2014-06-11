@@ -272,7 +272,7 @@ class Legend implements IComparable
      * Set font
      *
      * @param  PHPPowerPoint_Style_Font               $pFont Font
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function setFont(Font $pFont = null)

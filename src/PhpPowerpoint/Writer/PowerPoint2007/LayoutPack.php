@@ -176,7 +176,7 @@ abstract class LayoutPack
      * @param string $name
      * @param int $masterId
      * @return array
-     * @throws Exception
+     * @throws \Exception
      */
     public function findLayout($name = '', $masterId = 1)
     {
@@ -186,7 +186,7 @@ abstract class LayoutPack
             }
         }
 
-        throw new Exception("Could not find slide layout $name in current layout pack.");
+        throw new \Exception("Could not find slide layout $name in current layout pack.");
     }
 
     /**
@@ -195,7 +195,7 @@ abstract class LayoutPack
      * @param string $name
      * @param int $masterId
      * @return int
-     * @throws Exception
+     * @throws \Exception
      */
     public function findLayoutIndex($name = '', $masterId = 1)
     {
@@ -207,6 +207,6 @@ abstract class LayoutPack
             ++$index;
         }
 
-        throw new Exception("Could not find slide layout $name in current layout pack.");
+        throw new \Exception("Could not find slide layout $name in current layout pack.");
     }
 }

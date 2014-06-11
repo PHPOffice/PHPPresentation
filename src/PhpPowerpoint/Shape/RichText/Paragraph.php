@@ -110,7 +110,7 @@ class Paragraph implements IComparable
      * Set font
      *
      * @param  PHPPowerPoint_Style_Font               $pFont Font
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function setFont(Font $pFont = null)
@@ -134,7 +134,7 @@ class Paragraph implements IComparable
      * Set bullet style
      *
      * @param  PHPPowerPoint_Style_Bullet             $style
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function setBulletStyle(Bullet $style = null)
@@ -148,7 +148,7 @@ class Paragraph implements IComparable
      * Add text
      *
      * @param  PHPPowerPoint_Shape_RichText_ITextElement $pText Rich text element
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function addText(ITextElement $pText = null)
@@ -163,7 +163,7 @@ class Paragraph implements IComparable
      *
      * @param  string                                   $pText Text
      * @return PHPPowerPoint_Shape_RichText_TextElement
-     * @throws Exception
+     * @throws \Exception
      */
     public function createText($pText = '')
     {
@@ -177,7 +177,7 @@ class Paragraph implements IComparable
      * Create break
      *
      * @return PHPPowerPoint_Shape_RichText_Break
-     * @throws Exception
+     * @throws \Exception
      */
     public function createBreak()
     {
@@ -192,7 +192,7 @@ class Paragraph implements IComparable
      *
      * @param  string                           $pText Text
      * @return PHPPowerPoint_Shape_RichText_Run
-     * @throws Exception
+     * @throws \Exception
      */
     public function createTextRun($pText = '')
     {
@@ -246,7 +246,7 @@ class Paragraph implements IComparable
      * Set Rich Text elements
      *
      * @param  PHPPowerPoint_Shape_RichText_ITextElement[] $pElements Array of elements
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
     public function setRichTextElements($pElements = null)
@@ -254,7 +254,7 @@ class Paragraph implements IComparable
         if (is_array($pElements)) {
             $this->_richTextElements = $pElements;
         } else {
-            throw new Exception("Invalid PHPPowerPoint_Shape_RichText_ITextElement[] array passed.");
+            throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_ITextElement[] array passed.");
         }
 
         return $this;

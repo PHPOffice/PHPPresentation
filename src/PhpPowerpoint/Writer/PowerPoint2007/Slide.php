@@ -50,13 +50,13 @@ class Slide extends WriterPart
      *
      * @param  PHPPowerPoint_Slide $pSlide
      * @return string              XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeSlide(SlideElement $pSlide = null)
     {
         // Check slide
         if (is_null($pSlide)) {
-            throw new Exception("Invalid PHPPowerPoint_Slide object passed.");
+            throw new \Exception("Invalid PHPPowerPoint_Slide object passed.");
         }
 
         // Create XML writer
@@ -180,7 +180,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Shape_Chart      $shape
      * @param  int                            $shapeId
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
     {
@@ -250,7 +250,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter  $objWriter XML Writer
      * @param  PHPPowerPoint_Shape_BaseDrawing $shape
      * @param  int                             $shapeId
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
     {
@@ -376,7 +376,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Shape_RichText   $shape
      * @param  int                            $shapeId
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
     {
@@ -517,7 +517,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Shape_Table      $shape
      * @param  int                            $shapeId
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeTable(XMLWriter $objWriter, Table $shape, $shapeId)
     {
@@ -766,7 +766,7 @@ class Slide extends WriterPart
      *
      * @param  PHPPowerPoint_Shared_XMLWriter           $objWriter  XML Writer
      * @param  PHPPowerPoint_Shape_RichText_Paragraph[] $paragraphs
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeParagraphs(XMLWriter $objWriter, $paragraphs)
     {
@@ -890,7 +890,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Shape_RichText   $shape
      * @param  int                            $shapeId
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeLineShape(XMLWriter $objWriter, Line $shape, $shapeId)
     {
@@ -1001,7 +1001,7 @@ class Slide extends WriterPart
      *
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Style_Borders    $pBorders  Borders
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeBorders(XMLWriter $objWriter, Borders $pBorders)
     {
@@ -1019,7 +1019,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter    XML Writer
      * @param  PHPPowerPoint_Style_Border     $pBorder      Border
      * @param  string                         $pElementName Element name
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeBorder(XMLWriter $objWriter, Border $pBorder, $pElementName = 'L')
     {
@@ -1085,7 +1085,7 @@ class Slide extends WriterPart
      *
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeFill(XMLWriter $objWriter, Fill $pFill)
     {
@@ -1115,7 +1115,7 @@ class Slide extends WriterPart
      *
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeSolidFill(XMLWriter $objWriter, Fill $pFill)
     {
@@ -1135,7 +1135,7 @@ class Slide extends WriterPart
      *
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeGradientFill(XMLWriter $objWriter, Fill $pFill)
     {
@@ -1182,7 +1182,7 @@ class Slide extends WriterPart
      *
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writePatternFill(XMLWriter $objWriter, Fill $pFill)
     {

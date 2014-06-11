@@ -46,13 +46,13 @@ class Chart extends Slide
      *
      * @param  PHPPowerPoint_Shape_Chart $chart
      * @return string                    XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeChart(ShapeChart $chart = null)
     {
         // Check slide
         if (is_null($chart)) {
-            throw new Exception("Invalid PHPPowerPoint_Shape_Chart object passed.");
+            throw new \Exception("Invalid PHPPowerPoint_Shape_Chart object passed.");
         }
 
         // Create XML writer
@@ -216,7 +216,7 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shape_Chart $chart
      * @param  string                    $tempName
      * @return string                    String output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeSpreadsheet(PHPPowerPoint $presentation, $chart, $tempName)
     {
@@ -388,7 +388,7 @@ class Chart extends Slide
      *
      * @param  PHPPowerPoint_Shared_XMLWriter  $objWriter XML Writer
      * @param  PHPPowerPoint_Shape_Chart_Title $subject
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeTitle(XMLWriter $objWriter, Title $subject)
     {
@@ -497,7 +497,7 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shared_XMLWriter     $objWriter XML Writer
      * @param  PHPPowerPoint_Shape_Chart_PlotArea $subject
      * @param  PHPPowerPoint_Shape_Chart          $chart
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writePlotArea(XMLWriter $objWriter, PlotArea $subject, ShapeChart $chart)
     {
@@ -518,7 +518,7 @@ class Chart extends Slide
         } elseif ($chartType instanceof Scatter) {
             $this->_writeTypeScatter($objWriter, $chartType, $chart->getIncludeSpreadsheet());
         } else {
-            throw new Exception('The chart type provided could not be rendered.');
+            throw new \Exception('The chart type provided could not be rendered.');
         }
 
         // Write X axis?
@@ -744,7 +744,7 @@ class Chart extends Slide
      *
      * @param  PHPPowerPoint_Shared_XMLWriter   $objWriter XML Writer
      * @param  PHPPowerPoint_Shape_Chart_Legend $subject
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeLegend(XMLWriter $objWriter, Legend $subject)
     {
@@ -852,7 +852,7 @@ class Chart extends Slide
      *
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  mixed                          $subject
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeLayout(XMLWriter $objWriter, $subject)
     {
@@ -910,7 +910,7 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shared_XMLWriter       $objWriter    XML Writer
      * @param  PHPPowerPoint_Shape_Chart_Type_Bar3D $subject
      * @param  boolean                              $includeSheet
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, $includeSheet = false)
     {
@@ -1117,7 +1117,7 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shared_XMLWriter       $objWriter    XML Writer
      * @param  PHPPowerPoint_Shape_Chart_Type_Pie3D $subject
      * @param  boolean                              $includeSheet
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, $includeSheet = false)
     {
@@ -1291,7 +1291,7 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shared_XMLWriter      $objWriter    XML Writer
      * @param  PHPPowerPoint_Shape_Chart_Type_Line $subject
      * @param  boolean                             $includeSheet
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeTypeLine(XMLWriter $objWriter, Line $subject, $includeSheet = false)
     {
@@ -1495,7 +1495,7 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shared_XMLWriter         $objWriter    XML Writer
      * @param  PHPPowerPoint_Shape_Chart_Type_Scatter $subject
      * @param  boolean                                $includeSheet
-     * @throws Exception
+     * @throws \Exception
      */
     protected function _writeTypeScatter(XMLWriter $objWriter, Scatter $subject, $includeSheet = false)
     {

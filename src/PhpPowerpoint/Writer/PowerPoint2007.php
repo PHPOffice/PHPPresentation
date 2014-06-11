@@ -145,12 +145,12 @@ class PowerPoint2007 implements IWriter
      * Save PHPPowerPoint to file
      *
      * @param  string    $pFilename
-     * @throws Exception
+     * @throws \Exception
      */
     public function save($pFilename)
     {
         if (empty($pFilename)) {
-            throw new Exception("Filename is empty");
+            throw new \Exception("Filename is empty");
         }
         if (!is_null($this->_presentation)) {
             // If $pFilename is php://output or php://stdout, make it a temporary file...
@@ -171,7 +171,7 @@ class PowerPoint2007 implements IWriter
             // Try opening the ZIP file
             if ($objZip->open($pFilename, \ZIPARCHIVE::OVERWRITE) !== true) {
                 if ($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== true) {
-                    throw new Exception("Could not open " . $pFilename . " for writing.");
+                    throw new \Exception("Could not open " . $pFilename . " for writing.");
                 }
             }
 
@@ -278,18 +278,18 @@ class PowerPoint2007 implements IWriter
 
             // Close file
             if ($objZip->close() === false) {
-                throw new Exception("Could not close zip file $pFilename.");
+                throw new \Exception("Could not close zip file $pFilename.");
             }
 
             // If a temporary file was used, copy it to the correct file stream
             if ($originalFilename != $pFilename) {
                 if (copy($pFilename, $originalFilename) === false) {
-                    throw new Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
+                    throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
                 }
                 @unlink($pFilename);
             }
         } else {
-            throw new Exception("PHPPowerPoint object unassigned.");
+            throw new \Exception("PHPPowerPoint object unassigned.");
         }
     }
 
@@ -297,14 +297,14 @@ class PowerPoint2007 implements IWriter
      * Get PHPPowerPoint object
      *
      * @return PHPPowerPoint
-     * @throws Exception
+     * @throws \Exception
      */
     public function getPHPPowerPoint()
     {
         if (!is_null($this->_presentation)) {
             return $this->_presentation;
         } else {
-            throw new Exception("No PHPPowerPoint assigned.");
+            throw new \Exception("No PHPPowerPoint assigned.");
         }
     }
 
@@ -312,7 +312,7 @@ class PowerPoint2007 implements IWriter
      * Get PHPPowerPoint object
      *
      * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
     public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
@@ -370,7 +370,7 @@ class PowerPoint2007 implements IWriter
      *
      * @param  boolean                             $pValue
      * @param  string                              $pDirectory Disk caching directory
-     * @throws Exception                           Exception when directory does not exist
+     * @throws \Exception                           \Exception when directory does not exist
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
@@ -381,7 +381,7 @@ class PowerPoint2007 implements IWriter
             if (is_dir($pDirectory)) {
                 $this->_diskCachingDirectory = $pDirectory;
             } else {
-                throw new Exception("Directory does not exist: $pDirectory");
+                throw new \Exception("Directory does not exist: $pDirectory");
             }
         }
 

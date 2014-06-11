@@ -42,7 +42,7 @@ class Content extends WriterPart
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeContent(PHPPowerPoint $pPHPPowerPoint = null)
     {

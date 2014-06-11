@@ -36,7 +36,7 @@ class Manifest extends WriterPart
      * Write Manifest file to XML format
      *
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeManifest()
     {
@@ -120,7 +120,7 @@ class Manifest extends WriterPart
      *
      * @param  string    $pFile Filename
      * @return string    Mime Type
-     * @throws Exception
+     * @throws \Exception
      */
     private function _getImageMimeType($pFile = '')
     {
@@ -129,7 +129,7 @@ class Manifest extends WriterPart
 
             return image_type_to_mime_type($image[2]);
         } else {
-            throw new Exception("File $pFile does not exist");
+            throw new \Exception("File $pFile does not exist");
         }
     }
 }

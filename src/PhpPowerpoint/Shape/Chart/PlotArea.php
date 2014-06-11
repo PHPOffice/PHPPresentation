@@ -93,12 +93,12 @@ class PlotArea implements IComparable
      * Get type
      *
      * @return PHPPowerPoint_Shape_Chart_Type
-     * @throws Exception
+     * @throws \Exception
      */
     public function getType()
     {
         if (is_null($this->_type)) {
-            throw new Exception('Chart type has not been set.');
+            throw new \Exception('Chart type has not been set.');
         }
 
         return $this->_type;
@@ -109,7 +109,7 @@ class PlotArea implements IComparable
      *
      * @param  PHPPowerPoint_Shape_Chart_Type     $value
      * @return PHPPowerPoint_Shape_Chart_PlotArea
-     * @throws Exception
+     * @throws \Exception
      */
     public function setType(Type $value)
     {

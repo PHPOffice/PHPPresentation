@@ -154,7 +154,7 @@ class Fill implements IComparable
      * Set Start Color
      *
      * @param  PHPPowerPoint_Style_Color $pValue
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Style_Fill
      */
     public function setStartColor(Color $pValue = null)
@@ -180,7 +180,7 @@ class Fill implements IComparable
      * Set End Color
      *
      * @param  PHPPowerPoint_Style_Color $pValue
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Style_Fill
      */
     public function setEndColor(Color $pValue = null)

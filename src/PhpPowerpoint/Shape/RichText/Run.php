@@ -61,7 +61,7 @@ class Run extends TextElement implements ITextElement
      * Set font
      *
      * @param  PHPPowerPoint_Style_Font                  $pFont Font
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText_ITextElement
      */
     public function setFont(Font $pFont = null)

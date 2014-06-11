@@ -41,7 +41,7 @@ class Rels extends WriterPart
      * Write relationships to XML format
      *
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeRelationships()
     {
@@ -80,7 +80,7 @@ class Rels extends WriterPart
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writePresentationRelationships(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -130,7 +130,7 @@ class Rels extends WriterPart
      *
      * @param  int       $masterId Master slide id
      * @return string    XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeSlideMasterRelationships($masterId = 1)
     {
@@ -189,7 +189,7 @@ class Rels extends WriterPart
      * @param  int       $slideLayoutIndex
      * @param  int       $masterId
      * @return string    XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeSlideLayoutRelationships($slideLayoutIndex, $masterId = 1)
     {
@@ -233,7 +233,7 @@ class Rels extends WriterPart
      *
      * @param  int       $masterId Master slide id
      * @return string    XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeThemeRelationships($masterId = 1)
     {
@@ -274,7 +274,7 @@ class Rels extends WriterPart
      *
      * @param  PHPPowerPoint_Slide $pSlide
      * @return string              XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeSlideRelationships(SlideElement $pSlide = null)
     {
@@ -385,7 +385,7 @@ class Rels extends WriterPart
      *
      * @param  PHPPowerPoint_Shape_Chart $pChart
      * @return string                    XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeChartRelationships(Chart $pChart = null)
     {
@@ -426,7 +426,7 @@ class Rels extends WriterPart
      * @param  string                         $pType       Relationship type
      * @param  string                         $pTarget     Relationship target
      * @param  string                         $pTargetMode Relationship target mode
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeRelationship(XMLWriter $objWriter = null, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
     {
@@ -447,7 +447,7 @@ class Rels extends WriterPart
 
             $objWriter->endElement();
         } else {
-            throw new Exception("Invalid parameters passed.");
+            throw new \Exception("Invalid parameters passed.");
         }
     }
 }

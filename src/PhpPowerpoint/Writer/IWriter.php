@@ -30,7 +30,7 @@ interface IWriter
      * Save PHPPowerPoint to file
      *
      * @param  string    $pFilename
-     * @throws Exception
+     * @throws \Exception
      */
     public function save($pFilename);
 }

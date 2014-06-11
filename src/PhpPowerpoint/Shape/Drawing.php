@@ -94,7 +94,7 @@ class Drawing extends BaseDrawing implements IComparable
      *
      * @param  string                      $pValue      File path
      * @param  boolean                     $pVerifyFile Verify file
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape_Drawing
      */
     public function setPath($pValue = '', $pVerifyFile = true)
@@ -108,7 +108,7 @@ class Drawing extends BaseDrawing implements IComparable
                     list($this->_width, $this->_height) = getimagesize($pValue);
                 }
             } else {
-                throw new Exception("File $pValue not found!");
+                throw new \Exception("File $pValue not found!");
             }
         } else {
             $this->_path = $pValue;

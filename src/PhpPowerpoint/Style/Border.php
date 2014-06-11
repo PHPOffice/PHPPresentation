@@ -175,7 +175,7 @@ class Border implements IComparable
      * Set Border Color
      *
      * @param  PHPPowerPoint_Style_Color  $color
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Style_Border
      */
     public function setColor(Color $color = null)

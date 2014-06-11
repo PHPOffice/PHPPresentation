@@ -12,9 +12,9 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 /**
- * Test class for PHPPowerPoint_Writer_ODPresentation
+ * Test class for PhpOffice\PhpPowerpoint\Writer\ODPresentation
  *
- * @coversDefaultClass PHPPowerPoint_Writer_ODPresentation
+ * @coversDefaultClass PhpOffice\PhpPowerpoint\Writer\ODPresentation
  */
 class ODPresentationTest extends \PHPUnit_Framework_TestCase
 {
@@ -23,7 +23,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $objectPrefix = 'PHPPowerPoint_Writer_ODPresentation_';
+        $objectPrefix = 'PhpOffice\\PhpPowerpoint\\Writer\\ODPresentation\\';
         $parts = array(
             'content'  => 'Content',
             'manifest' => 'Manifest',
@@ -37,12 +37,12 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $phpPowerPoint->getActiveSlide()->createDrawingShape();
         $object = new ODPresentation($phpPowerPoint);
 
-        $this->assertInstanceOf('PHPPowerPoint', $object->getPHPPowerPoint());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', $object->getPHPPowerPoint());
         $this->assertEquals('./', $object->getDiskCachingDirectory());
         foreach ($parts as $partName => $objectName) {
             $this->assertInstanceOf($objectPrefix . $objectName, $object->getWriterPart($partName));
         }
-        $this->assertInstanceOf('PHPPowerPoint_HashTable', $object->getDrawingHashTable());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\HashTable', $object->getDrawingHashTable());
     }
 
     /**
@@ -51,13 +51,13 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
     public function testSave()
     {
         $filename = tempnam(sys_get_temp_dir(), 'PHPPowerPoint');
-        $imageFile = dirname(__FILE__) . '/../../resources/images/PHPPowerPointLogo.png';
+        $imageFile = dirname(__FILE__) . '/../../../resources/images/PHPPowerPointLogo.png';
 
         $phpPowerPoint = new PhpPowerpoint();
         $slide = $phpPowerPoint->getActiveSlide();
         $slide->createRichTextShape();
         $slide->createLineShape(10, 10, 10, 10);
-        $slide->createChartShape()->getPlotArea()->setType(new PHPPowerPoint_Shape_Chart_Type_Bar3D());
+        $slide->createChartShape()->getPlotArea()->setType(new \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D());
         $slide->createDrawingShape()->setName('Drawing')->setPath($imageFile);
         $slide->createTableShape()->createRow();
 

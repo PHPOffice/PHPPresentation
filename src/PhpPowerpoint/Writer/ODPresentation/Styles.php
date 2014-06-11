@@ -36,7 +36,7 @@ class Styles extends WriterPart
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeStyles(PHPPowerPoint $pPHPPowerPoint = null)
     {

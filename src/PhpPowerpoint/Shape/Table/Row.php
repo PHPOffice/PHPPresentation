@@ -88,7 +88,7 @@ class Row implements IComparable
             if ($exceptionAsNull) {
                 return null;
             }
-            throw new Exception('Cell number out of bounds.');
+            throw new \Exception('Cell number out of bounds.');
         }
 
         return $this->_cells[$cell];
@@ -108,7 +108,7 @@ class Row implements IComparable
      * Next cell (moves one cell to the right)
      *
      * @return PHPPowerPoint_Shape_Table_Cell
-     * @throws Exception
+     * @throws \Exception
      */
     public function nextCell()
     {
@@ -118,7 +118,7 @@ class Row implements IComparable
 
             return $this->_cells[$this->_activeCellIndex];
         } else {
-            throw new Exception("Cell count out of bounds.");
+            throw new \Exception("Cell count out of bounds.");
         }
     }
 

@@ -143,7 +143,7 @@ class PhpPowerpoint
      * Add slide
      *
      * @param  PHPPowerPoint_Slide $slide
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Slide
      */
     public function addSlide(Slide $slide = null)
@@ -157,13 +157,13 @@ class PhpPowerpoint
      * Remove slide by index
      *
      * @param  int           $index Slide index
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint
      */
     public function removeSlideByIndex($index = 0)
     {
         if ($index > count($this->_slideCollection) - 1) {
-            throw new Exception("Slide index is out of bounds.");
+            throw new \Exception("Slide index is out of bounds.");
         } else {
             array_splice($this->_slideCollection, $index, 1);
         }
@@ -176,12 +176,12 @@ class PhpPowerpoint
      *
      * @param  int                 $index Slide index
      * @return PHPPowerPoint_Slide
-     * @throws Exception
+     * @throws \Exception
      */
     public function getSlide($index = 0)
     {
         if ($index > count($this->_slideCollection) - 1) {
-            throw new Exception("Slide index is out of bounds.");
+            throw new \Exception("Slide index is out of bounds.");
         } else {
             return $this->_slideCollection[$index];
         }
@@ -202,7 +202,7 @@ class PhpPowerpoint
      *
      * @param  PHPPowerPoint_Slide $slide
      * @return Slide               index
-     * @throws Exception
+     * @throws \Exception
      */
     public function getIndex(Slide $slide)
     {
@@ -240,13 +240,13 @@ class PhpPowerpoint
      * Set active slide index
      *
      * @param  int                 $index Active slide index
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Slide
      */
     public function setActiveSlideIndex($index = 0)
     {
         if ($index > count($this->_slideCollection) - 1) {
-            throw new Exception("Active slide index is out of bounds.");
+            throw new \Exception("Active slide index is out of bounds.");
         } else {
             $this->_activeSlideIndex = $index;
         }
@@ -258,7 +258,7 @@ class PhpPowerpoint
      * Add external slide
      *
      * @param  PHPPowerPoint_Slide $slide External slide to add
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Slide
      */
     public function addExternalSlide(Slide $slide)

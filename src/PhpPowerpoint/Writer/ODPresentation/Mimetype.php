@@ -32,7 +32,7 @@ class Mimetype extends WriterPart
      * Write Mimetype to Text format
      *
      * @return string        Text Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeMimetype()
     {

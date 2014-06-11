@@ -46,7 +46,7 @@ class HashTable
      * Create a new PHPPowerPoint_HashTable
      *
      * @param  PhpOffice\PhpPowerpoint\IComparable[] $pSource Optional source array to create HashTable from
-     * @throws Exception
+     * @throws \Exception
      */
     public function __construct($pSource = null)
     {
@@ -60,7 +60,7 @@ class HashTable
      * Add HashTable items from source
      *
      * @param  PhpOffice\PhpPowerpoint\IComparable[] $pSource Source array to create HashTable from
-     * @throws Exception
+     * @throws \Exception
      */
     public function addFromSource($pSource = null)
     {
@@ -68,7 +68,7 @@ class HashTable
         if ($pSource == null) {
             return;
         } elseif (!is_array($pSource)) {
-            throw new Exception('Invalid array parameter passed.');
+            throw new \Exception('Invalid array parameter passed.');
         }
 
         foreach ($pSource as $item) {
@@ -80,7 +80,7 @@ class HashTable
      * Add HashTable item
      *
      * @param  PhpOffice\PhpPowerpoint\IComparable $pSource Item to add
-     * @throws Exception
+     * @throws \Exception
      */
     public function add(IComparable $pSource = null)
     {
@@ -110,7 +110,7 @@ class HashTable
      * Remove HashTable item
      *
      * @param  PhpOffice\PhpPowerpoint\IComparable $pSource Item to remove
-     * @throws Exception
+     * @throws \Exception
      */
     public function remove(IComparable $pSource = null)
     {

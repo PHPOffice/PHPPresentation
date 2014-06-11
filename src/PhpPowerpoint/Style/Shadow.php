@@ -236,7 +236,7 @@ class Shadow implements IComparable
      * Set Color
      *
      * @param  PHPPowerPoint_Style_Color  $pValue
-     * @throws Exception
+     * @throws \Exception
      * @return self
      */
     public function setColor(Color $pValue = null)

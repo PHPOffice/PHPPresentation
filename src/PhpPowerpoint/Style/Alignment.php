@@ -161,13 +161,13 @@ class Alignment implements IComparable
      * Set Level
      *
      * @param  int                           $pValue Ranging 0 - 8
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Style_Alignment
      */
     public function setLevel($pValue = 0)
     {
         if ($pValue < 0 || $pValue > 8) {
-            throw new Exception("Invalid value: shoul be range 0 - 8.");
+            throw new \Exception("Invalid value: shoul be range 0 - 8.");
         }
         $this->_level = $pValue;
 

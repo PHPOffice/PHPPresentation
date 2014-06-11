@@ -46,17 +46,17 @@ class IOFactory
         if (class_exists($class) && self::isConcreteClass($class)) {
             return new $class($phpPowerPoint);
         } else {
-            throw new Exception("\"{$name}\" is not a valid writer.");
+            throw new \Exception("\"{$name}\" is not a valid writer.");
         }
     }
 
     private static function isConcreteClass($class)
     {
         $reflection = new \ReflectionClass($class);
-    
+
         return !$reflection->isAbstract() && !$reflection->isInterface();
     }
-    
+
     /**
      * Create PHPPowerPoint_Reader_IReader
      *
@@ -69,7 +69,7 @@ class IOFactory
         if (class_exists($class) && self::isConcreteClass($class)) {
             return new $class();
         } else {
-            throw new Exception("\"{$name}\" is not a valid reader.");
+            throw new \Exception("\"{$name}\" is not a valid reader.");
         }
     }
 
@@ -78,7 +78,7 @@ class IOFactory
      *
      * @param  string        $pFilename
      * @return PHPPowerPoint
-     * @throws Exception
+     * @throws \Exception
      */
     public static function load($pFilename)
     {
@@ -90,6 +90,6 @@ class IOFactory
             }
         }
 
-        throw new Exception("Could not automatically determine PHPPowerPoint_Reader_IReader for file.");
+        throw new \Exception("Could not automatically determine PHPPowerPoint_Reader_IReader for file.");
     }
 }

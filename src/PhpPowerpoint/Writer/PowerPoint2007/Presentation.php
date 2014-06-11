@@ -36,7 +36,7 @@ class Presentation extends WriterPart
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writePresentation(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -116,7 +116,7 @@ class Presentation extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter       XML Writer
      * @param  PHPPowerPoint                  $pPHPPowerPoint
      * @param  int                            $startRelationId
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeSlides(XMLWriter $objWriter = null, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
     {
@@ -134,7 +134,7 @@ class Presentation extends WriterPart
      * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
      * @param  int                            $pSlideId  Slide id
      * @param  int                            $pRelId    Relationship ID
-     * @throws Exception
+     * @throws \Exception
      */
     private function _writeSlide(XMLWriter $objWriter = null, $pSlideId = 1, $pRelId = 1)
     {

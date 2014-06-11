@@ -35,7 +35,7 @@ class DocProps extends WriterPart
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeDocPropsApp(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -136,7 +136,7 @@ class DocProps extends WriterPart
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeDocPropsCore(PHPPowerPoint $pPHPPowerPoint = null)
     {

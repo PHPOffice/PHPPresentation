@@ -75,7 +75,7 @@ class Table extends BaseDrawing implements IComparable
             if ($exceptionAsNull) {
                 return null;
             }
-            throw new Exception('Row number out of bounds.');
+            throw new \Exception('Row number out of bounds.');
         }
 
         return $this->_rows[$row];

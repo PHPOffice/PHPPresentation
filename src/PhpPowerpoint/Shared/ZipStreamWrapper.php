@@ -71,7 +71,7 @@ class ZipStreamWrapper
     {
         // Check for mode
         if ($mode{0} != 'r') {
-            throw new Exception('Mode ' . $mode . ' is not supported. Only read mode is supported.');
+            throw new \Exception('Mode ' . $mode . ' is not supported. Only read mode is supported.');
         }
 
         // Parse URL

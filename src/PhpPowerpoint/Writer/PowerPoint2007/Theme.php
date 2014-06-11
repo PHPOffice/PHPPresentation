@@ -34,7 +34,7 @@ class Theme extends WriterPart
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @param  int           $masterId
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeTheme($masterId = 1)
     {
@@ -45,6 +45,6 @@ class Theme extends WriterPart
                 return $theme['body'];
             }
         }
-        throw new Exception('No theme has been found!');
+        throw new \Exception('No theme has been found!');
     }
 }

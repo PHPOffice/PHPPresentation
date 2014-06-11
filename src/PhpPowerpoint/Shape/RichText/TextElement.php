@@ -115,7 +115,7 @@ class TextElement implements ITextElement
      * Set Hyperlink
      *
      * @param  PHPPowerPoint_Shape_Hyperlink $pHyperlink
-     * @throws Exception
+     * @throws \Exception
      * @return PHPPowerPoint_Shape
      */
     public function setHyperlink(Hyperlink $pHyperlink = null)

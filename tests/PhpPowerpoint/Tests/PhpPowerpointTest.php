@@ -14,9 +14,9 @@ use PhpOffice\PhpPowerpoint\DocumentLayout;
 use PhpOffice\PhpPowerpoint\DocumentProperties;
 
 /**
- * Test class for PHPPowerPoint
+ * Test class for PhpPowerpoint
  *
- * @coversDefaultClass PHPPowerPoint
+ * @coversDefaultClass PhpOffice\PhpPowerpoint\PhpPowerpoint
  */
 class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
 {
@@ -30,12 +30,12 @@ class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(new DocumentProperties(), $object->getProperties());
         $this->assertEquals(new DocumentLayout(), $object->getLayout());
-        $this->assertInstanceOf('PHPPowerPoint_Slide', $object->getSlide());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
         $this->assertEquals(1, count($object->getAllSlides()));
         $this->assertEquals(0, $object->getIndex($slide));
         $this->assertEquals(1, $object->getSlideCount());
         $this->assertEquals(0, $object->getActiveSlideIndex());
-        $this->assertInstanceOf('PHPPowerPoint_Slide_Iterator', $object->getSlideIterator());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide\\Iterator', $object->getSlideIterator());
     }
 
     /**
@@ -57,7 +57,7 @@ class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
     public function testCopy()
     {
         $object = new PhpPowerpoint();
-        $this->assertInstanceOf('PHPPowerPoint', $object->copy());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', $object->copy());
     }
 
     /**

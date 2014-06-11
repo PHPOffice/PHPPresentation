@@ -35,7 +35,7 @@ class Meta extends WriterPart
      *
      * @param  PHPPowerPoint $pPHPPowerPoint
      * @return string        XML Output
-     * @throws Exception
+     * @throws \Exception
      */
     public function writeMeta(PHPPowerPoint $pPHPPowerPoint = null)
     {

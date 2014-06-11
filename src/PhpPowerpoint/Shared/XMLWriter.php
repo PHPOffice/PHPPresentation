@@ -100,7 +100,7 @@ class XMLWriter
                 $this->_xmlWriter,
                 $function
             ), $args);
-        } catch (Exception $ex) {
+        } catch (\Exception $ex) {
             // Do nothing!
         }
     }

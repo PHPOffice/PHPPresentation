@@ -37,7 +37,7 @@ class TemplateBased extends LayoutPack
     {
         // Check if file exists
         if (!file_exists($fileName)) {
-            throw new Exception("Could not open " . $fileName . " for reading! File does not exist.");
+            throw new \Exception("Could not open " . $fileName . " for reading! File does not exist.");
         }
 
         // Master slide relations

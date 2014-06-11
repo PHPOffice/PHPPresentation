@@ -35,7 +35,7 @@ class Serialized implements IReader
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
         }
 
         return $this->fileSupportsUnserializePHPPowerPoint($pFilename);
@@ -46,18 +46,18 @@ class Serialized implements IReader
      *
      * @param  string        $pFilename
      * @return PHPPowerPoint
-     * @throws Exception
+     * @throws \Exception
      */
     public function load($pFilename)
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
         }
 
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePHPPowerPoint($pFilename)) {
-            throw new Exception("Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized: " . $pFilename . ".");
         }
 
         return $this->_loadSerialized($pFilename);
@@ -91,14 +91,14 @@ class Serialized implements IReader
      * Does a file support UnserializePHPPowerPoint ?
      *
      * @param  string    $pFilename
-     * @throws Exception
+     * @throws \Exception
      * @return boolean
      */
     public function fileSupportsUnserializePHPPowerPoint($pFilename = '')
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
         }
 
         // File exists, does it contain PHPPowerPoint.xml?
