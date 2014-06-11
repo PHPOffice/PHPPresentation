@@ -10,6 +10,8 @@
 namespace PhpOffice\PhpPowerpoint\Tests;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\DocumentLayout;
+use PhpOffice\PhpPowerpoint\DocumentProperties;
 
 /**
  * Test class for PHPPowerPoint
@@ -23,11 +25,11 @@ class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $object = new PHPPowerPoint();
+        $object = new PhpPowerpoint();
         $slide = $object->getSlide();
 
-        $this->assertEquals(new PHPPowerPoint_DocumentProperties(), $object->getProperties());
-        $this->assertEquals(new PHPPowerPoint_DocumentLayout(), $object->getLayout());
+        $this->assertEquals(new DocumentProperties(), $object->getProperties());
+        $this->assertEquals(new DocumentLayout(), $object->getLayout());
         $this->assertInstanceOf('PHPPowerPoint_Slide', $object->getSlide());
         $this->assertEquals(1, count($object->getAllSlides()));
         $this->assertEquals(0, $object->getIndex($slide));
@@ -41,9 +43,9 @@ class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddExternalSlide()
     {
-        $origin = new PHPPowerPoint();
+        $origin = new PhpPowerpoint();
         $slide = $origin->getSlide();
-        $object = new PHPPowerPoint();
+        $object = new PhpPowerpoint();
         $object->addExternalSlide($slide);
 
         $this->assertEquals(2, $object->getSlideCount());
@@ -54,7 +56,7 @@ class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
      */
     public function testCopy()
     {
-        $object = new PHPPowerPoint();
+        $object = new PhpPowerpoint();
         $this->assertInstanceOf('PHPPowerPoint', $object->copy());
     }
 
@@ -66,7 +68,7 @@ class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
      */
     public function testRemoveSlideByIndexException()
     {
-        $object = new PHPPowerPoint();
+        $object = new PhpPowerpoint();
         $object->removeSlideByIndex(1);
     }
 
@@ -78,7 +80,7 @@ class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSlideException()
     {
-        $object = new PHPPowerPoint();
+        $object = new PhpPowerpoint();
         $object->getSlide(1);
     }
 
@@ -90,7 +92,7 @@ class PhpPowerpointTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetActiveSlideIndexException()
     {
-        $object = new PHPPowerPoint();
+        $object = new PhpPowerpoint();
         $object->setActiveSlideIndex(1);
     }
 }
