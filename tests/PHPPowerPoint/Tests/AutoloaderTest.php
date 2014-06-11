@@ -17,62 +17,37 @@ use PhpOffice\PhpPowerpoint\Autoloader;
 class AutoloaderTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Test register
+     * Register
      */
     public function testRegister()
     {
-        $this->assertTrue(Autoloader::Register());
+        Autoloader::register();
+        $this->assertContains(
+                array('PhpOffice\\PhpPowerpoint\\Autoloader', 'autoload'),
+                spl_autoload_functions()
+        );
     }
-
+    
     /**
-     * Test load
+     * Autoload
      */
-    public function testAutoloaderNonPHPPowerPointClass()
+    public function testAutoload()
     {
-        $className = 'InvalidClass';
-
-        $result = Autoloader::Load($className);
-        //    Must return a boolean...
-        $this->assertTrue(is_bool($result));
-        //    ... indicating failure
-        $this->assertFalse($result);
-    }
-
-    /**
-     * Test load
-     */
-    public function testAutoloaderInvalidPHPPowerPointClass()
-    {
-        $className = 'PHPPowerPoint_Invalid_Class';
-
-        $result = Autoloader::Load($className);
-        //    Must return a boolean...
-        $this->assertTrue(is_bool($result));
-        //    ... indicating failure
-        $this->assertFalse($result);
-    }
-
-    /**
-     * Test load
-     */
-    public function testAutoloadValidPHPPowerPointClass()
-    {
-        $className = 'PHPPowerPoint_IOFactory';
-
-        $result = Autoloader::Load($className);
-        //    Check that class has been loaded
-        $this->assertTrue(class_exists($className));
-    }
-
-    /**
-     * Test load
-     */
-    public function testAutoloadInstantiateSuccess()
-    {
-        $result = new PHPPowerPoint();
-        //    Must return an object...
-        $this->assertTrue(is_object($result));
-        //    ... of the correct type
-        $this->assertTrue(is_a($result, 'PHPPowerPoint'));
+        $declared = get_declared_classes();
+        $declaredCount = count($declared);
+        Autoloader::autoload('Foo');
+        $this->assertEquals(
+                $declaredCount,
+                count(get_declared_classes()),
+                'PhpOffice\\PhpPowerpoint\\Autoloader::autoload() is trying to load ' .
+                'classes outside of the PhpOffice\\PhpPowerpoint namespace'
+        );
+        // TODO change this class to the main PhpPowerpoint class when it is namespaced
+        Autoloader::autoload('PhpOffice\\PhpPowerpoint\\Exception\\InvalidStyleException');
+        $this->assertTrue(
+                in_array('PhpOffice\\PhpPowerpoint\\Exception\\InvalidStyleException', get_declared_classes()),
+                'PhpOffice\\PhpPowerpoint\\Autoloader::autoload() failed to autoload the ' .
+                'PhpOffice\\PhpPowerpoint\\Exception\\InvalidStyleException class'
+        );
     }
 }

@@ -8,6 +8,7 @@
  */
 namespace PhpOffice\PhpPowerpoint\Tests\Writer;
 
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 /**
@@ -32,9 +33,9 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
             'drawing'  => 'Drawing',
         );
 
-        $phpPowerPoint = new PHPPowerPoint();
+        $phpPowerPoint = new PhpPowerpoint();
         $phpPowerPoint->getActiveSlide()->createDrawingShape();
-        $object = new PHPPowerPoint_Writer_ODPresentation($phpPowerPoint);
+        $object = new ODPresentation($phpPowerPoint);
 
         $this->assertInstanceOf('PHPPowerPoint', $object->getPHPPowerPoint());
         $this->assertEquals('./', $object->getDiskCachingDirectory());
@@ -52,7 +53,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $filename = tempnam(sys_get_temp_dir(), 'PHPPowerPoint');
         $imageFile = dirname(__FILE__) . '/../../resources/images/PHPPowerPointLogo.png';
 
-        $phpPowerPoint = new PHPPowerPoint();
+        $phpPowerPoint = new PhpPowerpoint();
         $slide = $phpPowerPoint->getActiveSlide();
         $slide->createRichTextShape();
         $slide->createLineShape(10, 10, 10, 10);
@@ -60,7 +61,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $slide->createDrawingShape()->setName('Drawing')->setPath($imageFile);
         $slide->createTableShape()->createRow();
 
-        $object = new PHPPowerPoint_Writer_ODPresentation($phpPowerPoint);
+        $object = new ODPresentation($phpPowerPoint);
         $object->save($filename);
 
         $this->assertTrue(file_exists($filename));
@@ -73,7 +74,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetWriterPartNull()
     {
-        $object = new PHPPowerPoint_Writer_ODPresentation(new PHPPowerPoint());
+        $object = new ODPresentation(new PhpPowerpoint());
 
         $this->assertNull($object->getWriterPart('foo'));
     }
@@ -86,7 +87,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPHPPowerPointException()
     {
-        $object = new PHPPowerPoint_Writer_ODPresentation();
+        $object = new ODPresentation();
         $object->getPHPPowerPoint();
     }
 
@@ -95,7 +96,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetUseDiskCaching()
     {
-        $object = new PHPPowerPoint_Writer_ODPresentation(new PHPPowerPoint());
+        $object = new ODPresentation(new PhpPowerpoint());
         $this->assertFalse($object->getUseDiskCaching());
 
         $object->setUseDiskCaching(true, sys_get_temp_dir());
@@ -110,7 +111,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetUseDiskCachingException()
     {
-        $object = new PHPPowerPoint_Writer_ODPresentation(new PHPPowerPoint());
+        $object = new ODPresentation(new PhpPowerpoint());
         $object->setUseDiskCaching(true, 'foo');
     }
 }
