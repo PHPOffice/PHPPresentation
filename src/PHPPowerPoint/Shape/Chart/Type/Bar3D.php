@@ -16,6 +16,7 @@
  */
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart\Type;
+
 use PhpOffice\PhpPowerpoint\IComparable;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Series;

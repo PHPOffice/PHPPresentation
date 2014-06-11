@@ -42,19 +42,19 @@ class IOFactory
      */
     public static function createWriter(PHPPowerPoint $phpPowerPoint, $name = 'PowerPoint2007')
     {
-    	$class = 'PhpOffice\\PhpPowerpoint\\Writer\\' . $name;
-    	if (class_exists($class) && self::isConcreteClass($class)) {
-    		return new $class($phpPowerPoint);
-    	} else {
-    		throw new Exception("\"{$name}\" is not a valid writer.");
-    	}
+        $class = 'PhpOffice\\PhpPowerpoint\\Writer\\' . $name;
+        if (class_exists($class) && self::isConcreteClass($class)) {
+            return new $class($phpPowerPoint);
+        } else {
+            throw new Exception("\"{$name}\" is not a valid writer.");
+        }
     }
 
     private static function isConcreteClass($class)
     {
-    	$reflection = new \ReflectionClass($class);
+        $reflection = new \ReflectionClass($class);
     
-    	return !$reflection->isAbstract() && !$reflection->isInterface();
+        return !$reflection->isAbstract() && !$reflection->isInterface();
     }
     
     /**
@@ -65,7 +65,7 @@ class IOFactory
      */
     public static function createReader($name = '')
     {
-    	$class = 'PhpOffice\\PhpPowerpoint\\Reader\\' . $name;
+        $class = 'PhpOffice\\PhpPowerpoint\\Reader\\' . $name;
         if (class_exists($class) && self::isConcreteClass($class)) {
             return new $class();
         } else {

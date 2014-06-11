@@ -944,11 +944,11 @@ class Chart extends Slide
             $objWriter->endElement();
 
             // c:tx
-            if(class_exists('PHPExcel_Cell')){
-	            $objWriter->startElement('c:tx');
-	            $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
-	            $this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
-	            $objWriter->endElement();
+            if (class_exists('PHPExcel_Cell')) {
+                $objWriter->startElement('c:tx');
+                $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
+                $this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+                $objWriter->endElement();
             }
 
             // Fills for points?
@@ -1072,11 +1072,11 @@ class Chart extends Slide
             $axisYData = array_values($series->getValues());
 
             // c:val
-            if(class_exists('PHPExcel_Cell')){
-	            $objWriter->startElement('c:val');
-	            $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
-	            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
-	            $objWriter->endElement();
+            if (class_exists('PHPExcel_Cell')) {
+                $objWriter->startElement('c:val');
+                $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
+                $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+                $objWriter->endElement();
             }
             $objWriter->endElement();
 

@@ -19,19 +19,19 @@ namespace PhpOffice\PhpPowerpoint\Reader;
 
 interface IReader
 {
-	/**
-	 * Can the current \PhpOffice\PHPPowerPoint\Reader\IReader read the file?
-	 *
-	 * @param  string  $pFilename
-	 * @return boolean
-	 */
-	public function canRead ($pFilename);
-	
-	/**
-	 * Loads PHPPowerPoint from file
-	 *
-	 * @param  string    $pFilename
-	 * @throws Exception
-	 */
-	public function load ($pFilename);
+    /**
+     * Can the current \PhpOffice\PHPPowerPoint\Reader\IReader read the file?
+     *
+     * @param  string  $pFilename
+     * @return boolean
+     */
+    public function canRead($pFilename);
+    
+    /**
+     * Loads PHPPowerPoint from file
+     *
+     * @param  string    $pFilename
+     * @throws Exception
+     */
+    public function load($pFilename);
 }

@@ -16,6 +16,7 @@
  */
 
 namespace PhpOffice\PhpPowerpoint\Shape;
+
 use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
 use PhpOffice\PhpPowerpoint\IComparable;
 use PhpOffice\PhpPowerpoint\Shape\Table\Row;
