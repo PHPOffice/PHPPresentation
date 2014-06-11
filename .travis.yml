@@ -1,8 +1,8 @@
 language: php
 
 php:
-  - 5.3.3
   - 5.3
+  - 5.3.3
   - 5.4
   - 5.5
   - 5.6
@@ -10,8 +10,6 @@ php:
 
 matrix:
   allow_failures:
-    - php: 5.3.3
-    - php: 5.6
     - php: hhvm
 
 before_script:
@@ -20,9 +18,8 @@ before_script:
   - sudo apt-get -qq install graphviz > /dev/null
   ## Composer
   - composer self-update
-  - composer require dompdf/dompdf:0.6.*
-  - composer update --prefer-source --dev
   - composer install --prefer-source --dev
+  - composer require dompdf/dompdf:0.6.*
   ## PHP Copy/Paste Detector
   - curl -o phpcpd.phar https://phar.phpunit.de/phpcpd.phar
   ## PHP Mess Detector
@@ -34,16 +31,27 @@ before_script:
   - phpenv rehash
   ## PHPLOC
   - curl -o phploc.phar https://phar.phpunit.de/phploc.phar
+  ## PHPDocumentor
+  - mkdir -p build/docs
+  - mkdir -p build/coverage
 
 script:
+  ## PHPLOC
+  - php phploc.phar src/
   ## PHP_CodeSniffer
-  ## Custom xml is used until namespaces implemented. Use PSR2 after that
-  - ./vendor/bin/phpcs src/ tests/ --standard=phpcs.xml -n
-  ## PHPUnit
-  - phpunit -c ./ --coverage-text
+  - ./vendor/bin/phpcs src/ tests/ --standard=PSR2 -n
   ## PHP Copy/Paste Detector
   # - php phpcpd.phar src/
   ## PHP Mess Detector
   # - phpmd src/ text codesize,unusedcode,naming,design
-  ## PHPLOC
-  - php phploc.phar src/
+  ## PHPUnit
+  - phpunit -c ./ --coverage-text --coverage-html ./build/coverage
+  ## PHPDocumentor
+  #- vendor/bin/phpdoc.php -q -d ./src -t ./build/docs --ignore "*/src/PhpWord/Shared/*/*" --template="responsive-twig"
+  
+after_script:
+  ## PHPDocumentor
+  #- bash .travis_shell_after_success.sh
+  ## Scrutinizer
+  #- wget https://scrutinizer-ci.com/ocular.phar
+  #- php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
