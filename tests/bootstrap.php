@@ -49,5 +49,5 @@ spl_autoload_register(function ($class) {
     }
 });
 
-require_once __DIR__ . "/../src/PHPPowerPoint/Autoloader.php";
+require_once __DIR__ . "/../src/PhpPowerpoint/Autoloader.php";
 \PhpOffice\PhpPowerpoint\Autoloader::register();
