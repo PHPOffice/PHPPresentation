@@ -17,20 +17,22 @@
 
 date_default_timezone_set('UTC');
 
-// Define path to application directory
-defined('APPLICATION_PATH')
-    || define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../src'));
+// defining base dir for tests
+if (!defined('PHPPOWERPOINT_TESTS_BASE_DIR')) {
+    define('PHPPOWERPOINT_TESTS_BASE_DIR', realpath(__DIR__));
+}
 
-// Define path to application tests directory
-defined('APPLICATION_TESTS_PATH')
-    || define('APPLICATION_TESTS_PATH', realpath(dirname(__FILE__)));
+$vendor = realpath(__DIR__ . '/../vendor');
 
-// Define application environment
-defined('APPLICATION_ENV') || define('APPLICATION_ENV', 'ci');
-
-// Register autoloader
-if (!defined('PHPPOWERPOINT_ROOT')) {
-    define('PHPPOWERPOINT_ROOT', APPLICATION_PATH . '/');
+if (file_exists($vendor . "/autoload.php")) {
+    require $vendor . "/autoload.php";
+} else {
+    $vendor = realpath(__DIR__ . '/../../../');
+    if (file_exists($vendor . "/autoload.php")) {
+        require $vendor . "/autoload.php";
+    } else {
+        throw new Exception("Unable to load dependencies");
+    }
 }
 
 spl_autoload_register(function ($class) {
@@ -38,7 +40,7 @@ spl_autoload_register(function ($class) {
     $prefix = 'PhpOffice\\PhpPowerpoint\\Tests';
     if (strpos($class, $prefix) === 0) {
         $class = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-        $class = join(DIRECTORY_SEPARATOR, array('PHPPowerPoint', 'Tests', '_includes')) .
+        $class = join(DIRECTORY_SEPARATOR, array('PhpPowerpoint', 'Tests', '_includes')) .
         substr($class, strlen($prefix));
         $file = __DIR__ . DIRECTORY_SEPARATOR . $class . '.php';
         if (file_exists($file)) {
@@ -47,5 +49,5 @@ spl_autoload_register(function ($class) {
     }
 });
 
-    require_once __DIR__ . "/../src/PHPPowerPoint/Autoloader.php";
-    \PhpOffice\PhpPowerpoint\Autoloader::register();
+require_once __DIR__ . "/../src/PHPPowerPoint/Autoloader.php";
+\PhpOffice\PhpPowerpoint\Autoloader::register();
