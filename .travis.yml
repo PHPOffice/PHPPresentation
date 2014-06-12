@@ -43,7 +43,7 @@ script:
   ## PHP Copy/Paste Detector
   # - php phpcpd.phar src/
   ## PHP Mess Detector
-  # - phpmd src/ text codesize,unusedcode,naming,design
+  - phpmd src/,tests/ text ./phpmd.xml.dist
   ## PHPUnit
   - phpunit -c ./ --coverage-text --coverage-html ./build/coverage
   ## PHPDocumentor
