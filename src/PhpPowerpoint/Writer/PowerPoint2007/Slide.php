@@ -873,7 +873,7 @@ class Slide extends WriterPart
 
                     // t
                     $objWriter->startElement('a:t');
-                    $objWriter->writeCData(String::ControlCharacterPHP2OOXML($element->getText()));
+                    $objWriter->writeCData(String::controlCharacterPHP2OOXML($element->getText()));
                     $objWriter->endElement();
 
                     $objWriter->endElement();

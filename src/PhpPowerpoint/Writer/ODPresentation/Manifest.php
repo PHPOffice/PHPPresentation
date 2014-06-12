@@ -124,7 +124,7 @@ class Manifest extends WriterPart
      */
     private function _getImageMimeType($pFile = '')
     {
-        if (File::file_exists($pFile)) {
+        if (File::fileExists($pFile)) {
             $image = getimagesize($pFile);
 
             return image_type_to_mime_type($image[2]);

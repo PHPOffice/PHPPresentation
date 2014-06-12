@@ -155,7 +155,7 @@ class TemplateBased extends LayoutPack
         // Sort master slides
         usort($this->_masterSlides, array(
             "PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased",
-            "cmp_master"
+            "cmpMaster"
         ));
 
         // Close package
@@ -168,7 +168,7 @@ class TemplateBased extends LayoutPack
      * @param array $firstSlide
      * @param array $secondSlide
      */
-    public static function cmp_master($firstSlide, $secondSlide)
+    public static function cmpMaster($firstSlide, $secondSlide)
     {
         if ($firstSlide['masterid'] == $secondSlide['masterid']) {
             return 0;

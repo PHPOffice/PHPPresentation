@@ -102,6 +102,6 @@ class Serialized implements IReader
         }
 
         // File exists, does it contain PHPPowerPoint.xml?
-        return File::file_exists("zip://$pFilename#PHPPowerPoint.xml");
+        return File::fileExists("zip://$pFilename#PHPPowerPoint.xml");
     }
 }
