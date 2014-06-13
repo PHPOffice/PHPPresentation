@@ -157,6 +157,7 @@ class ZipStreamWrapper
                 } else {
                     return false;
                 }
+                // Break intentionally omitted
             case SEEK_CUR:
                 if ($offset >= 0) {
                     $this->position += $offset;
@@ -164,6 +165,7 @@ class ZipStreamWrapper
                 } else {
                     return false;
                 }
+                // Break intentionally omitted
             case SEEK_END:
                 if (strlen($this->data) + $offset >= 0) {
                     $this->position = strlen($this->data) + $offset;
@@ -171,6 +173,7 @@ class ZipStreamWrapper
                 } else {
                     return false;
                 }
+                // Break intentionally omitted
             default:
                 return false;
         }
