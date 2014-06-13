@@ -112,10 +112,10 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
     public function testSetGetUseDiskCaching()
     {
         $object = new PowerPoint2007(new PhpPowerpoint());
-        $this->assertFalse($object->getUseDiskCaching());
+        $this->assertFalse($object->hasDiskCaching());
 
         $object->setUseDiskCaching(true, sys_get_temp_dir());
-        $this->assertTrue($object->getUseDiskCaching());
+        $this->assertTrue($object->hasDiskCaching());
         $this->assertEquals(sys_get_temp_dir(), $object->getDiskCachingDirectory());
     }
 

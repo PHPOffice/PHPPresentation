@@ -107,6 +107,30 @@ function getEndingNotes($writers)
 
 	return $result;
 }
+
+/**
+ * Creates a templated slide
+ *
+ * @param PHPPowerPoint $objPHPPowerPoint
+ * @return PHPPowerPoint_Slide
+ */
+function createTemplatedSlide(PhpPowerpoint $objPHPPowerPoint)
+{
+	// Create slide
+	$slide = $objPHPPowerPoint->createSlide();
+
+	// Add logo
+	$slide->createDrawingShape()
+	->setName('PHPPowerPoint logo')
+	->setDescription('PHPPowerPoint logo')
+	->setPath('./resources/phppowerpoint_logo.gif')
+	->setHeight(40)
+	->setOffsetX(10)
+	->setOffsetY(720 - 10 - 40);
+
+	// Return slide
+	return $slide;
+}
 ?>
 <title><?php echo $pageTitle; ?></title>
 <meta charset="utf-8">

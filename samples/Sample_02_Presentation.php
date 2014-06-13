@@ -186,36 +186,3 @@ echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
 	include_once 'Sample_Footer.php';
 }
-
-/**
- * Creates a templated slide
- *
- * @param PHPPowerPoint $objPHPPowerPoint
- * @return PHPPowerPoint_Slide
- */
-function createTemplatedSlide(PhpPowerpoint $objPHPPowerPoint){
-    // Create slide
-    $slide = $objPHPPowerPoint->createSlide();
-
-    // Add background image
-    $slide->createDrawingShape()
-          ->setName('Background')
-          ->setDescription('Background')
-          ->setPath('./resources/realdolmen_bg.jpg')
-          ->setWidth(950)
-          ->setHeight(720)
-          ->setOffsetX(0)
-          ->setOffsetY(0);
-
-    // Add logo
-    $slide->createDrawingShape()
-          ->setName('PHPPowerPoint logo')
-          ->setDescription('PHPPowerPoint logo')
-          ->setPath('./resources/phppowerpoint_logo.gif')
-          ->setHeight(40)
-          ->setOffsetX(10)
-          ->setOffsetY(720 - 10 - 40);
-
-    // Return slide
-    return $slide;
-}
