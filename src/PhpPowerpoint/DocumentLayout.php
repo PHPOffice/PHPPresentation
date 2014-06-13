@@ -74,14 +74,14 @@ class DocumentLayout
      *
      * @var integer
      */
-    private $cx;
+    private $dimensionX;
 
     /**
      * Layout y dimension
      *
      * @var integer
      */
-    private $cy;
+    private $dimensionY;
 
     /**
      * Create a new PHPPowerPoint_DocumentLayout
@@ -90,8 +90,8 @@ class DocumentLayout
     {
         // Initialise values
         $this->layout = self::LAYOUT_SCREEN_4X3;
-        $this->cx     = $this->dimension[$this->layout]['cx'];
-        $this->cy     = $this->dimension[$this->layout]['cy'];
+        $this->dimensionX     = $this->dimension[$this->layout]['cx'];
+        $this->dimensionY     = $this->dimension[$this->layout]['cy'];
     }
 
     /**
@@ -126,21 +126,21 @@ class DocumentLayout
             case self::LAYOUT_LETTER:
             case self::LAYOUT_OVERHEAD:
                 $this->layout = $pValue;
-                $this->cx     = $this->dimension[$this->layout]['cy'];
-                $this->cy     = $this->dimension[$this->layout]['cx'];
+                $this->dimensionX     = $this->dimension[$this->layout]['cy'];
+                $this->dimensionY     = $this->dimension[$this->layout]['cx'];
                 break;
             case self::LAYOUT_CUSTOM:
             default:
-                $this->cx     = $pValue['cx'];
-                $this->cy     = $pValue['cy'];
+                $this->dimensionX     = $pValue['cx'];
+                $this->dimensionY     = $pValue['cy'];
                 $this->layout = self::LAYOUT_CUSTOM;
                 break;
         }
 
         if (!$isLandscape) {
-            $tmp       = $this->cx;
-            $this->cx = $this->cy;
-            $this->cy = $tmp;
+            $tmp       = $this->dimensionX;
+            $this->dimensionX = $this->dimensionY;
+            $this->dimensionY = $tmp;
         }
 
         return $this;
@@ -153,7 +153,7 @@ class DocumentLayout
      */
     public function getCX()
     {
-        return $this->cx;
+        return $this->dimensionX;
     }
 
     /**
@@ -163,7 +163,7 @@ class DocumentLayout
      */
     public function getCY()
     {
-        return $this->cy;
+        return $this->dimensionY;
     }
 
     /**
@@ -173,7 +173,7 @@ class DocumentLayout
      */
     public function getLayoutXmilli()
     {
-        return $this->cx / 36000;
+        return $this->dimensionX / 36000;
     }
 
     /**
@@ -183,7 +183,7 @@ class DocumentLayout
      */
     public function getLayoutYmilli()
     {
-        return $this->cy / 36000;
+        return $this->dimensionY / 36000;
     }
 
     /**
@@ -194,7 +194,7 @@ class DocumentLayout
      */
     public function setLayoutXmilli($pValue)
     {
-        $this->cx     = $pValue * 36000;
+        $this->dimensionX     = $pValue * 36000;
         $this->layout = self::LAYOUT_CUSTOM;
 
         return $this;
@@ -207,7 +207,7 @@ class DocumentLayout
      */
     public function setLayoutYmilli($pValue)
     {
-        $this->cy     = $pValue * 36000;
+        $this->dimensionY     = $pValue * 36000;
         $this->layout = self::LAYOUT_CUSTOM;
 
         return $this;

@@ -165,8 +165,8 @@ class Chart extends Slide
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', SharedDrawing::pixelsToEMU($chart->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', SharedDrawing::pixelsToEMU($chart->getShadow()->getDistance()));
+            $objWriter->writeAttribute('blurRad', SharedDrawing::pixelsToEmu($chart->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', SharedDrawing::pixelsToEmu($chart->getShadow()->getDistance()));
             $objWriter->writeAttribute('dir', SharedDrawing::degreesToAngle($chart->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $chart->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
@@ -414,9 +414,9 @@ class Chart extends Slide
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $subject->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEMU($subject->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEMU($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEMU($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr
@@ -793,9 +793,9 @@ class Chart extends Slide
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $subject->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEMU($subject->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEMU($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEMU($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr

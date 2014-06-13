@@ -396,14 +396,14 @@ class Content extends WriterPart
 
         $paragraphs                  = $shape->getParagraphs();
         $paragraphId                 = 0;
-        $sCstShapeLastBullet      = '';
-        $iCstShapeLastBulletLvl = 0;
-        $bCstShapeHasBullet       = false;
+        $sCstShpLastBullet      = '';
+        $iCstShpLastBulletLvl = 0;
+        $bCstShpHasBullet       = false;
 
         foreach ($paragraphs as $paragraph) {
             // Close the bullet list
-            if ($sCstShapeLastBullet != 'bullet' && $bCstShapeHasBullet == true) {
-                for ($iInc = $iCstShapeLastBulletLvl; $iInc >= 0; $iInc--) {
+            if ($sCstShpLastBullet != 'bullet' && $bCstShpHasBullet == true) {
+                for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; $iInc--) {
                     // text:list-item
                     $objWriter->endElement();
                     // text:list
@@ -456,18 +456,18 @@ class Content extends WriterPart
             // Bullet list
             //===============================================
             } elseif ($paragraph->getBulletStyle()->getBulletType() == 'bullet') {
-                $bCstShapeHasBullet = true;
+                $bCstShpHasBullet = true;
                 // Open the bullet list
-                if ($sCstShapeLastBullet != 'bullet' || ($sCstShapeLastBullet == $paragraph->getBulletStyle()->getBulletType() && $iCstShapeLastBulletLvl < $paragraph->getAlignment()->getLevel())) {
+                if ($sCstShpLastBullet != 'bullet' || ($sCstShpLastBullet == $paragraph->getBulletStyle()->getBulletType() && $iCstShpLastBulletLvl < $paragraph->getAlignment()->getLevel())) {
                     // text:list
                     $objWriter->startElement('text:list');
                     $objWriter->writeAttribute('text:style-name', 'L_' . $paragraph->getBulletStyle()->getHashCode());
                 }
-                if ($sCstShapeLastBullet == 'bullet') {
-                    if ($iCstShapeLastBulletLvl == $paragraph->getAlignment()->getLevel()) {
+                if ($sCstShpLastBullet == 'bullet') {
+                    if ($iCstShpLastBulletLvl == $paragraph->getAlignment()->getLevel()) {
                         // text:list-item
                         $objWriter->endElement();
-                    } elseif ($iCstShapeLastBulletLvl > $paragraph->getAlignment()->getLevel()) {
+                    } elseif ($iCstShpLastBulletLvl > $paragraph->getAlignment()->getLevel()) {
                         // text:list-item
                         $objWriter->endElement();
                         // text:list
@@ -518,13 +518,13 @@ class Content extends WriterPart
                 }
                 $objWriter->endElement();
             }
-            $sCstShapeLastBullet      = $paragraph->getBulletStyle()->getBulletType();
-            $iCstShapeLastBulletLvl = $paragraph->getAlignment()->getLevel();
+            $sCstShpLastBullet      = $paragraph->getBulletStyle()->getBulletType();
+            $iCstShpLastBulletLvl = $paragraph->getAlignment()->getLevel();
         }
 
         // Close the bullet list
-        if ($sCstShapeLastBullet == 'bullet' && $bCstShapeHasBullet == true) {
-            for ($iInc = $iCstShapeLastBulletLvl; $iInc >= 0; $iInc--) {
+        if ($sCstShpLastBullet == 'bullet' && $bCstShpHasBullet == true) {
+            for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; $iInc--) {
                 // text:list-item
                 $objWriter->endElement();
                 // text:list

@@ -211,14 +211,14 @@ class Slide extends WriterPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
-        $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
+        $objWriter->writeAttribute('cx', Drawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', Drawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -312,14 +312,14 @@ class Slide extends WriterPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
-        $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
+        $objWriter->writeAttribute('cx', Drawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', Drawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -343,8 +343,8 @@ class Slide extends WriterPart
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
+            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEmu($shape->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', Drawing::pixelsToEmu($shape->getShadow()->getDistance()));
             $objWriter->writeAttribute('dir', Drawing::degreesToAngle($shape->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
@@ -417,14 +417,14 @@ class Slide extends WriterPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
-        $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
+        $objWriter->writeAttribute('cx', Drawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', Drawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -446,8 +446,8 @@ class Slide extends WriterPart
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
+            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEmu($shape->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', Drawing::pixelsToEmu($shape->getShadow()->getDistance()));
             $objWriter->writeAttribute('dir', Drawing::degreesToAngle($shape->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
@@ -488,10 +488,10 @@ class Slide extends WriterPart
             $objWriter->writeAttribute('vert', 'vert');
         }
 
-        $objWriter->writeAttribute('bIns', Drawing::pixelsToEMU($shape->getInsetBottom()));
-        $objWriter->writeAttribute('lIns', Drawing::pixelsToEMU($shape->getInsetLeft()));
-        $objWriter->writeAttribute('rIns', Drawing::pixelsToEMU($shape->getInsetRight()));
-        $objWriter->writeAttribute('tIns', Drawing::pixelsToEMU($shape->getInsetTop()));
+        $objWriter->writeAttribute('bIns', Drawing::pixelsToEmu($shape->getInsetBottom()));
+        $objWriter->writeAttribute('lIns', Drawing::pixelsToEmu($shape->getInsetLeft()));
+        $objWriter->writeAttribute('rIns', Drawing::pixelsToEmu($shape->getInsetRight()));
+        $objWriter->writeAttribute('tIns', Drawing::pixelsToEmu($shape->getInsetTop()));
 
         $objWriter->writeAttribute('numCol', $shape->getColumns());
 
@@ -560,14 +560,14 @@ class Slide extends WriterPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
-        $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
+        $objWriter->writeAttribute('cx', Drawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', Drawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -593,8 +593,8 @@ class Slide extends WriterPart
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEMU($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', Drawing::pixelsToEMU($shape->getShadow()->getDistance()));
+            $objWriter->writeAttribute('blurRad', Drawing::pixelsToEmu($shape->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', Drawing::pixelsToEmu($shape->getShadow()->getDistance()));
             $objWriter->writeAttribute('dir', Drawing::degreesToAngle($shape->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
@@ -633,7 +633,7 @@ class Slide extends WriterPart
                 $width      = $totalWidth / $colCount;
             }
 
-            $objWriter->writeAttribute('w', Drawing::pixelsToEMU($width));
+            $objWriter->writeAttribute('w', Drawing::pixelsToEmu($width));
             $objWriter->endElement();
         }
 
@@ -650,7 +650,7 @@ class Slide extends WriterPart
         for ($row = 0; $row < count($shape->getRows()); $row++) {
             // a:tr
             $objWriter->startElement('a:tr');
-            $objWriter->writeAttribute('h', Drawing::pixelsToEMU($shape->getRow($row)->getHeight()));
+            $objWriter->writeAttribute('h', Drawing::pixelsToEmu($shape->getRow($row)->getHeight()));
 
             // Write cells
             for ($cell = 0; $cell < count($shape->getRow($row)->getCells()); $cell++) {
@@ -779,9 +779,9 @@ class Slide extends WriterPart
             $objWriter->startElement('a:pPr');
             $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
             $objWriter->writeAttribute('fontAlgn', $paragraph->getAlignment()->getVertical());
-            $objWriter->writeAttribute('marL', Drawing::pixelsToEMU($paragraph->getAlignment()->getMarginLeft()));
-            $objWriter->writeAttribute('marR', Drawing::pixelsToEMU($paragraph->getAlignment()->getMarginRight()));
-            $objWriter->writeAttribute('indent', Drawing::pixelsToEMU($paragraph->getAlignment()->getIndent()));
+            $objWriter->writeAttribute('marL', Drawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
+            $objWriter->writeAttribute('marR', Drawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
+            $objWriter->writeAttribute('indent', Drawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
             $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
             // Bullet type specified?
@@ -929,54 +929,54 @@ class Slide extends WriterPart
         if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
-            $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
+            $objWriter->writeAttribute('cx', Drawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', Drawing::pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY() + $shape->getHeight));
+            $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', Drawing::pixelsToEMU(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', Drawing::pixelsToEMU(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', Drawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', Drawing::pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getHeight() < 0) {
             $objWriter->writeAttribute('flipV', 1);
 
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY() + $shape->getHeight));
+            $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', Drawing::pixelsToEMU($shape->getWidth()));
-            $objWriter->writeAttribute('cy', Drawing::pixelsToEMU(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', Drawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', Drawing::pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0) {
             $objWriter->writeAttribute('flipV', 1);
 
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', Drawing::pixelsToEMU($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', Drawing::pixelsToEMU($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', Drawing::pixelsToEMU(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', Drawing::pixelsToEMU($shape->getHeight()));
+            $objWriter->writeAttribute('cx', Drawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', Drawing::pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         }
 
