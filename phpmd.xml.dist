@@ -12,7 +12,7 @@
     <rule ref="rulesets/design.xml/CouplingBetweenObjects">
         <!-- AbstractContainer needs more coupling (default: 13) -->
         <properties>
-            <property name="minimum" value="22" />
+            <property name="minimum" value="23" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">
