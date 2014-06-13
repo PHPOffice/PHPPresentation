@@ -118,8 +118,8 @@ class Styles extends WriterPart
         $objWriter->writeAttribute('fo:margin-bottom', '0cm');
         $objWriter->writeAttribute('fo:margin-left', '0cm');
         $objWriter->writeAttribute('fo:margin-right', '0cm');
-        $objWriter->writeAttribute('fo:page-width', round(Drawing::pixelsToCentimeters(Drawing::EmuToPixels($pPHPPowerPoint->getLayout()->getCX())), 1) . 'cm');
-        $objWriter->writeAttribute('fo:page-height', round(Drawing::pixelsToCentimeters(Drawing::EmuToPixels($pPHPPowerPoint->getLayout()->getCY())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-width', round(Drawing::pixelsToCentimeters(Drawing::emuToPixels($pPHPPowerPoint->getLayout()->getCX())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-height', round(Drawing::pixelsToCentimeters(Drawing::emuToPixels($pPHPPowerPoint->getLayout()->getCY())), 1) . 'cm');
         if ($pPHPPowerPoint->getLayout()->getCX() > $pPHPPowerPoint->getLayout()->getCY()) {
             $objWriter->writeAttribute('style:print-orientation', 'landscape');
         } else {

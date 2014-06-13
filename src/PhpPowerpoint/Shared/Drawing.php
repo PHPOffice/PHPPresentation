@@ -41,7 +41,7 @@ class Drawing
      * @param  int $pValue Value in EMU
      * @return int Value in pixels
      */
-    public static function EmuToPixels($pValue = 0)
+    public static function emuToPixels($pValue = 0)
     {
         if ($pValue != 0) {
             return round($pValue / 9525);
