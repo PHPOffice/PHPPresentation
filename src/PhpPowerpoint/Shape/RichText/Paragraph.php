@@ -38,28 +38,35 @@ class Paragraph implements IComparable
      *
      * @var PHPPowerPoint_Shape_RichText_ITextElement[]
      */
-    private $_richTextElements;
+    private $richTextElements;
 
     /**
      * Alignment
      *
      * @var PHPPowerPoint_Style_Alignment
      */
-    private $_alignment;
+    private $alignment;
 
     /**
      * Font
      *
      * @var PHPPowerPoint_Style_Font
      */
-    private $_font;
+    private $font;
 
     /**
      * Bullet style
      *
      * @var PHPPowerPoint_Style_Bullet
      */
-    private $_bulletStyle;
+    private $bulletStyle;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_RichText_Paragraph instance
@@ -67,10 +74,10 @@ class Paragraph implements IComparable
     public function __construct()
     {
         // Initialise variables
-        $this->_richTextElements = array();
-        $this->_alignment        = new Alignment();
-        $this->_font             = new Font();
-        $this->_bulletStyle      = new Bullet();
+        $this->richTextElements = array();
+        $this->alignment        = new Alignment();
+        $this->font             = new Font();
+        $this->bulletStyle      = new Bullet();
     }
 
     /**
@@ -80,7 +87,7 @@ class Paragraph implements IComparable
      */
     public function getAlignment()
     {
-        return $this->_alignment;
+        return $this->alignment;
     }
 
     /**
@@ -91,7 +98,7 @@ class Paragraph implements IComparable
      */
     public function setAlignment(Alignment $alignment)
     {
-        $this->_alignment = $alignment;
+        $this->alignment = $alignment;
 
         return $this;
     }
@@ -103,7 +110,7 @@ class Paragraph implements IComparable
      */
     public function getFont()
     {
-        return $this->_font;
+        return $this->font;
     }
 
     /**
@@ -115,7 +122,7 @@ class Paragraph implements IComparable
      */
     public function setFont(Font $pFont = null)
     {
-        $this->_font = $pFont;
+        $this->font = $pFont;
 
         return $this;
     }
@@ -127,7 +134,7 @@ class Paragraph implements IComparable
      */
     public function getBulletStyle()
     {
-        return $this->_bulletStyle;
+        return $this->bulletStyle;
     }
 
     /**
@@ -139,7 +146,7 @@ class Paragraph implements IComparable
      */
     public function setBulletStyle(Bullet $style = null)
     {
-        $this->_bulletStyle = $style;
+        $this->bulletStyle = $style;
 
         return $this;
     }
@@ -153,7 +160,7 @@ class Paragraph implements IComparable
      */
     public function addText(ITextElement $pText = null)
     {
-        $this->_richTextElements[] = $pText;
+        $this->richTextElements[] = $pText;
 
         return $this;
     }
@@ -197,7 +204,7 @@ class Paragraph implements IComparable
     public function createTextRun($pText = '')
     {
         $objText = new Run($pText);
-        $objText->setFont(clone $this->_font);
+        $objText->setFont(clone $this->font);
         $this->addText($objText);
 
         return $objText;
@@ -214,7 +221,7 @@ class Paragraph implements IComparable
         $returnValue = '';
 
         // Loop trough all PHPPowerPoint_Shape_RichText_ITextElement
-        foreach ($this->_richTextElements as $text) {
+        foreach ($this->richTextElements as $text) {
             $returnValue .= $text->getText();
         }
 
@@ -239,7 +246,7 @@ class Paragraph implements IComparable
      */
     public function getRichTextElements()
     {
-        return $this->_richTextElements;
+        return $this->richTextElements;
     }
 
     /**
@@ -252,7 +259,7 @@ class Paragraph implements IComparable
     public function setRichTextElements($pElements = null)
     {
         if (is_array($pElements)) {
-            $this->_richTextElements = $pElements;
+            $this->richTextElements = $pElements;
         } else {
             throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_ITextElement[] array passed.");
         }
@@ -268,19 +275,12 @@ class Paragraph implements IComparable
     public function getHashCode()
     {
         $hashElements = '';
-        foreach ($this->_richTextElements as $element) {
+        foreach ($this->richTextElements as $element) {
             $hashElements .= $element->getHashCode();
         }
 
-        return md5($hashElements . $this->_font->getHashCode() . __CLASS__);
+        return md5($hashElements . $this->font->getHashCode() . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -292,7 +292,7 @@ class Paragraph implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -305,7 +305,7 @@ class Paragraph implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

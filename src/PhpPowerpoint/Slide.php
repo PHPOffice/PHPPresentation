@@ -39,35 +39,42 @@ class Slide implements IComparable
      *
      * @var PHPPowerPoint
      */
-    private $_parent;
+    private $parent;
 
     /**
      * Collection of shapes
      *
      * @var PHPPowerPoint_Shape[]
      */
-    private $_shapeCollection = null;
+    private $shapeCollection = null;
 
     /**
      * Slide identifier
      *
      * @var string
      */
-    private $_identifier;
+    private $identifier;
 
     /**
      * Slide layout
      *
      * @var string
      */
-    private $_slideLayout;
+    private $slideLayout;
 
     /**
      * Slide master id
      *
      * @var string
      */
-    private $_slideMasterId = 1;
+    private $slideMasterId = 1;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new slide
@@ -77,15 +84,15 @@ class Slide implements IComparable
     public function __construct(PhpPowerpoint $pParent = null)
     {
         // Set parent
-        $this->_parent = $pParent;
+        $this->parent = $pParent;
         
-        $this->_slideLayout = Slide\Layout::BLANK;
+        $this->slideLayout = Slide\Layout::BLANK;
 
         // Shape collection
-        $this->_shapeCollection = new \ArrayObject();
+        $this->shapeCollection = new \ArrayObject();
 
         // Set identifier
-        $this->_identifier = md5(rand(0, 9999) . time());
+        $this->identifier = md5(rand(0, 9999) . time());
     }
 
     /**
@@ -95,7 +102,7 @@ class Slide implements IComparable
      */
     public function getShapeCollection()
     {
-        return $this->_shapeCollection;
+        return $this->shapeCollection;
     }
 
     /**
@@ -188,7 +195,7 @@ class Slide implements IComparable
      */
     public function getParent()
     {
-        return $this->_parent;
+        return $this->parent;
     }
 
     /**
@@ -199,8 +206,8 @@ class Slide implements IComparable
      */
     public function rebindParent(PHPPowerPoint $parent)
     {
-        $this->_parent->removeSlideByIndex($this->_parent->getIndex($this));
-        $this->_parent = $parent;
+        $this->parent->removeSlideByIndex($this->parent->getIndex($this));
+        $this->parent = $parent;
 
         return $this;
     }
@@ -212,7 +219,7 @@ class Slide implements IComparable
      */
     public function getSlideLayout()
     {
-        return $this->_slideLayout;
+        return $this->slideLayout;
     }
 
     /**
@@ -223,7 +230,7 @@ class Slide implements IComparable
      */
     public function setSlideLayout($layout = Layout::BLANK)
     {
-        $this->_slideLayout = $layout;
+        $this->slideLayout = $layout;
 
         return $this;
     }
@@ -235,7 +242,7 @@ class Slide implements IComparable
      */
     public function getSlideMasterId()
     {
-        return $this->_slideMasterId;
+        return $this->slideMasterId;
     }
 
     /**
@@ -246,7 +253,7 @@ class Slide implements IComparable
      */
     public function setSlideMasterId($masterId = 1)
     {
-        $this->_slideMasterId = $masterId;
+        $this->slideMasterId = $masterId;
 
         return $this;
     }
@@ -258,15 +265,8 @@ class Slide implements IComparable
      */
     public function getHashCode()
     {
-        return md5($this->_identifier . __CLASS__);
+        return md5($this->identifier . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -278,7 +278,7 @@ class Slide implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -291,7 +291,7 @@ class Slide implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

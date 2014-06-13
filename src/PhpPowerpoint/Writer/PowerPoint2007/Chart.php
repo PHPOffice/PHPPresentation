@@ -57,7 +57,7 @@ class Chart extends Slide
 
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -86,9 +86,9 @@ class Chart extends Slide
         $objWriter->startElement('c:chart');
 
         // Title?
-        if ($chart->getTitle()->getVisible()) {
+        if ($chart->getTitle()->isVisible()) {
             // Write title
-            $this->_writeTitle($objWriter, $chart->getTitle());
+            $this->writeTitle($objWriter, $chart->getTitle());
         }
 
         // c:autoTitleDeleted
@@ -121,7 +121,7 @@ class Chart extends Slide
 
         // c:rAngAx
         $objWriter->startElement('c:rAngAx');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getRightAngleAxes() ? '1' : '0');
+        $objWriter->writeAttribute('val', $chart->getView3D()->hasRightAngleAxes() ? '1' : '0');
         $objWriter->endElement();
 
         // c:perspective
@@ -132,12 +132,12 @@ class Chart extends Slide
         $objWriter->endElement();
 
         // Write plot area
-        $this->_writePlotArea($objWriter, $chart->getPlotArea(), $chart);
+        $this->writePlotArea($objWriter, $chart->getPlotArea(), $chart);
 
         // Legend?
-        if ($chart->getLegend()->getVisible()) {
+        if ($chart->getLegend()->isVisible()) {
             // Write legend
-            $this->_writeLegend($objWriter, $chart->getLegend());
+            $this->writeLegend($objWriter, $chart->getLegend());
         }
 
         // c:plotVisOnly
@@ -151,15 +151,15 @@ class Chart extends Slide
         $objWriter->startElement('c:spPr');
 
         // Fill
-        $this->_writeFill($objWriter, $chart->getFill());
+        $this->writeFill($objWriter, $chart->getFill());
 
         // Border
         if ($chart->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->_writeBorder($objWriter, $chart->getBorder(), '');
+            $this->writeBorder($objWriter, $chart->getBorder(), '');
         }
 
         // Shadow
-        if ($chart->getShadow()->getVisible()) {
+        if ($chart->getShadow()->isVisible()) {
             // a:effectLst
             $objWriter->startElement('a:effectLst');
 
@@ -190,7 +190,7 @@ class Chart extends Slide
         $objWriter->endElement();
 
         // External data?
-        if ($chart->getIncludeSpreadsheet()) {
+        if ($chart->hasIncludedSpreadsheet()) {
             // c:externalData
             $objWriter->startElement('c:externalData');
             $objWriter->writeAttribute('r:id', 'rId1');
@@ -221,7 +221,7 @@ class Chart extends Slide
     public function writeSpreadsheet(PHPPowerPoint $presentation, $chart, $tempName)
     {
         // Need output?
-        if (!$chart->getIncludeSpreadsheet()) {
+        if (!$chart->hasIncludedSpreadsheet()) {
             throw new \Exception('No spreadsheet output is required for the given chart.');
         }
 
@@ -283,7 +283,7 @@ class Chart extends Slide
      * @param string                         $elementName
      * @param string                         $value
      */
-    protected function _writeElementWithValAttribute($objWriter, $elementName, $value)
+    protected function writeElementWithValAttribute($objWriter, $elementName, $value)
     {
         $objWriter->startElement($elementName);
         $objWriter->writeAttribute('val', $value);
@@ -298,7 +298,7 @@ class Chart extends Slide
      * @param mixed                          $value
      * @param string                         $reference
      */
-    protected function _writeSingleValueOrReference($objWriter, $isReference, $value, $reference)
+    protected function writeSingleValueOrReference($objWriter, $isReference, $value, $reference)
     {
         if (!$isReference) {
             // Value
@@ -329,7 +329,7 @@ class Chart extends Slide
      * @param mixed                          $values
      * @param string                         $reference
      */
-    protected function _writeMultipleValuesOrReference($objWriter, $isReference, $values, $reference)
+    protected function writeMultipleValuesOrReference($objWriter, $isReference, $values, $reference)
     {
         // c:strLit / c:numLit
         // c:strRef / c:numRef
@@ -390,7 +390,7 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shape_Chart_Title $subject
      * @throws \Exception
      */
-    protected function _writeTitle(XMLWriter $objWriter, Title $subject)
+    protected function writeTitle(XMLWriter $objWriter, Title $subject)
     {
         // c:title
         $objWriter->startElement('c:title');
@@ -432,16 +432,16 @@ class Chart extends Slide
         $objWriter->writeAttribute('lang', 'en-US');
         $objWriter->writeAttribute('dirty', '0');
 
-        $objWriter->writeAttribute('b', ($subject->getFont()->getBold() ? 'true' : 'false'));
-        $objWriter->writeAttribute('i', ($subject->getFont()->getItalic() ? 'true' : 'false'));
-        $objWriter->writeAttribute('strike', ($subject->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('b', ($subject->getFont()->isBold() ? 'true' : 'false'));
+        $objWriter->writeAttribute('i', ($subject->getFont()->isItalic() ? 'true' : 'false'));
+        $objWriter->writeAttribute('strike', ($subject->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
         $objWriter->writeAttribute('sz', ($subject->getFont()->getSize() * 100));
         $objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
 
-        if ($subject->getFont()->getSuperScript() || $subject->getFont()->getSubScript()) {
-            if ($subject->getFont()->getSuperScript()) {
+        if ($subject->getFont()->isSuperScript() || $subject->getFont()->isSubScript()) {
+            if ($subject->getFont()->isSuperScript()) {
                 $objWriter->writeAttribute('baseline', '30000');
-            } elseif ($subject->getFont()->getSubScript()) {
+            } elseif ($subject->getFont()->isSubScript()) {
                 $objWriter->writeAttribute('baseline', '-25000');
             }
         }
@@ -481,7 +481,7 @@ class Chart extends Slide
         $objWriter->endElement();
 
         // Write layout
-        $this->_writeLayout($objWriter, $subject);
+        $this->writeLayout($objWriter, $subject);
 
         // c:overlay
         $objWriter->startElement('c:overlay');
@@ -499,24 +499,24 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shape_Chart          $chart
      * @throws \Exception
      */
-    protected function _writePlotArea(XMLWriter $objWriter, PlotArea $subject, ShapeChart $chart)
+    protected function writePlotArea(XMLWriter $objWriter, PlotArea $subject, ShapeChart $chart)
     {
         // c:plotArea
         $objWriter->startElement('c:plotArea');
 
         // Write layout
-        $this->_writeLayout($objWriter, $subject);
+        $this->writeLayout($objWriter, $subject);
 
         // Write chart
         $chartType = $subject->getType();
         if ($chartType instanceof Bar3D) {
-            $this->_writeTypeBar3D($objWriter, $chartType, $chart->getIncludeSpreadsheet());
+            $this->writeTypeBar3D($objWriter, $chartType, $chart->hasIncludedSpreadsheet());
         } elseif ($chartType instanceof Pie3D) {
-            $this->_writeTypePie3D($objWriter, $chartType, $chart->getIncludeSpreadsheet());
+            $this->writeTypePie3D($objWriter, $chartType, $chart->hasIncludedSpreadsheet());
         } elseif ($chartType instanceof Line) {
-            $this->_writeTypeLine($objWriter, $chartType, $chart->getIncludeSpreadsheet());
+            $this->writeTypeLine($objWriter, $chartType, $chart->hasIncludedSpreadsheet());
         } elseif ($chartType instanceof Scatter) {
-            $this->_writeTypeScatter($objWriter, $chartType, $chart->getIncludeSpreadsheet());
+            $this->writeTypeScatter($objWriter, $chartType, $chart->hasIncludedSpreadsheet());
         } else {
             throw new \Exception('The chart type provided could not be rendered.');
         }
@@ -746,7 +746,7 @@ class Chart extends Slide
      * @param  PHPPowerPoint_Shape_Chart_Legend $subject
      * @throws \Exception
      */
-    protected function _writeLegend(XMLWriter $objWriter, Legend $subject)
+    protected function writeLegend(XMLWriter $objWriter, Legend $subject)
     {
         // c:legend
         $objWriter->startElement('c:legend');
@@ -757,7 +757,7 @@ class Chart extends Slide
         $objWriter->endElement();
 
         // Write layout
-        $this->_writeLayout($objWriter, $subject);
+        $this->writeLayout($objWriter, $subject);
 
         // c:overlay
         $objWriter->startElement('c:overlay');
@@ -768,11 +768,11 @@ class Chart extends Slide
         $objWriter->startElement('c:spPr');
 
         // Fill
-        $this->_writeFill($objWriter, $subject->getFill());
+        $this->writeFill($objWriter, $subject->getFill());
 
         // Border
         if ($subject->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->_writeBorder($objWriter, $subject->getBorder(), '');
+            $this->writeBorder($objWriter, $subject->getBorder(), '');
         }
 
         $objWriter->endElement();
@@ -801,16 +801,16 @@ class Chart extends Slide
         // a:defRPr
         $objWriter->startElement('a:defRPr');
 
-        $objWriter->writeAttribute('b', ($subject->getFont()->getBold() ? 'true' : 'false'));
-        $objWriter->writeAttribute('i', ($subject->getFont()->getItalic() ? 'true' : 'false'));
-        $objWriter->writeAttribute('strike', ($subject->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('b', ($subject->getFont()->isBold() ? 'true' : 'false'));
+        $objWriter->writeAttribute('i', ($subject->getFont()->isItalic() ? 'true' : 'false'));
+        $objWriter->writeAttribute('strike', ($subject->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
         $objWriter->writeAttribute('sz', ($subject->getFont()->getSize() * 100));
         $objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
 
-        if ($subject->getFont()->getSuperScript() || $subject->getFont()->getSubScript()) {
-            if ($subject->getFont()->getSuperScript()) {
+        if ($subject->getFont()->isSuperScript() || $subject->getFont()->isSubScript()) {
+            if ($subject->getFont()->isSuperScript()) {
                 $objWriter->writeAttribute('baseline', '30000');
-            } elseif ($subject->getFont()->getSubScript()) {
+            } elseif ($subject->getFont()->isSubScript()) {
                 $objWriter->writeAttribute('baseline', '-25000');
             }
         }
@@ -854,7 +854,7 @@ class Chart extends Slide
      * @param  mixed                          $subject
      * @throws \Exception
      */
-    protected function _writeLayout(XMLWriter $objWriter, $subject)
+    protected function writeLayout(XMLWriter $objWriter, $subject)
     {
         // c:layout
         $objWriter->startElement('c:layout');
@@ -912,7 +912,7 @@ class Chart extends Slide
      * @param  boolean                              $includeSheet
      * @throws \Exception
      */
-    protected function _writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, $includeSheet = false)
+    protected function writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, $includeSheet = false)
     {
         // c:bar3DChart
         $objWriter->startElement('c:bar3DChart');
@@ -947,7 +947,7 @@ class Chart extends Slide
             if (class_exists('PHPExcel_Cell')) {
                 $objWriter->startElement('c:tx');
                 $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
-                $this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+                $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
                 $objWriter->endElement();
             }
 
@@ -958,13 +958,13 @@ class Chart extends Slide
                 $objWriter->startElement('c:dPt');
 
                 // c:idx
-                $this->_writeElementWithValAttribute($objWriter, 'c:idx', $key);
+                $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
 
                 // c:spPr
                 $objWriter->startElement('c:spPr');
 
                 // Write fill
-                $this->_writeFill($objWriter, $value);
+                $this->writeFill($objWriter, $value);
 
                 $objWriter->endElement();
 
@@ -992,16 +992,16 @@ class Chart extends Slide
             // a:defRPr
             $objWriter->startElement('a:defRPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->getBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->getItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
 
-            if ($series->getFont()->getSuperScript() || $series->getFont()->getSubScript()) {
-                if ($series->getFont()->getSuperScript()) {
+            if ($series->getFont()->isSuperScript() || $series->getFont()->isSubScript()) {
+                if ($series->getFont()->isSuperScript()) {
                     $objWriter->writeAttribute('baseline', '30000');
-                } elseif ($series->getFont()->getSubScript()) {
+                } elseif ($series->getFont()->isSubScript()) {
                     $objWriter->writeAttribute('baseline', '-25000');
                 }
             }
@@ -1036,19 +1036,19 @@ class Chart extends Slide
             $objWriter->endElement();
 
             // c:showVal
-            $this->_writeElementWithValAttribute($objWriter, 'c:showVal', $series->getShowValue() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
             // c:showCatName
-            $this->_writeElementWithValAttribute($objWriter, 'c:showCatName', $series->getShowCategoryName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
             // c:showSerName
-            $this->_writeElementWithValAttribute($objWriter, 'c:showSerName', $series->getShowSeriesName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
             // c:showPercent
-            $this->_writeElementWithValAttribute($objWriter, 'c:showPercent', $series->getShowPercentage() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
             // c:showLeaderLines
-            $this->_writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->getShowLeaderLines() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             $objWriter->endElement();
 
@@ -1056,7 +1056,7 @@ class Chart extends Slide
             $objWriter->startElement('c:spPr');
 
             // Write fill
-            $this->_writeFill($objWriter, $series->getFill());
+            $this->writeFill($objWriter, $series->getFill());
 
             $objWriter->endElement();
 
@@ -1065,7 +1065,7 @@ class Chart extends Slide
 
             // c:cat
             $objWriter->startElement('c:cat');
-            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
             $objWriter->endElement();
 
             // Write Y axis data
@@ -1075,7 +1075,7 @@ class Chart extends Slide
             if (class_exists('PHPExcel_Cell')) {
                 $objWriter->startElement('c:val');
                 $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
-                $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+                $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
                 $objWriter->endElement();
             }
             $objWriter->endElement();
@@ -1119,7 +1119,7 @@ class Chart extends Slide
      * @param  boolean                              $includeSheet
      * @throws \Exception
      */
-    protected function _writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, $includeSheet = false)
+    protected function writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, $includeSheet = false)
     {
         // c:pie3DChart
         $objWriter->startElement('c:pie3DChart');
@@ -1148,7 +1148,7 @@ class Chart extends Slide
             // c:tx
             $objWriter->startElement('c:tx');
             $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
-            $this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+            $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
             // c:explosion
@@ -1163,13 +1163,13 @@ class Chart extends Slide
                 $objWriter->startElement('c:dPt');
 
                 // c:idx
-                $this->_writeElementWithValAttribute($objWriter, 'c:idx', $key);
+                $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
 
                 // c:spPr
                 $objWriter->startElement('c:spPr');
 
                 // Write fill
-                $this->_writeFill($objWriter, $value);
+                $this->writeFill($objWriter, $value);
 
                 $objWriter->endElement();
 
@@ -1197,16 +1197,16 @@ class Chart extends Slide
             // a:defRPr
             $objWriter->startElement('a:defRPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->getBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->getItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
 
-            if ($series->getFont()->getSuperScript() || $series->getFont()->getSubScript()) {
-                if ($series->getFont()->getSuperScript()) {
+            if ($series->getFont()->isSuperScript() || $series->getFont()->isSubScript()) {
+                if ($series->getFont()->isSuperScript()) {
                     $objWriter->writeAttribute('baseline', '30000');
-                } elseif ($series->getFont()->getSubScript()) {
+                } elseif ($series->getFont()->isSubScript()) {
                     $objWriter->writeAttribute('baseline', '-25000');
                 }
             }
@@ -1241,22 +1241,22 @@ class Chart extends Slide
             $objWriter->endElement();
 
             // c:dLblPos
-            $this->_writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
+            $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
 
             // c:showVal
-            $this->_writeElementWithValAttribute($objWriter, 'c:showVal', $series->getShowValue() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
             // c:showCatName
-            $this->_writeElementWithValAttribute($objWriter, 'c:showCatName', $series->getShowCategoryName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
             // c:showSerName
-            $this->_writeElementWithValAttribute($objWriter, 'c:showSerName', $series->getShowSeriesName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
             // c:showPercent
-            $this->_writeElementWithValAttribute($objWriter, 'c:showPercent', $series->getShowPercentage() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
             // c:showLeaderLines
-            $this->_writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->getShowLeaderLines() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             $objWriter->endElement();
 
@@ -1265,7 +1265,7 @@ class Chart extends Slide
 
             // c:cat
             $objWriter->startElement('c:cat');
-            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
             $objWriter->endElement();
 
             // Write Y axis data
@@ -1274,7 +1274,7 @@ class Chart extends Slide
             // c:val
             $objWriter->startElement('c:val');
             $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
-            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
             $objWriter->endElement();
 
             $objWriter->endElement();
@@ -1293,7 +1293,7 @@ class Chart extends Slide
      * @param  boolean                             $includeSheet
      * @throws \Exception
      */
-    protected function _writeTypeLine(XMLWriter $objWriter, Line $subject, $includeSheet = false)
+    protected function writeTypeLine(XMLWriter $objWriter, Line $subject, $includeSheet = false)
     {
         // c:lineChart
         $objWriter->startElement('c:lineChart');
@@ -1327,7 +1327,7 @@ class Chart extends Slide
             // c:tx
             $objWriter->startElement('c:tx');
             $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
-            $this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+            $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
             // Fills for points?
@@ -1337,13 +1337,13 @@ class Chart extends Slide
                 $objWriter->startElement('c:dPt');
 
                 // c:idx
-                $this->_writeElementWithValAttribute($objWriter, 'c:idx', $key);
+                $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
 
                 // c:spPr
                 $objWriter->startElement('c:spPr');
 
                 // Write fill
-                $this->_writeFill($objWriter, $value);
+                $this->writeFill($objWriter, $value);
 
                 $objWriter->endElement();
 
@@ -1371,16 +1371,16 @@ class Chart extends Slide
             // a:defRPr
             $objWriter->startElement('a:defRPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->getBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->getItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
 
-            if ($series->getFont()->getSuperScript() || $series->getFont()->getSubScript()) {
-                if ($series->getFont()->getSuperScript()) {
+            if ($series->getFont()->isSuperScript() || $series->getFont()->isSubScript()) {
+                if ($series->getFont()->isSuperScript()) {
                     $objWriter->writeAttribute('baseline', '30000');
-                } elseif ($series->getFont()->getSubScript()) {
+                } elseif ($series->getFont()->isSubScript()) {
                     $objWriter->writeAttribute('baseline', '-25000');
                 }
             }
@@ -1415,19 +1415,19 @@ class Chart extends Slide
             $objWriter->endElement();
 
             // c:showVal
-            $this->_writeElementWithValAttribute($objWriter, 'c:showVal', $series->getShowValue() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
             // c:showCatName
-            $this->_writeElementWithValAttribute($objWriter, 'c:showCatName', $series->getShowCategoryName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
             // c:showSerName
-            $this->_writeElementWithValAttribute($objWriter, 'c:showSerName', $series->getShowSeriesName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
             // c:showPercent
-            $this->_writeElementWithValAttribute($objWriter, 'c:showPercent', $series->getShowPercentage() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
             // c:showLeaderLines
-            $this->_writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->getShowLeaderLines() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             $objWriter->endElement();
 
@@ -1435,7 +1435,7 @@ class Chart extends Slide
             $objWriter->startElement('c:spPr');
 
             // Write fill
-            $this->_writeFill($objWriter, $series->getFill());
+            $this->writeFill($objWriter, $series->getFill());
 
             $objWriter->endElement();
 
@@ -1444,7 +1444,7 @@ class Chart extends Slide
 
             // c:cat
             $objWriter->startElement('c:cat');
-            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
             $objWriter->endElement();
 
             // Write Y axis data
@@ -1453,7 +1453,7 @@ class Chart extends Slide
             // c:val
             $objWriter->startElement('c:val');
             $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
-            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
             $objWriter->endElement();
 
             $objWriter->endElement();
@@ -1497,7 +1497,7 @@ class Chart extends Slide
      * @param  boolean                                $includeSheet
      * @throws \Exception
      */
-    protected function _writeTypeScatter(XMLWriter $objWriter, Scatter $subject, $includeSheet = false)
+    protected function writeTypeScatter(XMLWriter $objWriter, Scatter $subject, $includeSheet = false)
     {
         // c:scatterChart
         $objWriter->startElement('c:scatterChart');
@@ -1531,7 +1531,7 @@ class Chart extends Slide
             // c:tx
             $objWriter->startElement('c:tx');
             $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
-            $this->_writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+            $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
             // c:marker
@@ -1552,13 +1552,13 @@ class Chart extends Slide
             $objWriter->startElement('c:dPt');
 
             // c:idx
-            $this->_writeElementWithValAttribute($objWriter, 'c:idx', $key);
+            $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
 
             // c:spPr
             $objWriter->startElement('c:spPr');
 
             // Write fill
-            $this->_writeFill($objWriter, $value);
+            $this->writeFill($objWriter, $value);
 
             $objWriter->endElement();
 
@@ -1586,16 +1586,16 @@ class Chart extends Slide
             // a:defRPr
             $objWriter->startElement('a:defRPr');
 
-            $objWriter->writeAttribute('b', ($series->getFont()->getBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->getItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
 
-            if ($series->getFont()->getSuperScript() || $series->getFont()->getSubScript()) {
-                if ($series->getFont()->getSuperScript()) {
+            if ($series->getFont()->isSuperScript() || $series->getFont()->isSubScript()) {
+                if ($series->getFont()->isSuperScript()) {
                     $objWriter->writeAttribute('baseline', '30000');
-                } elseif ($series->getFont()->getSubScript()) {
+                } elseif ($series->getFont()->isSubScript()) {
                     $objWriter->writeAttribute('baseline', '-25000');
                 }
             }
@@ -1630,22 +1630,22 @@ class Chart extends Slide
             $objWriter->endElement();
 
             // c:showLegendKey
-            $this->_writeElementWithValAttribute($objWriter, 'c:showLegendKey', '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', '0');
 
             // c:showVal
-            $this->_writeElementWithValAttribute($objWriter, 'c:showVal', $series->getShowValue() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
             // c:showCatName
-            $this->_writeElementWithValAttribute($objWriter, 'c:showCatName', $series->getShowCategoryName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
 
             // c:showSerName
-            $this->_writeElementWithValAttribute($objWriter, 'c:showSerName', $series->getShowSeriesName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
 
             // c:showPercent
-            $this->_writeElementWithValAttribute($objWriter, 'c:showPercent', $series->getShowPercentage() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
             // c:showLeaderLines
-            $this->_writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->getShowLeaderLines() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             $objWriter->endElement();
             /*
@@ -1653,7 +1653,7 @@ class Chart extends Slide
             $objWriter->startElement('c:spPr');
 
             // Write fill
-            $this->_writeFill($objWriter, $series->getFill());
+            $this->writeFill($objWriter, $series->getFill());
 
             $objWriter->endElement();
             */
@@ -1662,7 +1662,7 @@ class Chart extends Slide
 
             // c:xVal
             $objWriter->startElement('c:xVal');
-            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
             $objWriter->endElement();
 
             // Write Y axis data
@@ -1671,7 +1671,7 @@ class Chart extends Slide
             // c:yVal
             $objWriter->startElement('c:yVal');
             $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
-            $this->_writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
             $objWriter->endElement();
 
             // c:smooth

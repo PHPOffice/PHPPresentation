@@ -44,42 +44,49 @@ class Alignment implements IComparable
      *
      * @var string
      */
-    private $_horizontal;
+    private $horizontal;
 
     /**
      * Vertical
      *
      * @var string
      */
-    private $_vertical;
+    private $vertical;
 
     /**
      * Level
      *
      * @var int
      */
-    private $_level;
+    private $level;
 
     /**
      * Indent - only possible with horizontal alignment left and right
      *
      * @var int
      */
-    private $_indent;
+    private $indent;
 
     /**
      * Margin left - only possible with horizontal alignment left and right
      *
      * @var int
      */
-    private $_marginLeft;
+    private $marginLeft;
 
     /**
      * Margin right - only possible with horizontal alignment left and right
      *
      * @var int
      */
-    private $_marginRight;
+    private $marginRight;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Style_Alignment
@@ -87,12 +94,12 @@ class Alignment implements IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_horizontal          = self::HORIZONTAL_LEFT;
-        $this->_vertical            = self::VERTICAL_BASE;
-        $this->_level               = 0;
-        $this->_indent              = 0;
-        $this->_marginLeft          = 0;
-        $this->_marginRight         = 0;
+        $this->horizontal          = self::HORIZONTAL_LEFT;
+        $this->vertical            = self::VERTICAL_BASE;
+        $this->level               = 0;
+        $this->indent              = 0;
+        $this->marginLeft          = 0;
+        $this->marginRight         = 0;
     }
 
     /**
@@ -102,7 +109,7 @@ class Alignment implements IComparable
      */
     public function getHorizontal()
     {
-        return $this->_horizontal;
+        return $this->horizontal;
     }
 
     /**
@@ -116,7 +123,7 @@ class Alignment implements IComparable
         if ($pValue == '') {
             $pValue = self::HORIZONTAL_LEFT;
         }
-        $this->_horizontal = $pValue;
+        $this->horizontal = $pValue;
 
         return $this;
     }
@@ -128,7 +135,7 @@ class Alignment implements IComparable
      */
     public function getVertical()
     {
-        return $this->_vertical;
+        return $this->vertical;
     }
 
     /**
@@ -142,7 +149,7 @@ class Alignment implements IComparable
         if ($pValue == '') {
             $pValue = self::VERTICAL_BASE;
         }
-        $this->_vertical = $pValue;
+        $this->vertical = $pValue;
 
         return $this;
     }
@@ -154,7 +161,7 @@ class Alignment implements IComparable
      */
     public function getLevel()
     {
-        return $this->_level;
+        return $this->level;
     }
 
     /**
@@ -169,7 +176,7 @@ class Alignment implements IComparable
         if ($pValue < 0 || $pValue > 8) {
             throw new \Exception("Invalid value: shoul be range 0 - 8.");
         }
-        $this->_level = $pValue;
+        $this->level = $pValue;
 
         return $this;
     }
@@ -181,7 +188,7 @@ class Alignment implements IComparable
      */
     public function getIndent()
     {
-        return $this->_indent;
+        return $this->indent;
     }
 
     /**
@@ -198,7 +205,7 @@ class Alignment implements IComparable
             }
         }
 
-        $this->_indent = $pValue;
+        $this->indent = $pValue;
 
         return $this;
     }
@@ -210,7 +217,7 @@ class Alignment implements IComparable
      */
     public function getMarginLeft()
     {
-        return $this->_marginLeft;
+        return $this->marginLeft;
     }
 
     /**
@@ -227,7 +234,7 @@ class Alignment implements IComparable
             }
         }
 
-        $this->_marginLeft = $pValue;
+        $this->marginLeft = $pValue;
 
         return $this;
     }
@@ -239,7 +246,7 @@ class Alignment implements IComparable
      */
     public function getMarginRight()
     {
-        return $this->_marginRight;
+        return $this->marginRight;
     }
 
     /**
@@ -256,7 +263,7 @@ class Alignment implements IComparable
             }
         }
 
-        $this->_marginRight = $pValue;
+        $this->marginRight = $pValue;
 
         return $this;
     }
@@ -269,22 +276,15 @@ class Alignment implements IComparable
     public function getHashCode()
     {
         return md5(
-            $this->_horizontal
-            . $this->_vertical
-            . $this->_level
-            . $this->_indent
-            . $this->_marginLeft
-            . $this->_marginRight
+            $this->horizontal
+            . $this->vertical
+            . $this->level
+            . $this->indent
+            . $this->marginLeft
+            . $this->marginRight
             . __CLASS__
         );
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -296,7 +296,7 @@ class Alignment implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -309,7 +309,7 @@ class Alignment implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

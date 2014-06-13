@@ -39,35 +39,35 @@ class ODPresentation implements IWriter
     *
     * @var PHPPowerPoint
     */
-    private $_presentation;
+    private $presentation;
 
     /**
     * Private writer parts
     *
     * @var PHPPowerPoint_Writer_ODPresentation_WriterPart[]
     */
-    private $_writerParts;
+    private $writerParts;
 
     /**
      * Private unique PHPPowerPoint_Worksheet_BaseDrawing HashTable
      *
      * @var PHPPowerPoint_HashTable
      */
-    private $_drawingHashTable;
+    private $drawingHashTable;
 
     /**
     * Use disk caching where possible?
     *
     * @var boolean
     */
-    private $_useDiskCaching = false;
+    private $useDiskCaching = false;
 
     /**
      * Disk caching directory
      *
      * @var string
      */
-    private $_diskCachingDirectory;
+    private $diskCachingDirectory;
 
     /**
      * Create a new PHPPowerPoint_Writer_ODPresentation
@@ -80,24 +80,24 @@ class ODPresentation implements IWriter
         $this->setPHPPowerPoint($pPHPPowerPoint);
 
         // Set up disk caching location
-        $this->_diskCachingDirectory = './';
+        $this->diskCachingDirectory = './';
 
         // Initialise writer parts
-        $this->_writerParts['content']  = new Content();
-        $this->_writerParts['manifest'] = new Manifest();
-        $this->_writerParts['meta']     = new Meta();
-        $this->_writerParts['mimetype'] = new Mimetype();
-        $this->_writerParts['styles']   = new Styles();
+        $this->writerParts['content']  = new Content();
+        $this->writerParts['manifest'] = new Manifest();
+        $this->writerParts['meta']     = new Meta();
+        $this->writerParts['mimetype'] = new Mimetype();
+        $this->writerParts['styles']   = new Styles();
 
-        $this->_writerParts['drawing']  = new Drawing();
+        $this->writerParts['drawing']  = new Drawing();
 
         // Assign parent IWriter
-        foreach ($this->_writerParts as $writer) {
+        foreach ($this->writerParts as $writer) {
             $writer->setParentWriter($this);
         }
 
         // Set HashTable variables
-        $this->_drawingHashTable            = new HashTable();
+        $this->drawingHashTable            = new HashTable();
     }
 
     /**
@@ -111,7 +111,7 @@ class ODPresentation implements IWriter
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty");
         }
-        if (!is_null($this->_presentation)) {
+        if (!is_null($this->presentation)) {
             // If $pFilename is php://output or php://stdout, make it a temporary file...
             $originalFilename = $pFilename;
             if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
@@ -122,7 +122,7 @@ class ODPresentation implements IWriter
             }
 
             // Create drawing dictionary
-            $this->_drawingHashTable->addFromSource($this->getWriterPart('Drawing')->allDrawings($this->_presentation));
+            $this->drawingHashTable->addFromSource($this->getWriterPart('Drawing')->allDrawings($this->presentation));
 
             // Create new ZIP file and open it for writing
             $objZip = new \ZipArchive();
@@ -139,13 +139,13 @@ class ODPresentation implements IWriter
             $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writeMimetype());
 
             // Add content.xml to ZIP file
-            $objZip->addFromString('content.xml', $this->getWriterPart('content')->writeContent($this->_presentation));
+            $objZip->addFromString('content.xml', $this->getWriterPart('content')->writeContent($this->presentation));
 
             // Add meta.xml to ZIP file
-            $objZip->addFromString('meta.xml', $this->getWriterPart('meta')->writeMeta($this->_presentation));
+            $objZip->addFromString('meta.xml', $this->getWriterPart('meta')->writeMeta($this->presentation));
 
             // Add styles.xml to ZIP file
-            $objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writeStyles($this->_presentation));
+            $objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writeStyles($this->presentation));
 
             // Add META-INF/manifest.xml
             $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writeManifest());
@@ -214,8 +214,8 @@ class ODPresentation implements IWriter
      */
     public function getPHPPowerPoint()
     {
-        if (!is_null($this->_presentation)) {
-            return $this->_presentation;
+        if (!is_null($this->presentation)) {
+            return $this->presentation;
         } else {
             throw new \Exception("No PHPPowerPoint assigned.");
         }
@@ -230,7 +230,7 @@ class ODPresentation implements IWriter
      */
     public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
     {
-        $this->_presentation = $pPHPPowerPoint;
+        $this->presentation = $pPHPPowerPoint;
 
         return $this;
     }
@@ -242,7 +242,7 @@ class ODPresentation implements IWriter
      */
     public function getDrawingHashTable()
     {
-        return $this->_drawingHashTable;
+        return $this->drawingHashTable;
     }
 
     /**
@@ -253,8 +253,8 @@ class ODPresentation implements IWriter
      */
     public function getWriterPart($pPartName = '')
     {
-        if ($pPartName != '' && isset($this->_writerParts[strtolower($pPartName)])) {
-            return $this->_writerParts[strtolower($pPartName)];
+        if ($pPartName != '' && isset($this->writerParts[strtolower($pPartName)])) {
+            return $this->writerParts[strtolower($pPartName)];
         } else {
             return null;
         }
@@ -265,9 +265,9 @@ class ODPresentation implements IWriter
      *
      * @return boolean
      */
-    public function getUseDiskCaching()
+    public function hasDiskCaching()
     {
-        return $this->_useDiskCaching;
+        return $this->useDiskCaching;
     }
 
     /**
@@ -280,11 +280,11 @@ class ODPresentation implements IWriter
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
     {
-        $this->_useDiskCaching = $pValue;
+        $this->useDiskCaching = $pValue;
 
         if (!is_null($pDirectory)) {
             if (is_dir($pDirectory)) {
-                $this->_diskCachingDirectory = $pDirectory;
+                $this->diskCachingDirectory = $pDirectory;
             } else {
                 throw new \Exception("Directory does not exist: $pDirectory");
             }
@@ -300,6 +300,6 @@ class ODPresentation implements IWriter
      */
     public function getDiskCachingDirectory()
     {
-        return $this->_diskCachingDirectory;
+        return $this->diskCachingDirectory;
     }
 }

@@ -35,28 +35,35 @@ class Row implements IComparable
      *
      * @var PHPPowerPoint_Shape_Table_Cell[]
      */
-    private $_cells;
+    private $cells;
 
     /**
      * Fill
      *
      * @var PHPPowerPoint_Style_Fill
      */
-    private $_fill;
+    private $fill;
 
     /**
      * Height (in pixels)
      *
      * @var int
      */
-    private $_height = 38;
+    private $height = 38;
 
     /**
      * Active cell index
      *
      * @var int
      */
-    private $_activeCellIndex = -1;
+    private $activeCellIndex = -1;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_Table_Row instance
@@ -66,13 +73,13 @@ class Row implements IComparable
     public function __construct($columns = 1)
     {
         // Initialise variables
-        $this->_cells = array();
+        $this->cells = array();
         for ($i = 0; $i < $columns; $i++) {
-            $this->_cells[] = new Cell();
+            $this->cells[] = new Cell();
         }
 
         // Set fill
-        $this->_fill = new Fill();
+        $this->fill = new Fill();
     }
 
     /**
@@ -84,14 +91,14 @@ class Row implements IComparable
      */
     public function getCell($cell = 0, $exceptionAsNull = false)
     {
-        if (!isset($this->_cells[$cell])) {
+        if (!isset($this->cells[$cell])) {
             if ($exceptionAsNull) {
                 return null;
             }
             throw new \Exception('Cell number out of bounds.');
         }
 
-        return $this->_cells[$cell];
+        return $this->cells[$cell];
     }
 
     /**
@@ -101,7 +108,7 @@ class Row implements IComparable
      */
     public function getCells()
     {
-        return $this->_cells;
+        return $this->cells;
     }
 
     /**
@@ -112,11 +119,11 @@ class Row implements IComparable
      */
     public function nextCell()
     {
-        $this->_activeCellIndex++;
-        if (isset($this->_cells[$this->_activeCellIndex])) {
-            $this->_cells[$this->_activeCellIndex]->setFill(clone $this->getFill());
+        $this->activeCellIndex++;
+        if (isset($this->cells[$this->activeCellIndex])) {
+            $this->cells[$this->activeCellIndex]->setFill(clone $this->getFill());
 
-            return $this->_cells[$this->_activeCellIndex];
+            return $this->cells[$this->activeCellIndex];
         } else {
             throw new \Exception("Cell count out of bounds.");
         }
@@ -129,7 +136,7 @@ class Row implements IComparable
      */
     public function getFill()
     {
-        return $this->_fill;
+        return $this->fill;
     }
 
     /**
@@ -140,7 +147,7 @@ class Row implements IComparable
      */
     public function setFill(Fill $fill)
     {
-        $this->_fill = $fill;
+        $this->fill = $fill;
 
         return $this;
     }
@@ -152,7 +159,7 @@ class Row implements IComparable
      */
     public function getHeight()
     {
-        return $this->_height;
+        return $this->height;
     }
 
     /**
@@ -163,7 +170,7 @@ class Row implements IComparable
      */
     public function setHeight($value = 0)
     {
-        $this->_height = $value;
+        $this->height = $value;
 
         return $this;
     }
@@ -176,19 +183,12 @@ class Row implements IComparable
     public function getHashCode()
     {
         $hashElements = '';
-        foreach ($this->_cells as $cell) {
+        foreach ($this->cells as $cell) {
             $hashElements .= $cell->getHashCode();
         }
 
-        return md5($hashElements . $this->_fill->getHashCode() . $this->_height . __CLASS__);
+        return md5($hashElements . $this->fill->getHashCode() . $this->height . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -200,7 +200,7 @@ class Row implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -213,7 +213,7 @@ class Row implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

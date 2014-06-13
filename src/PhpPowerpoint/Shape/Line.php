@@ -30,6 +30,14 @@ use PhpOffice\PhpPowerpoint\Style\Border;
  */
 class Line extends Shape implements IComparable
 {
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
+    
     /**
      * Create a new PHPPowerPoint_Shape_Line instance
      *
@@ -61,13 +69,6 @@ class Line extends Shape implements IComparable
     }
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
-
-    /**
      * Get hash index
      *
      * Note that this index may vary during script execution! Only reliable moment is
@@ -77,7 +78,7 @@ class Line extends Shape implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -90,7 +91,7 @@ class Line extends Shape implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

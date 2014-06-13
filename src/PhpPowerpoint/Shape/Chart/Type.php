@@ -33,14 +33,21 @@ abstract class Type implements IComparable
      *
      * @var boolean
      */
-    protected $_hasAxisX = true;
+    protected $hasAxisX = true;
 
     /**
      * Has Axis Y?
      *
      * @var boolean
      */
-    protected $_hasAxisY = true;
+    protected $hasAxisY = true;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Has Axis X?
@@ -49,7 +56,7 @@ abstract class Type implements IComparable
      */
     public function hasAxisX()
     {
-        return $this->_hasAxisX;
+        return $this->hasAxisX;
     }
 
     /**
@@ -59,7 +66,7 @@ abstract class Type implements IComparable
      */
     public function hasAxisY()
     {
-        return $this->_hasAxisY;
+        return $this->hasAxisY;
     }
 
     /**
@@ -73,13 +80,6 @@ abstract class Type implements IComparable
     }
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
-
-    /**
      * Get hash index
      *
      * Note that this index may vary during script execution! Only reliable moment is
@@ -89,7 +89,7 @@ abstract class Type implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -102,7 +102,7 @@ abstract class Type implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

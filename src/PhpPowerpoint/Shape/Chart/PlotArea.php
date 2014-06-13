@@ -35,58 +35,58 @@ class PlotArea implements IComparable
      *
      * @var PHPPowerPoint_Shape_Chart_Type
      */
-    private $_type;
+    private $type;
 
     /**
      * Axis X
      *
      * @var PHPPowerPoint_Shape_Chart_Axis
      */
-    private $_axisX;
+    private $axisX;
 
     /**
      * Axis Y
      *
      * @var PHPPowerPoint_Shape_Chart_Axis
      */
-    private $_axisY;
+    private $axisY;
 
     /**
      * OffsetX (as a fraction of the chart)
      *
      * @var float
      */
-    private $_offsetX = 0;
+    private $offsetX = 0;
 
     /**
      * OffsetY (as a fraction of the chart)
      *
      * @var float
      */
-    private $_offsetY = 0;
+    private $offsetY = 0;
 
     /**
      * Width (as a fraction of the chart)
      *
      * @var float
      */
-    private $_width = 0;
+    private $width = 0;
 
     /**
      * Height (as a fraction of the chart)
      *
      * @var float
      */
-    private $_height = 0;
+    private $height = 0;
 
     /**
      * Create a new PHPPowerPoint_Shape_Chart_PlotArea instance
      */
     public function __construct()
     {
-        $this->_type  = null;
-        $this->_axisX = new Axis();
-        $this->_axisY = new Axis();
+        $this->type  = null;
+        $this->axisX = new Axis();
+        $this->axisY = new Axis();
     }
 
     /**
@@ -97,11 +97,11 @@ class PlotArea implements IComparable
      */
     public function getType()
     {
-        if (is_null($this->_type)) {
+        if (is_null($this->type)) {
             throw new \Exception('Chart type has not been set.');
         }
 
-        return $this->_type;
+        return $this->type;
     }
 
     /**
@@ -113,7 +113,7 @@ class PlotArea implements IComparable
      */
     public function setType(Type $value)
     {
-        $this->_type = $value;
+        $this->type = $value;
 
         return $this;
     }
@@ -125,7 +125,7 @@ class PlotArea implements IComparable
      */
     public function getAxisX()
     {
-        return $this->_axisX;
+        return $this->axisX;
     }
 
     /**
@@ -135,7 +135,7 @@ class PlotArea implements IComparable
      */
     public function getAxisY()
     {
-        return $this->_axisY;
+        return $this->axisY;
     }
 
     /**
@@ -145,7 +145,7 @@ class PlotArea implements IComparable
      */
     public function getOffsetX()
     {
-        return $this->_offsetX;
+        return $this->offsetX;
     }
 
     /**
@@ -156,7 +156,7 @@ class PlotArea implements IComparable
      */
     public function setOffsetX($value = 0)
     {
-        $this->_offsetX = $value;
+        $this->offsetX = $value;
 
         return $this;
     }
@@ -168,7 +168,7 @@ class PlotArea implements IComparable
      */
     public function getOffsetY()
     {
-        return $this->_offsetY;
+        return $this->offsetY;
     }
 
     /**
@@ -179,7 +179,7 @@ class PlotArea implements IComparable
      */
     public function setOffsetY($value = 0)
     {
-        $this->_offsetY = $value;
+        $this->offsetY = $value;
 
         return $this;
     }
@@ -191,7 +191,7 @@ class PlotArea implements IComparable
      */
     public function getWidth()
     {
-        return $this->_width;
+        return $this->width;
     }
 
     /**
@@ -202,7 +202,7 @@ class PlotArea implements IComparable
      */
     public function setWidth($value = 0)
     {
-        $this->_width = $value;
+        $this->width = $value;
 
         return $this;
     }
@@ -214,7 +214,7 @@ class PlotArea implements IComparable
      */
     public function getHeight()
     {
-        return $this->_height;
+        return $this->height;
     }
 
     /**
@@ -225,7 +225,7 @@ class PlotArea implements IComparable
      */
     public function setHeight($value = 0)
     {
-        $this->_height = $value;
+        $this->height = $value;
 
         return $this;
     }
@@ -237,7 +237,7 @@ class PlotArea implements IComparable
      */
     public function getHashCode()
     {
-        return md5((is_null($this->_type) ? 'null' : $this->_type->getHashCode()) . $this->_axisX->getHashCode() . $this->_axisY->getHashCode() . $this->_offsetX . $this->_offsetY . $this->_width . $this->_height . __CLASS__);
+        return md5((is_null($this->type) ? 'null' : $this->type->getHashCode()) . $this->axisX->getHashCode() . $this->axisY->getHashCode() . $this->offsetX . $this->offsetY . $this->width . $this->height . __CLASS__);
     }
 
     /**
@@ -245,7 +245,7 @@ class PlotArea implements IComparable
      *
      * @var string
      */
-    private $_hashIndex;
+    private $hashIndex;
 
     /**
      * Get hash index
@@ -257,7 +257,7 @@ class PlotArea implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -270,7 +270,7 @@ class PlotArea implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

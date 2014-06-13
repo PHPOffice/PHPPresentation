@@ -46,77 +46,77 @@ class Series implements IComparable
      *
      * @var string
      */
-    private $_title = 'Series Title';
+    private $title = 'Series Title';
 
     /**
      * Fill
      *
      * @var PHPPowerPoint_Style_Fill
      */
-    private $_fill;
+    private $fill;
 
     /**
      * Values (key/value)
      *
      * @var array
      */
-    private $_values = array();
+    private $values = array();
 
     /**
      * DataPointFills (key/value)
      *
      * @var array
      */
-    private $_dataPointFills = array();
+    private $dataPointFills = array();
 
     /**
      * ShowSeriesName
      *
      * @var boolean
      */
-    private $_showSeriesName = false;
+    private $showSeriesName = false;
 
     /**
      * ShowCategoryName
      *
      * @var boolean
      */
-    private $_showCategoryName = false;
+    private $showCategoryName = false;
 
     /**
      * ShowValue
      *
      * @var boolean
      */
-    private $_showValue = true;
+    private $showValue = true;
 
     /**
      * ShowPercentage
      *
      * @var boolean
      */
-    private $_showPercentage = false;
+    private $showPercentage = false;
 
     /**
      * ShowLeaderLines
      *
      * @var boolean
      */
-    private $_showLeaderLines = true;
+    private $showLeaderLines = true;
 
     /**
      * Font
      *
      * @var PHPPowerPoint_Style_Font
      */
-    private $_font;
+    private $font;
 
     /**
      * Label position
      *
      * @var string
      */
-    private $_labelPosition = 'ctr';
+    private $labelPosition = 'ctr';
 
     /**
      * Create a new PHPPowerPoint_Shape_Chart_Series instance
@@ -126,12 +126,12 @@ class Series implements IComparable
      */
     public function __construct($title = 'Series Title', $values = array())
     {
-        $this->_fill = new Fill();
-        $this->_font = new Font();
-        $this->_font->setName('Calibri');
-        $this->_font->setSize(9);
-        $this->_title  = $title;
-        $this->_values = $values;
+        $this->fill = new Fill();
+        $this->font = new Font();
+        $this->font->setName('Calibri');
+        $this->font->setSize(9);
+        $this->title  = $title;
+        $this->values = $values;
     }
 
     /**
@@ -141,7 +141,7 @@ class Series implements IComparable
      */
     public function getTitle()
     {
-        return $this->_title;
+        return $this->title;
     }
 
     /**
@@ -152,7 +152,7 @@ class Series implements IComparable
      */
     public function setTitle($value = 'Series Title')
     {
-        $this->_title = $value;
+        $this->title = $value;
 
         return $this;
     }
@@ -164,7 +164,7 @@ class Series implements IComparable
      */
     public function getFill()
     {
-        return $this->_fill;
+        return $this->fill;
     }
 
     /**
@@ -175,11 +175,11 @@ class Series implements IComparable
      */
     public function getDataPointFill($dataPointIndex)
     {
-        if (!isset($this->_dataPointFills[$dataPointIndex])) {
-            $this->_dataPointFills[$dataPointIndex] = new Fill();
+        if (!isset($this->dataPointFills[$dataPointIndex])) {
+            $this->dataPointFills[$dataPointIndex] = new Fill();
         }
 
-        return $this->_dataPointFills[$dataPointIndex];
+        return $this->dataPointFills[$dataPointIndex];
     }
 
     /**
@@ -189,7 +189,7 @@ class Series implements IComparable
      */
     public function getDataPointFills()
     {
-        return $this->_dataPointFills;
+        return $this->dataPointFills;
     }
 
     /**
@@ -199,7 +199,7 @@ class Series implements IComparable
      */
     public function getValues()
     {
-        return $this->_values;
+        return $this->values;
     }
 
     /**
@@ -210,7 +210,7 @@ class Series implements IComparable
      */
     public function setValues($value = array())
     {
-        $this->_values = $value;
+        $this->values = $value;
 
         return $this;
     }
@@ -224,7 +224,7 @@ class Series implements IComparable
      */
     public function addValue($key, $value)
     {
-        $this->_values[$key] = $value;
+        $this->values[$key] = $value;
 
         return $this;
     }
@@ -234,9 +234,9 @@ class Series implements IComparable
      *
      * @return boolean
      */
-    public function getShowSeriesName()
+    public function hasShowSeriesName()
     {
-        return $this->_showSeriesName;
+        return $this->showSeriesName;
     }
 
     /**
@@ -247,7 +247,7 @@ class Series implements IComparable
      */
     public function setShowSeriesName($value)
     {
-        $this->_showSeriesName = $value;
+        $this->showSeriesName = $value;
 
         return $this;
     }
@@ -257,9 +257,9 @@ class Series implements IComparable
      *
      * @return boolean
      */
-    public function getShowCategoryName()
+    public function hasShowCategoryName()
     {
-        return $this->_showCategoryName;
+        return $this->showCategoryName;
     }
 
     /**
@@ -270,7 +270,7 @@ class Series implements IComparable
      */
     public function setShowCategoryName($value)
     {
-        $this->_showCategoryName = $value;
+        $this->showCategoryName = $value;
 
         return $this;
     }
@@ -280,9 +280,9 @@ class Series implements IComparable
      *
      * @return boolean
      */
-    public function getShowValue()
+    public function hasShowValue()
     {
-        return $this->_showValue;
+        return $this->showValue;
     }
 
     /**
@@ -293,7 +293,7 @@ class Series implements IComparable
      */
     public function setShowValue($value)
     {
-        $this->_showValue = $value;
+        $this->showValue = $value;
 
         return $this;
     }
@@ -303,9 +303,9 @@ class Series implements IComparable
      *
      * @return boolean
      */
-    public function getShowPercentage()
+    public function hasShowPercentage()
     {
-        return $this->_showPercentage;
+        return $this->showPercentage;
     }
 
     /**
@@ -316,7 +316,7 @@ class Series implements IComparable
      */
     public function setShowPercentage($value)
     {
-        $this->_showPercentage = $value;
+        $this->showPercentage = $value;
 
         return $this;
     }
@@ -326,9 +326,9 @@ class Series implements IComparable
      *
      * @return boolean
      */
-    public function getShowLeaderLines()
+    public function hasShowLeaderLines()
     {
-        return $this->_showLeaderLines;
+        return $this->showLeaderLines;
     }
 
     /**
@@ -339,7 +339,7 @@ class Series implements IComparable
      */
     public function setShowLeaderLines($value)
     {
-        $this->_showLeaderLines = $value;
+        $this->showLeaderLines = $value;
 
         return $this;
     }
@@ -351,7 +351,7 @@ class Series implements IComparable
      */
     public function getFont()
     {
-        return $this->_font;
+        return $this->font;
     }
 
     /**
@@ -363,7 +363,7 @@ class Series implements IComparable
      */
     public function setFont(Font $pFont = null)
     {
-        $this->_font = $pFont;
+        $this->font = $pFont;
 
         return $this;
     }
@@ -375,7 +375,7 @@ class Series implements IComparable
      */
     public function getLabelPosition()
     {
-        return $this->_labelPosition;
+        return $this->labelPosition;
     }
 
     /**
@@ -386,7 +386,7 @@ class Series implements IComparable
      */
     public function setLabelPosition($value)
     {
-        $this->_labelPosition = $value;
+        $this->labelPosition = $value;
 
         return $this;
     }
@@ -398,7 +398,7 @@ class Series implements IComparable
      */
     public function getHashCode()
     {
-        return md5((is_null($this->_fill) ? 'null' : $this->_fill->getHashCode()) . (is_null($this->_font) ? 'null' : $this->_font->getHashCode()) . var_export($this->_values, true) . var_export($this, true) . __CLASS__);
+        return md5((is_null($this->fill) ? 'null' : $this->fill->getHashCode()) . (is_null($this->font) ? 'null' : $this->font->getHashCode()) . var_export($this->values, true) . var_export($this, true) . __CLASS__);
     }
 
     /**
@@ -406,7 +406,7 @@ class Series implements IComparable
      *
      * @var string
      */
-    private $_hashIndex;
+    private $hashIndex;
 
     /**
      * Get hash index
@@ -418,7 +418,7 @@ class Series implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -431,7 +431,7 @@ class Series implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

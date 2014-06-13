@@ -97,13 +97,13 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
     /**
      * Test set/get Office 2003 compatibility
      */
-    public function testSetGetOffice2003Compatibility()
+    public function testSetHasOffice2003Compatibility()
     {
         $object = new PowerPoint2007(new PhpPowerpoint());
-        $this->assertFalse($object->getOffice2003Compatibility());
+        $this->assertFalse($object->hasOffice2003Compatibility());
 
         $object->setOffice2003Compatibility(true);
-        $this->assertTrue($object->getOffice2003Compatibility());
+        $this->assertTrue($object->hasOffice2003Compatibility());
     }
 
     /**

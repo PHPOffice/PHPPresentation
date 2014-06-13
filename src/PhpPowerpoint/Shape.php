@@ -35,88 +35,95 @@ abstract class Shape implements IComparable
      *
      * @var PHPPowerPoint_Slide
      */
-    protected $_slide;
+    protected $slide;
 
     /**
      * Offset X
      *
      * @var int
      */
-    protected $_offsetX;
+    protected $offsetX;
 
     /**
      * Offset Y
      *
      * @var int
      */
-    protected $_offsetY;
+    protected $offsetY;
 
     /**
      * Width
      *
      * @var int
      */
-    protected $_width;
+    protected $width;
 
     /**
      * Height
      *
      * @var int
      */
-    protected $_height;
+    protected $height;
 
     /**
      * Fill
      *
      * @var PHPPowerPoint_Style_Fill
      */
-    private $_fill;
+    private $fill;
 
     /**
      * Border
      *
      * @var PHPPowerPoint_Style_Border
      */
-    private $_border;
+    private $border;
 
     /**
      * Rotation
      *
      * @var int
      */
-    protected $_rotation;
+    protected $rotation;
 
     /**
      * Shadow
      *
      * @var PHPPowerPoint_Style_Shadow
      */
-    protected $_shadow;
+    protected $shadow;
 
     /**
      * Hyperlink
      *
      * @var PHPPowerPoint_Shape_Hyperlink
      */
-    protected $_hyperlink;
+    protected $hyperlink;
 
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
+    
     /**
      * Create a new PHPPowerPoint_Shape
      */
     public function __construct()
     {
         // Initialise values
-        $this->_slide    = null;
-        $this->_offsetX  = 0;
-        $this->_offsetY  = 0;
-        $this->_width    = 0;
-        $this->_height   = 0;
-        $this->_rotation = 0;
-        $this->_fill     = new Style\Fill();
-        $this->_border   = new Style\Border();
-        $this->_shadow   = new Style\Shadow();
+        $this->slide    = null;
+        $this->offsetX  = 0;
+        $this->offsetY  = 0;
+        $this->width    = 0;
+        $this->height   = 0;
+        $this->rotation = 0;
+        $this->fill     = new Style\Fill();
+        $this->border   = new Style\Border();
+        $this->shadow   = new Style\Shadow();
 
-        $this->_border->setLineStyle(Style\Border::LINE_NONE);
+        $this->border->setLineStyle(Style\Border::LINE_NONE);
     }
 
     /**
@@ -126,7 +133,7 @@ abstract class Shape implements IComparable
      */
     public function getSlide()
     {
-        return $this->_slide;
+        return $this->slide;
     }
 
     /**
@@ -139,19 +146,19 @@ abstract class Shape implements IComparable
      */
     public function setSlide(Slide $pValue = null, $pOverrideOld = false)
     {
-        if (is_null($this->_slide)) {
+        if (is_null($this->slide)) {
             // Add drawing to PHPPowerPoint_Slide
-            $this->_slide = $pValue;
-            $this->_slide->getShapeCollection()->append($this);
+            $this->slide = $pValue;
+            $this->slide->getShapeCollection()->append($this);
         } else {
             if ($pOverrideOld) {
                 // Remove drawing from old PHPPowerPoint_Slide
-                $iterator = $this->_slide->getShapeCollection()->getIterator();
+                $iterator = $this->slide->getShapeCollection()->getIterator();
 
                 while ($iterator->valid()) {
                     if ($iterator->current()->getHashCode() == $this->getHashCode()) {
-                        $this->_slide->getShapeCollection()->offsetUnset($iterator->key());
-                        $this->_slide = null;
+                        $this->slide->getShapeCollection()->offsetUnset($iterator->key());
+                        $this->slide = null;
                         break;
                     }
                 }
@@ -173,7 +180,7 @@ abstract class Shape implements IComparable
      */
     public function getOffsetX()
     {
-        return $this->_offsetX;
+        return $this->offsetX;
     }
 
     /**
@@ -184,7 +191,7 @@ abstract class Shape implements IComparable
      */
     public function setOffsetX($pValue = 0)
     {
-        $this->_offsetX = $pValue;
+        $this->offsetX = $pValue;
 
         return $this;
     }
@@ -196,7 +203,7 @@ abstract class Shape implements IComparable
      */
     public function getOffsetY()
     {
-        return $this->_offsetY;
+        return $this->offsetY;
     }
 
     /**
@@ -207,7 +214,7 @@ abstract class Shape implements IComparable
      */
     public function setOffsetY($pValue = 0)
     {
-        $this->_offsetY = $pValue;
+        $this->offsetY = $pValue;
 
         return $this;
     }
@@ -219,7 +226,7 @@ abstract class Shape implements IComparable
      */
     public function getWidth()
     {
-        return $this->_width;
+        return $this->width;
     }
 
     /**
@@ -230,8 +237,7 @@ abstract class Shape implements IComparable
      */
     public function setWidth($pValue = 0)
     {
-        $this->_width = $pValue;
-
+        $this->width = $pValue;
         return $this;
     }
 
@@ -242,7 +248,7 @@ abstract class Shape implements IComparable
      */
     public function getHeight()
     {
-        return $this->_height;
+        return $this->height;
     }
 
     /**
@@ -253,8 +259,7 @@ abstract class Shape implements IComparable
      */
     public function setHeight($pValue = 0)
     {
-        $this->_height = $pValue;
-
+        $this->height = $pValue;
         return $this;
     }
 
@@ -268,9 +273,8 @@ abstract class Shape implements IComparable
      */
     public function setWidthAndHeight($width = 0, $height = 0)
     {
-        $this->_width  = $width;
-        $this->_height = $height;
-
+        $this->width  = $width;
+        $this->height = $height;
         return $this;
     }
 
@@ -281,7 +285,7 @@ abstract class Shape implements IComparable
      */
     public function getRotation()
     {
-        return $this->_rotation;
+        return $this->rotation;
     }
 
     /**
@@ -292,8 +296,7 @@ abstract class Shape implements IComparable
      */
     public function setRotation($pValue = 0)
     {
-        $this->_rotation = $pValue;
-
+        $this->rotation = $pValue;
         return $this;
     }
 
@@ -304,7 +307,7 @@ abstract class Shape implements IComparable
      */
     public function getFill()
     {
-        return $this->_fill;
+        return $this->fill;
     }
 
     /**
@@ -314,7 +317,7 @@ abstract class Shape implements IComparable
      */
     public function getBorder()
     {
-        return $this->_border;
+        return $this->border;
     }
 
     /**
@@ -324,7 +327,7 @@ abstract class Shape implements IComparable
      */
     public function getShadow()
     {
-        return $this->_shadow;
+        return $this->shadow;
     }
 
     /**
@@ -336,8 +339,7 @@ abstract class Shape implements IComparable
      */
     public function setShadow(Shadow $pValue = null)
     {
-        $this->_shadow = $pValue;
-
+        $this->shadow = $pValue;
         return $this;
     }
 
@@ -348,7 +350,7 @@ abstract class Shape implements IComparable
      */
     public function hasHyperlink()
     {
-        return !is_null($this->_hyperlink);
+        return !is_null($this->hyperlink);
     }
 
     /**
@@ -358,11 +360,10 @@ abstract class Shape implements IComparable
      */
     public function getHyperlink()
     {
-        if (is_null($this->_hyperlink)) {
-            $this->_hyperlink = new Hyperlink();
+        if (is_null($this->hyperlink)) {
+            $this->hyperlink = new Hyperlink();
         }
-
-        return $this->_hyperlink;
+        return $this->hyperlink;
     }
 
     /**
@@ -374,8 +375,7 @@ abstract class Shape implements IComparable
      */
     public function setHyperlink(Hyperlink $pHyperlink = null)
     {
-        $this->_hyperlink = $pHyperlink;
-
+        $this->hyperlink = $pHyperlink;
         return $this;
     }
 
@@ -386,15 +386,8 @@ abstract class Shape implements IComparable
      */
     public function getHashCode()
     {
-        return md5($this->_slide->getHashCode() . $this->_offsetX . $this->_offsetY . $this->_width . $this->_height . $this->_rotation . $this->getFill()->getHashCode() . $this->_shadow->getHashCode() . (is_null($this->_hyperlink) ? '' : $this->_hyperlink->getHashCode()) . __CLASS__);
+        return md5($this->slide->getHashCode() . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->rotation . $this->getFill()->getHashCode() . $this->shadow->getHashCode() . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -406,7 +399,7 @@ abstract class Shape implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -419,7 +412,7 @@ abstract class Shape implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

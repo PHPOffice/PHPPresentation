@@ -57,28 +57,35 @@ class Fill implements IComparable
      *
      * @var string
      */
-    private $_fillType;
+    private $fillType;
 
     /**
      * Rotation
      *
      * @var double
      */
-    private $_rotation;
+    private $rotation;
 
     /**
      * Start color
      *
      * @var PHPPowerPoint_Style_Color
      */
-    private $_startColor;
+    private $startColor;
 
     /**
      * End color
      *
      * @var PHPPowerPoint_Style_Color
      */
-    private $_endColor;
+    private $endColor;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Style_Fill
@@ -86,10 +93,10 @@ class Fill implements IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_fillType            = self::FILL_NONE;
-        $this->_rotation            = 0;
-        $this->_startColor          = new Color(Color::COLOR_WHITE);
-        $this->_endColor            = new Color(Color::COLOR_BLACK);
+        $this->fillType            = self::FILL_NONE;
+        $this->rotation            = 0;
+        $this->startColor          = new Color(Color::COLOR_WHITE);
+        $this->endColor            = new Color(Color::COLOR_BLACK);
     }
 
     /**
@@ -99,7 +106,7 @@ class Fill implements IComparable
      */
     public function getFillType()
     {
-        return $this->_fillType;
+        return $this->fillType;
     }
 
     /**
@@ -110,7 +117,7 @@ class Fill implements IComparable
      */
     public function setFillType($pValue = self::FILL_NONE)
     {
-        $this->_fillType = $pValue;
+        $this->fillType = $pValue;
 
         return $this;
     }
@@ -122,7 +129,7 @@ class Fill implements IComparable
      */
     public function getRotation()
     {
-        return $this->_rotation;
+        return $this->rotation;
     }
 
     /**
@@ -133,7 +140,7 @@ class Fill implements IComparable
      */
     public function setRotation($pValue = 0)
     {
-        $this->_rotation = $pValue;
+        $this->rotation = $pValue;
 
         return $this;
     }
@@ -147,7 +154,7 @@ class Fill implements IComparable
     {
         // It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
         // So bind as an assurance.
-        return $this->_startColor;
+        return $this->startColor;
     }
 
     /**
@@ -159,7 +166,7 @@ class Fill implements IComparable
      */
     public function setStartColor(Color $pValue = null)
     {
-        $this->_startColor = $pValue;
+        $this->startColor = $pValue;
 
         return $this;
     }
@@ -173,7 +180,7 @@ class Fill implements IComparable
     {
         // It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
         // So bind as an assurance.
-        return $this->_endColor;
+        return $this->endColor;
     }
 
     /**
@@ -185,7 +192,7 @@ class Fill implements IComparable
      */
     public function setEndColor(Color $pValue = null)
     {
-        $this->_endColor = $pValue;
+        $this->endColor = $pValue;
 
         return $this;
     }
@@ -207,13 +214,6 @@ class Fill implements IComparable
     }
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
-
-    /**
      * Get hash index
      *
      * Note that this index may vary during script execution! Only reliable moment is
@@ -223,7 +223,7 @@ class Fill implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -236,7 +236,7 @@ class Fill implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

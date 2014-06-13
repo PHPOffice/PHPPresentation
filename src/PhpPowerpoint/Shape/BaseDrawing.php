@@ -34,42 +34,42 @@ abstract class BaseDrawing extends Shape implements IComparable
      *
      * @var int
      */
-    private static $_imageCounter = 0;
+    private static $imageCounter = 0;
 
     /**
      * Image index
      *
      * @var int
      */
-    private $_imageIndex = 0;
+    private $imageIndex = 0;
 
     /**
      * Name
      *
      * @var string
      */
-    protected $_name;
+    protected $name;
 
     /**
      * Description
      *
      * @var string
      */
-    protected $_description;
+    protected $description;
 
     /**
      * Proportional resize
      *
      * @var boolean
      */
-    protected $_resizeProportional;
+    protected $resizeProportional;
 
     /**
      * Slide relation ID (should not be used by user code!)
      *
      * @var string
      */
-    public $__relationId = null;
+    public $relationId = null;
 
     /**
      * Create a new PHPPowerPoint_Slide_BaseDrawing
@@ -77,13 +77,13 @@ abstract class BaseDrawing extends Shape implements IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_name               = '';
-        $this->_description        = '';
-        $this->_resizeProportional = true;
+        $this->name               = '';
+        $this->description        = '';
+        $this->resizeProportional = true;
 
         // Set image index
-        self::$_imageCounter++;
-        $this->_imageIndex = self::$_imageCounter;
+        self::$imageCounter++;
+        $this->imageIndex = self::$imageCounter;
 
         // Initialize parent
         parent::__construct();
@@ -96,7 +96,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function getImageIndex()
     {
-        return $this->_imageIndex;
+        return $this->imageIndex;
     }
 
     /**
@@ -106,7 +106,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -117,8 +117,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function setName($pValue = '')
     {
-        $this->_name = $pValue;
-
+        $this->name = $pValue;
         return $this;
     }
 
@@ -129,7 +128,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function getDescription()
     {
-        return $this->_description;
+        return $this->description;
     }
 
     /**
@@ -140,7 +139,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function setDescription($pValue = '')
     {
-        $this->_description = $pValue;
+        $this->description = $pValue;
 
         return $this;
     }
@@ -154,13 +153,13 @@ abstract class BaseDrawing extends Shape implements IComparable
     public function setWidth($pValue = 0)
     {
         // Resize proportional?
-        if ($this->_resizeProportional && $pValue != 0) {
-            $ratio         = $this->_height / $this->_width;
-            $this->_height = round($ratio * $pValue);
+        if ($this->resizeProportional && $pValue != 0) {
+            $ratio         = $this->height / $this->width;
+            $this->height = round($ratio * $pValue);
         }
 
         // Set width
-        $this->_width = $pValue;
+        $this->width = $pValue;
 
         return $this;
     }
@@ -174,13 +173,13 @@ abstract class BaseDrawing extends Shape implements IComparable
     public function setHeight($pValue = 0)
     {
         // Resize proportional?
-        if ($this->_resizeProportional && $pValue != 0) {
-            $ratio        = $this->_width / $this->_height;
-            $this->_width = round($ratio * $pValue);
+        if ($this->resizeProportional && $pValue != 0) {
+            $ratio        = $this->width / $this->height;
+            $this->width = round($ratio * $pValue);
         }
 
         // Set height
-        $this->_height = $pValue;
+        $this->height = $pValue;
 
         return $this;
     }
@@ -196,15 +195,15 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function setWidthAndHeight($width = 0, $height = 0)
     {
-        $xratio = $width / $this->_width;
-        $yratio = $height / $this->_height;
-        if ($this->_resizeProportional && !($width == 0 || $height == 0)) {
-            if (($xratio * $this->_height) < $height) {
-                $this->_height = ceil($xratio * $this->_height);
-                $this->_width  = $width;
+        $xratio = $width / $this->width;
+        $yratio = $height / $this->height;
+        if ($this->resizeProportional && !($width == 0 || $height == 0)) {
+            if (($xratio * $this->height) < $height) {
+                $this->height = ceil($xratio * $this->height);
+                $this->width  = $width;
             } else {
-                $this->_width  = ceil($yratio * $this->_width);
-                $this->_height = $height;
+                $this->width  = ceil($yratio * $this->width);
+                $this->height = $height;
             }
         }
 
@@ -216,9 +215,9 @@ abstract class BaseDrawing extends Shape implements IComparable
      *
      * @return boolean
      */
-    public function getResizeProportional()
+    public function isResizeProportional()
     {
-        return $this->_resizeProportional;
+        return $this->resizeProportional;
     }
 
     /**
@@ -229,7 +228,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function setResizeProportional($pValue = true)
     {
-        $this->_resizeProportional = $pValue;
+        $this->resizeProportional = $pValue;
 
         return $this;
     }
@@ -241,7 +240,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function getHashCode()
     {
-        return md5($this->_name . $this->_description . parent::getHashCode() . __CLASS__);
+        return md5($this->name . $this->description . parent::getHashCode() . __CLASS__);
     }
 
     /**
@@ -249,7 +248,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      *
      * @var string
      */
-    private $_hashIndex;
+    private $hashIndex;
 
     /**
      * Get hash index
@@ -261,7 +260,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -274,7 +273,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

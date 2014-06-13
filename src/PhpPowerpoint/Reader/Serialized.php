@@ -60,31 +60,7 @@ class Serialized implements IReader
             throw new \Exception("Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized: " . $pFilename . ".");
         }
 
-        return $this->_loadSerialized($pFilename);
-    }
-
-    /**
-     * Load PHPPowerPoint Serialized file
-     *
-     * @param  string        $pFilename
-     * @return PHPPowerPoint
-     */
-    private function _loadSerialized($pFilename)
-    {
-        $xmlData = simplexml_load_string(file_get_contents("zip://$pFilename#PHPPowerPoint.xml"));
-        $excel   = unserialize(base64_decode((string) $xmlData->data));
-
-        // Update media links
-        for ($i = 0; $i < $excel->getSlideCount(); ++$i) {
-            for ($j = 0; $j < $excel->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($excel->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
-                    $imgTemp =& $excel->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $imgTemp->setPath('zip://' . $pFilename . '#media/' . $imgTemp->getFilename(), false);
-                }
-            }
-        }
-
-        return $excel;
+        return $this->loadSerialized($pFilename);
     }
 
     /**
@@ -103,5 +79,29 @@ class Serialized implements IReader
 
         // File exists, does it contain PHPPowerPoint.xml?
         return File::fileExists("zip://$pFilename#PHPPowerPoint.xml");
+    }
+    
+    /**
+     * Load PHPPowerPoint Serialized file
+     *
+     * @param  string        $pFilename
+     * @return PHPPowerPoint
+     */
+    private function loadSerialized($pFilename)
+    {
+        $xmlData = simplexml_load_string(file_get_contents("zip://$pFilename#PHPPowerPoint.xml"));
+        $file    = unserialize(base64_decode((string) $xmlData->data));
+
+        // Update media links
+        for ($i = 0; $i < $file->getSlideCount(); ++$i) {
+            for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
+                if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
+                    $imgTemp =& $file->getSlide($i)->getShapeCollection()->offsetGet($j);
+                    $imgTemp->setPath('zip://' . $pFilename . '#media/' . $imgTemp->getFilename(), false);
+                }
+            }
+        }
+
+        return $file;
     }
 }

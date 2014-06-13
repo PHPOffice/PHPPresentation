@@ -31,7 +31,7 @@ class IOFactory
      *
      * @var array
      */
-    private static $_autoResolveClasses = array('Serialized');
+    private static $autoResolveClasses = array('Serialized');
 
     /**
      * Create PHPPowerPoint_Writer_IWriter
@@ -82,8 +82,8 @@ class IOFactory
      */
     public static function load($pFilename)
     {
-        // Try loading using self::$_autoResolveClasses
-        foreach (self::$_autoResolveClasses as $autoResolveClass) {
+        // Try loading using self::$autoResolveClasses
+        foreach (self::$autoResolveClasses as $autoResolveClass) {
             $reader = self::createReader($autoResolveClass);
             if ($reader->canRead($pFilename)) {
                 return $reader->load($pFilename);

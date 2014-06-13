@@ -51,28 +51,35 @@ class Border implements IComparable
      *
      * @var int
      */
-    private $_lineWidth = 1;
+    private $lineWidth = 1;
 
     /**
      * Line style
      *
      * @var string
      */
-    private $_lineStyle;
+    private $lineStyle;
 
     /**
      * Dash style
      *
      * @var string
      */
-    private $_dashStyle;
+    private $dashStyle;
 
     /**
      * Border color
      *
      * @var PHPPowerPoint_Style_Color
      */
-    private $_color;
+    private $color;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Style_Border
@@ -80,10 +87,10 @@ class Border implements IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_lineWidth = 1;
-        $this->_lineStyle = self::LINE_SINGLE;
-        $this->_dashStyle = self::DASH_SOLID;
-        $this->_color     = new Color(Color::COLOR_BLACK);
+        $this->lineWidth = 1;
+        $this->lineStyle = self::LINE_SINGLE;
+        $this->dashStyle = self::DASH_SOLID;
+        $this->color     = new Color(Color::COLOR_BLACK);
     }
 
     /**
@@ -93,7 +100,7 @@ class Border implements IComparable
      */
     public function getLineWidth()
     {
-        return $this->_lineWidth;
+        return $this->lineWidth;
     }
 
     /**
@@ -104,7 +111,7 @@ class Border implements IComparable
      */
     public function setLineWidth($pValue = 1)
     {
-        $this->_lineWidth = $pValue;
+        $this->lineWidth = $pValue;
 
         return $this;
     }
@@ -116,7 +123,7 @@ class Border implements IComparable
      */
     public function getLineStyle()
     {
-        return $this->_lineStyle;
+        return $this->lineStyle;
     }
 
     /**
@@ -130,7 +137,7 @@ class Border implements IComparable
         if ($pValue == '') {
             $pValue = self::LINE_SINGLE;
         }
-        $this->_lineStyle = $pValue;
+        $this->lineStyle = $pValue;
 
         return $this;
     }
@@ -142,7 +149,7 @@ class Border implements IComparable
      */
     public function getDashStyle()
     {
-        return $this->_dashStyle;
+        return $this->dashStyle;
     }
 
     /**
@@ -156,7 +163,7 @@ class Border implements IComparable
         if ($pValue == '') {
             $pValue = self::DASH_SOLID;
         }
-        $this->_dashStyle = $pValue;
+        $this->dashStyle = $pValue;
 
         return $this;
     }
@@ -168,7 +175,7 @@ class Border implements IComparable
      */
     public function getColor()
     {
-        return $this->_color;
+        return $this->color;
     }
 
     /**
@@ -180,7 +187,7 @@ class Border implements IComparable
      */
     public function setColor(Color $color = null)
     {
-        $this->_color = $color;
+        $this->color = $color;
 
         return $this;
     }
@@ -193,20 +200,13 @@ class Border implements IComparable
     public function getHashCode()
     {
         return md5(
-            $this->_lineStyle
-            . $this->_lineWidth
-            . $this->_dashStyle
-            . $this->_color->getHashCode()
+            $this->lineStyle
+            . $this->lineWidth
+            . $this->dashStyle
+            . $this->color->getHashCode()
             . __CLASS__
         );
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -218,7 +218,7 @@ class Border implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -231,7 +231,7 @@ class Border implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

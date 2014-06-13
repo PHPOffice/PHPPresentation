@@ -44,7 +44,7 @@ class ContentTypes extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -58,41 +58,41 @@ class ContentTypes extends WriterPart
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/content-types');
 
         // Rels
-        $this->_writeDefaultContentType($objWriter, 'rels', 'application/vnd.openxmlformats-package.relationships+xml');
+        $this->writeDefaultContentType($objWriter, 'rels', 'application/vnd.openxmlformats-package.relationships+xml');
 
         // XML
-        $this->_writeDefaultContentType($objWriter, 'xml', 'application/xml');
+        $this->writeDefaultContentType($objWriter, 'xml', 'application/xml');
 
         // Themes
         $masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
         foreach ($masterSlides as $masterSlide) {
-            $this->_writeOverrideContentType($objWriter, '/ppt/theme/theme' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml');
+            $this->writeOverrideContentType($objWriter, '/ppt/theme/theme' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml');
         }
 
         // Presentation
-        $this->_writeOverrideContentType($objWriter, '/ppt/presentation.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml');
+        $this->writeOverrideContentType($objWriter, '/ppt/presentation.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml');
 
         // DocProps
-        $this->_writeOverrideContentType($objWriter, '/docProps/app.xml', 'application/vnd.openxmlformats-officedocument.extended-properties+xml');
+        $this->writeOverrideContentType($objWriter, '/docProps/app.xml', 'application/vnd.openxmlformats-officedocument.extended-properties+xml');
 
-        $this->_writeOverrideContentType($objWriter, '/docProps/core.xml', 'application/vnd.openxmlformats-package.core-properties+xml');
+        $this->writeOverrideContentType($objWriter, '/docProps/core.xml', 'application/vnd.openxmlformats-package.core-properties+xml');
 
         // Slide masters
         $masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
         foreach ($masterSlides as $masterSlide) {
-            $this->_writeOverrideContentType($objWriter, '/ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml');
+            $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml');
         }
 
         // Slide layouts
         $slideLayouts = $this->getParentWriter()->getLayoutPack()->getLayouts();
         for ($i = 0; $i < count($slideLayouts); ++$i) {
-            $this->_writeOverrideContentType($objWriter, '/ppt/slideLayouts/slideLayout' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml');
+            $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/slideLayout' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml');
         }
 
         // Slides
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
-            $this->_writeOverrideContentType($objWriter, '/ppt/slides/slide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slide+xml');
+            $this->writeOverrideContentType($objWriter, '/ppt/slides/slide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slide+xml');
         }
 
         // Add layoutpack content types
@@ -100,19 +100,19 @@ class ContentTypes extends WriterPart
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getMasterSlideRelations();
         foreach ($otherRelations as $otherRelations) {
             if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->_writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelations['target'], $otherRelations['contentType']);
+                $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelations['target'], $otherRelations['contentType']);
             }
         }
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getThemeRelations();
         foreach ($otherRelations as $otherRelations) {
             if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->_writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelations['target'], $otherRelations['contentType']);
+                $this->writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelations['target'], $otherRelations['contentType']);
             }
         }
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getLayoutRelations();
         foreach ($otherRelations as $otherRelations) {
             if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->_writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelations['target'], $otherRelations['contentType']);
+                $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelations['target'], $otherRelations['contentType']);
             }
         }
 
@@ -125,11 +125,11 @@ class ContentTypes extends WriterPart
         $aMediaContentTypes['jpeg'] = 'image/jpeg';
         $aMediaContentTypes['png']  = 'image/png';
         foreach ($aMediaContentTypes as $key => $value) {
-            $this->_writeDefaultContentType($objWriter, $key, $value);
+            $this->writeDefaultContentType($objWriter, $key, $value);
         }
 
         // XLSX
-        $this->_writeDefaultContentType($objWriter, 'xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        $this->writeDefaultContentType($objWriter, 'xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
         // Other media content types
         $mediaCount = $this->getParentWriter()->getDrawingHashTable()->count();
@@ -139,11 +139,11 @@ class ContentTypes extends WriterPart
 
             if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof Chart) {
                 // Chart content type
-                $this->_writeOverrideContentType($objWriter, '/ppt/charts/chart' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
+                $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
             } else {
                 if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof Drawing) {
                     $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
-                    $mimeType  = $this->_getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
+                    $mimeType  = $this->getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
                 } elseif ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
                     $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
                     $extension = explode('/', $extension);
@@ -155,7 +155,7 @@ class ContentTypes extends WriterPart
                 if (!isset($aMediaContentTypes[$extension])) {
                     $aMediaContentTypes[$extension] = $mimeType;
 
-                    $this->_writeDefaultContentType($objWriter, $extension, $mimeType);
+                    $this->writeDefaultContentType($objWriter, $extension, $mimeType);
                 }
             }
         }
@@ -173,7 +173,7 @@ class ContentTypes extends WriterPart
      * @return string    Mime Type
      * @throws \Exception
      */
-    private function _getImageMimeType($pFile = '')
+    private function getImageMimeType($pFile = '')
     {
         if (File::fileExists($pFile)) {
             $image = getimagesize($pFile);
@@ -192,7 +192,7 @@ class ContentTypes extends WriterPart
      * @param  string                         $pContentType Content type
      * @throws \Exception
      */
-    private function _writeDefaultContentType(XMLWriter $objWriter = null, $pPartname = '', $pContentType = '')
+    private function writeDefaultContentType(XMLWriter $objWriter = null, $pPartname = '', $pContentType = '')
     {
         if ($pPartname != '' && $pContentType != '') {
             // Write content type
@@ -213,7 +213,7 @@ class ContentTypes extends WriterPart
      * @param  string                         $pContentType Content type
      * @throws \Exception
      */
-    private function _writeOverrideContentType(XMLWriter $objWriter = null, $pPartname = '', $pContentType = '')
+    private function writeOverrideContentType(XMLWriter $objWriter = null, $pPartname = '', $pContentType = '')
     {
         if ($pPartname != '' && $pContentType != '') {
             // Write content type

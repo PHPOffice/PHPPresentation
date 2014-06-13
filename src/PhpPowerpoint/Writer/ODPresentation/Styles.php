@@ -42,7 +42,7 @@ class Styles extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);

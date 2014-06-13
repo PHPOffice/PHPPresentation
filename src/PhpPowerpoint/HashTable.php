@@ -33,14 +33,14 @@ class HashTable
      *
      * @var array
      */
-    public $_items = array();
+    public $items = array();
 
     /**
      * HashTable key map
      *
      * @var array
      */
-    public $_keyMap = array();
+    public $keyMap = array();
 
     /**
      * Create a new PHPPowerPoint_HashTable
@@ -85,24 +85,23 @@ class HashTable
     public function add(IComparable $pSource = null)
     {
         // Determine hashcode
-        $hashCode  = null;
         $hashIndex = $pSource->getHashIndex();
         if (is_null($hashIndex)) {
             $hashCode = $pSource->getHashCode();
-        } elseif (isset($this->_keyMap[$hashIndex])) {
-            $hashCode = $this->_keyMap[$hashIndex];
+        } elseif (isset($this->keyMap[$hashIndex])) {
+            $hashCode = $this->keyMap[$hashIndex];
         } else {
             $hashCode = $pSource->getHashCode();
         }
 
         // Add value
-        if (!isset($this->_items[$hashCode])) {
-            $this->_items[$hashCode] = $pSource;
-            $index                   = count($this->_items) - 1;
-            $this->_keyMap[$index]   = $hashCode;
+        if (!isset($this->items[$hashCode])) {
+            $this->items[$hashCode] = $pSource;
+            $index                   = count($this->items) - 1;
+            $this->keyMap[$index]   = $hashCode;
             $pSource->setHashIndex($index);
         } else {
-            $pSource->setHashIndex($this->_items[$hashCode]->getHashIndex());
+            $pSource->setHashIndex($this->items[$hashCode]->getHashIndex());
         }
     }
 
@@ -114,20 +113,20 @@ class HashTable
      */
     public function remove(IComparable $pSource = null)
     {
-        if (isset($this->_items[$pSource->getHashCode()])) {
-            unset($this->_items[$pSource->getHashCode()]);
+        if (isset($this->items[$pSource->getHashCode()])) {
+            unset($this->items[$pSource->getHashCode()]);
 
             $deleteKey = -1;
-            foreach ($this->_keyMap as $key => $value) {
+            foreach ($this->keyMap as $key => $value) {
                 if ($deleteKey >= 0) {
-                    $this->_keyMap[$key - 1] = $value;
+                    $this->keyMap[$key - 1] = $value;
                 }
 
                 if ($value == $pSource->getHashCode()) {
                     $deleteKey = $key;
                 }
             }
-            unset($this->_keyMap[count($this->_keyMap) - 1]);
+            unset($this->keyMap[count($this->keyMap) - 1]);
         }
     }
 
@@ -137,8 +136,8 @@ class HashTable
      */
     public function clear()
     {
-        $this->_items  = array();
-        $this->_keyMap = array();
+        $this->items  = array();
+        $this->keyMap = array();
     }
 
     /**
@@ -148,7 +147,7 @@ class HashTable
      */
     public function count()
     {
-        return count($this->_items);
+        return count($this->items);
     }
 
     /**
@@ -159,7 +158,7 @@ class HashTable
      */
     public function getIndexForHashCode($pHashCode = '')
     {
-        return array_search($pHashCode, $this->_keyMap);
+        return array_search($pHashCode, $this->keyMap);
     }
 
     /**
@@ -171,8 +170,8 @@ class HashTable
      */
     public function getByIndex($pIndex = 0)
     {
-        if (isset($this->_keyMap[$pIndex])) {
-            return $this->getByHashCode($this->_keyMap[$pIndex]);
+        if (isset($this->keyMap[$pIndex])) {
+            return $this->getByHashCode($this->keyMap[$pIndex]);
         }
 
         return null;
@@ -187,8 +186,8 @@ class HashTable
      */
     public function getByHashCode($pHashCode = '')
     {
-        if (isset($this->_items[$pHashCode])) {
-            return $this->_items[$pHashCode];
+        if (isset($this->items[$pHashCode])) {
+            return $this->items[$pHashCode];
         }
 
         return null;
@@ -201,7 +200,7 @@ class HashTable
      */
     public function toArray()
     {
-        return $this->_items;
+        return $this->items;
     }
 
     /**

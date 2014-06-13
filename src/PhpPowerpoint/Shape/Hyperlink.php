@@ -31,28 +31,35 @@ class Hyperlink
      *
      * @var string
      */
-    private $_url;
+    private $url;
 
     /**
      * Tooltip to display on the hyperlink
      *
      * @var string
      */
-    private $_tooltip;
+    private $tooltip;
 
     /**
      * Slide number to link to
      *
      * @var int
      */
-    private $_slideNumber = null;
+    private $slideNumber = null;
 
     /**
      * Slide relation ID (should not be used by user code!)
      *
      * @var string
      */
-    public $__relationId = null;
+    public $relationId = null;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_Hyperlink
@@ -64,8 +71,8 @@ class Hyperlink
     public function __construct($pUrl = '', $pTooltip = '')
     {
         // Initialise member variables
-        $this->_url     = $pUrl;
-        $this->_tooltip = $pTooltip;
+        $this->url     = $pUrl;
+        $this->tooltip = $pTooltip;
     }
 
     /**
@@ -75,7 +82,7 @@ class Hyperlink
      */
     public function getUrl()
     {
-        return $this->_url;
+        return $this->url;
     }
 
     /**
@@ -86,7 +93,7 @@ class Hyperlink
      */
     public function setUrl($value = '')
     {
-        $this->_url = $value;
+        $this->url = $value;
 
         return $this;
     }
@@ -98,7 +105,7 @@ class Hyperlink
      */
     public function getSlideNumber()
     {
-        return $this->_slideNumber;
+        return $this->slideNumber;
     }
 
     /**
@@ -109,8 +116,8 @@ class Hyperlink
      */
     public function setSlideNumber($value = 1)
     {
-        $this->_url         = 'ppaction://hlinksldjump';
-        $this->_slideNumber = $value;
+        $this->url         = 'ppaction://hlinksldjump';
+        $this->slideNumber = $value;
 
         return $this;
     }
@@ -122,7 +129,7 @@ class Hyperlink
      */
     public function getTooltip()
     {
-        return $this->_tooltip;
+        return $this->tooltip;
     }
 
     /**
@@ -133,7 +140,7 @@ class Hyperlink
      */
     public function setTooltip($value = '')
     {
-        $this->_tooltip = $value;
+        $this->tooltip = $value;
 
         return $this;
     }
@@ -145,7 +152,7 @@ class Hyperlink
      */
     public function isInternal()
     {
-        return strpos($this->_url, 'ppaction://') !== false;
+        return strpos($this->url, 'ppaction://') !== false;
     }
 
     /**
@@ -155,15 +162,8 @@ class Hyperlink
      */
     public function getHashCode()
     {
-        return md5($this->_url . $this->_tooltip . __CLASS__);
+        return md5($this->url . $this->tooltip . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -175,7 +175,7 @@ class Hyperlink
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -188,6 +188,6 @@ class Hyperlink
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 }

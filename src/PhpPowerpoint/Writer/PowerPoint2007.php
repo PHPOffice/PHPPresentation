@@ -19,9 +19,7 @@ namespace PhpOffice\PhpPowerpoint\Writer;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\HashTable;
-use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
-use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
-use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
+use PhpOffice\PhpPowerpoint\Shape;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\DocProps;
@@ -47,49 +45,49 @@ class PowerPoint2007 implements IWriter
      *
      * @var boolean
      */
-    protected $_office2003compatibility = false;
+    protected $office2003comp = false;
 
     /**
      * Private writer parts
      *
      * @var PHPPowerPoint_Writer_PowerPoint2007_WriterPart[]
      */
-    protected $_writerParts;
+    protected $writerParts;
 
     /**
      * Private PHPPowerPoint
      *
      * @var PHPPowerPoint
      */
-    protected $_presentation;
+    protected $presentation;
 
     /**
      * Private unique PHPPowerPoint_Worksheet_BaseDrawing HashTable
      *
      * @var PHPPowerPoint_HashTable
      */
-    protected $_drawingHashTable;
+    protected $drawingHashTable;
 
     /**
      * Use disk caching where possible?
      *
      * @var boolean
      */
-    protected $_useDiskCaching = false;
+    protected $useDiskCaching = false;
 
     /**
      * Disk caching directory
      *
      * @var string
      */
-    protected $_diskCachingDirectory;
+    protected $diskCachingDir;
 
     /**
      * Layout pack to use
      *
      * @var PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
      */
-    protected $_layoutPack;
+    protected $layoutPack;
 
     /**
      * Create a new PHPPowerPoint_Writer_PowerPoint2007
@@ -102,28 +100,28 @@ class PowerPoint2007 implements IWriter
         $this->setPHPPowerPoint($pPHPPowerPoint);
 
         // Set up disk caching location
-        $this->_diskCachingDirectory = './';
+        $this->diskCachingDir = './';
 
         // Set layout pack
-        $this->_layoutPack = new PackDefault();
+        $this->layoutPack = new PackDefault();
 
         // Initialise writer parts
-        $this->_writerParts['contenttypes'] = new ContentTypes();
-        $this->_writerParts['docprops']     = new DocProps();
-        $this->_writerParts['rels']         = new Rels();
-        $this->_writerParts['theme']        = new Theme();
-        $this->_writerParts['presentation'] = new Presentation();
-        $this->_writerParts['slide']        = new Slide();
-        $this->_writerParts['drawing']      = new Drawing();
-        $this->_writerParts['chart']        = new Chart();
+        $this->writerParts['contenttypes'] = new ContentTypes();
+        $this->writerParts['docprops']     = new DocProps();
+        $this->writerParts['rels']         = new Rels();
+        $this->writerParts['theme']        = new Theme();
+        $this->writerParts['presentation'] = new Presentation();
+        $this->writerParts['slide']        = new Slide();
+        $this->writerParts['drawing']      = new Drawing();
+        $this->writerParts['chart']        = new Chart();
 
         // Assign parent IWriter
-        foreach ($this->_writerParts as $writer) {
+        foreach ($this->writerParts as $writer) {
             $writer->setParentWriter($this);
         }
 
         // Set HashTable variables
-        $this->_drawingHashTable = new HashTable();
+        $this->drawingHashTable = new HashTable();
     }
 
     /**
@@ -134,8 +132,8 @@ class PowerPoint2007 implements IWriter
      */
     public function getWriterPart($pPartName = '')
     {
-        if ($pPartName != '' && isset($this->_writerParts[strtolower($pPartName)])) {
-            return $this->_writerParts[strtolower($pPartName)];
+        if ($pPartName != '' && isset($this->writerParts[strtolower($pPartName)])) {
+            return $this->writerParts[strtolower($pPartName)];
         } else {
             return null;
         }
@@ -152,7 +150,7 @@ class PowerPoint2007 implements IWriter
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty");
         }
-        if (!is_null($this->_presentation)) {
+        if (!is_null($this->presentation)) {
             // If $pFilename is php://output or php://stdout, make it a temporary file...
             $originalFilename = $pFilename;
             if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
@@ -163,7 +161,7 @@ class PowerPoint2007 implements IWriter
             }
 
             // Create drawing dictionary
-            $this->_drawingHashTable->addFromSource($this->getWriterPart('Drawing')->allDrawings($this->_presentation));
+            $this->drawingHashTable->addFromSource($this->getWriterPart('Drawing')->allDrawings($this->presentation));
 
             // Create new ZIP file and open it for writing
             $objZip = new \ZipArchive();
@@ -176,15 +174,15 @@ class PowerPoint2007 implements IWriter
             }
 
             // Add [Content_Types].xml to ZIP file
-            $objZip->addFromString('[Content_Types].xml', $this->getWriterPart('ContentTypes')->writeContentTypes($this->_presentation));
+            $objZip->addFromString('[Content_Types].xml', $this->getWriterPart('ContentTypes')->writeContentTypes($this->presentation));
 
             // Add relationships to ZIP file
             $objZip->addFromString('_rels/.rels', $this->getWriterPart('Rels')->writeRelationships());
-            $objZip->addFromString('ppt/_rels/presentation.xml.rels', $this->getWriterPart('Rels')->writePresentationRelationships($this->_presentation));
+            $objZip->addFromString('ppt/_rels/presentation.xml.rels', $this->getWriterPart('Rels')->writePresentationRelationships($this->presentation));
 
             // Add document properties to ZIP file
-            $objZip->addFromString('docProps/app.xml', $this->getWriterPart('DocProps')->writeDocPropsApp($this->_presentation));
-            $objZip->addFromString('docProps/core.xml', $this->getWriterPart('DocProps')->writeDocPropsCore($this->_presentation));
+            $objZip->addFromString('docProps/app.xml', $this->getWriterPart('DocProps')->writeDocPropsApp($this->presentation));
+            $objZip->addFromString('docProps/core.xml', $this->getWriterPart('DocProps')->writeDocPropsCore($this->presentation));
 
             // Add themes to ZIP file
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
@@ -229,18 +227,18 @@ class PowerPoint2007 implements IWriter
             }
 
             // Add presentation to ZIP file
-            $objZip->addFromString('ppt/presentation.xml', $this->getWriterPart('Presentation')->writePresentation($this->_presentation));
+            $objZip->addFromString('ppt/presentation.xml', $this->getWriterPart('Presentation')->writePresentation($this->presentation));
 
             // Add slides (drawings, ...) and slide relationships (drawings, ...)
-            for ($i = 0; $i < $this->_presentation->getSlideCount(); ++$i) {
+            for ($i = 0; $i < $this->presentation->getSlideCount(); ++$i) {
                 // Add slide
-                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $this->getWriterPart('Rels')->writeSlideRelationships($this->_presentation->getSlide($i)));
-                $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $this->getWriterPart('Slide')->writeSlide($this->_presentation->getSlide($i)));
+                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $this->getWriterPart('Rels')->writeSlideRelationships($this->presentation->getSlide($i)));
+                $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $this->getWriterPart('Slide')->writeSlide($this->presentation->getSlide($i)));
             }
 
             // Add media
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
-                if ($this->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
+                if ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\Drawing) {
                     $imageContents = null;
                     $imagePath     = $this->getDrawingHashTable()->getByIndex($i)->getPath();
 
@@ -258,20 +256,20 @@ class PowerPoint2007 implements IWriter
                     }
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\MemoryDrawing) {
                     ob_start();
                     call_user_func($this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(), $this->getDrawingHashTable()->getByIndex($i)->getImageResource());
                     $imageContents = ob_get_contents();
                     ob_end_clean();
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof ShapeChart) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\Chart) {
                     $objZip->addFromString('ppt/charts/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename(), $this->getWriterPart('Chart')->writeChart($this->getDrawingHashTable()->getByIndex($i)));
 
                     // Chart relations?
-                    if ($this->getDrawingHashTable()->getByIndex($i)->getIncludeSpreadsheet()) {
+                    if ($this->getDrawingHashTable()->getByIndex($i)->hasIncludedSpreadsheet()) {
                         $objZip->addFromString('ppt/charts/_rels/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename() . '.rels', $this->getWriterPart('Rels')->writeChartRelationships($this->getDrawingHashTable()->getByIndex($i)));
-                        $objZip->addFromString('ppt/embeddings/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename() . '.xlsx', $this->getWriterPart('Chart')->writeSpreadsheet($this->_presentation, $this->getDrawingHashTable()->getByIndex($i), $pFilename . '.xlsx'));
+                        $objZip->addFromString('ppt/embeddings/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename() . '.xlsx', $this->getWriterPart('Chart')->writeSpreadsheet($this->presentation, $this->getDrawingHashTable()->getByIndex($i), $pFilename . '.xlsx'));
                     }
                 }
             }
@@ -301,8 +299,8 @@ class PowerPoint2007 implements IWriter
      */
     public function getPHPPowerPoint()
     {
-        if (!is_null($this->_presentation)) {
-            return $this->_presentation;
+        if (!is_null($this->presentation)) {
+            return $this->presentation;
         } else {
             throw new \Exception("No PHPPowerPoint assigned.");
         }
@@ -317,7 +315,7 @@ class PowerPoint2007 implements IWriter
      */
     public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
     {
-        $this->_presentation = $pPHPPowerPoint;
+        $this->presentation = $pPHPPowerPoint;
 
         return $this;
     }
@@ -329,7 +327,7 @@ class PowerPoint2007 implements IWriter
      */
     public function getDrawingHashTable()
     {
-        return $this->_drawingHashTable;
+        return $this->drawingHashTable;
     }
 
     /**
@@ -337,9 +335,9 @@ class PowerPoint2007 implements IWriter
      *
      * @return boolean
      */
-    public function getOffice2003Compatibility()
+    public function hasOffice2003Compatibility()
     {
-        return $this->_office2003compatibility;
+        return $this->office2003comp;
     }
 
     /**
@@ -350,7 +348,7 @@ class PowerPoint2007 implements IWriter
      */
     public function setOffice2003Compatibility($pValue = false)
     {
-        $this->_office2003compatibility = $pValue;
+        $this->office2003comp = $pValue;
 
         return $this;
     }
@@ -360,9 +358,9 @@ class PowerPoint2007 implements IWriter
      *
      * @return boolean
      */
-    public function getUseDiskCaching()
+    public function hasDiskCaching()
     {
-        return $this->_useDiskCaching;
+        return $this->useDiskCaching;
     }
 
     /**
@@ -375,11 +373,11 @@ class PowerPoint2007 implements IWriter
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
     {
-        $this->_useDiskCaching = $pValue;
+        $this->useDiskCaching = $pValue;
 
         if (!is_null($pDirectory)) {
             if (is_dir($pDirectory)) {
-                $this->_diskCachingDirectory = $pDirectory;
+                $this->diskCachingDir = $pDirectory;
             } else {
                 throw new \Exception("Directory does not exist: $pDirectory");
             }
@@ -395,7 +393,7 @@ class PowerPoint2007 implements IWriter
      */
     public function getDiskCachingDirectory()
     {
-        return $this->_diskCachingDirectory;
+        return $this->diskCachingDir;
     }
 
     /**
@@ -405,7 +403,7 @@ class PowerPoint2007 implements IWriter
      */
     public function getLayoutPack()
     {
-        return $this->_layoutPack;
+        return $this->layoutPack;
     }
 
     /**
@@ -416,7 +414,7 @@ class PowerPoint2007 implements IWriter
      */
     public function setLayoutPack(LayoutPack $pValue = null)
     {
-        $this->_layoutPack = $pValue;
+        $this->layoutPack = $pValue;
 
         return $this;
     }

@@ -27,32 +27,32 @@ class String
      *
      * @var string[]
      */
-    private static $_controlCharacters = array();
+    private static $controlCharacters = array();
 
     /**
      * Is mbstring extension avalable?
      *
      * @var boolean
      */
-    private static $_isMbstringEnabled;
+    private static $isMbstringEnabled;
 
     /**
      * Is iconv extension avalable?
      *
      * @var boolean
      */
-    private static $_isIconvEnabled;
+    private static $isIconvEnabled;
 
     /**
      * Build control characters array
      */
-    private static function _buildControlCharacters()
+    private static function buildControlCharacters()
     {
         for ($i = 0; $i <= 19; ++$i) {
             if ($i != 9 && $i != 10 && $i != 13) {
                 $find                            = '_x' . sprintf('%04s', strtoupper(dechex($i))) . '_';
                 $replace                         = chr($i);
-                self::$_controlCharacters[$find] = $replace;
+                self::$controlCharacters[$find] = $replace;
             }
         }
     }
@@ -62,15 +62,15 @@ class String
      *
      * @return boolean
      */
-    public static function getIsMbstringEnabled()
+    public static function isMbstringEnabled()
     {
-        if (isset(self::$_isMbstringEnabled)) {
-            return self::$_isMbstringEnabled;
+        if (isset(self::$isMbstringEnabled)) {
+            return self::$isMbstringEnabled;
         }
 
-        self::$_isMbstringEnabled = function_exists('mb_convert_encoding') ? true : false;
+        self::$isMbstringEnabled = function_exists('mb_convert_encoding') ? true : false;
 
-        return self::$_isMbstringEnabled;
+        return self::$isMbstringEnabled;
     }
 
     /**
@@ -78,15 +78,15 @@ class String
      *
      * @return boolean
      */
-    public static function getIsIconvEnabled()
+    public static function isIconvEnabled()
     {
-        if (isset(self::$_isIconvEnabled)) {
-            return self::$_isIconvEnabled;
+        if (isset(self::$isIconvEnabled)) {
+            return self::$isIconvEnabled;
         }
 
-        self::$_isIconvEnabled = function_exists('iconv') ? true : false;
+        self::$isIconvEnabled = function_exists('iconv') ? true : false;
 
-        return self::$_isIconvEnabled;
+        return self::$isIconvEnabled;
     }
 
     /**
@@ -105,11 +105,11 @@ class String
      */
     public static function controlCharacterOOXML2PHP($value = '')
     {
-        if (empty(self::$_controlCharacters)) {
-            self::_buildControlCharacters();
+        if (empty(self::$controlCharacters)) {
+            self::buildControlCharacters();
         }
 
-        return str_replace(array_keys(self::$_controlCharacters), array_values(self::$_controlCharacters), $value);
+        return str_replace(array_keys(self::$controlCharacters), array_values(self::$controlCharacters), $value);
     }
 
     /**
@@ -128,11 +128,11 @@ class String
      */
     public static function controlCharacterPHP2OOXML($value = '')
     {
-        if (empty(self::$_controlCharacters)) {
-            self::_buildControlCharacters();
+        if (empty(self::$controlCharacters)) {
+            self::buildControlCharacters();
         }
 
-        return str_replace(array_values(self::$_controlCharacters), array_keys(self::$_controlCharacters), $value);
+        return str_replace(array_values(self::$controlCharacters), array_keys(self::$controlCharacters), $value);
     }
 
     /**

@@ -61,9 +61,6 @@ class File
      */
     public static function realpath($pFilename)
     {
-        // Returnvalue
-        $returnValue = '';
-
         // Try using realpath()
         $returnValue = realpath($pFilename);
 

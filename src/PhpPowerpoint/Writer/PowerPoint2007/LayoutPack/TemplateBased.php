@@ -59,8 +59,8 @@ class TemplateBased extends LayoutPack
         foreach ($relations->Relationship as $rel) {
             if ($rel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument") {
                 // Found office document! Search for master slide...
-                $presentationRelations = simplexml_load_string($package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/_rels/" . basename($rel["Target"]) . ".rels")));
-                foreach ($presentationRelations->Relationship as $presRel) {
+                $presentationRels = simplexml_load_string($package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/_rels/" . basename($rel["Target"]) . ".rels")));
+                foreach ($presentationRels->Relationship as $presRel) {
                     if ($presRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster") {
                         // Found slide master!
                         $slideMasterId         = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));

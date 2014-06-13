@@ -42,7 +42,7 @@ class Manifest extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -84,7 +84,7 @@ class Manifest extends WriterPart
                 if (!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
                     $arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
                     $extension  = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
-                    $mimeType   = $this->_getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
+                    $mimeType   = $this->getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
 
                     $objWriter->startElement('manifest:file-entry');
                     $objWriter->writeAttribute('manifest:media-type', $mimeType);
@@ -122,7 +122,7 @@ class Manifest extends WriterPart
      * @return string    Mime Type
      * @throws \Exception
      */
-    private function _getImageMimeType($pFile = '')
+    private function getImageMimeType($pFile = '')
     {
         if (File::fileExists($pFile)) {
             $image = getimagesize($pFile);

@@ -61,7 +61,7 @@ class Slide extends WriterPart
 
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -142,15 +142,15 @@ class Slide extends WriterPart
 
             // Check type
             if ($shape instanceof RichText) {
-                $this->_writeTxt($objWriter, $shape, $shapeId);
+                $this->writeTxt($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Table) {
-                $this->_writeTable($objWriter, $shape, $shapeId);
+                $this->writeTable($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Line) {
-                $this->_writeLineShape($objWriter, $shape, $shapeId);
+                $this->writeLineShape($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Chart) {
-                $this->_writeChart($objWriter, $shape, $shapeId);
+                $this->writeChart($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof BaseDrawing) {
-                $this->_writePic($objWriter, $shape, $shapeId);
+                $this->writePic($objWriter, $shape, $shapeId);
             }
         }
 
@@ -182,7 +182,7 @@ class Slide extends WriterPart
      * @param  int                            $shapeId
      * @throws \Exception
      */
-    private function _writeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
+    private function writeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -234,7 +234,7 @@ class Slide extends WriterPart
         $objWriter->startElement('c:chart');
         $objWriter->writeAttribute('xmlns:c', 'http://schemas.openxmlformats.org/drawingml/2006/chart');
         $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
-        $objWriter->writeAttribute('r:id', $shape->__relationId);
+        $objWriter->writeAttribute('r:id', $shape->relationId);
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -252,7 +252,7 @@ class Slide extends WriterPart
      * @param  int                             $shapeId
      * @throws \Exception
      */
-    private function _writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
+    private function writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -268,7 +268,7 @@ class Slide extends WriterPart
 
         // a:hlinkClick
         if ($shape->hasHyperlink()) {
-            $this->_writeHyperlink($objWriter, $shape);
+            $this->writeHyperlink($objWriter, $shape);
         }
 
         $objWriter->endElement();
@@ -293,7 +293,7 @@ class Slide extends WriterPart
 
         // a:blip
         $objWriter->startElement('a:blip');
-        $objWriter->writeAttribute('r:embed', $shape->__relationId);
+        $objWriter->writeAttribute('r:embed', $shape->relationId);
         $objWriter->endElement();
 
         // a:stretch
@@ -334,10 +334,10 @@ class Slide extends WriterPart
         $objWriter->endElement();
 
         if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->_writeBorder($objWriter, $shape->getBorder(), '');
+            $this->writeBorder($objWriter, $shape->getBorder(), '');
         }
 
-        if ($shape->getShadow()->getVisible()) {
+        if ($shape->getShadow()->isVisible()) {
             // a:effectLst
             $objWriter->startElement('a:effectLst');
 
@@ -378,7 +378,7 @@ class Slide extends WriterPart
      * @param  int                            $shapeId
      * @throws \Exception
      */
-    private function _writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
+    private function writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:sp');
@@ -393,7 +393,7 @@ class Slide extends WriterPart
 
         // a:hlinkClick
         if ($shape->hasHyperlink()) {
-            $this->_writeHyperlink($objWriter, $shape);
+            $this->writeHyperlink($objWriter, $shape);
         }
 
         $objWriter->endElement();
@@ -434,13 +434,13 @@ class Slide extends WriterPart
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
 
-        $this->_writeFill($objWriter, $shape->getFill());
+        $this->writeFill($objWriter, $shape->getFill());
 
         if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->_writeBorder($objWriter, $shape->getBorder(), '');
+            $this->writeBorder($objWriter, $shape->getBorder(), '');
         }
 
-        if ($shape->getShadow()->getVisible()) {
+        if ($shape->getShadow()->isVisible()) {
             // a:effectLst
             $objWriter->startElement('a:effectLst');
 
@@ -481,10 +481,10 @@ class Slide extends WriterPart
         $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
         $objWriter->writeAttribute('vertOverflow', $shape->getVerticalOverflow());
 
-        if ($shape->getUpright()) {
+        if ($shape->isUpright()) {
             $objWriter->writeAttribute('upright', '1');
         }
-        if ($shape->getVertical()) {
+        if ($shape->isVertical()) {
             $objWriter->writeAttribute('vert', 'vert');
         }
 
@@ -504,7 +504,7 @@ class Slide extends WriterPart
         $objWriter->writeElement('a:lstStyle', null);
 
         // Write paragraphs
-        $this->_writeParagraphs($objWriter, $shape->getParagraphs());
+        $this->writeParagraphs($objWriter, $shape->getParagraphs());
 
         $objWriter->endElement();
 
@@ -519,7 +519,7 @@ class Slide extends WriterPart
      * @param  int                            $shapeId
      * @throws \Exception
      */
-    private function _writeTable(XMLWriter $objWriter, Table $shape, $shapeId)
+    private function writeTable(XMLWriter $objWriter, Table $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -535,7 +535,7 @@ class Slide extends WriterPart
 
         // a:hlinkClick
         if ($shape->hasHyperlink()) {
-            $this->_writeHyperlink($objWriter, $shape);
+            $this->writeHyperlink($objWriter, $shape);
         }
 
         $objWriter->endElement();
@@ -587,7 +587,7 @@ class Slide extends WriterPart
         $objWriter->writeAttribute('firstRow', '1');
         $objWriter->writeAttribute('bandRow', '1');
 
-        if ($shape->getShadow()->getVisible()) {
+        if ($shape->getShadow()->isVisible()) {
             // a:effectLst
             $objWriter->startElement('a:effectLst');
 
@@ -704,7 +704,7 @@ class Slide extends WriterPart
                 $objWriter->writeElement('a:lstStyle', null);
 
                 // Write paragraphs
-                $this->_writeParagraphs($objWriter, $currentCell->getParagraphs());
+                $this->writeParagraphs($objWriter, $currentCell->getParagraphs());
 
                 $objWriter->endElement();
 
@@ -734,15 +734,15 @@ class Slide extends WriterPart
                 }
 
                 // Write borders
-                $this->_writeBorder($objWriter, $borderLeft, 'L');
-                $this->_writeBorder($objWriter, $borderRight, 'R');
-                $this->_writeBorder($objWriter, $borderTop, 'T');
-                $this->_writeBorder($objWriter, $borderBottom, 'B');
-                $this->_writeBorder($objWriter, $borderDiagonalDown, 'TlToBr');
-                $this->_writeBorder($objWriter, $borderDiagonalUp, 'BlToTr');
+                $this->writeBorder($objWriter, $borderLeft, 'L');
+                $this->writeBorder($objWriter, $borderRight, 'R');
+                $this->writeBorder($objWriter, $borderTop, 'T');
+                $this->writeBorder($objWriter, $borderBottom, 'B');
+                $this->writeBorder($objWriter, $borderDiagonalDown, 'TlToBr');
+                $this->writeBorder($objWriter, $borderDiagonalUp, 'BlToTr');
 
                 // Fill
-                $this->_writeFill($objWriter, $currentCell->getFill());
+                $this->writeFill($objWriter, $currentCell->getFill());
 
                 $objWriter->endElement();
 
@@ -768,7 +768,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Shape_RichText_Paragraph[] $paragraphs
      * @throws \Exception
      */
-    private function _writeParagraphs(XMLWriter $objWriter, $paragraphs)
+    private function writeParagraphs(XMLWriter $objWriter, $paragraphs)
     {
         // Loop trough paragraphs
         foreach ($paragraphs as $paragraph) {
@@ -825,13 +825,13 @@ class Slide extends WriterPart
                         $objWriter->startElement('a:rPr');
 
                         // Bold
-                        $objWriter->writeAttribute('b', ($element->getFont()->getBold() ? 'true' : 'false'));
+                        $objWriter->writeAttribute('b', ($element->getFont()->isBold() ? 'true' : 'false'));
 
                         // Italic
-                        $objWriter->writeAttribute('i', ($element->getFont()->getItalic() ? 'true' : 'false'));
+                        $objWriter->writeAttribute('i', ($element->getFont()->isItalic() ? 'true' : 'false'));
 
                         // Strikethrough
-                        $objWriter->writeAttribute('strike', ($element->getFont()->getStrikethrough() ? 'sngStrike' : 'noStrike'));
+                        $objWriter->writeAttribute('strike', ($element->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
 
                         // Size
                         $objWriter->writeAttribute('sz', ($element->getFont()->getSize() * 100));
@@ -840,10 +840,10 @@ class Slide extends WriterPart
                         $objWriter->writeAttribute('u', $element->getFont()->getUnderline());
 
                         // Superscript / subscript
-                        if ($element->getFont()->getSuperScript() || $element->getFont()->getSubScript()) {
-                            if ($element->getFont()->getSuperScript()) {
+                        if ($element->getFont()->isSuperScript() || $element->getFont()->isSubScript()) {
+                            if ($element->getFont()->isSuperScript()) {
                                 $objWriter->writeAttribute('baseline', '30000');
-                            } elseif ($element->getFont()->getSubScript()) {
+                            } elseif ($element->getFont()->isSubScript()) {
                                 $objWriter->writeAttribute('baseline', '-25000');
                             }
                         }
@@ -865,7 +865,7 @@ class Slide extends WriterPart
 
                         // a:hlinkClick
                         if ($element->hasHyperlink()) {
-                            $this->_writeHyperlink($objWriter, $element);
+                            $this->writeHyperlink($objWriter, $element);
                         }
 
                         $objWriter->endElement();
@@ -892,7 +892,7 @@ class Slide extends WriterPart
      * @param  int                            $shapeId
      * @throws \Exception
      */
-    private function _writeLineShape(XMLWriter $objWriter, Line $shape, $shapeId)
+    private function writeLineShape(XMLWriter $objWriter, Line $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:cxnSp');
@@ -907,7 +907,7 @@ class Slide extends WriterPart
 
         // a:hlinkClick
         if ($shape->hasHyperlink()) {
-            $this->_writeHyperlink($objWriter, $shape);
+            $this->writeHyperlink($objWriter, $shape);
         }
 
         $objWriter->endElement();
@@ -988,7 +988,7 @@ class Slide extends WriterPart
         $objWriter->endElement();
 
         if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->_writeBorder($objWriter, $shape->getBorder(), '');
+            $this->writeBorder($objWriter, $shape->getBorder(), '');
         }
 
         $objWriter->endElement();
@@ -1003,14 +1003,14 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Style_Borders    $pBorders  Borders
      * @throws \Exception
      */
-    protected function _writeBorders(XMLWriter $objWriter, Borders $pBorders)
+    protected function writeBorders(XMLWriter $objWriter, Borders $pBorders)
     {
-        $this->_writeBorder($objWriter, $pBorders->getLeft(), 'L');
-        $this->_writeBorder($objWriter, $pBorders->getRight(), 'R');
-        $this->_writeBorder($objWriter, $pBorders->getTop(), 'T');
-        $this->_writeBorder($objWriter, $pBorders->getBottom(), 'B');
-        $this->_writeBorder($objWriter, $pBorders->getDiagonalDown(), 'TlToBr');
-        $this->_writeBorder($objWriter, $pBorders->getDiagonalUp(), 'BlToTr');
+        $this->writeBorder($objWriter, $pBorders->getLeft(), 'L');
+        $this->writeBorder($objWriter, $pBorders->getRight(), 'R');
+        $this->writeBorder($objWriter, $pBorders->getTop(), 'T');
+        $this->writeBorder($objWriter, $pBorders->getBottom(), 'B');
+        $this->writeBorder($objWriter, $pBorders->getDiagonalDown(), 'TlToBr');
+        $this->writeBorder($objWriter, $pBorders->getDiagonalUp(), 'BlToTr');
     }
 
     /**
@@ -1021,7 +1021,7 @@ class Slide extends WriterPart
      * @param  string                         $pElementName Element name
      * @throws \Exception
      */
-    protected function _writeBorder(XMLWriter $objWriter, Border $pBorder, $pElementName = 'L')
+    protected function writeBorder(XMLWriter $objWriter, Border $pBorder, $pElementName = 'L')
     {
         // Line style
         $lineStyle = $pBorder->getLineStyle();
@@ -1087,7 +1087,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws \Exception
      */
-    protected function _writeFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writeFill(XMLWriter $objWriter, Fill $pFill)
     {
         // Is it a fill?
         if ($pFill->getFillType() == Fill::FILL_NONE) {
@@ -1096,17 +1096,17 @@ class Slide extends WriterPart
 
         // Is it a solid fill?
         if ($pFill->getFillType() == Fill::FILL_SOLID) {
-            $this->_writeSolidFill($objWriter, $pFill);
+            $this->writeSolidFill($objWriter, $pFill);
             return;
         }
 
         // Check if this is a pattern type or gradient type
         if ($pFill->getFillType() == Fill::FILL_GRADIENT_LINEAR || $pFill->getFillType() == Fill::FILL_GRADIENT_PATH) {
             // Gradient fill
-            $this->_writeGradientFill($objWriter, $pFill);
+            $this->writeGradientFill($objWriter, $pFill);
         } else {
             // Pattern fill
-            $this->_writePatternFill($objWriter, $pFill);
+            $this->writePatternFill($objWriter, $pFill);
         }
     }
 
@@ -1117,7 +1117,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws \Exception
      */
-    protected function _writeSolidFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writeSolidFill(XMLWriter $objWriter, Fill $pFill)
     {
         // a:gradFill
         $objWriter->startElement('a:solidFill');
@@ -1137,7 +1137,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws \Exception
      */
-    protected function _writeGradientFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writeGradientFill(XMLWriter $objWriter, Fill $pFill)
     {
         // a:gradFill
         $objWriter->startElement('a:gradFill');
@@ -1184,7 +1184,7 @@ class Slide extends WriterPart
      * @param  PHPPowerPoint_Style_Fill       $pFill     Fill style
      * @throws \Exception
      */
-    protected function _writePatternFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writePatternFill(XMLWriter $objWriter, Fill $pFill)
     {
         // a:pattFill
         $objWriter->startElement('a:pattFill');
@@ -1218,11 +1218,11 @@ class Slide extends WriterPart
      * @param PHPPowerPoint_Shared_XMLWriter                               $objWriter XML Writer
      * @param PHPPowerPoint_Shape|PHPPowerPoint_Shape_RichText_TextElement $shape
      */
-    private function _writeHyperlink(XMLWriter $objWriter, $shape)
+    private function writeHyperlink(XMLWriter $objWriter, $shape)
     {
         // a:hlinkClick
         $objWriter->startElement('a:hlinkClick');
-        $objWriter->writeAttribute('r:id', $shape->getHyperlink()->__relationId);
+        $objWriter->writeAttribute('r:id', $shape->getHyperlink()->relationId);
         $objWriter->writeAttribute('tooltip', $shape->getHyperlink()->getTooltip());
         if ($shape->getHyperlink()->isInternal()) {
             $objWriter->writeAttribute('action', $shape->getHyperlink()->getUrl());

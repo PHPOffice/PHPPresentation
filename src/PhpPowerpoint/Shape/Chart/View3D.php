@@ -33,42 +33,49 @@ class View3D implements IComparable
      *
      * @var int
      */
-    protected $_rotationX = 0;
+    protected $rotationX = 0;
 
     /**
      * Rotation Y
      *
      * @var int
      */
-    protected $_rotationY = 0;
+    protected $rotationY = 0;
 
     /**
      * Right Angle Axes
      *
      * @var boolean
      */
-    private $_rightAngleAxes = true;
+    private $rightAngleAxes = true;
 
     /**
      * Perspective
      *
      * @var int
      */
-    private $_perspective = 30;
+    private $perspective = 30;
 
     /**
      * Height Percent
      *
      * @var int
      */
-    private $_heightPercent = 100;
+    private $heightPercent = 100;
 
     /**
      * Depth Percent
      *
      * @var int
      */
-    private $_depthPercent = 100;
+    private $depthPercent = 100;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_Chart_View3D instance
@@ -84,7 +91,7 @@ class View3D implements IComparable
      */
     public function getRotationX()
     {
-        return $this->_rotationX;
+        return $this->rotationX;
     }
 
     /**
@@ -95,7 +102,7 @@ class View3D implements IComparable
      */
     public function setRotationX($pValue = 0)
     {
-        $this->_rotationX = $pValue;
+        $this->rotationX = $pValue;
 
         return $this;
     }
@@ -107,7 +114,7 @@ class View3D implements IComparable
      */
     public function getRotationY()
     {
-        return $this->_rotationY;
+        return $this->rotationY;
     }
 
     /**
@@ -118,7 +125,7 @@ class View3D implements IComparable
      */
     public function setRotationY($pValue = 0)
     {
-        $this->_rotationY = $pValue;
+        $this->rotationY = $pValue;
 
         return $this;
     }
@@ -128,9 +135,9 @@ class View3D implements IComparable
      *
      * @return boolean
      */
-    public function getRightAngleAxes()
+    public function hasRightAngleAxes()
     {
-        return $this->_rightAngleAxes;
+        return $this->rightAngleAxes;
     }
 
     /**
@@ -141,7 +148,7 @@ class View3D implements IComparable
      */
     public function setRightAngleAxes($value = true)
     {
-        $this->_rightAngleAxes = $value;
+        $this->rightAngleAxes = $value;
 
         return $this;
     }
@@ -153,7 +160,7 @@ class View3D implements IComparable
      */
     public function getPerspective()
     {
-        return $this->_perspective;
+        return $this->perspective;
     }
 
     /**
@@ -164,7 +171,7 @@ class View3D implements IComparable
      */
     public function setPerspective($value = 30)
     {
-        $this->_perspective = $value;
+        $this->perspective = $value;
 
         return $this;
     }
@@ -176,7 +183,7 @@ class View3D implements IComparable
      */
     public function getHeightPercent()
     {
-        return $this->_heightPercent;
+        return $this->heightPercent;
     }
 
     /**
@@ -187,7 +194,7 @@ class View3D implements IComparable
      */
     public function setHeightPercent($value = 100)
     {
-        $this->_heightPercent = $value;
+        $this->heightPercent = $value;
 
         return $this;
     }
@@ -199,7 +206,7 @@ class View3D implements IComparable
      */
     public function getDepthPercent()
     {
-        return $this->_depthPercent;
+        return $this->depthPercent;
     }
 
     /**
@@ -210,7 +217,7 @@ class View3D implements IComparable
      */
     public function setDepthPercent($value = 100)
     {
-        $this->_depthPercent = $value;
+        $this->depthPercent = $value;
 
         return $this;
     }
@@ -222,15 +229,8 @@ class View3D implements IComparable
      */
     public function getHashCode()
     {
-        return md5($this->_rotationX . $this->_rotationY . ($this->_rightAngleAxes ? 't' : 'f') . $this->_perspective . $this->_heightPercent . $this->_depthPercent . __CLASS__);
+        return md5($this->rotationX . $this->rotationY . ($this->rightAngleAxes ? 't' : 'f') . $this->perspective . $this->heightPercent . $this->depthPercent . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -242,7 +242,7 @@ class View3D implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -255,7 +255,7 @@ class View3D implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

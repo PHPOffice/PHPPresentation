@@ -78,35 +78,42 @@ class Bullet implements IComparable
      *
      * @var string
      */
-    private $_bulletType = self::TYPE_NONE;
+    private $bulletType = self::TYPE_NONE;
 
     /**
      * Bullet font
      *
      * @var string
      */
-    private $_bulletFont;
+    private $bulletFont;
 
     /**
      * Bullet char
      *
      * @var string
      */
-    private $_bulletChar = '-';
+    private $bulletChar = '-';
 
     /**
      * Bullet numeric style
      *
      * @var string
      */
-    private $_bulletNumericStyle = self::NUMERIC_DEFAULT;
+    private $bulletNumericStyle = self::NUMERIC_DEFAULT;
 
     /**
      * Bullet numeric start at
      *
      * @var int
      */
-    private $_bulletNumericStartAt = 1;
+    private $bulletNumericStartAt = 1;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Style_Bullet
@@ -114,11 +121,11 @@ class Bullet implements IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_bulletType              = self::TYPE_NONE;
-        $this->_bulletFont              = 'Calibri';
-        $this->_bulletChar              = '-';
-        $this->_bulletNumericStyle      = self::NUMERIC_DEFAULT;
-        $this->_bulletNumericStartAt    = 1;
+        $this->bulletType              = self::TYPE_NONE;
+        $this->bulletFont              = 'Calibri';
+        $this->bulletChar              = '-';
+        $this->bulletNumericStyle      = self::NUMERIC_DEFAULT;
+        $this->bulletNumericStartAt    = 1;
     }
 
     /**
@@ -128,7 +135,7 @@ class Bullet implements IComparable
      */
     public function getBulletType()
     {
-        return $this->_bulletType;
+        return $this->bulletType;
     }
 
     /**
@@ -139,7 +146,7 @@ class Bullet implements IComparable
      */
     public function setBulletType($pValue = self::TYPE_NONE)
     {
-        $this->_bulletType = $pValue;
+        $this->bulletType = $pValue;
 
         return $this;
     }
@@ -151,7 +158,7 @@ class Bullet implements IComparable
      */
     public function getBulletFont()
     {
-        return $this->_bulletFont;
+        return $this->bulletFont;
     }
 
     /**
@@ -165,7 +172,7 @@ class Bullet implements IComparable
         if ($pValue == '') {
             $pValue = 'Calibri';
         }
-        $this->_bulletFont = $pValue;
+        $this->bulletFont = $pValue;
 
         return $this;
     }
@@ -177,7 +184,7 @@ class Bullet implements IComparable
      */
     public function getBulletChar()
     {
-        return $this->_bulletChar;
+        return $this->bulletChar;
     }
 
     /**
@@ -188,7 +195,7 @@ class Bullet implements IComparable
      */
     public function setBulletChar($pValue = '-')
     {
-        $this->_bulletChar = $pValue;
+        $this->bulletChar = $pValue;
 
         return $this;
     }
@@ -200,7 +207,7 @@ class Bullet implements IComparable
      */
     public function getBulletNumericStyle()
     {
-        return $this->_bulletNumericStyle;
+        return $this->bulletNumericStyle;
     }
 
     /**
@@ -211,7 +218,7 @@ class Bullet implements IComparable
      */
     public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT)
     {
-        $this->_bulletNumericStyle = $pValue;
+        $this->bulletNumericStyle = $pValue;
 
         return $this;
     }
@@ -223,7 +230,7 @@ class Bullet implements IComparable
      */
     public function getBulletNumericStartAt()
     {
-        return $this->_bulletNumericStartAt;
+        return $this->bulletNumericStartAt;
     }
 
     /**
@@ -234,7 +241,7 @@ class Bullet implements IComparable
      */
     public function setBulletNumericStartAt($pValue = 1)
     {
-        $this->_bulletNumericStartAt = $pValue;
+        $this->bulletNumericStartAt = $pValue;
 
         return $this;
     }
@@ -247,21 +254,14 @@ class Bullet implements IComparable
     public function getHashCode()
     {
         return md5(
-            $this->_bulletType
-            . $this->_bulletFont
-            . $this->_bulletChar
-            . $this->_bulletNumericStyle
-            . $this->_bulletNumericStartAt
+            $this->bulletType
+            . $this->bulletFont
+            . $this->bulletChar
+            . $this->bulletNumericStyle
+            . $this->bulletNumericStartAt
             . __CLASS__
         );
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -273,7 +273,7 @@ class Bullet implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -286,7 +286,7 @@ class Bullet implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

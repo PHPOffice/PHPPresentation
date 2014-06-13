@@ -42,7 +42,14 @@ class Color implements IComparable
      *
      * @var string
      */
-    private $_argb;
+    private $argb;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Style_Color
@@ -52,7 +59,7 @@ class Color implements IComparable
     public function __construct($pARGB = self::COLOR_BLACK)
     {
         // Initialise values
-        $this->_argb            = $pARGB;
+        $this->argb            = $pARGB;
     }
 
     /**
@@ -62,7 +69,7 @@ class Color implements IComparable
      */
     public function getARGB()
     {
-        return $this->_argb;
+        return $this->argb;
     }
 
     /**
@@ -76,7 +83,7 @@ class Color implements IComparable
         if ($pValue == '') {
             $pValue = self::COLOR_BLACK;
         }
-        $this->_argb = $pValue;
+        $this->argb = $pValue;
 
         return $this;
     }
@@ -88,10 +95,10 @@ class Color implements IComparable
      */
     public function getRGB()
     {
-        if (strlen($this->_argb) == 6) {
-            return $this->_argb;
+        if (strlen($this->argb) == 6) {
+            return $this->argb;
         } else {
-            return substr($this->_argb, 2);
+            return substr($this->argb, 2);
         }
     }
 
@@ -106,7 +113,7 @@ class Color implements IComparable
         if ($pValue == '') {
             $pValue = '000000';
         }
-        $this->_argb = 'FF' . $pValue;
+        $this->argb = 'FF' . $pValue;
 
         return $this;
     }
@@ -119,17 +126,10 @@ class Color implements IComparable
     public function getHashCode()
     {
         return md5(
-            $this->_argb
+            $this->argb
             . __CLASS__
         );
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -141,7 +141,7 @@ class Color implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -154,7 +154,7 @@ class Color implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

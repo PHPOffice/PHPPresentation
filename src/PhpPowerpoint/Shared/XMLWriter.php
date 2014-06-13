@@ -35,14 +35,14 @@ class XMLWriter
      *
      * @var XMLWriter
      */
-    private $_xmlWriter;
+    private $xmlWriter;
 
     /**
      * Temporary filename
      *
      * @var string
      */
-    private $_tempFileName = '';
+    private $tempFileName = '';
 
     /**
      * Create a new PHPPowerPoint_Shared_XMLWriter instance
@@ -50,27 +50,27 @@ class XMLWriter
      * @param int    $pTemporaryStorage       Temporary storage location
      * @param string $pTemporaryStorageFolder Temporary storage folder
      */
-    public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageFolder = './')
+    public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageDir = './')
     {
         // Create internal XMLWriter
-        $this->_xmlWriter = new \XMLWriter();
+        $this->xmlWriter = new \XMLWriter();
 
         // Open temporary storage
         if ($pTemporaryStorage == self::STORAGE_MEMORY) {
-            $this->_xmlWriter->openMemory();
+            $this->xmlWriter->openMemory();
         } else {
             // Create temporary filename
-            $this->_tempFileName = @tempnam($pTemporaryStorageFolder, 'xml');
+            $this->tempFileName = @tempnam($pTemporaryStorageDir, 'xml');
 
             // Open storage
-            if ($this->_xmlWriter->openUri($this->_tempFileName) === false) {
+            if ($this->xmlWriter->openUri($this->tempFileName) === false) {
                 // Fallback to memory...
-                $this->_xmlWriter->openMemory();
+                $this->xmlWriter->openMemory();
             }
         }
 
         // Set default values
-        $this->_xmlWriter->setIndent(true);
+        $this->xmlWriter->setIndent(true);
     }
 
     /**
@@ -79,11 +79,11 @@ class XMLWriter
     public function __destruct()
     {
         // Desctruct XMLWriter
-        unset($this->_xmlWriter);
+        unset($this->xmlWriter);
 
         // Unlink temporary files
-        if ($this->_tempFileName != '') {
-            @unlink($this->_tempFileName);
+        if ($this->tempFileName != '') {
+            @unlink($this->tempFileName);
         }
     }
 
@@ -97,7 +97,7 @@ class XMLWriter
     {
         try {
             @call_user_func_array(array(
-                $this->_xmlWriter,
+                $this->xmlWriter,
                 $function
             ), $args);
         } catch (\Exception $ex) {
@@ -112,12 +112,12 @@ class XMLWriter
      */
     public function getData()
     {
-        if ($this->_tempFileName == '') {
-            return $this->_xmlWriter->outputMemory(true);
+        if ($this->tempFileName == '') {
+            return $this->xmlWriter->outputMemory(true);
         } else {
-            $this->_xmlWriter->flush();
+            $this->xmlWriter->flush();
 
-            return file_get_contents($this->_tempFileName);
+            return file_get_contents($this->tempFileName);
         }
     }
 
@@ -129,8 +129,8 @@ class XMLWriter
      */
     public function writeRaw($text)
     {
-        if (isset($this->_xmlWriter) && is_object($this->_xmlWriter) && (method_exists($this->_xmlWriter, 'writeRaw'))) {
-            return $this->_xmlWriter->writeRaw($text);
+        if (isset($this->xmlWriter) && is_object($this->xmlWriter) && (method_exists($this->xmlWriter, 'writeRaw'))) {
+            return $this->xmlWriter->writeRaw($text);
         }
 
         return $this->text($text);

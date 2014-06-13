@@ -35,14 +35,21 @@ class Table extends BaseDrawing implements IComparable
      *
      * @var PHPPowerPoint_Shape_Table_Row[]
      */
-    private $_rows;
+    private $rows;
 
     /**
      * Number of columns
      *
      * @var int
      */
-    private $_columnCount = 1;
+    private $columnCount = 1;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_Table instance
@@ -52,14 +59,14 @@ class Table extends BaseDrawing implements IComparable
     public function __construct($columns = 1)
     {
         // Initialise variables
-        $this->_rows        = array();
-        $this->_columnCount = $columns;
+        $this->rows        = array();
+        $this->columnCount = $columns;
 
         // Initialize parent
         parent::__construct();
 
         // No resize proportional
-        $this->_resizeProportional = false;
+        $this->resizeProportional = false;
     }
 
     /**
@@ -71,14 +78,14 @@ class Table extends BaseDrawing implements IComparable
      */
     public function getRow($row = 0, $exceptionAsNull = false)
     {
-        if (!isset($this->_rows[$row])) {
+        if (!isset($this->rows[$row])) {
             if ($exceptionAsNull) {
                 return null;
             }
             throw new \Exception('Row number out of bounds.');
         }
 
-        return $this->_rows[$row];
+        return $this->rows[$row];
     }
 
     /**
@@ -88,7 +95,7 @@ class Table extends BaseDrawing implements IComparable
      */
     public function getRows()
     {
-        return $this->_rows;
+        return $this->rows;
     }
 
     /**
@@ -98,8 +105,8 @@ class Table extends BaseDrawing implements IComparable
      */
     public function createRow()
     {
-        $row           = new Row($this->_columnCount);
-        $this->_rows[] = $row;
+        $row           = new Row($this->columnCount);
+        $this->rows[] = $row;
 
         return $row;
     }
@@ -112,19 +119,12 @@ class Table extends BaseDrawing implements IComparable
     public function getHashCode()
     {
         $hashElements = '';
-        foreach ($this->_rows as $row) {
+        foreach ($this->rows as $row) {
             $hashElements .= $row->getHashCode();
         }
 
         return md5($hashElements . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -136,7 +136,7 @@ class Table extends BaseDrawing implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -149,7 +149,7 @@ class Table extends BaseDrawing implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

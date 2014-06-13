@@ -33,14 +33,14 @@ class Axis implements IComparable
      *
      * @var string
      */
-    private $_title = 'Axis Title';
+    private $title = 'Axis Title';
 
     /**
      * Format code
      *
      * @var string
      */
-    private $_formatCode = '';
+    private $formatCode = '';
 
     /**
      * Create a new PHPPowerPoint_Shape_Chart_Axis instance
@@ -49,7 +49,7 @@ class Axis implements IComparable
      */
     public function __construct($title = 'Axis Title')
     {
-        $this->_title = $title;
+        $this->title = $title;
     }
 
     /**
@@ -59,7 +59,7 @@ class Axis implements IComparable
      */
     public function getTitle()
     {
-        return $this->_title;
+        return $this->title;
     }
 
     /**
@@ -70,7 +70,7 @@ class Axis implements IComparable
      */
     public function setTitle($value = 'Axis Title')
     {
-        $this->_title = $value;
+        $this->title = $value;
 
         return $this;
     }
@@ -82,7 +82,7 @@ class Axis implements IComparable
      */
     public function getFormatCode()
     {
-        return $this->_formatCode;
+        return $this->formatCode;
     }
 
     /**
@@ -93,7 +93,7 @@ class Axis implements IComparable
      */
     public function setFormatCode($value = '')
     {
-        $this->_formatCode = $value;
+        $this->formatCode = $value;
 
         return $this;
     }
@@ -105,7 +105,7 @@ class Axis implements IComparable
      */
     public function getHashCode()
     {
-        return md5($this->_title . $this->_formatCode . __CLASS__);
+        return md5($this->title . $this->formatCode . __CLASS__);
     }
 
     /**
@@ -113,7 +113,7 @@ class Axis implements IComparable
      *
      * @var string
      */
-    private $_hashIndex;
+    private $hashIndex;
 
     /**
      * Get hash index
@@ -125,7 +125,7 @@ class Axis implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -138,7 +138,7 @@ class Axis implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

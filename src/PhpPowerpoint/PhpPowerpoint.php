@@ -34,28 +34,28 @@ class PhpPowerpoint
      *
      * @var PHPPowerPoint_DocumentProperties
      */
-    private $_properties;
+    private $properties;
 
     /**
      * Document layout
      *
      * @var PHPPowerPoint_DocumentLayout
      */
-    private $_layout;
+    private $layout;
 
     /**
      * Collection of Slide objects
      *
      * @var PHPPowerPoint_Slide[]
      */
-    private $_slideCollection = array();
+    private $slideCollection = array();
 
     /**
      * Active slide index
      *
      * @var int
      */
-    private $_activeSlideIndex = 0;
+    private $activeSlideIndex = 0;
 
     /**
      * Create a new PHPPowerPoint with one Slide
@@ -78,7 +78,7 @@ class PhpPowerpoint
      */
     public function getProperties()
     {
-        return $this->_properties;
+        return $this->properties;
     }
 
     /**
@@ -89,7 +89,7 @@ class PhpPowerpoint
      */
     public function setProperties(DocumentProperties $value)
     {
-        $this->_properties = $value;
+        $this->properties = $value;
 
         return $this;
     }
@@ -101,7 +101,7 @@ class PhpPowerpoint
      */
     public function getLayout()
     {
-        return $this->_layout;
+        return $this->layout;
     }
 
     /**
@@ -112,7 +112,7 @@ class PhpPowerpoint
      */
     public function setLayout(DocumentLayout $value)
     {
-        $this->_layout = $value;
+        $this->layout = $value;
 
         return $this;
     }
@@ -124,7 +124,7 @@ class PhpPowerpoint
      */
     public function getActiveSlide()
     {
-        return $this->_slideCollection[$this->_activeSlideIndex];
+        return $this->slideCollection[$this->activeSlideIndex];
     }
 
     /**
@@ -148,7 +148,7 @@ class PhpPowerpoint
      */
     public function addSlide(Slide $slide = null)
     {
-        $this->_slideCollection[] = $slide;
+        $this->slideCollection[] = $slide;
 
         return $slide;
     }
@@ -162,10 +162,10 @@ class PhpPowerpoint
      */
     public function removeSlideByIndex($index = 0)
     {
-        if ($index > count($this->_slideCollection) - 1) {
+        if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Slide index is out of bounds.");
         } else {
-            array_splice($this->_slideCollection, $index, 1);
+            array_splice($this->slideCollection, $index, 1);
         }
 
         return $this;
@@ -180,10 +180,10 @@ class PhpPowerpoint
      */
     public function getSlide($index = 0)
     {
-        if ($index > count($this->_slideCollection) - 1) {
+        if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Slide index is out of bounds.");
         } else {
-            return $this->_slideCollection[$index];
+            return $this->slideCollection[$index];
         }
     }
 
@@ -194,7 +194,7 @@ class PhpPowerpoint
      */
     public function getAllSlides()
     {
-        return $this->_slideCollection;
+        return $this->slideCollection;
     }
 
     /**
@@ -207,7 +207,7 @@ class PhpPowerpoint
     public function getIndex(Slide $slide)
     {
         $index = null;
-        foreach ($this->_slideCollection as $key => $value) {
+        foreach ($this->slideCollection as $key => $value) {
             if ($value->getHashCode() == $slide->getHashCode()) {
                 $index = $key;
                 break;
@@ -223,7 +223,7 @@ class PhpPowerpoint
      */
     public function getSlideCount()
     {
-        return count($this->_slideCollection);
+        return count($this->slideCollection);
     }
 
     /**
@@ -233,7 +233,7 @@ class PhpPowerpoint
      */
     public function getActiveSlideIndex()
     {
-        return $this->_activeSlideIndex;
+        return $this->activeSlideIndex;
     }
 
     /**
@@ -245,10 +245,10 @@ class PhpPowerpoint
      */
     public function setActiveSlideIndex($index = 0)
     {
-        if ($index > count($this->_slideCollection) - 1) {
+        if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Active slide index is out of bounds.");
         } else {
-            $this->_activeSlideIndex = $index;
+            $this->activeSlideIndex = $index;
         }
 
         return $this->getActiveSlide();
@@ -287,10 +287,10 @@ class PhpPowerpoint
     {
         $copied = clone $this;
 
-        $slideCount = count($this->_slideCollection);
+        $slideCount = count($this->slideCollection);
         for ($i = 0; $i < $slideCount; ++$i) {
-            $this->_slideCollection[$i] = $this->_slideCollection[$i]->copy();
-            $this->_slideCollection[$i]->rebindParent($this);
+            $this->slideCollection[$i] = $this->slideCollection[$i]->copy();
+            $this->slideCollection[$i]->rebindParent($this);
         }
 
         return $copied;

@@ -30,42 +30,49 @@ class Borders implements IComparable
      *
      * @var PHPPowerPoint_Style_Border
      */
-    private $_left;
+    private $left;
 
     /**
      * Right
      *
      * @var PHPPowerPoint_Style_Border
      */
-    private $_right;
+    private $right;
 
     /**
      * Top
      *
      * @var PHPPowerPoint_Style_Border
      */
-    private $_top;
+    private $top;
 
     /**
      * Bottom
      *
      * @var PHPPowerPoint_Style_Border
      */
-    private $_bottom;
+    private $bottom;
 
     /**
      * Diagonal up
      *
      * @var PHPPowerPoint_Style_Border
      */
-    private $_diagonalUp;
+    private $diagonalUp;
 
     /**
      * Diagonal down
      *
      * @var PHPPowerPoint_Style_Border
      */
-    private $_diagonalDown;
+    private $diagonalDown;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Style_Borders
@@ -73,14 +80,14 @@ class Borders implements IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_left                = new Border();
-        $this->_right               = new Border();
-        $this->_top                 = new Border();
-        $this->_bottom              = new Border();
-        $this->_diagonalUp          = new Border();
-        $this->_diagonalUp->setLineStyle(Border::LINE_NONE);
-        $this->_diagonalDown        = new Border();
-        $this->_diagonalDown->setLineStyle(Border::LINE_NONE);
+        $this->left                = new Border();
+        $this->right               = new Border();
+        $this->top                 = new Border();
+        $this->bottom              = new Border();
+        $this->diagonalUp          = new Border();
+        $this->diagonalUp->setLineStyle(Border::LINE_NONE);
+        $this->diagonalDown        = new Border();
+        $this->diagonalDown->setLineStyle(Border::LINE_NONE);
     }
 
     /**
@@ -90,7 +97,7 @@ class Borders implements IComparable
      */
     public function getLeft()
     {
-        return $this->_left;
+        return $this->left;
     }
 
     /**
@@ -100,7 +107,7 @@ class Borders implements IComparable
      */
     public function getRight()
     {
-        return $this->_right;
+        return $this->right;
     }
 
     /**
@@ -110,7 +117,7 @@ class Borders implements IComparable
      */
     public function getTop()
     {
-        return $this->_top;
+        return $this->top;
     }
 
     /**
@@ -120,7 +127,7 @@ class Borders implements IComparable
      */
     public function getBottom()
     {
-        return $this->_bottom;
+        return $this->bottom;
     }
 
     /**
@@ -130,7 +137,7 @@ class Borders implements IComparable
      */
     public function getDiagonalUp()
     {
-        return $this->_diagonalUp;
+        return $this->diagonalUp;
     }
 
     /**
@@ -140,7 +147,7 @@ class Borders implements IComparable
      */
     public function getDiagonalDown()
     {
-        return $this->_diagonalDown;
+        return $this->diagonalDown;
     }
 
     /**
@@ -162,13 +169,6 @@ class Borders implements IComparable
     }
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
-
-    /**
      * Get hash index
      *
      * Note that this index may vary during script execution! Only reliable moment is
@@ -178,7 +178,7 @@ class Borders implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -191,7 +191,7 @@ class Borders implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

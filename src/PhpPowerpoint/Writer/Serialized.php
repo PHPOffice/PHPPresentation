@@ -36,7 +36,7 @@ class Serialized implements IWriter
      *
      * @var PHPPowerPoint
      */
-    private $_presentation;
+    private $presentation;
 
     /**
      * Create a new PHPPowerPoint_Writer_Serialized
@@ -60,7 +60,7 @@ class Serialized implements IWriter
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty");
         }
-        if (!is_null($this->_presentation)) {
+        if (!is_null($this->presentation)) {
             // Create new ZIP file and open it for writing
             $objZip = new \ZipArchive();
 
@@ -72,18 +72,18 @@ class Serialized implements IWriter
             }
 
             // Add media
-            $slideCount = $this->_presentation->getSlideCount();
+            $slideCount = $this->presentation->getSlideCount();
             for ($i = 0; $i < $slideCount; ++$i) {
-                for ($j = 0; $j < $this->_presentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                    if ($this->_presentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
-                        $imgTemp = $this->_presentation->getSlide($i)->getShapeCollection()->offsetGet($j);
+                for ($j = 0; $j < $this->presentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
+                    if ($this->presentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
+                        $imgTemp = $this->presentation->getSlide($i)->getShapeCollection()->offsetGet($j);
                         $objZip->addFromString('media/' . $imgTemp->getFilename(), file_get_contents($imgTemp->getPath()));
                     }
                 }
             }
 
             // Add PHPPowerPoint.xml to the document, which represents a PHP serialized PHPPowerPoint object
-            $objZip->addFromString('PHPPowerPoint.xml', $this->_writeSerialized($this->_presentation, $pFilename));
+            $objZip->addFromString('PHPPowerPoint.xml', $this->writeSerialized($this->presentation, $pFilename));
 
             // Close file
             if ($objZip->close() === false) {
@@ -102,8 +102,8 @@ class Serialized implements IWriter
      */
     public function getPHPPowerPoint ()
     {
-        if (!is_null($this->_presentation)) {
-            return $this->_presentation;
+        if (!is_null($this->presentation)) {
+            return $this->presentation;
         } else {
             throw new \Exception("No PHPPowerPoint assigned.");
         }
@@ -118,7 +118,7 @@ class Serialized implements IWriter
      */
     public function setPHPPowerPoint (PHPPowerPoint $pPHPPowerPoint = null)
     {
-        $this->_presentation = $pPHPPowerPoint;
+        $this->presentation = $pPHPPowerPoint;
 
         return $this;
     }
@@ -131,7 +131,7 @@ class Serialized implements IWriter
      * @return string        XML Output
      * @throws \Exception
      */
-    private function _writeSerialized (PHPPowerPoint $pPHPPowerPoint = null, $pFilename = '')
+    private function writeSerialized (PHPPowerPoint $pPHPPowerPoint = null, $pFilename = '')
     {
         // Clone $pPHPPowerPoint
         $pPHPPowerPoint = clone $pPHPPowerPoint;

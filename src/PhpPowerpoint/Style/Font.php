@@ -50,56 +50,63 @@ class Font implements IComparable
      *
      * @var string
      */
-    private $_name;
+    private $name;
 
     /**
      * Bold
      *
      * @var boolean
      */
-    private $_bold;
+    private $bold;
 
     /**
      * Italic
      *
      * @var boolean
      */
-    private $_italic;
+    private $italic;
 
     /**
      * Superscript
      *
      * @var boolean
      */
-    private $_superScript;
+    private $superScript;
 
     /**
      * Subscript
      *
      * @var boolean
      */
-    private $_subScript;
+    private $subScript;
 
     /**
      * Underline
      *
      * @var string
      */
-    private $_underline;
+    private $underline;
 
     /**
      * Strikethrough
      *
      * @var boolean
      */
-    private $_strikethrough;
+    private $strikethrough;
 
     /**
      * Foreground color
      *
      * @var PHPPowerPoint_Style_Color
      */
-    private $_color;
+    private $color;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Style_Font
@@ -107,15 +114,15 @@ class Font implements IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_name          = 'Calibri';
-        $this->_size          = 10;
-        $this->_bold          = false;
-        $this->_italic        = false;
-        $this->_superScript   = false;
-        $this->_subScript     = false;
-        $this->_underline     = self::UNDERLINE_NONE;
-        $this->_strikethrough = false;
-        $this->_color         = new Color(Color::COLOR_BLACK);
+        $this->name          = 'Calibri';
+        $this->size          = 10;
+        $this->bold          = false;
+        $this->italic        = false;
+        $this->superScript   = false;
+        $this->subScript     = false;
+        $this->underline     = self::UNDERLINE_NONE;
+        $this->strikethrough = false;
+        $this->color         = new Color(Color::COLOR_BLACK);
     }
 
     /**
@@ -125,7 +132,7 @@ class Font implements IComparable
      */
     public function getName()
     {
-        return $this->_name;
+        return $this->name;
     }
 
     /**
@@ -139,7 +146,7 @@ class Font implements IComparable
         if ($pValue == '') {
             $pValue = 'Calibri';
         }
-        $this->_name = $pValue;
+        $this->name = $pValue;
 
         return $this;
     }
@@ -151,7 +158,7 @@ class Font implements IComparable
      */
     public function getSize()
     {
-        return $this->_size;
+        return $this->size;
     }
 
     /**
@@ -165,7 +172,7 @@ class Font implements IComparable
         if ($pValue == '') {
             $pValue = 10;
         }
-        $this->_size = $pValue;
+        $this->size = $pValue;
 
         return $this;
     }
@@ -175,9 +182,9 @@ class Font implements IComparable
      *
      * @return boolean
      */
-    public function getBold()
+    public function isBold()
     {
-        return $this->_bold;
+        return $this->bold;
     }
 
     /**
@@ -191,7 +198,7 @@ class Font implements IComparable
         if ($pValue == '') {
             $pValue = false;
         }
-        $this->_bold = $pValue;
+        $this->bold = $pValue;
 
         return $this;
     }
@@ -201,9 +208,9 @@ class Font implements IComparable
      *
      * @return boolean
      */
-    public function getItalic()
+    public function isItalic()
     {
-        return $this->_italic;
+        return $this->italic;
     }
 
     /**
@@ -217,7 +224,7 @@ class Font implements IComparable
         if ($pValue == '') {
             $pValue = false;
         }
-        $this->_italic = $pValue;
+        $this->italic = $pValue;
 
         return $this;
     }
@@ -227,9 +234,9 @@ class Font implements IComparable
      *
      * @return boolean
      */
-    public function getSuperScript()
+    public function isSuperScript()
     {
-        return $this->_superScript;
+        return $this->superScript;
     }
 
     /**
@@ -243,8 +250,8 @@ class Font implements IComparable
         if ($pValue == '') {
             $pValue = false;
         }
-        $this->_superScript = $pValue;
-        $this->_subScript   = !$pValue;
+        $this->superScript = $pValue;
+        $this->subScript   = !$pValue;
 
         return $this;
     }
@@ -254,9 +261,9 @@ class Font implements IComparable
      *
      * @return boolean
      */
-    public function getSubScript()
+    public function isSubScript()
     {
-        return $this->_subScript;
+        return $this->subScript;
     }
 
     /**
@@ -270,8 +277,8 @@ class Font implements IComparable
         if ($pValue == '') {
             $pValue = false;
         }
-        $this->_subScript   = $pValue;
-        $this->_superScript = !$pValue;
+        $this->subScript   = $pValue;
+        $this->superScript = !$pValue;
 
         return $this;
     }
@@ -283,7 +290,7 @@ class Font implements IComparable
      */
     public function getUnderline()
     {
-        return $this->_underline;
+        return $this->underline;
     }
 
     /**
@@ -297,20 +304,9 @@ class Font implements IComparable
         if ($pValue == '') {
             $pValue = self::UNDERLINE_NONE;
         }
-        $this->_underline = $pValue;
+        $this->underline = $pValue;
 
         return $this;
-    }
-
-    /**
-     * Get Striketrough
-     *
-     * @deprecated Use getStrikethrough() instead.
-     * @return boolean
-     */
-    public function getStriketrough()
-    {
-        return $this->getStrikethrough();
     }
 
     /**
@@ -330,9 +326,9 @@ class Font implements IComparable
      *
      * @return boolean
      */
-    public function getStrikethrough()
+    public function isStrikethrough()
     {
-        return $this->_strikethrough;
+        return $this->strikethrough;
     }
 
     /**
@@ -346,7 +342,7 @@ class Font implements IComparable
         if ($pValue == '') {
             $pValue = false;
         }
-        $this->_strikethrough = $pValue;
+        $this->strikethrough = $pValue;
 
         return $this;
     }
@@ -358,7 +354,7 @@ class Font implements IComparable
      */
     public function getColor()
     {
-        return $this->_color;
+        return $this->color;
     }
 
     /**
@@ -370,7 +366,7 @@ class Font implements IComparable
      */
     public function setColor(Color $pValue = null)
     {
-        $this->_color = $pValue;
+        $this->color = $pValue;
 
         return $this;
     }
@@ -382,15 +378,8 @@ class Font implements IComparable
      */
     public function getHashCode()
     {
-        return md5($this->_name . $this->_size . ($this->_bold ? 't' : 'f') . ($this->_italic ? 't' : 'f') . ($this->_superScript ? 't' : 'f') . ($this->_subScript ? 't' : 'f') . $this->_underline . ($this->_strikethrough ? 't' : 'f') . $this->_color->getHashCode() . __CLASS__);
+        return md5($this->name . $this->size . ($this->bold ? 't' : 'f') . ($this->italic ? 't' : 'f') . ($this->superScript ? 't' : 'f') . ($this->subScript ? 't' : 'f') . $this->underline . ($this->strikethrough ? 't' : 'f') . $this->color->getHashCode() . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -402,7 +391,7 @@ class Font implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -415,7 +404,7 @@ class Font implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

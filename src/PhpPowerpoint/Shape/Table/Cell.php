@@ -37,49 +37,56 @@ class Cell implements IComparable
      *
      * @var PHPPowerPoint_Shape_RichText_Paragraph[]
      */
-    private $_richTextParagraphs;
+    private $richTextParagraphs;
 
     /**
      * Active paragraph
      *
      * @var int
      */
-    private $_activeParagraph = 0;
+    private $activeParagraph = 0;
 
     /**
      * Fill
      *
      * @var PHPPowerPoint_Style_Fill
      */
-    private $_fill;
+    private $fill;
 
     /**
      * Borders
      *
      * @var PHPPowerPoint_Style_Borders
      */
-    private $_borders;
+    private $borders;
 
     /**
      * Width (in pixels)
      *
      * @var int
      */
-    private $_width = 0;
+    private $width = 0;
 
     /**
      * Colspan
      *
      * @var int
      */
-    private $_colSpan = 0;
+    private $colSpan = 0;
 
     /**
      * Rowspan
      *
      * @var int
      */
-    private $_rowSpan = 0;
+    private $rowSpan = 0;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_RichText instance
@@ -87,16 +94,16 @@ class Cell implements IComparable
     public function __construct()
     {
         // Initialise variables
-        $this->_richTextParagraphs = array(
+        $this->richTextParagraphs = array(
             new Paragraph()
         );
-        $this->_activeParagraph    = 0;
+        $this->activeParagraph    = 0;
 
         // Set fill
-        $this->_fill = new Fill();
+        $this->fill = new Fill();
 
         // Set borders
-        $this->_borders = new Borders();
+        $this->borders = new Borders();
     }
 
     /**
@@ -106,7 +113,7 @@ class Cell implements IComparable
      */
     public function getActiveParagraphIndex()
     {
-        return $this->_activeParagraph;
+        return $this->activeParagraph;
     }
 
     /**
@@ -116,7 +123,7 @@ class Cell implements IComparable
      */
     public function getActiveParagraph()
     {
-        return $this->_richTextParagraphs[$this->_activeParagraph];
+        return $this->richTextParagraphs[$this->activeParagraph];
     }
 
     /**
@@ -127,11 +134,11 @@ class Cell implements IComparable
      */
     public function setActiveParagraph($index = 0)
     {
-        if ($index >= count($this->_richTextParagraphs)) {
+        if ($index >= count($this->richTextParagraphs)) {
             throw new \Exception("Invalid paragraph count.");
         }
 
-        $this->_activeParagraph = $index;
+        $this->activeParagraph = $index;
 
         return $this->getActiveParagraph();
     }
@@ -144,11 +151,11 @@ class Cell implements IComparable
      */
     public function getParagraph($index = 0)
     {
-        if ($index >= count($this->_richTextParagraphs)) {
+        if ($index >= count($this->richTextParagraphs)) {
             throw new \Exception("Invalid paragraph count.");
         }
 
-        return $this->_richTextParagraphs[$index];
+        return $this->richTextParagraphs[$index];
     }
 
     /**
@@ -162,8 +169,8 @@ class Cell implements IComparable
         $font        = clone $this->getActiveParagraph()->getFont();
         $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
 
-        $this->_richTextParagraphs[] = new Paragraph();
-        $this->_activeParagraph      = count($this->_richTextParagraphs) - 1;
+        $this->richTextParagraphs[] = new Paragraph();
+        $this->activeParagraph      = count($this->richTextParagraphs) - 1;
 
         $this->getActiveParagraph()->setAlignment($alignment);
         $this->getActiveParagraph()->setFont($font);
@@ -181,7 +188,7 @@ class Cell implements IComparable
      */
     public function addText(ITextElement $pText = null)
     {
-        $this->_richTextParagraphs[$this->_activeParagraph]->addText($pText);
+        $this->richTextParagraphs[$this->activeParagraph]->addText($pText);
 
         return $this;
     }
@@ -195,7 +202,7 @@ class Cell implements IComparable
      */
     public function createText($pText = '')
     {
-        return $this->_richTextParagraphs[$this->_activeParagraph]->createText($pText);
+        return $this->richTextParagraphs[$this->activeParagraph]->createText($pText);
     }
 
     /**
@@ -206,7 +213,7 @@ class Cell implements IComparable
      */
     public function createBreak()
     {
-        return $this->_richTextParagraphs[$this->_activeParagraph]->createBreak();
+        return $this->richTextParagraphs[$this->activeParagraph]->createBreak();
     }
 
     /**
@@ -218,7 +225,7 @@ class Cell implements IComparable
      */
     public function createTextRun($pText = '')
     {
-        return $this->_richTextParagraphs[$this->_activeParagraph]->createTextRun($pText);
+        return $this->richTextParagraphs[$this->activeParagraph]->createTextRun($pText);
     }
 
     /**
@@ -232,7 +239,7 @@ class Cell implements IComparable
         $returnValue = '';
 
         // Loop trough all PHPPowerPoint_Shape_RichText_Paragraph
-        foreach ($this->_richTextParagraphs as $p) {
+        foreach ($this->richTextParagraphs as $p) {
             $returnValue .= $p->getPlainText();
         }
 
@@ -257,7 +264,7 @@ class Cell implements IComparable
      */
     public function getParagraphs()
     {
-        return $this->_richTextParagraphs;
+        return $this->richTextParagraphs;
     }
 
     /**
@@ -270,8 +277,8 @@ class Cell implements IComparable
     public function setParagraphs($paragraphs = null)
     {
         if (is_array($paragraphs)) {
-            $this->_richTextParagraphs = $paragraphs;
-            $this->_activeParagraph    = count($this->_richTextParagraphs) - 1;
+            $this->richTextParagraphs = $paragraphs;
+            $this->activeParagraph    = count($this->richTextParagraphs) - 1;
         } else {
             throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
         }
@@ -286,7 +293,7 @@ class Cell implements IComparable
      */
     public function getFill()
     {
-        return $this->_fill;
+        return $this->fill;
     }
 
     /**
@@ -297,7 +304,7 @@ class Cell implements IComparable
      */
     public function setFill(Fill $fill)
     {
-        $this->_fill = $fill;
+        $this->fill = $fill;
 
         return $this;
     }
@@ -309,7 +316,7 @@ class Cell implements IComparable
      */
     public function getBorders()
     {
-        return $this->_borders;
+        return $this->borders;
     }
 
     /**
@@ -320,7 +327,7 @@ class Cell implements IComparable
      */
     public function setBorders(Borders $borders)
     {
-        $this->_borders = $borders;
+        $this->borders = $borders;
 
         return $this;
     }
@@ -332,7 +339,7 @@ class Cell implements IComparable
      */
     public function getWidth()
     {
-        return $this->_width;
+        return $this->width;
     }
 
     /**
@@ -343,7 +350,7 @@ class Cell implements IComparable
      */
     public function setWidth($value = 0)
     {
-        $this->_width = $value;
+        $this->width = $value;
 
         return $this;
     }
@@ -355,7 +362,7 @@ class Cell implements IComparable
      */
     public function getColSpan()
     {
-        return $this->_colSpan;
+        return $this->colSpan;
     }
 
     /**
@@ -366,7 +373,7 @@ class Cell implements IComparable
      */
     public function setColSpan($value = 0)
     {
-        $this->_colSpan = $value;
+        $this->colSpan = $value;
 
         return $this;
     }
@@ -378,7 +385,7 @@ class Cell implements IComparable
      */
     public function getRowSpan()
     {
-        return $this->_rowSpan;
+        return $this->rowSpan;
     }
 
     /**
@@ -389,7 +396,7 @@ class Cell implements IComparable
      */
     public function setRowSpan($value = 0)
     {
-        $this->_rowSpan = $value;
+        $this->rowSpan = $value;
 
         return $this;
     }
@@ -402,19 +409,12 @@ class Cell implements IComparable
     public function getHashCode()
     {
         $hashElements = '';
-        foreach ($this->_richTextParagraphs as $element) {
+        foreach ($this->richTextParagraphs as $element) {
             $hashElements .= $element->getHashCode();
         }
 
-        return md5($hashElements . $this->_fill->getHashCode() . $this->_borders->getHashCode() . $this->_width . __CLASS__);
+        return md5($hashElements . $this->fill->getHashCode() . $this->borders->getHashCode() . $this->width . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -426,7 +426,7 @@ class Cell implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -439,7 +439,7 @@ class Cell implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

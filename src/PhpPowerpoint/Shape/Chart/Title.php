@@ -35,66 +35,73 @@ class Title implements IComparable
      *
      * @var boolean
      */
-    private $_visible = true;
+    private $visible = true;
 
     /**
      * Text
      *
      * @var string
      */
-    private $_text = 'Chart Title';
+    private $text = 'Chart Title';
 
     /**
      * OffsetX (as a fraction of the chart)
      *
      * @var float
      */
-    private $_offsetX = 0.01;
+    private $offsetX = 0.01;
 
     /**
      * OffsetY (as a fraction of the chart)
      *
      * @var float
      */
-    private $_offsetY = 0.01;
+    private $offsetY = 0.01;
 
     /**
      * Width (as a fraction of the chart)
      *
      * @var float
      */
-    private $_width = 0;
+    private $width = 0;
 
     /**
      * Height (as a fraction of the chart)
      *
      * @var float
      */
-    private $_height = 0;
+    private $height = 0;
 
     /**
      * Alignment
      *
      * @var PHPPowerPoint_Style_Alignment
      */
-    private $_alignment;
+    private $alignment;
 
     /**
      * Font
      *
      * @var PHPPowerPoint_Style_Font
      */
-    private $_font;
+    private $font;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_Chart_Title instance
      */
     public function __construct()
     {
-        $this->_alignment = new Alignment();
-        $this->_font      = new Font();
-        $this->_font->setName('Calibri');
-        $this->_font->setSize(18);
+        $this->alignment = new Alignment();
+        $this->font      = new Font();
+        $this->font->setName('Calibri');
+        $this->font->setSize(18);
     }
 
     /**
@@ -102,9 +109,9 @@ class Title implements IComparable
      *
      * @return boolean
      */
-    public function getVisible()
+    public function isVisible()
     {
-        return $this->_visible;
+        return $this->visible;
     }
 
     /**
@@ -115,7 +122,7 @@ class Title implements IComparable
      */
     public function setVisible($value = true)
     {
-        $this->_visible = $value;
+        $this->visible = $value;
 
         return $this;
     }
@@ -127,7 +134,7 @@ class Title implements IComparable
      */
     public function getText()
     {
-        return $this->_text;
+        return $this->text;
     }
 
     /**
@@ -138,7 +145,7 @@ class Title implements IComparable
      */
     public function setText($value = null)
     {
-        $this->_text = $value;
+        $this->text = $value;
 
         return $this;
     }
@@ -150,7 +157,7 @@ class Title implements IComparable
      */
     public function getOffsetX()
     {
-        return $this->_offsetX;
+        return $this->offsetX;
     }
 
     /**
@@ -161,7 +168,7 @@ class Title implements IComparable
      */
     public function setOffsetX($value = 0.01)
     {
-        $this->_offsetX = $value;
+        $this->offsetX = $value;
 
         return $this;
     }
@@ -173,7 +180,7 @@ class Title implements IComparable
      */
     public function getOffsetY()
     {
-        return $this->_offsetY;
+        return $this->offsetY;
     }
 
     /**
@@ -184,7 +191,7 @@ class Title implements IComparable
      */
     public function setOffsetY($value = 0.01)
     {
-        $this->_offsetY = $value;
+        $this->offsetY = $value;
 
         return $this;
     }
@@ -196,7 +203,7 @@ class Title implements IComparable
      */
     public function getWidth()
     {
-        return $this->_width;
+        return $this->width;
     }
 
     /**
@@ -207,7 +214,7 @@ class Title implements IComparable
      */
     public function setWidth($value = 0)
     {
-        $this->_width = $value;
+        $this->width = $value;
 
         return $this;
     }
@@ -219,7 +226,7 @@ class Title implements IComparable
      */
     public function getHeight()
     {
-        return $this->_height;
+        return $this->height;
     }
 
     /**
@@ -230,7 +237,7 @@ class Title implements IComparable
      */
     public function setHeight($value = 0)
     {
-        $this->_height = $value;
+        $this->height = $value;
 
         return $this;
     }
@@ -242,7 +249,7 @@ class Title implements IComparable
      */
     public function getFont()
     {
-        return $this->_font;
+        return $this->font;
     }
 
     /**
@@ -254,7 +261,7 @@ class Title implements IComparable
      */
     public function setFont(Font $pFont = null)
     {
-        $this->_font = $pFont;
+        $this->font = $pFont;
 
         return $this;
     }
@@ -266,7 +273,7 @@ class Title implements IComparable
      */
     public function getAlignment()
     {
-        return $this->_alignment;
+        return $this->alignment;
     }
 
     /**
@@ -277,7 +284,7 @@ class Title implements IComparable
      */
     public function setAlignment(Alignment $alignment)
     {
-        $this->_alignment = $alignment;
+        $this->alignment = $alignment;
 
         return $this;
     }
@@ -289,15 +296,8 @@ class Title implements IComparable
      */
     public function getHashCode()
     {
-        return md5($this->_text . $this->_offsetX . $this->_offsetY . $this->_width . $this->_height . $this->_font->getHashCode() . $this->_alignment->getHashCode() . ($this->_visible ? 't' : 'f') . __CLASS__);
+        return md5($this->text . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->font->getHashCode() . $this->alignment->getHashCode() . ($this->visible ? 't' : 'f') . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -309,7 +309,7 @@ class Title implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -322,7 +322,7 @@ class Title implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

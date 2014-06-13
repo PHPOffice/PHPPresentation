@@ -35,15 +35,22 @@ class Pie3D extends Type implements IComparable
      *
      * @var array
      */
-    private $_data = array();
+    private $data = array();
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_Chart_Type_Pie3D instance
      */
     public function __construct()
     {
-        $this->_hasAxisX = false;
-        $this->_hasAxisY = false;
+        $this->hasAxisX = false;
+        $this->hasAxisY = false;
     }
 
     /**
@@ -53,7 +60,7 @@ class Pie3D extends Type implements IComparable
      */
     public function getData()
     {
-        return $this->_data;
+        return $this->data;
     }
 
     /**
@@ -64,7 +71,7 @@ class Pie3D extends Type implements IComparable
      */
     public function setData($value = array())
     {
-        $this->_data = $value;
+        $this->data = $value;
 
         return $this;
     }
@@ -77,7 +84,7 @@ class Pie3D extends Type implements IComparable
      */
     public function addSeries(Series $value)
     {
-        $this->_data[] = $value;
+        $this->data[] = $value;
 
         return $this;
     }
@@ -90,19 +97,12 @@ class Pie3D extends Type implements IComparable
     public function getHashCode()
     {
         $hash = '';
-        foreach ($this->_data as $series) {
+        foreach ($this->data as $series) {
             $hash .= $series->getHashCode();
         }
 
         return md5($hash . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -114,7 +114,7 @@ class Pie3D extends Type implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -127,7 +127,7 @@ class Pie3D extends Type implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

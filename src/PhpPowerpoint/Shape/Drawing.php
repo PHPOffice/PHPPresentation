@@ -33,7 +33,14 @@ class Drawing extends BaseDrawing implements IComparable
      *
      * @var string
      */
-    private $_path;
+    private $path;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Slide_Drawing
@@ -41,7 +48,7 @@ class Drawing extends BaseDrawing implements IComparable
     public function __construct()
     {
         // Initialise values
-        $this->_path = '';
+        $this->path = '';
 
         // Initialize parent
         parent::__construct();
@@ -54,7 +61,7 @@ class Drawing extends BaseDrawing implements IComparable
      */
     public function getFilename()
     {
-        return basename($this->_path);
+        return basename($this->path);
     }
 
     /**
@@ -74,7 +81,7 @@ class Drawing extends BaseDrawing implements IComparable
      */
     public function getExtension()
     {
-        $exploded = explode(".", basename($this->_path));
+        $exploded = explode(".", basename($this->path));
 
         return $exploded[count($exploded) - 1];
     }
@@ -86,7 +93,7 @@ class Drawing extends BaseDrawing implements IComparable
      */
     public function getPath()
     {
-        return $this->_path;
+        return $this->path;
     }
 
     /**
@@ -101,17 +108,17 @@ class Drawing extends BaseDrawing implements IComparable
     {
         if ($pVerifyFile) {
             if (file_exists($pValue)) {
-                $this->_path = $pValue;
+                $this->path = $pValue;
 
-                if ($this->_width == 0 && $this->_height == 0) {
+                if ($this->width == 0 && $this->height == 0) {
                     // Get width/height
-                    list($this->_width, $this->_height) = getimagesize($pValue);
+                    list($this->width, $this->height) = getimagesize($pValue);
                 }
             } else {
                 throw new \Exception("File $pValue not found!");
             }
         } else {
-            $this->_path = $pValue;
+            $this->path = $pValue;
         }
 
         return $this;
@@ -124,15 +131,8 @@ class Drawing extends BaseDrawing implements IComparable
      */
     public function getHashCode()
     {
-        return md5($this->_path . parent::getHashCode() . __CLASS__);
+        return md5($this->path . parent::getHashCode() . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -144,7 +144,7 @@ class Drawing extends BaseDrawing implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -157,7 +157,7 @@ class Drawing extends BaseDrawing implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

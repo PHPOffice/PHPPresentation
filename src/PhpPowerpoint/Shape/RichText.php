@@ -50,91 +50,98 @@ class RichText extends Shape implements IComparable
      *
      * @var PHPPowerPoint_Shape_RichText_Paragraph[]
      */
-    private $_richTextParagraphs;
+    private $richTextParagraphs;
 
     /**
      * Active paragraph
      *
      * @var int
      */
-    private $_activeParagraph = 0;
+    private $activeParagraph = 0;
 
     /**
      * Text wrapping
      *
      * @var string
      */
-    private $_wrap = self::WRAP_SQUARE;
+    private $wrap = self::WRAP_SQUARE;
 
     /**
      * Autofit
      *
      * @var string
      */
-    private $_autoFit = self::AUTOFIT_DEFAULT;
+    private $autoFit = self::AUTOFIT_DEFAULT;
 
     /**
      * Horizontal overflow
      *
      * @var string
      */
-    private $_horizontalOverflow = self::OVERFLOW_OVERFLOW;
+    private $horizontalOverflow = self::OVERFLOW_OVERFLOW;
 
     /**
      * Vertical overflow
      *
      * @var string
      */
-    private $_verticalOverflow = self::OVERFLOW_OVERFLOW;
+    private $verticalOverflow = self::OVERFLOW_OVERFLOW;
 
     /**
      * Text upright?
      *
      * @var boolean
      */
-    private $_upright = false;
+    private $upright = false;
 
     /**
      * Vertical text?
      *
      * @var boolean
      */
-    private $_vertical = false;
+    private $vertical = false;
 
     /**
      * Number of columns (1 - 16)
      *
      * @var int
      */
-    private $_columns = 1;
+    private $columns = 1;
 
     /**
      * Bottom inset (in pixels)
      *
      * @var float
      */
-    private $_bottomInset = 4.8;
+    private $bottomInset = 4.8;
 
     /**
      * Left inset (in pixels)
      *
      * @var float
      */
-    private $_leftInset = 9.6;
+    private $leftInset = 9.6;
 
     /**
      * Right inset (in pixels)
      *
      * @var float
      */
-    private $_rightInset = 9.6;
+    private $rightInset = 9.6;
 
     /**
      * Top inset (in pixels)
      *
      * @var float
      */
-    private $_topInset = 4.8;
+    private $topInset = 4.8;
+
+    /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
 
     /**
      * Create a new PHPPowerPoint_Shape_RichText instance
@@ -142,10 +149,10 @@ class RichText extends Shape implements IComparable
     public function __construct()
     {
         // Initialise variables
-        $this->_richTextParagraphs = array(
+        $this->richTextParagraphs = array(
             new Paragraph()
         );
-        $this->_activeParagraph    = 0;
+        $this->activeParagraph    = 0;
 
         // Initialize parent
         parent::__construct();
@@ -158,7 +165,7 @@ class RichText extends Shape implements IComparable
      */
     public function getActiveParagraphIndex()
     {
-        return $this->_activeParagraph;
+        return $this->activeParagraph;
     }
 
     /**
@@ -168,7 +175,7 @@ class RichText extends Shape implements IComparable
      */
     public function getActiveParagraph()
     {
-        return $this->_richTextParagraphs[$this->_activeParagraph];
+        return $this->richTextParagraphs[$this->activeParagraph];
     }
 
     /**
@@ -179,11 +186,11 @@ class RichText extends Shape implements IComparable
      */
     public function setActiveParagraph($index = 0)
     {
-        if ($index >= count($this->_richTextParagraphs)) {
+        if ($index >= count($this->richTextParagraphs)) {
             throw new \Exception("Invalid paragraph count.");
         }
 
-        $this->_activeParagraph = $index;
+        $this->activeParagraph = $index;
 
         return $this->getActiveParagraph();
     }
@@ -196,11 +203,11 @@ class RichText extends Shape implements IComparable
      */
     public function getParagraph($index = 0)
     {
-        if ($index >= count($this->_richTextParagraphs)) {
+        if ($index >= count($this->richTextParagraphs)) {
             throw new \Exception("Invalid paragraph count.");
         }
 
-        return $this->_richTextParagraphs[$index];
+        return $this->richTextParagraphs[$index];
     }
 
     /**
@@ -214,8 +221,8 @@ class RichText extends Shape implements IComparable
         $font        = clone $this->getActiveParagraph()->getFont();
         $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
 
-        $this->_richTextParagraphs[] = new Paragraph();
-        $this->_activeParagraph      = count($this->_richTextParagraphs) - 1;
+        $this->richTextParagraphs[] = new Paragraph();
+        $this->activeParagraph      = count($this->richTextParagraphs) - 1;
 
         $this->getActiveParagraph()->setAlignment($alignment);
         $this->getActiveParagraph()->setFont($font);
@@ -233,7 +240,7 @@ class RichText extends Shape implements IComparable
      */
     public function addText(ITextElement $pText = null)
     {
-        $this->_richTextParagraphs[$this->_activeParagraph]->addText($pText);
+        $this->richTextParagraphs[$this->activeParagraph]->addText($pText);
 
         return $this;
     }
@@ -247,7 +254,7 @@ class RichText extends Shape implements IComparable
      */
     public function createText($pText = '')
     {
-        return $this->_richTextParagraphs[$this->_activeParagraph]->createText($pText);
+        return $this->richTextParagraphs[$this->activeParagraph]->createText($pText);
     }
 
     /**
@@ -258,7 +265,7 @@ class RichText extends Shape implements IComparable
      */
     public function createBreak()
     {
-        return $this->_richTextParagraphs[$this->_activeParagraph]->createBreak();
+        return $this->richTextParagraphs[$this->activeParagraph]->createBreak();
     }
 
     /**
@@ -270,7 +277,7 @@ class RichText extends Shape implements IComparable
      */
     public function createTextRun($pText = '')
     {
-        return $this->_richTextParagraphs[$this->_activeParagraph]->createTextRun($pText);
+        return $this->richTextParagraphs[$this->activeParagraph]->createTextRun($pText);
     }
 
     /**
@@ -284,7 +291,7 @@ class RichText extends Shape implements IComparable
         $returnValue = '';
 
         // Loop trough all PHPPowerPoint_Shape_RichText_Paragraph
-        foreach ($this->_richTextParagraphs as $p) {
+        foreach ($this->richTextParagraphs as $p) {
             $returnValue .= $p->getPlainText();
         }
 
@@ -309,7 +316,7 @@ class RichText extends Shape implements IComparable
      */
     public function getParagraphs()
     {
-        return $this->_richTextParagraphs;
+        return $this->richTextParagraphs;
     }
 
     /**
@@ -322,8 +329,8 @@ class RichText extends Shape implements IComparable
     public function setParagraphs($paragraphs = null)
     {
         if (is_array($paragraphs)) {
-            $this->_richTextParagraphs = $paragraphs;
-            $this->_activeParagraph    = count($this->_richTextParagraphs) - 1;
+            $this->richTextParagraphs = $paragraphs;
+            $this->activeParagraph    = count($this->richTextParagraphs) - 1;
         } else {
             throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
         }
@@ -338,7 +345,7 @@ class RichText extends Shape implements IComparable
      */
     public function getWrap()
     {
-        return $this->_wrap;
+        return $this->wrap;
     }
 
     /**
@@ -349,7 +356,7 @@ class RichText extends Shape implements IComparable
      */
     public function setWrap($value = self::WRAP_SQUARE)
     {
-        $this->_wrap = $value;
+        $this->wrap = $value;
 
         return $this;
     }
@@ -361,7 +368,7 @@ class RichText extends Shape implements IComparable
      */
     public function getAutoFit()
     {
-        return $this->_autoFit;
+        return $this->autoFit;
     }
 
     /**
@@ -372,7 +379,7 @@ class RichText extends Shape implements IComparable
      */
     public function setAutoFit($value = self::AUTOFIT_DEFAULT)
     {
-        $this->_autoFit = $value;
+        $this->autoFit = $value;
 
         return $this;
     }
@@ -384,7 +391,7 @@ class RichText extends Shape implements IComparable
      */
     public function getHorizontalOverflow()
     {
-        return $this->_horizontalOverflow;
+        return $this->horizontalOverflow;
     }
 
     /**
@@ -395,7 +402,7 @@ class RichText extends Shape implements IComparable
      */
     public function setHorizontalOverflow($value = self::OVERFLOW_OVERFLOW)
     {
-        $this->_horizontalOverflow = $value;
+        $this->horizontalOverflow = $value;
 
         return $this;
     }
@@ -407,7 +414,7 @@ class RichText extends Shape implements IComparable
      */
     public function getVerticalOverflow()
     {
-        return $this->_verticalOverflow;
+        return $this->verticalOverflow;
     }
 
     /**
@@ -418,7 +425,7 @@ class RichText extends Shape implements IComparable
      */
     public function setVerticalOverflow($value = self::OVERFLOW_OVERFLOW)
     {
-        $this->_verticalOverflow = $value;
+        $this->verticalOverflow = $value;
 
         return $this;
     }
@@ -428,9 +435,9 @@ class RichText extends Shape implements IComparable
      *
      * @return boolean
      */
-    public function getUpright()
+    public function isUpright()
     {
-        return $this->_upright;
+        return $this->upright;
     }
 
     /**
@@ -441,7 +448,7 @@ class RichText extends Shape implements IComparable
      */
     public function setUpright($value = false)
     {
-        $this->_upright = $value;
+        $this->upright = $value;
 
         return $this;
     }
@@ -451,9 +458,9 @@ class RichText extends Shape implements IComparable
      *
      * @return boolean
      */
-    public function getVertical()
+    public function isVertical()
     {
-        return $this->_vertical;
+        return $this->vertical;
     }
 
     /**
@@ -464,7 +471,7 @@ class RichText extends Shape implements IComparable
      */
     public function setVertical($value = false)
     {
-        $this->_vertical = $value;
+        $this->vertical = $value;
 
         return $this;
     }
@@ -476,7 +483,7 @@ class RichText extends Shape implements IComparable
      */
     public function getColumns()
     {
-        return $this->_columns;
+        return $this->columns;
     }
 
     /**
@@ -491,7 +498,7 @@ class RichText extends Shape implements IComparable
             throw new \Exception('Number of columns should be 1-16');
         }
 
-        $this->_columns = $value;
+        $this->columns = $value;
 
         return $this;
     }
@@ -503,7 +510,7 @@ class RichText extends Shape implements IComparable
      */
     public function getInsetBottom()
     {
-        return $this->_bottomInset;
+        return $this->bottomInset;
     }
 
     /**
@@ -514,7 +521,7 @@ class RichText extends Shape implements IComparable
      */
     public function setInsetBottom($value = 4.8)
     {
-        $this->_bottomInset = $value;
+        $this->bottomInset = $value;
 
         return $this;
     }
@@ -526,7 +533,7 @@ class RichText extends Shape implements IComparable
      */
     public function getInsetLeft()
     {
-        return $this->_leftInset;
+        return $this->leftInset;
     }
 
     /**
@@ -537,7 +544,7 @@ class RichText extends Shape implements IComparable
      */
     public function setInsetLeft($value = 9.6)
     {
-        $this->_leftInset = $value;
+        $this->leftInset = $value;
 
         return $this;
     }
@@ -549,7 +556,7 @@ class RichText extends Shape implements IComparable
      */
     public function getInsetRight()
     {
-        return $this->_rightInset;
+        return $this->rightInset;
     }
 
     /**
@@ -560,7 +567,7 @@ class RichText extends Shape implements IComparable
      */
     public function setInsetRight($value = 9.6)
     {
-        $this->_rightInset = $value;
+        $this->rightInset = $value;
 
         return $this;
     }
@@ -572,7 +579,7 @@ class RichText extends Shape implements IComparable
      */
     public function getInsetTop()
     {
-        return $this->_topInset;
+        return $this->topInset;
     }
 
     /**
@@ -583,7 +590,7 @@ class RichText extends Shape implements IComparable
      */
     public function setInsetTop($value = 4.8)
     {
-        $this->_topInset = $value;
+        $this->topInset = $value;
 
         return $this;
     }
@@ -596,19 +603,12 @@ class RichText extends Shape implements IComparable
     public function getHashCode()
     {
         $hashElements = '';
-        foreach ($this->_richTextParagraphs as $element) {
+        foreach ($this->richTextParagraphs as $element) {
             $hashElements .= $element->getHashCode();
         }
 
-        return md5($hashElements . $this->_wrap . $this->_autoFit . $this->_horizontalOverflow . $this->_verticalOverflow . ($this->_upright ? '1' : '0') . ($this->_vertical ? '1' : '0') . $this->_columns . $this->_bottomInset . $this->_leftInset . $this->_rightInset . $this->_topInset . parent::getHashCode() . __CLASS__);
+        return md5($hashElements . $this->wrap . $this->autoFit . $this->horizontalOverflow . $this->verticalOverflow . ($this->upright ? '1' : '0') . ($this->vertical ? '1' : '0') . $this->columns . $this->bottomInset . $this->leftInset . $this->rightInset . $this->topInset . parent::getHashCode() . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -620,7 +620,7 @@ class RichText extends Shape implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -633,7 +633,7 @@ class RichText extends Shape implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

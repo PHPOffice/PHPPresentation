@@ -34,14 +34,14 @@ class TextElement implements ITextElement
      *
      * @var string
      */
-    private $_text;
+    private $text;
 
     /**
      * Hyperlink
      *
      * @var PHPPowerPoint_Shape_Hyperlink
      */
-    protected $_hyperlink;
+    protected $hyperlink;
 
     /**
      * Create a new PHPPowerPoint_Shape_RichText_TextElement instance
@@ -51,7 +51,7 @@ class TextElement implements ITextElement
     public function __construct($pText = '')
     {
         // Initialise variables
-        $this->_text = $pText;
+        $this->text = $pText;
     }
 
     /**
@@ -61,7 +61,7 @@ class TextElement implements ITextElement
      */
     public function getText()
     {
-        return $this->_text;
+        return $this->text;
     }
 
     /**
@@ -72,7 +72,7 @@ class TextElement implements ITextElement
      */
     public function setText($pText = '')
     {
-        $this->_text = $pText;
+        $this->text = $pText;
 
         return $this;
     }
@@ -94,7 +94,7 @@ class TextElement implements ITextElement
      */
     public function hasHyperlink()
     {
-        return !is_null($this->_hyperlink);
+        return !is_null($this->hyperlink);
     }
 
     /**
@@ -104,11 +104,11 @@ class TextElement implements ITextElement
      */
     public function getHyperlink()
     {
-        if (is_null($this->_hyperlink)) {
-            $this->_hyperlink = new Hyperlink();
+        if (is_null($this->hyperlink)) {
+            $this->hyperlink = new Hyperlink();
         }
 
-        return $this->_hyperlink;
+        return $this->hyperlink;
     }
 
     /**
@@ -120,7 +120,7 @@ class TextElement implements ITextElement
      */
     public function setHyperlink(Hyperlink $pHyperlink = null)
     {
-        $this->_hyperlink = $pHyperlink;
+        $this->hyperlink = $pHyperlink;
 
         return $this;
     }
@@ -132,7 +132,7 @@ class TextElement implements ITextElement
      */
     public function getHashCode()
     {
-        return md5($this->_text . (is_null($this->_hyperlink) ? '' : $this->_hyperlink->getHashCode()) . __CLASS__);
+        return md5($this->text . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }
 
     /**

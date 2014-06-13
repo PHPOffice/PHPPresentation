@@ -38,35 +38,35 @@ class Chart extends BaseDrawing implements IComparable
      *
      * @var PHPPowerPoint_Shape_Chart_Title
      */
-    private $_title;
+    private $title;
 
     /**
      * Legend
      *
      * @var PHPPowerPoint_Shape_Chart_Legend
      */
-    private $_legend;
+    private $legend;
 
     /**
      * Plot area
      *
      * @var PHPPowerPoint_Shape_Chart_PlotArea
      */
-    private $_plotArea;
+    private $plotArea;
 
     /**
      * View 3D
      *
      * @var PHPPowerPoint_Shape_Chart_View3D
      */
-    private $_view3D;
+    private $view3D;
 
     /**
      * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
      *
      * @var bool
      */
-    private $_includeSpreadsheet = false;
+    private $includeSpreadsheet = false;
 
     /**
      * Create a new PHPPowerPoint_Slide_MemoryDrawing
@@ -74,10 +74,10 @@ class Chart extends BaseDrawing implements IComparable
     public function __construct()
     {
         // Initialize
-        $this->_title    = new Title();
-        $this->_legend   = new Legend();
-        $this->_plotArea = new PlotArea();
-        $this->_view3D   = new View3D();
+        $this->title    = new Title();
+        $this->legend   = new Legend();
+        $this->plotArea = new PlotArea();
+        $this->view3D   = new View3D();
 
         // Initialize parent
         parent::__construct();
@@ -90,7 +90,7 @@ class Chart extends BaseDrawing implements IComparable
      */
     public function getTitle()
     {
-        return $this->_title;
+        return $this->title;
     }
 
     /**
@@ -100,7 +100,7 @@ class Chart extends BaseDrawing implements IComparable
      */
     public function getLegend()
     {
-        return $this->_legend;
+        return $this->legend;
     }
 
     /**
@@ -110,7 +110,7 @@ class Chart extends BaseDrawing implements IComparable
      */
     public function getPlotArea()
     {
-        return $this->_plotArea;
+        return $this->plotArea;
     }
 
     /**
@@ -120,7 +120,7 @@ class Chart extends BaseDrawing implements IComparable
      */
     public function getView3D()
     {
-        return $this->_view3D;
+        return $this->view3D;
     }
 
     /**
@@ -128,9 +128,9 @@ class Chart extends BaseDrawing implements IComparable
      *
      * @return boolean
      */
-    public function getIncludeSpreadsheet()
+    public function hasIncludedSpreadsheet()
     {
-        return $this->_includeSpreadsheet;
+        return $this->includeSpreadsheet;
     }
 
     /**
@@ -141,8 +141,7 @@ class Chart extends BaseDrawing implements IComparable
      */
     public function setIncludeSpreadsheet($value = false)
     {
-        $this->_includeSpreadsheet = $value;
-
+        $this->includeSpreadsheet = $value;
         return $this;
     }
 
@@ -163,7 +162,7 @@ class Chart extends BaseDrawing implements IComparable
      */
     public function getHashCode()
     {
-        return md5(parent::getHashCode() . $this->_title->getHashCode() . $this->_legend->getHashCode() . $this->_plotArea->getHashCode() . $this->_view3D->getHashCode() . ($this->_includeSpreadsheet ? 1 : 0) . __CLASS__);
+        return md5(parent::getHashCode() . $this->title->getHashCode() . $this->legend->getHashCode() . $this->plotArea->getHashCode() . $this->view3D->getHashCode() . ($this->includeSpreadsheet ? 1 : 0) . __CLASS__);
     }
 
     /**
@@ -171,7 +170,7 @@ class Chart extends BaseDrawing implements IComparable
      *
      * @var string
      */
-    private $_hashIndex;
+    private $hashIndex;
 
     /**
      * Get hash index
@@ -183,7 +182,7 @@ class Chart extends BaseDrawing implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -196,7 +195,7 @@ class Chart extends BaseDrawing implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

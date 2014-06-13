@@ -35,7 +35,7 @@ abstract class LayoutPack
      *
      * @var array
      */
-    protected $_masterSlides = array();
+    protected $masterSlides = array();
 
     /**
      * Master slide relations
@@ -50,7 +50,7 @@ abstract class LayoutPack
      *
      * @var array
      */
-    protected $_masterSlideRelations = array();
+    protected $masterSlideRels = array();
 
     /**
      * Themes
@@ -61,7 +61,7 @@ abstract class LayoutPack
      *
      * @var array
      */
-    protected $_themes = '';
+    protected $themes = '';
 
     /**
      * Theme relations
@@ -76,7 +76,7 @@ abstract class LayoutPack
      *
      * @var array
      */
-    protected $_themeRelations = array();
+    protected $themeRelations = array();
 
     /**
      * Array of slide layouts.
@@ -88,7 +88,7 @@ abstract class LayoutPack
      *
      * @var array
      */
-    protected $_layouts = array();
+    protected $layouts = array();
 
     /**
      * Layout relations
@@ -103,7 +103,7 @@ abstract class LayoutPack
      *
      * @var array
      */
-    protected $_layoutRelations = array();
+    protected $layoutRelations = array();
 
     /**
      * Get master slides
@@ -112,7 +112,7 @@ abstract class LayoutPack
      */
     public function getMasterSlides()
     {
-        return $this->_masterSlides;
+        return $this->masterSlides;
     }
 
     /**
@@ -122,7 +122,7 @@ abstract class LayoutPack
      */
     public function getMasterSlideRelations()
     {
-        return $this->_masterSlideRelations;
+        return $this->masterSlideRels;
     }
 
     /**
@@ -132,7 +132,7 @@ abstract class LayoutPack
      */
     public function getThemes()
     {
-        return $this->_themes;
+        return $this->themes;
     }
 
     /**
@@ -142,7 +142,7 @@ abstract class LayoutPack
      */
     public function getThemeRelations()
     {
-        return $this->_themeRelations;
+        return $this->themeRelations;
     }
 
     /**
@@ -152,7 +152,7 @@ abstract class LayoutPack
      */
     public function getLayouts()
     {
-        return $this->_layouts;
+        return $this->layouts;
     }
 
     /**
@@ -162,7 +162,7 @@ abstract class LayoutPack
      */
     public function getLayoutRelations()
     {
-        return $this->_layoutRelations;
+        return $this->layoutRelations;
     }
 
     /**
@@ -180,7 +180,7 @@ abstract class LayoutPack
      */
     public function findLayout($name = '', $masterId = 1)
     {
-        foreach ($this->_layouts as $layout) {
+        foreach ($this->layouts as $layout) {
             if ($layout['name'] == $name && $layout['masterid'] == $masterId) {
                 return $layout;
             }
@@ -200,7 +200,7 @@ abstract class LayoutPack
     public function findLayoutIndex($name = '', $masterId = 1)
     {
         $index = 0;
-        foreach ($this->_layouts as $layout) {
+        foreach ($this->layouts as $layout) {
             if ($layout['name'] == $name && $layout['masterid'] == $masterId) {
                 return $index;
             }

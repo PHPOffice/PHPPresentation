@@ -35,14 +35,14 @@ class Line extends Type implements IComparable
      *
      * @var array
      */
-    private $_data = array();
+    private $data = array();
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_Type_Line instance
+     * Hash index
+     *
+     * @var string
      */
-    public function __construct()
-    {
-    }
+    private $hashIndex;
 
     /**
      * Get Data
@@ -51,7 +51,7 @@ class Line extends Type implements IComparable
      */
     public function getData()
     {
-        return $this->_data;
+        return $this->data;
     }
 
     /**
@@ -62,7 +62,7 @@ class Line extends Type implements IComparable
      */
     public function setData($value = array())
     {
-        $this->_data = $value;
+        $this->data = $value;
 
         return $this;
     }
@@ -75,7 +75,7 @@ class Line extends Type implements IComparable
      */
     public function addSeries(Series $value)
     {
-        $this->_data[] = $value;
+        $this->data[] = $value;
 
         return $this;
     }
@@ -88,19 +88,12 @@ class Line extends Type implements IComparable
     public function getHashCode()
     {
         $hash = '';
-        foreach ($this->_data as $series) {
+        foreach ($this->data as $series) {
             $hash .= $series->getHashCode();
         }
 
         return md5($hash . __CLASS__);
     }
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $_hashIndex;
 
     /**
      * Get hash index
@@ -112,7 +105,7 @@ class Line extends Type implements IComparable
      */
     public function getHashIndex()
     {
-        return $this->_hashIndex;
+        return $this->hashIndex;
     }
 
     /**
@@ -125,7 +118,7 @@ class Line extends Type implements IComparable
      */
     public function setHashIndex($value)
     {
-        $this->_hashIndex = $value;
+        $this->hashIndex = $value;
     }
 
     /**

@@ -42,7 +42,7 @@ class Presentation extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -84,7 +84,7 @@ class Presentation extends WriterPart
 
         // p:sldIdLst
         $objWriter->startElement('p:sldIdLst');
-        $this->_writeSlides($objWriter, $pPHPPowerPoint, $relationId);
+        $this->writeSlides($objWriter, $pPHPPowerPoint, $relationId);
         $objWriter->endElement();
 
         // p:sldSz
@@ -118,13 +118,13 @@ class Presentation extends WriterPart
      * @param  int                            $startRelationId
      * @throws \Exception
      */
-    private function _writeSlides(XMLWriter $objWriter = null, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
+    private function writeSlides(XMLWriter $objWriter = null, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
     {
         // Write slides
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
             // p:sldId
-            $this->_writeSlide($objWriter, ($i + 256), ($i + $startRelationId));
+            $this->writeSlide($objWriter, ($i + 256), ($i + $startRelationId));
         }
     }
 
@@ -136,7 +136,7 @@ class Presentation extends WriterPart
      * @param  int                            $pRelId    Relationship ID
      * @throws \Exception
      */
-    private function _writeSlide(XMLWriter $objWriter = null, $pSlideId = 1, $pRelId = 1)
+    private function writeSlide(XMLWriter $objWriter = null, $pSlideId = 1, $pRelId = 1)
     {
         // p:sldId
         $objWriter->startElement('p:sldId');

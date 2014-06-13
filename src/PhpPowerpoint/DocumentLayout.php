@@ -39,13 +39,6 @@ class DocumentLayout
     const LAYOUT_LETTER = 'letter';
     const LAYOUT_OVERHEAD = 'overhead';
 
-    // Maintain for backward compatibility. Constants should be in all uppercase.
-    // @codingStandardsIgnoreStart
-    const LAYOUT_SCREEN_4x3 = 'screen4x3';
-    const LAYOUT_SCREEN_16x10 = 'screen16x10';
-    const LAYOUT_SCREEN_16x9 = 'screen16x9';
-    const LAYOUT_35mm = '35mm';
-    // @codingStandardsIgnoreEnd
 
     /**
      * Dimension types
@@ -55,7 +48,7 @@ class DocumentLayout
      * occasionally referred to as A units; there are 360000 EMUs per
      * centimeter, 914400 EMUs per inch, 12700 EMUs per point.
      */
-    private $_dimension = array(
+    private $dimension = array(
         self::LAYOUT_SCREEN_4X3 => array('cx' => 9144000, 'cy' => 6858000),
         self::LAYOUT_SCREEN_16X10 => array('cx' => 9144000, 'cy' => 5715000),
         self::LAYOUT_SCREEN_16X9 => array('cx' => 9144000, 'cy' => 5143500),
@@ -67,10 +60,6 @@ class DocumentLayout
         self::LAYOUT_BANNER => array('cx' => 7315200, 'cy' => 914400),
         self::LAYOUT_LETTER => array('cx' => 9144000, 'cy' => 6858000),
         self::LAYOUT_OVERHEAD => array('cx' => 9144000, 'cy' => 6858000),
-        self::LAYOUT_SCREEN_4x3 => array('cx' => 9144000, 'cy' => 6858000),
-        self::LAYOUT_SCREEN_16x10 => array('cx' => 9144000, 'cy' => 5715000),
-        self::LAYOUT_SCREEN_16x9 => array('cx' => 9144000, 'cy' => 5143500),
-        self::LAYOUT_35mm => array('cx' => 10287000, 'cy' => 6858000),
     );
 
     /**
@@ -78,21 +67,21 @@ class DocumentLayout
      *
      * @var string
      */
-    private $_layout;
+    private $layout;
 
     /**
      * Layout x dimension
      *
      * @var integer
      */
-    private $_cx;
+    private $cx;
 
     /**
      * Layout y dimension
      *
      * @var integer
      */
-    private $_cy;
+    private $cy;
 
     /**
      * Create a new PHPPowerPoint_DocumentLayout
@@ -100,9 +89,9 @@ class DocumentLayout
     public function __construct()
     {
         // Initialise values
-        $this->_layout = self::LAYOUT_SCREEN_4X3;
-        $this->_cx     = $this->_dimension[$this->_layout]['cx'];
-        $this->_cy     = $this->_dimension[$this->_layout]['cy'];
+        $this->layout = self::LAYOUT_SCREEN_4X3;
+        $this->cx     = $this->dimension[$this->layout]['cx'];
+        $this->cy     = $this->dimension[$this->layout]['cy'];
     }
 
     /**
@@ -112,7 +101,7 @@ class DocumentLayout
      */
     public function getDocumentLayout()
     {
-        return $this->_layout;
+        return $this->layout;
     }
 
     /**
@@ -136,26 +125,22 @@ class DocumentLayout
             case self::LAYOUT_BANNER:
             case self::LAYOUT_LETTER:
             case self::LAYOUT_OVERHEAD:
-            case self::LAYOUT_SCREEN_4x3:
-            case self::LAYOUT_SCREEN_16x10:
-            case self::LAYOUT_SCREEN_16x9:
-            case self::LAYOUT_35mm:
-                $this->_layout = $pValue;
-                $this->_cx     = $this->_dimension[$this->_layout]['cy'];
-                $this->_cy     = $this->_dimension[$this->_layout]['cx'];
+                $this->layout = $pValue;
+                $this->cx     = $this->dimension[$this->layout]['cy'];
+                $this->cy     = $this->dimension[$this->layout]['cx'];
                 break;
             case self::LAYOUT_CUSTOM:
             default:
-                $this->_cx     = $pValue['cx'];
-                $this->_cy     = $pValue['cy'];
-                $this->_layout = self::LAYOUT_CUSTOM;
+                $this->cx     = $pValue['cx'];
+                $this->cy     = $pValue['cy'];
+                $this->layout = self::LAYOUT_CUSTOM;
                 break;
         }
 
         if (!$isLandscape) {
-            $tmp       = $this->_cx;
-            $this->_cx = $this->_cy;
-            $this->_cy = $tmp;
+            $tmp       = $this->cx;
+            $this->cx = $this->cy;
+            $this->cy = $tmp;
         }
 
         return $this;
@@ -168,7 +153,7 @@ class DocumentLayout
      */
     public function getCX()
     {
-        return $this->_cx;
+        return $this->cx;
     }
 
     /**
@@ -178,7 +163,7 @@ class DocumentLayout
      */
     public function getCY()
     {
-        return $this->_cy;
+        return $this->cy;
     }
 
     /**
@@ -188,7 +173,7 @@ class DocumentLayout
      */
     public function getLayoutXmilli()
     {
-        return $this->_cx / 36000;
+        return $this->cx / 36000;
     }
 
     /**
@@ -198,7 +183,7 @@ class DocumentLayout
      */
     public function getLayoutYmilli()
     {
-        return $this->_cy / 36000;
+        return $this->cy / 36000;
     }
 
     /**
@@ -209,8 +194,8 @@ class DocumentLayout
      */
     public function setLayoutXmilli($pValue)
     {
-        $this->_cx     = $pValue * 36000;
-        $this->_layout = self::LAYOUT_CUSTOM;
+        $this->cx     = $pValue * 36000;
+        $this->layout = self::LAYOUT_CUSTOM;
 
         return $this;
     }
@@ -222,8 +207,8 @@ class DocumentLayout
      */
     public function setLayoutYmilli($pValue)
     {
-        $this->_cy     = $pValue * 36000;
-        $this->_layout = self::LAYOUT_CUSTOM;
+        $this->cy     = $pValue * 36000;
+        $this->layout = self::LAYOUT_CUSTOM;
 
         return $this;
     }

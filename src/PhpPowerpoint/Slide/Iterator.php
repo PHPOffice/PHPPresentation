@@ -31,14 +31,14 @@ class Iterator extends \IteratorIterator
      *
      * @var PHPPowerPoint
      */
-    private $_subject;
+    private $subject;
 
     /**
      * Current iterator position
      *
      * @var int
      */
-    private $_position = 0;
+    private $position = 0;
 
     /**
      * Create a new slide iterator
@@ -48,7 +48,7 @@ class Iterator extends \IteratorIterator
     public function __construct(PhpPowerpoint $subject = null)
     {
         // Set subject
-        $this->_subject = $subject;
+        $this->subject = $subject;
     }
 
     /**
@@ -56,7 +56,7 @@ class Iterator extends \IteratorIterator
      */
     public function __destruct()
     {
-        unset($this->_subject);
+        unset($this->subject);
     }
 
     /**
@@ -64,7 +64,7 @@ class Iterator extends \IteratorIterator
      */
     public function rewind()
     {
-        $this->_position = 0;
+        $this->position = 0;
     }
 
     /**
@@ -74,7 +74,7 @@ class Iterator extends \IteratorIterator
      */
     public function current()
     {
-        return $this->_subject->getSlide($this->_position);
+        return $this->subject->getSlide($this->position);
     }
 
     /**
@@ -84,7 +84,7 @@ class Iterator extends \IteratorIterator
      */
     public function key()
     {
-        return $this->_position;
+        return $this->position;
     }
 
     /**
@@ -92,7 +92,7 @@ class Iterator extends \IteratorIterator
      */
     public function next()
     {
-        ++$this->_position;
+        ++$this->position;
     }
 
     /**
@@ -102,6 +102,6 @@ class Iterator extends \IteratorIterator
      */
     public function valid()
     {
-        return $this->_position < $this->_subject->getSlideCount();
+        return $this->position < $this->subject->getSlideCount();
     }
 }

@@ -48,7 +48,7 @@ class Content extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -161,7 +161,7 @@ class Content extends WriterPart
                     }
                 }
                 if ($shape instanceof BaseDrawing) {
-                    if ($shape->getShadow()->getVisible()) {
+                    if ($shape->getShadow()->isVisible()) {
                         // style:style
                         $objWriter->startElement('style:style');
                         $objWriter->writeAttribute('style:name', 'gr' . $shapeId);
@@ -293,7 +293,7 @@ class Content extends WriterPart
                 $objWriter->writeAttribute('fo:font-family', $item->getName());
                 $objWriter->writeAttribute('fo:font-size', $item->getSize() . 'pt');
                 // @todo : fo:font-style
-                if ($item->getBold()) {
+                if ($item->isBold()) {
                     $objWriter->writeAttribute('fo:font-weight', 'bold');
                 }
                 // @todo : style:text-underline-style
@@ -327,7 +327,7 @@ class Content extends WriterPart
 
                 // Check type
                 if ($shape instanceof RichText) {
-                    $this->_writeTxt($objWriter, $shape, $shapeId);
+                    $this->writeTxt($objWriter, $shape, $shapeId);
                 /*
                 elseif ($shape instanceof Table) {
                     $this->_writeTable($objWriter, $shape, $shapeId);
@@ -338,7 +338,7 @@ class Content extends WriterPart
                 }
                 */
                 } elseif ($shape instanceof Drawing) {
-                    $this->_writePic($objWriter, $shape, $shapeId);
+                    $this->writePic($objWriter, $shape, $shapeId);
                 }
             }
             $objWriter->endElement();
@@ -356,7 +356,7 @@ class Content extends WriterPart
      *
      * @param int $shapeId
      */
-    public function _writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
+    public function writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -365,7 +365,7 @@ class Content extends WriterPart
         $objWriter->writeAttribute('svg:height', number_format(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        if ($shape->getShadow()->getVisible()) {
+        if ($shape->getShadow()->isVisible()) {
             $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
         }
         // draw:image
@@ -384,7 +384,7 @@ class Content extends WriterPart
      *
      * @param int $shapeId
      */
-    public function _writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
+    public function writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
     {
         // draw:custom-shape
         $objWriter->startElement('draw:custom-shape');
@@ -396,14 +396,14 @@ class Content extends WriterPart
 
         $paragraphs                  = $shape->getParagraphs();
         $paragraphId                 = 0;
-        $sCustomShapeLastBullet      = '';
-        $iCustomShapeLastBulletLevel = 0;
-        $bCustomShapeHasBullet       = false;
+        $sCstShapeLastBullet      = '';
+        $iCstShapeLastBulletLvl = 0;
+        $bCstShapeHasBullet       = false;
 
         foreach ($paragraphs as $paragraph) {
             // Close the bullet list
-            if ($sCustomShapeLastBullet != 'bullet' && $bCustomShapeHasBullet == true) {
-                for ($iInc = $iCustomShapeLastBulletLevel; $iInc >= 0; $iInc--) {
+            if ($sCstShapeLastBullet != 'bullet' && $bCstShapeHasBullet == true) {
+                for ($iInc = $iCstShapeLastBulletLvl; $iInc >= 0; $iInc--) {
                     // text:list-item
                     $objWriter->endElement();
                     // text:list
@@ -456,18 +456,18 @@ class Content extends WriterPart
             // Bullet list
             //===============================================
             } elseif ($paragraph->getBulletStyle()->getBulletType() == 'bullet') {
-                $bCustomShapeHasBullet = true;
+                $bCstShapeHasBullet = true;
                 // Open the bullet list
-                if ($sCustomShapeLastBullet != 'bullet' || ($sCustomShapeLastBullet == $paragraph->getBulletStyle()->getBulletType() && $iCustomShapeLastBulletLevel < $paragraph->getAlignment()->getLevel())) {
+                if ($sCstShapeLastBullet != 'bullet' || ($sCstShapeLastBullet == $paragraph->getBulletStyle()->getBulletType() && $iCstShapeLastBulletLvl < $paragraph->getAlignment()->getLevel())) {
                     // text:list
                     $objWriter->startElement('text:list');
                     $objWriter->writeAttribute('text:style-name', 'L_' . $paragraph->getBulletStyle()->getHashCode());
                 }
-                if ($sCustomShapeLastBullet == 'bullet') {
-                    if ($iCustomShapeLastBulletLevel == $paragraph->getAlignment()->getLevel()) {
+                if ($sCstShapeLastBullet == 'bullet') {
+                    if ($iCstShapeLastBulletLvl == $paragraph->getAlignment()->getLevel()) {
                         // text:list-item
                         $objWriter->endElement();
-                    } elseif ($iCustomShapeLastBulletLevel > $paragraph->getAlignment()->getLevel()) {
+                    } elseif ($iCstShapeLastBulletLvl > $paragraph->getAlignment()->getLevel()) {
                         // text:list-item
                         $objWriter->endElement();
                         // text:list
@@ -518,13 +518,13 @@ class Content extends WriterPart
                 }
                 $objWriter->endElement();
             }
-            $sCustomShapeLastBullet      = $paragraph->getBulletStyle()->getBulletType();
-            $iCustomShapeLastBulletLevel = $paragraph->getAlignment()->getLevel();
+            $sCstShapeLastBullet      = $paragraph->getBulletStyle()->getBulletType();
+            $iCstShapeLastBulletLvl = $paragraph->getAlignment()->getLevel();
         }
 
         // Close the bullet list
-        if ($sCustomShapeLastBullet == 'bullet' && $bCustomShapeHasBullet == true) {
-            for ($iInc = $iCustomShapeLastBulletLevel; $iInc >= 0; $iInc--) {
+        if ($sCstShapeLastBullet == 'bullet' && $bCstShapeHasBullet == true) {
+            for ($iInc = $iCstShapeLastBulletLvl; $iInc >= 0; $iInc--) {
                 // text:list-item
                 $objWriter->endElement();
                 // text:list

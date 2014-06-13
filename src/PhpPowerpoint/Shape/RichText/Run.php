@@ -33,7 +33,7 @@ class Run extends TextElement implements ITextElement
      *
      * @var PHPPowerPoint_Style_Font
      */
-    private $_font;
+    private $font;
 
     /**
      * Create a new PHPPowerPoint_Shape_RichText_Run instance
@@ -44,7 +44,7 @@ class Run extends TextElement implements ITextElement
     {
         // Initialise variables
         $this->setText($pText);
-        $this->_font = new Font();
+        $this->font = new Font();
     }
 
     /**
@@ -54,7 +54,7 @@ class Run extends TextElement implements ITextElement
      */
     public function getFont()
     {
-        return $this->_font;
+        return $this->font;
     }
 
     /**
@@ -66,7 +66,7 @@ class Run extends TextElement implements ITextElement
      */
     public function setFont(Font $pFont = null)
     {
-        $this->_font = $pFont;
+        $this->font = $pFont;
 
         return $this;
     }
@@ -78,7 +78,7 @@ class Run extends TextElement implements ITextElement
      */
     public function getHashCode()
     {
-        return md5($this->getText() . $this->_font->getHashCode() . __CLASS__);
+        return md5($this->getText() . $this->font->getHashCode() . __CLASS__);
     }
 
     /**

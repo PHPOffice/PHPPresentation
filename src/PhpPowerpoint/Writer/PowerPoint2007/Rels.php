@@ -47,7 +47,7 @@ class Rels extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -61,13 +61,13 @@ class Rels extends WriterPart
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
         // Relationship docProps/app.xml
-        $this->_writeRelationship($objWriter, 3, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties', 'docProps/app.xml');
+        $this->writeRelationship($objWriter, 3, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties', 'docProps/app.xml');
 
         // Relationship docProps/core.xml
-        $this->_writeRelationship($objWriter, 2, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties', 'docProps/core.xml');
+        $this->writeRelationship($objWriter, 2, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties', 'docProps/core.xml');
 
         // Relationship ppt/presentation.xml
-        $this->_writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument', 'ppt/presentation.xml');
+        $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument', 'ppt/presentation.xml');
 
         $objWriter->endElement();
 
@@ -86,7 +86,7 @@ class Rels extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -106,17 +106,17 @@ class Rels extends WriterPart
         $masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
         foreach ($masterSlides as $masterSlide) {
             // Relationship slideMasters/slideMasterX.xml
-            $this->_writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', 'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml');
+            $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', 'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml');
         }
 
         // Add slide theme (only one!)
         // Relationship theme/theme1.xml
-        $this->_writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', 'theme/theme1.xml');
+        $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', 'theme/theme1.xml');
 
         // Relationships with slides
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
-            $this->_writeRelationship($objWriter, ($i + $relationId), 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slides/slide' . ($i + 1) . '.xml');
+            $this->writeRelationship($objWriter, ($i + $relationId), 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slides/slide' . ($i + 1) . '.xml');
         }
 
         $objWriter->endElement();
@@ -136,7 +136,7 @@ class Rels extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -163,17 +163,17 @@ class Rels extends WriterPart
 
         // Write slideLayout relationships
         foreach ($layouts as $key => $layout) {
-            $this->_writeRelationship($objWriter, ++$contentId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $key . '.xml');
+            $this->writeRelationship($objWriter, ++$contentId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $key . '.xml');
         }
 
         // Relationship theme/theme1.xml
-        $this->_writeRelationship($objWriter, ++$contentId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $masterId . '.xml');
+        $this->writeRelationship($objWriter, ++$contentId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $masterId . '.xml');
 
         // Other relationships
         $otherRelations = $layoutPack->getMasterSlideRelations();
         foreach ($otherRelations as $otherRelation) {
             if ($otherRelation['masterid'] == $masterId) {
-                $this->_writeRelationship($objWriter, ++$contentId, $otherRelation['type'], $otherRelation['target']);
+                $this->writeRelationship($objWriter, ++$contentId, $otherRelation['type'], $otherRelation['target']);
             }
         }
 
@@ -195,7 +195,7 @@ class Rels extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -212,13 +212,13 @@ class Rels extends WriterPart
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
         // Write slideMaster relationship
-        $this->_writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
+        $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
 
         // Other relationships
         $otherRelations = $layoutPack->getLayoutRelations();
         foreach ($otherRelations as $otherRelation) {
             if ($otherRelation['layoutId'] == $slideLayoutIndex) {
-                $this->_writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
+                $this->writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
             }
         }
 
@@ -239,7 +239,7 @@ class Rels extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -259,7 +259,7 @@ class Rels extends WriterPart
         $otherRelations = $layoutPack->getThemeRelations();
         foreach ($otherRelations as $otherRelation) {
             if ($otherRelation['masterid'] == $masterId) {
-                $this->_writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
+                $this->writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
             }
         }
 
@@ -280,7 +280,7 @@ class Rels extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -300,7 +300,7 @@ class Rels extends WriterPart
         $layoutPack  = $this->getParentWriter()->getLayoutPack();
         $layoutIndex = $layoutPack->findlayoutIndex($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
 
-        $this->_writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . ($layoutIndex + 1) . '.xml');
+        $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . ($layoutIndex + 1) . '.xml');
 
         // Write drawing relationships?
         if ($pSlide->getShapeCollection()->count() > 0) {
@@ -309,16 +309,16 @@ class Rels extends WriterPart
             while ($iterator->valid()) {
                 if ($iterator->current() instanceof Drawing || $iterator->current() instanceof MemoryDrawing) {
                     // Write relationship for image drawing
-                    $this->_writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename()));
+                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename()));
 
-                    $iterator->current()->__relationId = 'rId' . $relId;
+                    $iterator->current()->relationId = 'rId' . $relId;
 
                     ++$relId;
                 } elseif ($iterator->current() instanceof Chart) {
                     // Write relationship for chart drawing
-                    $this->_writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator->current()->getIndexedFilename());
+                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator->current()->getIndexedFilename());
 
-                    $iterator->current()->__relationId = 'rId' . $relId;
+                    $iterator->current()->relationId = 'rId' . $relId;
 
                     ++$relId;
                 }
@@ -336,12 +336,12 @@ class Rels extends WriterPart
                 if ($iterator->current()->hasHyperlink()) {
                     // Write relationship for hyperlink
                     $hyperlink               = $iterator->current()->getHyperlink();
-                    $hyperlink->__relationId = 'rId' . $relId;
+                    $hyperlink->relationId = 'rId' . $relId;
 
                     if (!$hyperlink->isInternal()) {
-                        $this->_writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
                     } else {
-                        $this->_writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
                     }
 
                     ++$relId;
@@ -355,12 +355,12 @@ class Rels extends WriterPart
                                 if ($element->hasHyperlink()) {
                                     // Write relationship for hyperlink
                                     $hyperlink               = $element->getHyperlink();
-                                    $hyperlink->__relationId = 'rId' . $relId;
+                                    $hyperlink->relationId = 'rId' . $relId;
 
                                     if (!$hyperlink->isInternal()) {
-                                        $this->_writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
                                     } else {
-                                        $this->_writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
                                     }
 
                                     ++$relId;
@@ -391,7 +391,7 @@ class Rels extends WriterPart
     {
         // Create XML writer
         $objWriter = null;
-        if ($this->getParentWriter()->getUseDiskCaching()) {
+        if ($this->getParentWriter()->hasDiskCaching()) {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
         } else {
             $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -408,8 +408,8 @@ class Rels extends WriterPart
         $relId = 1;
 
         // Write spreadsheet relationship?
-        if ($pChart->getIncludeSpreadsheet()) {
-            $this->_writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
+        if ($pChart->hasIncludedSpreadsheet()) {
+            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
         }
 
         $objWriter->endElement();
@@ -428,7 +428,7 @@ class Rels extends WriterPart
      * @param  string                         $pTargetMode Relationship target mode
      * @throws \Exception
      */
-    private function _writeRelationship(XMLWriter $objWriter = null, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
+    private function writeRelationship(XMLWriter $objWriter = null, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
     {
         if ($pType != '' && $pTarget != '') {
             if (strpos($pId, 'rId') === false) {
