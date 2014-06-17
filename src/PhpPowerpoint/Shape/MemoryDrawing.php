@@ -178,9 +178,9 @@ class MemoryDrawing extends BaseDrawing implements IComparable
     
     public function getExtension()
     {
-    	$extension = strtolower($this->getMimeType());
-    	$extension = explode('/', $extension);
-    	return $extension[1];
+        $extension = strtolower($this->getMimeType());
+        $extension = explode('/', $extension);
+        return $extension[1];
     }
 
     /**

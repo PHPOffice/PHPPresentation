@@ -42,15 +42,15 @@ class IOFactory
 
     private static function loadClass($class, $name, $type, PHPPowerPoint $phpPowerPoint = null)
     {
-    	if (class_exists($class) && self::isConcreteClass($class)) {
-    		if(is_null($phpPowerPoint)){
-    			return new $class();
-    		} else {
-    			return new $class($phpPowerPoint);
-    		}
-    	} else {
-    		throw new \Exception('"'.$name.'" is not a valid '.$type.'.');
-    	}
+        if (class_exists($class) && self::isConcreteClass($class)) {
+            if (is_null($phpPowerPoint)) {
+                return new $class();
+            } else {
+                return new $class($phpPowerPoint);
+            }
+        } else {
+            throw new \Exception('"'.$name.'" is not a valid '.$type.'.');
+        }
     }
 
     /**

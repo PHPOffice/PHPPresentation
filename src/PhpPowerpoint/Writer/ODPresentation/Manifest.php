@@ -125,16 +125,16 @@ class Manifest extends WriterPart
     private function getImageMimeType($pFile = '')
     {
         if (File::fileExists($pFile)) {
-        	if(strpos($pFile, 'zip://') === 0){
-        		$pZIPFile = str_replace('zip://', '', $pFile);
-        		$pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
-        		$pImgFile = substr($pFile, strpos($pFile, '#') + 1);
-        		$oArchive = new \ZipArchive();
-        		$oArchive->open($pZIPFile);
-	            $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
-        	} else {
-	            $image = getimagesize($pFile);
-        	}
+            if (strpos($pFile, 'zip://') === 0){
+                $pZIPFile = str_replace('zip://', '', $pFile);
+                $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
+                $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
+                $oArchive = new \ZipArchive();
+                $oArchive->open($pZIPFile);
+                $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
+            } else {
+                $image = getimagesize($pFile);
+            }
 
             return image_type_to_mime_type($image[2]);
         } else {
