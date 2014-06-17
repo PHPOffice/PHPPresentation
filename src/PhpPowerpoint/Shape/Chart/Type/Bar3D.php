@@ -38,13 +38,6 @@ class Bar3D extends Type implements IComparable
     private $data = array();
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $hashIndex;
-
-    /**
      * Get Data
      *
      * @return array
@@ -106,19 +99,6 @@ class Bar3D extends Type implements IComparable
     public function getHashIndex()
     {
         return $this->hashIndex;
-    }
-
-    /**
-     * Set hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @param string $value Hash index
-     */
-    public function setHashIndex($value)
-    {
-        $this->hashIndex = $value;
     }
 
     /**
