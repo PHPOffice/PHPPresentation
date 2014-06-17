@@ -15,17 +15,17 @@ use PhpOffice\PhpPowerpoint\Style\Fill;
 
 // Create new PHPPowerPoint object
 echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
-$objPHPPowerPoint = new \PhpOffice\PhpPowerpoint\PHPPowerPoint();
+$objPHPPowerPoint = new PhpPowerpoint();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPowerPoint->getProperties()->setCreator('Maarten Balliauw')
-                                  ->setLastModifiedBy('Maarten Balliauw')
-                                  ->setTitle('Office 2007 PPTX Test Document')
-                                  ->setSubject('Office 2007 PPTX Test Document')
-                                  ->setDescription('Test document for Office 2007 PPTX, generated using PHP classes.')
-                                  ->setKeywords('office 2007 openxml php')
-                                  ->setCategory('Test result file');
+$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
+                                  ->setLastModifiedBy('PHPPowerPoint Team')
+                                  ->setTitle('Sample 07 Title')
+                                  ->setSubject('Sample 07 Subject')
+                                  ->setDescription('Sample 07 Description')
+                                  ->setKeywords('office 2007 openxml libreoffice odt php')
+                                  ->setCategory('Sample Category');
 
 // Remove first slide
 echo date('H:i:s') . ' Remove first slide'.EOL;
@@ -33,7 +33,7 @@ $objPHPPowerPoint->removeSlideByIndex(0);
 
 // Create templated slide
 echo date('H:i:s') . ' Create templated slide'.EOL;
-$currentSlide = createTemplatedSlide($objPHPPowerPoint); // local function
+$currentSlide = createTemplatedSlide($objPHPPowerPoint);
 
 // Generate sample data for first chart
 echo date('H:i:s') . ' Generate sample data for first chart'.EOL;
@@ -46,7 +46,7 @@ $bar3DChart = new Bar3D();
 $series1 = new Series('2009', $series1Data);
 $series1->setShowSeriesName(true);
 $series1->getFont()->getColor()->setRGB('00FF00');
-$series1->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF00FF00'));
+$series1->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
 $series2 = new Series('2010', $series2Data);
 $series2->setShowSeriesName(true);
 $series2->getFont()->getColor()->setRGB('FF0000');
@@ -66,7 +66,7 @@ $shape->getShadow()->setVisible(true)
                    ->setDirection(45)
                    ->setDistance(10);
 $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
-                 ->setStartColor(new Color('FFCCCCCC'))
+                 ->setStartColor(new Color('FFE06B20'))
                  ->setEndColor(new Color('FFFFFFFF'))
                  ->setRotation(270);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
@@ -84,7 +84,7 @@ $shape->getLegend()->getFont()->setItalic(true);
 
 // Create templated slide
 echo date('H:i:s') . ' Create templated slide'.EOL;
-$currentSlide = createTemplatedSlide($objPHPPowerPoint); // local function
+$currentSlide = createTemplatedSlide($objPHPPowerPoint);
 
 // Generate sample data for second chart
 echo date('H:i:s') . ' Generate sample data for second chart'.EOL;
@@ -110,7 +110,7 @@ $shape->getShadow()->setVisible(true)
                    ->setDirection(45)
                    ->setDistance(10);
 $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
-                 ->setStartColor(new Color('FFCCCCCC'))
+                 ->setStartColor(new Color('FFE06B20'))
                  ->setEndColor(new Color('FFFFFFFF'))
                  ->setRotation(270);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
@@ -150,7 +150,7 @@ $shape->getShadow()->setVisible(true)
                    ->setDirection(45)
                    ->setDistance(10);
 $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
-                 ->setStartColor(new Color('FFCCCCCC'))
+                 ->setStartColor(new Color('FFE06B20'))
                  ->setEndColor(new Color('FFFFFFFF'))
                  ->setRotation(270);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
@@ -191,7 +191,7 @@ $shape->getShadow()->setVisible(true)
                    ->setDirection(45)
                    ->setDistance(10);
 $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
-                 ->setStartColor(new Color('FFCCCCCC'))
+                 ->setStartColor(new Color('FFE06B20'))
                  ->setEndColor(new Color('FFFFFFFF'))
                  ->setRotation(270);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);

@@ -9,17 +9,17 @@ use PhpOffice\PhpPowerpoint\IOFactory;
 
 // Create new PHPPowerPoint object
 echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
-$objPHPPowerPoint = new \PhpOffice\PhpPowerpoint\PhpPowerpoint();
+$objPHPPowerPoint = new PhpPowerpoint();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPowerPoint->getProperties()->setCreator('Maarten Balliauw')
-                                  ->setLastModifiedBy('Maarten Balliauw')
-                                  ->setTitle('Office 2007 PPTX Test Document')
-                                  ->setSubject('Office 2007 PPTX Test Document')
-                                  ->setDescription('Test document for Office 2007 PPTX, generated using PHP classes.')
-                                  ->setKeywords('office 2007 openxml php')
-                                  ->setCategory('Test result file');
+$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
+                                  ->setLastModifiedBy('PHPPowerPoint Team')
+                                  ->setTitle('Sample 03 Title')
+                                  ->setSubject('Sample 03 Subject')
+                                  ->setDescription('Sample 03 Description')
+                                  ->setKeywords('office 2007 openxml libreoffice odt php')
+                                  ->setCategory('Sample Category');
 
 // Create slide
 echo date('H:i:s') . ' Create slide'.EOL;
@@ -49,7 +49,7 @@ $shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONT
 $textRun = $shape->createTextRun('Thank you for using PHPPowerPoint!');
 $textRun->getFont()->setBold(true)
                    ->setSize(60)
-                   ->setColor( new Color( 'FFC00000' ) );
+                   ->setColor( new Color( 'FFE06B20' ) );
 
 // Save serialized file
 $basename = basename(__FILE__, '.php');

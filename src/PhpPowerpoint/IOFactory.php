@@ -40,10 +40,14 @@ class IOFactory
         return !$reflection->isAbstract() && !$reflection->isInterface();
     }
 
-    private static function loadClass($class, $name, $type)
+    private static function loadClass($class, $name, $type, PHPPowerPoint $phpPowerPoint = null)
     {
     	if (class_exists($class) && self::isConcreteClass($class)) {
-    		return new $class($phpPowerPoint);
+    		if(is_null($phpPowerPoint)){
+    			return new $class();
+    		} else {
+    			return new $class($phpPowerPoint);
+    		}
     	} else {
     		throw new \Exception('"'.$name.'" is not a valid '.$type.'.');
     	}
@@ -59,7 +63,7 @@ class IOFactory
     public static function createWriter(PHPPowerPoint $phpPowerPoint, $name = 'PowerPoint2007')
     {
         $class = 'PhpOffice\\PhpPowerpoint\\Writer\\' . $name;
-        return self::loadClass($class, $name, 'writer');
+        return self::loadClass($class, $name, 'writer', $phpPowerPoint);
     }
 
     /**

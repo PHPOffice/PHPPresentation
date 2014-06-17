@@ -65,8 +65,8 @@ class Serialized implements IWriter
             $objZip = new \ZipArchive();
 
             // Try opening the ZIP file
-            if ($objZip->open($pFilename, \ZIPARCHIVE::OVERWRITE) !== true) {
-                if ($objZip->open($pFilename, \ZIPARCHIVE::CREATE) !== true) {
+            if ($objZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
+                if ($objZip->open($pFilename, \ZipArchive::CREATE) !== true) {
                     throw new \Exception("Could not open " . $pFilename . " for writing.");
                 }
             }
@@ -131,7 +131,7 @@ class Serialized implements IWriter
      * @return string        XML Output
      * @throws \Exception
      */
-    private function writeSerialized (PHPPowerPoint $pPHPPowerPoint = null, $pFilename = '')
+    private function writeSerialized (PhpPowerpoint $pPHPPowerPoint = null, $pFilename = '')
     {
         // Clone $pPHPPowerPoint
         $pPHPPowerPoint = clone $pPHPPowerPoint;
@@ -159,7 +159,7 @@ class Serialized implements IWriter
         $objWriter->writeAttribute('version', '##VERSION##');
 
         // Comment
-        $objWriter->writeComment('This file has been generated using PHPPowerPoint v##VERSION## (http://www.codeplex.com/PHPPowerPoint). It contains a base64 encoded serialized version of the PHPPowerPoint internal object.');
+        $objWriter->writeComment('This file has been generated using PHPPowerPoint v##VERSION## (http://github.com/PHPOffice/PHPPowerPoint). It contains a base64 encoded serialized version of the PHPPowerPoint internal object.');
 
         // Data
         $objWriter->startElement('data');
@@ -167,8 +167,8 @@ class Serialized implements IWriter
         $objWriter->endElement();
 
         $objWriter->endElement();
-
+        
         // Return
-        return $objWriter->outputMemory(true);
+        return $objWriter->getData();
     }
 }

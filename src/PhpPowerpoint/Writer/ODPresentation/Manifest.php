@@ -92,8 +92,8 @@ class Manifest extends WriterPart
                     $objWriter->endElement();
                 }
             } elseif ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
-                if (!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
-                    $arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
+                if (!in_array(str_replace(' ', '_', $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $arrMedia)) {
+                    $arrMedia[] = str_replace(' ', '_', $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getIndexedFilename());
 
                     $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
                     $extension = explode('/', $extension);
@@ -103,7 +103,7 @@ class Manifest extends WriterPart
 
                     $objWriter->startElement('manifest:file-entry');
                     $objWriter->writeAttribute('manifest:media-type', $mimeType);
-                    $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()) . '.' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
+                    $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()));
                     $objWriter->endElement();
                 }
             }
@@ -125,7 +125,16 @@ class Manifest extends WriterPart
     private function getImageMimeType($pFile = '')
     {
         if (File::fileExists($pFile)) {
-            $image = getimagesize($pFile);
+        	if(strpos($pFile, 'zip://') === 0){
+        		$pZIPFile = str_replace('zip://', '', $pFile);
+        		$pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
+        		$pImgFile = substr($pFile, strpos($pFile, '#') + 1);
+        		$oArchive = new \ZipArchive();
+        		$oArchive->open($pZIPFile);
+	            $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
+        	} else {
+	            $image = getimagesize($pFile);
+        	}
 
             return image_type_to_mime_type($image[2]);
         } else {

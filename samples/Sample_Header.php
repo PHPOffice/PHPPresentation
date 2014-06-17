@@ -114,19 +114,22 @@ function getEndingNotes($writers)
  * @param PHPPowerPoint $objPHPPowerPoint
  * @return PHPPowerPoint_Slide
  */
-function createTemplatedSlide(PhpPowerpoint $objPHPPowerPoint)
+function createTemplatedSlide(PhpOffice\PhpPowerpoint\PhpPowerpoint $objPHPPowerPoint)
 {
 	// Create slide
 	$slide = $objPHPPowerPoint->createSlide();
-
+	
 	// Add logo
-	$slide->createDrawingShape()
-	->setName('PHPPowerPoint logo')
-	->setDescription('PHPPowerPoint logo')
-	->setPath('./resources/phppowerpoint_logo.gif')
-	->setHeight(40)
-	->setOffsetX(10)
-	->setOffsetY(720 - 10 - 40);
+	$shape = $slide->createDrawingShape();
+	$shape->setName('PHPPowerPoint logo')
+		->setDescription('PHPPowerPoint logo')
+		->setPath('./resources/phppowerpoint_logo.gif')
+		->setHeight(36)
+		->setOffsetX(10)
+		->setOffsetY(10);
+	$shape->getShadow()->setVisible(true)
+		->setDirection(45)
+		->setDistance(10);
 
 	// Return slide
 	return $slide;

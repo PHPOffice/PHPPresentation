@@ -89,19 +89,26 @@ class Serialized implements IReader
      */
     private function loadSerialized($pFilename)
     {
-        $xmlData = simplexml_load_string(file_get_contents("zip://$pFilename#PHPPowerPoint.xml"));
-        $file    = unserialize(base64_decode((string) $xmlData->data));
-
-        // Update media links
-        for ($i = 0; $i < $file->getSlideCount(); ++$i) {
-            for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
-                    $imgTemp =& $file->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $imgTemp->setPath('zip://' . $pFilename . '#media/' . $imgTemp->getFilename(), false);
-                }
-            }
-        }
-
-        return $file;
+    	$oArchive = new \ZipArchive();
+    	if ($oArchive->open($pFilename) === TRUE) {
+    		$xmlContent = $oArchive->getFromName('PHPPowerPoint.xml');
+    		
+    		if(!empty($xmlContent)){
+    			$xmlData = simplexml_load_string($xmlContent);
+    			$file    = unserialize(base64_decode((string) $xmlData->data));
+    			
+    			// Update media links
+    			for ($i = 0; $i < $file->getSlideCount(); ++$i) {
+    				for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
+    					if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
+    						$file->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $file->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
+    					}
+    				}
+    			}
+    			
+    			$oArchive->close();
+    			return $file;
+    		}
+    	}
     }
 }

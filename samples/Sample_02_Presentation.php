@@ -1,25 +1,27 @@
 <?php
 
-include_once 'Sample_Header.php';
-
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Style\Color;
 
+include_once 'Sample_Header.php';
+
+$colorBlack = new Color( 'FF000000' );
+
 // Create new PHPPowerPoint object
 echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
-$objPHPPowerPoint = new \PhpOffice\PhpPowerpoint\PHPPowerPoint();
+$objPHPPowerPoint = new PhpPowerpoint();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPowerPoint->getProperties()->setCreator('Maarten Balliauw')
-                                  ->setLastModifiedBy('Maarten Balliauw')
-                                  ->setTitle('Office 2007 PPTX Test Document')
-                                  ->setSubject('Office 2007 PPTX Test Document')
-                                  ->setDescription('Test document for Office 2007 PPTX, generated using PHP classes.')
-                                  ->setKeywords('office 2007 openxml php')
-                                  ->setCategory('Test result file');
+$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
+                                  ->setLastModifiedBy('PHPPowerPoint Team')
+                                  ->setTitle('Sample 02 Title')
+                                  ->setSubject('Sample 02 Subject')
+                                  ->setDescription('Sample 02 Description')
+                                  ->setKeywords('office 2007 openxml libreoffice odt php')
+                                  ->setCategory('Sample Category');
 
 // Remove first slide
 echo date('H:i:s') . ' Remove first slide'.EOL;
@@ -28,7 +30,6 @@ $objPHPPowerPoint->removeSlideByIndex(0);
 // Create templated slide
 echo date('H:i:s') . ' Create templated slide'.EOL;
 $currentSlide = createTemplatedSlide($objPHPPowerPoint); // local function
-
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -42,14 +43,14 @@ $shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONT
 $textRun = $shape->createTextRun('Introduction to');
 $textRun->getFont()->setBold(true);
 $textRun->getFont()->setSize(28);
-$textRun->getFont()->setColor( new Color( 'FFFFFFFF' ) );
+$textRun->getFont()->setColor($colorBlack);
 
 $shape->createBreak();
 
 $textRun = $shape->createTextRun('PHPPowerPoint');
 $textRun->getFont()->setBold(true);
 $textRun->getFont()->setSize(60);
-$textRun->getFont()->setColor( new Color( 'FFFFFFFF' ) );
+$textRun->getFont()->setColor($colorBlack);
 
 
 // Create templated slide
@@ -62,13 +63,13 @@ $shape = $currentSlide->createRichTextShape();
 $shape->setHeight(100)
       ->setWidth(930)
       ->setOffsetX(10)
-      ->setOffsetY(10);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
+      ->setOffsetY(50);
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
 $textRun = $shape->createTextRun('What is PHPPowerPoint?');
 $textRun->getFont()->setBold(true)
                    ->setSize(48)
-                   ->setColor( new Color( 'FFFFFFFF' ) );
+                   ->setColor($colorBlack);
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -76,12 +77,12 @@ $shape = $currentSlide->createRichTextShape()
       ->setHeight(600)
       ->setWidth(930)
       ->setOffsetX(10)
-      ->setOffsetY(100);
+      ->setOffsetY(130);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
                                             ->setMarginLeft(25)
                                             ->setIndent(-25);
 $shape->getActiveParagraph()->getFont()->setSize(36)
-                                       ->setColor(new Color('FFFFFFFF'));
+                                       ->setColor($colorBlack);
 $shape->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
 
 $shape->createTextRun('A class library');
@@ -100,13 +101,13 @@ $shape = $currentSlide->createRichTextShape()
       ->setHeight(100)
       ->setWidth(930)
       ->setOffsetX(10)
-      ->setOffsetY(10);
+      ->setOffsetY(50);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT );
 
 $textRun = $shape->createTextRun('What\'s the point?');
 $textRun->getFont()->setBold(true)
                    ->setSize(48)
-                   ->setColor(new Color('FFFFFFFF'));
+                   ->setColor($colorBlack);
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -114,12 +115,12 @@ $shape = $currentSlide->createRichTextShape();
 $shape->setHeight(600)
       ->setWidth(930)
       ->setOffsetX(10)
-      ->setOffsetY(100);
+      ->setOffsetY(130);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)
                                             ->setMarginLeft(25)
                                             ->setIndent(-25);
 $shape->getActiveParagraph()->getFont()->setSize(36)
-                                       ->setColor(new Color('FFFFFFFF'));
+                                       ->setColor($colorBlack);
 $shape->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
 
 $shape->createTextRun('Generate slide decks');
@@ -152,13 +153,13 @@ $shape = $currentSlide->createRichTextShape();
 $shape->setHeight(100)
       ->setWidth(930)
       ->setOffsetX(10)
-      ->setOffsetY(10);
+      ->setOffsetY(50);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
 
 $textRun = $shape->createTextRun('Need more info?');
 $textRun->getFont()->setBold(true)
                    ->setSize(48)
-                   ->setColor( new Color( 'FFFFFFFF' ) );
+                   ->setColor($colorBlack);
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -166,19 +167,19 @@ $shape = $currentSlide->createRichTextShape();
 $shape->setHeight(600)
       ->setWidth(930)
       ->setOffsetX(10)
-      ->setOffsetY(100);
+      ->setOffsetY(130);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
 
-$textRun = $shape->createTextRun('Check the project site on CodePlex:');
+$textRun = $shape->createTextRun('Check the project site on GitHub:');
 $textRun->getFont()->setSize(36)
-                   ->setColor( new Color( 'FFFFFFFF' ) );
+                   ->setColor($colorBlack);
 
 $shape->createBreak();
 
-$textRun = $shape->createTextRun('http://phppowerpoint.codeplex.com');
-$textRun->getFont()->setSize(36)
-                   ->setColor( new Color( 'FFFFFFFF' ) );
-$textRun->getHyperlink()->setUrl('http://phppowerpoint.codeplex.com')
+$textRun = $shape->createTextRun('https://github.com/PHPOffice/PHPPowerPoint/');
+$textRun->getFont()->setSize(32)
+                   ->setColor($colorBlack);
+$textRun->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/')
                         ->setTooltip('PHPPowerPoint');
 
 // Save file

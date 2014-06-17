@@ -246,7 +246,7 @@ class PowerPoint2007 implements IWriter
                         $imagePath         = substr($imagePath, 6);
                         $imagePathSplitted = explode('#', $imagePath);
 
-                        $imageZip = new ZipArchive();
+                        $imageZip = new \ZipArchive();
                         $imageZip->open($imagePathSplitted[0]);
                         $imageContents = $imageZip->getFromName($imagePathSplitted[1]);
                         $imageZip->close();

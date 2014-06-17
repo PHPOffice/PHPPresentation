@@ -116,7 +116,6 @@ class XMLWriter
             return $this->xmlWriter->outputMemory(true);
         } else {
             $this->xmlWriter->flush();
-
             return file_get_contents($this->tempFileName);
         }
     }

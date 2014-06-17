@@ -41,13 +41,13 @@ class TemplateBased extends LayoutPack
         }
 
         // Master slide relations
-        $this->_masterSlideRelations = array();
+        $this->masterSlideRelations = array();
 
         // Theme relations
-        $this->_themeRelations = array();
+        $this->themeRelations = array();
 
         // Layout relations
-        $this->_layoutRelations = array();
+        $this->layoutRelations = array();
 
         // Open package
         $package = new ZipArchive;
@@ -64,7 +64,7 @@ class TemplateBased extends LayoutPack
                     if ($presRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster") {
                         // Found slide master!
                         $slideMasterId         = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));
-                        $this->_masterSlides[] = array(
+                        $this->masterSlides[] = array(
                             'masterid' => $slideMasterId,
                             'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . basename($presRel["Target"])))
                         );
@@ -75,7 +75,7 @@ class TemplateBased extends LayoutPack
                             if ($masterRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                 // Found theme!
                                 $themeId                     = str_replace('theme', '', basename($masterRel["Target"], '.xml'));
-                                $this->_themes[$themeId - 1] = array(
+                                $this->themes[$themeId - 1] = array(
                                     'masterid' => $slideMasterId,
                                     'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
                                 );
@@ -86,7 +86,7 @@ class TemplateBased extends LayoutPack
                                     foreach ($themeRelations->Relationship as $themeRel) {
                                         if ($themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" && $themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" && $themeRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                             // Theme relation
-                                            $this->_themeRelations[] = array(
+                                            $this->themeRelations[] = array(
                                                 'masterid' => $slideMasterId,
                                                 'id' => $themeRel["Id"],
                                                 'type' => $themeRel["Type"],
@@ -114,7 +114,7 @@ class TemplateBased extends LayoutPack
                                 $layoutXml->registerXPathNamespace("p", "http://schemas.openxmlformats.org/presentationml/2006/main");
                                 $slide                     = $layoutXml->xpath('/p:sldLayout/p:cSld');
                                 $layout['name']            = (string) $slide[0]['name'];
-                                $this->_layouts[$layoutId] = $layout;
+                                $this->layouts[$layoutId] = $layout;
 
                                 // Search for slide layout relations
                                 $layoutRelations = @simplexml_load_string($package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/_rels/" . basename($masterRel["Target"]) . ".rels")));
@@ -122,7 +122,7 @@ class TemplateBased extends LayoutPack
                                     foreach ($layoutRelations->Relationship as $layoutRel) {
                                         if ($layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster" && $layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout" && $layoutRel["Type"] != "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                             // Layout relation
-                                            $this->_layoutRelations[] = array(
+                                            $this->layoutRelations[] = array(
                                                 'layoutId' => $layoutId,
                                                 'id' => $layoutRel["Id"],
                                                 'type' => $layoutRel["Type"],
@@ -135,7 +135,7 @@ class TemplateBased extends LayoutPack
                                 }
                             } else {
                                 // Master slide relation
-                                $this->_masterSlideRelations[] = array(
+                                $this->masterSlideRelations[] = array(
                                     'masterid' => $slideMasterId,
                                     'id' => $masterRel["Id"],
                                     'type' => $masterRel["Type"],
@@ -153,7 +153,7 @@ class TemplateBased extends LayoutPack
         }
 
         // Sort master slides
-        usort($this->_masterSlides, array(
+        usort($this->masterSlides, array(
             "PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased",
             "cmpMaster"
         ));

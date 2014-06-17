@@ -35,7 +35,7 @@ class PackDefault extends LayoutPack
     public function __construct()
     {
         // Master slide
-        $this->_masterSlides = array(
+        $this->masterSlides = array(
             array(
                 'masterid' => 1,
                 'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -543,12 +543,12 @@ class PackDefault extends LayoutPack
 </p:sldMaster>'));
 
         // Master slide relations
-        $this->_masterSlideRelations = array(
+        $this->masterSlideRelations = array(
             //array('masterid' => '', 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
         );
 
         // Theme
-        $this->_themes = array(
+        $this->themes = array(
             array(
                 'masterid' => 1,
                 'body'     => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -834,12 +834,12 @@ class PackDefault extends LayoutPack
 </a:theme>'));
 
         // Theme relations
-        $this->_themeRelations = array(
+        $this->themeRelations = array(
             //array('masterid' => 1, 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
         );
 
         // Layouts - Layout::TITLE_SLIDE
-        $this->_layouts[1] = array(
+        $this->layouts[1] = array(
             'masterid'  => 1,
             'name'      => Layout::TITLE_SLIDE,
             'body'      => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1079,7 +1079,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::TITLE_AND_CONTENT
-        $this->_layouts[2] = array(
+        $this->layouts[2] = array(
             'masterid'  => 1,
             'name'      => Layout::TITLE_AND_CONTENT,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1247,7 +1247,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::SECTION_HEADER
-        $this->_layouts[3] = array(
+        $this->layouts[3] = array(
             'masterid'  => 1,
             'name'      => Layout::SECTION_HEADER,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1491,7 +1491,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::TWO_CONTENT
-        $this->_layouts[4] = array(
+        $this->layouts[4] = array(
             'masterid'  => 1,
             'name'      => Layout::TWO_CONTENT,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1777,7 +1777,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::COMPARISON
-        $this->_layouts[5] = array(
+        $this->layouts[5] = array(
             'masterid'  => 1,
             'name'      => Layout::COMPARISON,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2197,7 +2197,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::TITLE_ONLY
-        $this->_layouts[6] = array(
+        $this->layouts[6] = array(
             'masterid'  => 1,
             'name'      => Layout::TITLE_ONLY,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2313,7 +2313,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::BLANK
-        $this->_layouts[7] = array(
+        $this->layouts[7] = array(
             'masterid'  => 1,
             'name'      => Layout::BLANK,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2406,7 +2406,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::CONTENT_WITH_CAPTION
-        $this->_layouts[8] = array(
+        $this->layouts[8] = array(
             'masterid'  => 1,
             'name'      => Layout::CONTENT_WITH_CAPTION,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2681,7 +2681,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::PICTURE_WITH_CAPTION
-        $this->_layouts[9] = array(
+        $this->layouts[9] = array(
             'masterid'  => 1,
             'name'      => Layout::PICTURE_WITH_CAPTION,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2932,7 +2932,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::TITLE_AND_VERTICAL_TEXT
-        $this->_layouts[10] = array(
+        $this->layouts[10] = array(
             'masterid'  => 1,
             'name'      => Layout::TITLE_AND_VERTICAL_TEXT,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -3100,7 +3100,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layouts - Layout::VERTICAL_TITLE_AND_TEXT
-        $this->_layouts[11] = array(
+        $this->layouts[11] = array(
             'masterid'  => 1,
             'name'      => Layout::VERTICAL_TITLE_AND_TEXT,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -3278,7 +3278,7 @@ class PackDefault extends LayoutPack
 </p:sldLayout>');
 
         // Layout relations
-        $this->_layoutRelations = array(
+        $this->layoutRelations = array(
             //array('layoutId' => 0, 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
         );
     }
