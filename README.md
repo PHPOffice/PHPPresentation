@@ -15,7 +15,7 @@ PHPPowerPoint is a library written in pure PHP that provides a set of classes to
 - Supports hyperlinks and rich-text strings
 - Add images with different styles (positioning, rotation, shadow)
 - Set printing options (header, footer, page margins, paper size, orientation)
-- Output to different file formats: PowerPoint 2007 (.pptx), OpenDocument Presentation (.odp), Serialized Spreadsheet)
+- Output to different file formats: PowerPoint 2007 (.pptx), OpenDocument Presentation (.odp), Serialized Presentation)
 - ... and lots of other things!
 
 ### Requirements
