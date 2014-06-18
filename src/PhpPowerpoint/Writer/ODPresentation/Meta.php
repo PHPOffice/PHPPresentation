@@ -40,7 +40,7 @@ class Meta extends WriterPart
     public function writeMeta(PHPPowerPoint $pPHPPowerPoint = null)
     {
         // Create XML writer
-    	$objWriter = $this->getXMLWriter();
+        $objWriter = $this->getXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8');

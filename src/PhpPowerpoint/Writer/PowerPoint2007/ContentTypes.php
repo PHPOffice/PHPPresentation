@@ -43,7 +43,7 @@ class ContentTypes extends WriterPart
     public function writeContentTypes(PHPPowerPoint $pPHPPowerPoint = null)
     {
         // Create XML writer
-    	$objWriter = $this->getXMLWriter();
+        $objWriter = $this->getXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');

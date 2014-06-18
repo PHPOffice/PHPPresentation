@@ -305,16 +305,4 @@ class Slide implements IComparable
 
         return $copied;
     }
-
-    /**
-     * Implement PHP __clone to create a deep clone, not just a shallow copy.
-     */
-    public function __clone()
-    {
-        foreach ($this as $key => $val) {
-            if (is_object($val) || (is_array($val))) {
-                $this->{$key} = unserialize(serialize($val));
-            }
-        }
-    }
 }

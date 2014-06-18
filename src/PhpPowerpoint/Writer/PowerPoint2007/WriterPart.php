@@ -64,10 +64,10 @@ abstract class WriterPart
     
     protected function getXMLWriter()
     {
-    	if ($this->getParentWriter()->hasDiskCaching()) {
-    		return new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-    	} else {
-    		return new XMLWriter(XMLWriter::STORAGE_MEMORY);
-    	}
+        if ($this->getParentWriter()->hasDiskCaching()) {
+            return new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        } else {
+            return new XMLWriter(XMLWriter::STORAGE_MEMORY);
+        }
     }
 }
