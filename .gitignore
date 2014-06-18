@@ -15,3 +15,5 @@ vendor
 *.buildpath
 
 /samples/results
+/phpunit.bat
+/todo.txt
