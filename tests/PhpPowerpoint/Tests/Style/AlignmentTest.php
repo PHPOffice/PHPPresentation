@@ -16,8 +16,7 @@ use PhpOffice\PhpPowerpoint\Style\Alignment;
  *
  * @coversDefaultClass PhpOffice\PhpPowerpoint\PhpPowerpoint
  */
-class AlignmentTest
-    extends \PHPUnit_Framework_TestCase
+class AlignmentTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test create new instance
