@@ -89,19 +89,6 @@ class Bar3D extends Type implements IComparable
     }
 
     /**
-     * Get hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @return string Hash index
-     */
-    public function getHashIndex()
-    {
-        return $this->hashIndex;
-    }
-
-    /**
      * Implement PHP __clone to create a deep clone, not just a shallow copy.
      */
     public function __clone()

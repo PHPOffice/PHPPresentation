@@ -38,13 +38,6 @@ class Pie3D extends Type implements IComparable
     private $data = array();
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $hashIndex;
-
-    /**
      * Create a new PHPPowerPoint_Shape_Chart_Type_Pie3D instance
      */
     public function __construct()
@@ -102,32 +95,6 @@ class Pie3D extends Type implements IComparable
         }
 
         return md5($hash . __CLASS__);
-    }
-
-    /**
-     * Get hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @return string Hash index
-     */
-    public function getHashIndex()
-    {
-        return $this->hashIndex;
-    }
-
-    /**
-     * Set hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @param string $value Hash index
-     */
-    public function setHashIndex($value)
-    {
-        $this->hashIndex = $value;
     }
 
     /**

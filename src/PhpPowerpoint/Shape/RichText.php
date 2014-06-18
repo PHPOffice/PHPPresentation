@@ -137,13 +137,6 @@ class RichText extends Shape implements IComparable
     private $topInset = 4.8;
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $hashIndex;
-
-    /**
      * Create a new PHPPowerPoint_Shape_RichText instance
      */
     public function __construct()
@@ -608,32 +601,6 @@ class RichText extends Shape implements IComparable
         }
 
         return md5($hashElements . $this->wrap . $this->autoFit . $this->horizontalOverflow . $this->verticalOverflow . ($this->upright ? '1' : '0') . ($this->vertical ? '1' : '0') . $this->columns . $this->bottomInset . $this->leftInset . $this->rightInset . $this->topInset . parent::getHashCode() . __CLASS__);
-    }
-
-    /**
-     * Get hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @return string Hash index
-     */
-    public function getHashIndex()
-    {
-        return $this->hashIndex;
-    }
-
-    /**
-     * Set hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @param string $value Hash index
-     */
-    public function setHashIndex($value)
-    {
-        $this->hashIndex = $value;
     }
 
     /**

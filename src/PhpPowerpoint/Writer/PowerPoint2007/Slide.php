@@ -938,7 +938,7 @@ class Slide extends WriterPart
             // a:off
             $objWriter->startElement('a:off');
             $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
             $objWriter->endElement();
 
             // a:ext
@@ -952,7 +952,7 @@ class Slide extends WriterPart
             // a:off
             $objWriter->startElement('a:off');
             $objWriter->writeAttribute('x', Drawing::pixelsToEmu($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight));
+            $objWriter->writeAttribute('y', Drawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
             $objWriter->endElement();
 
             // a:ext
