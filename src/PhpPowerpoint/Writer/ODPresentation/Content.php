@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\WriterPart;
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
@@ -28,9 +28,9 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
 use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
 use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\WriterPart;
 
 /**
  * PHPPowerPoint_Writer_ODPresentation_Content
@@ -47,12 +47,7 @@ class Content extends WriterPart
     public function writeContent(PHPPowerPoint $pPHPPowerPoint = null)
     {
         // Create XML writer
-        $objWriter = null;
-        if ($this->getParentWriter()->hasDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+    	$objWriter = $this->getXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8');

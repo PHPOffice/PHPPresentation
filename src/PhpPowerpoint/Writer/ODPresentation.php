@@ -157,7 +157,6 @@ class ODPresentation implements IWriter
                     if (!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
                         $arrMedia[] = md5($this->getDrawingHashTable()->getByIndex($i)->getPath());
 
-                        $imageContents = null;
                         $imagePath = $this->getDrawingHashTable()->getByIndex($i)->getPath();
 
                         if (strpos($imagePath, 'zip://') !== false) {

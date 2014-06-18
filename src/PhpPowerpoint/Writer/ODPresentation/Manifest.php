@@ -41,12 +41,7 @@ class Manifest extends WriterPart
     public function writeManifest()
     {
         // Create XML writer
-        $objWriter = null;
-        if ($this->getParentWriter()->hasDiskCaching()) {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
-        } else {
-            $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
-        }
+    	$objWriter = $this->getXMLWriter();
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8');
@@ -125,7 +120,7 @@ class Manifest extends WriterPart
     private function getImageMimeType($pFile = '')
     {
         if (File::fileExists($pFile)) {
-            if (strpos($pFile, 'zip://') === 0){
+            if (strpos($pFile, 'zip://') === 0) {
                 $pZIPFile = str_replace('zip://', '', $pFile);
                 $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
                 $pImgFile = substr($pFile, strpos($pFile, '#') + 1);

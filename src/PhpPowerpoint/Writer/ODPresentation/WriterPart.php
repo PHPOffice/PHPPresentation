@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\Writer\IWriter;
+use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
 /**
  * PHPPowerPoint_Writer_ODPresentation_WriterPart
@@ -59,5 +60,14 @@ abstract class WriterPart
         } else {
             throw new \Exception("No parent PHPPowerPoint_Writer_IWriter assigned.");
         }
+    }
+    
+    protected function getXMLWriter()
+    {
+    	if ($this->getParentWriter()->hasDiskCaching()) {
+    		return new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+    	} else {
+    		return new XMLWriter(XMLWriter::STORAGE_MEMORY);
+    	}
     }
 }

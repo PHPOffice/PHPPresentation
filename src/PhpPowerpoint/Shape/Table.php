@@ -45,13 +45,6 @@ class Table extends BaseDrawing implements IComparable
     private $columnCount = 1;
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $hashIndex;
-
-    /**
      * Create a new PHPPowerPoint_Shape_Table instance
      *
      * @param int $columns Number of columns
@@ -124,32 +117,6 @@ class Table extends BaseDrawing implements IComparable
         }
 
         return md5($hashElements . __CLASS__);
-    }
-
-    /**
-     * Get hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @return string Hash index
-     */
-    public function getHashIndex()
-    {
-        return $this->hashIndex;
-    }
-
-    /**
-     * Set hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @param string $value Hash index
-     */
-    public function setHashIndex($value)
-    {
-        $this->hashIndex = $value;
     }
 
     /**
