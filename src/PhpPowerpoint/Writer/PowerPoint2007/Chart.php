@@ -328,7 +328,6 @@ class Chart extends Slide
     {
         // c:strLit / c:numLit
         // c:strRef / c:numRef
-        $dataType      = '';
         $referenceType = ($isReference ? 'Ref' : 'Lit');
         if (is_int($values[0]) || is_float($values[0])) {
             $dataType = 'num';

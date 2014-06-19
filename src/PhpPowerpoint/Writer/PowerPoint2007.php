@@ -206,7 +206,6 @@ class PowerPoint2007 implements IWriter
             }
 
             // Add layoutpack relations
-            $otherRelations = null;
             $otherRelations = $this->getLayoutPack()->getMasterSlideRelations();
             foreach ($otherRelations as $otherRelations) {
                 if (strpos($otherRelations['target'], 'http://') !== 0) {
@@ -239,7 +238,6 @@ class PowerPoint2007 implements IWriter
             // Add media
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
                 if ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\Drawing) {
-                    $imageContents = null;
                     $imagePath     = $this->getDrawingHashTable()->getByIndex($i)->getPath();
 
                     if (strpos($imagePath, 'zip://') !== false) {

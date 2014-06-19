@@ -91,7 +91,6 @@ class ContentTypes extends WriterPart
         }
 
         // Add layoutpack content types
-        $otherRelations = null;
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getMasterSlideRelations();
         foreach ($otherRelations as $otherRelations) {
             if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {

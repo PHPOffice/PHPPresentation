@@ -78,7 +78,6 @@ class Manifest extends WriterPart
             if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof Drawing) {
                 if (!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
                     $arrMedia[] = md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
-                    $extension  = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
                     $mimeType   = $this->getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
 
                     $objWriter->startElement('manifest:file-entry');
@@ -89,11 +88,6 @@ class Manifest extends WriterPart
             } elseif ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
                 if (!in_array(str_replace(' ', '_', $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $arrMedia)) {
                     $arrMedia[] = str_replace(' ', '_', $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getIndexedFilename());
-
-                    $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
-                    $extension = explode('/', $extension);
-                    $extension = $extension[1];
-
                     $mimeType = $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType();
 
                     $objWriter->startElement('manifest:file-entry');

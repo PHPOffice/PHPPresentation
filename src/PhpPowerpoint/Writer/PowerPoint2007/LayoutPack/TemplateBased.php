@@ -54,7 +54,6 @@ class TemplateBased extends LayoutPack
         $package->open($fileName);
 
         // Read relations and search for officeDocument
-        $layoutId  = -1;
         $relations = simplexml_load_string($package->getFromName("_rels/.rels"));
         foreach ($relations->Relationship as $rel) {
             if ($rel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument") {
@@ -105,7 +104,6 @@ class TemplateBased extends LayoutPack
                                     'name' => '-unknown-',
                                     'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
                                 );
-                                $layoutXml = null;
                                 if (utf8_encode(utf8_decode($layout['body'])) == $layout['body']) {
                                     $layoutXml = simplexml_load_string($layout['body']);
                                 } else {
