@@ -31,7 +31,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->getColor());
         $this->assertEquals('FF000000', $object->getColor()->getARGB());
     }
-    
+
     public function testSetGetColor ()
     {
         $object = new Border();
@@ -41,7 +41,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->getColor());
         $this->assertEquals('FF0000FF', $object->getColor()->getARGB());
     }
-    
+
     public function testSetGetDashStyle ()
     {
         $object = new Border();
@@ -52,7 +52,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->setDashStyle(BORDER::DASH_DASH));
         $this->assertEquals(Border::DASH_DASH, $object->getDashStyle());
     }
-    
+
     public function testSetGetHashIndex ()
     {
         $object = new Border();
@@ -60,7 +60,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
     public function testSetGetLineStyle ()
     {
         $object = new Border();
@@ -71,7 +71,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->setLineStyle(BORDER::LINE_DOUBLE));
         $this->assertEquals(Border::LINE_DOUBLE, $object->getLineStyle());
     }
-    
+
     public function testSetGetLineWidth ()
     {
         $object = new Border();
@@ -81,5 +81,4 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->setLineWidth($value));
         $this->assertEquals($value, $object->getLineWidth());
     }
-    
 }

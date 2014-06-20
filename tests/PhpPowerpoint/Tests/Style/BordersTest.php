@@ -34,7 +34,7 @@ class BordersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Border::LINE_NONE, $object->getDiagonalDown()->getLineStyle());
         $this->assertEquals(Border::LINE_NONE, $object->getDiagonalUp()->getLineStyle());
     }
-    
+
     public function testSetGetHashIndex ()
     {
         $object = new Borders();
@@ -42,12 +42,21 @@ class BordersTest extends \PHPUnit_Framework_TestCase
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
     public function testGetHashCode ()
     {
         $object = new Borders();
-        $this->assertEquals(md5($object->getLeft()->getHashCode() . $object->getRight()->getHashCode()
-            . $object->getTop()->getHashCode() . $object->getBottom()->getHashCode()
-            . $object->getDiagonalUp()->getHashCode() . $object->getDiagonalDown()->getHashCode() . get_class($object)), $object->getHashCode());
+        $this->assertEquals(
+            md5(
+                $object->getLeft()->getHashCode() .
+                $object->getRight()->getHashCode() .
+                $object->getTop()->getHashCode() .
+                $object->getBottom()->getHashCode() .
+                $object->getDiagonalUp()->getHashCode() .
+                $object->getDiagonalDown()->getHashCode() .
+                get_class($object)
+            ),
+            $object->getHashCode()
+        );
     }
 }

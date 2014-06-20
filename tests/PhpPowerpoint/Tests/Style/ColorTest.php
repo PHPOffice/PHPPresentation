@@ -16,7 +16,7 @@ use PhpOffice\PhpPowerpoint\Style\Color;
  *
  * @coversDefaultClass PhpOffice\PhpPowerpoint\PhpPowerpoint
  */
-class ColorTest    extends \PHPUnit_Framework_TestCase
+class ColorTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test create new instance
@@ -55,7 +55,7 @@ class ColorTest    extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FF6666', $object->getRGB());
         $this->assertEquals('FF6666', $object->getARGB());
     }
-    
+
     public function testSetGetHashIndex ()
     {
         $object = new Color();
