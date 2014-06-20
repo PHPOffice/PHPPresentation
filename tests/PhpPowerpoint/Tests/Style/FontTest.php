@@ -1,0 +1,164 @@
+<?php
+/**
+ * PHPPowerPoint
+ *
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
+ * @copyright   2014 PHPPowerPoint
+ * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
+ */
+
+namespace PhpOffice\PhpPowerpoint\Tests;
+
+use PhpOffice\PhpPowerpoint\Style\Color;
+use PhpOffice\PhpPowerpoint\Style\Font;
+
+/**
+ * Test class for PhpPowerpoint
+ *
+ * @coversDefaultClass PhpOffice\PhpPowerpoint\PhpPowerpoint
+ */
+class FontTest extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * Test create new instance
+     */
+    public function testConstruct ()
+    {
+        $object = new Font();
+        $this->assertEquals('Calibri', $object->getName());
+        $this->assertEquals(10, $object->getSize());
+        $this->assertFalse($object->isBold());
+        $this->assertFalse($object->isItalic());
+        $this->assertFalse($object->isSuperScript());
+        $this->assertFalse($object->isSubScript());
+        $this->assertFalse($object->isStrikethrough());
+        $this->assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->getColor());
+        $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+    }
+    
+    public function testSetGetColor ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setColor());
+        $this->assertNull($object->getColor());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setColor(new Color(Color::COLOR_BLUE)));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->getColor());
+        $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
+    }
+    
+    public function testSetGetName ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setName());
+        $this->assertEquals('Calibri', $object->getName());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setName(''));
+        $this->assertEquals('Calibri', $object->getName());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setName('Arial'));
+        $this->assertEquals('Arial', $object->getName());
+    }
+    
+    public function testSetGetSize ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSize());
+        $this->assertEquals(10, $object->getSize());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSize(''));
+        $this->assertEquals(10, $object->getSize());
+        $value = rand(1, 100);
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSize($value));
+        $this->assertEquals($value, $object->getSize());
+    }
+    
+    public function testSetGetUnderline ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setUnderline());
+        $this->assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setUnderline(''));
+        $this->assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setUnderline(FONT::UNDERLINE_DASH));
+        $this->assertEquals(FONT::UNDERLINE_DASH, $object->getUnderline());
+    }
+    
+    public function testSetIsBold ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setBold());
+        $this->assertFalse($object->isBold());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setBold(''));
+        $this->assertFalse($object->isBold());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setBold(false));
+        $this->assertFalse($object->isBold());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setBold(true));
+        $this->assertTrue($object->isBold());
+    }
+    
+    public function testSetIsItalic ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setItalic());
+        $this->assertFalse($object->isItalic());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setItalic(''));
+        $this->assertFalse($object->isItalic());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setItalic(false));
+        $this->assertFalse($object->isItalic());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setItalic(true));
+        $this->assertTrue($object->isItalic());
+    }
+    
+    public function testSetIsStriketrough ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough());
+        $this->assertFalse($object->isStrikethrough());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough(''));
+        $this->assertFalse($object->isStrikethrough());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough(false));
+        $this->assertFalse($object->isStrikethrough());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough(true));
+        $this->assertTrue($object->isStrikethrough());
+    }
+    
+    public function testSetIsSubScript ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSubScript());
+        $this->assertFalse($object->isSubScript());
+        $this->assertTrue($object->isSuperScript());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSubScript(''));
+        $this->assertFalse($object->isSubScript());
+        $this->assertTrue($object->isSuperScript());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSubScript(false));
+        $this->assertFalse($object->isSubScript());
+        $this->assertTrue($object->isSuperScript());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSubScript(true));
+        $this->assertTrue($object->isSubScript());
+        $this->assertFalse($object->isSuperScript());
+    }
+    
+    public function testSetIsSuperScript ()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSuperScript());
+        $this->assertFalse($object->isSuperScript());
+        $this->assertTrue($object->isSubScript());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSuperScript(''));
+        $this->assertFalse($object->isSuperScript());
+        $this->assertTrue($object->isSubScript());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSuperScript(false));
+        $this->assertFalse($object->isSuperScript());
+        $this->assertTrue($object->isSubScript());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSuperScript(true));
+        $this->assertTrue($object->isSuperScript());
+        $this->assertFalse($object->isSubScript());
+    }
+
+    public function testSetGetHashIndex ()
+    {
+        $object = new Font();
+        $value = rand(1, 100);
+        $object->setHashIndex($value);
+        $this->assertEquals($value, $object->getHashIndex());
+    }
+}
