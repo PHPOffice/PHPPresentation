@@ -21,16 +21,16 @@ before_script:
   - composer install --prefer-source --dev
   - composer require dompdf/dompdf:0.6.*
   ## PHP Copy/Paste Detector
-  - curl -o phpcpd.phar https://phar.phpunit.de/phpcpd.phar
+  # - curl -o phpcpd.phar https://phar.phpunit.de/phpcpd.phar
   ## PHP Mess Detector
-  - pear config-set preferred_state beta
-  - printf "\n" | pecl install imagick
-  - pear channel-discover pear.phpmd.org
-  - pear channel-discover pear.pdepend.org
-  - pear install --alldeps phpmd/PHP_PMD
-  - phpenv rehash
+  #- pear config-set preferred_state beta
+  #- printf "\n" | pecl install imagick
+  #- pear channel-discover pear.phpmd.org
+  #- pear channel-discover pear.pdepend.org
+  #- pear install --alldeps phpmd/PHP_PMD
+  #- phpenv rehash
   ## PHPLOC
-  - curl -o phploc.phar https://phar.phpunit.de/phploc.phar
+  # - curl -o phploc.phar https://phar.phpunit.de/phploc.phar
   ## PHPDocumentor
   - mkdir -p build/docs
   - mkdir -p build/coverage
@@ -39,13 +39,13 @@ script:
   ## PHP_CodeSniffer
   - ./vendor/bin/phpcs src/ tests/ --standard=PSR2 -n
   ## PHP Copy/Paste Detector
-  # - php phpcpd.phar src/
+  # - ./vendor/bin/phpcpd src/
   ## PHP Mess Detector
-  - phpmd src/,tests/ text ./phpmd.xml.dist
+  - ./vendor/bin/phpmd src/,tests/ text ./phpmd.xml.dist
   ## PHPUnit
   - ./vendor/bin/phpunit -c ./ --coverage-text --coverage-html ./build/coverage
   ## PHPLOC
-  - php phploc.phar src/
+  - ./vendor/bin/phploc src/
   ## PHPDocumentor
   #- vendor/bin/phpdoc.php -q -d ./src -t ./build/docs --ignore "*/src/PhpWord/Shared/*/*" --template="responsive-twig"
 

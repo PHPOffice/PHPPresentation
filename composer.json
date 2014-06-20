@@ -26,7 +26,10 @@
     },
     "require-dev": {
         "phpdocumentor/phpdocumentor":"2.*",
+		"phploc/phploc": "*",
+		"phpmd/phpmd": "2.0.0",
         "phpunit/phpunit": "3.7.*",
+		"sebastian/phpcpd": "*",
         "squizlabs/php_codesniffer": "1.*"
     },
     "suggest": {
