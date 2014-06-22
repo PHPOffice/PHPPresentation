@@ -67,8 +67,8 @@ class Hyperlink
     public function __construct($pUrl = '', $pTooltip = '')
     {
         // Initialise member variables
-        $this->url     = $pUrl;
-        $this->tooltip = $pTooltip;
+        $this->setUrl($pUrl);
+        $this->setTooltip($pTooltip);
     }
 
     /**
@@ -95,6 +95,29 @@ class Hyperlink
     }
 
     /**
+     * Get tooltip
+     *
+     * @return string
+     */
+    public function getTooltip()
+    {
+        return $this->tooltip;
+    }
+
+    /**
+     * Set tooltip
+     *
+     * @param  string                        $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Hyperlink
+     */
+    public function setTooltip($value = '')
+    {
+        $this->tooltip = $value;
+
+        return $this;
+    }
+
+    /**
      * Get slide number
      *
      * @return int
@@ -114,29 +137,6 @@ class Hyperlink
     {
         $this->url         = 'ppaction://hlinksldjump';
         $this->slideNumber = $value;
-
-        return $this;
-    }
-
-    /**
-     * Get tooltip
-     *
-     * @return string
-     */
-    public function getTooltip()
-    {
-        return $this->tooltip;
-    }
-
-    /**
-     * Set tooltip
-     *
-     * @param  string                        $value
-     * @return \PhpOffice\PhpPowerpoint\Shape\Hyperlink
-     */
-    public function setTooltip($value = '')
-    {
-        $this->tooltip = $value;
 
         return $this;
     }

@@ -70,10 +70,10 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
     public function __construct()
     {
         // Initialise values
-        $this->imageResource     = null;
-        $this->renderingFunction = self::RENDERING_DEFAULT;
-        $this->mimeType          = self::MIMETYPE_DEFAULT;
-        $this->uniqueName        = md5(rand(0, 9999) . time() . rand(0, 9999));
+        $this->setImageResource(null);
+        $this->setRenderingFunction(self::RENDERING_DEFAULT);
+        $this->setMimeType(self::MIMETYPE_DEFAULT);
+        $this->uniqueName = md5(rand(0, 9999) . time() . rand(0, 9999));
 
         // Initialize parent
         parent::__construct();

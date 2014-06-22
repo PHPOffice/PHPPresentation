@@ -60,7 +60,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
     public function testSave()
     {
         $filename = tempnam(sys_get_temp_dir(), 'PHPPowerPoint');
-        $imageFile = dirname(__FILE__) . '/../../../resources/images/PHPPowerPointLogo.png';
+        $imageFile = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/images/PHPPowerPointLogo.png';
 
         $phpPowerPoint = new PhpPowerpoint();
         $slide = $phpPowerPoint->getActiveSlide();

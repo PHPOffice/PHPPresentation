@@ -34,12 +34,25 @@ class Serialized implements ReaderInterface
      */
     public function canRead($pFilename)
     {
+        return $this->fileSupportsUnserializePHPPowerPoint($pFilename);
+    }
+
+    /**
+     * Does a file support UnserializePHPPowerPoint ?
+     *
+     * @param  string    $pFilename
+     * @throws \Exception
+     * @return boolean
+     */
+    public function fileSupportsUnserializePHPPowerPoint($pFilename = '')
+    {
         // Check if file exists
         if (!file_exists($pFilename)) {
             throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
         }
 
-        return $this->fileSupportsUnserializePHPPowerPoint($pFilename);
+        // File exists, does it contain PHPPowerPoint.xml?
+        return File::fileExists("zip://$pFilename#PHPPowerPoint.xml");
     }
 
     /**
@@ -62,24 +75,6 @@ class Serialized implements ReaderInterface
         }
 
         return $this->loadSerialized($pFilename);
-    }
-
-    /**
-     * Does a file support UnserializePHPPowerPoint ?
-     *
-     * @param  string    $pFilename
-     * @throws \Exception
-     * @return boolean
-     */
-    public function fileSupportsUnserializePHPPowerPoint($pFilename = '')
-    {
-        // Check if file exists
-        if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
-        }
-
-        // File exists, does it contain PHPPowerPoint.xml?
-        return File::fileExists("zip://$pFilename#PHPPowerPoint.xml");
     }
 
     /**
