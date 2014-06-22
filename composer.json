@@ -5,7 +5,7 @@
     "homepage": "http://phpoffice.github.io",
     "type": "library",
     "license": "LGPL",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "authors": [
         {
             "name": "Mark Baker"
@@ -25,12 +25,12 @@
         "ext-zip": "*"
     },
     "require-dev": {
+        "phpunit/phpunit": "4.*",
         "phpdocumentor/phpdocumentor":"2.*",
-        "phpunit/phpunit": "3.7.*",
-        "squizlabs/php_codesniffer": "1.*",
-        "phpmd/phpmd": "dev-master",
-        "sebastian/phpcpd": "*",
-        "phploc/phploc": "*"
+        "squizlabs/php_codesniffer": "*",
+        "phpmd/phpmd": "2.*",
+        "sebastian/phpcpd": "2.*",
+        "phploc/phploc": "2.*"
     },
     "suggest": {
         "ext-gd2": "Required to add images"
