@@ -17,9 +17,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Tests;
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\DocumentLayout;
 use PhpOffice\PhpPowerpoint\DocumentProperties;
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 
 /**
  * Test class for PhpPowerpoint

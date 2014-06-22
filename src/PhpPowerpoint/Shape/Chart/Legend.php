@@ -18,10 +18,10 @@
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
-use PhpOffice\PhpPowerpoint\Style\Font;
+use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Style\Font;
 
 /**
  * \PhpOffice\PhpPowerpoint\Shape\Chart\Legend

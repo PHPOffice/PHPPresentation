@@ -17,8 +17,6 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart;
-
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype
  */

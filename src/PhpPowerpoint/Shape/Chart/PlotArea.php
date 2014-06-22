@@ -18,8 +18,6 @@
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Axis;
-use PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType;
 
 /**
  * \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea

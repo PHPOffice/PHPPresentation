@@ -17,7 +17,6 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
-use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 
 /**

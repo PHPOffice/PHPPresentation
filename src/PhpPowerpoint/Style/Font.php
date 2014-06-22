@@ -18,7 +18,6 @@
 namespace PhpOffice\PhpPowerpoint\Style;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
-use PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
  * \PhpOffice\PhpPowerpoint\Style\Font

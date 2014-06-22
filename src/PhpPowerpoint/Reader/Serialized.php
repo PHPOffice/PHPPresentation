@@ -17,9 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Reader;
 
-use PhpOffice\PhpPowerpoint\Reader\ReaderInterface;
-use PhpOffice\PhpPowerpoint\Shared\File;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
+use PhpOffice\PhpPowerpoint\Shared\File;
 
 /**
  * Serialized format reader

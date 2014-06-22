@@ -17,8 +17,6 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
-
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Theme
  */

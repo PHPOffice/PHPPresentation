@@ -18,7 +18,6 @@
 namespace PhpOffice\PhpPowerpoint\Writer;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 

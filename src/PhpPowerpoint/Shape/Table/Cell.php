@@ -19,9 +19,9 @@ namespace PhpOffice\PhpPowerpoint\Shape\Table;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph;
-use PhpOffice\PhpPowerpoint\Style\Fill;
-use PhpOffice\PhpPowerpoint\Style\Borders;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
+use PhpOffice\PhpPowerpoint\Style\Borders;
+use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
  * Table cell

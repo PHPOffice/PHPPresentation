@@ -17,8 +17,6 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
-use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
-
 /**
  * Rich text break
  */

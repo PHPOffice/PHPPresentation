@@ -17,14 +17,13 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer;
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\HashTable;
-use PhpOffice\PhpPowerpoint\AbstractShape;
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\DocProps;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Drawing;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\PackDefault;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Presentation;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels;

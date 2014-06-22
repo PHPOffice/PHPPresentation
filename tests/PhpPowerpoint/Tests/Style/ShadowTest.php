@@ -19,7 +19,6 @@ namespace PhpOffice\PhpPowerpoint\Tests;
 
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Style\Shadow;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
 
 /**
  * Test class for PhpPowerpoint

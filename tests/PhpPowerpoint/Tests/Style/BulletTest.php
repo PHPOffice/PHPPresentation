@@ -18,7 +18,6 @@
 namespace PhpOffice\PhpPowerpoint\Tests;
 
 use PhpOffice\PhpPowerpoint\Style\Bullet;
-use PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
  * Test class for PhpPowerpoint

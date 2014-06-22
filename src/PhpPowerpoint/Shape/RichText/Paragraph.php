@@ -19,10 +19,8 @@ namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Font;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
-use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
-use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
+use PhpOffice\PhpPowerpoint\Style\Font;
 
 /**
  * \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph

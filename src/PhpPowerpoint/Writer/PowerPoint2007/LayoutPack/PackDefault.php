@@ -17,8 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack;
 
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 use PhpOffice\PhpPowerpoint\Slide\Layout;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\Default

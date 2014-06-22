@@ -27,7 +27,6 @@ use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Meta;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles;
-use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
 
 /**
  * ODPresentation writer

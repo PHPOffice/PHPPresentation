@@ -17,8 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart

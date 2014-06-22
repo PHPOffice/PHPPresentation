@@ -18,7 +18,6 @@
 namespace PhpOffice\PhpPowerpoint\Shape\Table;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
-use PhpOffice\PhpPowerpoint\Shape\Table\Cell;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
