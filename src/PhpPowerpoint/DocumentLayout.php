@@ -119,19 +119,19 @@ class DocumentLayout
             case self::LAYOUT_LETTER:
             case self::LAYOUT_OVERHEAD:
                 $this->layout = $pValue;
-                $this->dimensionX     = $this->dimension[$this->layout]['cy'];
-                $this->dimensionY     = $this->dimension[$this->layout]['cx'];
+                $this->dimensionX = $this->dimension[$this->layout]['cx'];
+                $this->dimensionY = $this->dimension[$this->layout]['cy'];
                 break;
             case self::LAYOUT_CUSTOM:
             default:
                 $this->layout = self::LAYOUT_CUSTOM;
-                $this->dimensionX     = $pValue['cx'];
-                $this->dimensionY     = $pValue['cy'];
+                $this->dimensionX = $pValue['cx'];
+                $this->dimensionY = $pValue['cy'];
                 break;
         }
 
         if (!$isLandscape) {
-            $tmp       = $this->dimensionX;
+            $tmp = $this->dimensionX;
             $this->dimensionX = $this->dimensionY;
             $this->dimensionY = $tmp;
         }

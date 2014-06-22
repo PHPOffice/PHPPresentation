@@ -34,10 +34,10 @@ class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
         $object = new DocumentLayout();
 
         $this->assertEquals('screen4x3', $object->getDocumentLayout());
-        $this->assertEquals(6858000, $object->getCX());
-        $this->assertEquals(9144000, $object->getCY());
-        $this->assertEquals(6858000 / 36000, $object->getLayoutXmilli());
-        $this->assertEquals(9144000 / 36000, $object->getLayoutYmilli());
+        $this->assertEquals(9144000, $object->getCX());
+        $this->assertEquals(6858000, $object->getCY());
+        $this->assertEquals(9144000 / 36000, $object->getLayoutXmilli());
+        $this->assertEquals(6858000 / 36000, $object->getLayoutYmilli());
     }
 
     /**
