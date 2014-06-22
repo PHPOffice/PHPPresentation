@@ -17,15 +17,20 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
+use PhpOffice\PhpPowerpoint\Shape\Chart;
+use PhpOffice\PhpPowerpoint\Shape\Line;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
-use PhpOffice\PhpPowerpoint\Shape\RichText;
+use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\Drawing;
 use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Style\Borders;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Style\Fill;
@@ -128,13 +133,13 @@ class Slide extends AbstractPart
             // Check type
             if ($shape instanceof RichText) {
                 $this->writeShapeText($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Shape\Table) {
+            } elseif ($shape instanceof Table) {
                 $this->writeShapeTable($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Shape\Line) {
+            } elseif ($shape instanceof Line) {
                 $this->writeShapeLine($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Shape\Chart) {
+            } elseif ($shape instanceof Chart) {
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Shape\AbstractDrawing) {
+            } elseif ($shape instanceof AbstractDrawing) {
                 $this->writeShapePic($objWriter, $shape, $shapeId);
             }
         }
@@ -161,12 +166,11 @@ class Slide extends AbstractPart
     /**
      * Write chart
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
-     * @param  \PHPPowerPointShape\Chart      $shape
-     * @param  int                            $shapeId
-     * @throws \Exception
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\PhpPowerpoint\Shape\Chart $shape
+     * @param  int $shapeId
      */
-    private function writeShapeChart(XMLWriter $objWriter, Shape\Chart $shape, $shapeId)
+    private function writeShapeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -232,11 +236,11 @@ class Slide extends AbstractPart
      * Write pic
      *
      * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter  $objWriter XML Writer
-     * @param  \PHPPowerPoint\Shape\AbstractDrawing $shape
-     * @param  int                             $shapeId
+     * @param  \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
+     * @param  int $shapeId
      * @throws \Exception
      */
-    private function writeShapePic(XMLWriter $objWriter, Shape\AbstractDrawing $shape, $shapeId)
+    private function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -503,7 +507,7 @@ class Slide extends AbstractPart
      * @param  int                            $shapeId
      * @throws \Exception
      */
-    private function writeShapeTable(XMLWriter $objWriter, Shape\Table $shape, $shapeId)
+    private function writeShapeTable(XMLWriter $objWriter, Table $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -872,11 +876,10 @@ class Slide extends AbstractPart
      * Write Line Shape
      *
      * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText   $shape
-     * @param  int                            $shapeId
-     * @throws \Exception
+     * @param \PhpOffice\PhpPowerpoint\Shape\Line $shape
+     * @param  int $shapeId
      */
-    private function writeShapeLine(XMLWriter $objWriter, Shape\Line $shape, $shapeId)
+    private function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:cxnSp');

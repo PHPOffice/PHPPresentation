@@ -173,7 +173,7 @@ class Legend implements ComparableInterface
     /**
      * Set OffsetX (as a fraction of the chart)
      *
-     * @param  float                            $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setOffsetX($value = 0)
@@ -195,7 +195,7 @@ class Legend implements ComparableInterface
     /**
      * Set OffsetY (as a fraction of the chart)
      *
-     * @param  float                            $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setOffsetY($value = 0)
@@ -217,7 +217,7 @@ class Legend implements ComparableInterface
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param  float                            $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setWidth($value = 0)
@@ -239,7 +239,7 @@ class Legend implements ComparableInterface
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param  float                            $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setHeight($value = 0)

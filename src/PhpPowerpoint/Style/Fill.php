@@ -130,7 +130,7 @@ class Fill implements ComparableInterface
     /**
      * Set Rotation
      *
-     * @param  double                   $pValue
+     * @param float|int $pValue
      * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function setRotation($pValue = 0)

@@ -30,7 +30,7 @@ class Drawing extends AbstractPart
      * Get an array of all drawings
      *
      * @param  PHPPowerPoint                 $pPHPPowerPoint
-     * @return \PhpOffice\PhpPowerpoint\Slide\Drawing[] All drawings in PHPPowerPoint
+     * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing[] All drawings in PHPPowerPoint
      * @throws \Exception
      */
     public function allDrawings(PHPPowerPoint $pPHPPowerPoint = null)

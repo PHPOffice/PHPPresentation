@@ -28,7 +28,8 @@ class Serialized implements ReaderInterface
     /**
      * Can the current \PhpOffice\PhpPowerpoint\Reader\ReaderInterface read the file?
      *
-     * @param  string  $pFilename
+     * @param  string $pFilename
+     * @throws \Exception
      * @return boolean
      */
     public function canRead($pFilename)
@@ -45,7 +46,7 @@ class Serialized implements ReaderInterface
      * Loads PHPPowerPoint Serialized file
      *
      * @param  string        $pFilename
-     * @return PHPPowerPoint
+     * @return \PhpOffice\PhpPowerpoint\PhpPowerpoint
      * @throws \Exception
      */
     public function load($pFilename)
@@ -85,7 +86,7 @@ class Serialized implements ReaderInterface
      * Load PHPPowerPoint Serialized file
      *
      * @param  string        $pFilename
-     * @return PHPPowerPoint
+     * @return \PhpOffice\PhpPowerpoint\PhpPowerpoint
      */
     private function loadSerialized($pFilename)
     {
@@ -110,5 +111,7 @@ class Serialized implements ReaderInterface
                 return $file;
             }
         }
+
+        return null;
     }
 }

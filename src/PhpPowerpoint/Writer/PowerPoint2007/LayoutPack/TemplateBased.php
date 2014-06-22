@@ -28,6 +28,7 @@ class TemplateBased extends AbstractLayoutPack
      * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\TemplateBased
      *
      * @param string $fileName
+     * @throws \Exception
      */
     public function __construct($fileName = '')
     {
@@ -46,7 +47,7 @@ class TemplateBased extends AbstractLayoutPack
         $this->layoutRelations = array();
 
         // Open package
-        $package = new ZipArchive;
+        $package = new \ZipArchive;
         $package->open($fileName);
 
         // Read relations and search for officeDocument
@@ -161,6 +162,7 @@ class TemplateBased extends AbstractLayoutPack
      *
      * @param array $firstSlide
      * @param array $secondSlide
+     * @return int
      */
     public static function cmpMaster($firstSlide, $secondSlide)
     {

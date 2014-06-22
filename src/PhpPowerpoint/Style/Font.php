@@ -163,7 +163,7 @@ class Font implements ComparableInterface
     /**
      * Set Size
      *
-     * @param  double                   $pValue
+     * @param float|int $pValue
      * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setSize($pValue = 10)

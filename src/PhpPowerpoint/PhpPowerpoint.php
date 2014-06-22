@@ -126,7 +126,7 @@ class PhpPowerpoint
     /**
      * Create slide and add it to this presentation
      *
-     * @return PhpOffice\PhpPowerpoint\Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function createSlide()
     {
@@ -197,7 +197,7 @@ class PhpPowerpoint
      * Get index for slide
      *
      * @param  \PhpOffice\PhpPowerpoint\Slide $slide
-     * @return Slide               index
+     * @return int
      * @throws \Exception
      */
     public function getIndex(Slide $slide)

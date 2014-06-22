@@ -364,12 +364,9 @@ class Rels extends AbstractPart
         $objWriter->startElement('Relationships');
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-        // Starting relation id
-        $relId = 1;
-
         // Write spreadsheet relationship?
         if ($pChart->hasIncludedSpreadsheet()) {
-            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
+            $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
         }
 
         $objWriter->endElement();

@@ -23,14 +23,14 @@ namespace PhpOffice\PhpPowerpoint\Shared;
 class ZipStreamWrapper
 {
     /**
-     * Internal ZipAcrhive
+     * Internal ZipArchive
      *
-     * @var ZipAcrhive
+     * @var \ZipArchive
      */
     private $archive;
 
     /**
-     * Filename in ZipAcrhive
+     * Filename in ZipArchive
      *
      * @var string
      */
@@ -66,6 +66,8 @@ class ZipStreamWrapper
      *
      * @param string $path
      * @param string $mode
+     * @throws \Exception
+     * @return bool
      */
     public function streamOpen($path, $mode)
     {
@@ -94,7 +96,7 @@ class ZipStreamWrapper
         }
 
         // Open archive
-        $this->archive = new ZipArchive();
+        $this->archive = new \ZipArchive();
         $this->archive->open($url['host']);
 
         $this->fileNameInArchive = $url['fragment'];
@@ -116,6 +118,7 @@ class ZipStreamWrapper
      * Read stream
      *
      * @param int $count
+     * @return string
      */
     public function streamRead($count)
     {
@@ -146,6 +149,7 @@ class ZipStreamWrapper
      *
      * @param int $offset
      * @param int $whence
+     * @return bool
      */
     public function streamSeek($offset, $whence)
     {

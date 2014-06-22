@@ -39,7 +39,7 @@ class HashTable
     /**
      * Create a new \PhpOffice\PhpPowerpoint\HashTable
      *
-     * @param  PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource Optional source array to create HashTable from
+     * @param  \PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource Optional source array to create HashTable from
      * @throws \Exception
      */
     public function __construct($pSource = null)
@@ -53,7 +53,7 @@ class HashTable
     /**
      * Add HashTable items from source
      *
-     * @param  PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource Source array to create HashTable from
+     * @param  \PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource Source array to create HashTable from
      * @throws \Exception
      */
     public function addFromSource($pSource = null)
@@ -73,8 +73,7 @@ class HashTable
     /**
      * Add HashTable item
      *
-     * @param  PhpOffice\PhpPowerpoint\ComparableInterface $pSource Item to add
-     * @throws \Exception
+     * @param \PhpOffice\PhpPowerpoint\ComparableInterface $pSource Item to add
      */
     public function add(ComparableInterface $pSource = null)
     {
@@ -102,7 +101,7 @@ class HashTable
     /**
      * Remove HashTable item
      *
-     * @param  PhpOffice\PhpPowerpoint\ComparableInterface $pSource Item to remove
+     * @param  \PhpOffice\PhpPowerpoint\ComparableInterface $pSource Item to remove
      * @throws \Exception
      */
     public function remove(ComparableInterface $pSource = null)
@@ -159,7 +158,7 @@ class HashTable
      * Get by index
      *
      * @param  int                       $pIndex
-     * @return PhpOffice\PhpPowerpoint\ComparableInterface
+     * @return \PhpOffice\PhpPowerpoint\ComparableInterface
      *
      */
     public function getByIndex($pIndex = 0)
@@ -175,7 +174,7 @@ class HashTable
      * Get by hashcode
      *
      * @param  string                    $pHashCode
-     * @return PhpOffice\PhpPowerpoint\ComparableInterface
+     * @return \PhpOffice\PhpPowerpoint\ComparableInterface
      *
      */
     public function getByHashCode($pHashCode = '')
@@ -190,7 +189,7 @@ class HashTable
     /**
      * HashTable to array
      *
-     * @return PhpOffice\PhpPowerpoint\ComparableInterface[]
+     * @return \PhpOffice\PhpPowerpoint\ComparableInterface[]
      */
     public function toArray()
     {

@@ -100,7 +100,7 @@ class DocumentLayout
     /**
      * Set Document Layout
      *
-     * @param  array $pValue \PhpOffice\PhpPowerpoint\DocumentLayout document layout
+     * @param array|string $pValue
      * @param  boolean $isLandscape
      * @return \PhpOffice\PhpPowerpoint\DocumentLayout
      */

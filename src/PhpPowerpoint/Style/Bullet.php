@@ -236,7 +236,7 @@ class Bullet implements ComparableInterface
     /**
      * Set bullet numeric start at
      *
-     * @param  string                     $pValue
+     * @param int|string $pValue
      * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletNumericStartAt($pValue = 1)

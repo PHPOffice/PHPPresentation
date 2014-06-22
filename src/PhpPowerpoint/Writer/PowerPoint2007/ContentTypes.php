@@ -88,21 +88,21 @@ class ContentTypes extends AbstractPart
 
         // Add layoutpack content types
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getMasterSlideRelations();
-        foreach ($otherRelations as $otherRelations) {
-            if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelations['target'], $otherRelations['contentType']);
+        foreach ($otherRelations as $otherRelation) {
+            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
+                $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getThemeRelations();
-        foreach ($otherRelations as $otherRelations) {
-            if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelations['target'], $otherRelations['contentType']);
+        foreach ($otherRelations as $otherRelation) {
+            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
+                $this->writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getLayoutRelations();
-        foreach ($otherRelations as $otherRelations) {
-            if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelations['target'], $otherRelations['contentType']);
+        foreach ($otherRelations as $otherRelation) {
+            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
+                $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
 

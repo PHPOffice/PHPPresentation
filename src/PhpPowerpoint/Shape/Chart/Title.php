@@ -205,7 +205,7 @@ class Title implements ComparableInterface
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param  float                           $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setWidth($value = 0)
@@ -228,7 +228,7 @@ class Title implements ComparableInterface
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param  float                           $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setHeight($value = 0)

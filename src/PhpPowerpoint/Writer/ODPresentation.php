@@ -271,9 +271,9 @@ class ODPresentation implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param  boolean                             $pValue
-     * @param  string                              $pDirectory Disk caching directory
-     * @throws \Exception                           \Exception when directory does not exist
+     * @param  boolean $pValue
+     * @param  string $pDirectory Disk caching directory
+     * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)

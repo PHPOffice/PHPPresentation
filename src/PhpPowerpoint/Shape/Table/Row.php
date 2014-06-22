@@ -80,8 +80,9 @@ class Row implements ComparableInterface
     /**
      * Get cell
      *
-     * @param  int                            $cell            Cell number
-     * @param  boolean                        $exceptionAsNull Return a null value instead of an exception?
+     * @param  int $cell Cell number
+     * @param  boolean $exceptionAsNull Return a null value instead of an exception?
+     * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Shape\Table\Cell
      */
     public function getCell($cell = 0, $exceptionAsNull = false)

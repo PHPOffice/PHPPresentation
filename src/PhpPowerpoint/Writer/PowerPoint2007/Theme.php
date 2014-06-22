@@ -25,10 +25,9 @@ class Theme extends AbstractPart
     /**
      * Write theme to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
-     * @param  int           $masterId
-     * @return string        XML Output
+     * @param  int $masterId
      * @throws \Exception
+     * @return string XML Output
      */
     public function writeTheme($masterId = 1)
     {

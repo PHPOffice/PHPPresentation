@@ -177,7 +177,7 @@ class Paragraph implements ComparableInterface
     /**
      * Create break
      *
-     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Break
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement
      * @throws \Exception
      */
     public function createBreak()

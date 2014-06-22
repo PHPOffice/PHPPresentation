@@ -19,6 +19,9 @@ namespace PhpOffice\PhpPowerpoint\Writer;
 
 use PhpOffice\PhpPowerpoint\HashTable;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Drawing as DrawingShape;
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing as MemoryDrawingShape;
+use PhpOffice\PhpPowerpoint\Shape\Chart as ChartShape;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes;
@@ -80,7 +83,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Layout pack to use
      *
-     * @var \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack
+     * @var \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack
      */
     protected $layoutPack;
 
@@ -162,8 +165,8 @@ class PowerPoint2007 implements WriterInterface
             $objZip = new \ZipArchive();
 
             // Try opening the ZIP file
-            if ($objZip->open($pFilename, \ZIPARCHIVE::OVERWRITE) !== true) {
-                if ($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== true) {
+            if ($objZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
+                if ($objZip->open($pFilename, \ZipArchive::CREATE) !== true) {
                     throw new \Exception("Could not open " . $pFilename . " for writing.");
                 }
             }
@@ -202,21 +205,21 @@ class PowerPoint2007 implements WriterInterface
 
             // Add layoutpack relations
             $otherRelations = $this->getLayoutPack()->getMasterSlideRelations();
-            foreach ($otherRelations as $otherRelations) {
-                if (strpos($otherRelations['target'], 'http://') !== 0) {
-                    $objZip->addFromString($this->absoluteZipPath('ppt/slideMasters/' . $otherRelations['target']), $otherRelations['contents']);
+            foreach ($otherRelations as $otherRelation) {
+                if (strpos($otherRelation['target'], 'http://') !== 0) {
+                    $objZip->addFromString($this->absoluteZipPath('ppt/slideMasters/' . $otherRelation['target']), $otherRelation['contents']);
                 }
             }
             $otherRelations = $this->getLayoutPack()->getThemeRelations();
-            foreach ($otherRelations as $otherRelations) {
-                if (strpos($otherRelations['target'], 'http://') !== 0) {
-                    $objZip->addFromString($this->absoluteZipPath('ppt/theme/' . $otherRelations['target']), $otherRelations['contents']);
+            foreach ($otherRelations as $otherRelation) {
+                if (strpos($otherRelation['target'], 'http://') !== 0) {
+                    $objZip->addFromString($this->absoluteZipPath('ppt/theme/' . $otherRelation['target']), $otherRelation['contents']);
                 }
             }
             $otherRelations = $this->getLayoutPack()->getLayoutRelations();
-            foreach ($otherRelations as $otherRelations) {
-                if (strpos($otherRelations['target'], 'http://') !== 0) {
-                    $objZip->addFromString($this->absoluteZipPath('ppt/slideLayouts/' . $otherRelations['target']), $otherRelations['contents']);
+            foreach ($otherRelations as $otherRelation) {
+                if (strpos($otherRelation['target'], 'http://') !== 0) {
+                    $objZip->addFromString($this->absoluteZipPath('ppt/slideLayouts/' . $otherRelation['target']), $otherRelation['contents']);
                 }
             }
 
@@ -232,7 +235,7 @@ class PowerPoint2007 implements WriterInterface
 
             // Add media
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
-                if ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\Drawing) {
+                if ($this->getDrawingHashTable()->getByIndex($i) instanceof DrawingShape) {
                     $imagePath     = $this->getDrawingHashTable()->getByIndex($i)->getPath();
 
                     if (strpos($imagePath, 'zip://') !== false) {
@@ -249,14 +252,14 @@ class PowerPoint2007 implements WriterInterface
                     }
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\MemoryDrawing) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawingShape) {
                     ob_start();
                     call_user_func($this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(), $this->getDrawingHashTable()->getByIndex($i)->getImageResource());
                     $imageContents = ob_get_contents();
                     ob_end_clean();
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\Chart) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof ChartShape) {
                     $objZip->addFromString('ppt/charts/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename(), $this->getWriterPart('Chart')->writeChart($this->getDrawingHashTable()->getByIndex($i)));
 
                     // Chart relations?
@@ -359,9 +362,9 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param  boolean                             $pValue
-     * @param  string                              $pDirectory Disk caching directory
-     * @throws \Exception                           \Exception when directory does not exist
+     * @param  boolean $pValue
+     * @param  string $pDirectory Disk caching directory
+     * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
@@ -392,7 +395,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Get layout pack to use
      *
-     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack
      */
     public function getLayoutPack()
     {
@@ -402,7 +405,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Set layout pack to use
      *
-     * @param  \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack $pValue
+     * @param \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack $pValue
      * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setLayoutPack(AbstractLayoutPack $pValue = null)

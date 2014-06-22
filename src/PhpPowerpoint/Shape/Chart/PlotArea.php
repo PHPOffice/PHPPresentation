@@ -27,7 +27,7 @@ class PlotArea implements ComparableInterface
     /**
      * Type
      *
-     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Type
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType
      */
     private $type;
 
@@ -86,7 +86,7 @@ class PlotArea implements ComparableInterface
     /**
      * Get type
      *
-     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Type
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType
      * @throws \Exception
      */
     public function getType()
@@ -101,9 +101,8 @@ class PlotArea implements ComparableInterface
     /**
      * Set type
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type     $value
+     * @param \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
-     * @throws \Exception
      */
     public function setType(AbstractType $value)
     {
@@ -145,7 +144,7 @@ class PlotArea implements ComparableInterface
     /**
      * Set OffsetX (as a fraction of the chart)
      *
-     * @param  float                           $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setOffsetX($value = 0)
@@ -168,7 +167,7 @@ class PlotArea implements ComparableInterface
     /**
      * Set OffsetY (as a fraction of the chart)
      *
-     * @param  float                           $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setOffsetY($value = 0)
@@ -191,7 +190,7 @@ class PlotArea implements ComparableInterface
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param  float                           $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setWidth($value = 0)
@@ -214,7 +213,7 @@ class PlotArea implements ComparableInterface
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param  float                           $value
+     * @param float|int $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setHeight($value = 0)

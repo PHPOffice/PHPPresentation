@@ -32,9 +32,9 @@ class IOFactory
     /**
      * Create writer
      *
-     * @param PHPPowerPoint $PHPPowerPoint
+     * @param PhpPowerpoint $phpPowerPoint
      * @param string $name
-     * @return \PhpOffice\PhpPowerpoint\PhpPowerpoint\Writer\WriterInterface
+     * @return \PhpOffice\PhpPowerpoint\Writer\WriterInterface
      */
     public static function createWriter(PhpPowerpoint $phpPowerPoint, $name = 'PowerPoint2007')
     {
@@ -81,6 +81,8 @@ class IOFactory
      * @param string $name
      * @param string $type
      * @param \PhpOffice\PhpPowerpoint\PhpPowerpoint $phpPowerPoint
+     * @throws \Exception
+     * @return
      */
     private static function loadClass($class, $name, $type, PhpPowerpoint $phpPowerPoint = null)
     {
@@ -99,6 +101,7 @@ class IOFactory
      * Is it a concrete class?
      *
      * @param string $class
+     * @return bool
      */
     private static function isConcreteClass($class)
     {

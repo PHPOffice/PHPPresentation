@@ -60,8 +60,9 @@ class Table extends AbstractDrawing implements ComparableInterface
     /**
      * Get row
      *
-     * @param  int                           $row             Row number
-     * @param  boolean                       $exceptionAsNull Return a null value instead of an exception?
+     * @param  int $row Row number
+     * @param  boolean $exceptionAsNull Return a null value instead of an exception?
+     * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Shape\Table\Row
      */
     public function getRow($row = 0, $exceptionAsNull = false)

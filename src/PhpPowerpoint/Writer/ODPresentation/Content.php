@@ -347,6 +347,8 @@ class Content extends AbstractPart
     /**
      * Write picture
      *
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
      * @param int $shapeId
      */
     public function writePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
@@ -375,6 +377,8 @@ class Content extends AbstractPart
     /**
      * Write text
      *
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\PhpPowerpoint\Shape\RichText $shape
      * @param int $shapeId
      */
     public function writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)

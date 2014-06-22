@@ -170,7 +170,8 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set active paragraph
      *
-     * @param  int                                    $index
+     * @param  int $index
+     * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function setActiveParagraph($index = 0)
@@ -188,6 +189,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Get paragraph
      *
      * @param  int $index
+     * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function getParagraph($index = 0)
@@ -249,7 +251,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Create break
      *
-     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Break
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement
      * @throws \Exception
      */
     public function createBreak()
@@ -311,7 +313,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set paragraphs
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraphs[] $paragraphs Array of paragraphs
+     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[] $paragraphs Array of paragraphs
      * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
@@ -479,6 +481,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set columns
      *
      * @param $value int
+     * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setColumns($value = 1)

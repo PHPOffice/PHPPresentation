@@ -46,8 +46,8 @@ class Line extends AbstractType implements ComparableInterface
     /**
      * Set Data
      *
-     * @param  array                          $value Array of \PhpOffice\PhpPowerpoint\Shape\Chart\Series
-     * @return \PhpOffice\PhpPowerpoint\Shape\Type_Bar3D
+     * @param  array $value Array of \PhpOffice\PhpPowerpoint\Shape\Chart\Series
+     * @return self
      */
     public function setData($value = array())
     {
@@ -60,7 +60,7 @@ class Line extends AbstractType implements ComparableInterface
      * Add Series
      *
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Series $value
-     * @return \PhpOffice\PhpPowerpoint\Shape\Type_Bar3D
+     * @return self
      */
     public function addSeries(Series $value)
     {

@@ -116,7 +116,7 @@ class Slide implements ComparableInterface
     /**
      * Create rich text shape
      *
-     * @return \PHPPowerPoint\Shape\RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function createRichTextShape()
     {
@@ -196,10 +196,10 @@ class Slide implements ComparableInterface
     /**
      * Re-bind parent
      *
-     * @param  PHPPowerPoint       $parent
+     * @param  \PhpOffice\PhpPowerpoint\PhpPowerpoint       $parent
      * @return \PhpOffice\PhpPowerpoint\Slide
      */
-    public function rebindParent(PHPPowerPoint $parent)
+    public function rebindParent(PhpPowerpoint $parent)
     {
         $this->parent->removeSlideByIndex($this->parent->getIndex($this));
         $this->parent = $parent;
