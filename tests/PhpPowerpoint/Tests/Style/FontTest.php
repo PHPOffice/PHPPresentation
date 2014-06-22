@@ -36,7 +36,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->getColor());
         $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
     }
-    
+
+    /**
+     * Test get/set color
+     */
     public function testSetGetColor ()
     {
         $object = new Font();
@@ -46,7 +49,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->getColor());
         $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
     }
-    
+
+    /**
+     * Test get/set name
+     */
     public function testSetGetName ()
     {
         $object = new Font();
@@ -57,7 +63,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setName('Arial'));
         $this->assertEquals('Arial', $object->getName());
     }
-    
+
+    /**
+     * Test get/set size
+     */
     public function testSetGetSize ()
     {
         $object = new Font();
@@ -69,7 +78,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSize($value));
         $this->assertEquals($value, $object->getSize());
     }
-    
+
+    /**
+     * Test get/set underline
+     */
     public function testSetGetUnderline ()
     {
         $object = new Font();
@@ -80,7 +92,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setUnderline(FONT::UNDERLINE_DASH));
         $this->assertEquals(FONT::UNDERLINE_DASH, $object->getUnderline());
     }
-    
+
+    /**
+     * Test get/set bold
+     */
     public function testSetIsBold ()
     {
         $object = new Font();
@@ -93,7 +108,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setBold(true));
         $this->assertTrue($object->isBold());
     }
-    
+
+    /**
+     * Test get/set italic
+     */
     public function testSetIsItalic ()
     {
         $object = new Font();
@@ -106,7 +124,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setItalic(true));
         $this->assertTrue($object->isItalic());
     }
-    
+
+    /**
+     * Test get/set strikethrough
+     */
     public function testSetIsStriketrough ()
     {
         $object = new Font();
@@ -119,7 +140,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough(true));
         $this->assertTrue($object->isStrikethrough());
     }
-    
+
+    /**
+     * Test get/set subscript
+     */
     public function testSetIsSubScript ()
     {
         $object = new Font();
@@ -136,7 +160,10 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($object->isSubScript());
         $this->assertFalse($object->isSuperScript());
     }
-    
+
+    /**
+     * Test get/set superscript
+     */
     public function testSetIsSuperScript ()
     {
         $object = new Font();
@@ -154,6 +181,9 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($object->isSubScript());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Font();

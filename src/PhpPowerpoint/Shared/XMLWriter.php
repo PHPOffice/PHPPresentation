@@ -47,8 +47,8 @@ class XMLWriter
     /**
      * Create a new PHPPowerPoint_Shared_XMLWriter instance
      *
-     * @param int    $pTemporaryStorage       Temporary storage location
-     * @param string $pTemporaryStorageFolder Temporary storage folder
+     * @param int $pTemporaryStorage Temporary storage location
+     * @param string $pTemporaryStorageDir Temporary storage folder
      */
     public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageDir = './')
     {

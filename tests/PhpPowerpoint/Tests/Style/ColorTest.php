@@ -29,6 +29,9 @@ class ColorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Color::COLOR_BLUE, $object->getARGB());
     }
 
+    /**
+     * Test get/set ARGB
+     */
     public function testSetGetARGB ()
     {
         $object = new Color();
@@ -39,6 +42,10 @@ class ColorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
         $this->assertEquals(Color::COLOR_BLUE, $object->getARGB());
     }
+
+    /**
+     * Test get/set RGB
+     */
     public function testSetGetRGB ()
     {
         $object = new Color();
@@ -56,6 +63,9 @@ class ColorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FF6666', $object->getARGB());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Color();

@@ -32,6 +32,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FF000000', $object->getColor()->getARGB());
     }
 
+    /**
+     * Test get/set color
+     */
     public function testSetGetColor ()
     {
         $object = new Border();
@@ -42,6 +45,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FF0000FF', $object->getColor()->getARGB());
     }
 
+    /**
+     * Test get/set dash style
+     */
     public function testSetGetDashStyle ()
     {
         $object = new Border();
@@ -53,6 +59,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Border::DASH_DASH, $object->getDashStyle());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Border();
@@ -61,6 +70,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
+    /**
+     * Test get/set line style
+     */
     public function testSetGetLineStyle ()
     {
         $object = new Border();
@@ -72,6 +84,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Border::LINE_DOUBLE, $object->getLineStyle());
     }
 
+    /**
+     * Test get/set line width
+     */
     public function testSetGetLineWidth ()
     {
         $object = new Border();

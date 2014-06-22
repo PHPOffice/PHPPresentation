@@ -35,6 +35,9 @@ class BordersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Border::LINE_NONE, $object->getDiagonalUp()->getLineStyle());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Borders();
@@ -43,6 +46,9 @@ class BordersTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
+    /**
+     * Test get/set hash code
+     */
     public function testGetHashCode ()
     {
         $object = new Borders();

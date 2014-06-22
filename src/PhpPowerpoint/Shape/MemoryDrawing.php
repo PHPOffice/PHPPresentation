@@ -168,7 +168,10 @@ class MemoryDrawing extends BaseDrawing implements IComparable
     {
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();
     }
-    
+
+    /**
+     * Get extension
+     */
     public function getExtension()
     {
         $extension = strtolower($this->getMimeType());

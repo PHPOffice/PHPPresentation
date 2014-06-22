@@ -31,7 +31,10 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $object->getMarginLeft());
         $this->assertEquals(0, $object->getMarginRight());
     }
-    
+
+    /**
+     * Test get/set horizontal
+     */
     public function testSetGetHorizontal ()
     {
         $object = new Alignment();
@@ -40,7 +43,10 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setHorizontal(Alignment::HORIZONTAL_GENERAL));
         $this->assertEquals(Alignment::HORIZONTAL_GENERAL, $object->getHorizontal());
     }
-    
+
+    /**
+     * Test get/set vertical
+     */
     public function testSetGetVertical ()
     {
         $object = new Alignment();
@@ -49,21 +55,30 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setVertical(Alignment::VERTICAL_AUTO));
         $this->assertEquals(Alignment::VERTICAL_AUTO, $object->getVertical());
     }
-    
+
+    /**
+     * Test get/set min level exception
+     */
     public function testSetGetLevelExceptionMin ()
     {
         $object = new Alignment();
         $this->setExpectedException('\Exception', 'Invalid value: shoul be range 0 - 8.');
         $object->setLevel(-1);
     }
-    
+
+    /**
+     * Test get/set max level exception
+     */
     public function testSetGetLevelExceptionMax ()
     {
         $object = new Alignment();
         $this->setExpectedException('\Exception', 'Invalid value: shoul be range 0 - 8.');
         $object->setLevel(9);
     }
-    
+
+    /**
+     * Test get/set level
+     */
     public function testSetGetLevel ()
     {
         $object = new Alignment();
@@ -71,7 +86,10 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setLevel($value));
         $this->assertEquals($value, $object->getLevel());
     }
-    
+
+    /**
+     * Test get/set indent
+     */
     public function testSetGetIndent ()
     {
         $object = new Alignment();
@@ -83,7 +101,7 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $value = rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setIndent($value));
         $this->assertEquals($value, $object->getIndent());
-        
+
 
         $object->setHorizontal(Alignment::HORIZONTAL_GENERAL);
         $value = rand(1, 100);
@@ -93,7 +111,10 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setIndent($value));
         $this->assertEquals($value, $object->getIndent());
     }
-    
+
+    /**
+     * Test get/set margin left
+     */
     public function testSetGetMarginLeft ()
     {
         $object = new Alignment();
@@ -105,7 +126,7 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $value = rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setMarginLeft($value));
         $this->assertEquals($value, $object->getMarginLeft());
-        
+
 
         $object->setHorizontal(Alignment::HORIZONTAL_GENERAL);
         $value = rand(1, 100);
@@ -115,7 +136,10 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setMarginLeft($value));
         $this->assertEquals($value, $object->getMarginLeft());
     }
-    
+
+    /**
+     * Test get/set margin right
+     */
     public function testSetGetMarginRight ()
     {
         $object = new Alignment();
@@ -127,7 +151,7 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $value = rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setMarginRight($value));
         $this->assertEquals($value, $object->getMarginRight());
-        
+
 
         $object->setHorizontal(Alignment::HORIZONTAL_GENERAL);
         $value = rand(1, 100);
@@ -137,11 +161,14 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->setMarginRight($value));
         $this->assertEquals($value, $object->getMarginRight());
     }
-    
+
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $value = md5(rand(1, 100));
-        
+
         $object = new Alignment();
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());

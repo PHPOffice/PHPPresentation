@@ -22,6 +22,7 @@ use PhpOffice\PhpPowerpoint\Shared\File;
 use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
 
 /**
+ * Serialized format reader
  */
 class Serialized implements IReader
 {
@@ -80,7 +81,7 @@ class Serialized implements IReader
         // File exists, does it contain PHPPowerPoint.xml?
         return File::fileExists("zip://$pFilename#PHPPowerPoint.xml");
     }
-    
+
     /**
      * Load PHPPowerPoint Serialized file
      *
@@ -92,11 +93,11 @@ class Serialized implements IReader
         $oArchive = new \ZipArchive();
         if ($oArchive->open($pFilename) === true) {
             $xmlContent = $oArchive->getFromName('PHPPowerPoint.xml');
-            
+
             if (!empty($xmlContent)) {
                 $xmlData = simplexml_load_string($xmlContent);
                 $file    = unserialize(base64_decode((string) $xmlData->data));
-                
+
                 // Update media links
                 for ($i = 0; $i < $file->getSlideCount(); ++$i) {
                     for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
@@ -105,7 +106,7 @@ class Serialized implements IReader
                         }
                     }
                 }
-                
+
                 $oArchive->close();
                 return $file;
             }

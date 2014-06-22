@@ -36,6 +36,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(50, $object->getAlpha());
     }
 
+    /**
+     * Test get/set alignment
+     */
     public function testSetGetAlignment ()
     {
         $object = new Shadow();
@@ -45,6 +48,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Shadow::SHADOW_CENTER, $object->getAlignment());
     }
 
+    /**
+     * Test get/set alpha
+     */
     public function testSetGetAlpha ()
     {
         $object = new Shadow();
@@ -55,6 +61,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getAlpha());
     }
 
+    /**
+     * Test get/set blur radius
+     */
     public function testSetGetBlurRadius ()
     {
         $object = new Shadow();
@@ -65,6 +74,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getBlurRadius());
     }
 
+    /**
+     * Test get/set color
+     */
     public function testSetGetColor ()
     {
         $object = new Shadow();
@@ -75,6 +87,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
     }
 
+    /**
+     * Test get/set direction
+     */
     public function testSetGetDirection ()
     {
         $object = new Shadow();
@@ -85,6 +100,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getDirection());
     }
 
+    /**
+     * Test get/set distance
+     */
     public function testSetGetDistance ()
     {
         $object = new Shadow();
@@ -95,6 +113,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getDistance());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Shadow();
@@ -102,7 +123,10 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
+    /**
+     * Test get/set visible
+     */
     public function testSetIsVisible ()
     {
         $object = new Shadow();

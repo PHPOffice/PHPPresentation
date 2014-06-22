@@ -17,6 +17,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Reader;
 
+/**
+ * Reader interface
+ */
 interface IReader
 {
     /**

@@ -33,6 +33,11 @@ class IOFactory
      */
     private static $autoResolveClasses = array('Serialized');
 
+    /**
+     * Is it a concrete class?
+     *
+     * @param string $class
+     */
     private static function isConcreteClass($class)
     {
         $reflection = new \ReflectionClass($class);
@@ -40,7 +45,15 @@ class IOFactory
         return !$reflection->isAbstract() && !$reflection->isInterface();
     }
 
-    private static function loadClass($class, $name, $type, PHPPowerPoint $phpPowerPoint = null)
+    /**
+     * Load class
+     *
+     * @param string $class
+     * @param string $name
+     * @param string $type
+     * @param \PhpOffice\PhpPowerpoint\PhpPowerpoint $phpPowerPoint
+     */
+    private static function loadClass($class, $name, $type, PhpPowerpoint $phpPowerPoint = null)
     {
         if (class_exists($class) && self::isConcreteClass($class)) {
             if (is_null($phpPowerPoint)) {
@@ -54,22 +67,22 @@ class IOFactory
     }
 
     /**
-     * Create PHPPowerPoint_Writer_IWriter
+     * Create writer
      *
-     * @param  PHPPowerPoint                $PHPPowerPoint
-     * @param  string                       $writerType    Example: PowerPoint2007
-     * @return PHPPowerPoint_Writer_IWriter
+     * @param PHPPowerPoint $PHPPowerPoint
+     * @param string $name
+     * @return \PhpOffice\PhpPowerpoint\PhpPowerpoint\Writer\IWriter
      */
-    public static function createWriter(PHPPowerPoint $phpPowerPoint, $name = 'PowerPoint2007')
+    public static function createWriter(PhpPowerpoint $phpPowerPoint, $name = 'PowerPoint2007')
     {
         $class = 'PhpOffice\\PhpPowerpoint\\Writer\\' . $name;
         return self::loadClass($class, $name, 'writer', $phpPowerPoint);
     }
 
     /**
-     * Create PHPPowerPoint_Reader_IReader
+     * Create reader
      *
-     * @param  string                       $name Example: PowerPoint2007
+     * @param  string $name
      * @return PHPPowerPoint_Reader_IReader
      */
     public static function createReader($name = '')

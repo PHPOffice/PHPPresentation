@@ -32,6 +32,10 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->getEndColor());
         $this->assertEquals(Color::COLOR_BLACK, $object->getEndColor()->getARGB());
     }
+
+    /**
+     * Test get/set end color
+     */
     public function testSetGetEndColor ()
     {
         $object = new Fill();
@@ -42,6 +46,9 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(COLOR::COLOR_BLUE, $object->getEndColor()->getARGB());
     }
 
+    /**
+     * Test get/set fill type
+     */
     public function testSetGetFillType ()
     {
         $object = new Fill();
@@ -50,7 +57,10 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->setFillType(Fill::FILL_GRADIENT_LINEAR));
         $this->assertEquals(Fill::FILL_GRADIENT_LINEAR, $object->getFillType());
     }
-    
+
+    /**
+     * Test get/set rotation
+     */
     public function testSetGetRotation ()
     {
         $object = new Fill();
@@ -60,7 +70,10 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->setRotation($value));
         $this->assertEquals($value, $object->getRotation());
     }
-    
+
+    /**
+     * Test get/set start color
+     */
     public function testSetGetStartColor ()
     {
         $object = new Fill();
@@ -71,6 +84,9 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(COLOR::COLOR_BLUE, $object->getStartColor()->getARGB());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Fill();

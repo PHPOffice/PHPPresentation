@@ -61,7 +61,10 @@ abstract class WriterPart
             throw new \Exception("No parent PHPPowerPoint_Writer_IWriter assigned.");
         }
     }
-    
+
+    /**
+     * Get XML Writer
+     */
     protected function getXMLWriter()
     {
         if ($this->getParentWriter()->hasDiskCaching()) {
