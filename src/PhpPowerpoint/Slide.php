@@ -32,7 +32,7 @@ use PhpOffice\PhpPowerpoint\Slide\Layout;
  * @package    PHPPowerPoint_Slide
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Slide implements IComparable
+class Slide implements ComparableInterface
 {
     /**
      * Parent presentation
@@ -85,7 +85,7 @@ class Slide implements IComparable
     {
         // Set parent
         $this->parent = $pParent;
-        
+
         $this->slideLayout = Slide\Layout::BLANK;
 
         // Shape collection
@@ -111,7 +111,7 @@ class Slide implements IComparable
      * @param  PHPPowerPoint_Shape $shape
      * @return PHPPowerPoint_Shape
      */
-    public function addShape(Shape $shape)
+    public function addShape(AbstractShape $shape)
     {
         $shape->setSlide($this);
 

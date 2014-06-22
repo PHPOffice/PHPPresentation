@@ -19,7 +19,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
-use PhpOffice\PhpPowerpoint\Shape;
+use PhpOffice\PhpPowerpoint\AbstractShape;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
@@ -31,7 +31,7 @@ use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
 
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Slide
@@ -40,7 +40,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
  * @package PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2006 - 2009 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Slide extends WriterPart
+class Slide extends AbstractPart
 {
     /**
      * Write slide to XML format
@@ -141,7 +141,7 @@ class Slide extends WriterPart
                 $this->writeShapeLine($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Shape\Chart) {
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Shape\BaseDrawing) {
+            } elseif ($shape instanceof Shape\AbstractDrawing) {
                 $this->writeShapePic($objWriter, $shape, $shapeId);
             }
         }
@@ -239,11 +239,11 @@ class Slide extends WriterPart
      * Write pic
      *
      * @param  PHPPowerPoint_Shared_XMLWriter  $objWriter XML Writer
-     * @param  \PHPPowerPoint\Shape\BaseDrawing $shape
+     * @param  \PHPPowerPoint\Shape\AbstractDrawing $shape
      * @param  int                             $shapeId
      * @throws \Exception
      */
-    private function writeShapePic(XMLWriter $objWriter, Shape\BaseDrawing $shape, $shapeId)
+    private function writeShapePic(XMLWriter $objWriter, Shape\AbstractDrawing $shape, $shapeId)
     {
         // p:pic
         $objWriter->startElement('p:pic');

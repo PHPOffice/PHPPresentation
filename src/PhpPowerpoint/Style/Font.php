@@ -17,13 +17,13 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
+use \PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
  * PHPPowerPoint_Style_Font
  */
-class Font implements IComparable
+class Font implements ComparableInterface
 {
     /* Underline types */
     const UNDERLINE_NONE = 'none';

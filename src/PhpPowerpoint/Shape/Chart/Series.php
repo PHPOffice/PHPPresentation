@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 use PhpOffice\PhpPowerpoint\Style\Font;
 
@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\Style\Font;
  * @package    PHPPowerPoint_Shape_Chart
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Series implements IComparable
+class Series implements ComparableInterface
 {
     /* Label positions */
     const LABEL_BESTFIT = 'bestFir';

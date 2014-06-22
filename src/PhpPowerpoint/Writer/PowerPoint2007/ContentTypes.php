@@ -31,7 +31,7 @@ use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class ContentTypes extends WriterPart
+class ContentTypes extends AbstractPart
 {
     /**
      * Write content types to XML format

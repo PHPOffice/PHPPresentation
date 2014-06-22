@@ -15,22 +15,43 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPowerpoint\Writer;
+namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
 /**
- * PHPPowerPoint_Writer_IWriter
+ * PHPPowerPoint_Shape_RichText_TextElementInterface
  *
  * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer
+ * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-interface IWriter
+interface TextElementInterface
 {
     /**
-     * Save PHPPowerPoint to file
+     * Get text
      *
-     * @param  string    $pFilename
-     * @throws \Exception
+     * @return string Text
      */
-    public function save($pFilename);
+    public function getText();
+
+    /**
+     * Set text
+     *
+     * @param                                            $pText string   Text
+     * @return PHPPowerPoint_Shape_RichText_TextElementInterface
+     */
+    public function setText($pText = '');
+
+    /**
+     * Get font
+     *
+     * @return PHPPowerPoint_Style_Font
+     */
+    public function getFont();
+
+    /**
+     * Get hash code
+     *
+     * @return string Hash code
+     */
+    public function getHashCode();
 }

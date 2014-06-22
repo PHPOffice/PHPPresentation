@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 use PhpOffice\PhpPowerpoint\Style\Shadow;
 
@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\Style\Shadow;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-abstract class Shape implements IComparable
+abstract class AbstractShape implements ComparableInterface
 {
     /**
      * Slide
@@ -106,7 +106,7 @@ abstract class Shape implements IComparable
      * @var string
      */
     private $hashIndex;
-    
+
     /**
      * Create a new PHPPowerPoint_Shape
      */

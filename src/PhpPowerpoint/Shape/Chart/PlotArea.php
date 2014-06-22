@@ -17,9 +17,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Axis;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type;
+use PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType;
 
 /**
  * PHPPowerPoint_Shape_Chart_PlotArea
@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\Type;
  * @package    PHPPowerPoint_Shape_Chart
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PlotArea implements IComparable
+class PlotArea implements ComparableInterface
 {
     /**
      * Type
@@ -111,7 +111,7 @@ class PlotArea implements IComparable
      * @return PHPPowerPoint_Shape_Chart_PlotArea
      * @throws \Exception
      */
-    public function setType(Type $value)
+    public function setType(AbstractType $value)
     {
         $this->type = $value;
 

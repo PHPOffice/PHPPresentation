@@ -38,7 +38,7 @@ class IOFactory
      *
      * @param PHPPowerPoint $PHPPowerPoint
      * @param string $name
-     * @return \PhpOffice\PhpPowerpoint\PhpPowerpoint\Writer\IWriter
+     * @return \PhpOffice\PhpPowerpoint\PhpPowerpoint\Writer\WriterInterface
      */
     public static function createWriter(PhpPowerpoint $phpPowerPoint, $name = 'PowerPoint2007')
     {
@@ -50,7 +50,7 @@ class IOFactory
      * Create reader
      *
      * @param  string $name
-     * @return PHPPowerPoint_Reader_IReader
+     * @return PHPPowerPoint_Reader_ReaderInterface
      */
     public static function createReader($name = '')
     {
@@ -59,7 +59,7 @@ class IOFactory
     }
 
     /**
-     * Loads PHPPowerPoint from file using automatic PHPPowerPoint_Reader_IReader resolution
+     * Loads PHPPowerPoint from file using automatic PHPPowerPoint_Reader_ReaderInterface resolution
      *
      * @param  string        $pFilename
      * @return PHPPowerPoint
@@ -75,7 +75,7 @@ class IOFactory
             }
         }
 
-        throw new \Exception("Could not automatically determine PHPPowerPoint_Reader_IReader for file.");
+        throw new \Exception("Could not automatically determine PHPPowerPoint_Reader_ReaderInterface for file.");
     }
 
     /**

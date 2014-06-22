@@ -17,40 +17,40 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
-use PhpOffice\PhpPowerpoint\Writer\IWriter;
+use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
 /**
- * PHPPowerPoint_Writer_ODPresentation_WriterPart
+ * PHPPowerPoint_Writer_ODPresentation_AbstractPart
  *
  * @category   PHPPowerPoint
  * @package    PHPPowerPoint_Writer_ODPresentation
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-abstract class WriterPart
+abstract class AbstractPart
 {
     /**
-     * Parent IWriter object
+     * Parent WriterInterface object
      *
-     * @var PHPPowerPoint_Writer_IWriter
+     * @var PHPPowerPoint_Writer_WriterInterface
      */
     private $parentWriter;
 
     /**
-     * Set parent IWriter object
+     * Set parent WriterInterface object
      *
-     * @param  PHPPowerPoint_Writer_IWriter $pWriter
+     * @param  PHPPowerPoint_Writer_WriterInterface $pWriter
      * @throws \Exception
      */
-    public function setParentWriter(IWriter $pWriter = null)
+    public function setParentWriter(WriterInterface $pWriter = null)
     {
         $this->parentWriter = $pWriter;
     }
 
     /**
-     * Get parent IWriter object
+     * Get parent WriterInterface object
      *
-     * @return PHPPowerPoint_Writer_IWriter
+     * @return PHPPowerPoint_Writer_WriterInterface
      * @throws \Exception
      */
     public function getParentWriter()
@@ -58,7 +58,7 @@ abstract class WriterPart
         if (!is_null($this->parentWriter)) {
             return $this->parentWriter;
         } else {
-            throw new \Exception("No parent PHPPowerPoint_Writer_IWriter assigned.");
+            throw new \Exception("No parent PHPPowerPoint_Writer_WriterInterface assigned.");
         }
     }
 

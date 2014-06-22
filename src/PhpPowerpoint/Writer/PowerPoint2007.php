@@ -19,12 +19,12 @@ namespace PhpOffice\PhpPowerpoint\Writer;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\HashTable;
-use PhpOffice\PhpPowerpoint\Shape;
+use PhpOffice\PhpPowerpoint\AbstractShape;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\DocProps;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Drawing;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\PackDefault;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Presentation;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels;
@@ -38,7 +38,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Theme;
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class PowerPoint2007 implements IWriter
+class PowerPoint2007 implements WriterInterface
 {
     /**
      * Office2003 compatibility
@@ -50,7 +50,7 @@ class PowerPoint2007 implements IWriter
     /**
      * Private writer parts
      *
-     * @var PHPPowerPoint_Writer_PowerPoint2007_WriterPart[]
+     * @var PHPPowerPoint_Writer_PowerPoint2007_AbstractPart[]
      */
     protected $writerParts;
 
@@ -115,7 +115,7 @@ class PowerPoint2007 implements IWriter
         $this->writerParts['drawing']      = new Drawing();
         $this->writerParts['chart']        = new Chart();
 
-        // Assign parent IWriter
+        // Assign parent WriterInterface
         foreach ($this->writerParts as $writer) {
             $writer->setParentWriter($this);
         }
@@ -128,7 +128,7 @@ class PowerPoint2007 implements IWriter
      * Get writer part
      *
      * @param  string                                         $pPartName Writer part name
-     * @return PHPPowerPoint_Writer_PowerPoint2007_WriterPart
+     * @return PHPPowerPoint_Writer_PowerPoint2007_AbstractPart
      */
     public function getWriterPart($pPartName = '')
     {
@@ -410,7 +410,7 @@ class PowerPoint2007 implements IWriter
      * @param  PHPPowerPoint_Writer_PowerPoint2007_LayoutPack $pValue
      * @return PHPPowerPoint_Writer_PowerPoint2007
      */
-    public function setLayoutPack(LayoutPack $pValue = null)
+    public function setLayoutPack(AbstractLayoutPack $pValue = null)
     {
         $this->layoutPack = $pValue;
 

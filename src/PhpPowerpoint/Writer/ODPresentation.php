@@ -17,22 +17,22 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer;
 
-use PhpOffice\PhpPowerpoint\Writer\IWriter;
+use PhpOffice\PhpPowerpoint\HashTable;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Meta;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles;
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing;
-use PhpOffice\PhpPowerpoint\HashTable;
-use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
-use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
+use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
 
 /**
  * ODPresentation writer
  */
-class ODPresentation implements IWriter
+class ODPresentation implements WriterInterface
 {
     /**
     * Private PHPPowerPoint
@@ -44,7 +44,7 @@ class ODPresentation implements IWriter
     /**
     * Private writer parts
     *
-    * @var PHPPowerPoint_Writer_ODPresentation_WriterPart[]
+    * @var PHPPowerPoint_Writer_ODPresentation_AbstractPart[]
     */
     private $writerParts;
 
@@ -91,7 +91,7 @@ class ODPresentation implements IWriter
 
         $this->writerParts['drawing']  = new Drawing();
 
-        // Assign parent IWriter
+        // Assign parent WriterInterface
         foreach ($this->writerParts as $writer) {
             $writer->setParentWriter($this);
         }
@@ -248,7 +248,7 @@ class ODPresentation implements IWriter
      * Get writer part
      *
      * @param  string                                         $pPartName Writer part name
-     * @return PHPPowerPoint_Writer_ODPresentation_WriterPart
+     * @return PHPPowerPoint_Writer_ODPresentation_AbstractPart
      */
     public function getWriterPart($pPartName = '')
     {

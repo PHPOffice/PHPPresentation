@@ -17,11 +17,11 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Table;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 use PhpOffice\PhpPowerpoint\Style\Borders;
-use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
+use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
 
 /**
  * PHPPowerPoint_Shape_Table_Cell
@@ -30,7 +30,7 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Cell implements IComparable
+class Cell implements ComparableInterface
 {
     /**
      * Rich text paragraphs
@@ -182,11 +182,11 @@ class Cell implements IComparable
     /**
      * Add text
      *
-     * @param  PHPPowerPoint_Shape_RichText_ITextElement $pText Rich text element
+     * @param  PHPPowerPoint_Shape_RichText_TextElementInterface $pText Rich text element
      * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function addText(ITextElement $pText = null)
+    public function addText(TextElementInterface $pText = null)
     {
         $this->richTextParagraphs[$this->activeParagraph]->addText($pText);
 

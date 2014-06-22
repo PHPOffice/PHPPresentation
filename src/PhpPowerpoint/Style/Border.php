@@ -17,13 +17,13 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
+use \PhpOffice\PhpPowerpoint\ComparableInterface;
 use \PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
  * PHPPowerPoint_Style_Border
  */
-class Border implements IComparable
+class Border implements ComparableInterface
 {
     /* Line style */
     const LINE_NONE             = 'none';

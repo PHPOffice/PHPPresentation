@@ -17,12 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
+use \PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
  * PHPPowerPoint_Style_Bullet
  */
-class Bullet implements IComparable
+class Bullet implements ComparableInterface
 {
     /* Bullet types */
     const TYPE_NONE                         = 'none';

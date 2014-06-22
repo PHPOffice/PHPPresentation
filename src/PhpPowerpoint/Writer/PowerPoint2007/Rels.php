@@ -26,7 +26,7 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
 
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Rels
@@ -35,7 +35,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Rels extends WriterPart
+class Rels extends AbstractPart
 {
     /**
      * Write relationships to XML format

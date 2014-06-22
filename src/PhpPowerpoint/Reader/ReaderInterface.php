@@ -20,10 +20,10 @@ namespace PhpOffice\PhpPowerpoint\Reader;
 /**
  * Reader interface
  */
-interface IReader
+interface ReaderInterface
 {
     /**
-     * Can the current \PhpOffice\PHPPowerPoint\Reader\IReader read the file?
+     * Can the current \PhpOffice\PHPPowerPoint\Reader\ReaderInterface read the file?
      *
      * @param  string  $pFilename
      * @return boolean

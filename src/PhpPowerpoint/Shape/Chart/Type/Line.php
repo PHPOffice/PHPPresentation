@@ -17,8 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart\Type;
 
-use PhpOffice\PhpPowerpoint\IComparable;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
+use PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
 
 /**
@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
  * @package    PHPPowerPoint_Shape_Chart_Type
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Line extends Type implements IComparable
+class Line extends AbstractType implements ComparableInterface
 {
     /**
      * Data

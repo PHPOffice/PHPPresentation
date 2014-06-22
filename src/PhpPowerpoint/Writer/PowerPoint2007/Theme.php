@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
 
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Theme
@@ -26,7 +26,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2006 - 2009 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Theme extends WriterPart
+class Theme extends AbstractPart
 {
     /**
      * Write theme to XML format

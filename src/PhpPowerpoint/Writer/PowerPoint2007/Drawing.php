@@ -18,9 +18,9 @@
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Table;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
 
 /**
  * PHPPowerPoint_Writer_PowerPoint2007_Drawing
@@ -29,7 +29,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Drawing extends WriterPart
+class Drawing extends AbstractPart
 {
     /**
      * Get an array of all drawings
@@ -49,7 +49,7 @@ class Drawing extends WriterPart
             // Loop trough images and add to array
             $iterator = $pPHPPowerPoint->getSlide($i)->getShapeCollection()->getIterator();
             while ($iterator->valid()) {
-                if ($iterator->current() instanceof BaseDrawing && !($iterator->current() instanceof Table)) {
+                if ($iterator->current() instanceof AbstractDrawing && !($iterator->current() instanceof Table)) {
                     $aDrawings[] = $iterator->current();
                 }
 

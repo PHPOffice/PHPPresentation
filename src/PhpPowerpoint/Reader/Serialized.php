@@ -17,17 +17,17 @@
 
 namespace PhpOffice\PhpPowerpoint\Reader;
 
-use PhpOffice\PhpPowerpoint\Reader\IReader;
+use PhpOffice\PhpPowerpoint\Reader\ReaderInterface;
 use PhpOffice\PhpPowerpoint\Shared\File;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 
 /**
  * Serialized format reader
  */
-class Serialized implements IReader
+class Serialized implements ReaderInterface
 {
     /**
-     * Can the current PHPPowerPoint_Reader_IReader read the file?
+     * Can the current PHPPowerPoint_Reader_ReaderInterface read the file?
      *
      * @param  string  $pFilename
      * @return boolean
@@ -101,7 +101,7 @@ class Serialized implements IReader
                 // Update media links
                 for ($i = 0; $i < $file->getSlideCount(); ++$i) {
                     for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                        if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
+                        if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
                             $file->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $file->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
                         }
                     }

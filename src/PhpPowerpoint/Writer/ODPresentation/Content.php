@@ -18,7 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
 use PhpOffice\PhpPowerpoint\Shape\Line;
@@ -30,12 +30,12 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\WriterPart;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart;
 
 /**
  * PHPPowerPoint_Writer_ODPresentation_Content
  */
-class Content extends WriterPart
+class Content extends AbstractPart
 {
     /**
      * Write content file to XML format
@@ -155,7 +155,7 @@ class Content extends WriterPart
                         }
                     }
                 }
-                if ($shape instanceof BaseDrawing) {
+                if ($shape instanceof AbstractDrawing) {
                     if ($shape->getShadow()->isVisible()) {
                         // style:style
                         $objWriter->startElement('style:style');
@@ -351,7 +351,7 @@ class Content extends WriterPart
      *
      * @param int $shapeId
      */
-    public function writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
+    public function writePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');

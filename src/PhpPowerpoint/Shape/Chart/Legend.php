@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Font;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
@@ -30,7 +30,7 @@ use PhpOffice\PhpPowerpoint\Style\Alignment;
  * @package    PHPPowerPoint_Shape_Chart
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Legend implements IComparable
+class Legend implements ComparableInterface
 {
     /** Legend positions */
     const POSITION_BOTTOM = 'b';

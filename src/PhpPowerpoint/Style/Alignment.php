@@ -17,12 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
+use \PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
  * PHPPowerPoint_Style_Alignment
  */
-class Alignment implements IComparable
+class Alignment implements ComparableInterface
 {
     /* Horizontal alignment styles */
     const HORIZONTAL_GENERAL                = 'l';

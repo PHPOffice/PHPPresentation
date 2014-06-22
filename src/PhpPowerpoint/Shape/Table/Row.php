@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Table;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\Table\Cell;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 
@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\Style\Fill;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Row implements IComparable
+class Row implements ComparableInterface
 {
     /**
      * Cells

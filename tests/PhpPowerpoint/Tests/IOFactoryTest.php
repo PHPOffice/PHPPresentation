@@ -42,7 +42,7 @@ class IOFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateReader()
     {
-        $class = 'PhpOffice\\PhpPowerpoint\\Reader\\IReader';
+        $class = 'PhpOffice\\PhpPowerpoint\\Reader\\ReaderInterface';
 
         $this->assertInstanceOf($class, IOFactory::createReader('Serialized'));
     }

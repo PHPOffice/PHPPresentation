@@ -17,10 +17,10 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\Shape;
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\AbstractShape;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph;
-use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
+use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
 
 /**
  * PHPPowerPoint_Shape_RichText
@@ -29,7 +29,7 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
  * @package    PHPPowerPoint_RichText
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class RichText extends Shape implements IComparable
+class RichText extends AbstractShape implements ComparableInterface
 {
     /** Wrapping */
     const WRAP_NONE = 'none';
@@ -227,11 +227,11 @@ class RichText extends Shape implements IComparable
     /**
      * Add text
      *
-     * @param  PHPPowerPoint_Shape_RichText_ITextElement $pText Rich text element
+     * @param  PHPPowerPoint_Shape_RichText_TextElementInterface $pText Rich text element
      * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText
      */
-    public function addText(ITextElement $pText = null)
+    public function addText(TextElementInterface $pText = null)
     {
         $this->richTextParagraphs[$this->activeParagraph]->addText($pText);
 

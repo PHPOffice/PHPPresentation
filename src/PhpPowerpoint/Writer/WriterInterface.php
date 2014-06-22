@@ -15,41 +15,22 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPowerpoint;
+namespace PhpOffice\PhpPowerpoint\Writer;
 
 /**
- * PhpOffice\PhpPowerpoint\IComparable
+ * PHPPowerPoint_Writer_IWriter
  *
  * @category   PHPPowerPoint
- * @package    PHPPowerPoint
+ * @package    PHPPowerPoint_Writer
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-interface IComparable
+interface WriterInterface
 {
     /**
-     * Get hash code
+     * Save PHPPowerPoint to file
      *
-     * @return string Hash code
+     * @param  string    $pFilename
+     * @throws \Exception
      */
-    public function getHashCode();
-
-    /**
-     * Get hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @return string Hash index
-     */
-    public function getHashIndex();
-
-    /**
-     * Set hash index
-     *
-     * Note that this index may vary during script execution! Only reliable moment is
-     * while doing a write of a workbook and when changes are not allowed.
-     *
-     * @param string $value Hash index
-     */
-    public function setHashIndex($value);
+    public function save($pFilename);
 }

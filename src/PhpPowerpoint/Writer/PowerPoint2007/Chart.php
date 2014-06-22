@@ -29,7 +29,7 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Style\Border;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
 
 /**

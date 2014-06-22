@@ -17,8 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\Shape;
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\AbstractShape;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Border;
 
 /**
@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\Style\Border;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Line extends Shape implements IComparable
+class Line extends AbstractShape implements ComparableInterface
 {
     /**
      * Create a new PHPPowerPoint_Shape_Line instance

@@ -17,13 +17,13 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Border;
 
 /**
  * PHPPowerPoint_Style_Borders
  */
-class Borders implements IComparable
+class Borders implements ComparableInterface
 {
     /**
      * Left

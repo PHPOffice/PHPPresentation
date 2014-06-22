@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
  * PHPPowerPoint_Shape_Chart_Type
@@ -26,7 +26,7 @@ use PhpOffice\PhpPowerpoint\IComparable;
  * @package    PHPPowerPoint_Shape_Chart
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-abstract class Type implements IComparable
+abstract class AbstractType implements ComparableInterface
 {
     /**
      * Has Axis X?

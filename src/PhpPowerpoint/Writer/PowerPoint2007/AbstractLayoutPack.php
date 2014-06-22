@@ -24,7 +24,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
  * @package    PHPPowerPoint_Writer_PowerPoint2007
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-abstract class LayoutPack
+abstract class AbstractLayoutPack
 {
     /**
      * Master slides

@@ -26,7 +26,7 @@ use PhpOffice\PhpPowerpoint\Style\Font;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Run extends TextElement implements ITextElement
+class Run extends TextElement implements TextElementInterface
 {
     /**
      * Font
@@ -62,7 +62,7 @@ class Run extends TextElement implements ITextElement
      *
      * @param  PHPPowerPoint_Style_Font                  $pFont Font
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     * @return PHPPowerPoint_Shape_RichText_TextElementInterface
      */
     public function setFont(Font $pFont = null)
     {

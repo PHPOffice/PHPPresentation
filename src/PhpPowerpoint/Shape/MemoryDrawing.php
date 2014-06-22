@@ -17,8 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
  * PHPPowerPoint_Shape_MemoryDrawing
@@ -27,7 +27,7 @@ use PhpOffice\PhpPowerpoint\IComparable;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class MemoryDrawing extends BaseDrawing implements IComparable
+class MemoryDrawing extends AbstractDrawing implements ComparableInterface
 {
     /* Rendering functions */
     const RENDERING_DEFAULT = 'imagepng';

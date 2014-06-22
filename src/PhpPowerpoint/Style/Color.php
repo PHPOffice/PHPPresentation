@@ -17,13 +17,13 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
  * PHPPowerPoint_Style_Color
  */
-class Color implements IComparable
+class Color implements ComparableInterface
 {
     /* Colors */
     const COLOR_BLACK                       = 'FF000000';

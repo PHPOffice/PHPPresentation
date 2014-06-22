@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\WriterPart;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
  * @package    PHPPowerPoint_Writer_ODPresentation
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Meta extends WriterPart
+class Meta extends AbstractPart
 {
     /**
      * Write Meta file to XML format

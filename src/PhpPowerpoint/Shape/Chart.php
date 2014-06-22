@@ -17,8 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\IComparable;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Legend;
 use PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea;
@@ -31,7 +31,7 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\View3D;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Chart extends BaseDrawing implements IComparable
+class Chart extends AbstractDrawing implements ComparableInterface
 {
     /**
      * Title

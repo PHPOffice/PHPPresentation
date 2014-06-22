@@ -17,8 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\Table\Row;
 
 /**
@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\Shape\Table\Row;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Table extends BaseDrawing implements IComparable
+class Table extends AbstractDrawing implements ComparableInterface
 {
     /**
      * Rows

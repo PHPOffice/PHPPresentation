@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Font;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
@@ -31,12 +31,12 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
  * @package    PHPPowerPoint_RichText
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Paragraph implements IComparable
+class Paragraph implements ComparableInterface
 {
     /**
      * Rich text elements
      *
-     * @var PHPPowerPoint_Shape_RichText_ITextElement[]
+     * @var PHPPowerPoint_Shape_RichText_TextElementInterface[]
      */
     private $richTextElements;
 
@@ -154,11 +154,11 @@ class Paragraph implements IComparable
     /**
      * Add text
      *
-     * @param  PHPPowerPoint_Shape_RichText_ITextElement $pText Rich text element
+     * @param  PHPPowerPoint_Shape_RichText_TextElementInterface $pText Rich text element
      * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
-    public function addText(ITextElement $pText = null)
+    public function addText(TextElementInterface $pText = null)
     {
         $this->richTextElements[] = $pText;
 
@@ -220,7 +220,7 @@ class Paragraph implements IComparable
         // Return value
         $returnValue = '';
 
-        // Loop trough all PHPPowerPoint_Shape_RichText_ITextElement
+        // Loop trough all PHPPowerPoint_Shape_RichText_TextElementInterface
         foreach ($this->richTextElements as $text) {
             $returnValue .= $text->getText();
         }
@@ -242,7 +242,7 @@ class Paragraph implements IComparable
     /**
      * Get Rich Text elements
      *
-     * @return PHPPowerPoint_Shape_RichText_ITextElement[]
+     * @return PHPPowerPoint_Shape_RichText_TextElementInterface[]
      */
     public function getRichTextElements()
     {
@@ -252,7 +252,7 @@ class Paragraph implements IComparable
     /**
      * Set Rich Text elements
      *
-     * @param  PHPPowerPoint_Shape_RichText_ITextElement[] $pElements Array of elements
+     * @param  PHPPowerPoint_Shape_RichText_TextElementInterface[] $pElements Array of elements
      * @throws \Exception
      * @return PHPPowerPoint_Shape_RichText_Paragraph
      */
@@ -261,7 +261,7 @@ class Paragraph implements IComparable
         if (is_array($pElements)) {
             $this->richTextElements = $pElements;
         } else {
-            throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_ITextElement[] array passed.");
+            throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_TextElementInterface[] array passed.");
         }
 
         return $this;

@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
+use \PhpOffice\PhpPowerpoint\ComparableInterface;
 use \PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
@@ -27,7 +27,7 @@ use \PhpOffice\PhpPowerpoint\Style\Color;
  * @package    PHPPowerPoint_Style
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class Fill implements IComparable
+class Fill implements ComparableInterface
 {
     /* Fill types */
     const FILL_NONE                         = 'none';

@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
-use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
+use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 
 /**
@@ -27,7 +27,7 @@ use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
  * @package    PHPPowerPoint_Shape
  * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
-class TextElement implements ITextElement
+class TextElement implements TextElementInterface
 {
     /**
      * Text
@@ -68,7 +68,7 @@ class TextElement implements ITextElement
      * Set text
      *
      * @param                                            $pText string   Text
-     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     * @return PHPPowerPoint_Shape_RichText_TextElementInterface
      */
     public function setText($pText = '')
     {
