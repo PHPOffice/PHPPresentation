@@ -34,39 +34,6 @@ class IOFactory
     private static $autoResolveClasses = array('Serialized');
 
     /**
-     * Is it a concrete class?
-     *
-     * @param string $class
-     */
-    private static function isConcreteClass($class)
-    {
-        $reflection = new \ReflectionClass($class);
-
-        return !$reflection->isAbstract() && !$reflection->isInterface();
-    }
-
-    /**
-     * Load class
-     *
-     * @param string $class
-     * @param string $name
-     * @param string $type
-     * @param \PhpOffice\PhpPowerpoint\PhpPowerpoint $phpPowerPoint
-     */
-    private static function loadClass($class, $name, $type, PhpPowerpoint $phpPowerPoint = null)
-    {
-        if (class_exists($class) && self::isConcreteClass($class)) {
-            if (is_null($phpPowerPoint)) {
-                return new $class();
-            } else {
-                return new $class($phpPowerPoint);
-            }
-        } else {
-            throw new \Exception('"'.$name.'" is not a valid '.$type.'.');
-        }
-    }
-
-    /**
      * Create writer
      *
      * @param PHPPowerPoint $PHPPowerPoint
@@ -109,5 +76,38 @@ class IOFactory
         }
 
         throw new \Exception("Could not automatically determine PHPPowerPoint_Reader_IReader for file.");
+    }
+
+    /**
+     * Load class
+     *
+     * @param string $class
+     * @param string $name
+     * @param string $type
+     * @param \PhpOffice\PhpPowerpoint\PhpPowerpoint $phpPowerPoint
+     */
+    private static function loadClass($class, $name, $type, PhpPowerpoint $phpPowerPoint = null)
+    {
+        if (class_exists($class) && self::isConcreteClass($class)) {
+            if (is_null($phpPowerPoint)) {
+                return new $class();
+            } else {
+                return new $class($phpPowerPoint);
+            }
+        } else {
+            throw new \Exception('"'.$name.'" is not a valid '.$type.'.');
+        }
+    }
+
+    /**
+     * Is it a concrete class?
+     *
+     * @param string $class
+     */
+    private static function isConcreteClass($class)
+    {
+        $reflection = new \ReflectionClass($class);
+
+        return !$reflection->isAbstract() && !$reflection->isInterface();
     }
 }

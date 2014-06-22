@@ -88,10 +88,7 @@ class DocumentLayout
      */
     public function __construct()
     {
-        // Initialise values
-        $this->layout = self::LAYOUT_SCREEN_4X3;
-        $this->dimensionX     = $this->dimension[$this->layout]['cx'];
-        $this->dimensionY     = $this->dimension[$this->layout]['cy'];
+        $this->setDocumentLayout(self::LAYOUT_SCREEN_4X3);
     }
 
     /**
@@ -131,9 +128,9 @@ class DocumentLayout
                 break;
             case self::LAYOUT_CUSTOM:
             default:
+                $this->layout = self::LAYOUT_CUSTOM;
                 $this->dimensionX     = $pValue['cx'];
                 $this->dimensionY     = $pValue['cy'];
-                $this->layout = self::LAYOUT_CUSTOM;
                 break;
         }
 
