@@ -7,7 +7,6 @@ Desktop.ini
 .idea
 build/
 phpunit.xml
-composer.lock
 composer.phar
 vendor
 *.settings
