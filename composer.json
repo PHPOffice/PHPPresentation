@@ -27,7 +27,10 @@
     "require-dev": {
         "phpdocumentor/phpdocumentor":"2.*",
         "phpunit/phpunit": "3.7.*",
-        "squizlabs/php_codesniffer": "1.*"
+        "squizlabs/php_codesniffer": "1.*",
+        "phpmd/phpmd": "dev-master",
+        "sebastian/phpcpd": "*",
+        "phploc/phploc": "*"
     },
     "suggest": {
         "ext-gd2": "Required to add images"
