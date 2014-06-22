@@ -20,16 +20,12 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\TemplateBased
  */
 class TemplateBased extends AbstractLayoutPack
 {
     /**
-     * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased
+     * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\TemplateBased
      *
      * @param string $fileName
      */
@@ -152,7 +148,7 @@ class TemplateBased extends AbstractLayoutPack
 
         // Sort master slides
         usort($this->masterSlides, array(
-            "PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased",
+            "\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\TemplateBased",
             "cmpMaster"
         ));
 

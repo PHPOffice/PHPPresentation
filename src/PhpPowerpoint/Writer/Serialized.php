@@ -23,11 +23,7 @@ use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
 /**
- * PHPPowerPoint_Writer_Serialized
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\Serialized
  */
 class Serialized implements WriterInterface
 {
@@ -39,7 +35,7 @@ class Serialized implements WriterInterface
     private $presentation;
 
     /**
-     * Create a new PHPPowerPoint_Writer_Serialized
+     * Create a new \PhpOffice\PhpPowerpoint\Writer\Serialized
      *
      * @param PHPPowerPoint $pPHPPowerPoint
      */
@@ -114,7 +110,7 @@ class Serialized implements WriterInterface
      *
      * @param  PHPPowerPoint                   $pPHPPowerPoint PHPPowerPoint object
      * @throws \Exception
-     * @return PHPPowerPoint_Writer_Serialized
+     * @return \PhpOffice\PhpPowerpoint\Writer\Serialized
      */
     public function setPHPPowerPoint (PHPPowerPoint $pPHPPowerPoint = null)
     {

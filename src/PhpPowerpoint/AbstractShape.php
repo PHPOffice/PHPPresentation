@@ -22,18 +22,14 @@ use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 use PhpOffice\PhpPowerpoint\Style\Shadow;
 
 /**
- * PHPPowerPoint_Shape
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Abstract shape
  */
 abstract class AbstractShape implements ComparableInterface
 {
     /**
      * Slide
      *
-     * @var PHPPowerPoint_Slide
+     * @var \PhpOffice\PhpPowerpoint\Slide
      */
     protected $slide;
 
@@ -68,14 +64,14 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Fill
      *
-     * @var PHPPowerPoint_Style_Fill
+     * @var \PhpOffice\PhpPowerpoint\Style\Fill
      */
     private $fill;
 
     /**
      * Border
      *
-     * @var PHPPowerPoint_Style_Border
+     * @var \PhpOffice\PhpPowerpoint\Style\Border
      */
     private $border;
 
@@ -89,14 +85,14 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Shadow
      *
-     * @var PHPPowerPoint_Style_Shadow
+     * @var \PhpOffice\PhpPowerpoint\Style\Shadow
      */
     protected $shadow;
 
     /**
      * Hyperlink
      *
-     * @var PHPPowerPoint_Shape_Hyperlink
+     * @var \PhpOffice\PhpPowerpoint\Shape\Hyperlink
      */
     protected $hyperlink;
 
@@ -108,7 +104,7 @@ abstract class AbstractShape implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Shape
+     * Create a new self
      */
     public function __construct()
     {
@@ -129,7 +125,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Get Slide
      *
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function getSlide()
     {
@@ -139,20 +135,20 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Set Slide
      *
-     * @param  PHPPowerPoint_Slide $pValue
+     * @param  \PhpOffice\PhpPowerpoint\Slide $pValue
      * @param  bool                $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
      * @throws \Exception
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setSlide(Slide $pValue = null, $pOverrideOld = false)
     {
         if (is_null($this->slide)) {
-            // Add drawing to PHPPowerPoint_Slide
+            // Add drawing to \PhpOffice\PhpPowerpoint\Slide
             $this->slide = $pValue;
             $this->slide->getShapeCollection()->append($this);
         } else {
             if ($pOverrideOld) {
-                // Remove drawing from old PHPPowerPoint_Slide
+                // Remove drawing from old \PhpOffice\PhpPowerpoint\Slide
                 $iterator = $this->slide->getShapeCollection()->getIterator();
 
                 while ($iterator->valid()) {
@@ -163,10 +159,10 @@ abstract class AbstractShape implements ComparableInterface
                     }
                 }
 
-                // Set new PHPPowerPoint_Slide
+                // Set new \PhpOffice\PhpPowerpoint\Slide
                 $this->setSlide($pValue);
             } else {
-                throw new \Exception("A PHPPowerPoint_Slide has already been assigned. Shapes can only exist on one PHPPowerPoint_Slide.");
+                throw new \Exception("A \PhpOffice\PhpPowerpoint\Slide has already been assigned. Shapes can only exist on one \PhpOffice\PhpPowerpoint\Slide.");
             }
         }
 
@@ -187,7 +183,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set OffsetX
      *
      * @param  int                 $pValue
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setOffsetX($pValue = 0)
     {
@@ -210,7 +206,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set OffsetY
      *
      * @param  int                 $pValue
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setOffsetY($pValue = 0)
     {
@@ -233,7 +229,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set Width
      *
      * @param  int                 $pValue
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setWidth($pValue = 0)
     {
@@ -255,7 +251,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set Height
      *
      * @param  int                 $pValue
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setHeight($pValue = 0)
     {
@@ -269,7 +265,7 @@ abstract class AbstractShape implements ComparableInterface
      * @param  int                 $width
      * @param  int                 $height
      * @example $objDrawing->setWidthAndHeight(160,120);
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setWidthAndHeight($width = 0, $height = 0)
     {
@@ -292,7 +288,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set Rotation
      *
      * @param  int                 $pValue
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setRotation($pValue = 0)
     {
@@ -303,7 +299,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Get Fill
      *
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function getFill()
     {
@@ -313,7 +309,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Get Border
      *
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function getBorder()
     {
@@ -323,7 +319,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Get Shadow
      *
-     * @return PHPPowerPoint_Style_Shadow
+     * @return \PhpOffice\PhpPowerpoint\Style\Shadow
      */
     public function getShadow()
     {
@@ -333,9 +329,9 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Set Shadow
      *
-     * @param  PHPPowerPoint_Style_Shadow $pValue
+     * @param  \PhpOffice\PhpPowerpoint\Style\Shadow $pValue
      * @throws \Exception
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setShadow(Shadow $pValue = null)
     {
@@ -356,7 +352,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Get Hyperlink
      *
-     * @return PHPPowerPoint_Shape_Hyperlink
+     * @return \PhpOffice\PhpPowerpoint\Shape\Hyperlink
      */
     public function getHyperlink()
     {
@@ -369,9 +365,9 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Set Hyperlink
      *
-     * @param  PHPPowerPoint_Shape_Hyperlink $pHyperlink
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Hyperlink $pHyperlink
      * @throws \Exception
-     * @return PHPPowerPoint_Shape
+     * @return self
      */
     public function setHyperlink(Hyperlink $pHyperlink = null)
     {

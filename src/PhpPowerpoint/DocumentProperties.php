@@ -18,11 +18,7 @@
 namespace PhpOffice\PhpPowerpoint;
 
 /**
- * PHPPowerPoint_DocumentProperties
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\DocumentProperties
  */
 class DocumentProperties
 {
@@ -97,7 +93,7 @@ class DocumentProperties
     private $company;
 
     /**
-     * Create a new PHPPowerPoint_DocumentProperties
+     * Create a new \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function __construct()
     {
@@ -128,7 +124,7 @@ class DocumentProperties
      * Set Creator
      *
      * @param  string                           $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setCreator($pValue = '')
     {
@@ -151,7 +147,7 @@ class DocumentProperties
      * Set Last Modified By
      *
      * @param  string                           $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setLastModifiedBy($pValue = '')
     {
@@ -174,7 +170,7 @@ class DocumentProperties
      * Set Created
      *
      * @param  datetime                         $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setCreated($pValue = null)
     {
@@ -200,7 +196,7 @@ class DocumentProperties
      * Set Modified
      *
      * @param  datetime                         $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setModified($pValue = null)
     {
@@ -226,7 +222,7 @@ class DocumentProperties
      * Set Title
      *
      * @param  string                           $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setTitle($pValue = '')
     {
@@ -249,7 +245,7 @@ class DocumentProperties
      * Set Description
      *
      * @param  string                           $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setDescription($pValue = '')
     {
@@ -272,7 +268,7 @@ class DocumentProperties
      * Set Subject
      *
      * @param  string                           $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setSubject($pValue = '')
     {
@@ -295,7 +291,7 @@ class DocumentProperties
      * Set Keywords
      *
      * @param  string                           $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setKeywords($pValue = '')
     {
@@ -318,7 +314,7 @@ class DocumentProperties
      * Set Category
      *
      * @param  string                           $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setCategory($pValue = '')
     {
@@ -341,7 +337,7 @@ class DocumentProperties
      * Set Company
      *
      * @param  string                           $pValue
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function setCompany($pValue = '')
     {

@@ -22,11 +22,7 @@ use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_DocProps
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\DocProps
  */
 class DocProps extends AbstractPart
 {

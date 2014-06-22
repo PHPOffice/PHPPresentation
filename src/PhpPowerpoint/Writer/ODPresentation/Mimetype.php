@@ -20,11 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart;
 
 /**
- * PHPPowerPoint_Writer_ODPresentation_Mimetype
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_ODPresentation
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype
  */
 class Mimetype extends AbstractPart
 {

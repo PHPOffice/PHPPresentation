@@ -17,10 +17,10 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\ComparableInterface;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Bullet
+ * \PhpOffice\PhpPowerpoint\Style\Bullet
  */
 class Bullet implements ComparableInterface
 {
@@ -116,7 +116,7 @@ class Bullet implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Bullet
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function __construct()
     {
@@ -142,7 +142,7 @@ class Bullet implements ComparableInterface
      * Set bullet type
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletType($pValue = self::TYPE_NONE)
     {
@@ -165,7 +165,7 @@ class Bullet implements ComparableInterface
      * Set bullet font
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletFont($pValue = 'Calibri')
     {
@@ -191,7 +191,7 @@ class Bullet implements ComparableInterface
      * Set bullet char
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletChar($pValue = '-')
     {
@@ -214,7 +214,7 @@ class Bullet implements ComparableInterface
      * Set bullet numeric style
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT)
     {
@@ -237,7 +237,7 @@ class Bullet implements ComparableInterface
      * Set bullet numeric start at
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletNumericStartAt($pValue = 1)
     {

@@ -23,11 +23,7 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
 
 /**
- * PHPPowerPoint_Shape_RichText
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_RichText
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\RichText
  */
 class RichText extends AbstractShape implements ComparableInterface
 {
@@ -48,7 +44,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Rich text paragraphs
      *
-     * @var PHPPowerPoint_Shape_RichText_Paragraph[]
+     * @var \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[]
      */
     private $richTextParagraphs;
 
@@ -137,7 +133,7 @@ class RichText extends AbstractShape implements ComparableInterface
     private $topInset = 4.8;
 
     /**
-     * Create a new PHPPowerPoint_Shape_RichText instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\RichText instance
      */
     public function __construct()
     {
@@ -164,7 +160,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Get active paragraph
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function getActiveParagraph()
     {
@@ -175,7 +171,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set active paragraph
      *
      * @param  int                                    $index
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function setActiveParagraph($index = 0)
     {
@@ -192,7 +188,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Get paragraph
      *
      * @param  int $index
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function getParagraph($index = 0)
     {
@@ -206,7 +202,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Create paragraph
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function createParagraph()
     {
@@ -227,9 +223,9 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Add text
      *
-     * @param  PHPPowerPoint_Shape_RichText_TextElementInterface $pText Rich text element
+     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface $pText Rich text element
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function addText(TextElementInterface $pText = null)
     {
@@ -242,7 +238,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Create text (can not be formatted !)
      *
      * @param  string                                   $pText Text
-     * @return PHPPowerPoint_Shape_RichText_TextElement
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\TextElement
      * @throws \Exception
      */
     public function createText($pText = '')
@@ -253,7 +249,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Create break
      *
-     * @return PHPPowerPoint_Shape_RichText_Break
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Break
      * @throws \Exception
      */
     public function createBreak()
@@ -265,7 +261,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Create text run (can be formatted)
      *
      * @param  string                           $pText Text
-     * @return PHPPowerPoint_Shape_RichText_Run
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Run
      * @throws \Exception
      */
     public function createTextRun($pText = '')
@@ -283,7 +279,7 @@ class RichText extends AbstractShape implements ComparableInterface
         // Return value
         $returnValue = '';
 
-        // Loop trough all PHPPowerPoint_Shape_RichText_Paragraph
+        // Loop trough all \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
         foreach ($this->richTextParagraphs as $p) {
             $returnValue .= $p->getPlainText();
         }
@@ -305,7 +301,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Get paragraphs
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph[]
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[]
      */
     public function getParagraphs()
     {
@@ -315,9 +311,9 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set paragraphs
      *
-     * @param  PHPPowerPoint_Shape_RichText_Paragraphs[] $paragraphs Array of paragraphs
+     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraphs[] $paragraphs Array of paragraphs
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setParagraphs($paragraphs = null)
     {
@@ -325,7 +321,7 @@ class RichText extends AbstractShape implements ComparableInterface
             $this->richTextParagraphs = $paragraphs;
             $this->activeParagraph    = count($this->richTextParagraphs) - 1;
         } else {
-            throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
+            throw new \Exception("Invalid \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[] array passed.");
         }
 
         return $this;
@@ -345,7 +341,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set text wrapping
      *
      * @param $value string
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setWrap($value = self::WRAP_SQUARE)
     {
@@ -368,7 +364,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set autofit
      *
      * @param $value string
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setAutoFit($value = self::AUTOFIT_DEFAULT)
     {
@@ -391,7 +387,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set horizontal overflow
      *
      * @param $value string
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setHorizontalOverflow($value = self::OVERFLOW_OVERFLOW)
     {
@@ -414,7 +410,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set vertical overflow
      *
      * @param $value string
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setVerticalOverflow($value = self::OVERFLOW_OVERFLOW)
     {
@@ -437,7 +433,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set vertical
      *
      * @param $value boolean
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setUpright($value = false)
     {
@@ -460,7 +456,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set vertical
      *
      * @param $value boolean
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setVertical($value = false)
     {
@@ -483,7 +479,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set columns
      *
      * @param $value int
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setColumns($value = 1)
     {
@@ -510,7 +506,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set bottom inset
      *
      * @param $value float
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setInsetBottom($value = 4.8)
     {
@@ -533,7 +529,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set left inset
      *
      * @param $value float
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setInsetLeft($value = 9.6)
     {
@@ -556,7 +552,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set left inset
      *
      * @param $value float
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setInsetRight($value = 9.6)
     {
@@ -579,7 +575,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set top inset
      *
      * @param $value float
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setInsetTop($value = 4.8)
     {

@@ -25,11 +25,7 @@ use PhpOffice\PhpPowerpoint\Shared\File;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_ContentTypes
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes
  */
 class ContentTypes extends AbstractPart
 {
@@ -190,7 +186,7 @@ class ContentTypes extends AbstractPart
     /**
      * Write Default content type
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
      * @throws \Exception
@@ -211,7 +207,7 @@ class ContentTypes extends AbstractPart
     /**
      * Write Override content type
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
      * @throws \Exception

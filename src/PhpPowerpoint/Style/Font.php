@@ -17,11 +17,11 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\ComparableInterface;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
- * PHPPowerPoint_Style_Font
+ * \PhpOffice\PhpPowerpoint\Style\Font
  */
 class Font implements ComparableInterface
 {
@@ -97,7 +97,7 @@ class Font implements ComparableInterface
     /**
      * Foreground color
      *
-     * @var PHPPowerPoint_Style_Color
+     * @var \PhpOffice\PhpPowerpoint\Style\Color
      */
     private $color;
 
@@ -109,7 +109,7 @@ class Font implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Font
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function __construct()
     {
@@ -139,7 +139,7 @@ class Font implements ComparableInterface
      * Set Name
      *
      * @param  string                   $pValue
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setName($pValue = 'Calibri')
     {
@@ -165,7 +165,7 @@ class Font implements ComparableInterface
      * Set Size
      *
      * @param  double                   $pValue
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setSize($pValue = 10)
     {
@@ -191,7 +191,7 @@ class Font implements ComparableInterface
      * Set Bold
      *
      * @param  boolean                  $pValue
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setBold($pValue = false)
     {
@@ -217,7 +217,7 @@ class Font implements ComparableInterface
      * Set Italic
      *
      * @param  boolean                  $pValue
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setItalic($pValue = false)
     {
@@ -243,7 +243,7 @@ class Font implements ComparableInterface
      * Set SuperScript
      *
      * @param  boolean                  $pValue
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setSuperScript($pValue = false)
     {
@@ -270,7 +270,7 @@ class Font implements ComparableInterface
      * Set SubScript
      *
      * @param  boolean                  $pValue
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setSubScript($pValue = false)
     {
@@ -296,8 +296,8 @@ class Font implements ComparableInterface
     /**
      * Set Underline
      *
-     * @param  string                   $pValue PHPPowerPoint_Style_Font underline type
-     * @return PHPPowerPoint_Style_Font
+     * @param  string                   $pValue \PhpOffice\PhpPowerpoint\Style\Font underline type
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setUnderline($pValue = self::UNDERLINE_NONE)
     {
@@ -314,7 +314,7 @@ class Font implements ComparableInterface
      *
      * @deprecated Use setStrikethrough() instead.
      * @param  boolean                  $pValue
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setStriketrough($pValue = false)
     {
@@ -335,7 +335,7 @@ class Font implements ComparableInterface
      * Set Strikethrough
      *
      * @param  boolean                  $pValue
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setStrikethrough($pValue = false)
     {
@@ -350,7 +350,7 @@ class Font implements ComparableInterface
     /**
      * Get Color
      *
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function getColor()
     {
@@ -360,9 +360,9 @@ class Font implements ComparableInterface
     /**
      * Set Color
      *
-     * @param  PHPPowerPoint_Style_Color $pValue
+     * @param  \PhpOffice\PhpPowerpoint\Style\Color $pValue
      * @throws \Exception
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function setColor(Color $pValue = null)
     {

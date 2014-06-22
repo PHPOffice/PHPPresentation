@@ -18,11 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Writer;
 
 /**
- * PHPPowerPoint_Writer_IWriter
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Writer interface
  */
 interface WriterInterface
 {

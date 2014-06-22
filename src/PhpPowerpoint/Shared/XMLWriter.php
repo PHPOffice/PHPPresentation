@@ -22,7 +22,7 @@ if (!defined('DATE_W3C')) {
 }
 
 /**
- * PHPPowerPoint_Shared_XMLWriter
+ * XMLWriter
  */
 class XMLWriter
 {
@@ -45,7 +45,7 @@ class XMLWriter
     private $tempFileName = '';
 
     /**
-     * Create a new PHPPowerPoint_Shared_XMLWriter instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shared\XMLWriter instance
      *
      * @param int $pTemporaryStorage Temporary storage location
      * @param string $pTemporaryStorageDir Temporary storage folder

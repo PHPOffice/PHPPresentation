@@ -20,11 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Shape_Chart_View3D
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape_Chart
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\Chart\View3D
  */
 class View3D implements ComparableInterface
 {
@@ -78,7 +74,7 @@ class View3D implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_View3D instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\View3D instance
      */
     public function __construct()
     {
@@ -98,7 +94,7 @@ class View3D implements ComparableInterface
      * Set Rotation X (-90 to 90)
      *
      * @param  int                              $pValue
-     * @return PHPPowerPoint_Shape_Chart_View3D
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\View3D
      */
     public function setRotationX($pValue = 0)
     {
@@ -121,7 +117,7 @@ class View3D implements ComparableInterface
      * Set Rotation Y (-90 to 90)
      *
      * @param  int                              $pValue
-     * @return PHPPowerPoint_Shape_Chart_View3D
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\View3D
      */
     public function setRotationY($pValue = 0)
     {
@@ -144,7 +140,7 @@ class View3D implements ComparableInterface
      * Set RightAngleAxes
      *
      * @param  boolean                          $value
-     * @return PHPPowerPoint_Shape_Chart_View3D
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\View3D
      */
     public function setRightAngleAxes($value = true)
     {
@@ -167,7 +163,7 @@ class View3D implements ComparableInterface
      * Set Perspective (0 to 100)
      *
      * @param  int                              $value
-     * @return PHPPowerPoint_Shape_Chart_View3D
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\View3D
      */
     public function setPerspective($value = 30)
     {

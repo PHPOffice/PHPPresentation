@@ -24,18 +24,14 @@ use PhpOffice\PhpPowerpoint\Style\Borders;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
 
 /**
- * PHPPowerPoint_Shape_Table_Cell
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Table cell
  */
 class Cell implements ComparableInterface
 {
     /**
      * Rich text paragraphs
      *
-     * @var PHPPowerPoint_Shape_RichText_Paragraph[]
+     * @var \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[]
      */
     private $richTextParagraphs;
 
@@ -49,14 +45,14 @@ class Cell implements ComparableInterface
     /**
      * Fill
      *
-     * @var PHPPowerPoint_Style_Fill
+     * @var \PhpOffice\PhpPowerpoint\Style\Fill
      */
     private $fill;
 
     /**
      * Borders
      *
-     * @var PHPPowerPoint_Style_Borders
+     * @var \PhpOffice\PhpPowerpoint\Style\Borders
      */
     private $borders;
 
@@ -89,7 +85,7 @@ class Cell implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Shape_RichText instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\RichText instance
      */
     public function __construct()
     {
@@ -119,7 +115,7 @@ class Cell implements ComparableInterface
     /**
      * Get active paragraph
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function getActiveParagraph()
     {
@@ -130,7 +126,7 @@ class Cell implements ComparableInterface
      * Set active paragraph
      *
      * @param  int                                    $index
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function setActiveParagraph($index = 0)
     {
@@ -147,7 +143,7 @@ class Cell implements ComparableInterface
      * Get paragraph
      *
      * @param  int $index
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function getParagraph($index = 0)
     {
@@ -161,7 +157,7 @@ class Cell implements ComparableInterface
     /**
      * Create paragraph
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function createParagraph()
     {
@@ -182,9 +178,9 @@ class Cell implements ComparableInterface
     /**
      * Add text
      *
-     * @param  PHPPowerPoint_Shape_RichText_TextElementInterface $pText Rich text element
+     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface $pText Rich text element
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function addText(TextElementInterface $pText = null)
     {
@@ -197,7 +193,7 @@ class Cell implements ComparableInterface
      * Create text (can not be formatted !)
      *
      * @param  string                                   $pText Text
-     * @return PHPPowerPoint_Shape_RichText_TextElement
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\TextElement
      * @throws \Exception
      */
     public function createText($pText = '')
@@ -208,7 +204,7 @@ class Cell implements ComparableInterface
     /**
      * Create break
      *
-     * @return PHPPowerPoint_Shape_RichText_Break
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Break
      * @throws \Exception
      */
     public function createBreak()
@@ -220,7 +216,7 @@ class Cell implements ComparableInterface
      * Create text run (can be formatted)
      *
      * @param  string                           $pText Text
-     * @return PHPPowerPoint_Shape_RichText_Run
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Run
      * @throws \Exception
      */
     public function createTextRun($pText = '')
@@ -238,7 +234,7 @@ class Cell implements ComparableInterface
         // Return value
         $returnValue = '';
 
-        // Loop trough all PHPPowerPoint_Shape_RichText_Paragraph
+        // Loop trough all \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
         foreach ($this->richTextParagraphs as $p) {
             $returnValue .= $p->getPlainText();
         }
@@ -260,7 +256,7 @@ class Cell implements ComparableInterface
     /**
      * Get paragraphs
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph[]
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[]
      */
     public function getParagraphs()
     {
@@ -270,9 +266,9 @@ class Cell implements ComparableInterface
     /**
      * Set paragraphs
      *
-     * @param  PHPPowerPoint_Shape_RichText_Paragraphs[] $paragraphs Array of paragraphs
+     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraphs[] $paragraphs Array of paragraphs
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setParagraphs($paragraphs = null)
     {
@@ -280,7 +276,7 @@ class Cell implements ComparableInterface
             $this->richTextParagraphs = $paragraphs;
             $this->activeParagraph    = count($this->richTextParagraphs) - 1;
         } else {
-            throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
+            throw new \Exception("Invalid \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[] array passed.");
         }
 
         return $this;
@@ -289,7 +285,7 @@ class Cell implements ComparableInterface
     /**
      * Get fill
      *
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function getFill()
     {
@@ -299,8 +295,8 @@ class Cell implements ComparableInterface
     /**
      * Set fill
      *
-     * @param  PHPPowerPoint_Style_Fill     $fill
-     * @return PHPPowerPoint_Shape_RichText
+     * @param  \PhpOffice\PhpPowerpoint\Style\Fill     $fill
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setFill(Fill $fill)
     {
@@ -312,7 +308,7 @@ class Cell implements ComparableInterface
     /**
      * Get borders
      *
-     * @return PHPPowerPoint_Style_Borders
+     * @return \PhpOffice\PhpPowerpoint\Style\Borders
      */
     public function getBorders()
     {
@@ -322,8 +318,8 @@ class Cell implements ComparableInterface
     /**
      * Set borders
      *
-     * @param  PHPPowerPoint_Style_Borders  $borders
-     * @return PHPPowerPoint_Shape_RichText
+     * @param  \PhpOffice\PhpPowerpoint\Style\Borders  $borders
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setBorders(Borders $borders)
     {
@@ -346,7 +342,7 @@ class Cell implements ComparableInterface
      * Set width
      *
      * @param  int                          $value
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setWidth($value = 0)
     {
@@ -369,7 +365,7 @@ class Cell implements ComparableInterface
      * Set colSpan
      *
      * @param  int                          $value
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setColSpan($value = 0)
     {
@@ -392,7 +388,7 @@ class Cell implements ComparableInterface
      * Set rowSpan
      *
      * @param  int                          $value
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setRowSpan($value = 0)
     {

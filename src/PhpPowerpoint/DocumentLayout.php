@@ -18,11 +18,7 @@
 namespace PhpOffice\PhpPowerpoint;
 
 /**
- * PHPPowerPoint_DocumentLayout
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\DocumentLayout
  */
 class DocumentLayout
 {
@@ -84,7 +80,7 @@ class DocumentLayout
     private $dimensionY;
 
     /**
-     * Create a new PHPPowerPoint_DocumentLayout
+     * Create a new \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function __construct()
     {
@@ -104,9 +100,9 @@ class DocumentLayout
     /**
      * Set Document Layout
      *
-     * @param  array $pValue PHPPowerPoint_DocumentLayout document layout
+     * @param  array $pValue \PhpOffice\PhpPowerpoint\DocumentLayout document layout
      * @param  boolean $isLandscape
-     * @return PHPPowerPoint_DocumentLayout
+     * @return \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function setDocumentLayout($pValue = self::LAYOUT_SCREEN_4X3, $isLandscape = true)
     {
@@ -187,7 +183,7 @@ class DocumentLayout
      * Set Document Layout in millimeters
      *
      * @param  integer                      $pValue Layout width
-     * @return PHPPowerPoint_DocumentLayout
+     * @return \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function setLayoutXmilli($pValue)
     {
@@ -200,7 +196,7 @@ class DocumentLayout
      * Set Document Layout in millimeters
      *
      * @param  integer                      $pValue Layout height
-     * @return PHPPowerPoint_DocumentLayout
+     * @return \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function setLayoutYmilli($pValue)
     {

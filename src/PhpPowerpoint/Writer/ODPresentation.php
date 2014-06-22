@@ -44,14 +44,14 @@ class ODPresentation implements WriterInterface
     /**
     * Private writer parts
     *
-    * @var PHPPowerPoint_Writer_ODPresentation_AbstractPart[]
+    * @var \PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart[]
     */
     private $writerParts;
 
     /**
-     * Private unique PHPPowerPoint_Worksheet_BaseDrawing HashTable
+     * Private unique hashtable
      *
-     * @var PHPPowerPoint_HashTable
+     * @var \PhpOffice\PhpPowerpoint\HashTable
      */
     private $drawingHashTable;
 
@@ -70,7 +70,7 @@ class ODPresentation implements WriterInterface
     private $diskCachingDirectory;
 
     /**
-     * Create a new PHPPowerPoint_Writer_ODPresentation
+     * Create a new \PhpOffice\PhpPowerpoint\Writer\ODPresentation
      *
      * @param PHPPowerPoint $pPHPPowerPoint
      */
@@ -225,7 +225,7 @@ class ODPresentation implements WriterInterface
      *
      * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
      * @throws \Exception
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -235,9 +235,9 @@ class ODPresentation implements WriterInterface
     }
 
     /**
-     * Get PHPPowerPoint_Worksheet_BaseDrawing HashTable
+     * Get drawing hash table
      *
-     * @return PHPPowerPoint_HashTable
+     * @return \PhpOffice\PhpPowerpoint\HashTable
      */
     public function getDrawingHashTable()
     {
@@ -248,7 +248,7 @@ class ODPresentation implements WriterInterface
      * Get writer part
      *
      * @param  string                                         $pPartName Writer part name
-     * @return PHPPowerPoint_Writer_ODPresentation_AbstractPart
+     * @return \PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart
      */
     public function getWriterPart($pPartName = '')
     {
@@ -275,7 +275,7 @@ class ODPresentation implements WriterInterface
      * @param  boolean                             $pValue
      * @param  string                              $pDirectory Disk caching directory
      * @throws \Exception                           \Exception when directory does not exist
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
     {

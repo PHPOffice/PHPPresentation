@@ -21,7 +21,7 @@ use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
- * PHPPowerPoint_Style_Color
+ * \PhpOffice\PhpPowerpoint\Style\Color
  */
 class Color implements ComparableInterface
 {
@@ -52,7 +52,7 @@ class Color implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Color
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Color
      *
      * @param string $pARGB
      */
@@ -76,7 +76,7 @@ class Color implements ComparableInterface
      * Set ARGB
      *
      * @param  string                    $pValue
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function setARGB($pValue = self::COLOR_BLACK)
     {
@@ -106,7 +106,7 @@ class Color implements ComparableInterface
      * Set RGB
      *
      * @param  string                    $pValue
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function setRGB($pValue = '000000')
     {

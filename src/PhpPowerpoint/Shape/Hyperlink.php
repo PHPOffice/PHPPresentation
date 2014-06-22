@@ -18,11 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Shape;
 
 /**
- * PHPPowerPoint_Shape_Hyperlink
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Hyperlink element
  */
 class Hyperlink
 {
@@ -62,7 +58,7 @@ class Hyperlink
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Hyperlink
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Hyperlink
      *
      * @param  string    $pUrl     Url to link the shape to
      * @param  string    $pTooltip Tooltip to display on the hyperlink
@@ -89,7 +85,7 @@ class Hyperlink
      * Set URL
      *
      * @param  string                        $value
-     * @return PHPPowerPoint_Shape_Hyperlink
+     * @return \PhpOffice\PhpPowerpoint\Shape\Hyperlink
      */
     public function setUrl($value = '')
     {
@@ -112,7 +108,7 @@ class Hyperlink
      * Set slide number
      *
      * @param  int                           $value
-     * @return PHPPowerPoint_Shape_Hyperlink
+     * @return \PhpOffice\PhpPowerpoint\Shape\Hyperlink
      */
     public function setSlideNumber($value = 1)
     {
@@ -136,7 +132,7 @@ class Hyperlink
      * Set tooltip
      *
      * @param  string                        $value
-     * @return PHPPowerPoint_Shape_Hyperlink
+     * @return \PhpOffice\PhpPowerpoint\Shape\Hyperlink
      */
     public function setTooltip($value = '')
     {

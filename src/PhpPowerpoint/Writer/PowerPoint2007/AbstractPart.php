@@ -21,25 +21,21 @@ use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_AbstractPart
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart
  */
 abstract class AbstractPart
 {
     /**
      * Parent WriterInterface object
      *
-     * @var PHPPowerPoint_Writer_WriterInterface
+     * @var \PhpOffice\PhpPowerpoint\Writer\WriterInterface
      */
     private $parentWriter;
 
     /**
      * Set parent WriterInterface object
      *
-     * @param  PHPPowerPoint_Writer_WriterInterface $pWriter
+     * @param  \PhpOffice\PhpPowerpoint\Writer\WriterInterface $pWriter
      * @throws \Exception
      */
     public function setParentWriter(WriterInterface $pWriter = null)
@@ -50,7 +46,7 @@ abstract class AbstractPart
     /**
      * Get parent WriterInterface object
      *
-     * @return PHPPowerPoint_Writer_WriterInterface
+     * @return \PhpOffice\PhpPowerpoint\Writer\WriterInterface
      * @throws \Exception
      */
     public function getParentWriter()
@@ -58,7 +54,7 @@ abstract class AbstractPart
         if (!is_null($this->parentWriter)) {
             return $this->parentWriter;
         } else {
-            throw new \Exception("No parent PHPPowerPoint_Writer_WriterInterface assigned.");
+            throw new \Exception("No parent \PhpOffice\PhpPowerpoint\Writer\WriterInterface assigned.");
         }
     }
 

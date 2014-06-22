@@ -18,11 +18,7 @@
 namespace PhpOffice\PhpPowerpoint;
 
 /**
- * PHPPowerPoint_IOFactory
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * IOFactory
  */
 class IOFactory
 {
@@ -50,7 +46,7 @@ class IOFactory
      * Create reader
      *
      * @param  string $name
-     * @return PHPPowerPoint_Reader_ReaderInterface
+     * @return \PhpOffice\PhpPowerpoint\Reader\ReaderInterface
      */
     public static function createReader($name = '')
     {
@@ -59,7 +55,7 @@ class IOFactory
     }
 
     /**
-     * Loads PHPPowerPoint from file using automatic PHPPowerPoint_Reader_ReaderInterface resolution
+     * Loads PHPPowerPoint from file using automatic \PhpOffice\PhpPowerpoint\Reader\ReaderInterface resolution
      *
      * @param  string        $pFilename
      * @return PHPPowerPoint
@@ -75,7 +71,7 @@ class IOFactory
             }
         }
 
-        throw new \Exception("Could not automatically determine PHPPowerPoint_Reader_ReaderInterface for file.");
+        throw new \Exception("Could not automatically determine \PhpOffice\PhpPowerpoint\Reader\ReaderInterface for file.");
     }
 
     /**

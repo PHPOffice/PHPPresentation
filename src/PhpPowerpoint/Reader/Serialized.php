@@ -27,7 +27,7 @@ use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 class Serialized implements ReaderInterface
 {
     /**
-     * Can the current PHPPowerPoint_Reader_ReaderInterface read the file?
+     * Can the current \PhpOffice\PhpPowerpoint\Reader\ReaderInterface read the file?
      *
      * @param  string  $pFilename
      * @return boolean

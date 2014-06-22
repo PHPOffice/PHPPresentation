@@ -24,11 +24,7 @@ use PhpOffice\PhpPowerpoint\Style\Fill;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 
 /**
- * PHPPowerPoint_Shape_Chart_Legend
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape_Chart
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
  */
 class Legend implements ComparableInterface
 {
@@ -84,33 +80,33 @@ class Legend implements ComparableInterface
     /**
      * Font
      *
-     * @var PHPPowerPoint_Style_Font
+     * @var \PhpOffice\PhpPowerpoint\Style\Font
      */
     private $font;
 
     /**
      * Border
      *
-     * @var PHPPowerPoint_Style_Border
+     * @var \PhpOffice\PhpPowerpoint\Style\Border
      */
     private $border;
 
     /**
      * Fill
      *
-     * @var PHPPowerPoint_Style_Fill
+     * @var \PhpOffice\PhpPowerpoint\Style\Fill
      */
     private $fill;
 
     /**
      * Alignment
      *
-     * @var PHPPowerPoint_Style_Alignment
+     * @var \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     private $alignment;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_Legend instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\Legend instance
      */
     public function __construct()
     {
@@ -134,7 +130,7 @@ class Legend implements ComparableInterface
      * Set Visible
      *
      * @param  boolean                          $value
-     * @return PHPPowerPoint_Shape_Chart_Legend
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setVisible($value = true)
     {
@@ -156,7 +152,7 @@ class Legend implements ComparableInterface
      * Set Position
      *
      * @param  string                          $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setPosition($value = self::POSITION_RIGHT)
     {
@@ -178,7 +174,7 @@ class Legend implements ComparableInterface
      * Set OffsetX (as a fraction of the chart)
      *
      * @param  float                            $value
-     * @return PHPPowerPoint_Shape_Chart_Legend
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setOffsetX($value = 0)
     {
@@ -200,7 +196,7 @@ class Legend implements ComparableInterface
      * Set OffsetY (as a fraction of the chart)
      *
      * @param  float                            $value
-     * @return PHPPowerPoint_Shape_Chart_Legend
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setOffsetY($value = 0)
     {
@@ -222,7 +218,7 @@ class Legend implements ComparableInterface
      * Set Width (as a fraction of the chart)
      *
      * @param  float                            $value
-     * @return PHPPowerPoint_Shape_Chart_Legend
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setWidth($value = 0)
     {
@@ -244,7 +240,7 @@ class Legend implements ComparableInterface
      * Set Height (as a fraction of the chart)
      *
      * @param  float                            $value
-     * @return PHPPowerPoint_Shape_Chart_Legend
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function setHeight($value = 0)
     {
@@ -255,7 +251,7 @@ class Legend implements ComparableInterface
     /**
      * Get font
      *
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function getFont()
     {
@@ -265,9 +261,9 @@ class Legend implements ComparableInterface
     /**
      * Set font
      *
-     * @param  PHPPowerPoint_Style_Font               $pFont Font
+     * @param  \PhpOffice\PhpPowerpoint\Style\Font               $pFont Font
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function setFont(Font $pFont = null)
     {
@@ -278,7 +274,7 @@ class Legend implements ComparableInterface
     /**
      * Get Border
      *
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function getBorder()
     {
@@ -288,7 +284,7 @@ class Legend implements ComparableInterface
     /**
      * Get Fill
      *
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function getFill()
     {
@@ -298,7 +294,7 @@ class Legend implements ComparableInterface
     /**
      * Get alignment
      *
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function getAlignment()
     {
@@ -308,8 +304,8 @@ class Legend implements ComparableInterface
     /**
      * Set alignment
      *
-     * @param  PHPPowerPoint_Style_Alignment          $alignment
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @param  \PhpOffice\PhpPowerpoint\Style\Alignment          $alignment
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function setAlignment(Alignment $alignment)
     {

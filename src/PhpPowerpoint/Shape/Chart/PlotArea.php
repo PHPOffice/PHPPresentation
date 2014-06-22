@@ -22,32 +22,28 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\Axis;
 use PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType;
 
 /**
- * PHPPowerPoint_Shape_Chart_PlotArea
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape_Chart
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
  */
 class PlotArea implements ComparableInterface
 {
     /**
      * Type
      *
-     * @var PHPPowerPoint_Shape_Chart_Type
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Type
      */
     private $type;
 
     /**
      * Axis X
      *
-     * @var PHPPowerPoint_Shape_Chart_Axis
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     private $axisX;
 
     /**
      * Axis Y
      *
-     * @var PHPPowerPoint_Shape_Chart_Axis
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     private $axisY;
 
@@ -80,7 +76,7 @@ class PlotArea implements ComparableInterface
     private $height = 0;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_PlotArea instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea instance
      */
     public function __construct()
     {
@@ -92,7 +88,7 @@ class PlotArea implements ComparableInterface
     /**
      * Get type
      *
-     * @return PHPPowerPoint_Shape_Chart_Type
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Type
      * @throws \Exception
      */
     public function getType()
@@ -107,8 +103,8 @@ class PlotArea implements ComparableInterface
     /**
      * Set type
      *
-     * @param  PHPPowerPoint_Shape_Chart_Type     $value
-     * @return PHPPowerPoint_Shape_Chart_PlotArea
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type     $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
      * @throws \Exception
      */
     public function setType(AbstractType $value)
@@ -121,7 +117,7 @@ class PlotArea implements ComparableInterface
     /**
      * Get Axis X
      *
-     * @return PHPPowerPoint_Shape_Chart_Axis
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     public function getAxisX()
     {
@@ -131,7 +127,7 @@ class PlotArea implements ComparableInterface
     /**
      * Get Axis Y
      *
-     * @return PHPPowerPoint_Shape_Chart_Axis
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     public function getAxisY()
     {
@@ -152,7 +148,7 @@ class PlotArea implements ComparableInterface
      * Set OffsetX (as a fraction of the chart)
      *
      * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setOffsetX($value = 0)
     {
@@ -175,7 +171,7 @@ class PlotArea implements ComparableInterface
      * Set OffsetY (as a fraction of the chart)
      *
      * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setOffsetY($value = 0)
     {
@@ -198,7 +194,7 @@ class PlotArea implements ComparableInterface
      * Set Width (as a fraction of the chart)
      *
      * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setWidth($value = 0)
     {
@@ -221,7 +217,7 @@ class PlotArea implements ComparableInterface
      * Set Height (as a fraction of the chart)
      *
      * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setHeight($value = 0)
     {

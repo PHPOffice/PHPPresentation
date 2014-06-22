@@ -20,11 +20,7 @@ namespace PhpOffice\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_HashTable
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\HashTable
  */
 class HashTable
 {
@@ -43,7 +39,7 @@ class HashTable
     public $keyMap = array();
 
     /**
-     * Create a new PHPPowerPoint_HashTable
+     * Create a new \PhpOffice\PhpPowerpoint\HashTable
      *
      * @param  PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource Optional source array to create HashTable from
      * @throws \Exception

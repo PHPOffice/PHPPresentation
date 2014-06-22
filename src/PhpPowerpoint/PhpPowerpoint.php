@@ -22,31 +22,27 @@ use PhpOffice\PhpPowerpoint\Slide\Iterator;
 
 /**
  * PHPPowerPoint
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
 class PhpPowerpoint
 {
     /**
      * Document properties
      *
-     * @var PHPPowerPoint_DocumentProperties
+     * @var \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     private $properties;
 
     /**
      * Document layout
      *
-     * @var PHPPowerPoint_DocumentLayout
+     * @var \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     private $layout;
 
     /**
      * Collection of Slide objects
      *
-     * @var PHPPowerPoint_Slide[]
+     * @var \PhpOffice\PhpPowerpoint\Slide[]
      */
     private $slideCollection = array();
 
@@ -74,7 +70,7 @@ class PhpPowerpoint
     /**
      * Get properties
      *
-     * @return PHPPowerPoint_DocumentProperties
+     * @return \PhpOffice\PhpPowerpoint\DocumentProperties
      */
     public function getProperties()
     {
@@ -84,7 +80,7 @@ class PhpPowerpoint
     /**
      * Set properties
      *
-     * @param  PHPPowerPoint_DocumentProperties $value
+     * @param  \PhpOffice\PhpPowerpoint\DocumentProperties $value
      * @return PHPPowerPoint
      */
     public function setProperties(DocumentProperties $value)
@@ -97,7 +93,7 @@ class PhpPowerpoint
     /**
      * Get layout
      *
-     * @return PHPPowerPoint_DocumentLayout
+     * @return \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function getLayout()
     {
@@ -107,7 +103,7 @@ class PhpPowerpoint
     /**
      * Set layout
      *
-     * @param  PHPPowerPoint_DocumentLayout $value
+     * @param  \PhpOffice\PhpPowerpoint\DocumentLayout $value
      * @return PHPPowerPoint
      */
     public function setLayout(DocumentLayout $value)
@@ -120,7 +116,7 @@ class PhpPowerpoint
     /**
      * Get active slide
      *
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function getActiveSlide()
     {
@@ -142,9 +138,9 @@ class PhpPowerpoint
     /**
      * Add slide
      *
-     * @param  PHPPowerPoint_Slide $slide
+     * @param  \PhpOffice\PhpPowerpoint\Slide $slide
      * @throws \Exception
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function addSlide(Slide $slide = null)
     {
@@ -175,7 +171,7 @@ class PhpPowerpoint
      * Get slide by index
      *
      * @param  int                 $index Slide index
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      * @throws \Exception
      */
     public function getSlide($index = 0)
@@ -190,7 +186,7 @@ class PhpPowerpoint
     /**
      * Get all slides
      *
-     * @return PHPPowerPoint_Slide[]
+     * @return \PhpOffice\PhpPowerpoint\Slide[]
      */
     public function getAllSlides()
     {
@@ -200,7 +196,7 @@ class PhpPowerpoint
     /**
      * Get index for slide
      *
-     * @param  PHPPowerPoint_Slide $slide
+     * @param  \PhpOffice\PhpPowerpoint\Slide $slide
      * @return Slide               index
      * @throws \Exception
      */
@@ -241,7 +237,7 @@ class PhpPowerpoint
      *
      * @param  int                 $index Active slide index
      * @throws \Exception
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function setActiveSlideIndex($index = 0)
     {
@@ -257,9 +253,9 @@ class PhpPowerpoint
     /**
      * Add external slide
      *
-     * @param  PHPPowerPoint_Slide $slide External slide to add
+     * @param  \PhpOffice\PhpPowerpoint\Slide $slide External slide to add
      * @throws \Exception
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function addExternalSlide(Slide $slide)
     {
@@ -271,7 +267,7 @@ class PhpPowerpoint
     /**
      * Get slide iterator
      *
-     * @return PHPPowerPoint_Slide_Iterator
+     * @return \PhpOffice\PhpPowerpoint\Slide\Iterator
      */
     public function getSlideIterator()
     {

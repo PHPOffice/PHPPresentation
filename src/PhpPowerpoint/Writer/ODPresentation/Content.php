@@ -33,7 +33,7 @@ use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart;
 
 /**
- * PHPPowerPoint_Writer_ODPresentation_Content
+ * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content
  */
 class Content extends AbstractPart
 {

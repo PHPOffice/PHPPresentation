@@ -32,11 +32,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Theme;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
  */
 class PowerPoint2007 implements WriterInterface
 {
@@ -50,7 +46,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Private writer parts
      *
-     * @var PHPPowerPoint_Writer_PowerPoint2007_AbstractPart[]
+     * @var \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart[]
      */
     protected $writerParts;
 
@@ -62,9 +58,9 @@ class PowerPoint2007 implements WriterInterface
     protected $presentation;
 
     /**
-     * Private unique PHPPowerPoint_Worksheet_BaseDrawing HashTable
+     * Private unique hash table
      *
-     * @var PHPPowerPoint_HashTable
+     * @var \PhpOffice\PhpPowerpoint\HashTable
      */
     protected $drawingHashTable;
 
@@ -85,12 +81,12 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Layout pack to use
      *
-     * @var PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
+     * @var \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack
      */
     protected $layoutPack;
 
     /**
-     * Create a new PHPPowerPoint_Writer_PowerPoint2007
+     * Create a new \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      *
      * @param PHPPowerPoint $pPHPPowerPoint
      */
@@ -128,7 +124,7 @@ class PowerPoint2007 implements WriterInterface
      * Get writer part
      *
      * @param  string                                         $pPartName Writer part name
-     * @return PHPPowerPoint_Writer_PowerPoint2007_AbstractPart
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart
      */
     public function getWriterPart($pPartName = '')
     {
@@ -309,7 +305,7 @@ class PowerPoint2007 implements WriterInterface
      *
      * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
      * @throws \Exception
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -319,9 +315,9 @@ class PowerPoint2007 implements WriterInterface
     }
 
     /**
-     * Get PHPPowerPoint_Worksheet_BaseDrawing HashTable
+     * Get hash table
      *
-     * @return PHPPowerPoint_HashTable
+     * @return \PhpOffice\PhpPowerpoint\HashTable
      */
     public function getDrawingHashTable()
     {
@@ -342,7 +338,7 @@ class PowerPoint2007 implements WriterInterface
      * Set Pre-Calculate Formulas
      *
      * @param  boolean                             $pValue Office2003 compatibility?
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setOffice2003Compatibility($pValue = false)
     {
@@ -367,7 +363,7 @@ class PowerPoint2007 implements WriterInterface
      * @param  boolean                             $pValue
      * @param  string                              $pDirectory Disk caching directory
      * @throws \Exception                           \Exception when directory does not exist
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
     {
@@ -397,7 +393,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Get layout pack to use
      *
-     * @return PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack
      */
     public function getLayoutPack()
     {
@@ -407,8 +403,8 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Set layout pack to use
      *
-     * @param  PHPPowerPoint_Writer_PowerPoint2007_LayoutPack $pValue
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @param  \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack $pValue
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setLayoutPack(AbstractLayoutPack $pValue = null)
     {

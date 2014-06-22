@@ -21,16 +21,12 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 use PhpOffice\PhpPowerpoint\Slide\Layout;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\Default
  */
 class PackDefault extends AbstractLayoutPack
 {
     /**
-     * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_Default
+     * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\Default
      */
     public function __construct()
     {

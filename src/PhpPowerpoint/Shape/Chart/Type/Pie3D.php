@@ -22,11 +22,7 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
 
 /**
- * PHPPowerPoint_Shape_Chart_Type_Pie3D
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape_Chart_Type
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D
  */
 class Pie3D extends AbstractType implements ComparableInterface
 {
@@ -38,7 +34,7 @@ class Pie3D extends AbstractType implements ComparableInterface
     private $data = array();
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_Type_Pie3D instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D instance
      */
     public function __construct()
     {
@@ -59,8 +55,8 @@ class Pie3D extends AbstractType implements ComparableInterface
     /**
      * Set Data
      *
-     * @param  array                                $value Array of PHPPowerPoint_Shape_Chart_Series
-     * @return PHPPowerPoint_Shape_Chart_Type_Pie3D
+     * @param  array                                $value Array of \PhpOffice\PhpPowerpoint\Shape\Chart\Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D
      */
     public function setData($value = array())
     {
@@ -72,8 +68,8 @@ class Pie3D extends AbstractType implements ComparableInterface
     /**
      * Add Series
      *
-     * @param  PHPPowerPoint_Shape_Chart_Series     $value
-     * @return PHPPowerPoint_Shape_Chart_Type_Pie3D
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Series     $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D
      */
     public function addSeries(Series $value)
     {

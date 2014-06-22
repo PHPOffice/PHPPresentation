@@ -19,10 +19,6 @@ namespace PhpOffice\PhpPowerpoint;
 
 /**
  * PhpOffice\PhpPowerpoint\ComparableInterface
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
  */
 interface ComparableInterface
 {

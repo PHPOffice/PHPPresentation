@@ -65,7 +65,7 @@ class DocumentPropertiesTest extends \PHPUnit_Framework_TestCase
         );
         $time = time();
 
-        foreach ($properties as $key => $val) {
+        foreach (array_keys($properties) as $key) {
             $get = "get{$key}";
             $set = "set{$key}";
             $object->$set();

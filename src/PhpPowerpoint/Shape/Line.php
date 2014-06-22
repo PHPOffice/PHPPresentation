@@ -22,16 +22,12 @@ use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Border;
 
 /**
- * PHPPowerPoint_Shape_Line
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Line shape
  */
 class Line extends AbstractShape implements ComparableInterface
 {
     /**
-     * Create a new PHPPowerPoint_Shape_Line instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Line instance
      *
      * @param int $fromX
      * @param int $fromY

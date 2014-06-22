@@ -23,11 +23,7 @@ use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Shared\Drawing;
 
 /**
- * PHPPowerPoint_Writer_ODPresentation_Styles
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_ODPresentation
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles
  */
 class Styles extends AbstractPart
 {

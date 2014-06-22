@@ -26,11 +26,7 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Slide\Layout;
 
 /**
- * PHPPowerPoint_Slide
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Slide
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Slide class
  */
 class Slide implements ComparableInterface
 {
@@ -44,7 +40,7 @@ class Slide implements ComparableInterface
     /**
      * Collection of shapes
      *
-     * @var PHPPowerPoint_Shape[]
+     * @var \PhpOffice\PhpPowerpoint\AbstractShape[]
      */
     private $shapeCollection = null;
 
@@ -98,7 +94,7 @@ class Slide implements ComparableInterface
     /**
      * Get collection of shapes
      *
-     * @return PHPPowerPoint_Shape[]
+     * @return \PhpOffice\PhpPowerpoint\AbstractShape[]
      */
     public function getShapeCollection()
     {
@@ -108,8 +104,8 @@ class Slide implements ComparableInterface
     /**
      * Add shape to slide
      *
-     * @param  PHPPowerPoint_Shape $shape
-     * @return PHPPowerPoint_Shape
+     * @param  \PhpOffice\PhpPowerpoint\AbstractShape $shape
+     * @return \PhpOffice\PhpPowerpoint\AbstractShape
      */
     public function addShape(AbstractShape $shape)
     {
@@ -138,7 +134,7 @@ class Slide implements ComparableInterface
      * @param  int                      $fromY Starting point y offset
      * @param  int                      $toX   Ending point x offset
      * @param  int                      $toY   Ending point y offset
-     * @return PHPPowerPoint_Shape_Line
+     * @return \PhpOffice\PhpPowerpoint\Shape\Line
      */
     public function createLineShape($fromX, $fromY, $toX, $toY)
     {
@@ -151,7 +147,7 @@ class Slide implements ComparableInterface
     /**
      * Create chart shape
      *
-     * @return PHPPowerPoint_Shape_Chart
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart
      */
     public function createChartShape()
     {
@@ -164,7 +160,7 @@ class Slide implements ComparableInterface
     /**
      * Create drawing shape
      *
-     * @return PHPPowerPoint_Shape_Drawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\Drawing
      */
     public function createDrawingShape()
     {
@@ -178,7 +174,7 @@ class Slide implements ComparableInterface
      * Create table shape
      *
      * @param  int                       $columns Number of columns
-     * @return PHPPowerPoint_Shape_Table
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table
      */
     public function createTableShape($columns = 1)
     {
@@ -202,7 +198,7 @@ class Slide implements ComparableInterface
      * Re-bind parent
      *
      * @param  PHPPowerPoint       $parent
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function rebindParent(PHPPowerPoint $parent)
     {
@@ -226,7 +222,7 @@ class Slide implements ComparableInterface
      * Set slide layout
      *
      * @param  string              $layout
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function setSlideLayout($layout = Layout::BLANK)
     {
@@ -249,7 +245,7 @@ class Slide implements ComparableInterface
      * Set slide master id
      *
      * @param  int                 $masterId
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function setSlideMasterId($masterId = 1)
     {
@@ -297,7 +293,7 @@ class Slide implements ComparableInterface
     /**
      * Copy slide (!= clone!)
      *
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function copy()
     {

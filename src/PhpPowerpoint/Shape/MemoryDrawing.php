@@ -21,11 +21,7 @@ use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Shape_MemoryDrawing
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Memory drawing shape
  */
 class MemoryDrawing extends AbstractDrawing implements ComparableInterface
 {
@@ -70,7 +66,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
     private $uniqueName;
 
     /**
-     * Create a new PHPPowerPoint_Slide_MemoryDrawing
+     * Create a new \PhpOffice\PhpPowerpoint\Slide\MemoryDrawing
      */
     public function __construct()
     {
@@ -98,7 +94,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
      * Set image resource
      *
      * @param                                    $value resource
-     * @return PHPPowerPoint_Shape_MemoryDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\MemoryDrawing
      */
     public function setImageResource($value = null)
     {
@@ -127,7 +123,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
      * Set rendering function
      *
      * @param  string                            $value
-     * @return PHPPowerPoint_Shape_MemoryDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\MemoryDrawing
      */
     public function setRenderingFunction($value = self::RENDERING_DEFAULT)
     {
@@ -150,7 +146,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
      * Set mime type
      *
      * @param  string                            $value
-     * @return PHPPowerPoint_Shape_MemoryDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\MemoryDrawing
      */
     public function setMimeType($value = self::MIMETYPE_DEFAULT)
     {

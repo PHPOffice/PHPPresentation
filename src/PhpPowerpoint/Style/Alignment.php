@@ -17,10 +17,10 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\ComparableInterface;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Alignment
+ * \PhpOffice\PhpPowerpoint\Style\Alignment
  */
 class Alignment implements ComparableInterface
 {
@@ -89,7 +89,7 @@ class Alignment implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Alignment
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function __construct()
     {
@@ -116,7 +116,7 @@ class Alignment implements ComparableInterface
      * Set Horizontal
      *
      * @param  string                        $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setHorizontal($pValue = self::HORIZONTAL_LEFT)
     {
@@ -142,7 +142,7 @@ class Alignment implements ComparableInterface
      * Set Vertical
      *
      * @param  string                        $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setVertical($pValue = self::VERTICAL_BASE)
     {
@@ -169,7 +169,7 @@ class Alignment implements ComparableInterface
      *
      * @param  int                           $pValue Ranging 0 - 8
      * @throws \Exception
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setLevel($pValue = 0)
     {
@@ -195,7 +195,7 @@ class Alignment implements ComparableInterface
      * Set indent
      *
      * @param  int                           $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setIndent($pValue = 0)
     {
@@ -224,7 +224,7 @@ class Alignment implements ComparableInterface
      * Set margin left
      *
      * @param  int                           $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setMarginLeft($pValue = 0)
     {
@@ -253,7 +253,7 @@ class Alignment implements ComparableInterface
      * Set margin ight
      *
      * @param  int                           $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setMarginRight($pValue = 0)
     {

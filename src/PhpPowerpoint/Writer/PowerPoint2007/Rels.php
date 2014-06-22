@@ -29,11 +29,7 @@ use PhpOffice\PhpPowerpoint\Slide as SlideElement;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_Rels
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels
  */
 class Rels extends AbstractPart
 {
@@ -247,7 +243,7 @@ class Rels extends AbstractPart
     /**
      * Write slide relationships to XML format
      *
-     * @param  PHPPowerPoint_Slide $pSlide
+     * @param  \PhpOffice\PhpPowerpoint\Slide $pSlide
      * @return string              XML Output
      * @throws \Exception
      */
@@ -353,7 +349,7 @@ class Rels extends AbstractPart
     /**
      * Write chart relationships to XML format
      *
-     * @param  PHPPowerPoint_Shape_Chart $pChart
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart $pChart
      * @return string                    XML Output
      * @throws \Exception
      */
@@ -386,7 +382,7 @@ class Rels extends AbstractPart
     /**
      * Write relationship
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter   XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
      * @param  int                            $pId         Relationship ID. rId will be prepended!
      * @param  string                         $pType       Relationship type
      * @param  string                         $pTarget     Relationship target

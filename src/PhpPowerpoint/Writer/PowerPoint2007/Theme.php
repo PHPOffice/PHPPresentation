@@ -20,11 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_Theme
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2006 - 2009 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Theme
  */
 class Theme extends AbstractPart
 {

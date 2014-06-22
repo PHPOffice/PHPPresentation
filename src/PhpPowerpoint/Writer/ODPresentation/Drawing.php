@@ -23,11 +23,7 @@ use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Table;
 
 /**
- * PHPPowerPoint_Writer_ODPresentation_Drawing
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_ODPresentation
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing
  */
 class Drawing extends AbstractPart
 {
@@ -35,7 +31,7 @@ class Drawing extends AbstractPart
      * Get an array of all drawings
      *
      * @param  PHPPowerPoint                 $pPHPPowerPoint
-     * @return PHPPowerPoint_Slide_Drawing[] All drawings in PHPPowerPoint
+     * @return \PhpOffice\PhpPowerpoint\Slide\Drawing[] All drawings in PHPPowerPoint
      * @throws \Exception
      */
     public function allDrawings(PHPPowerPoint $pPHPPowerPoint = null)
