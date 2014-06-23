@@ -15,23 +15,18 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPowerpoint\Reader;
+namespace PhpOffice\PhpPowerpoint\Writer;
 
-interface IReader
+/**
+ * Writer interface
+ */
+interface WriterInterface
 {
     /**
-     * Can the current \PhpOffice\PHPPowerPoint\Reader\IReader read the file?
-     *
-     * @param  string  $pFilename
-     * @return boolean
-     */
-    public function canRead($pFilename);
-
-    /**
-     * Loads PHPPowerPoint from file
+     * Save PHPPowerPoint to file
      *
      * @param  string    $pFilename
      * @throws \Exception
      */
-    public function load($pFilename);
+    public function save($pFilename);
 }

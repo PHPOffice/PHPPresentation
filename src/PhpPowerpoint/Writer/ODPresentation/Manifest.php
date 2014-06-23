@@ -17,20 +17,14 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\WriterPart;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shared\File;
 
 /**
- * PHPPowerPoint_Writer_ODPresentation_Manifest
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_ODPresentation
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest
  */
-class Manifest extends WriterPart
+class Manifest extends AbstractPart
 {
     /**
      * Write Manifest file to XML format

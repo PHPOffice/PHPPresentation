@@ -18,17 +18,13 @@
 namespace PhpOffice\PhpPowerpoint;
 
 /**
- * PHPPowerPoint_Autoloader
- *
- * @category    PHPPowerPoint
- * @package     PHPPowerPoint
- * @copyright   Copyright (c) 2006 - 2012 PHPPowerPoint (https://github.com/Progi1984/PHPPowerPoint)
+ * Autoloader
  */
 class Autoloader
 {
     /** @const string */
     const NAMESPACE_PREFIX = 'PhpOffice\\PhpPowerpoint\\';
-    
+
     /**
      * Register
      *
@@ -38,7 +34,7 @@ class Autoloader
     {
         spl_autoload_register(array(new self, 'autoload'));
     }
-    
+
     /**
      * Autoload
      *

@@ -17,14 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint;
 
-use PhpOffice\PhpPowerpoint\IComparable;
-
 /**
- * PHPPowerPoint_HashTable
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\HashTable
  */
 class HashTable
 {
@@ -43,9 +37,9 @@ class HashTable
     public $keyMap = array();
 
     /**
-     * Create a new PHPPowerPoint_HashTable
+     * Create a new \PhpOffice\PhpPowerpoint\HashTable
      *
-     * @param  PhpOffice\PhpPowerpoint\IComparable[] $pSource Optional source array to create HashTable from
+     * @param  \PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource Optional source array to create HashTable from
      * @throws \Exception
      */
     public function __construct($pSource = null)
@@ -59,7 +53,7 @@ class HashTable
     /**
      * Add HashTable items from source
      *
-     * @param  PhpOffice\PhpPowerpoint\IComparable[] $pSource Source array to create HashTable from
+     * @param  \PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource Source array to create HashTable from
      * @throws \Exception
      */
     public function addFromSource($pSource = null)
@@ -79,10 +73,9 @@ class HashTable
     /**
      * Add HashTable item
      *
-     * @param  PhpOffice\PhpPowerpoint\IComparable $pSource Item to add
-     * @throws \Exception
+     * @param \PhpOffice\PhpPowerpoint\ComparableInterface $pSource Item to add
      */
-    public function add(IComparable $pSource = null)
+    public function add(ComparableInterface $pSource = null)
     {
         // Determine hashcode
         $hashIndex = $pSource->getHashIndex();
@@ -108,10 +101,10 @@ class HashTable
     /**
      * Remove HashTable item
      *
-     * @param  PhpOffice\PhpPowerpoint\IComparable $pSource Item to remove
+     * @param  \PhpOffice\PhpPowerpoint\ComparableInterface $pSource Item to remove
      * @throws \Exception
      */
-    public function remove(IComparable $pSource = null)
+    public function remove(ComparableInterface $pSource = null)
     {
         if (isset($this->items[$pSource->getHashCode()])) {
             unset($this->items[$pSource->getHashCode()]);
@@ -165,7 +158,7 @@ class HashTable
      * Get by index
      *
      * @param  int                       $pIndex
-     * @return PhpOffice\PhpPowerpoint\IComparable
+     * @return \PhpOffice\PhpPowerpoint\ComparableInterface
      *
      */
     public function getByIndex($pIndex = 0)
@@ -181,7 +174,7 @@ class HashTable
      * Get by hashcode
      *
      * @param  string                    $pHashCode
-     * @return PhpOffice\PhpPowerpoint\IComparable
+     * @return \PhpOffice\PhpPowerpoint\ComparableInterface
      *
      */
     public function getByHashCode($pHashCode = '')
@@ -196,7 +189,7 @@ class HashTable
     /**
      * HashTable to array
      *
-     * @return PhpOffice\PhpPowerpoint\IComparable[]
+     * @return \PhpOffice\PhpPowerpoint\ComparableInterface[]
      */
     public function toArray()
     {

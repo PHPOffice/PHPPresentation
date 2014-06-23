@@ -17,17 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Shape_MemoryDrawing
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Memory drawing shape
  */
-class MemoryDrawing extends BaseDrawing implements IComparable
+class MemoryDrawing extends AbstractDrawing implements ComparableInterface
 {
     /* Rendering functions */
     const RENDERING_DEFAULT = 'imagepng';
@@ -70,15 +65,15 @@ class MemoryDrawing extends BaseDrawing implements IComparable
     private $uniqueName;
 
     /**
-     * Create a new PHPPowerPoint_Slide_MemoryDrawing
+     * Create a new \PhpOffice\PhpPowerpoint\Slide\MemoryDrawing
      */
     public function __construct()
     {
         // Initialise values
-        $this->imageResource     = null;
-        $this->renderingFunction = self::RENDERING_DEFAULT;
-        $this->mimeType          = self::MIMETYPE_DEFAULT;
-        $this->uniqueName        = md5(rand(0, 9999) . time() . rand(0, 9999));
+        $this->setImageResource(null);
+        $this->setRenderingFunction(self::RENDERING_DEFAULT);
+        $this->setMimeType(self::MIMETYPE_DEFAULT);
+        $this->uniqueName = md5(rand(0, 9999) . time() . rand(0, 9999));
 
         // Initialize parent
         parent::__construct();
@@ -98,7 +93,7 @@ class MemoryDrawing extends BaseDrawing implements IComparable
      * Set image resource
      *
      * @param                                    $value resource
-     * @return PHPPowerPoint_Shape_MemoryDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\MemoryDrawing
      */
     public function setImageResource($value = null)
     {
@@ -127,7 +122,7 @@ class MemoryDrawing extends BaseDrawing implements IComparable
      * Set rendering function
      *
      * @param  string                            $value
-     * @return PHPPowerPoint_Shape_MemoryDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\MemoryDrawing
      */
     public function setRenderingFunction($value = self::RENDERING_DEFAULT)
     {
@@ -150,7 +145,7 @@ class MemoryDrawing extends BaseDrawing implements IComparable
      * Set mime type
      *
      * @param  string                            $value
-     * @return PHPPowerPoint_Shape_MemoryDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\MemoryDrawing
      */
     public function setMimeType($value = self::MIMETYPE_DEFAULT)
     {
@@ -168,7 +163,10 @@ class MemoryDrawing extends BaseDrawing implements IComparable
     {
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();
     }
-    
+
+    /**
+     * Get extension
+     */
     public function getExtension()
     {
         $extension = strtolower($this->getMimeType());

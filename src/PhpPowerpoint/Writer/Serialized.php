@@ -18,18 +18,13 @@
 namespace PhpOffice\PhpPowerpoint\Writer;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Writer\IWriter;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
 /**
- * PHPPowerPoint_Writer_Serialized
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\Serialized
  */
-class Serialized implements IWriter
+class Serialized implements WriterInterface
 {
     /**
      * Private PHPPowerPoint
@@ -39,7 +34,7 @@ class Serialized implements IWriter
     private $presentation;
 
     /**
-     * Create a new PHPPowerPoint_Writer_Serialized
+     * Create a new \PhpOffice\PhpPowerpoint\Writer\Serialized
      *
      * @param PHPPowerPoint $pPHPPowerPoint
      */
@@ -75,7 +70,7 @@ class Serialized implements IWriter
             $slideCount = $this->presentation->getSlideCount();
             for ($i = 0; $i < $slideCount; ++$i) {
                 for ($j = 0; $j < $this->presentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                    if ($this->presentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
+                    if ($this->presentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
                         $imgTemp = $this->presentation->getSlide($i)->getShapeCollection()->offsetGet($j);
                         $objZip->addFromString('media/' . $imgTemp->getFilename(), file_get_contents($imgTemp->getPath()));
                     }
@@ -114,7 +109,7 @@ class Serialized implements IWriter
      *
      * @param  PHPPowerPoint                   $pPHPPowerPoint PHPPowerPoint object
      * @throws \Exception
-     * @return PHPPowerPoint_Writer_Serialized
+     * @return \PhpOffice\PhpPowerpoint\Writer\Serialized
      */
     public function setPHPPowerPoint (PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -140,7 +135,7 @@ class Serialized implements IWriter
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
             for ($j = 0; $j < $pPHPPowerPoint->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
+                if ($pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
                     $pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $pPHPPowerPoint->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
                 }
             }
@@ -167,7 +162,7 @@ class Serialized implements IWriter
         $objWriter->endElement();
 
         $objWriter->endElement();
-        
+
         // Return
         return $objWriter->getData();
     }

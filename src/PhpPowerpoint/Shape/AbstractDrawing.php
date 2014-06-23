@@ -17,17 +17,13 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\Shape;
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\AbstractShape;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Shape_BaseDrawing
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Abstract drawing
  */
-abstract class BaseDrawing extends Shape implements IComparable
+abstract class AbstractDrawing extends AbstractShape implements ComparableInterface
 {
     /**
      * Image counter
@@ -72,7 +68,7 @@ abstract class BaseDrawing extends Shape implements IComparable
     public $relationId = null;
 
     /**
-     * Create a new PHPPowerPoint_Slide_BaseDrawing
+     * Create a new \PhpOffice\PhpPowerpoint\Slide\AbstractDrawing
      */
     public function __construct()
     {
@@ -113,7 +109,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      * Set Name
      *
      * @param  string                          $pValue
-     * @return PHPPowerPoint_Shape_BaseDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing
      */
     public function setName($pValue = '')
     {
@@ -135,7 +131,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      * Set Description
      *
      * @param  string                          $pValue
-     * @return PHPPowerPoint_Shape_BaseDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing
      */
     public function setDescription($pValue = '')
     {
@@ -148,7 +144,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      * Set Width
      *
      * @param  int                             $pValue
-     * @return PHPPowerPoint_Shape_BaseDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing
      */
     public function setWidth($pValue = 0)
     {
@@ -168,7 +164,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      * Set Height
      *
      * @param  int                             $pValue
-     * @return PHPPowerPoint_Shape_BaseDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing
      */
     public function setHeight($pValue = 0)
     {
@@ -191,7 +187,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      * @param  int                             $height
      * @example $objDrawing->setResizeProportional(true);
      * @example $objDrawing->setWidthAndHeight(160,120);
-     * @return PHPPowerPoint_Shape_BaseDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing
      */
     public function setWidthAndHeight($width = 0, $height = 0)
     {
@@ -224,7 +220,7 @@ abstract class BaseDrawing extends Shape implements IComparable
      * Set ResizeProportional
      *
      * @param  boolean                         $pValue
-     * @return PHPPowerPoint_Shape_BaseDrawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing
      */
     public function setResizeProportional($pValue = true)
     {

@@ -18,24 +18,22 @@
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
-use PhpOffice\PhpPowerpoint\Shape\Line;
-use PhpOffice\PhpPowerpoint\Shape\RichText;
+use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
-use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\Table;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
+use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\WriterPart;
 
 /**
- * PHPPowerPoint_Writer_ODPresentation_Content
+ * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content
  */
-class Content extends WriterPart
+class Content extends AbstractPart
 {
     /**
      * Write content file to XML format
@@ -155,7 +153,7 @@ class Content extends WriterPart
                         }
                     }
                 }
-                if ($shape instanceof BaseDrawing) {
+                if ($shape instanceof AbstractDrawing) {
                     if ($shape->getShadow()->isVisible()) {
                         // style:style
                         $objWriter->startElement('style:style');
@@ -349,9 +347,11 @@ class Content extends WriterPart
     /**
      * Write picture
      *
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
      * @param int $shapeId
      */
-    public function writePic(XMLWriter $objWriter, BaseDrawing $shape, $shapeId)
+    public function writePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -377,6 +377,8 @@ class Content extends WriterPart
     /**
      * Write text
      *
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\PhpPowerpoint\Shape\RichText $shape
      * @param int $shapeId
      */
     public function writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)

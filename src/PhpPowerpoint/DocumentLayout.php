@@ -18,11 +18,7 @@
 namespace PhpOffice\PhpPowerpoint;
 
 /**
- * PHPPowerPoint_DocumentLayout
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\DocumentLayout
  */
 class DocumentLayout
 {
@@ -84,14 +80,11 @@ class DocumentLayout
     private $dimensionY;
 
     /**
-     * Create a new PHPPowerPoint_DocumentLayout
+     * Create a new \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function __construct()
     {
-        // Initialise values
-        $this->layout = self::LAYOUT_SCREEN_4X3;
-        $this->dimensionX     = $this->dimension[$this->layout]['cx'];
-        $this->dimensionY     = $this->dimension[$this->layout]['cy'];
+        $this->setDocumentLayout(self::LAYOUT_SCREEN_4X3);
     }
 
     /**
@@ -107,9 +100,9 @@ class DocumentLayout
     /**
      * Set Document Layout
      *
-     * @param  array $pValue PHPPowerPoint_DocumentLayout document layout
+     * @param array|string $pValue
      * @param  boolean $isLandscape
-     * @return PHPPowerPoint_DocumentLayout
+     * @return \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function setDocumentLayout($pValue = self::LAYOUT_SCREEN_4X3, $isLandscape = true)
     {
@@ -126,19 +119,19 @@ class DocumentLayout
             case self::LAYOUT_LETTER:
             case self::LAYOUT_OVERHEAD:
                 $this->layout = $pValue;
-                $this->dimensionX     = $this->dimension[$this->layout]['cy'];
-                $this->dimensionY     = $this->dimension[$this->layout]['cx'];
+                $this->dimensionX = $this->dimension[$this->layout]['cx'];
+                $this->dimensionY = $this->dimension[$this->layout]['cy'];
                 break;
             case self::LAYOUT_CUSTOM:
             default:
-                $this->dimensionX     = $pValue['cx'];
-                $this->dimensionY     = $pValue['cy'];
                 $this->layout = self::LAYOUT_CUSTOM;
+                $this->dimensionX = $pValue['cx'];
+                $this->dimensionY = $pValue['cy'];
                 break;
         }
 
         if (!$isLandscape) {
-            $tmp       = $this->dimensionX;
+            $tmp = $this->dimensionX;
             $this->dimensionX = $this->dimensionY;
             $this->dimensionY = $tmp;
         }
@@ -190,7 +183,7 @@ class DocumentLayout
      * Set Document Layout in millimeters
      *
      * @param  integer                      $pValue Layout width
-     * @return PHPPowerPoint_DocumentLayout
+     * @return \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function setLayoutXmilli($pValue)
     {
@@ -203,7 +196,7 @@ class DocumentLayout
      * Set Document Layout in millimeters
      *
      * @param  integer                      $pValue Layout height
-     * @return PHPPowerPoint_DocumentLayout
+     * @return \PhpOffice\PhpPowerpoint\DocumentLayout
      */
     public function setLayoutYmilli($pValue)
     {

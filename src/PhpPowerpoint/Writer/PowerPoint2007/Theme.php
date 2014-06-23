@@ -17,24 +17,17 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
-
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_Theme
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2006 - 2009 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Theme
  */
-class Theme extends WriterPart
+class Theme extends AbstractPart
 {
     /**
      * Write theme to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
-     * @param  int           $masterId
-     * @return string        XML Output
+     * @param  int $masterId
      * @throws \Exception
+     * @return string XML Output
      */
     public function writeTheme($masterId = 1)
     {

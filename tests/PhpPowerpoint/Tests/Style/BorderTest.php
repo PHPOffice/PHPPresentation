@@ -1,10 +1,18 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPowerPoint/contributors.
+ *
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  * @link        https://github.com/PHPOffice/PHPPowerPoint
- * @copyright   2014 PHPPowerPoint
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
  */
 
 namespace PhpOffice\PhpPowerpoint\Tests;
@@ -32,6 +40,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FF000000', $object->getColor()->getARGB());
     }
 
+    /**
+     * Test get/set color
+     */
     public function testSetGetColor ()
     {
         $object = new Border();
@@ -42,6 +53,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('FF0000FF', $object->getColor()->getARGB());
     }
 
+    /**
+     * Test get/set dash style
+     */
     public function testSetGetDashStyle ()
     {
         $object = new Border();
@@ -53,6 +67,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Border::DASH_DASH, $object->getDashStyle());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Border();
@@ -61,6 +78,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
+    /**
+     * Test get/set line style
+     */
     public function testSetGetLineStyle ()
     {
         $object = new Border();
@@ -72,6 +92,9 @@ class BorderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Border::LINE_DOUBLE, $object->getLineStyle());
     }
 
+    /**
+     * Test get/set line width
+     */
     public function testSetGetLineWidth ()
     {
         $object = new Border();

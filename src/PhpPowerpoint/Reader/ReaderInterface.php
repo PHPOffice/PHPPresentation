@@ -15,21 +15,26 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
+namespace PhpOffice\PhpPowerpoint\Reader;
 
 /**
- * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype
+ * Reader interface
  */
-class Mimetype extends AbstractPart
+interface ReaderInterface
 {
     /**
-     * Write Mimetype to Text format
+     * Can the current \PhpOffice\PHPPowerPoint\Reader\ReaderInterface read the file?
      *
-     * @return string        Text Output
+     * @param  string  $pFilename
+     * @return boolean
+     */
+    public function canRead($pFilename);
+
+    /**
+     * Loads PHPPowerPoint from file
+     *
+     * @param  string    $pFilename
      * @throws \Exception
      */
-    public function writeMimetype()
-    {
-        return 'application/vnd.oasis.opendocument.presentation';
-    }
+    public function load($pFilename);
 }

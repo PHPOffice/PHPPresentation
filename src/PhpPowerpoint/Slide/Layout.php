@@ -18,7 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Slide;
 
 /**
- * PHPPowerPoint_Slide_Layout
+ * \PhpOffice\PhpPowerpoint\Slide\Layout
  */
 class Layout
 {

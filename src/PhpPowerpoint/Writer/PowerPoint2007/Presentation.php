@@ -17,19 +17,14 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
+use PhpOffice\PhpPowerpoint\DocumentLayout;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
-use PhpOffice\PhpPowerpoint\DocumentLayout;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_Workbook
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Workbook
  */
-class Presentation extends WriterPart
+class Presentation extends AbstractPart
 {
     /**
      * Write presentation to XML format
@@ -108,7 +103,7 @@ class Presentation extends WriterPart
     /**
      * Write slides
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter       XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter       XML Writer
      * @param  PHPPowerPoint                  $pPHPPowerPoint
      * @param  int                            $startRelationId
      * @throws \Exception
@@ -126,7 +121,7 @@ class Presentation extends WriterPart
     /**
      * Write slide
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
      * @param  int                            $pSlideId  Slide id
      * @param  int                            $pRelId    Relationship ID
      * @throws \Exception

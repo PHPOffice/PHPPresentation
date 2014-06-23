@@ -17,17 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
-use \PhpOffice\PhpPowerpoint\Style\Color;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Shadow
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Style
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Style\Shadow
  */
-class Shadow implements IComparable
+class Shadow implements ComparableInterface
 {
     /* Shadow alignment */
     const SHADOW_BOTTOM = 'b';
@@ -81,7 +76,7 @@ class Shadow implements IComparable
     /**
      * Color
      *
-     * @var PHPPowerPoint_Style_Color
+     * @var \PhpOffice\PhpPowerpoint\Style\Color
      */
     private $color;
 
@@ -100,7 +95,7 @@ class Shadow implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Shadow
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Shadow
      */
     public function __construct()
     {
@@ -232,7 +227,7 @@ class Shadow implements IComparable
     /**
      * Get Color
      *
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function getColor()
     {
@@ -242,7 +237,7 @@ class Shadow implements IComparable
     /**
      * Set Color
      *
-     * @param  PHPPowerPoint_Style_Color  $pValue
+     * @param  \PhpOffice\PhpPowerpoint\Style\Color  $pValue
      * @throws \Exception
      * @return self
      */

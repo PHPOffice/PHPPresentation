@@ -18,11 +18,7 @@
 namespace PhpOffice\PhpPowerpoint;
 
 /**
- * PHPPowerPoint_IOFactory
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * IOFactory
  */
 class IOFactory
 {
@@ -33,44 +29,24 @@ class IOFactory
      */
     private static $autoResolveClasses = array('Serialized');
 
-    private static function isConcreteClass($class)
-    {
-        $reflection = new \ReflectionClass($class);
-
-        return !$reflection->isAbstract() && !$reflection->isInterface();
-    }
-
-    private static function loadClass($class, $name, $type, PHPPowerPoint $phpPowerPoint = null)
-    {
-        if (class_exists($class) && self::isConcreteClass($class)) {
-            if (is_null($phpPowerPoint)) {
-                return new $class();
-            } else {
-                return new $class($phpPowerPoint);
-            }
-        } else {
-            throw new \Exception('"'.$name.'" is not a valid '.$type.'.');
-        }
-    }
-
     /**
-     * Create PHPPowerPoint_Writer_IWriter
+     * Create writer
      *
-     * @param  PHPPowerPoint                $PHPPowerPoint
-     * @param  string                       $writerType    Example: PowerPoint2007
-     * @return PHPPowerPoint_Writer_IWriter
+     * @param PhpPowerpoint $phpPowerPoint
+     * @param string $name
+     * @return \PhpOffice\PhpPowerpoint\Writer\WriterInterface
      */
-    public static function createWriter(PHPPowerPoint $phpPowerPoint, $name = 'PowerPoint2007')
+    public static function createWriter(PhpPowerpoint $phpPowerPoint, $name = 'PowerPoint2007')
     {
         $class = 'PhpOffice\\PhpPowerpoint\\Writer\\' . $name;
         return self::loadClass($class, $name, 'writer', $phpPowerPoint);
     }
 
     /**
-     * Create PHPPowerPoint_Reader_IReader
+     * Create reader
      *
-     * @param  string                       $name Example: PowerPoint2007
-     * @return PHPPowerPoint_Reader_IReader
+     * @param  string $name
+     * @return \PhpOffice\PhpPowerpoint\Reader\ReaderInterface
      */
     public static function createReader($name = '')
     {
@@ -79,7 +55,7 @@ class IOFactory
     }
 
     /**
-     * Loads PHPPowerPoint from file using automatic PHPPowerPoint_Reader_IReader resolution
+     * Loads PHPPowerPoint from file using automatic \PhpOffice\PhpPowerpoint\Reader\ReaderInterface resolution
      *
      * @param  string        $pFilename
      * @return PHPPowerPoint
@@ -95,6 +71,42 @@ class IOFactory
             }
         }
 
-        throw new \Exception("Could not automatically determine PHPPowerPoint_Reader_IReader for file.");
+        throw new \Exception("Could not automatically determine \PhpOffice\PhpPowerpoint\Reader\ReaderInterface for file.");
+    }
+
+    /**
+     * Load class
+     *
+     * @param string $class
+     * @param string $name
+     * @param string $type
+     * @param \PhpOffice\PhpPowerpoint\PhpPowerpoint $phpPowerPoint
+     * @throws \Exception
+     * @return
+     */
+    private static function loadClass($class, $name, $type, PhpPowerpoint $phpPowerPoint = null)
+    {
+        if (class_exists($class) && self::isConcreteClass($class)) {
+            if (is_null($phpPowerPoint)) {
+                return new $class();
+            } else {
+                return new $class($phpPowerPoint);
+            }
+        } else {
+            throw new \Exception('"'.$name.'" is not a valid '.$type.'.');
+        }
+    }
+
+    /**
+     * Is it a concrete class?
+     *
+     * @param string $class
+     * @return bool
+     */
+    private static function isConcreteClass($class)
+    {
+        $reflection = new \ReflectionClass($class);
+
+        return !$reflection->isAbstract() && !$reflection->isInterface();
     }
 }

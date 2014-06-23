@@ -18,7 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Shared;
 
 /**
- * PHPPowerPoint_Shared_Drawing
+ * \PhpOffice\PhpPowerpoint\Shared\Drawing
  */
 class Drawing
 {

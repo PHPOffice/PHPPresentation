@@ -18,17 +18,11 @@
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_DocProps
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\DocProps
  */
-class DocProps extends WriterPart
+class DocProps extends AbstractPart
 {
     /**
      * Write docProps/app.xml to XML format

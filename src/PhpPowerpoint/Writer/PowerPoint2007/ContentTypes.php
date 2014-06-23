@@ -25,13 +25,9 @@ use PhpOffice\PhpPowerpoint\Shared\File;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_ContentTypes
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes
  */
-class ContentTypes extends WriterPart
+class ContentTypes extends AbstractPart
 {
     /**
      * Write content types to XML format
@@ -92,21 +88,21 @@ class ContentTypes extends WriterPart
 
         // Add layoutpack content types
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getMasterSlideRelations();
-        foreach ($otherRelations as $otherRelations) {
-            if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelations['target'], $otherRelations['contentType']);
+        foreach ($otherRelations as $otherRelation) {
+            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
+                $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getThemeRelations();
-        foreach ($otherRelations as $otherRelations) {
-            if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelations['target'], $otherRelations['contentType']);
+        foreach ($otherRelations as $otherRelation) {
+            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
+                $this->writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
         $otherRelations = $this->getParentWriter()->getLayoutPack()->getLayoutRelations();
-        foreach ($otherRelations as $otherRelations) {
-            if (strpos($otherRelations['target'], 'http://') !== 0 && $otherRelations['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelations['target'], $otherRelations['contentType']);
+        foreach ($otherRelations as $otherRelation) {
+            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
+                $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
 
@@ -190,7 +186,7 @@ class ContentTypes extends WriterPart
     /**
      * Write Default content type
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
      * @throws \Exception
@@ -211,7 +207,7 @@ class ContentTypes extends WriterPart
     /**
      * Write Override content type
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
      * @throws \Exception

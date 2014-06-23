@@ -21,21 +21,16 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
-use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_Rels
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels
  */
-class Rels extends WriterPart
+class Rels extends AbstractPart
 {
     /**
      * Write relationships to XML format
@@ -247,7 +242,7 @@ class Rels extends WriterPart
     /**
      * Write slide relationships to XML format
      *
-     * @param  PHPPowerPoint_Slide $pSlide
+     * @param  \PhpOffice\PhpPowerpoint\Slide $pSlide
      * @return string              XML Output
      * @throws \Exception
      */
@@ -353,7 +348,7 @@ class Rels extends WriterPart
     /**
      * Write chart relationships to XML format
      *
-     * @param  PHPPowerPoint_Shape_Chart $pChart
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart $pChart
      * @return string                    XML Output
      * @throws \Exception
      */
@@ -369,12 +364,9 @@ class Rels extends WriterPart
         $objWriter->startElement('Relationships');
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
-        // Starting relation id
-        $relId = 1;
-
         // Write spreadsheet relationship?
         if ($pChart->hasIncludedSpreadsheet()) {
-            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
+            $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
         }
 
         $objWriter->endElement();
@@ -386,7 +378,7 @@ class Rels extends WriterPart
     /**
      * Write relationship
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter   XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
      * @param  int                            $pId         Relationship ID. rId will be prepended!
      * @param  string                         $pType       Relationship type
      * @param  string                         $pTarget     Relationship target

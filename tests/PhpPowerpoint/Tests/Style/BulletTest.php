@@ -1,16 +1,23 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPowerPoint/contributors.
+ *
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  * @link        https://github.com/PHPOffice/PHPPowerPoint
- * @copyright   2014 PHPPowerPoint
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
  */
 
 namespace PhpOffice\PhpPowerpoint\Tests;
 
 use PhpOffice\PhpPowerpoint\Style\Bullet;
-use PhpOffice\PhpPowerpoint\Style\Color;
 
 /**
  * Test class for PhpPowerpoint
@@ -32,6 +39,9 @@ class BulletTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $object->getBulletNumericStartAt());
     }
 
+    /**
+     * Test get/set bullet char
+     */
     public function testSetGetBulletChar ()
     {
         $object = new Bullet();
@@ -40,6 +50,10 @@ class BulletTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->setBulletChar('a'));
         $this->assertEquals('a', $object->getBulletChar());
     }
+
+    /**
+     * Test get/set bullet font
+     */
     public function testSetGetBulletFont ()
     {
         $object = new Bullet();
@@ -50,6 +64,10 @@ class BulletTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->setBulletFont('Arial'));
         $this->assertEquals('Arial', $object->getBulletFont());
     }
+
+    /**
+     * Test get/set bullet numeric start at
+     */
     public function testSetGetBulletNumericStartAt ()
     {
         $object = new Bullet();
@@ -59,6 +77,10 @@ class BulletTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->setBulletNumericStartAt($value));
         $this->assertEquals($value, $object->getBulletNumericStartAt());
     }
+
+    /**
+     * Test get/set bullet numeric style
+     */
     public function testSetGetBulletNumericStyle ()
     {
         $object = new Bullet();
@@ -67,7 +89,10 @@ class BulletTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->setBulletNumericStyle(Bullet::NUMERIC_ALPHALCPARENBOTH));
         $this->assertEquals(Bullet::NUMERIC_ALPHALCPARENBOTH, $object->getBulletNumericStyle());
     }
-    
+
+    /**
+     * Test get/set bullet type
+     */
     public function testSetGetBulletType ()
     {
         $object = new Bullet();
@@ -76,7 +101,10 @@ class BulletTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->setBulletType(Bullet::TYPE_BULLET));
         $this->assertEquals(Bullet::TYPE_BULLET, $object->getBulletType());
     }
-    
+
+    /**
+     * Test get/set has index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Bullet();

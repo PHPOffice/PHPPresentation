@@ -8,29 +8,31 @@
  *
  * For the full copyright and license information, please read the LICENSE
  * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPWord/contributors.
+ * contributors, visit https://github.com/PHPOffice/PHPPowerPoint/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPowerPoint
  * @copyright   2009-2014 PHPPowerPoint contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ * @link        https://github.com/PHPOffice/PHPPowerPoint
  */
 
-namespace PhpOffice\PhpPowerpoint\Writer;
+namespace PhpOffice\PhpPowerpoint\Tests\Shape;
+
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 
 /**
- * PHPPowerPoint_Writer_IWriter
+ * Test class for memory drawing element
  *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * @coversDefaultClass PhpOffice\PhpPowerpoint\Shape\MemoryDrawing
  */
-interface IWriter
+class MemoryDrawingTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Save PHPPowerPoint to file
-     *
-     * @param  string    $pFilename
-     * @throws \Exception
+     * Test can read
      */
-    public function save($pFilename);
+    public function testConstruct()
+    {
+        $object = new MemoryDrawing();
+
+        $this->assertEquals('imagepng', $object->getRenderingFunction());
+    }
 }

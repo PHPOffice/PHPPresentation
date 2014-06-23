@@ -17,19 +17,13 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
-use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
-
 /**
- * PHPPowerPoint_Shape_RichText_Break
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Rich text break
  */
-class BreakElement implements ITextElement
+class BreakElement implements TextElementInterface
 {
     /**
-     * Create a new PHPPowerPoint_Shape_RichText_Break instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\RichText\Break instance
      */
     public function __construct()
     {
@@ -49,7 +43,7 @@ class BreakElement implements ITextElement
      * Set text
      *
      * @param                                            $pText string   Text
-     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface
      */
     public function setText($pText = '')
     {
@@ -59,7 +53,7 @@ class BreakElement implements ITextElement
     /**
      * Get font
      *
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function getFont()
     {

@@ -17,14 +17,16 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer;
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\HashTable;
-use PhpOffice\PhpPowerpoint\Shape;
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Drawing as DrawingShape;
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing as MemoryDrawingShape;
+use PhpOffice\PhpPowerpoint\Shape\Chart as ChartShape;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\DocProps;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Drawing;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\PackDefault;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Presentation;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels;
@@ -32,13 +34,9 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Theme;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
  */
-class PowerPoint2007 implements IWriter
+class PowerPoint2007 implements WriterInterface
 {
     /**
      * Office2003 compatibility
@@ -50,7 +48,7 @@ class PowerPoint2007 implements IWriter
     /**
      * Private writer parts
      *
-     * @var PHPPowerPoint_Writer_PowerPoint2007_WriterPart[]
+     * @var \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart[]
      */
     protected $writerParts;
 
@@ -62,9 +60,9 @@ class PowerPoint2007 implements IWriter
     protected $presentation;
 
     /**
-     * Private unique PHPPowerPoint_Worksheet_BaseDrawing HashTable
+     * Private unique hash table
      *
-     * @var PHPPowerPoint_HashTable
+     * @var \PhpOffice\PhpPowerpoint\HashTable
      */
     protected $drawingHashTable;
 
@@ -85,12 +83,12 @@ class PowerPoint2007 implements IWriter
     /**
      * Layout pack to use
      *
-     * @var PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
+     * @var \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack
      */
     protected $layoutPack;
 
     /**
-     * Create a new PHPPowerPoint_Writer_PowerPoint2007
+     * Create a new \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      *
      * @param PHPPowerPoint $pPHPPowerPoint
      */
@@ -115,7 +113,7 @@ class PowerPoint2007 implements IWriter
         $this->writerParts['drawing']      = new Drawing();
         $this->writerParts['chart']        = new Chart();
 
-        // Assign parent IWriter
+        // Assign parent WriterInterface
         foreach ($this->writerParts as $writer) {
             $writer->setParentWriter($this);
         }
@@ -128,7 +126,7 @@ class PowerPoint2007 implements IWriter
      * Get writer part
      *
      * @param  string                                         $pPartName Writer part name
-     * @return PHPPowerPoint_Writer_PowerPoint2007_WriterPart
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart
      */
     public function getWriterPart($pPartName = '')
     {
@@ -167,8 +165,8 @@ class PowerPoint2007 implements IWriter
             $objZip = new \ZipArchive();
 
             // Try opening the ZIP file
-            if ($objZip->open($pFilename, \ZIPARCHIVE::OVERWRITE) !== true) {
-                if ($objZip->open($pFilename, ZIPARCHIVE::CREATE) !== true) {
+            if ($objZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
+                if ($objZip->open($pFilename, \ZipArchive::CREATE) !== true) {
                     throw new \Exception("Could not open " . $pFilename . " for writing.");
                 }
             }
@@ -207,21 +205,21 @@ class PowerPoint2007 implements IWriter
 
             // Add layoutpack relations
             $otherRelations = $this->getLayoutPack()->getMasterSlideRelations();
-            foreach ($otherRelations as $otherRelations) {
-                if (strpos($otherRelations['target'], 'http://') !== 0) {
-                    $objZip->addFromString($this->absoluteZipPath('ppt/slideMasters/' . $otherRelations['target']), $otherRelations['contents']);
+            foreach ($otherRelations as $otherRelation) {
+                if (strpos($otherRelation['target'], 'http://') !== 0) {
+                    $objZip->addFromString($this->absoluteZipPath('ppt/slideMasters/' . $otherRelation['target']), $otherRelation['contents']);
                 }
             }
             $otherRelations = $this->getLayoutPack()->getThemeRelations();
-            foreach ($otherRelations as $otherRelations) {
-                if (strpos($otherRelations['target'], 'http://') !== 0) {
-                    $objZip->addFromString($this->absoluteZipPath('ppt/theme/' . $otherRelations['target']), $otherRelations['contents']);
+            foreach ($otherRelations as $otherRelation) {
+                if (strpos($otherRelation['target'], 'http://') !== 0) {
+                    $objZip->addFromString($this->absoluteZipPath('ppt/theme/' . $otherRelation['target']), $otherRelation['contents']);
                 }
             }
             $otherRelations = $this->getLayoutPack()->getLayoutRelations();
-            foreach ($otherRelations as $otherRelations) {
-                if (strpos($otherRelations['target'], 'http://') !== 0) {
-                    $objZip->addFromString($this->absoluteZipPath('ppt/slideLayouts/' . $otherRelations['target']), $otherRelations['contents']);
+            foreach ($otherRelations as $otherRelation) {
+                if (strpos($otherRelation['target'], 'http://') !== 0) {
+                    $objZip->addFromString($this->absoluteZipPath('ppt/slideLayouts/' . $otherRelation['target']), $otherRelation['contents']);
                 }
             }
 
@@ -237,7 +235,7 @@ class PowerPoint2007 implements IWriter
 
             // Add media
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
-                if ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\Drawing) {
+                if ($this->getDrawingHashTable()->getByIndex($i) instanceof DrawingShape) {
                     $imagePath     = $this->getDrawingHashTable()->getByIndex($i)->getPath();
 
                     if (strpos($imagePath, 'zip://') !== false) {
@@ -254,14 +252,14 @@ class PowerPoint2007 implements IWriter
                     }
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\MemoryDrawing) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawingShape) {
                     ob_start();
                     call_user_func($this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(), $this->getDrawingHashTable()->getByIndex($i)->getImageResource());
                     $imageContents = ob_get_contents();
                     ob_end_clean();
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof Shape\Chart) {
+                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof ChartShape) {
                     $objZip->addFromString('ppt/charts/' . $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename(), $this->getWriterPart('Chart')->writeChart($this->getDrawingHashTable()->getByIndex($i)));
 
                     // Chart relations?
@@ -309,7 +307,7 @@ class PowerPoint2007 implements IWriter
      *
      * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
      * @throws \Exception
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -319,9 +317,9 @@ class PowerPoint2007 implements IWriter
     }
 
     /**
-     * Get PHPPowerPoint_Worksheet_BaseDrawing HashTable
+     * Get hash table
      *
-     * @return PHPPowerPoint_HashTable
+     * @return \PhpOffice\PhpPowerpoint\HashTable
      */
     public function getDrawingHashTable()
     {
@@ -342,7 +340,7 @@ class PowerPoint2007 implements IWriter
      * Set Pre-Calculate Formulas
      *
      * @param  boolean                             $pValue Office2003 compatibility?
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setOffice2003Compatibility($pValue = false)
     {
@@ -364,10 +362,10 @@ class PowerPoint2007 implements IWriter
     /**
      * Set use disk caching where possible?
      *
-     * @param  boolean                             $pValue
-     * @param  string                              $pDirectory Disk caching directory
-     * @throws \Exception                           \Exception when directory does not exist
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @param  boolean $pValue
+     * @param  string $pDirectory Disk caching directory
+     * @throws \Exception
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
     {
@@ -397,7 +395,7 @@ class PowerPoint2007 implements IWriter
     /**
      * Get layout pack to use
      *
-     * @return PHPPowerPoint_Writer_PowerPoint2007_LayoutPack
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack
      */
     public function getLayoutPack()
     {
@@ -407,10 +405,10 @@ class PowerPoint2007 implements IWriter
     /**
      * Set layout pack to use
      *
-     * @param  PHPPowerPoint_Writer_PowerPoint2007_LayoutPack $pValue
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @param \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack $pValue
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
-    public function setLayoutPack(LayoutPack $pValue = null)
+    public function setLayoutPack(AbstractLayoutPack $pValue = null)
     {
         $this->layoutPack = $pValue;
 

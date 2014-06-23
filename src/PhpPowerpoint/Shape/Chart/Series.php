@@ -17,18 +17,14 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 use PhpOffice\PhpPowerpoint\Style\Font;
 
 /**
- * PHPPowerPoint_Shape_Chart_Series
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape_Chart
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\Chart\Series
  */
-class Series implements IComparable
+class Series implements ComparableInterface
 {
     /* Label positions */
     const LABEL_BESTFIT = 'bestFir';
@@ -51,7 +47,7 @@ class Series implements IComparable
     /**
      * Fill
      *
-     * @var PHPPowerPoint_Style_Fill
+     * @var \PhpOffice\PhpPowerpoint\Style\Fill
      */
     private $fill;
 
@@ -107,7 +103,7 @@ class Series implements IComparable
     /**
      * Font
      *
-     * @var PHPPowerPoint_Style_Font
+     * @var \PhpOffice\PhpPowerpoint\Style\Font
      */
     private $font;
 
@@ -119,7 +115,7 @@ class Series implements IComparable
     private $labelPosition = 'ctr';
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_Series instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\Series instance
      *
      * @param string $title  Title
      * @param array  $values Values
@@ -148,7 +144,7 @@ class Series implements IComparable
      * Set Title
      *
      * @param  string                           $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function setTitle($value = 'Series Title')
     {
@@ -160,7 +156,7 @@ class Series implements IComparable
     /**
      * Get Fill
      *
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function getFill()
     {
@@ -171,7 +167,7 @@ class Series implements IComparable
      * Get DataPointFill
      *
      * @param  int                      $dataPointIndex Data point index.
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function getDataPointFill($dataPointIndex)
     {
@@ -206,7 +202,7 @@ class Series implements IComparable
      * Set Values
      *
      * @param  array                            $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function setValues($value = array())
     {
@@ -220,7 +216,7 @@ class Series implements IComparable
      *
      * @param  mixed                            $key
      * @param  mixed                            $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function addValue($key, $value)
     {
@@ -243,7 +239,7 @@ class Series implements IComparable
      * Set ShowSeriesName
      *
      * @param  boolean                          $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function setShowSeriesName($value)
     {
@@ -266,7 +262,7 @@ class Series implements IComparable
      * Set ShowCategoryName
      *
      * @param  boolean                          $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function setShowCategoryName($value)
     {
@@ -289,7 +285,7 @@ class Series implements IComparable
      * Set ShowValue
      *
      * @param  boolean                          $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function setShowValue($value)
     {
@@ -312,7 +308,7 @@ class Series implements IComparable
      * Set ShowPercentage
      *
      * @param  boolean                          $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function setShowPercentage($value)
     {
@@ -335,7 +331,7 @@ class Series implements IComparable
      * Set ShowLeaderLines
      *
      * @param  boolean                          $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function setShowLeaderLines($value)
     {
@@ -347,7 +343,7 @@ class Series implements IComparable
     /**
      * Get font
      *
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function getFont()
     {
@@ -357,9 +353,9 @@ class Series implements IComparable
     /**
      * Set font
      *
-     * @param  PHPPowerPoint_Style_Font               $pFont Font
+     * @param  \PhpOffice\PhpPowerpoint\Style\Font               $pFont Font
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function setFont(Font $pFont = null)
     {
@@ -382,7 +378,7 @@ class Series implements IComparable
      * Set label position
      *
      * @param  string                           $value
-     * @return PHPPowerPoint_Shape_Chart_Series
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
     public function setLabelPosition($value)
     {

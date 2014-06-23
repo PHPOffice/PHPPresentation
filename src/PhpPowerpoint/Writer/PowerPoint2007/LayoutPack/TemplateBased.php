@@ -17,21 +17,18 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack;
 
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractLayoutPack;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\TemplateBased
  */
-class TemplateBased extends LayoutPack
+class TemplateBased extends AbstractLayoutPack
 {
     /**
-     * PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased
+     * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\TemplateBased
      *
      * @param string $fileName
+     * @throws \Exception
      */
     public function __construct($fileName = '')
     {
@@ -50,7 +47,7 @@ class TemplateBased extends LayoutPack
         $this->layoutRelations = array();
 
         // Open package
-        $package = new ZipArchive;
+        $package = new \ZipArchive;
         $package->open($fileName);
 
         // Read relations and search for officeDocument
@@ -152,7 +149,7 @@ class TemplateBased extends LayoutPack
 
         // Sort master slides
         usort($this->masterSlides, array(
-            "PHPPowerPoint_Writer_PowerPoint2007_LayoutPack_TemplateBased",
+            "\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\TemplateBased",
             "cmpMaster"
         ));
 
@@ -165,6 +162,7 @@ class TemplateBased extends LayoutPack
      *
      * @param array $firstSlide
      * @param array $secondSlide
+     * @return int
      */
     public static function cmpMaster($firstSlide, $secondSlide)
     {

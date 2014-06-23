@@ -22,7 +22,15 @@ if (!defined('DATE_W3C')) {
 }
 
 /**
- * PHPPowerPoint_Shared_XMLWriter
+ * XMLWriter
+ *
+ * @method bool endElement()
+ * @method bool startDocument(string $version = 1.0, string $encoding = null, string $standalone = null)
+ * @method bool startElement(string $name)
+ * @method bool text(string $content)
+ * @method bool writeAttribute(string $name, mixed $value)
+ * @method bool writeElement(string $name, string $content = null)
+ * @method bool writeRaw(string $content)
  */
 class XMLWriter
 {
@@ -45,10 +53,10 @@ class XMLWriter
     private $tempFileName = '';
 
     /**
-     * Create a new PHPPowerPoint_Shared_XMLWriter instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shared\XMLWriter instance
      *
-     * @param int    $pTemporaryStorage       Temporary storage location
-     * @param string $pTemporaryStorageFolder Temporary storage folder
+     * @param int $pTemporaryStorage Temporary storage location
+     * @param string $pTemporaryStorageDir Temporary storage folder
      */
     public function __construct($pTemporaryStorage = self::STORAGE_MEMORY, $pTemporaryStorageDir = './')
     {
@@ -108,7 +116,7 @@ class XMLWriter
     /**
      * Get written data
      *
-     * @return $data
+     * @return string
      */
     public function getData()
     {
@@ -118,20 +126,5 @@ class XMLWriter
             $this->xmlWriter->flush();
             return file_get_contents($this->tempFileName);
         }
-    }
-
-    /**
-     * Fallback method for writeRaw, introduced in PHP 5.2
-     *
-     * @param  string $text
-     * @return string
-     */
-    public function writeRaw($text)
-    {
-        if (isset($this->xmlWriter) && is_object($this->xmlWriter) && (method_exists($this->xmlWriter, 'writeRaw'))) {
-            return $this->xmlWriter->writeRaw($text);
-        }
-
-        return $this->text($text);
     }
 }

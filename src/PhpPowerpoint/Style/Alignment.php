@@ -17,12 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Alignment
+ * \PhpOffice\PhpPowerpoint\Style\Alignment
  */
-class Alignment implements IComparable
+class Alignment implements ComparableInterface
 {
     /* Horizontal alignment styles */
     const HORIZONTAL_GENERAL                = 'l';
@@ -89,7 +89,7 @@ class Alignment implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Alignment
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function __construct()
     {
@@ -116,7 +116,7 @@ class Alignment implements IComparable
      * Set Horizontal
      *
      * @param  string                        $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setHorizontal($pValue = self::HORIZONTAL_LEFT)
     {
@@ -142,7 +142,7 @@ class Alignment implements IComparable
      * Set Vertical
      *
      * @param  string                        $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setVertical($pValue = self::VERTICAL_BASE)
     {
@@ -169,7 +169,7 @@ class Alignment implements IComparable
      *
      * @param  int                           $pValue Ranging 0 - 8
      * @throws \Exception
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setLevel($pValue = 0)
     {
@@ -195,7 +195,7 @@ class Alignment implements IComparable
      * Set indent
      *
      * @param  int                           $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setIndent($pValue = 0)
     {
@@ -224,7 +224,7 @@ class Alignment implements IComparable
      * Set margin left
      *
      * @param  int                           $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setMarginLeft($pValue = 0)
     {
@@ -253,7 +253,7 @@ class Alignment implements IComparable
      * Set margin ight
      *
      * @param  int                           $pValue
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function setMarginRight($pValue = 0)
     {

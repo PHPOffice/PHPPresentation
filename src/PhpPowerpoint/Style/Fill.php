@@ -17,17 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
-use \PhpOffice\PhpPowerpoint\Style\Color;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Fill
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Style
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Style\Fill
  */
-class Fill implements IComparable
+class Fill implements ComparableInterface
 {
     /* Fill types */
     const FILL_NONE                         = 'none';
@@ -69,14 +64,14 @@ class Fill implements IComparable
     /**
      * Start color
      *
-     * @var PHPPowerPoint_Style_Color
+     * @var \PhpOffice\PhpPowerpoint\Style\Color
      */
     private $startColor;
 
     /**
      * End color
      *
-     * @var PHPPowerPoint_Style_Color
+     * @var \PhpOffice\PhpPowerpoint\Style\Color
      */
     private $endColor;
 
@@ -88,7 +83,7 @@ class Fill implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Fill
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function __construct()
     {
@@ -112,8 +107,8 @@ class Fill implements IComparable
     /**
      * Set Fill Type
      *
-     * @param  string                   $pValue PHPPowerPoint_Style_Fill fill type
-     * @return PHPPowerPoint_Style_Fill
+     * @param  string                   $pValue \PhpOffice\PhpPowerpoint\Style\Fill fill type
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function setFillType($pValue = self::FILL_NONE)
     {
@@ -135,8 +130,8 @@ class Fill implements IComparable
     /**
      * Set Rotation
      *
-     * @param  double                   $pValue
-     * @return PHPPowerPoint_Style_Fill
+     * @param float|int $pValue
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function setRotation($pValue = 0)
     {
@@ -148,7 +143,7 @@ class Fill implements IComparable
     /**
      * Get Start Color
      *
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function getStartColor()
     {
@@ -160,9 +155,9 @@ class Fill implements IComparable
     /**
      * Set Start Color
      *
-     * @param  PHPPowerPoint_Style_Color $pValue
+     * @param  \PhpOffice\PhpPowerpoint\Style\Color $pValue
      * @throws \Exception
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function setStartColor(Color $pValue = null)
     {
@@ -174,7 +169,7 @@ class Fill implements IComparable
     /**
      * Get End Color
      *
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function getEndColor()
     {
@@ -186,9 +181,9 @@ class Fill implements IComparable
     /**
      * Set End Color
      *
-     * @param  PHPPowerPoint_Style_Color $pValue
+     * @param  \PhpOffice\PhpPowerpoint\Style\Color $pValue
      * @throws \Exception
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function setEndColor(Color $pValue = null)
     {

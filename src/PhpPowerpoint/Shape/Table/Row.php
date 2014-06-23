@@ -17,30 +17,25 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Table;
 
-use PhpOffice\PhpPowerpoint\IComparable;
-use PhpOffice\PhpPowerpoint\Shape\Table\Cell;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
- * PHPPowerPoint_Shape_Table_Row
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Table row
  */
-class Row implements IComparable
+class Row implements ComparableInterface
 {
     /**
      * Cells
      *
-     * @var PHPPowerPoint_Shape_Table_Cell[]
+     * @var \PhpOffice\PhpPowerpoint\Shape\Table\Cell[]
      */
     private $cells;
 
     /**
      * Fill
      *
-     * @var PHPPowerPoint_Style_Fill
+     * @var \PhpOffice\PhpPowerpoint\Style\Fill
      */
     private $fill;
 
@@ -66,7 +61,7 @@ class Row implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Table_Row instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Table\Row instance
      *
      * @param int $columns Number of columns
      */
@@ -85,9 +80,10 @@ class Row implements IComparable
     /**
      * Get cell
      *
-     * @param  int                            $cell            Cell number
-     * @param  boolean                        $exceptionAsNull Return a null value instead of an exception?
-     * @return PHPPowerPoint_Shape_Table_Cell
+     * @param  int $cell Cell number
+     * @param  boolean $exceptionAsNull Return a null value instead of an exception?
+     * @throws \Exception
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table\Cell
      */
     public function getCell($cell = 0, $exceptionAsNull = false)
     {
@@ -104,7 +100,7 @@ class Row implements IComparable
     /**
      * Get cells
      *
-     * @return PHPPowerPoint_Shape_Table_Cell[]
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table\Cell[]
      */
     public function getCells()
     {
@@ -114,7 +110,7 @@ class Row implements IComparable
     /**
      * Next cell (moves one cell to the right)
      *
-     * @return PHPPowerPoint_Shape_Table_Cell
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table\Cell
      * @throws \Exception
      */
     public function nextCell()
@@ -132,7 +128,7 @@ class Row implements IComparable
     /**
      * Get fill
      *
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function getFill()
     {
@@ -142,8 +138,8 @@ class Row implements IComparable
     /**
      * Set fill
      *
-     * @param  PHPPowerPoint_Style_Fill      $fill
-     * @return PHPPowerPoint_Shape_Table_Row
+     * @param  \PhpOffice\PhpPowerpoint\Style\Fill      $fill
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table\Row
      */
     public function setFill(Fill $fill)
     {
@@ -166,7 +162,7 @@ class Row implements IComparable
      * Set height
      *
      * @param  int                          $value
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setHeight($value = 0)
     {

@@ -17,16 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Shape_Drawing
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Drawing element
  */
-class Drawing extends BaseDrawing implements IComparable
+class Drawing extends AbstractDrawing implements ComparableInterface
 {
     /**
      * Path
@@ -36,7 +32,7 @@ class Drawing extends BaseDrawing implements IComparable
     private $path;
 
     /**
-     * Create a new PHPPowerPoint_Slide_Drawing
+     * Create a new \PhpOffice\PhpPowerpoint\Slide\Drawing
      */
     public function __construct()
     {
@@ -95,7 +91,7 @@ class Drawing extends BaseDrawing implements IComparable
      * @param  string                      $pValue      File path
      * @param  boolean                     $pVerifyFile Verify file
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_Drawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\Drawing
      */
     public function setPath($pValue = '', $pVerifyFile = true)
     {

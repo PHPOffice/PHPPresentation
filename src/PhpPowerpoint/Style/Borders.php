@@ -17,53 +17,52 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use PhpOffice\PhpPowerpoint\IComparable;
-use PhpOffice\PhpPowerpoint\Style\Border;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Borders
+ * \PhpOffice\PhpPowerpoint\Style\Borders
  */
-class Borders implements IComparable
+class Borders implements ComparableInterface
 {
     /**
      * Left
      *
-     * @var PHPPowerPoint_Style_Border
+     * @var \PhpOffice\PhpPowerpoint\Style\Border
      */
     private $left;
 
     /**
      * Right
      *
-     * @var PHPPowerPoint_Style_Border
+     * @var \PhpOffice\PhpPowerpoint\Style\Border
      */
     private $right;
 
     /**
      * Top
      *
-     * @var PHPPowerPoint_Style_Border
+     * @var \PhpOffice\PhpPowerpoint\Style\Border
      */
     private $top;
 
     /**
      * Bottom
      *
-     * @var PHPPowerPoint_Style_Border
+     * @var \PhpOffice\PhpPowerpoint\Style\Border
      */
     private $bottom;
 
     /**
      * Diagonal up
      *
-     * @var PHPPowerPoint_Style_Border
+     * @var \PhpOffice\PhpPowerpoint\Style\Border
      */
     private $diagonalUp;
 
     /**
      * Diagonal down
      *
-     * @var PHPPowerPoint_Style_Border
+     * @var \PhpOffice\PhpPowerpoint\Style\Border
      */
     private $diagonalDown;
 
@@ -75,7 +74,7 @@ class Borders implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Borders
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Borders
      */
     public function __construct()
     {
@@ -93,7 +92,7 @@ class Borders implements IComparable
     /**
      * Get Left
      *
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function getLeft()
     {
@@ -103,7 +102,7 @@ class Borders implements IComparable
     /**
      * Get Right
      *
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function getRight()
     {
@@ -113,7 +112,7 @@ class Borders implements IComparable
     /**
      * Get Top
      *
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function getTop()
     {
@@ -123,7 +122,7 @@ class Borders implements IComparable
     /**
      * Get Bottom
      *
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function getBottom()
     {
@@ -133,7 +132,7 @@ class Borders implements IComparable
     /**
      * Get Diagonal Up
      *
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function getDiagonalUp()
     {
@@ -143,7 +142,7 @@ class Borders implements IComparable
     /**
      * Get Diagonal Down
      *
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function getDiagonalDown()
     {

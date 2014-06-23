@@ -17,22 +17,21 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer;
 
-use PhpOffice\PhpPowerpoint\Writer\IWriter;
+use PhpOffice\PhpPowerpoint\HashTable;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Meta;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles;
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing;
-use PhpOffice\PhpPowerpoint\HashTable;
-use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
-use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 
 /**
  * ODPresentation writer
  */
-class ODPresentation implements IWriter
+class ODPresentation implements WriterInterface
 {
     /**
     * Private PHPPowerPoint
@@ -44,14 +43,14 @@ class ODPresentation implements IWriter
     /**
     * Private writer parts
     *
-    * @var PHPPowerPoint_Writer_ODPresentation_WriterPart[]
+    * @var \PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart[]
     */
     private $writerParts;
 
     /**
-     * Private unique PHPPowerPoint_Worksheet_BaseDrawing HashTable
+     * Private unique hashtable
      *
-     * @var PHPPowerPoint_HashTable
+     * @var \PhpOffice\PhpPowerpoint\HashTable
      */
     private $drawingHashTable;
 
@@ -70,7 +69,7 @@ class ODPresentation implements IWriter
     private $diskCachingDirectory;
 
     /**
-     * Create a new PHPPowerPoint_Writer_ODPresentation
+     * Create a new \PhpOffice\PhpPowerpoint\Writer\ODPresentation
      *
      * @param PHPPowerPoint $pPHPPowerPoint
      */
@@ -91,7 +90,7 @@ class ODPresentation implements IWriter
 
         $this->writerParts['drawing']  = new Drawing();
 
-        // Assign parent IWriter
+        // Assign parent WriterInterface
         foreach ($this->writerParts as $writer) {
             $writer->setParentWriter($this);
         }
@@ -225,7 +224,7 @@ class ODPresentation implements IWriter
      *
      * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
      * @throws \Exception
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
     {
@@ -235,9 +234,9 @@ class ODPresentation implements IWriter
     }
 
     /**
-     * Get PHPPowerPoint_Worksheet_BaseDrawing HashTable
+     * Get drawing hash table
      *
-     * @return PHPPowerPoint_HashTable
+     * @return \PhpOffice\PhpPowerpoint\HashTable
      */
     public function getDrawingHashTable()
     {
@@ -248,7 +247,7 @@ class ODPresentation implements IWriter
      * Get writer part
      *
      * @param  string                                         $pPartName Writer part name
-     * @return PHPPowerPoint_Writer_ODPresentation_WriterPart
+     * @return \PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart
      */
     public function getWriterPart($pPartName = '')
     {
@@ -272,10 +271,10 @@ class ODPresentation implements IWriter
     /**
      * Set use disk caching where possible?
      *
-     * @param  boolean                             $pValue
-     * @param  string                              $pDirectory Disk caching directory
-     * @throws \Exception                           \Exception when directory does not exist
-     * @return PHPPowerPoint_Writer_PowerPoint2007
+     * @param  boolean $pValue
+     * @param  string $pDirectory Disk caching directory
+     * @throws \Exception
+     * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
     {

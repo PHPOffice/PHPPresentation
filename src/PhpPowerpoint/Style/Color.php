@@ -17,13 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use PhpOffice\PhpPowerpoint\IComparable;
-use PhpOffice\PhpPowerpoint\Style\Color;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Color
+ * \PhpOffice\PhpPowerpoint\Style\Color
  */
-class Color implements IComparable
+class Color implements ComparableInterface
 {
     /* Colors */
     const COLOR_BLACK                       = 'FF000000';
@@ -52,7 +51,7 @@ class Color implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Color
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Color
      *
      * @param string $pARGB
      */
@@ -76,7 +75,7 @@ class Color implements IComparable
      * Set ARGB
      *
      * @param  string                    $pValue
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function setARGB($pValue = self::COLOR_BLACK)
     {
@@ -106,7 +105,7 @@ class Color implements IComparable
      * Set RGB
      *
      * @param  string                    $pValue
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function setRGB($pValue = '000000')
     {

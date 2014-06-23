@@ -20,23 +20,19 @@ namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Style\Font;
 
 /**
- * PHPPowerPoint_Shape_RichText_Run
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Rich text run
  */
-class Run extends TextElement implements ITextElement
+class Run extends TextElement implements TextElementInterface
 {
     /**
      * Font
      *
-     * @var PHPPowerPoint_Style_Font
+     * @var \PhpOffice\PhpPowerpoint\Style\Font
      */
     private $font;
 
     /**
-     * Create a new PHPPowerPoint_Shape_RichText_Run instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\RichText\Run instance
      *
      * @param string $pText Text
      */
@@ -50,7 +46,7 @@ class Run extends TextElement implements ITextElement
     /**
      * Get font
      *
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function getFont()
     {
@@ -60,9 +56,9 @@ class Run extends TextElement implements ITextElement
     /**
      * Set font
      *
-     * @param  PHPPowerPoint_Style_Font                  $pFont Font
+     * @param  \PhpOffice\PhpPowerpoint\Style\Font                  $pFont Font
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface
      */
     public function setFont(Font $pFont = null)
     {

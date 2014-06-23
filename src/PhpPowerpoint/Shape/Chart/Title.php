@@ -17,18 +17,14 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Font;
 
 /**
- * PHPPowerPoint_Shape_Chart_Title
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape_Chart
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\Chart\Title
  */
-class Title implements IComparable
+class Title implements ComparableInterface
 {
     /**
      * Visible
@@ -75,14 +71,14 @@ class Title implements IComparable
     /**
      * Alignment
      *
-     * @var PHPPowerPoint_Style_Alignment
+     * @var \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     private $alignment;
 
     /**
      * Font
      *
-     * @var PHPPowerPoint_Style_Font
+     * @var \PhpOffice\PhpPowerpoint\Style\Font
      */
     private $font;
 
@@ -94,7 +90,7 @@ class Title implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_Title instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\Title instance
      */
     public function __construct()
     {
@@ -118,7 +114,7 @@ class Title implements IComparable
      * Set Visible
      *
      * @param  boolean                         $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setVisible($value = true)
     {
@@ -141,7 +137,7 @@ class Title implements IComparable
      * Set Text
      *
      * @param  string                          $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setText($value = null)
     {
@@ -164,7 +160,7 @@ class Title implements IComparable
      * Set OffsetX (as a fraction of the chart)
      *
      * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setOffsetX($value = 0.01)
     {
@@ -187,7 +183,7 @@ class Title implements IComparable
      * Set OffsetY (as a fraction of the chart)
      *
      * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setOffsetY($value = 0.01)
     {
@@ -209,8 +205,8 @@ class Title implements IComparable
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @param float|int $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setWidth($value = 0)
     {
@@ -232,8 +228,8 @@ class Title implements IComparable
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @param float|int $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setHeight($value = 0)
     {
@@ -245,7 +241,7 @@ class Title implements IComparable
     /**
      * Get font
      *
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function getFont()
     {
@@ -255,9 +251,9 @@ class Title implements IComparable
     /**
      * Set font
      *
-     * @param  PHPPowerPoint_Style_Font               $pFont Font
+     * @param  \PhpOffice\PhpPowerpoint\Style\Font               $pFont Font
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function setFont(Font $pFont = null)
     {
@@ -269,7 +265,7 @@ class Title implements IComparable
     /**
      * Get alignment
      *
-     * @return PHPPowerPoint_Style_Alignment
+     * @return \PhpOffice\PhpPowerpoint\Style\Alignment
      */
     public function getAlignment()
     {
@@ -279,8 +275,8 @@ class Title implements IComparable
     /**
      * Set alignment
      *
-     * @param  PHPPowerPoint_Style_Alignment   $alignment
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @param  \PhpOffice\PhpPowerpoint\Style\Alignment   $alignment
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setAlignment(Alignment $alignment)
     {

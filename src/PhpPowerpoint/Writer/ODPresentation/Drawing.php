@@ -17,25 +17,20 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
-use PhpOffice\PhpPowerpoint\Writer\ODPresentation\WriterPart;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Table;
 
 /**
- * PHPPowerPoint_Writer_ODPresentation_Drawing
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_ODPresentation
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing
  */
-class Drawing extends WriterPart
+class Drawing extends AbstractPart
 {
     /**
      * Get an array of all drawings
      *
      * @param  PHPPowerPoint                 $pPHPPowerPoint
-     * @return PHPPowerPoint_Slide_Drawing[] All drawings in PHPPowerPoint
+     * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing[] All drawings in PHPPowerPoint
      * @throws \Exception
      */
     public function allDrawings(PHPPowerPoint $pPHPPowerPoint = null)
@@ -49,7 +44,7 @@ class Drawing extends WriterPart
             // Loop trough images and add to array
             $iterator = $pPHPPowerPoint->getSlide($i)->getShapeCollection()->getIterator();
             while ($iterator->valid()) {
-                if ($iterator->current() instanceof BaseDrawing && !($iterator->current() instanceof Table)) {
+                if ($iterator->current() instanceof AbstractDrawing && !($iterator->current() instanceof Table)) {
                     $aDrawings[] = $iterator->current();
                 }
 

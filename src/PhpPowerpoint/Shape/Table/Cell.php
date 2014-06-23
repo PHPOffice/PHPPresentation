@@ -17,25 +17,21 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Table;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph;
-use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface;
 use PhpOffice\PhpPowerpoint\Style\Borders;
-use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
+use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
- * PHPPowerPoint_Shape_Table_Cell
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Table cell
  */
-class Cell implements IComparable
+class Cell implements ComparableInterface
 {
     /**
      * Rich text paragraphs
      *
-     * @var PHPPowerPoint_Shape_RichText_Paragraph[]
+     * @var \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[]
      */
     private $richTextParagraphs;
 
@@ -49,14 +45,14 @@ class Cell implements IComparable
     /**
      * Fill
      *
-     * @var PHPPowerPoint_Style_Fill
+     * @var \PhpOffice\PhpPowerpoint\Style\Fill
      */
     private $fill;
 
     /**
      * Borders
      *
-     * @var PHPPowerPoint_Style_Borders
+     * @var \PhpOffice\PhpPowerpoint\Style\Borders
      */
     private $borders;
 
@@ -89,7 +85,7 @@ class Cell implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Shape_RichText instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\RichText instance
      */
     public function __construct()
     {
@@ -119,7 +115,7 @@ class Cell implements IComparable
     /**
      * Get active paragraph
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function getActiveParagraph()
     {
@@ -129,8 +125,9 @@ class Cell implements IComparable
     /**
      * Set active paragraph
      *
-     * @param  int                                    $index
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @param  int $index
+     * @throws \Exception
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function setActiveParagraph($index = 0)
     {
@@ -147,7 +144,8 @@ class Cell implements IComparable
      * Get paragraph
      *
      * @param  int $index
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @throws \Exception
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function getParagraph($index = 0)
     {
@@ -161,7 +159,7 @@ class Cell implements IComparable
     /**
      * Create paragraph
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
      */
     public function createParagraph()
     {
@@ -182,11 +180,11 @@ class Cell implements IComparable
     /**
      * Add text
      *
-     * @param  PHPPowerPoint_Shape_RichText_ITextElement $pText Rich text element
+     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface $pText Rich text element
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
-    public function addText(ITextElement $pText = null)
+    public function addText(TextElementInterface $pText = null)
     {
         $this->richTextParagraphs[$this->activeParagraph]->addText($pText);
 
@@ -197,7 +195,7 @@ class Cell implements IComparable
      * Create text (can not be formatted !)
      *
      * @param  string                                   $pText Text
-     * @return PHPPowerPoint_Shape_RichText_TextElement
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\TextElement
      * @throws \Exception
      */
     public function createText($pText = '')
@@ -208,7 +206,7 @@ class Cell implements IComparable
     /**
      * Create break
      *
-     * @return PHPPowerPoint_Shape_RichText_Break
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement
      * @throws \Exception
      */
     public function createBreak()
@@ -220,7 +218,7 @@ class Cell implements IComparable
      * Create text run (can be formatted)
      *
      * @param  string                           $pText Text
-     * @return PHPPowerPoint_Shape_RichText_Run
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Run
      * @throws \Exception
      */
     public function createTextRun($pText = '')
@@ -238,7 +236,7 @@ class Cell implements IComparable
         // Return value
         $returnValue = '';
 
-        // Loop trough all PHPPowerPoint_Shape_RichText_Paragraph
+        // Loop trough all \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph
         foreach ($this->richTextParagraphs as $p) {
             $returnValue .= $p->getPlainText();
         }
@@ -260,7 +258,7 @@ class Cell implements IComparable
     /**
      * Get paragraphs
      *
-     * @return PHPPowerPoint_Shape_RichText_Paragraph[]
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[]
      */
     public function getParagraphs()
     {
@@ -270,9 +268,9 @@ class Cell implements IComparable
     /**
      * Set paragraphs
      *
-     * @param  PHPPowerPoint_Shape_RichText_Paragraphs[] $paragraphs Array of paragraphs
+     * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[] $paragraphs Array of paragraphs
      * @throws \Exception
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setParagraphs($paragraphs = null)
     {
@@ -280,7 +278,7 @@ class Cell implements IComparable
             $this->richTextParagraphs = $paragraphs;
             $this->activeParagraph    = count($this->richTextParagraphs) - 1;
         } else {
-            throw new \Exception("Invalid PHPPowerPoint_Shape_RichText_Paragraph[] array passed.");
+            throw new \Exception("Invalid \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[] array passed.");
         }
 
         return $this;
@@ -289,7 +287,7 @@ class Cell implements IComparable
     /**
      * Get fill
      *
-     * @return PHPPowerPoint_Style_Fill
+     * @return \PhpOffice\PhpPowerpoint\Style\Fill
      */
     public function getFill()
     {
@@ -299,8 +297,8 @@ class Cell implements IComparable
     /**
      * Set fill
      *
-     * @param  PHPPowerPoint_Style_Fill     $fill
-     * @return PHPPowerPoint_Shape_RichText
+     * @param  \PhpOffice\PhpPowerpoint\Style\Fill     $fill
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setFill(Fill $fill)
     {
@@ -312,7 +310,7 @@ class Cell implements IComparable
     /**
      * Get borders
      *
-     * @return PHPPowerPoint_Style_Borders
+     * @return \PhpOffice\PhpPowerpoint\Style\Borders
      */
     public function getBorders()
     {
@@ -322,8 +320,8 @@ class Cell implements IComparable
     /**
      * Set borders
      *
-     * @param  PHPPowerPoint_Style_Borders  $borders
-     * @return PHPPowerPoint_Shape_RichText
+     * @param  \PhpOffice\PhpPowerpoint\Style\Borders  $borders
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setBorders(Borders $borders)
     {
@@ -346,7 +344,7 @@ class Cell implements IComparable
      * Set width
      *
      * @param  int                          $value
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setWidth($value = 0)
     {
@@ -369,7 +367,7 @@ class Cell implements IComparable
      * Set colSpan
      *
      * @param  int                          $value
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setColSpan($value = 0)
     {
@@ -392,7 +390,7 @@ class Cell implements IComparable
      * Set rowSpan
      *
      * @param  int                          $value
-     * @return PHPPowerPoint_Shape_RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function setRowSpan($value = 0)
     {

@@ -20,7 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Slide;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 
 /**
- * PHPPowerPoint_Slide_Iterator
+ * \PhpOffice\PhpPowerpoint\Slide\Iterator
  *
  * Used to iterate slides in PHPPowerPoint
  */
@@ -68,9 +68,9 @@ class Iterator extends \IteratorIterator
     }
 
     /**
-     * Current PHPPowerPoint_Slide
+     * Current \PhpOffice\PhpPowerpoint\Slide
      *
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function current()
     {
@@ -96,7 +96,7 @@ class Iterator extends \IteratorIterator
     }
 
     /**
-     * More PHPPowerPoint_Slide instances available?
+     * More \PhpOffice\PhpPowerpoint\Slide instances available?
      *
      * @return boolean
      */

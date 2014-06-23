@@ -18,33 +18,27 @@
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Legend;
 use PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
+use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Border;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\WriterPart;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
 
 /**
- * PHPPowerPoint_Writer_PowerPoint2007_Chart
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Writer_PowerPoint2007
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart
  */
 class Chart extends Slide
 {
     /**
      * Write chart to XML format
      *
-     * @param  PHPPowerPoint_Shape_Chart $chart
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart $chart
      * @return string                    XML Output
      * @throws \Exception
      */
@@ -52,7 +46,7 @@ class Chart extends Slide
     {
         // Check slide
         if (is_null($chart)) {
-            throw new \Exception("Invalid PHPPowerPoint_Shape_Chart object passed.");
+            throw new \Exception("Invalid \PhpOffice\PhpPowerpoint\Shape\Chart object passed.");
         }
 
         // Create XML writer
@@ -208,7 +202,7 @@ class Chart extends Slide
      * Write chart to XML format
      *
      * @param  PHPPowerPoint             $presentation
-     * @param  PHPPowerPoint_Shape_Chart $chart
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart $chart
      * @param  string                    $tempName
      * @return string                    String output
      * @throws \Exception
@@ -274,7 +268,7 @@ class Chart extends Slide
     /**
      * Write element with value attribute
      *
-     * @param PHPPowerPoint_Shared_XMLWriter $objWriter   XML Writer
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
      * @param string                         $elementName
      * @param string                         $value
      */
@@ -288,7 +282,7 @@ class Chart extends Slide
     /**
      * Write single value or reference
      *
-     * @param PHPPowerPoint_Shared_XMLWriter $objWriter   XML Writer
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
      * @param boolean                        $isReference
      * @param mixed                          $value
      * @param string                         $reference
@@ -319,7 +313,7 @@ class Chart extends Slide
     /**
      * Write series value or reference
      *
-     * @param PHPPowerPoint_Shared_XMLWriter $objWriter   XML Writer
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
      * @param boolean                        $isReference
      * @param mixed                          $values
      * @param string                         $reference
@@ -380,8 +374,8 @@ class Chart extends Slide
     /**
      * Write Title
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter  $objWriter XML Writer
-     * @param  PHPPowerPoint_Shape_Chart_Title $subject
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter  $objWriter XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Title $subject
      * @throws \Exception
      */
     protected function writeTitle(XMLWriter $objWriter, Title $subject)
@@ -488,9 +482,9 @@ class Chart extends Slide
     /**
      * Write Plot Area
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter     $objWriter XML Writer
-     * @param  PHPPowerPoint_Shape_Chart_PlotArea $subject
-     * @param  PHPPowerPoint_Shape_Chart          $chart
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter     $objWriter XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea $subject
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart          $chart
      * @throws \Exception
      */
     protected function writePlotArea(XMLWriter $objWriter, PlotArea $subject, ShapeChart $chart)
@@ -736,8 +730,8 @@ class Chart extends Slide
     /**
      * Write Legend
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter   $objWriter XML Writer
-     * @param  PHPPowerPoint_Shape_Chart_Legend $subject
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter   $objWriter XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Legend $subject
      * @throws \Exception
      */
     protected function writeLegend(XMLWriter $objWriter, Legend $subject)
@@ -844,7 +838,7 @@ class Chart extends Slide
     /**
      * Write Layout
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
      * @param  mixed                          $subject
      * @throws \Exception
      */
@@ -901,8 +895,8 @@ class Chart extends Slide
     /**
      * Write Type Bar3D
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter       $objWriter    XML Writer
-     * @param  PHPPowerPoint_Shape_Chart_Type_Bar3D $subject
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D $subject
      * @param  boolean                              $includeSheet
      * @throws \Exception
      */
@@ -1108,8 +1102,8 @@ class Chart extends Slide
     /**
      * Write Type Pie3D
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter       $objWriter    XML Writer
-     * @param  PHPPowerPoint_Shape_Chart_Type_Pie3D $subject
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D $subject
      * @param  boolean                              $includeSheet
      * @throws \Exception
      */
@@ -1282,8 +1276,8 @@ class Chart extends Slide
     /**
      * Write Type Line
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter      $objWriter    XML Writer
-     * @param  PHPPowerPoint_Shape_Chart_Type_Line $subject
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter      $objWriter    XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line $subject
      * @param  boolean                             $includeSheet
      * @throws \Exception
      */
@@ -1486,8 +1480,8 @@ class Chart extends Slide
     /**
      * Write Type Scatter
      *
-     * @param  PHPPowerPoint_Shared_XMLWriter         $objWriter    XML Writer
-     * @param  PHPPowerPoint_Shape_Chart_Type_Scatter $subject
+     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter         $objWriter    XML Writer
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter $subject
      * @param  boolean                                $includeSheet
      * @throws \Exception
      */

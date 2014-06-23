@@ -17,47 +17,42 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\IComparable;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Legend;
 use PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
 use PhpOffice\PhpPowerpoint\Shape\Chart\View3D;
 
 /**
- * PHPPowerPoint_Shape_Chart
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Chart element
  */
-class Chart extends BaseDrawing implements IComparable
+class Chart extends AbstractDrawing implements ComparableInterface
 {
     /**
      * Title
      *
-     * @var PHPPowerPoint_Shape_Chart_Title
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     private $title;
 
     /**
      * Legend
      *
-     * @var PHPPowerPoint_Shape_Chart_Legend
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     private $legend;
 
     /**
      * Plot area
      *
-     * @var PHPPowerPoint_Shape_Chart_PlotArea
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
      */
     private $plotArea;
 
     /**
      * View 3D
      *
-     * @var PHPPowerPoint_Shape_Chart_View3D
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\View3D
      */
     private $view3D;
 
@@ -69,7 +64,7 @@ class Chart extends BaseDrawing implements IComparable
     private $includeSpreadsheet = false;
 
     /**
-     * Create a new PHPPowerPoint_Slide_MemoryDrawing
+     * Create a new \PhpOffice\PhpPowerpoint\Slide\MemoryDrawing
      */
     public function __construct()
     {
@@ -86,7 +81,7 @@ class Chart extends BaseDrawing implements IComparable
     /**
      * Get Title
      *
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function getTitle()
     {
@@ -96,7 +91,7 @@ class Chart extends BaseDrawing implements IComparable
     /**
      * Get Legend
      *
-     * @return PHPPowerPoint_Shape_Chart_Legend
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Legend
      */
     public function getLegend()
     {
@@ -106,7 +101,7 @@ class Chart extends BaseDrawing implements IComparable
     /**
      * Get PlotArea
      *
-     * @return PHPPowerPoint_Shape_Chart_PlotArea
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
      */
     public function getPlotArea()
     {
@@ -116,7 +111,7 @@ class Chart extends BaseDrawing implements IComparable
     /**
      * Get View3D
      *
-     * @return PHPPowerPoint_Shape_Chart_View3D
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\View3D
      */
     public function getView3D()
     {
@@ -137,7 +132,7 @@ class Chart extends BaseDrawing implements IComparable
      * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PHPPowerPoint
      *
      * @param  boolean                   $value
-     * @return PHPPowerPoint_Shape_Chart
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart
      */
     public function setIncludeSpreadsheet($value = false)
     {

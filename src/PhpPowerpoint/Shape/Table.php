@@ -17,23 +17,18 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape;
 
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 use PhpOffice\PhpPowerpoint\Shape\Table\Row;
 
 /**
- * PHPPowerPoint_Shape_Table
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Table shape
  */
-class Table extends BaseDrawing implements IComparable
+class Table extends AbstractDrawing implements ComparableInterface
 {
     /**
      * Rows
      *
-     * @var PHPPowerPoint_Shape_Table_Row[]
+     * @var \PhpOffice\PhpPowerpoint\Shape\Table\Row[]
      */
     private $rows;
 
@@ -45,7 +40,7 @@ class Table extends BaseDrawing implements IComparable
     private $columnCount = 1;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Table instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Table instance
      *
      * @param int $columns Number of columns
      */
@@ -65,9 +60,10 @@ class Table extends BaseDrawing implements IComparable
     /**
      * Get row
      *
-     * @param  int                           $row             Row number
-     * @param  boolean                       $exceptionAsNull Return a null value instead of an exception?
-     * @return PHPPowerPoint_Shape_Table_Row
+     * @param  int $row Row number
+     * @param  boolean $exceptionAsNull Return a null value instead of an exception?
+     * @throws \Exception
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table\Row
      */
     public function getRow($row = 0, $exceptionAsNull = false)
     {
@@ -84,7 +80,7 @@ class Table extends BaseDrawing implements IComparable
     /**
      * Get rows
      *
-     * @return PHPPowerPoint_Shape_Table_Row[]
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table\Row[]
      */
     public function getRows()
     {
@@ -94,7 +90,7 @@ class Table extends BaseDrawing implements IComparable
     /**
      * Create row
      *
-     * @return PHPPowerPoint_Shape_Table_Row
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table\Row
      */
     public function createRow()
     {

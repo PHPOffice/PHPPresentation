@@ -17,12 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Bullet
+ * \PhpOffice\PhpPowerpoint\Style\Bullet
  */
-class Bullet implements IComparable
+class Bullet implements ComparableInterface
 {
     /* Bullet types */
     const TYPE_NONE                         = 'none';
@@ -116,7 +116,7 @@ class Bullet implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Bullet
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function __construct()
     {
@@ -142,7 +142,7 @@ class Bullet implements IComparable
      * Set bullet type
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletType($pValue = self::TYPE_NONE)
     {
@@ -165,7 +165,7 @@ class Bullet implements IComparable
      * Set bullet font
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletFont($pValue = 'Calibri')
     {
@@ -191,7 +191,7 @@ class Bullet implements IComparable
      * Set bullet char
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletChar($pValue = '-')
     {
@@ -214,7 +214,7 @@ class Bullet implements IComparable
      * Set bullet numeric style
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT)
     {
@@ -236,8 +236,8 @@ class Bullet implements IComparable
     /**
      * Set bullet numeric start at
      *
-     * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Bullet
+     * @param int|string $pValue
+     * @return \PhpOffice\PhpPowerpoint\Style\Bullet
      */
     public function setBulletNumericStartAt($pValue = 1)
     {

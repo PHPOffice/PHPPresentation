@@ -17,7 +17,6 @@
 
 namespace PhpOffice\PhpPowerpoint;
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
 use PhpOffice\PhpPowerpoint\Shape\Line;
@@ -26,13 +25,9 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Slide\Layout;
 
 /**
- * PHPPowerPoint_Slide
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Slide
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Slide class
  */
-class Slide implements IComparable
+class Slide implements ComparableInterface
 {
     /**
      * Parent presentation
@@ -44,7 +39,7 @@ class Slide implements IComparable
     /**
      * Collection of shapes
      *
-     * @var PHPPowerPoint_Shape[]
+     * @var \PhpOffice\PhpPowerpoint\AbstractShape[]
      */
     private $shapeCollection = null;
 
@@ -85,7 +80,7 @@ class Slide implements IComparable
     {
         // Set parent
         $this->parent = $pParent;
-        
+
         $this->slideLayout = Slide\Layout::BLANK;
 
         // Shape collection
@@ -98,7 +93,7 @@ class Slide implements IComparable
     /**
      * Get collection of shapes
      *
-     * @return PHPPowerPoint_Shape[]
+     * @return \PhpOffice\PhpPowerpoint\AbstractShape[]
      */
     public function getShapeCollection()
     {
@@ -108,10 +103,10 @@ class Slide implements IComparable
     /**
      * Add shape to slide
      *
-     * @param  PHPPowerPoint_Shape $shape
-     * @return PHPPowerPoint_Shape
+     * @param  \PhpOffice\PhpPowerpoint\AbstractShape $shape
+     * @return \PhpOffice\PhpPowerpoint\AbstractShape
      */
-    public function addShape(Shape $shape)
+    public function addShape(AbstractShape $shape)
     {
         $shape->setSlide($this);
 
@@ -121,7 +116,7 @@ class Slide implements IComparable
     /**
      * Create rich text shape
      *
-     * @return \PHPPowerPoint\Shape\RichText
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
     public function createRichTextShape()
     {
@@ -138,7 +133,7 @@ class Slide implements IComparable
      * @param  int                      $fromY Starting point y offset
      * @param  int                      $toX   Ending point x offset
      * @param  int                      $toY   Ending point y offset
-     * @return PHPPowerPoint_Shape_Line
+     * @return \PhpOffice\PhpPowerpoint\Shape\Line
      */
     public function createLineShape($fromX, $fromY, $toX, $toY)
     {
@@ -151,7 +146,7 @@ class Slide implements IComparable
     /**
      * Create chart shape
      *
-     * @return PHPPowerPoint_Shape_Chart
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart
      */
     public function createChartShape()
     {
@@ -164,7 +159,7 @@ class Slide implements IComparable
     /**
      * Create drawing shape
      *
-     * @return PHPPowerPoint_Shape_Drawing
+     * @return \PhpOffice\PhpPowerpoint\Shape\Drawing
      */
     public function createDrawingShape()
     {
@@ -178,7 +173,7 @@ class Slide implements IComparable
      * Create table shape
      *
      * @param  int                       $columns Number of columns
-     * @return PHPPowerPoint_Shape_Table
+     * @return \PhpOffice\PhpPowerpoint\Shape\Table
      */
     public function createTableShape($columns = 1)
     {
@@ -201,10 +196,10 @@ class Slide implements IComparable
     /**
      * Re-bind parent
      *
-     * @param  PHPPowerPoint       $parent
-     * @return PHPPowerPoint_Slide
+     * @param  \PhpOffice\PhpPowerpoint\PhpPowerpoint       $parent
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
-    public function rebindParent(PHPPowerPoint $parent)
+    public function rebindParent(PhpPowerpoint $parent)
     {
         $this->parent->removeSlideByIndex($this->parent->getIndex($this));
         $this->parent = $parent;
@@ -226,7 +221,7 @@ class Slide implements IComparable
      * Set slide layout
      *
      * @param  string              $layout
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function setSlideLayout($layout = Layout::BLANK)
     {
@@ -249,7 +244,7 @@ class Slide implements IComparable
      * Set slide master id
      *
      * @param  int                 $masterId
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function setSlideMasterId($masterId = 1)
     {
@@ -297,7 +292,7 @@ class Slide implements IComparable
     /**
      * Copy slide (!= clone!)
      *
-     * @return PHPPowerPoint_Slide
+     * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function copy()
     {

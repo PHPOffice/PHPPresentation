@@ -17,37 +17,31 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
-use PhpOffice\PhpPowerpoint\IComparable;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Axis;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Shape_Chart_PlotArea
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape_Chart
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
  */
-class PlotArea implements IComparable
+class PlotArea implements ComparableInterface
 {
     /**
      * Type
      *
-     * @var PHPPowerPoint_Shape_Chart_Type
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType
      */
     private $type;
 
     /**
      * Axis X
      *
-     * @var PHPPowerPoint_Shape_Chart_Axis
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     private $axisX;
 
     /**
      * Axis Y
      *
-     * @var PHPPowerPoint_Shape_Chart_Axis
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     private $axisY;
 
@@ -80,7 +74,7 @@ class PlotArea implements IComparable
     private $height = 0;
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_PlotArea instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea instance
      */
     public function __construct()
     {
@@ -92,7 +86,7 @@ class PlotArea implements IComparable
     /**
      * Get type
      *
-     * @return PHPPowerPoint_Shape_Chart_Type
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType
      * @throws \Exception
      */
     public function getType()
@@ -107,11 +101,10 @@ class PlotArea implements IComparable
     /**
      * Set type
      *
-     * @param  PHPPowerPoint_Shape_Chart_Type     $value
-     * @return PHPPowerPoint_Shape_Chart_PlotArea
-     * @throws \Exception
+     * @param \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
      */
-    public function setType(Type $value)
+    public function setType(AbstractType $value)
     {
         $this->type = $value;
 
@@ -121,7 +114,7 @@ class PlotArea implements IComparable
     /**
      * Get Axis X
      *
-     * @return PHPPowerPoint_Shape_Chart_Axis
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     public function getAxisX()
     {
@@ -131,7 +124,7 @@ class PlotArea implements IComparable
     /**
      * Get Axis Y
      *
-     * @return PHPPowerPoint_Shape_Chart_Axis
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     public function getAxisY()
     {
@@ -151,8 +144,8 @@ class PlotArea implements IComparable
     /**
      * Set OffsetX (as a fraction of the chart)
      *
-     * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @param float|int $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setOffsetX($value = 0)
     {
@@ -174,8 +167,8 @@ class PlotArea implements IComparable
     /**
      * Set OffsetY (as a fraction of the chart)
      *
-     * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @param float|int $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setOffsetY($value = 0)
     {
@@ -197,8 +190,8 @@ class PlotArea implements IComparable
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @param float|int $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setWidth($value = 0)
     {
@@ -220,8 +213,8 @@ class PlotArea implements IComparable
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param  float                           $value
-     * @return PHPPowerPoint_Shape_Chart_Title
+     * @param float|int $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Title
      */
     public function setHeight($value = 0)
     {

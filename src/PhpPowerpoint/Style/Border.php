@@ -17,13 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Style;
 
-use \PhpOffice\PhpPowerpoint\IComparable;
-use \PhpOffice\PhpPowerpoint\Style\Color;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Style_Border
+ * \PhpOffice\PhpPowerpoint\Style\Border
  */
-class Border implements IComparable
+class Border implements ComparableInterface
 {
     /* Line style */
     const LINE_NONE             = 'none';
@@ -70,7 +69,7 @@ class Border implements IComparable
     /**
      * Border color
      *
-     * @var PHPPowerPoint_Style_Color
+     * @var \PhpOffice\PhpPowerpoint\Style\Color
      */
     private $color;
 
@@ -82,7 +81,7 @@ class Border implements IComparable
     private $hashIndex;
 
     /**
-     * Create a new PHPPowerPoint_Style_Border
+     * Create a new \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function __construct()
     {
@@ -107,7 +106,7 @@ class Border implements IComparable
      * Set line width
      *
      * @param  int                        $pValue
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function setLineWidth($pValue = 1)
     {
@@ -130,7 +129,7 @@ class Border implements IComparable
      * Set line style
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function setLineStyle($pValue = self::LINE_SINGLE)
     {
@@ -156,7 +155,7 @@ class Border implements IComparable
      * Set dash style
      *
      * @param  string                     $pValue
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function setDashStyle($pValue = self::DASH_SOLID)
     {
@@ -171,7 +170,7 @@ class Border implements IComparable
     /**
      * Get Border Color
      *
-     * @return PHPPowerPoint_Style_Color
+     * @return \PhpOffice\PhpPowerpoint\Style\Color
      */
     public function getColor()
     {
@@ -181,9 +180,9 @@ class Border implements IComparable
     /**
      * Set Border Color
      *
-     * @param  PHPPowerPoint_Style_Color  $color
+     * @param  \PhpOffice\PhpPowerpoint\Style\Color  $color
      * @throws \Exception
-     * @return PHPPowerPoint_Style_Border
+     * @return \PhpOffice\PhpPowerpoint\Style\Border
      */
     public function setColor(Color $color = null)
     {

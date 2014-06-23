@@ -5,7 +5,7 @@
     "homepage": "http://phpoffice.github.io",
     "type": "library",
     "license": "LGPL",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "authors": [
         {
             "name": "Mark Baker"
@@ -20,16 +20,16 @@
         }
     ],
     "require": {
-        "php": ">=5.2.0",
+        "php": ">=5.3.0",
         "ext-xml": "*",
         "ext-zip": "*"
     },
     "require-dev": {
-        "phpdocumentor/phpdocumentor":"2.*",
-		"phploc/phploc": "*",
-		"phpmd/phpmd": "2.0.0",
         "phpunit/phpunit": "3.7.*",
-		"sebastian/phpcpd": "*",
+        "phpdocumentor/phpdocumentor":"2.*",
+        "phpmd/phpmd": "2.*",
+        "sebastian/phpcpd": "2.*",
+        "phploc/phploc": "2.*"
         "squizlabs/php_codesniffer": "1.*"
     },
     "suggest": {

@@ -17,16 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
-use PhpOffice\PhpPowerpoint\IComparable;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
 
 /**
- * PHPPowerPoint_Shape_Chart_Axis
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape_Chart
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
  */
-class Axis implements IComparable
+class Axis implements ComparableInterface
 {
     /**
      * Title
@@ -43,7 +39,7 @@ class Axis implements IComparable
     private $formatCode = '';
 
     /**
-     * Create a new PHPPowerPoint_Shape_Chart_Axis instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\Axis instance
      *
      * @param string $title Title
      */
@@ -66,7 +62,7 @@ class Axis implements IComparable
      * Set Title
      *
      * @param  string                         $value
-     * @return PHPPowerPoint_Shape_Chart_Axis
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     public function setTitle($value = 'Axis Title')
     {
@@ -89,7 +85,7 @@ class Axis implements IComparable
      * Set Format Code
      *
      * @param  string                         $value
-     * @return PHPPowerPoint_Shape_Chart_Axis
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Axis
      */
     public function setFormatCode($value = '')
     {

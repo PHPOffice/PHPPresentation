@@ -1,10 +1,18 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPowerPoint/contributors.
+ *
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  * @link        https://github.com/PHPOffice/PHPPowerPoint
- * @copyright   2014 PHPPowerPoint
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
  */
 
 namespace PhpOffice\PhpPowerpoint\Tests;
@@ -32,6 +40,10 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->getEndColor());
         $this->assertEquals(Color::COLOR_BLACK, $object->getEndColor()->getARGB());
     }
+
+    /**
+     * Test get/set end color
+     */
     public function testSetGetEndColor ()
     {
         $object = new Fill();
@@ -42,6 +54,9 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(COLOR::COLOR_BLUE, $object->getEndColor()->getARGB());
     }
 
+    /**
+     * Test get/set fill type
+     */
     public function testSetGetFillType ()
     {
         $object = new Fill();
@@ -50,7 +65,10 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->setFillType(Fill::FILL_GRADIENT_LINEAR));
         $this->assertEquals(Fill::FILL_GRADIENT_LINEAR, $object->getFillType());
     }
-    
+
+    /**
+     * Test get/set rotation
+     */
     public function testSetGetRotation ()
     {
         $object = new Fill();
@@ -60,7 +78,10 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->setRotation($value));
         $this->assertEquals($value, $object->getRotation());
     }
-    
+
+    /**
+     * Test get/set start color
+     */
     public function testSetGetStartColor ()
     {
         $object = new Fill();
@@ -71,6 +92,9 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(COLOR::COLOR_BLUE, $object->getStartColor()->getARGB());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Fill();

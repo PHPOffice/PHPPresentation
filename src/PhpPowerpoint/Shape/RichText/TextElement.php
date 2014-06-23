@@ -17,17 +17,12 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
-use PhpOffice\PhpPowerpoint\Shape\RichText\ITextElement;
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 
 /**
- * PHPPowerPoint_Shape_RichText_TextElement
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Rich text text element
  */
-class TextElement implements ITextElement
+class TextElement implements TextElementInterface
 {
     /**
      * Text
@@ -39,12 +34,12 @@ class TextElement implements ITextElement
     /**
      * Hyperlink
      *
-     * @var PHPPowerPoint_Shape_Hyperlink
+     * @var \PhpOffice\PhpPowerpoint\Shape\Hyperlink
      */
     protected $hyperlink;
 
     /**
-     * Create a new PHPPowerPoint_Shape_RichText_TextElement instance
+     * Create a new \PhpOffice\PhpPowerpoint\Shape\RichText\TextElement instance
      *
      * @param string $pText Text
      */
@@ -68,7 +63,7 @@ class TextElement implements ITextElement
      * Set text
      *
      * @param                                            $pText string   Text
-     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface
      */
     public function setText($pText = '')
     {
@@ -80,7 +75,7 @@ class TextElement implements ITextElement
     /**
      * Get font
      *
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function getFont()
     {
@@ -100,7 +95,7 @@ class TextElement implements ITextElement
     /**
      * Get Hyperlink
      *
-     * @return PHPPowerPoint_Shape_Hyperlink
+     * @return \PhpOffice\PhpPowerpoint\Shape\Hyperlink
      */
     public function getHyperlink()
     {
@@ -114,9 +109,9 @@ class TextElement implements ITextElement
     /**
      * Set Hyperlink
      *
-     * @param  PHPPowerPoint_Shape_Hyperlink $pHyperlink
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Hyperlink $pHyperlink
      * @throws \Exception
-     * @return PHPPowerPoint_Shape
+     * @return \PhpOffice\PhpPowerpoint\AbstractShape
      */
     public function setHyperlink(Hyperlink $pHyperlink = null)
     {

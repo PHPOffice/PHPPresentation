@@ -1,17 +1,24 @@
 <?php
 /**
- * PHPPowerPoint
+ * This file is part of PHPPowerPoint - A pure PHP library for reading and writing
+ * presentations documents.
  *
+ * PHPPowerPoint is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPowerPoint/contributors.
+ *
+ * @copyright   2009-2014 PHPPowerPoint contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  * @link        https://github.com/PHPOffice/PHPPowerPoint
- * @copyright   2014 PHPPowerPoint
- * @license     http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt LGPL
  */
 
 namespace PhpOffice\PhpPowerpoint\Tests;
 
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Style\Shadow;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
 
 /**
  * Test class for PhpPowerpoint
@@ -36,6 +43,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(50, $object->getAlpha());
     }
 
+    /**
+     * Test get/set alignment
+     */
     public function testSetGetAlignment ()
     {
         $object = new Shadow();
@@ -45,6 +55,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Shadow::SHADOW_CENTER, $object->getAlignment());
     }
 
+    /**
+     * Test get/set alpha
+     */
     public function testSetGetAlpha ()
     {
         $object = new Shadow();
@@ -55,6 +68,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getAlpha());
     }
 
+    /**
+     * Test get/set blur radius
+     */
     public function testSetGetBlurRadius ()
     {
         $object = new Shadow();
@@ -65,6 +81,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getBlurRadius());
     }
 
+    /**
+     * Test get/set color
+     */
     public function testSetGetColor ()
     {
         $object = new Shadow();
@@ -75,6 +94,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
     }
 
+    /**
+     * Test get/set direction
+     */
     public function testSetGetDirection ()
     {
         $object = new Shadow();
@@ -85,6 +107,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getDirection());
     }
 
+    /**
+     * Test get/set distance
+     */
     public function testSetGetDistance ()
     {
         $object = new Shadow();
@@ -95,6 +120,9 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getDistance());
     }
 
+    /**
+     * Test get/set hash index
+     */
     public function testSetGetHashIndex ()
     {
         $object = new Shadow();
@@ -102,7 +130,10 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
+    /**
+     * Test get/set visible
+     */
     public function testSetIsVisible ()
     {
         $object = new Shadow();

@@ -18,13 +18,9 @@
 namespace PhpOffice\PhpPowerpoint\Shape\RichText;
 
 /**
- * PHPPowerPoint_Shape_RichText_ITextElement
- *
- * @category   PHPPowerPoint
- * @package    PHPPowerPoint_Shape
- * @copyright  Copyright (c) 2009 - 2010 PHPPowerPoint (http://www.codeplex.com/PHPPowerPoint)
+ * Rich text element interface
  */
-interface ITextElement
+interface TextElementInterface
 {
     /**
      * Get text
@@ -37,14 +33,14 @@ interface ITextElement
      * Set text
      *
      * @param                                            $pText string   Text
-     * @return PHPPowerPoint_Shape_RichText_ITextElement
+     * @return \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface
      */
     public function setText($pText = '');
 
     /**
      * Get font
      *
-     * @return PHPPowerPoint_Style_Font
+     * @return \PhpOffice\PhpPowerpoint\Style\Font
      */
     public function getFont();
 

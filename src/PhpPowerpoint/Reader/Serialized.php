@@ -17,50 +17,24 @@
 
 namespace PhpOffice\PhpPowerpoint\Reader;
 
-use PhpOffice\PhpPowerpoint\Reader\IReader;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shared\File;
-use PhpOffice\PhpPowerpoint\Shape\BaseDrawing;
 
 /**
+ * Serialized format reader
  */
-class Serialized implements IReader
+class Serialized implements ReaderInterface
 {
     /**
-     * Can the current PHPPowerPoint_Reader_IReader read the file?
+     * Can the current \PhpOffice\PhpPowerpoint\Reader\ReaderInterface read the file?
      *
-     * @param  string  $pFilename
+     * @param  string $pFilename
+     * @throws \Exception
      * @return boolean
      */
     public function canRead($pFilename)
     {
-        // Check if file exists
-        if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
-        }
-
         return $this->fileSupportsUnserializePHPPowerPoint($pFilename);
-    }
-
-    /**
-     * Loads PHPPowerPoint Serialized file
-     *
-     * @param  string        $pFilename
-     * @return PHPPowerPoint
-     * @throws \Exception
-     */
-    public function load($pFilename)
-    {
-        // Check if file exists
-        if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
-        }
-
-        // Unserialize... First make sure the file supports it!
-        if (!$this->fileSupportsUnserializePHPPowerPoint($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized: " . $pFilename . ".");
-        }
-
-        return $this->loadSerialized($pFilename);
     }
 
     /**
@@ -80,35 +54,59 @@ class Serialized implements IReader
         // File exists, does it contain PHPPowerPoint.xml?
         return File::fileExists("zip://$pFilename#PHPPowerPoint.xml");
     }
-    
+
+    /**
+     * Loads PHPPowerPoint Serialized file
+     *
+     * @param  string        $pFilename
+     * @return \PhpOffice\PhpPowerpoint\PhpPowerpoint
+     * @throws \Exception
+     */
+    public function load($pFilename)
+    {
+        // Check if file exists
+        if (!file_exists($pFilename)) {
+            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+        }
+
+        // Unserialize... First make sure the file supports it!
+        if (!$this->fileSupportsUnserializePHPPowerPoint($pFilename)) {
+            throw new \Exception("Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized: " . $pFilename . ".");
+        }
+
+        return $this->loadSerialized($pFilename);
+    }
+
     /**
      * Load PHPPowerPoint Serialized file
      *
      * @param  string        $pFilename
-     * @return PHPPowerPoint
+     * @return \PhpOffice\PhpPowerpoint\PhpPowerpoint
      */
     private function loadSerialized($pFilename)
     {
         $oArchive = new \ZipArchive();
         if ($oArchive->open($pFilename) === true) {
             $xmlContent = $oArchive->getFromName('PHPPowerPoint.xml');
-            
+
             if (!empty($xmlContent)) {
                 $xmlData = simplexml_load_string($xmlContent);
                 $file    = unserialize(base64_decode((string) $xmlData->data));
-                
+
                 // Update media links
                 for ($i = 0; $i < $file->getSlideCount(); ++$i) {
                     for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                        if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof BaseDrawing) {
+                        if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
                             $file->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $file->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
                         }
                     }
                 }
-                
+
                 $oArchive->close();
                 return $file;
             }
         }
+
+        return null;
     }
 }
