@@ -64,4 +64,52 @@ class DrawingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $object->getWidth());
         $this->assertEquals(0, $object->getHeight());
     }
+    
+    public function testGetSetDescription()
+    {
+        $object = new Drawing();
+    
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setDescription());
+        $this->assertEmpty($object->getDescription());
+    
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setDescription('TEST'));
+        $this->assertEquals('TEST', $object->getDescription());
+    }
+    
+    public function testGetSetResizeProportional()
+    {
+        $object = new Drawing();
+    
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setResizeProportional());
+        $this->assertTrue($object->isResizeProportional());
+
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setResizeProportional(false));
+        $this->assertFalse($object->isResizeProportional());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setResizeProportional(true));
+        $this->assertTrue($object->isResizeProportional());
+    }
+    
+    public function testGetSetHeightWidth()
+    {
+        $object = new Drawing();
+    
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setWidth());
+        $this->assertEquals(0, $object->getWidth());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setHeight());
+        $this->assertEquals(0, $object->getHeight());
+    
+        // Valeur : Resize Proportional (false)
+        $value = rand(0, 100);
+        $object->setResizeProportional(false);
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setWidth($value));
+        $this->assertEquals($value, $object->getWidth());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setHeight($value));
+        $this->assertEquals($value, $object->getHeight());
+        
+//         // Valeur : Resize Proportional (true)
+//         $value = rand(0, 100);
+//         $object->setResizeProportional(true);
+//         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setWidth($value));
+        
+    }
 }

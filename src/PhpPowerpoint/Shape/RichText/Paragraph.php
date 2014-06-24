@@ -216,7 +216,7 @@ class Paragraph implements ComparableInterface
 
         // Loop trough all \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface
         foreach ($this->richTextElements as $text) {
-            if($text instanceof TextElementInterface){
+            if ($text instanceof TextElementInterface) {
                 $returnValue .= $text->getText();
             }
         }

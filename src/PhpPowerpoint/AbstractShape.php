@@ -381,7 +381,7 @@ abstract class AbstractShape implements ComparableInterface
      */
     public function getHashCode()
     {
-        return md5($this->slide->getHashCode() . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->rotation . $this->getFill()->getHashCode() . $this->shadow->getHashCode() . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
+        return md5((is_object($this->slide)?$this->slide->getHashCode():'') . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->rotation . $this->getFill()->getHashCode() . $this->shadow->getHashCode() . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }
 
     /**

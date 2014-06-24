@@ -232,4 +232,15 @@ class RichTextTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setWrap(RichText::WRAP_NONE));
         $this->assertEquals(RichText::WRAP_NONE, $object->getWrap());
     }
+    
+    public function testHashCode()
+    {
+        $object = new RichText();
+        
+        $hash  = $object->getActiveParagraph()->getHashCode();
+        $hash .= RichText::WRAP_SQUARE.RichText::AUTOFIT_DEFAULT.RichText::OVERFLOW_OVERFLOW.RichText::OVERFLOW_OVERFLOW.'0014.89.69.64.8';
+        $hash .= md5('00000' . $object->getFill()->getHashCode() . $object->getShadow()->getHashCode() . '' . get_parent_class($object));
+        $hash .= get_class($object);
+        $this->assertEquals(md5($hash), $object->getHashCode());
+    }
 }

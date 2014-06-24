@@ -34,5 +34,50 @@ class MemoryDrawingTest extends \PHPUnit_Framework_TestCase
         $object = new MemoryDrawing();
 
         $this->assertEquals('imagepng', $object->getRenderingFunction());
+        $this->assertEquals(MemoryDrawing::MIMETYPE_DEFAULT, $object->getMimeType());
+        $this->assertNull($object->getImageResource());
+        $this->assertInternalType('string', $object->getIndexedFilename());
+        $this->assertInternalType('string', $object->getExtension());
+        $this->assertInternalType('string', $object->getHashCode());
+    }
+    
+    public function testImageResource()
+    {
+        $object = new MemoryDrawing();
+        
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\MemoryDrawing', $object->setImageResource());
+        $this->assertNull($object->getImageResource());
+        $this->assertEquals(0, $object->getWidth());
+        $this->assertEquals(0, $object->getHeight());
+        
+        $width = rand(1, 100);
+        $height = rand(100, 200);
+        $gdImage = @imagecreatetruecolor($width, $height) or die('Cannot Initialize new GD image stream');
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\MemoryDrawing', $object->setImageResource($gdImage));
+        $this->assertTrue(is_resource($object->getImageResource()));
+        $this->assertEquals($width, $object->getWidth());
+        $this->assertEquals($height, $object->getHeight());
+    }
+    
+    public function testMimeType()
+    {
+        $object = new MemoryDrawing();
+        
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\MemoryDrawing', $object->setMimeType());
+        $this->assertEquals(MemoryDrawing::MIMETYPE_DEFAULT, $object->getMimeType());
+        
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\MemoryDrawing', $object->setMimeType(MemoryDrawing::MIMETYPE_JPEG));
+        $this->assertEquals(MemoryDrawing::MIMETYPE_JPEG, $object->getMimeType());
+    }
+    
+    public function testRenderingFunction()
+    {
+        $object = new MemoryDrawing();
+        
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\MemoryDrawing', $object->setRenderingFunction());
+        $this->assertEquals(MemoryDrawing::RENDERING_DEFAULT, $object->getRenderingFunction());
+        
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\MemoryDrawing', $object->setRenderingFunction(MemoryDrawing::RENDERING_JPEG));
+        $this->assertEquals(MemoryDrawing::RENDERING_JPEG, $object->getRenderingFunction());
     }
 }
