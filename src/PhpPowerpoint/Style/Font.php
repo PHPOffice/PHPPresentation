@@ -50,7 +50,14 @@ class Font implements ComparableInterface
      * @var string
      */
     private $name;
-
+    
+    /**
+     * Font Size
+     *
+     * @var float|int
+     */
+    private $size;
+    
     /**
      * Bold
      *

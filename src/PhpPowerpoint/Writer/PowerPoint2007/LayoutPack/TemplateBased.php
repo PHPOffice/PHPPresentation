@@ -38,7 +38,7 @@ class TemplateBased extends AbstractLayoutPack
         }
 
         // Master slide relations
-        $this->masterSlideRelations = array();
+        $this->masterSlideRels = array();
 
         // Theme relations
         $this->themeRelations = array();
@@ -130,7 +130,7 @@ class TemplateBased extends AbstractLayoutPack
                                 }
                             } else {
                                 // Master slide relation
-                                $this->masterSlideRelations[] = array(
+                                $this->masterSlideRels[] = array(
                                     'masterid' => $slideMasterId,
                                     'id' => $masterRel["Id"],
                                     'type' => $masterRel["Type"],

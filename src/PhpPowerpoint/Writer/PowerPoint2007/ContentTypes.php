@@ -191,7 +191,7 @@ class ContentTypes extends AbstractPart
      * @param  string                         $pContentType Content type
      * @throws \Exception
      */
-    private function writeDefaultContentType(XMLWriter $objWriter = null, $pPartname = '', $pContentType = '')
+    private function writeDefaultContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
     {
         if ($pPartname != '' && $pContentType != '') {
             // Write content type
@@ -212,7 +212,7 @@ class ContentTypes extends AbstractPart
      * @param  string                         $pContentType Content type
      * @throws \Exception
      */
-    private function writeOverrideContentType(XMLWriter $objWriter = null, $pPartname = '', $pContentType = '')
+    private function writeOverrideContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
     {
         if ($pPartname != '' && $pContentType != '') {
             // Write content type

@@ -29,7 +29,7 @@ class Iterator extends \IteratorIterator
     /**
      * Presentation to iterate
      *
-     * @var PHPPowerPoint
+     * @var \PhpOffice\PhpPowerpoint\PhpPowerpoint
      */
     private $subject;
 

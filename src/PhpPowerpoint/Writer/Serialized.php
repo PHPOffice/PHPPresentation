@@ -111,7 +111,7 @@ class Serialized implements WriterInterface
      * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Writer\Serialized
      */
-    public function setPHPPowerPoint (PHPPowerPoint $pPHPPowerPoint = null)
+    public function setPHPPowerPoint (PhpPowerpoint $pPHPPowerPoint = null)
     {
         $this->presentation = $pPHPPowerPoint;
 

@@ -385,7 +385,7 @@ class Rels extends AbstractPart
      * @param  string                         $pTargetMode Relationship target mode
      * @throws \Exception
      */
-    private function writeRelationship(XMLWriter $objWriter = null, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
+    private function writeRelationship(XMLWriter $objWriter, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
     {
         if ($pType != '' && $pTarget != '') {
             if (strpos($pId, 'rId') === false) {

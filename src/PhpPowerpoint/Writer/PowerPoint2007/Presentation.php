@@ -108,7 +108,7 @@ class Presentation extends AbstractPart
      * @param  int                            $startRelationId
      * @throws \Exception
      */
-    private function writeSlides(XMLWriter $objWriter = null, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
+    private function writeSlides(XMLWriter $objWriter, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
     {
         // Write slides
         $slideCount = $pPHPPowerPoint->getSlideCount();
@@ -126,7 +126,7 @@ class Presentation extends AbstractPart
      * @param  int                            $pRelId    Relationship ID
      * @throws \Exception
      */
-    private function writeSlide(XMLWriter $objWriter = null, $pSlideId = 1, $pRelId = 1)
+    private function writeSlide(XMLWriter $objWriter, $pSlideId = 1, $pRelId = 1)
     {
         // p:sldId
         $objWriter->startElement('p:sldId');

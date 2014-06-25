@@ -69,7 +69,7 @@ class Shadow implements ComparableInterface
     /**
      * Shadow alignment
      *
-     * @var int
+     * @var string
      */
     private $alignment;
 

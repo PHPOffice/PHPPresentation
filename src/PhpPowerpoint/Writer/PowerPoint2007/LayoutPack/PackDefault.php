@@ -539,7 +539,7 @@ class PackDefault extends AbstractLayoutPack
 </p:sldMaster>'));
 
         // Master slide relations
-        $this->masterSlideRelations = array(
+        $this->masterSlideRels = array(
             //array('masterid' => '', 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
         );
 

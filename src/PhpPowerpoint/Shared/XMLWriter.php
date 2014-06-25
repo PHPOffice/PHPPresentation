@@ -24,11 +24,16 @@ if (!defined('DATE_W3C')) {
 /**
  * XMLWriter
  *
- * @method bool endElement()
+ * @method bool openMemory()
+ * @method mixed flush(bool $empty = null)
+ * @method string outputMemory(bool $flush = null)
+ * @method bool setIndent (bool $indent)
  * @method bool startDocument(string $version = 1.0, string $encoding = null, string $standalone = null)
  * @method bool startElement(string $name)
  * @method bool text(string $content)
  * @method bool writeAttribute(string $name, mixed $value)
+ * @method bool writeCData(string $content)
+ * @method bool writeComment(string $content)
  * @method bool writeElement(string $name, string $content = null)
  * @method bool writeRaw(string $content)
  */
@@ -41,7 +46,7 @@ class XMLWriter
     /**
      * Internal XMLWriter
      *
-     * @var XMLWriter
+     * @var \XMLWriter
      */
     private $xmlWriter;
 
