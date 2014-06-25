@@ -24,8 +24,9 @@ if (!defined('DATE_W3C')) {
 /**
  * XMLWriter
  *
- * @method bool openMemory()
+ * @method bool endElement()
  * @method mixed flush(bool $empty = null)
+ * @method bool openMemory()
  * @method string outputMemory(bool $flush = null)
  * @method bool setIndent (bool $indent)
  * @method bool startDocument(string $version = 1.0, string $encoding = null, string $standalone = null)

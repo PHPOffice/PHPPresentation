@@ -50,7 +50,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setAlignment());
-        $this->assertEquals(0, $object->getAlignment());
+        $this->assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setAlignment(Shadow::SHADOW_CENTER));
         $this->assertEquals(Shadow::SHADOW_CENTER, $object->getAlignment());
     }

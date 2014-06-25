@@ -29,14 +29,14 @@ class Serialized implements WriterInterface
     /**
      * Private PHPPowerPoint
      *
-     * @var PHPPowerPoint
+     * @var \PhpOffice\PhpPowerpoint\PhpPowerpoint
      */
     private $presentation;
 
     /**
      * Create a new \PhpOffice\PhpPowerpoint\Writer\Serialized
      *
-     * @param PHPPowerPoint $pPHPPowerPoint
+     * @param \PhpOffice\PhpPowerpoint\PhpPowerpoint $pPHPPowerPoint
      */
     public function __construct (PhpPowerpoint $pPHPPowerPoint = null)
     {

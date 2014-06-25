@@ -217,7 +217,7 @@ class Shadow implements ComparableInterface
      * @param  int                        $pValue
      * @return self
      */
-    public function setAlignment($pValue = 0)
+    public function setAlignment($pValue = self::SHADOW_BOTTOM_RIGHT)
     {
         $this->alignment = $pValue;
 
