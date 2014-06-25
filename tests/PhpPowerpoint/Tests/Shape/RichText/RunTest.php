@@ -33,7 +33,7 @@ class RunTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $object = new Run();
-        $this->assertEquals('',$object->getText());
+        $this->assertEquals('', $object->getText());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
         
         $object = new Run('BBB');
@@ -43,7 +43,7 @@ class RunTest extends \PHPUnit_Framework_TestCase
     
     public function testFont ()
     {
-    	$object = new Run();
+        $object = new Run();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Run', $object->setFont(new Font()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
     }
@@ -51,11 +51,11 @@ class RunTest extends \PHPUnit_Framework_TestCase
     public function testText ()
     {
         $object = new Run();
-        $this->assertEquals('',$object->getText());
+        $this->assertEquals('', $object->getText());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Run', $object->setText());
-        $this->assertEquals('',$object->getText());
+        $this->assertEquals('', $object->getText());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Run', $object->setText('AAA'));
-        $this->assertEquals('AAA',$object->getText());
+        $this->assertEquals('AAA', $object->getText());
 
         $object = new Run('BBB');
         $this->assertEquals('BBB', $object->getText());

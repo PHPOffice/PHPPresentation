@@ -60,7 +60,7 @@ class Slide implements ComparableInterface
     /**
      * Slide master id
      *
-     * @var string
+     * @var integer
      */
     private $slideMasterId = 1;
 

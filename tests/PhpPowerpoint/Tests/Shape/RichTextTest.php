@@ -94,9 +94,9 @@ class RichTextTest extends \PHPUnit_Framework_TestCase
         $object = new RichText();
         
         $array = array(
-        	new Paragraph(),
-        	new Paragraph(),
-        	new Paragraph(),
+            new Paragraph(),
+            new Paragraph(),
+            new Paragraph(),
         );
         
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setParagraphs($array));
@@ -131,8 +131,8 @@ class RichTextTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(6, $object->getActiveParagraph()->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
         $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertEquals('ALPHA'.PHP_EOL.'BETA', $object->getPlainText());
-        $this->assertEquals('ALPHA'.PHP_EOL.'BETA', (string)$object);
+        $this->assertEquals('ALPHA'."\r\n".'BETA', $object->getPlainText());
+        $this->assertEquals('ALPHA'."\r\n".'BETA', (string)$object);
     }
     
     public function testGetSetAutoFit()

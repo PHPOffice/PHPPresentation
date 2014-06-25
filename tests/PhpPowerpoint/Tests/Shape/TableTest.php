@@ -30,7 +30,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Table();
         $this->assertEmpty($object->getRows());
-        $this->assertFalse( $object->isResizeProportional());
+        $this->assertFalse($object->isResizeProportional());
     }
     
     public function testRows ()

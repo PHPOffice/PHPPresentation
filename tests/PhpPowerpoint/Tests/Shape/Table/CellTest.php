@@ -44,17 +44,17 @@ class CellTest extends \PHPUnit_Framework_TestCase
     
     public function testActiveParagraph ()
     {
-    	$object = new Cell();
-    	$this->assertEquals(0, $object->getActiveParagraphIndex());
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->createParagraph());
-    	$this->assertCount(2, $object->getParagraphs());
-    	$value = rand(0, 1);
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setActiveParagraph($value));
-    	$this->assertEquals($value, $object->getActiveParagraphIndex());
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->getActiveParagraph());
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->getParagraph());
-    	$value = rand(0, 1);
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
+        $object = new Cell();
+        $this->assertEquals(0, $object->getActiveParagraphIndex());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->createParagraph());
+        $this->assertCount(2, $object->getParagraphs());
+        $value = rand(0, 1);
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setActiveParagraph($value));
+        $this->assertEquals($value, $object->getActiveParagraphIndex());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->getActiveParagraph());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->getParagraph());
+        $value = rand(0, 1);
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
     }
     
     /**
@@ -105,8 +105,8 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(6, $object->getActiveParagraph()->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
         $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertEquals('ALPHA'.PHP_EOL.'BETA', $object->getPlainText());
-        $this->assertEquals('ALPHA'.PHP_EOL.'BETA', (string)$object);
+        $this->assertEquals('ALPHA'."\r\n".'BETA', $object->getPlainText());
+        $this->assertEquals('ALPHA'."\r\n".'BETA', (string)$object);
     }
     
     public function testParagraphs ()
@@ -114,9 +114,9 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $object = new Cell();
         
         $array = array(
-        	new Paragraph(),
-        	new Paragraph(),
-        	new Paragraph(),
+            new Paragraph(),
+            new Paragraph(),
+            new Paragraph(),
         );
         
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setParagraphs($array));

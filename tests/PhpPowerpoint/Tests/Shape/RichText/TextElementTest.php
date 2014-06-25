@@ -42,13 +42,13 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
     
     public function testFont ()
     {
-    	$object = new TextElement();
+        $object = new TextElement();
         $this->assertNull($object->getFont());
     }
     
     public function testHyperlink ()
     {
-    	$object = new TextElement();
+        $object = new TextElement();
         $this->assertFalse($object->hasHyperlink());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\TextElement', $object->setHyperlink());
         $this->assertFalse($object->hasHyperlink());

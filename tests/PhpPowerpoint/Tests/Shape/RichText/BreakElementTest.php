@@ -32,17 +32,17 @@ class BreakElementTest extends \PHPUnit_Framework_TestCase
     public function testText()
     {
         $object = new BreakElement();
-        $this->assertEquals("\r\n",$object->getText());
+        $this->assertEquals("\r\n", $object->getText());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\BreakElement', $object->setText());
-        $this->assertEquals("\r\n",$object->getText());
+        $this->assertEquals("\r\n", $object->getText());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\BreakElement', $object->setText('AAA'));
-        $this->assertEquals("\r\n",$object->getText());
+        $this->assertEquals("\r\n", $object->getText());
     }
     
     public function testFont ()
     {
-    	$object = new BreakElement();
-    	$this->assertNull($object->getFont());
+        $object = new BreakElement();
+        $this->assertNull($object->getFont());
     }
     
     /**

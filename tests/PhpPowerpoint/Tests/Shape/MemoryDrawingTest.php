@@ -52,7 +52,7 @@ class MemoryDrawingTest extends \PHPUnit_Framework_TestCase
         
         $width = rand(1, 100);
         $height = rand(100, 200);
-        $gdImage = @imagecreatetruecolor($width, $height) or die('Cannot Initialize new GD image stream');
+        $gdImage = @imagecreatetruecolor($width, $height);
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\MemoryDrawing', $object->setImageResource($gdImage));
         $this->assertTrue(is_resource($object->getImageResource()));
         $this->assertEquals($width, $object->getWidth());

@@ -44,7 +44,7 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
     
     public function testAlignment ()
     {
-    	$object = new Paragraph();
+        $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->getAlignment());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setAlignment(new Alignment()));
     }
@@ -54,7 +54,7 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
      */
     public function testBulletStyle ()
     {
-    	$object = new Paragraph();
+        $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->getBulletStyle());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setBulletStyle());
         $this->assertNull($object->getBulletStyle());
@@ -67,7 +67,7 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
      */
     public function testFont ()
     {
-    	$object = new Paragraph();
+        $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setFont());
         $this->assertNull($object->getFont());
@@ -80,9 +80,9 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
      */
     public function testHashCode ()
     {
-    	$object = new Paragraph();
-    	$oElement = new TextElement();
-    	$object->addText($oElement);
+        $object = new Paragraph();
+        $oElement = new TextElement();
+        $object->addText($oElement);
         $this->assertEquals(md5($oElement->getHashCode().$object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
     }
     
@@ -91,8 +91,8 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
      */
     public function testHashIndex ()
     {
-    	$object = new Paragraph();
-    	$value = rand(1, 100);
+        $object = new Paragraph();
+        $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -102,16 +102,16 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
      */
     public function testRichTextElements ()
     {
-    	$object = new Paragraph();
+        $object = new Paragraph();
         $this->assertInternalType('array', $object->getRichTextElements());
         $this->assertEmpty($object->getRichTextElements());
         $object->createBreak();
         $this->assertCount(1, $object->getRichTextElements());
         
         $array = array(
-        	new TextElement(),
-        	new TextElement(),
-        	new TextElement(),
+            new TextElement(),
+            new TextElement(),
+            new TextElement(),
         );
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setRichTextElements($array));
         $this->assertCount(3, $object->getRichTextElements());
@@ -132,7 +132,7 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
      */
     public function testText ()
     {
-    	$object = new Paragraph();
+        $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->addText(new TextElement()));
         $this->assertcount(1, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\TextElement', $object->createText());
