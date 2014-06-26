@@ -264,5 +264,6 @@ class PlotArea implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

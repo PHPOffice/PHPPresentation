@@ -252,5 +252,6 @@ class View3D implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

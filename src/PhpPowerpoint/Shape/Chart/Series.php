@@ -115,6 +115,13 @@ class Series implements ComparableInterface
     private $labelPosition = 'ctr';
 
     /**
+     * Hash index
+     *
+     * @var string
+     */
+    private $hashIndex;
+
+    /**
      * Create a new \PhpOffice\PhpPowerpoint\Shape\Chart\Series instance
      *
      * @param string $title  Title
@@ -398,13 +405,6 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Hash index
-     *
-     * @var string
-     */
-    private $hashIndex;
-
-    /**
      * Get hash index
      *
      * Note that this index may vary during script execution! Only reliable moment is
@@ -428,5 +428,6 @@ class Series implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

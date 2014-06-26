@@ -66,16 +66,6 @@ abstract class AbstractType implements ComparableInterface
     }
 
     /**
-     * Get hash code
-     *
-     * @return string Hash code
-     */
-    public function getHashCode()
-    {
-        return md5(__CLASS__);
-    }
-
-    /**
      * Get hash index
      *
      * Note that this index may vary during script execution! Only reliable moment is
@@ -99,5 +89,6 @@ abstract class AbstractType implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }
