@@ -30,49 +30,49 @@ class View3DTest extends \PHPUnit_Framework_TestCase
     {
         $object = new View3D();
         $value = rand(20, 20000);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setDepthPercent());
         $this->assertEquals(100, $object->getDepthPercent());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setDepthPercent($value));
         $this->assertEquals($value, $object->getDepthPercent());
     }
-    
+
     public function testHashIndex()
     {
         $object = new View3D();
         $value = rand(1, 100);
-        
+
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setHashIndex($value));
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
     public function testHeightPercent()
     {
         $object = new View3D();
         $value = rand(5, 500);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setHeightPercent());
         $this->assertEquals(100, $object->getHeightPercent());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setHeightPercent($value));
         $this->assertEquals($value, $object->getHeightPercent());
     }
-    
+
     public function testPerspective()
     {
         $object = new View3D();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setPerspective());
         $this->assertEquals(30, $object->getPerspective());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setPerspective($value));
         $this->assertEquals($value, $object->getPerspective());
     }
-    
+
     public function testRightAngleAxes()
     {
         $object = new View3D();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setRightAngleAxes());
         $this->assertTrue($object->hasRightAngleAxes());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setRightAngleAxes(true));
@@ -80,23 +80,23 @@ class View3DTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setRightAngleAxes(false));
         $this->assertFalse($object->hasRightAngleAxes());
     }
-    
+
     public function testRotationX()
     {
         $object = new View3D();
         $value = rand(-90, 90);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setRotationX());
         $this->assertEquals(0, $object->getRotationX());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setRotationX($value));
         $this->assertEquals($value, $object->getRotationX());
     }
-    
+
     public function testRotationY()
     {
         $object = new View3D();
         $value = rand(-90, 90);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setRotationY());
         $this->assertEquals(0, $object->getRotationY());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->setRotationY($value));

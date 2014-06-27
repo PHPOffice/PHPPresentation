@@ -34,7 +34,7 @@ class IteratorTest extends \PHPUnit_Framework_TestCase
     {
         $oPHPPowerPoint = new PhpPowerpoint();
         $oPHPPowerPoint->addSlide(new Slide());
-        
+
         $object = new Iterator($oPHPPowerPoint);
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->current());

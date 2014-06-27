@@ -28,93 +28,93 @@ use PhpOffice\PhpPowerpoint\Style\Font;
  *
  * @coversDefaultClass PhpOffice\PhpPowerpoint\Shape\Chart\Legend
  */
-class LegendTest extends \PHPUnit_Framework_TestCase
+class AxisTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
         $object = new Legend();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->getBorder());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->getFill());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->getAlignment());
     }
-    
+
     public function testAlignment()
     {
         $object = new Legend();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setAlignment(new Alignment()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->getAlignment());
     }
-    
+
     public function testFont()
     {
         $object = new Legend();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setFont());
         $this->assertNull($object->getFont());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setFont(new Font()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
     }
-    
+
     public function testHashIndex()
     {
         $object = new Legend();
         $value = rand(1, 100);
-        
+
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setHashIndex($value));
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
     public function testHeight()
     {
         $object = new Legend();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setHeight());
         $this->assertEquals(0, $object->getHeight());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setHeight($value));
         $this->assertEquals($value, $object->getHeight());
     }
-    
+
     public function testOffsetX()
     {
         $object = new Legend();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setOffsetX());
         $this->assertEquals(0, $object->getOffsetX());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setOffsetX($value));
         $this->assertEquals($value, $object->getOffsetX());
     }
-    
+
     public function testOffsetY()
     {
         $object = new Legend();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setOffsetY());
         $this->assertEquals(0, $object->getOffsetY());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setOffsetY($value));
         $this->assertEquals($value, $object->getOffsetY());
     }
-    
+
     public function testPosition()
     {
         $object = new Legend();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setPosition());
         $this->assertEquals(Legend::POSITION_RIGHT, $object->getPosition());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setPosition(Legend::POSITION_BOTTOM));
         $this->assertEquals(Legend::POSITION_BOTTOM, $object->getPosition());
     }
-    
+
     public function testVisible()
     {
         $object = new Legend();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setVisible());
         $this->assertTrue($object->isVisible());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setVisible(true));
@@ -122,12 +122,12 @@ class LegendTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setVisible(false));
         $this->assertFalse($object->isVisible());
     }
-    
+
     public function testWidth()
     {
         $object = new Legend();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $object->setWidth($value));

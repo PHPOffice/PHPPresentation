@@ -37,7 +37,7 @@ class FileTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(File::fileExists('zip://'.$pathResources.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#404.xml'));
         $this->assertFalse(File::fileExists('zip://'.$pathResources.'files'.DIRECTORY_SEPARATOR.'404.pptx#404.xml'));
     }
-    
+
     /**
      */
     public function testRealPath()

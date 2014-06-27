@@ -15,7 +15,7 @@
  * @link        https://github.com/PHPOffice/PHPPowerPoint
  */
 
-namespace PhpOffice\PhpPowerpoint\Tests;
+namespace PhpOffice\PhpPowerpoint\Tests\Style;
 
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Style\Font;
@@ -30,7 +30,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct ()
+    public function testConstruct()
     {
         $object = new Font();
         $this->assertEquals('Calibri', $object->getName());
@@ -48,7 +48,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set color
      */
-    public function testSetGetColor ()
+    public function testSetGetColor()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setColor());
@@ -61,7 +61,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set name
      */
-    public function testSetGetName ()
+    public function testSetGetName()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setName());
@@ -75,7 +75,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set size
      */
-    public function testSetGetSize ()
+    public function testSetGetSize()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSize());
@@ -90,7 +90,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set underline
      */
-    public function testSetGetUnderline ()
+    public function testSetGetUnderline()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setUnderline());
@@ -104,7 +104,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set bold
      */
-    public function testSetIsBold ()
+    public function testSetIsBold()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setBold());
@@ -120,7 +120,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set italic
      */
-    public function testSetIsItalic ()
+    public function testSetIsItalic()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setItalic());
@@ -136,7 +136,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set strikethrough
      */
-    public function testSetIsStriketrough ()
+    public function testSetIsStriketrough()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough());
@@ -152,7 +152,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set subscript
      */
-    public function testSetIsSubScript ()
+    public function testSetIsSubScript()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSubScript());
@@ -172,7 +172,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set superscript
      */
-    public function testSetIsSuperScript ()
+    public function testSetIsSuperScript()
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setSuperScript());
@@ -192,7 +192,7 @@ class FontTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex ()
+    public function testSetGetHashIndex()
     {
         $object = new Font();
         $value = rand(1, 100);

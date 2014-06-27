@@ -15,7 +15,7 @@
  * @link        https://github.com/PHPOffice/PHPPowerPoint
  */
 
-namespace PhpOffice\PhpPowerpoint\Tests;
+namespace PhpOffice\PhpPowerpoint\Tests\Style;
 
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Style\Fill;
@@ -30,7 +30,7 @@ class FillTest extends \PHPUnit_Framework_TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct ()
+    public function testConstruct()
     {
         $object = new Fill();
         $this->assertEquals(Fill::FILL_NONE, $object->getFillType());
@@ -44,7 +44,7 @@ class FillTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set end color
      */
-    public function testSetGetEndColor ()
+    public function testSetGetEndColor()
     {
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->setEndColor());
@@ -57,7 +57,7 @@ class FillTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set fill type
      */
-    public function testSetGetFillType ()
+    public function testSetGetFillType()
     {
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->setFillType());
@@ -69,7 +69,7 @@ class FillTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set rotation
      */
-    public function testSetGetRotation ()
+    public function testSetGetRotation()
     {
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->setRotation());
@@ -82,7 +82,7 @@ class FillTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set start color
      */
-    public function testSetGetStartColor ()
+    public function testSetGetStartColor()
     {
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->setStartColor());
@@ -95,7 +95,7 @@ class FillTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex ()
+    public function testSetGetHashIndex()
     {
         $object = new Fill();
         $value = rand(1, 100);

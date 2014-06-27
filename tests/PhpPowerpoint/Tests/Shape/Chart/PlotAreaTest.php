@@ -32,48 +32,48 @@ class PlotAreaTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $object = new PlotArea();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->getAxisX());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->getAxisY());
     }
-    
+
     public function testHashIndex()
     {
         $object = new PlotArea();
         $value = rand(1, 100);
-        
+
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setHashIndex($value));
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
     public function testHeight()
     {
         $object = new PlotArea();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setHeight());
         $this->assertEquals(0, $object->getHeight());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setHeight($value));
         $this->assertEquals($value, $object->getHeight());
     }
-    
+
     public function testOffsetX()
     {
         $object = new PlotArea();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setOffsetX());
         $this->assertEquals(0, $object->getOffsetX());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setOffsetX($value));
         $this->assertEquals($value, $object->getOffsetX());
     }
-    
+
     public function testOffsetY()
     {
         $object = new PlotArea();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setOffsetY());
         $this->assertEquals(0, $object->getOffsetY());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setOffsetY($value));
@@ -83,12 +83,11 @@ class PlotAreaTest extends \PHPUnit_Framework_TestCase
     public function testType()
     {
         $object = new PlotArea();
-        $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setType(new Bar3D()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\AbstractType', $object->getType());
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Chart type has not been set.
@@ -103,7 +102,7 @@ class PlotAreaTest extends \PHPUnit_Framework_TestCase
     {
         $object = new PlotArea();
         $value = rand(0, 100);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setWidth($value));

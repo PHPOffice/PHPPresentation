@@ -19,7 +19,6 @@ namespace PhpOffice\PhpPowerpoint\Tests\Shape\RichText;
 
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
-use PhpOffice\PhpPowerpoint\Style\Font;
 
 /**
  * Test class for TextElement element
@@ -35,18 +34,18 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
     {
         $object = new TextElement();
         $this->assertEquals('', $object->getText());
-        
+
         $object = new TextElement('AAA');
         $this->assertEquals('AAA', $object->getText());
     }
-    
-    public function testFont ()
+
+    public function testFont()
     {
         $object = new TextElement();
         $this->assertNull($object->getFont());
     }
-    
-    public function testHyperlink ()
+
+    public function testHyperlink()
     {
         $object = new TextElement();
         $this->assertFalse($object->hasHyperlink());
@@ -58,8 +57,8 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($object->hasHyperlink());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->getHyperlink());
     }
-    
-    public function testText ()
+
+    public function testText()
     {
         $object = new TextElement();
         $this->assertEquals('', $object->getText());
@@ -68,11 +67,11 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\TextElement', $object->setText('AAA'));
         $this->assertEquals('AAA', $object->getText());
     }
-    
+
     /**
      * Test get/set hash index
      */
-    public function testHashCode ()
+    public function testHashCode()
     {
         $object = new TextElement();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());

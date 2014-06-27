@@ -33,10 +33,10 @@ class ScatterTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $object->getData());
         $this->assertEmpty($object->getData());
-        
+
         $array = array(
-        	new Series(),
-        	new Series(),
+            new Series(),
+            new Series(),
         );
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Scatter', $object->setData());
@@ -44,7 +44,7 @@ class ScatterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Scatter', $object->setData($array));
         $this->assertCount(count($array), $object->getData());
     }
-    
+
     public function testSerties()
     {
         $object = new Scatter();
@@ -52,14 +52,14 @@ class ScatterTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Scatter', $object->addSeries(new Series()));
         $this->assertCount(1, $object->getData());
     }
-    
+
     public function testHashCode()
     {
         $oSeries = new Series();
-        
+
         $object = new Scatter();
         $object->addSeries($oSeries);
-        
+
         $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
     }
 }

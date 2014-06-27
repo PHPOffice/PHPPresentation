@@ -33,7 +33,7 @@ class StringTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', String::controlCharacterPHP2OOXML());
         $this->assertEquals('aeiou', String::controlCharacterPHP2OOXML('aeiou'));
         $this->assertEquals('àéîöù', String::controlCharacterPHP2OOXML('àéîöù'));
-        
+
         $value = rand(0, 8);
         $this->assertEquals('_x'.sprintf('%04s', strtoupper(dechex($value))).'_', String::controlCharacterPHP2OOXML(chr($value)));
     }

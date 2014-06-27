@@ -35,7 +35,7 @@ class XMLWriterTest extends \PHPUnit_Framework_TestCase
             $object->text('AAA');
         $object->endElement();
         $this->assertEquals('<element>AAA</element>'.chr(10), $object->getData());
-        
+
         $object = new XMLWriter(XMLWriter::STORAGE_DISK);
         $object->startElement('element');
             $object->text('BBB');

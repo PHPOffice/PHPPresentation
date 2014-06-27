@@ -34,7 +34,7 @@ class LineTest extends \PHPUnit_Framework_TestCase
     {
         $value = rand(1, 100);
         $object = new Line($value, $value, $value, $value);
-        
+
         $this->assertEquals(Border::LINE_SINGLE, $object->getBorder()->getLineStyle());
         $this->assertEquals($value, $object->getOffsetX());
         $this->assertEquals($value, $object->getOffsetY());

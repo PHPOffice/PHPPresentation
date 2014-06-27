@@ -38,17 +38,17 @@ class BreakElementTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\BreakElement', $object->setText('AAA'));
         $this->assertEquals("\r\n", $object->getText());
     }
-    
-    public function testFont ()
+
+    public function testFont()
     {
         $object = new BreakElement();
         $this->assertNull($object->getFont());
     }
-    
+
     /**
      * Test get/set hash index
      */
-    public function testHashCode ()
+    public function testHashCode()
     {
         $object = new BreakElement();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());

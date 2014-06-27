@@ -15,7 +15,7 @@
  * @link        https://github.com/PHPOffice/PHPPowerPoint
  */
 
-namespace PhpOffice\PhpPowerpoint\Tests;
+namespace PhpOffice\PhpPowerpoint\Tests\Style;
 
 use PhpOffice\PhpPowerpoint\Style\Color;
 
@@ -29,7 +29,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct ()
+    public function testConstruct()
     {
         $object = new Color();
         $this->assertEquals(Color::COLOR_BLACK, $object->getARGB());
@@ -40,7 +40,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set ARGB
      */
-    public function testSetGetARGB ()
+    public function testSetGetARGB()
     {
         $object = new Color();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->setARGB());
@@ -54,7 +54,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set RGB
      */
-    public function testSetGetRGB ()
+    public function testSetGetRGB()
     {
         $object = new Color();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Color', $object->setRGB());
@@ -74,7 +74,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex ()
+    public function testSetGetHashIndex()
     {
         $object = new Color();
         $value = rand(1, 100);

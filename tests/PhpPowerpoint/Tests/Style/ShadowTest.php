@@ -15,7 +15,7 @@
  * @link        https://github.com/PHPOffice/PHPPowerPoint
  */
 
-namespace PhpOffice\PhpPowerpoint\Tests;
+namespace PhpOffice\PhpPowerpoint\Tests\Style;
 
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Style\Shadow;
@@ -30,7 +30,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct ()
+    public function testConstruct()
     {
         $object = new Shadow();
         $this->assertFalse($object->isVisible());
@@ -46,7 +46,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set alignment
      */
-    public function testSetGetAlignment ()
+    public function testSetGetAlignment()
     {
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setAlignment());
@@ -58,7 +58,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set alpha
      */
-    public function testSetGetAlpha ()
+    public function testSetGetAlpha()
     {
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setAlpha());
@@ -71,7 +71,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set blur radius
      */
-    public function testSetGetBlurRadius ()
+    public function testSetGetBlurRadius()
     {
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setBlurRadius());
@@ -84,7 +84,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set color
      */
-    public function testSetGetColor ()
+    public function testSetGetColor()
     {
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setColor());
@@ -97,7 +97,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set direction
      */
-    public function testSetGetDirection ()
+    public function testSetGetDirection()
     {
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setDirection());
@@ -110,7 +110,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set distance
      */
-    public function testSetGetDistance ()
+    public function testSetGetDistance()
     {
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setDistance());
@@ -123,7 +123,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex ()
+    public function testSetGetHashIndex()
     {
         $object = new Shadow();
         $value = rand(1, 100);
@@ -134,7 +134,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set visible
      */
-    public function testSetIsVisible ()
+    public function testSetIsVisible()
     {
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->setVisible());

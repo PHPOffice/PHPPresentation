@@ -38,7 +38,7 @@ class HyperlinkTest extends \PHPUnit_Framework_TestCase
         $object = new Hyperlink('http://test.com');
         $this->assertEquals('http://test.com', $object->getUrl());
         $this->assertEmpty($object->getTooltip());
-        
+
         $object = new Hyperlink('http://test.com', 'Test');
         $this->assertEquals('http://test.com', $object->getUrl());
         $this->assertEquals('Test', $object->getTooltip());
@@ -47,7 +47,7 @@ class HyperlinkTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get hash code
      */
-    public function testGetHashCode ()
+    public function testGetHashCode()
     {
         $object = new Hyperlink();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());
@@ -62,14 +62,14 @@ class HyperlinkTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex ()
+    public function testSetGetHashIndex()
     {
         $object = new Hyperlink();
         $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
     public function testGetSetSlideNumber()
     {
         $object = new Hyperlink();
@@ -77,43 +77,43 @@ class HyperlinkTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->setSlideNumber());
         $this->assertEquals(1, $object->getSlideNumber());
         $this->assertEquals('ppaction://hlinksldjump', $object->getUrl());
-        
+
         $value = rand(1, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->setSlideNumber($value));
         $this->assertEquals($value, $object->getSlideNumber());
         $this->assertEquals('ppaction://hlinksldjump', $object->getUrl());
     }
-    
+
     public function testGetSetTooltip()
     {
         $object = new Hyperlink();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->setTooltip());
         $this->assertEmpty($object->getTooltip());
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->setTooltip('TEST'));
         $this->assertEquals('TEST', $object->getTooltip());
     }
-    
+
     public function testGetSetUrl()
     {
         $object = new Hyperlink();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->setUrl());
         $this->assertEmpty($object->getUrl());
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->setUrl('http://www.github.com'));
         $this->assertEquals('http://www.github.com', $object->getUrl());
     }
-    
+
     public function testIsInternal()
     {
         $object = new Hyperlink();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->setSlideNumber());
         $this->assertTrue($object->isInternal());
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Hyperlink', $object->setUrl('http://www.github.com'));
         $this->assertFalse($object->isInternal());
     }
