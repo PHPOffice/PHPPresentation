@@ -144,7 +144,9 @@ abstract class AbstractShape implements ComparableInterface
         if (is_null($this->slide)) {
             // Add drawing to \PhpOffice\PhpPowerpoint\Slide
             $this->slide = $pValue;
-            $this->slide->getShapeCollection()->append($this);
+            if (!is_null($this->slide)) {
+                $this->slide->getShapeCollection()->append($this);
+            }
         } else {
             if ($pOverrideOld) {
                 // Remove drawing from old \PhpOffice\PhpPowerpoint\Slide
@@ -408,20 +410,5 @@ abstract class AbstractShape implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
-    }
-
-    /**
-     * Implement PHP __clone to create a deep clone, not just a shallow copy.
-     */
-    public function __clone()
-    {
-        $vars = get_object_vars($this);
-        foreach ($vars as $key => $value) {
-            if (is_object($value)) {
-                $this->$key = clone $value;
-            } else {
-                $this->$key = $value;
-            }
-        }
     }
 }

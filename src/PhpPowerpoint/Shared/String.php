@@ -30,20 +30,6 @@ class String
     private static $controlCharacters = array();
 
     /**
-     * Is mbstring extension avalable?
-     *
-     * @var boolean
-     */
-    private static $isMbstringEnabled;
-
-    /**
-     * Is iconv extension avalable?
-     *
-     * @var boolean
-     */
-    private static $isIconvEnabled;
-
-    /**
      * Build control characters array
      */
     private static function buildControlCharacters()
@@ -55,61 +41,6 @@ class String
                 self::$controlCharacters[$find] = $replace;
             }
         }
-    }
-
-    /**
-     * Get whether mbstring extension is available
-     *
-     * @return boolean
-     */
-    public static function isMbstringEnabled()
-    {
-        if (isset(self::$isMbstringEnabled)) {
-            return self::$isMbstringEnabled;
-        }
-
-        self::$isMbstringEnabled = function_exists('mb_convert_encoding') ? true : false;
-
-        return self::$isMbstringEnabled;
-    }
-
-    /**
-     * Get whether iconv extension is available
-     *
-     * @return boolean
-     */
-    public static function isIconvEnabled()
-    {
-        if (isset(self::$isIconvEnabled)) {
-            return self::$isIconvEnabled;
-        }
-
-        self::$isIconvEnabled = function_exists('iconv') ? true : false;
-
-        return self::$isIconvEnabled;
-    }
-
-    /**
-     * Convert from OpenXML escaped control character to PHP control character
-     *
-     * Excel 2007 team:
-     * ----------------
-     * That's correct, control characters are stored directly in the shared-strings table.
-     * We do encode characters that cannot be represented in XML using the following escape sequence:
-     * _xHHHH_ where H represents a hexadecimal character in the character's value...
-     * So you could end up with something like _x0008_ in a string (either in a cell value (<v>)
-     * element or in the shared string <t> element.
-     *
-     * @param  string $value Value to unescape
-     * @return string
-     */
-    public static function controlCharacterOOXML2PHP($value = '')
-    {
-        if (empty(self::$controlCharacters)) {
-            self::buildControlCharacters();
-        }
-
-        return str_replace(array_keys(self::$controlCharacters), array_values(self::$controlCharacters), $value);
     }
 
     /**
@@ -133,16 +64,5 @@ class String
         }
 
         return str_replace(array_values(self::$controlCharacters), array_keys(self::$controlCharacters), $value);
-    }
-
-    /**
-     * Check if a string contains UTF8 data
-     *
-     * @param  string  $value
-     * @return boolean
-     */
-    public static function isUTF8($value = '')
-    {
-        return utf8_encode(utf8_decode($value)) === $value;
     }
 }
