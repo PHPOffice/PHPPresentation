@@ -36,4 +36,35 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($object->canRead($file));
     }
+    
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Could not open  for reading! File does not exist.
+     */
+    public function testLoadFileNotExists()
+    {
+    	$object = new Serialized();
+    	$object->load('');
+    }
+    
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Could not open  for reading! File does not exist.
+     */
+    public function testLoadFileBadFormat()
+    {
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_01_Simple.pptx';
+    	$object = new Serialized();
+    	$object->load($file);
+    }
+    
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage Could not open  for reading! File does not exist.
+     */
+    public function testFileSupportsNotExists()
+    {
+    	$object = new Serialized();
+    	$object->fileSupportsUnserializePHPPowerPoint('');
+    }
 }
