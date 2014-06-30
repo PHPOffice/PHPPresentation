@@ -49,7 +49,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
+     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized: 
      */
     public function testLoadFileBadFormat()
     {
