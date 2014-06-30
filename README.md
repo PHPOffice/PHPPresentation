@@ -10,9 +10,9 @@
 
 PHPPowerPoint is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF). 
 
-PHPPowerPoint is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPowerPoint/blob/develop/COPYING.LESSER). PHPPowerPoint is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPowerPoint) and [unit testing](http://phpoffice.github.io/PHPPowerPoint/coverage/develop/). You can learn more about PHPWord by reading the [Developers' Documentation](http://phppowerpoint.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPowerPoint/docs/develop/).
+PHPPowerPoint is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPowerPoint/blob/develop/COPYING.LESSER). PHPPowerPoint is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPowerPoint) and [unit testing](http://phpoffice.github.io/PHPPowerPoint/coverage/develop/). You can learn more about PHPPowerPoint by reading the [Developers' Documentation](http://phppowerpoint.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPowerPoint/docs/develop/).
 
-Read more about PHPWord:
+Read more about PHPPowerPoint:
 
 - [Features](#features)
 - [Requirements](#requirements)
@@ -20,8 +20,8 @@ Read more about PHPWord:
 - [Getting started](#getting-started)
 - [Known issues](#known-issues)
 - [Contributing](#contributing)
-- [Developers' Documentation](http://phpword.readthedocs.org/)
-- [API Documentation](http://phpoffice.github.io/PHPWord/docs/master/)
+- [Developers' Documentation](http://phppowerpoint.readthedocs.org/)
+- [API Documentation](http://phpoffice.github.io/PHPPowerPoint/docs/master/)
 
 ### Features
 
@@ -68,7 +68,7 @@ require_once 'path/to/PhpPowerpoint/src/PhpPowerpoint/Autoloader.php';
 
 ## Getting started
 
-The following is a basic usage example of the PHPWord library.
+The following is a basic usage example of the PHPPowerPoint library.
 
 ```php
 require_once 'src/PhpPowerpoint/Autoloader.php';
