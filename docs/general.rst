@@ -57,7 +57,7 @@ name. Use the following functions:
 
 .. code-block:: php
 
-    $properties = $phpWord->getProperties();
+    $properties = $phpPowerpoint->getProperties();
     $properties->setCreator('My name');
     $properties->setCompany('My factory');
     $properties->setTitle('My title');
