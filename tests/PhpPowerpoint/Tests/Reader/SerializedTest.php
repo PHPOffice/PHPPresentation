@@ -43,8 +43,8 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadFileNotExists()
     {
-    	$object = new Serialized();
-    	$object->load('');
+        $object = new Serialized();
+        $object->load('');
     }
     
     /**
@@ -54,8 +54,8 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
     public function testLoadFileBadFormat()
     {
         $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_01_Simple.pptx';
-    	$object = new Serialized();
-    	$object->load($file);
+        $object = new Serialized();
+        $object->load($file);
     }
     
     /**
@@ -64,7 +64,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
      */
     public function testFileSupportsNotExists()
     {
-    	$object = new Serialized();
-    	$object->fileSupportsUnserializePHPPowerPoint('');
+        $object = new Serialized();
+        $object->fileSupportsUnserializePHPPowerPoint('');
     }
 }
