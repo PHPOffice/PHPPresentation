@@ -35,11 +35,11 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->getPlotArea());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->getView3D());
     }
-    
+
     public function testIncludeSpreadsheet()
     {
         $object = new Chart();
-    
+
         $this->assertFalse($object->hasIncludedSpreadsheet());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart', $object->setIncludeSpreadsheet());
         $this->assertFalse($object->hasIncludedSpreadsheet());

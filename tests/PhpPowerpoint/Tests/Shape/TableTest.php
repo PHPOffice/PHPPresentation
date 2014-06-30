@@ -26,39 +26,39 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
  */
 class TableTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstruct ()
+    public function testConstruct()
     {
         $object = new Table();
         $this->assertEmpty($object->getRows());
         $this->assertFalse($object->isResizeProportional());
     }
-    
-    public function testRows ()
+
+    public function testRows()
     {
         $object = new Table();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Row', $object->createRow());
         $this->assertCount(1, $object->getRows());
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Row', $object->getRow(0));
         $this->assertNull($object->getRow(1, true));
     }
-    
+
     /**
      * @expectedException \Exception
      * expectedExceptionMessage Row number out of bounds.
      */
-    public function testGetRowException ()
+    public function testGetRowException()
     {
         $object = new Table();
         $object->getRow();
     }
-    
+
     public function testHashCode()
     {
         $object = new Table();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());
-        
+
         $row = $object->createRow();
         $this->assertEquals(md5($row->getHashCode().get_class($object)), $object->getHashCode());
     }

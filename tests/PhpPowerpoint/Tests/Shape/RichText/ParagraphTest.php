@@ -41,18 +41,18 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->getBulletStyle());
     }
-    
-    public function testAlignment ()
+
+    public function testAlignment()
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Alignment', $object->getAlignment());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setAlignment(new Alignment()));
     }
-    
+
     /**
      * Test get/set bullet style
      */
-    public function testBulletStyle ()
+    public function testBulletStyle()
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->getBulletStyle());
@@ -61,11 +61,11 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setBulletStyle(new Bullet()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Bullet', $object->getBulletStyle());
     }
-    
+
     /**
      * Test get/set font
      */
-    public function testFont ()
+    public function testFont()
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
@@ -74,40 +74,40 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setFont(new Font()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
     }
-    
+
     /**
      * Test get/set hashCode
      */
-    public function testHashCode ()
+    public function testHashCode()
     {
         $object = new Paragraph();
         $oElement = new TextElement();
         $object->addText($oElement);
         $this->assertEquals(md5($oElement->getHashCode().$object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
     }
-    
+
     /**
      * Test get/set hashIndex
      */
-    public function testHashIndex ()
+    public function testHashIndex()
     {
         $object = new Paragraph();
         $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
     /**
      * Test get/set richTextElements
      */
-    public function testRichTextElements ()
+    public function testRichTextElements()
     {
         $object = new Paragraph();
         $this->assertInternalType('array', $object->getRichTextElements());
         $this->assertEmpty($object->getRichTextElements());
         $object->createBreak();
         $this->assertCount(1, $object->getRichTextElements());
-        
+
         $array = array(
             new TextElement(),
             new TextElement(),
@@ -116,21 +116,21 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->setRichTextElements($array));
         $this->assertCount(3, $object->getRichTextElements());
     }
-    
+
     /**
      * @expectedException \Exception
      * expectedExceptionMessage Invalid \PhpOffice\PhpPowerpoint\Shape\RichText\TextElementInterface[] array passed.
      */
-    public function testRichTextElementsException ()
+    public function testRichTextElementsException()
     {
         $object = new Paragraph();
         $object->setRichTextElements(1);
     }
-    
+
     /**
      * Test text methods
      */
-    public function testText ()
+    public function testText()
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->addText(new TextElement()));
@@ -146,6 +146,6 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Run', $object->createTextRun('BBB'));
         $this->assertcount(6, $object->getRichTextElements());
         $this->assertEquals('AAA'."\r\n".'BBB', $object->getPlainText());
-        $this->assertEquals('AAA'."\r\n".'BBB', (string)$object);
+        $this->assertEquals('AAA'."\r\n".'BBB', (string) $object);
     }
 }

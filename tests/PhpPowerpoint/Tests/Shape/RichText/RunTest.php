@@ -35,20 +35,20 @@ class RunTest extends \PHPUnit_Framework_TestCase
         $object = new Run();
         $this->assertEquals('', $object->getText());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
-        
+
         $object = new Run('BBB');
         $this->assertEquals('BBB', $object->getText());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
     }
-    
-    public function testFont ()
+
+    public function testFont()
     {
         $object = new Run();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Run', $object->setFont(new Font()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->getFont());
     }
-    
-    public function testText ()
+
+    public function testText()
     {
         $object = new Run();
         $this->assertEquals('', $object->getText());
@@ -60,11 +60,11 @@ class RunTest extends \PHPUnit_Framework_TestCase
         $object = new Run('BBB');
         $this->assertEquals('BBB', $object->getText());
     }
-    
+
     /**
      * Test get/set hash index
      */
-    public function testHashCode ()
+    public function testHashCode()
     {
         $object = new Run();
         $this->assertEquals(md5($object->getFont()->getHashCode().get_class($object)), $object->getHashCode());

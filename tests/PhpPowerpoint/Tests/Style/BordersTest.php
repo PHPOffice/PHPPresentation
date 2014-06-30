@@ -15,7 +15,7 @@
  * @link        https://github.com/PHPOffice/PHPPowerPoint
  */
 
-namespace PhpOffice\PhpPowerpoint\Tests;
+namespace PhpOffice\PhpPowerpoint\Tests\Style;
 
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Borders;
@@ -30,7 +30,7 @@ class BordersTest extends \PHPUnit_Framework_TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct ()
+    public function testConstruct()
     {
         $object = new Borders();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->getBottom());
@@ -46,7 +46,7 @@ class BordersTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex ()
+    public function testSetGetHashIndex()
     {
         $object = new Borders();
         $value = rand(1, 100);
@@ -57,7 +57,7 @@ class BordersTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash code
      */
-    public function testGetHashCode ()
+    public function testGetHashCode()
     {
         $object = new Borders();
         $this->assertEquals(

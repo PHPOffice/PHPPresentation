@@ -57,10 +57,10 @@ class IOFactoryTest extends \PHPUnit_Framework_TestCase
     {
         IOFactory::createReader();
     }
-    
+
     public function testLoad()
     {
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', IOFactory::load(PHPPOWERPOINT_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'serialized.phppt'));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', IOFactory::load(PHPPOWERPOINT_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'serialized.phppt'));
     }
 
     /**

@@ -41,8 +41,8 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->getFill());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Borders', $object->getBorders());
     }
-    
-    public function testActiveParagraph ()
+
+    public function testActiveParagraph()
     {
         $object = new Cell();
         $this->assertEquals(0, $object->getActiveParagraphIndex());
@@ -56,22 +56,22 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $value = rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
     }
-    
+
     /**
      * @expectedException \Exception
      * expectedExceptionMessage Invalid paragraph count.
      */
-    public function testActiveParagraphException ()
+    public function testActiveParagraphException()
     {
         $object = new Cell();
         $object->setActiveParagraph(1000);
     }
-    
+
     /**
      * @expectedException \Exception
      * expectedExceptionMessage Invalid paragraph count.
      */
-    public function testGetParagraphException ()
+    public function testGetParagraphException()
     {
         $object = new Cell();
         $object->getParagraph(1000);
@@ -80,15 +80,15 @@ class CellTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex ()
+    public function testSetGetHashIndex()
     {
         $object = new Cell();
         $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
-    public function testText ()
+
+    public function testText()
     {
         $object = new Cell();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->addText());
@@ -106,34 +106,34 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
         $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
         $this->assertEquals('ALPHA'."\r\n".'BETA', $object->getPlainText());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', (string)$object);
+        $this->assertEquals('ALPHA'."\r\n".'BETA', (string) $object);
     }
-    
-    public function testParagraphs ()
+
+    public function testParagraphs()
     {
         $object = new Cell();
-        
+
         $array = array(
             new Paragraph(),
             new Paragraph(),
             new Paragraph(),
         );
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setParagraphs($array));
         $this->assertCount(3, $object->getParagraphs());
         $this->assertEquals(2, $object->getActiveParagraphIndex());
     }
-    
+
     /**
      * @expectedException \Exception
      * expectedExceptionMessage Invalid \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[] array passed.
      */
-    public function testParagraphsException ()
+    public function testParagraphsException()
     {
         $object = new Cell();
         $object->setParagraphs(1000);
     }
-    
+
     public function testGetSetBorders()
     {
         $object = new Cell();
@@ -141,19 +141,19 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setBorders(new Borders()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Borders', $object->getBorders());
     }
-    
+
     public function testGetSetColspan()
     {
         $object = new Cell();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setColSpan());
         $this->assertEquals(0, $object->getColSpan());
-        
+
         $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setColSpan($value));
         $this->assertEquals($value, $object->getColSpan());
     }
-    
+
     public function testGetSetFill()
     {
         $object = new Cell();
@@ -161,26 +161,26 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setFill(new Fill()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->getFill());
     }
-    
+
     public function testGetSetRowspan()
     {
         $object = new Cell();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setRowSpan());
         $this->assertEquals(0, $object->getRowSpan());
-        
+
         $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setRowSpan($value));
         $this->assertEquals($value, $object->getRowSpan());
     }
-    
+
     public function testGetSetWidth()
     {
         $object = new Cell();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
-        
+
         $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table\\Cell', $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());

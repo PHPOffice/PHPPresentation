@@ -15,7 +15,7 @@
  * @link        https://github.com/PHPOffice/PHPPowerPoint
  */
 
-namespace PhpOffice\PhpPowerpoint\Tests;
+namespace PhpOffice\PhpPowerpoint\Tests\Reader;
 
 use PhpOffice\PhpPowerpoint\Reader\Serialized;
 

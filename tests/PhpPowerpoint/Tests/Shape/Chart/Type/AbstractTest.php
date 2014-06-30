@@ -18,7 +18,6 @@
 namespace PhpOffice\PhpPowerpoint\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
 
 /**
  * Test class for Scatter element
@@ -34,14 +33,14 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($object->hasAxisX());
         $this->assertTrue($object->hasAxisY());
     }
-    
+
     public function testHashIndex()
     {
-    	$object = new Scatter();
-    	$value = rand(1, 100);
-    
-    	$this->assertEmpty($object->getHashIndex());
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Scatter', $object->setHashIndex($value));
-    	$this->assertEquals($value, $object->getHashIndex());
+        $object = new Scatter();
+        $value = rand(1, 100);
+
+        $this->assertEmpty($object->getHashIndex());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Scatter', $object->setHashIndex($value));
+        $this->assertEquals($value, $object->getHashIndex());
     }
 }

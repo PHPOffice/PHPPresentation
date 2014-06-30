@@ -18,49 +18,45 @@
 namespace PhpOffice\PhpPowerpoint\Tests\Shape\Chart;
 
 use PhpOffice\PhpPowerpoint\Shape\Chart\Axis;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Border;
-use PhpOffice\PhpPowerpoint\Style\Fill;
-use PhpOffice\PhpPowerpoint\Style\Font;
 
 /**
  * Test class for Axis element
  *
  * @coversDefaultClass PhpOffice\PhpPowerpoint\Shape\Chart\Axis
  */
-class AxisTest extends \PHPUnit_Framework_TestCase
+class LegendTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
         $object = new Axis();
-        
+
         $this->assertEquals('Axis Title', $object->getTitle());
     }
-    
+
     public function testFormatCode()
     {
-    	$object = new Axis();
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->setFormatCode());
-    	$this->assertEquals('', $object->getFormatCode());
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->setFormatCode('AAAA'));
-    	$this->assertEquals('AAAA', $object->getFormatCode());
+        $object = new Axis();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->setFormatCode());
+        $this->assertEquals('', $object->getFormatCode());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->setFormatCode('AAAA'));
+        $this->assertEquals('AAAA', $object->getFormatCode());
     }
-    
+
     public function testHashIndex()
     {
         $object = new Axis();
         $value = rand(1, 100);
-        
+
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->setHashIndex($value));
         $this->assertEquals($value, $object->getHashIndex());
     }
-    
+
     public function testTitle()
     {
-    	$object = new Axis();
-    	$this->assertEquals('Axis Title', $object->getTitle());
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->setTitle('AAAA'));
-    	$this->assertEquals('AAAA', $object->getTitle());
+        $object = new Axis();
+        $this->assertEquals('Axis Title', $object->getTitle());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Axis', $object->setTitle('AAAA'));
+        $this->assertEquals('AAAA', $object->getTitle());
     }
 }

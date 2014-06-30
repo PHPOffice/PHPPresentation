@@ -32,7 +32,7 @@ class DrawingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEmpty($object->getPath());
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage File  not found!
@@ -43,43 +43,43 @@ class DrawingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setPath());
     }
-    
+
     public function testPathWithoutVerifyFile()
     {
         $object = new Drawing();
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setPath('', false));
         $this->assertEmpty($object->getPath());
     }
-    
+
     public function testPathWithRealFile()
     {
         $object = new Drawing();
 
         $imagePath = PHPPOWERPOINT_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PHPPowerPointLogo.png';
         //list($width, $height) = getimagesize($imagePath);
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setPath($imagePath, false));
         $this->assertEquals($imagePath, $object->getPath());
         $this->assertEquals(0, $object->getWidth());
         $this->assertEquals(0, $object->getHeight());
     }
-    
+
     public function testGetSetDescription()
     {
         $object = new Drawing();
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setDescription());
         $this->assertEmpty($object->getDescription());
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setDescription('TEST'));
         $this->assertEquals('TEST', $object->getDescription());
     }
-    
+
     public function testGetSetResizeProportional()
     {
         $object = new Drawing();
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setResizeProportional());
         $this->assertTrue($object->isResizeProportional());
 
@@ -88,11 +88,11 @@ class DrawingTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setResizeProportional(true));
         $this->assertTrue($object->isResizeProportional());
     }
-    
+
     public function testGetSetHeightWidth()
     {
         $object = new Drawing();
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setHeight());
@@ -112,7 +112,7 @@ class DrawingTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setHeight($value));
         $this->assertEquals($value, $object->getHeight());
     }
-    
+
     /**
      * Value : Resize Proportional (true)
      */
@@ -132,7 +132,7 @@ class DrawingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($valueHeight, $object->getHeight());
         $this->assertEquals(round($valueHeight * ($valueWidth / $valueHeight)), $object->getWidth());
     }
-    
+
     public function testSetWidthAndHeight()
     {
         $object = new Drawing();
@@ -145,7 +145,7 @@ class DrawingTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setWidthAndHeight($valueHeight, $valueWidth));
         $this->assertEquals($valueHeight, $object->getWidth());
         $this->assertEquals(ceil($valueHeight * ($valueHeight/$valueWidth)), $object->getHeight());
-        
+
         $object = new Drawing();
         $valueWidth = rand(1, 100);
         $valueHeight = $valueWidth / 2;

@@ -33,10 +33,10 @@ class Bar3DTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType('array', $object->getData());
         $this->assertEmpty($object->getData());
-        
+
         $array = array(
-        	new Series(),
-        	new Series(),
+            new Series(),
+            new Series(),
         );
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setData());
@@ -44,7 +44,7 @@ class Bar3DTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setData($array));
         $this->assertCount(count($array), $object->getData());
     }
-    
+
     public function testSerties()
     {
         $object = new Bar3D();
@@ -52,14 +52,14 @@ class Bar3DTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->addSeries(new Series()));
         $this->assertCount(1, $object->getData());
     }
-    
+
     public function testHashCode()
     {
         $oSeries = new Series();
-        
+
         $object = new Bar3D();
         $object->addSeries($oSeries);
-        
+
         $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
     }
 }

@@ -15,7 +15,7 @@
  * @link        https://github.com/PHPOffice/PHPPowerPoint
  */
 
-namespace PhpOffice\PhpPowerpoint\Tests;
+namespace PhpOffice\PhpPowerpoint\Tests\Style;
 
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Color;
@@ -30,7 +30,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct ()
+    public function testConstruct()
     {
         $object = new Border();
         $this->assertEquals(1, $object->getLineWidth());
@@ -43,7 +43,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set color
      */
-    public function testSetGetColor ()
+    public function testSetGetColor()
     {
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->setColor());
@@ -56,7 +56,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set dash style
      */
-    public function testSetGetDashStyle ()
+    public function testSetGetDashStyle()
     {
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->setDashStyle());
@@ -70,7 +70,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex ()
+    public function testSetGetHashIndex()
     {
         $object = new Border();
         $value = rand(1, 100);
@@ -81,7 +81,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set line style
      */
-    public function testSetGetLineStyle ()
+    public function testSetGetLineStyle()
     {
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->setLineStyle());
@@ -95,7 +95,7 @@ class BorderTest extends \PHPUnit_Framework_TestCase
     /**
      * Test get/set line width
      */
-    public function testSetGetLineWidth ()
+    public function testSetGetLineWidth()
     {
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Border', $object->setLineWidth());
