@@ -29,6 +29,7 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content
@@ -330,7 +331,7 @@ class Content extends AbstractPart
                     $this->_writeChart($objWriter, $shape, $shapeId);
                 }
                 */
-                } elseif ($shape instanceof Drawing) {
+                } elseif ($shape instanceof AbstractDrawing) {
                     $this->writePic($objWriter, $shape, $shapeId);
                 }
             }
@@ -365,7 +366,11 @@ class Content extends AbstractPart
         }
         // draw:image
         $objWriter->startElement('draw:image');
-        $objWriter->writeAttribute('xlink:href', 'Pictures/' . md5($shape->getPath()) . '.' . $shape->getExtension());
+        if($shape instanceof Drawing){
+            $objWriter->writeAttribute('xlink:href', 'Pictures/' . md5($shape->getPath()) . '.' . $shape->getExtension());
+        } elseif($shape instanceof MemoryDrawing){
+            $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
+        }
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');
