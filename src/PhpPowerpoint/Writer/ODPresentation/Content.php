@@ -366,9 +366,9 @@ class Content extends AbstractPart
         }
         // draw:image
         $objWriter->startElement('draw:image');
-        if($shape instanceof Drawing){
+        if ($shape instanceof Drawing) {
             $objWriter->writeAttribute('xlink:href', 'Pictures/' . md5($shape->getPath()) . '.' . $shape->getExtension());
-        } elseif($shape instanceof MemoryDrawing){
+        } elseif($shape instanceof MemoryDrawing) {
             $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
         }
         $objWriter->writeAttribute('xlink:type', 'simple');
