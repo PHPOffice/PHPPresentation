@@ -21,6 +21,8 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\Line;
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
@@ -29,7 +31,7 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
+use PhpOffice\PhpPowerpoint\Style\Border;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content
@@ -200,6 +202,31 @@ class Content extends AbstractPart
                         $objWriter->endElement();
                     }
                 }
+                if ($shape instanceof Line) {
+                    // style:style
+                    $objWriter->startElement('style:style');
+                    $objWriter->writeAttribute('style:name', 'gr' . $shapeId);
+                    $objWriter->writeAttribute('style:family', 'graphic');
+                    $objWriter->writeAttribute('style:parent-style-name', 'standard');
+            
+                    // style:graphic-properties
+                    $objWriter->startElement('style:graphic-properties');
+                    $objWriter->writeAttribute('draw:fill', 'none');
+                    switch ($shape->getBorder()->getLineStyle()) {
+                        default:
+                        case Border::LINE_NONE:
+                            $objWriter->writeAttribute('draw:stroke', 'none');
+                            break;
+                        case Border::LINE_SINGLE:
+                            $objWriter->writeAttribute('draw:stroke', 'solid');
+                            break;
+                    }
+                    $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
+                    $objWriter->writeAttribute('svg:stroke-width', number_format(SharedDrawing::pixelsToCentimeters((SharedDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3).'cm');
+                    $objWriter->endElement();
+            
+                    $objWriter->endElement();
+                }
             }
         }
         // Style : Bullet
@@ -324,10 +351,10 @@ class Content extends AbstractPart
                     $this->writeTxt($objWriter, $shape, $shapeId);
                 /*
                 elseif ($shape instanceof Table) {
-                    $this->_writeTable($objWriter, $shape, $shapeId);
+                    $this->_writeTable($objWriter, $shape, $shapeId);*/
                 } elseif ($shape instanceof Line) {
-                    $this->_writeLineShape($objWriter, $shape, $shapeId);
-                } elseif ($shape instanceof Chart) {
+                    $this->writeShapeLine($objWriter, $shape, $shapeId);
+                /*} elseif ($shape instanceof Chart) {
                     $this->_writeChart($objWriter, $shape, $shapeId);
                 }
                 */
@@ -533,6 +560,22 @@ class Content extends AbstractPart
                 $objWriter->endElement();
             }
         }
+        $objWriter->endElement();
+    }
+
+    public function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
+    {
+        // draw:line
+        $objWriter->startElement('draw:line');
+        $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
+        $objWriter->writeAttribute('svg:x1', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y1', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x2', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()+$shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y2', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()+$shape->getHeight()), 3) . 'cm');
+
+            // text:p
+            $objWriter->writeElement('text:p');
+
         $objWriter->endElement();
     }
 }
