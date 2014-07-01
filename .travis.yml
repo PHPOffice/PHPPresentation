@@ -12,6 +12,10 @@ matrix:
   allow_failures:
     - php: hhvm
 
+env:
+    global:
+        - secure: "Sq+6bVtnPsu0mWX8DWQ+9bGAjxMcGorksUiHc4YIXEJsuDfVmVlH8tTD547IeCjDAx9MxXerZ2Z4HSjxTB70VEnJPvZMHI/EZn4Ny31YLHEthdZbV5Gd1h0TGp8VOzPKGShvGrtGBX6MvMfgpK4zuieVWbSfdKeecm8ZNLMpUd4="
+
 before_script:
   ## Packages
   - sudo apt-get -qq update > /dev/null
