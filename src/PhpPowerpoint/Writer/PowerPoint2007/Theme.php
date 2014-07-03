@@ -34,8 +34,9 @@ class Theme extends AbstractPart
     public function writeTheme($masterId = 1)
     {
         // Write theme from layout pack
-        if ($this->getParentWriter() instanceof PowerPoint2007) {
-            $layoutPack     = $this->getParentWriter()->getLayoutPack();
+        $parentWriter = $this->getParentWriter();
+        if ($parentWriter instanceof PowerPoint2007) {
+            $layoutPack     = $parentWriter->getLayoutPack();
             foreach ($layoutPack->getThemes() as $theme) {
                 if ($theme['masterid'] == $masterId) {
                     return $theme['body'];
