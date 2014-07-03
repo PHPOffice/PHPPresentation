@@ -23,6 +23,7 @@ use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shared\File;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes
@@ -38,6 +39,10 @@ class ContentTypes extends AbstractPart
      */
     public function writeContentTypes(PHPPowerPoint $pPHPPowerPoint = null)
     {
+        $parentWriter = $this->getParentWriter();
+        if (!$parentWriter instanceof PowerPoint2007) {
+            throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007');
+        }
         // Create XML writer
         $objWriter = $this->getXMLWriter();
 
@@ -55,11 +60,11 @@ class ContentTypes extends AbstractPart
         $this->writeDefaultContentType($objWriter, 'xml', 'application/xml');
 
         // Themes
-        $masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+        $masterSlides = $parentWriter->getLayoutPack()->getMasterSlides();
         foreach ($masterSlides as $masterSlide) {
             $this->writeOverrideContentType($objWriter, '/ppt/theme/theme' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml');
         }
-
+            
         // Presentation
         $this->writeOverrideContentType($objWriter, '/ppt/presentation.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml');
 
@@ -69,13 +74,13 @@ class ContentTypes extends AbstractPart
         $this->writeOverrideContentType($objWriter, '/docProps/core.xml', 'application/vnd.openxmlformats-package.core-properties+xml');
 
         // Slide masters
-        $masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+        $masterSlides = $parentWriter->getLayoutPack()->getMasterSlides();
         foreach ($masterSlides as $masterSlide) {
             $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml');
         }
 
         // Slide layouts
-        $slideLayouts = $this->getParentWriter()->getLayoutPack()->getLayouts();
+        $slideLayouts = $parentWriter->getLayoutPack()->getLayouts();
         for ($i = 0; $i < count($slideLayouts); ++$i) {
             $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/slideLayout' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml');
         }
@@ -87,19 +92,19 @@ class ContentTypes extends AbstractPart
         }
 
         // Add layoutpack content types
-        $otherRelations = $this->getParentWriter()->getLayoutPack()->getMasterSlideRelations();
+        $otherRelations = $parentWriter->getLayoutPack()->getMasterSlideRelations();
         foreach ($otherRelations as $otherRelation) {
             if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
                 $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
-        $otherRelations = $this->getParentWriter()->getLayoutPack()->getThemeRelations();
+        $otherRelations = $parentWriter->getLayoutPack()->getThemeRelations();
         foreach ($otherRelations as $otherRelation) {
             if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
                 $this->writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
-        $otherRelations = $this->getParentWriter()->getLayoutPack()->getLayoutRelations();
+        $otherRelations = $parentWriter->getLayoutPack()->getLayoutRelations();
         foreach ($otherRelations as $otherRelation) {
             if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
                 $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelation['target'], $otherRelation['contentType']);
@@ -122,24 +127,24 @@ class ContentTypes extends AbstractPart
         $this->writeDefaultContentType($objWriter, 'xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 
         // Other media content types
-        $mediaCount = $this->getParentWriter()->getDrawingHashTable()->count();
+        $mediaCount = $parentWriter->getDrawingHashTable()->count();
         for ($i = 0; $i < $mediaCount; ++$i) {
             $extension = '';
             $mimeType  = '';
 
-            if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof ShapeChart) {
+            if ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof ShapeChart) {
                 // Chart content type
-                $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
+                $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $parentWriter->getDrawingHashTable()->getByIndex($i)->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
             } else {
-                if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
-                    $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
-                    $mimeType  = $this->getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
-                } elseif ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
-                    $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType());
+                if ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
+                    $extension = strtolower($parentWriter->getDrawingHashTable()->getByIndex($i)->getExtension());
+                    $mimeType  = $this->getImageMimeType($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath());
+                } elseif ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
+                    $extension = strtolower($parentWriter->getDrawingHashTable()->getByIndex($i)->getMimeType());
                     $extension = explode('/', $extension);
                     $extension = $extension[1];
 
-                    $mimeType = $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getMimeType();
+                    $mimeType = $parentWriter->getDrawingHashTable()->getByIndex($i)->getMimeType();
                 }
 
                 if (!isset($aMediaContentTypes[$extension])) {

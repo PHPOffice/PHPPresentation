@@ -20,6 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 use PhpOffice\PhpPowerpoint\DocumentLayout;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Workbook
@@ -53,20 +54,22 @@ class Presentation extends AbstractPart
         // Add slide masters
         $relationId    = 1;
         $slideMasterId = 2147483648;
-        $masterSlides  = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
-        $masterSlidesCount = count($masterSlides);
-        // @todo foreach ($masterSlides as $masterSlide)
-        for ($i = 0; $i < $masterSlidesCount; $i++) {
-            // p:sldMasterId
-            $objWriter->startElement('p:sldMasterId');
-            $objWriter->writeAttribute('id', $slideMasterId);
-            $objWriter->writeAttribute('r:id', 'rId' . $relationId++);
-            $objWriter->endElement();
-
-            // Increase identifier
-            $slideMasterId += 12;
+        $parentWriter = $this->getParentWriter();
+        if ($parentWriter instanceof PowerPoint2007) {
+            $masterSlides  = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+            $masterSlidesCount = count($masterSlides);
+            // @todo foreach ($masterSlides as $masterSlide)
+            for ($i = 0; $i < $masterSlidesCount; $i++) {
+                // p:sldMasterId
+                $objWriter->startElement('p:sldMasterId');
+                $objWriter->writeAttribute('id', $slideMasterId);
+                $objWriter->writeAttribute('r:id', 'rId' . $relationId++);
+                $objWriter->endElement();
+    
+                // Increase identifier
+                $slideMasterId += 12;
+            }
         }
-
         $objWriter->endElement();
 
         // theme

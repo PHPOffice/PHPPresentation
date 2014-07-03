@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart
@@ -63,8 +64,12 @@ abstract class AbstractPart
      */
     protected function getXMLWriter()
     {
-        if ($this->getParentWriter()->hasDiskCaching()) {
-            return new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        $parentWriter = $this->getParentWriter();
+        if (!$parentWriter instanceof PowerPoint2007) {
+        	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007');
+        }
+        if ($parentWriter->hasDiskCaching()) {
+            return new XMLWriter(XMLWriter::STORAGE_DISK, $parentWriter->getDiskCachingDirectory());
         } else {
             return new XMLWriter(XMLWriter::STORAGE_MEMORY);
         }

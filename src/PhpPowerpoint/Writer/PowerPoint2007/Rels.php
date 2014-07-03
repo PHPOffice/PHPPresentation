@@ -26,6 +26,7 @@ use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels
@@ -87,11 +88,14 @@ class Rels extends AbstractPart
         // Relation id
         $relationId = 1;
 
-        // Add slide masters
-        $masterSlides = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
-        foreach ($masterSlides as $masterSlide) {
-            // Relationship slideMasters/slideMasterX.xml
-            $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', 'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml');
+        $parentWriter = $this->getParentWriter();
+        if ($parentWriter instanceof PowerPoint2007) {
+            // Add slide masters
+            $masterSlides = $parentWriter->getLayoutPack()->getMasterSlides();
+            foreach ($masterSlides as $masterSlide) {
+                // Relationship slideMasters/slideMasterX.xml
+                $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', 'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml');
+            }
         }
 
         // Add slide theme (only one!)
@@ -132,31 +136,33 @@ class Rels extends AbstractPart
         // Keep content id
         $contentId = 0;
 
-        // Lookup layouts
-        $layoutPack = $this->getParentWriter()->getLayoutPack();
-        $layouts    = array();
-        foreach ($layoutPack->getLayouts() as $key => $layout) {
-            if ($layout['masterid'] == $masterId) {
-                $layouts[$key] = $layout;
+        $parentWriter = $this->getParentWriter();
+        if ($parentWriter instanceof PowerPoint2007) {
+            // Lookup layouts
+            $layouts    = array();
+            $layoutPack = $parentWriter->getLayoutPack();
+            foreach ($layoutPack->getLayouts() as $key => $layout) {
+                if ($layout['masterid'] == $masterId) {
+                    $layouts[$key] = $layout;
+                }
+            }
+        
+            // Write slideLayout relationships
+            foreach ($layouts as $key => $layout) {
+                $this->writeRelationship($objWriter, ++$contentId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $key . '.xml');
+            }
+    
+            // Relationship theme/theme1.xml
+            $this->writeRelationship($objWriter, ++$contentId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $masterId . '.xml');
+    
+            // Other relationships
+            $otherRelations = $layoutPack->getMasterSlideRelations();
+            foreach ($otherRelations as $otherRelation) {
+                if ($otherRelation['masterid'] == $masterId) {
+                    $this->writeRelationship($objWriter, ++$contentId, $otherRelation['type'], $otherRelation['target']);
+                }
             }
         }
-
-        // Write slideLayout relationships
-        foreach ($layouts as $key => $layout) {
-            $this->writeRelationship($objWriter, ++$contentId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $key . '.xml');
-        }
-
-        // Relationship theme/theme1.xml
-        $this->writeRelationship($objWriter, ++$contentId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $masterId . '.xml');
-
-        // Other relationships
-        $otherRelations = $layoutPack->getMasterSlideRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if ($otherRelation['masterid'] == $masterId) {
-                $this->writeRelationship($objWriter, ++$contentId, $otherRelation['type'], $otherRelation['target']);
-            }
-        }
-
         $objWriter->endElement();
 
         // Return
@@ -176,28 +182,31 @@ class Rels extends AbstractPart
         // Create XML writer
         $objWriter = $this->getXMLWriter();
 
-        // Layout pack
-        $layoutPack = $this->getParentWriter()->getLayoutPack();
-
-        // XML header
-        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
-
-        // Relationships
-        $objWriter->startElement('Relationships');
-        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
-
-        // Write slideMaster relationship
-        $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
-
-        // Other relationships
-        $otherRelations = $layoutPack->getLayoutRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if ($otherRelation['layoutId'] == $slideLayoutIndex) {
-                $this->writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
+        $parentWriter = $this->getParentWriter();
+        if ($parentWriter instanceof PowerPoint2007) {
+            // Layout pack
+            $layoutPack = $parentWriter->getLayoutPack();
+    
+            // XML header
+            $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+    
+            // Relationships
+            $objWriter->startElement('Relationships');
+            $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+    
+            // Write slideMaster relationship
+            $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
+    
+            // Other relationships
+            $otherRelations = $layoutPack->getLayoutRelations();
+            foreach ($otherRelations as $otherRelation) {
+                if ($otherRelation['layoutId'] == $slideLayoutIndex) {
+                    $this->writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
+                }
             }
+    
+            $objWriter->endElement();
         }
-
-        $objWriter->endElement();
 
         // Return
         return $objWriter->getData();
@@ -215,26 +224,28 @@ class Rels extends AbstractPart
         // Create XML writer
         $objWriter = $this->getXMLWriter();
 
-        // Layout pack
-        $layoutPack = $this->getParentWriter()->getLayoutPack();
-
-        // XML header
-        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
-
-        // Relationships
-        $objWriter->startElement('Relationships');
-        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
-
-        // Other relationships
-        $otherRelations = $layoutPack->getThemeRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if ($otherRelation['masterid'] == $masterId) {
-                $this->writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
+        $parentWriter = $this->getParentWriter();
+        if ($parentWriter instanceof PowerPoint2007) {
+            // Layout pack
+            $layoutPack = $parentWriter->getLayoutPack();
+    
+            // XML header
+            $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+    
+            // Relationships
+            $objWriter->startElement('Relationships');
+            $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+    
+            // Other relationships
+            $otherRelations = $layoutPack->getThemeRelations();
+            foreach ($otherRelations as $otherRelation) {
+                if ($otherRelation['masterid'] == $masterId) {
+                    $this->writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
+                }
             }
+    
+            $objWriter->endElement();
         }
-
-        $objWriter->endElement();
-
         // Return
         return $objWriter->getData();
     }
@@ -262,10 +273,13 @@ class Rels extends AbstractPart
         $relId = 1;
 
         // Write slideLayout relationship
-        $layoutPack  = $this->getParentWriter()->getLayoutPack();
-        $layoutIndex = $layoutPack->findlayoutIndex($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
-
-        $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . ($layoutIndex + 1) . '.xml');
+        $parentWriter = $this->getParentWriter();
+        if ($parentWriter instanceof PowerPoint2007) {
+            $layoutPack  = $parentWriter->getLayoutPack();
+            $layoutIndex = $layoutPack->findlayoutIndex($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
+    
+            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . ($layoutIndex + 1) . '.xml');
+        }
 
         // Write drawing relationships?
         if ($pSlide->getShapeCollection()->count() > 0) {

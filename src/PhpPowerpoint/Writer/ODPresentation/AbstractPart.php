@@ -63,8 +63,12 @@ abstract class AbstractPart
      */
     protected function getXMLWriter()
     {
-        if ($this->getParentWriter()->hasDiskCaching()) {
-            return new XMLWriter(XMLWriter::STORAGE_DISK, $this->getParentWriter()->getDiskCachingDirectory());
+        $parentWriter = $this->getParentWriter();
+        if (!$parentWriter instanceof ODPresentation) {
+        	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation');
+        }
+        if ($parentWriter->hasDiskCaching()) {
+            return new XMLWriter(XMLWriter::STORAGE_DISK, $parentWriter->getDiskCachingDirectory());
         } else {
             return new XMLWriter(XMLWriter::STORAGE_MEMORY);
         }
