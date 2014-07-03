@@ -151,7 +151,7 @@ abstract class AbstractDrawing extends AbstractShape implements ComparableInterf
         // Resize proportional?
         if ($this->resizeProportional && $pValue != 0) {
             $ratio         = $this->height / $this->width;
-            $this->height = round($ratio * $pValue);
+            $this->height = (int) round($ratio * $pValue);
         }
 
         // Set width
@@ -171,7 +171,7 @@ abstract class AbstractDrawing extends AbstractShape implements ComparableInterf
         // Resize proportional?
         if ($this->resizeProportional && $pValue != 0) {
             $ratio        = $this->width / $this->height;
-            $this->width = round($ratio * $pValue);
+            $this->width = (int) round($ratio * $pValue);
         }
 
         // Set height
@@ -195,10 +195,10 @@ abstract class AbstractDrawing extends AbstractShape implements ComparableInterf
         $yratio = $height / $this->height;
         if ($this->resizeProportional && !($width == 0 || $height == 0)) {
             if (($xratio * $this->height) < $height) {
-                $this->height = ceil($xratio * $this->height);
+                $this->height = (int) ceil($xratio * $this->height);
                 $this->width  = $width;
             } else {
-                $this->width  = ceil($yratio * $this->width);
+                $this->width  = (int) ceil($yratio * $this->width);
                 $this->height = $height;
             }
         }
