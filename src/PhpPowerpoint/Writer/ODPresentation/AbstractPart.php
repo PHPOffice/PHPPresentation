@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart
@@ -65,7 +66,7 @@ abstract class AbstractPart
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof ODPresentation) {
-        	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation');
+            throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation');
         }
         if ($parentWriter->hasDiskCaching()) {
             return new XMLWriter(XMLWriter::STORAGE_DISK, $parentWriter->getDiskCachingDirectory());

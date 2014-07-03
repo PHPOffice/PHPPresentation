@@ -66,7 +66,7 @@ abstract class AbstractPart
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof PowerPoint2007) {
-        	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007');
+            throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007');
         }
         if ($parentWriter->hasDiskCaching()) {
             return new XMLWriter(XMLWriter::STORAGE_DISK, $parentWriter->getDiskCachingDirectory());
