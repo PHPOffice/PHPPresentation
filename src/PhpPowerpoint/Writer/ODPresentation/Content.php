@@ -101,7 +101,7 @@ class Content extends AbstractPart
         $objWriter->startElement('office:automatic-styles');
 
         $shapeId    = 0;
-        foreach ($pPHPPowerPoint->getAllSlides() as $pSlide){
+        foreach ($pPHPPowerPoint->getAllSlides() as $pSlide) {
             // Images
             $shapes = $pSlide->getShapeCollection();
             foreach ($shapes as $shape) {
@@ -250,28 +250,28 @@ class Content extends AbstractPart
                             
                             // style:graphic-properties
                             $objWriter->startElement('style:graphic-properties');
-                            if($shapeCell->getFill()->getFillType() == Fill::FILL_SOLID){
+                            if ($shapeCell->getFill()->getFillType() == Fill::FILL_SOLID) {
                                 $objWriter->writeAttribute('draw:fill', 'solid');
-                                $objWriter->writeAttribute('draw:fill-color', '#'.$shapeCell->getFill()->getStartColor()->getRGB());;
+                                $objWriter->writeAttribute('draw:fill-color', '#'.$shapeCell->getFill()->getStartColor()->getRGB());
                             }
-                            if($shapeCell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR){
+                            if ($shapeCell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
                                 $objWriter->writeAttribute('draw:fill', 'gradient');
                                 $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_'.$shapeCell->getFill()->getHashCode());
                             }
                             $objWriter->endElement();
-                            // <style:graphic-properties 
+                            // <style:graphic-properties
                             
                             // style:paragraph-properties
                             $objWriter->startElement('style:paragraph-properties');
-                            if($shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getTop()->getHashCode()
+                            if ($shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getTop()->getHashCode()
                                 && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getLeft()->getHashCode()
-                                && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getRight()->getHashCode()){
+                                && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getRight()->getHashCode()) {
                                 $lineStyle = 'none';
                                 $lineWidth = number_format($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
-                                	case Border::LINE_SINGLE:
-                                	    $lineStyle = 'solid';
+                                    case Border::LINE_SINGLE:
+                                        $lineStyle = 'solid';
                                 }
                                 $objWriter->writeAttribute('fo:border', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                             } else {
@@ -279,8 +279,8 @@ class Content extends AbstractPart
                                 $lineWidth = number_format($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
-                                	case Border::LINE_SINGLE:
-                                		$lineStyle = 'solid';
+                                    case Border::LINE_SINGLE:
+                                        $lineStyle = 'solid';
                                 }
                                 $objWriter->writeAttribute('fo:border-bottom', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                                 // TOP
@@ -288,8 +288,8 @@ class Content extends AbstractPart
                                 $lineWidth = number_format($shapeCell->getBorders()->getTop()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getTop()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getTop()->getLineStyle()){
-                                	case Border::LINE_SINGLE:
-                                		$lineStyle = 'solid';
+                                    case Border::LINE_SINGLE:
+                                        $lineStyle = 'solid';
                                 }
                                 $objWriter->writeAttribute('fo:border-top', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                                 // RIGHT
@@ -297,8 +297,8 @@ class Content extends AbstractPart
                                 $lineWidth = number_format($shapeCell->getBorders()->getRight()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getRight()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getRight()->getLineStyle()){
-                                	case Border::LINE_SINGLE:
-                                		$lineStyle = 'solid';
+                                    case Border::LINE_SINGLE:
+                                        $lineStyle = 'solid';
                                 }
                                 $objWriter->writeAttribute('fo:border-right', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                                 // LEFT
@@ -306,8 +306,8 @@ class Content extends AbstractPart
                                 $lineWidth = number_format($shapeCell->getBorders()->getLeft()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getLeft()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getLeft()->getLineStyle()){
-                                	case Border::LINE_SINGLE:
-                                		$lineStyle = 'solid';
+                                    case Border::LINE_SINGLE:
+                                        $lineStyle = 'solid';
                                 }
                                 $objWriter->writeAttribute('fo:border-left', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                             }
@@ -315,15 +315,15 @@ class Content extends AbstractPart
                             
                             $objWriter->endElement();
                             
-                            foreach ($shapeCell->getParagraphs() as $shapeParagraph){
-                            	foreach ($shapeParagraph->getRichTextElements() as $shapeRichText){
-                            		if ($shapeRichText instanceof Run) {
-                            			// Style des font text
-                            			if (!isset($arrStyleTextFont[$shapeRichText->getFont()->getHashCode()])) {
-                            				$arrStyleTextFont[$shapeRichText->getFont()->getHashCode()] = $shapeRichText->getFont();
-                            			}
-                            		}
-                            	}
+                            foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
+                                foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
+                                    if ($shapeRichText instanceof Run) {
+                                        // Style des font text
+                                        if (!isset($arrStyleTextFont[$shapeRichText->getFont()->getHashCode()])) {
+                                            $arrStyleTextFont[$shapeRichText->getFont()->getHashCode()] = $shapeRichText->getFont();
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -709,7 +709,7 @@ class Content extends AbstractPart
             //@todo getFill
             
             $numColspan = 0;
-            foreach ($shapeRow->getCells() as $keyCell => $shapeCell){
+            foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
                 if ($numColspan == 0) {
                     // table:table-cell
                     $objWriter->startElement('table:table-cell');
@@ -723,8 +723,8 @@ class Content extends AbstractPart
                     $objWriter->startElement('text:p');
                     
                     // text:span
-                    foreach ($shapeCell->getParagraphs() as $shapeParagraph){
-                        foreach ($shapeParagraph->getRichTextElements() as $shapeRichText){
+                    foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
+                        foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
                             $objWriter->startElement('text:span');
                             $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getFont()->getHashCode());
                             $objWriter->text($shapeRichText->getText());

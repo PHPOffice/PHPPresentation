@@ -96,13 +96,13 @@ class Styles extends AbstractPart
         $objWriter->endElement();
         // draw:gradient
         $arrayGradient = array();
-        foreach ($pPHPPowerPoint->getAllSlides() as $slide){
-            foreach ($slide->getShapeCollection() as $shape){
-                if($shape instanceof Table){
-                    foreach ($shape->getRows() as $row){
-                        foreach ($row->getCells() as $cell){
-                            if($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR){
-                                if(!in_array($cell->getFill()->getHashCode(), $arrayGradient)){
+        foreach ($pPHPPowerPoint->getAllSlides() as $slide) {
+            foreach ($slide->getShapeCollection() as $shape) {
+                if ($shape instanceof Table) {
+                    foreach ($shape->getRows() as $row) {
+                        foreach ($row->getCells() as $cell) {
+                            if ($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
+                                if (!in_array($cell->getFill()->getHashCode(), $arrayGradient)) {
                                     $objWriter->startElement('draw:gradient');
                                     $objWriter->writeAttribute('draw:name', 'gradient_'.$cell->getFill()->getHashCode());
                                     $objWriter->writeAttribute('draw:display-name', 'gradient_'.$cell->getFill()->getHashCode());
