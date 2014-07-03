@@ -39,7 +39,7 @@ class Slide implements ComparableInterface
     /**
      * Collection of shapes
      *
-     * @var \PhpOffice\PhpPowerpoint\AbstractShape[]
+     * @var \ArrayObject|\PhpOffice\PhpPowerpoint\AbstractShape[]
      */
     private $shapeCollection = null;
 

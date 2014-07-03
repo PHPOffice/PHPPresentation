@@ -68,7 +68,7 @@ class Manifest extends AbstractPart
         $objWriter->endElement();
 
         $arrMedia = array();
-        if($this->getParentWriter() instanceof ShapeDrawing || $this->getParentWriter() instanceof MemoryDrawing){
+        if($this->getParentWriter() instanceof ShapeDrawing || $this->getParentWriter() instanceof MemoryDrawing) {
             for ($i = 0; $i < $this->getParentWriter()->getDrawingHashTable()->count(); ++$i) {
                 if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
                     if (!in_array(md5($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
