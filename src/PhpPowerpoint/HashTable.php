@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint;
 
+use PhpOffice\PhpPowerpoint\ComparableInterface;
+
 /**
  * \PhpOffice\PhpPowerpoint\HashTable
  */
@@ -42,7 +44,7 @@ class HashTable
      * @param  \PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource Optional source array to create HashTable from
      * @throws \Exception
      */
-    public function __construct($pSource = null)
+    public function __construct(array $pSource = null)
     {
         if (!is_null($pSource)) {
             // Create HashTable
@@ -75,7 +77,7 @@ class HashTable
      *
      * @param \PhpOffice\PhpPowerpoint\ComparableInterface $pSource Item to add
      */
-    public function add(ComparableInterface $pSource = null)
+    public function add(ComparableInterface $pSource)
     {
         // Determine hashcode
         $hashIndex = $pSource->getHashIndex();
@@ -104,7 +106,7 @@ class HashTable
      * @param  \PhpOffice\PhpPowerpoint\ComparableInterface $pSource Item to remove
      * @throws \Exception
      */
-    public function remove(ComparableInterface $pSource = null)
+    public function remove(ComparableInterface $pSource)
     {
         if (isset($this->items[$pSource->getHashCode()])) {
             unset($this->items[$pSource->getHashCode()]);

@@ -18,8 +18,8 @@
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\Chart;
-use PhpOffice\PhpPowerpoint\Shape\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
+use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
@@ -246,7 +246,7 @@ class Rels extends AbstractPart
      * @return string              XML Output
      * @throws \Exception
      */
-    public function writeSlideRelationships(SlideElement $pSlide = null)
+    public function writeSlideRelationships(SlideElement $pSlide)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
@@ -272,14 +272,14 @@ class Rels extends AbstractPart
             // Loop trough images and write relationships
             $iterator = $pSlide->getShapeCollection()->getIterator();
             while ($iterator->valid()) {
-                if ($iterator->current() instanceof Drawing || $iterator->current() instanceof MemoryDrawing) {
+                if ($iterator->current() instanceof ShapeDrawing || $iterator->current() instanceof MemoryDrawing) {
                     // Write relationship for image drawing
                     $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename()));
 
                     $iterator->current()->relationId = 'rId' . $relId;
 
                     ++$relId;
-                } elseif ($iterator->current() instanceof Chart) {
+                } elseif ($iterator->current() instanceof ShapeChart) {
                     // Write relationship for chart drawing
                     $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator->current()->getIndexedFilename());
 
@@ -352,7 +352,7 @@ class Rels extends AbstractPart
      * @return string                    XML Output
      * @throws \Exception
      */
-    public function writeChartRelationships(Chart $pChart = null)
+    public function writeChartRelationships(ShapeChart $pChart)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();

@@ -18,8 +18,8 @@
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\Chart;
-use PhpOffice\PhpPowerpoint\Shape\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
+use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shared\File;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
@@ -127,11 +127,11 @@ class ContentTypes extends AbstractPart
             $extension = '';
             $mimeType  = '';
 
-            if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof Chart) {
+            if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof ShapeChart) {
                 // Chart content type
                 $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
             } else {
-                if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof Drawing) {
+                if ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
                     $extension = strtolower($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getExtension());
                     $mimeType  = $this->getImageMimeType($this->getParentWriter()->getDrawingHashTable()->getByIndex($i)->getPath());
                 } elseif ($this->getParentWriter()->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
