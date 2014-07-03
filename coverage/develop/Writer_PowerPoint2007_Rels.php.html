@@ -174,7 +174,7 @@
      </tr>
 
      <tr>
-      <td class="danger" colspan="4">&nbsp;<a href="#249">writeSlideRelationships(SlideElement $pSlide = null)</a></td>
+      <td class="danger" colspan="4">&nbsp;<a href="#249">writeSlideRelationships(SlideElement $pSlide)</a></td>
       <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
         <div class="bar" style="width: 0.00%;"></div>
        </div>
@@ -191,7 +191,7 @@
      </tr>
 
      <tr>
-      <td class="danger" colspan="4">&nbsp;<a href="#355">writeChartRelationships(Chart $pChart = null)</a></td>
+      <td class="danger" colspan="4">&nbsp;<a href="#355">writeChartRelationships(ShapeChart $pChart)</a></td>
       <td class="danger big">       <div class="progress progress-danger" style="width: 100px;">
         <div class="bar" style="width: 0.00%;"></div>
        </div>
@@ -249,8 +249,8 @@
      <tr><td><div align="right"><a name="18"></a><a href="#18">18</a></div></td><td class="codeLine">namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;</td></tr>
      <tr><td><div align="right"><a name="19"></a><a href="#19">19</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="20"></a><a href="#20">20</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\PhpPowerpoint;</td></tr>
-     <tr><td><div align="right"><a name="21"></a><a href="#21">21</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Chart;</td></tr>
-     <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Drawing;</td></tr>
+     <tr><td><div align="right"><a name="21"></a><a href="#21">21</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;</td></tr>
+     <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;</td></tr>
      <tr><td><div align="right"><a name="23"></a><a href="#23">23</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;</td></tr>
      <tr><td><div align="right"><a name="24"></a><a href="#24">24</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\RichText\Run;</td></tr>
      <tr><td><div align="right"><a name="25"></a><a href="#25">25</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\RichText;</td></tr>
@@ -477,7 +477,7 @@
      <tr><td><div align="right"><a name="246"></a><a href="#246">246</a></div></td><td class="codeLine">     * @return string              XML Output</td></tr>
      <tr><td><div align="right"><a name="247"></a><a href="#247">247</a></div></td><td class="codeLine">     * @throws \Exception</td></tr>
      <tr><td><div align="right"><a name="248"></a><a href="#248">248</a></div></td><td class="codeLine">     */</td></tr>
-     <tr><td><div align="right"><a name="249"></a><a href="#249">249</a></div></td><td class="codeLine">    public function writeSlideRelationships(SlideElement $pSlide = null)</td></tr>
+     <tr><td><div align="right"><a name="249"></a><a href="#249">249</a></div></td><td class="codeLine">    public function writeSlideRelationships(SlideElement $pSlide)</td></tr>
      <tr><td><div align="right"><a name="250"></a><a href="#250">250</a></div></td><td class="codeLine">    {</td></tr>
      <tr><td><div align="right"><a name="251"></a><a href="#251">251</a></div></td><td class="codeLine">        // Create XML writer</td></tr>
      <tr class="success popin" data-title="1 test covers line 252" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="252"></a><a href="#252">252</a></div></td><td class="codeLine">        $objWriter = $this-&gt;getXMLWriter();</td></tr>
@@ -503,14 +503,14 @@
      <tr><td><div align="right"><a name="272"></a><a href="#272">272</a></div></td><td class="codeLine">            // Loop trough images and write relationships</td></tr>
      <tr class="success popin" data-title="1 test covers line 273" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="273"></a><a href="#273">273</a></div></td><td class="codeLine">            $iterator = $pSlide-&gt;getShapeCollection()-&gt;getIterator();</td></tr>
      <tr class="success popin" data-title="1 test covers line 274" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="274"></a><a href="#274">274</a></div></td><td class="codeLine">            while ($iterator-&gt;valid()) {</td></tr>
-     <tr class="success popin" data-title="1 test covers line 275" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="275"></a><a href="#275">275</a></div></td><td class="codeLine">                if ($iterator-&gt;current() instanceof Drawing || $iterator-&gt;current() instanceof MemoryDrawing) {</td></tr>
+     <tr class="success popin" data-title="1 test covers line 275" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="275"></a><a href="#275">275</a></div></td><td class="codeLine">                if ($iterator-&gt;current() instanceof ShapeDrawing || $iterator-&gt;current() instanceof MemoryDrawing) {</td></tr>
      <tr><td><div align="right"><a name="276"></a><a href="#276">276</a></div></td><td class="codeLine">                    // Write relationship for image drawing</td></tr>
      <tr class="success popin" data-title="1 test covers line 277" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="277"></a><a href="#277">277</a></div></td><td class="codeLine">                    $this-&gt;writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator-&gt;current()-&gt;getIndexedFilename()));</td></tr>
      <tr><td><div align="right"><a name="278"></a><a href="#278">278</a></div></td><td class="codeLine"></td></tr>
      <tr class="success popin" data-title="1 test covers line 279" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="279"></a><a href="#279">279</a></div></td><td class="codeLine">                    $iterator-&gt;current()-&gt;relationId = 'rId' . $relId;</td></tr>
      <tr><td><div align="right"><a name="280"></a><a href="#280">280</a></div></td><td class="codeLine"></td></tr>
      <tr class="success popin" data-title="1 test covers line 281" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="281"></a><a href="#281">281</a></div></td><td class="codeLine">                    ++$relId;</td></tr>
-     <tr class="success popin" data-title="1 test covers line 282" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="282"></a><a href="#282">282</a></div></td><td class="codeLine">                } elseif ($iterator-&gt;current() instanceof Chart) {</td></tr>
+     <tr class="success popin" data-title="1 test covers line 282" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="282"></a><a href="#282">282</a></div></td><td class="codeLine">                } elseif ($iterator-&gt;current() instanceof ShapeChart) {</td></tr>
      <tr><td><div align="right"><a name="283"></a><a href="#283">283</a></div></td><td class="codeLine">                    // Write relationship for chart drawing</td></tr>
      <tr class="success popin" data-title="1 test covers line 284" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007Test::testSave&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="284"></a><a href="#284">284</a></div></td><td class="codeLine">                    $this-&gt;writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator-&gt;current()-&gt;getIndexedFilename());</td></tr>
      <tr><td><div align="right"><a name="285"></a><a href="#285">285</a></div></td><td class="codeLine"></td></tr>
@@ -583,7 +583,7 @@
      <tr><td><div align="right"><a name="352"></a><a href="#352">352</a></div></td><td class="codeLine">     * @return string                    XML Output</td></tr>
      <tr><td><div align="right"><a name="353"></a><a href="#353">353</a></div></td><td class="codeLine">     * @throws \Exception</td></tr>
      <tr><td><div align="right"><a name="354"></a><a href="#354">354</a></div></td><td class="codeLine">     */</td></tr>
-     <tr><td><div align="right"><a name="355"></a><a href="#355">355</a></div></td><td class="codeLine">    public function writeChartRelationships(Chart $pChart = null)</td></tr>
+     <tr><td><div align="right"><a name="355"></a><a href="#355">355</a></div></td><td class="codeLine">    public function writeChartRelationships(ShapeChart $pChart)</td></tr>
      <tr><td><div align="right"><a name="356"></a><a href="#356">356</a></div></td><td class="codeLine">    {</td></tr>
      <tr><td><div align="right"><a name="357"></a><a href="#357">357</a></div></td><td class="codeLine">        // Create XML writer</td></tr>
      <tr class="danger"><td><div align="right"><a name="358"></a><a href="#358">358</a></div></td><td class="codeLine">        $objWriter = $this-&gt;getXMLWriter();</td></tr>
@@ -650,7 +650,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.17</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.13</a> and <a href="http://phpunit.de/">PHPUnit 3.7.37</a> at Thu Jul 3 9:50:55 UTC 2014.</small>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.17</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.13</a> and <a href="http://phpunit.de/">PHPUnit 3.7.37</a> at Thu Jul 3 11:18:47 UTC 2014.</small>
     </p>
    </footer>
   </div>
