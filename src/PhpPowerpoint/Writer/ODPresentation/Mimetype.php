@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype
  */
@@ -28,7 +30,7 @@ class Mimetype extends AbstractPart
      * @return string        Text Output
      * @throws \Exception
      */
-    public function writeMimetype()
+    public function writePart(PhpPowerpoint $pPHPPowerPoint = null)
     {
         return 'application/vnd.oasis.opendocument.presentation';
     }

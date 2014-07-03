@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shared\File;
@@ -33,7 +34,7 @@ class Manifest extends AbstractPart
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writeManifest()
+    public function writePart(PhpPowerpoint $pPHPPowerPoint = null)
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof ODPresentation) {

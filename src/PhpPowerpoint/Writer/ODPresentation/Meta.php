@@ -31,7 +31,7 @@ class Meta extends AbstractPart
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writeMeta(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writePart(PHPPowerPoint $pPHPPowerPoint = null)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();

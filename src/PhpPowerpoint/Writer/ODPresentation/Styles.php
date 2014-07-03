@@ -34,7 +34,7 @@ class Styles extends AbstractPart
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writeStyles(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writePart(PHPPowerPoint $pPHPPowerPoint = null)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();

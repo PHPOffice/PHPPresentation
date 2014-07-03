@@ -132,19 +132,20 @@ class ContentTypes extends AbstractPart
             $extension = '';
             $mimeType  = '';
 
-            if ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof ShapeChart) {
+            $shapeIndex = $parentWriter->getDrawingHashTable()->getByIndex($i);
+            if ($shapeIndex instanceof ShapeChart) {
                 // Chart content type
-                $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $parentWriter->getDrawingHashTable()->getByIndex($i)->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
+                $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $shapeIndex->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
             } else {
-                if ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
-                    $extension = strtolower($parentWriter->getDrawingHashTable()->getByIndex($i)->getExtension());
-                    $mimeType  = $this->getImageMimeType($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath());
-                } elseif ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
-                    $extension = strtolower($parentWriter->getDrawingHashTable()->getByIndex($i)->getMimeType());
+                if ($shapeIndex instanceof ShapeDrawing) {
+                    $extension = strtolower($shapeIndex->getExtension());
+                    $mimeType  = $this->getImageMimeType($shapeIndex->getPath());
+                } elseif ($shapeIndex instanceof MemoryDrawing) {
+                    $extension = strtolower($shapeIndex->getMimeType());
                     $extension = explode('/', $extension);
                     $extension = $extension[1];
 
-                    $mimeType = $parentWriter->getDrawingHashTable()->getByIndex($i)->getMimeType();
+                    $mimeType = $shapeIndex->getMimeType();
                 }
 
                 if (!isset($aMediaContentTypes[$extension])) {

@@ -56,7 +56,7 @@ class Presentation extends AbstractPart
         $slideMasterId = 2147483648;
         $parentWriter = $this->getParentWriter();
         if ($parentWriter instanceof PowerPoint2007) {
-            $masterSlides  = $this->getParentWriter()->getLayoutPack()->getMasterSlides();
+            $masterSlides  = $parentWriter->getLayoutPack()->getMasterSlides();
             $masterSlidesCount = count($masterSlides);
             // @todo foreach ($masterSlides as $masterSlide)
             for ($i = 0; $i < $masterSlidesCount; $i++) {

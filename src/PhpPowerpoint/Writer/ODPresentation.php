@@ -27,6 +27,7 @@ use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Meta;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles;
+use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 
 /**
  * ODPresentation writer
@@ -120,8 +121,13 @@ class ODPresentation implements WriterInterface
                 }
             }
 
+            $writerPartDrawing = $this->getWriterPart('Drawing');
+            if (!$writerPartDrawing instanceof Drawing) {
+            	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing');
+            }
+
             // Create drawing dictionary
-            $this->drawingHashTable->addFromSource($this->getWriterPart('Drawing')->allDrawings($this->presentation));
+            $this->drawingHashTable->addFromSource($writerPartDrawing->allDrawings($this->presentation));
 
             // Create new ZIP file and open it for writing
             $objZip = new \ZipArchive();
@@ -135,28 +141,32 @@ class ODPresentation implements WriterInterface
 
             // Add mimetype to ZIP file
             //@todo Not in ZIPARCHIVE::CM_STORE mode
-            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writeMimetype());
+            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writePart());
 
             // Add content.xml to ZIP file
-            $objZip->addFromString('content.xml', $this->getWriterPart('content')->writeContent($this->presentation));
+            $objZip->addFromString('content.xml', $this->getWriterPart('content')->writePart($this->presentation));
 
             // Add meta.xml to ZIP file
-            $objZip->addFromString('meta.xml', $this->getWriterPart('meta')->writeMeta($this->presentation));
+            $objZip->addFromString('meta.xml', $this->getWriterPart('meta')->writePart($this->presentation));
 
             // Add styles.xml to ZIP file
-            $objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writeStyles($this->presentation));
+            $objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writePart($this->presentation));
 
             // Add META-INF/manifest.xml
-            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writeManifest());
+            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writePart());
 
             // Add media
             $arrMedia = array();
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
-                if ($this->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
-                    if (!in_array(md5($this->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
-                        $arrMedia[] = md5($this->getDrawingHashTable()->getByIndex($i)->getPath());
+                $shape = $this->getDrawingHashTable()->getByIndex($i);
+                if (!($shape instanceof AbstractDrawing)) {
+                	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing');
+                }
+                if ($shape instanceof ShapeDrawing) {
+                    if (!in_array(md5($shape->getPath()), $arrMedia)) {
+                        $arrMedia[] = md5($shape->getPath());
 
-                        $imagePath = $this->getDrawingHashTable()->getByIndex($i)->getPath();
+                        $imagePath = $shape->getPath();
 
                         if (strpos($imagePath, 'zip://') !== false) {
                             $imagePath = substr($imagePath, 6);
@@ -171,17 +181,17 @@ class ODPresentation implements WriterInterface
                             $imageContents = file_get_contents($imagePath);
                         }
 
-                        $objZip->addFromString('Pictures/' . md5($this->getDrawingHashTable()->getByIndex($i)->getPath()).'.'.$this->getDrawingHashTable()->getByIndex($i)->getExtension(), $imageContents);
+                        $objZip->addFromString('Pictures/' . md5($shape->getPath()).'.'.$shape->getExtension(), $imageContents);
                     }
-                } elseif ($this->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
-                    if (!in_array(str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $arrMedia)) {
-                        $arrMedia[] = str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename());
+                } elseif ($shape instanceof MemoryDrawing) {
+                    if (!in_array(str_replace(' ', '_', $shape->getIndexedFilename()), $arrMedia)) {
+                        $arrMedia[] = str_replace(' ', '_', $shape->getIndexedFilename());
                         ob_start();
-                            call_user_func($this->getDrawingHashTable()->getByIndex($i)->getRenderingFunction(), $this->getDrawingHashTable()->getByIndex($i)->getImageResource());
+                            call_user_func($shape->getRenderingFunction(), $shape->getImageResource());
                             $imageContents = ob_get_contents();
                         ob_end_clean();
 
-                        $objZip->addFromString('Pictures/' . str_replace(' ', '_', $this->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $imageContents);
+                        $objZip->addFromString('Pictures/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
                     }
                 }
             }

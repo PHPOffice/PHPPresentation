@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
+use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Writer\WriterInterface;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
@@ -26,6 +27,8 @@ use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
  */
 abstract class AbstractPart
 {
+    abstract public function writePart(PhpPowerpoint $pPHPPowerPoint = null);
+    
     /**
      * Parent WriterInterface object
      *
