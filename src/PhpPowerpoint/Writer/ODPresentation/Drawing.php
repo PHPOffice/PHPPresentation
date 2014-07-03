@@ -26,8 +26,9 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
  */
 class Drawing extends AbstractPart
 {
-    public function writePart(PhpPowerpoint $pPHPPowerPoint = null) {
-        
+    public function writePart(PhpPowerpoint $pPHPPowerPoint) 
+    {
+        return null;
     }
     
     /**

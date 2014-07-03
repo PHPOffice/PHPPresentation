@@ -123,7 +123,7 @@ class ODPresentation implements WriterInterface
 
             $writerPartDrawing = $this->getWriterPart('Drawing');
             if (!$writerPartDrawing instanceof Drawing) {
-            	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing');
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing');
             }
 
             // Create drawing dictionary
@@ -141,7 +141,7 @@ class ODPresentation implements WriterInterface
 
             // Add mimetype to ZIP file
             //@todo Not in ZIPARCHIVE::CM_STORE mode
-            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writePart());
+            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writePart($this->presentation));
 
             // Add content.xml to ZIP file
             $objZip->addFromString('content.xml', $this->getWriterPart('content')->writePart($this->presentation));
@@ -153,14 +153,14 @@ class ODPresentation implements WriterInterface
             $objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writePart($this->presentation));
 
             // Add META-INF/manifest.xml
-            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writePart());
+            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writePart($this->presentation));
 
             // Add media
             $arrMedia = array();
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
                 $shape = $this->getDrawingHashTable()->getByIndex($i);
                 if (!($shape instanceof AbstractDrawing)) {
-                	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing');
+                    throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing');
                 }
                 if ($shape instanceof ShapeDrawing) {
                     if (!in_array(md5($shape->getPath()), $arrMedia)) {
