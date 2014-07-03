@@ -20,7 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
-use PhpOffice\PhpPowerpoint\Shape\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Line;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
@@ -214,12 +214,14 @@ class Content extends AbstractPart
                     $objWriter->startElement('style:graphic-properties');
                     $objWriter->writeAttribute('draw:fill', 'none');
                     switch ($shape->getBorder()->getLineStyle()) {
-                        default:
                         case Border::LINE_NONE:
                             $objWriter->writeAttribute('draw:stroke', 'none');
                             break;
                         case Border::LINE_SINGLE:
                             $objWriter->writeAttribute('draw:stroke', 'solid');
+                            break;
+                        default:
+                            $objWriter->writeAttribute('draw:stroke', 'none');
                             break;
                     }
                     $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
@@ -492,7 +494,7 @@ class Content extends AbstractPart
         }
         // draw:image
         $objWriter->startElement('draw:image');
-        if ($shape instanceof Drawing) {
+        if ($shape instanceof ShapeDrawing) {
             $objWriter->writeAttribute('xlink:href', 'Pictures/' . md5($shape->getPath()) . '.' . $shape->getExtension());
         } elseif ($shape instanceof MemoryDrawing) {
             $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());

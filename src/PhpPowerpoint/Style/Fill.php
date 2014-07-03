@@ -89,7 +89,7 @@ class Fill implements ComparableInterface
     {
         // Initialise values
         $this->fillType            = self::FILL_NONE;
-        $this->rotation            = 0;
+        $this->rotation            = (double)0;
         $this->startColor          = new Color(Color::COLOR_WHITE);
         $this->endColor            = new Color(Color::COLOR_BLACK);
     }
@@ -135,7 +135,7 @@ class Fill implements ComparableInterface
      */
     public function setRotation($pValue = 0)
     {
-        $this->rotation = $pValue;
+        $this->rotation = (double)$pValue;
 
         return $this;
     }

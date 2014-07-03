@@ -149,7 +149,7 @@ class PlotArea implements ComparableInterface
      */
     public function setOffsetX($value = 0)
     {
-        $this->offsetX = $value;
+        $this->offsetX = (double)$value;
 
         return $this;
     }
@@ -172,7 +172,7 @@ class PlotArea implements ComparableInterface
      */
     public function setOffsetY($value = 0)
     {
-        $this->offsetY = $value;
+        $this->offsetY = (double)$value;
 
         return $this;
     }
@@ -195,7 +195,7 @@ class PlotArea implements ComparableInterface
      */
     public function setWidth($value = 0)
     {
-        $this->width = $value;
+        $this->width = (double)$value;
 
         return $this;
     }
@@ -218,7 +218,7 @@ class PlotArea implements ComparableInterface
      */
     public function setHeight($value = 0)
     {
-        $this->height = $value;
+        $this->height = (double)$value;
 
         return $this;
     }
