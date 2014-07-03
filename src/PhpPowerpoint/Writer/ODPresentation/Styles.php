@@ -18,7 +18,9 @@
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\Drawing;
+use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles
@@ -88,8 +90,39 @@ class Styles extends AbstractPart
         // style:graphic-properties
         $objWriter->startElement('style:graphic-properties');
         $objWriter->writeAttribute('draw:fill-color', '#ffffff');
+        // > style:graphic-properties
         $objWriter->endElement();
+        // > style:style
         $objWriter->endElement();
+        // draw:gradient
+        $arrayGradient = array();
+        foreach ($pPHPPowerPoint->getAllSlides() as $slide){
+            foreach ($slide->getShapeCollection() as $shape){
+                if($shape instanceof Table){
+                    foreach ($shape->getRows() as $row){
+                        foreach ($row->getCells() as $cell){
+                            if($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR){
+                                if(!in_array($cell->getFill()->getHashCode(), $arrayGradient)){
+                                    $objWriter->startElement('draw:gradient');
+                                    $objWriter->writeAttribute('draw:name', 'gradient_'.$cell->getFill()->getHashCode());
+                                    $objWriter->writeAttribute('draw:display-name', 'gradient_'.$cell->getFill()->getHashCode());
+                                    $objWriter->writeAttribute('draw:style', 'linear');
+                                    $objWriter->writeAttribute('draw:start-intensity', '100%');
+                                    $objWriter->writeAttribute('draw:end-intensity', '100%');
+                                    $objWriter->writeAttribute('draw:start-color', '#'.$cell->getFill()->getStartColor()->getRGB());
+                                    $objWriter->writeAttribute('draw:end-color', '#'.$cell->getFill()->getEndColor()->getRGB());
+                                    $objWriter->writeAttribute('draw:border', '0%');
+                                    $objWriter->writeAttribute('draw:angle', $cell->getFill()->getRotation() - 90);
+                                    $objWriter->endElement();
+                                    $arrayGradient[] = $cell->getFill()->getHashCode();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        // > office:styles
         $objWriter->endElement();
 
         // office:automatic-styles
@@ -132,7 +165,7 @@ class Styles extends AbstractPart
         $objWriter->writeAttribute('draw:style-name', 'sPres0');
         $objWriter->endElement();
         $objWriter->endElement();
-
+        
         $objWriter->endElement();
 
         // Return

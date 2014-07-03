@@ -93,7 +93,7 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Get line width
+     * Get line width (in points)
      *
      * @return int
      */
@@ -103,7 +103,7 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Set line width
+     * Set line width (in points)
      *
      * @param  int                        $pValue
      * @return \PhpOffice\PhpPowerpoint\Style\Border
