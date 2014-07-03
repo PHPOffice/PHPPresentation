@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
+
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Theme
  */
@@ -32,12 +34,14 @@ class Theme extends AbstractPart
     public function writeTheme($masterId = 1)
     {
         // Write theme from layout pack
-        $layoutPack     = $this->getParentWriter()->getLayoutPack();
-        foreach ($layoutPack->getThemes() as $theme) {
-            if ($theme['masterid'] == $masterId) {
-                return $theme['body'];
+        if ($this->getParentWriter() instanceof PowerPoint2007) {
+            $layoutPack     = $this->getParentWriter()->getLayoutPack();
+            foreach ($layoutPack->getThemes() as $theme) {
+                if ($theme['masterid'] == $masterId) {
+                    return $theme['body'];
+                }
             }
+            throw new \Exception('No theme has been found!');
         }
-        throw new \Exception('No theme has been found!');
     }
 }
