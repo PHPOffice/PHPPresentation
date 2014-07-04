@@ -75,28 +75,26 @@ class Manifest extends AbstractPart
         $objWriter->endElement();
 
         $arrMedia = array();
-        if ($parentWriter instanceof ShapeDrawing || $parentWriter instanceof MemoryDrawing) {
-            for ($i = 0; $i < $parentWriter->getDrawingHashTable()->count(); ++$i) {
-                if ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
-                    if (!in_array(md5($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
-                        $arrMedia[] = md5($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath());
-                        $mimeType   = $this->getImageMimeType($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath());
-    
-                        $objWriter->startElement('manifest:file-entry');
-                        $objWriter->writeAttribute('manifest:media-type', $mimeType);
-                        $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . md5($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath()) . '.' . $parentWriter->getDrawingHashTable()->getByIndex($i)->getExtension());
-                        $objWriter->endElement();
-                    }
-                } elseif ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
-                    if (!in_array(str_replace(' ', '_', $parentWriter->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $arrMedia)) {
-                        $arrMedia[] = str_replace(' ', '_', $parentWriter->getDrawingHashTable()->getByIndex($i)->getIndexedFilename());
-                        $mimeType = $parentWriter->getDrawingHashTable()->getByIndex($i)->getMimeType();
-    
-                        $objWriter->startElement('manifest:file-entry');
-                        $objWriter->writeAttribute('manifest:media-type', $mimeType);
-                        $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $parentWriter->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()));
-                        $objWriter->endElement();
-                    }
+        for ($i = 0; $i < $parentWriter->getDrawingHashTable()->count(); ++$i) {
+            if ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof ShapeDrawing) {
+                if (!in_array(md5($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath()), $arrMedia)) {
+                    $arrMedia[] = md5($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath());
+                    $mimeType   = $this->getImageMimeType($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath());
+
+                    $objWriter->startElement('manifest:file-entry');
+                    $objWriter->writeAttribute('manifest:media-type', $mimeType);
+                    $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . md5($parentWriter->getDrawingHashTable()->getByIndex($i)->getPath()) . '.' . $parentWriter->getDrawingHashTable()->getByIndex($i)->getExtension());
+                    $objWriter->endElement();
+                }
+            } elseif ($parentWriter->getDrawingHashTable()->getByIndex($i) instanceof MemoryDrawing) {
+                if (!in_array(str_replace(' ', '_', $parentWriter->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()), $arrMedia)) {
+                    $arrMedia[] = str_replace(' ', '_', $parentWriter->getDrawingHashTable()->getByIndex($i)->getIndexedFilename());
+                    $mimeType = $parentWriter->getDrawingHashTable()->getByIndex($i)->getMimeType();
+
+                    $objWriter->startElement('manifest:file-entry');
+                    $objWriter->writeAttribute('manifest:media-type', $mimeType);
+                    $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $parentWriter->getDrawingHashTable()->getByIndex($i)->getIndexedFilename()));
+                    $objWriter->endElement();
                 }
             }
         }
