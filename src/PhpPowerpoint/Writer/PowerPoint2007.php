@@ -50,7 +50,7 @@ class PowerPoint2007 implements WriterInterface
      *
      * @var \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart[]
      */
-    protected $writerParts;
+    protected $wParts;
 
     /**
      * Private PHPPowerPoint
@@ -158,41 +158,41 @@ class PowerPoint2007 implements WriterInterface
                 }
             }
             
-            $writerPartDrawing = $this->getWriterPart('Drawing');
-            if (!$writerPartDrawing instanceof Drawing) {
+            $wPartDrawing = $this->getWriterPart('Drawing');
+            if (!$wPartDrawing instanceof Drawing) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Drawing');
             }
-            $writerPartContentTypes = $this->getWriterPart('ContentTypes');
-            if (!$writerPartContentTypes instanceof ContentTypes) {
+            $wPartContentTypes = $this->getWriterPart('ContentTypes');
+            if (!$wPartContentTypes instanceof ContentTypes) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes');
             }
-            $writerPartRels = $this->getWriterPart('Rels');
-            if (!$writerPartRels instanceof Rels) {
+            $wPartRels = $this->getWriterPart('Rels');
+            if (!$wPartRels instanceof Rels) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels');
             }
-            $writerPartDocProps = $this->getWriterPart('DocProps');
-            if (!$writerPartDocProps instanceof DocProps) {
+            $wPartDocProps = $this->getWriterPart('DocProps');
+            if (!$wPartDocProps instanceof DocProps) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\DocProps');
             }
-            $writerPartTheme = $this->getWriterPart('Theme');
-            if (!$writerPartTheme instanceof Theme) {
+            $wPartTheme = $this->getWriterPart('Theme');
+            if (!$wPartTheme instanceof Theme) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Theme');
             }
-            $writerPartPresentation = $this->getWriterPart('Presentation');
-            if (!$writerPartPresentation instanceof Presentation) {
+            $wPartPresentation = $this->getWriterPart('Presentation');
+            if (!$wPartPresentation instanceof Presentation) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Presentation');
             }
-            $writerPartSlide = $this->getWriterPart('Slide');
-            if (!$writerPartSlide instanceof Slide) {
+            $wPartSlide = $this->getWriterPart('Slide');
+            if (!$wPartSlide instanceof Slide) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide');
             }
-            $writerPartChart = $this->getWriterPart('Chart');
-            if (!$writerPartChart instanceof Chart) {
+            $wPartChart = $this->getWriterPart('Chart');
+            if (!$wPartChart instanceof Chart) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart');
             }
             
             // Create drawing dictionary
-            $this->drawingHashTable->addFromSource($writerPartDrawing->allDrawings($this->presentation));
+            $this->drawingHashTable->addFromSource($wPartDrawing->allDrawings($this->presentation));
 
             // Create new ZIP file and open it for writing
             $objZip = new \ZipArchive();
@@ -205,33 +205,33 @@ class PowerPoint2007 implements WriterInterface
             }
 
             // Add [Content_Types].xml to ZIP file
-            $objZip->addFromString('[Content_Types].xml', $writerPartContentTypes->writeContentTypes($this->presentation));
+            $objZip->addFromString('[Content_Types].xml', $wPartContentTypes->writeContentTypes($this->presentation));
 
             // Add relationships to ZIP file
-            $objZip->addFromString('_rels/.rels', $writerPartRels->writeRelationships());
-            $objZip->addFromString('ppt/_rels/presentation.xml.rels', $writerPartRels->writePresentationRelationships($this->presentation));
+            $objZip->addFromString('_rels/.rels', $wPartRels->writeRelationships());
+            $objZip->addFromString('ppt/_rels/presentation.xml.rels', $wPartRels->writePresentationRelationships($this->presentation));
             // Add document properties to ZIP file
-            $objZip->addFromString('docProps/app.xml', $writerPartDocProps->writeDocPropsApp($this->presentation));
-            $objZip->addFromString('docProps/core.xml', $writerPartDocProps->writeDocPropsCore($this->presentation));
+            $objZip->addFromString('docProps/app.xml', $wPartDocProps->writeDocPropsApp($this->presentation));
+            $objZip->addFromString('docProps/core.xml', $wPartDocProps->writeDocPropsCore($this->presentation));
 
             // Add themes to ZIP file
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {
-                $objZip->addFromString('ppt/theme/_rels/theme' . $masterSlide['masterid'] . '.xml.rels', $writerPartRels->writeThemeRelationships($masterSlide['masterid']));
-                $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', utf8_encode($writerPartTheme->writeTheme($masterSlide['masterid'])));
+                $objZip->addFromString('ppt/theme/_rels/theme' . $masterSlide['masterid'] . '.xml.rels', $wPartRels->writeThemeRelationships($masterSlide['masterid']));
+                $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', utf8_encode($wPartTheme->writeTheme($masterSlide['masterid'])));
             }
 
             // Add slide masters to ZIP file
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {
-                $objZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $masterSlide['masterid'] . '.xml.rels', $writerPartRels->writeSlideMasterRelationships($masterSlide['masterid']));
+                $objZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $masterSlide['masterid'] . '.xml.rels', $wPartRels->writeSlideMasterRelationships($masterSlide['masterid']));
                 $objZip->addFromString('ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', $masterSlide['body']);
             }
 
             // Add slide layouts to ZIP file
             $slideLayouts = $this->getLayoutPack()->getLayouts();
             foreach ($slideLayouts as $key => $layout) {
-                $objZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $key . '.xml.rels', $writerPartRels->writeSlideLayoutRelationships($key, $layout['masterid']));
+                $objZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $key . '.xml.rels', $wPartRels->writeSlideLayoutRelationships($key, $layout['masterid']));
                 $objZip->addFromString('ppt/slideLayouts/slideLayout' . $key . '.xml', utf8_encode($layout['body']));
             }
 
@@ -256,13 +256,13 @@ class PowerPoint2007 implements WriterInterface
             }
 
             // Add presentation to ZIP file
-            $objZip->addFromString('ppt/presentation.xml', $writerPartPresentation->writePresentation($this->presentation));
+            $objZip->addFromString('ppt/presentation.xml', $wPartPresentation->writePresentation($this->presentation));
 
             // Add slides (drawings, ...) and slide relationships (drawings, ...)
             for ($i = 0; $i < $this->presentation->getSlideCount(); ++$i) {
                 // Add slide
-                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $writerPartRels->writeSlideRelationships($this->presentation->getSlide($i)));
-                $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $writerPartSlide->writeSlide($this->presentation->getSlide($i)));
+                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $wPartRels->writeSlideRelationships($this->presentation->getSlide($i)));
+                $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $wPartSlide->writeSlide($this->presentation->getSlide($i)));
             }
 
             // Add media
@@ -293,12 +293,12 @@ class PowerPoint2007 implements WriterInterface
 
                     $objZip->addFromString('ppt/media/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
                 } elseif ($shape instanceof ChartShape) {
-                    $objZip->addFromString('ppt/charts/' . $shape->getIndexedFilename(), $writerPartChart->writeChart($shape));
+                    $objZip->addFromString('ppt/charts/' . $shape->getIndexedFilename(), $wPartChart->writeChart($shape));
 
                     // Chart relations?
                     if ($shape->hasIncludedSpreadsheet()) {
-                        $objZip->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $writerPartRels->writeChartRelationships($shape));
-                        $objZip->addFromString('ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', $writerPartChart->writeSpreadsheet($this->presentation, $shape, $pFilename . '.xlsx'));
+                        $objZip->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $wPartRels->writeChartRelationships($shape));
+                        $objZip->addFromString('ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', $wPartChart->writeSpreadsheet($this->presentation, $shape, $pFilename . '.xlsx'));
                     }
                 }
             }
