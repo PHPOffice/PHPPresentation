@@ -39,14 +39,14 @@ class TestHelperDOCX
      * @param string $writerName
      * @return \PhpOffice\PhpPowerpoint\Tests\XmlDocument
      */
-    public static function getDocument(PhpPowerpoint $PhpPowerpoint, $writerName = 'PowerPoint2007')
+    public static function getDocument(PhpPowerpoint $phpPowerpoint, $writerName = 'PowerPoint2007')
     {
         self::$file = tempnam(sys_get_temp_dir(), 'PhpPowerpoint');
         if (!is_dir(sys_get_temp_dir() . '/PhpPowerpoint_Unit_Test/')) {
             mkdir(sys_get_temp_dir() . '/PhpPowerpoint_Unit_Test/');
         }
 
-        $xmlWriter = IOFactory::createWriter($PhpPowerpoint, $writerName);
+        $xmlWriter = IOFactory::createWriter($phpPowerpoint, $writerName);
         $xmlWriter->save(self::$file);
 
         $zip = new \ZipArchive;

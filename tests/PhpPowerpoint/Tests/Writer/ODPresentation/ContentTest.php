@@ -41,7 +41,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     {
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
-        $oShape = $oSlide->createTableShape();
+        $oSlide->createTableShape();
         
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table';

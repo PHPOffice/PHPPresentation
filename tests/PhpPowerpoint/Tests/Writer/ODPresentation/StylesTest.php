@@ -41,8 +41,6 @@ class StylesTest extends \PHPUnit_Framework_TestCase
     
     public function testGradient()
     {
-        $expected = 'Expected';
-        
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
         $oShape = $oSlide->createTableShape();

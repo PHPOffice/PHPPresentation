@@ -58,7 +58,7 @@ class ManifestTest extends \PHPUnit_Framework_TestCase
         
         $gdImage = @imagecreatetruecolor(140, 20);
         $textColor = imagecolorallocate($gdImage, 255, 255, 255);
-        imagestring($gdImage, 1, 5, 5,  'Created with PHPPowerPoint', $textColor);
+        imagestring($gdImage, 1, 5, 5, 'Created with PHPPowerPoint', $textColor);
         $oShape->setImageResource($gdImage)->setRenderingFunction(MemoryDrawing::RENDERING_JPEG)->setMimeType(MemoryDrawing::MIMETYPE_DEFAULT);
         $oSlide->addShape($oShape);
          
