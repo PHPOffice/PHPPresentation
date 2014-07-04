@@ -18,9 +18,10 @@
 namespace PhpOffice\PhpPowerpoint\Tests\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
+use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
-use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 
 /**
  * Test class for PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest
@@ -85,6 +86,21 @@ class ContentTest extends \PHPUnit_Framework_TestCase
 
     public function testList()
     {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+        $oRichText->createTextRun('Alpha');
+        $oRichText->createParagraph()->createTextRun('Beta');
+        $oRichText->createParagraph()->createTextRun('Delta');
+        $oRichText->createParagraph()->createTextRun('Epsilon');
         
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        
+        $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-bullet';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 }
