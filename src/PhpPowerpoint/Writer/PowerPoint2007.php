@@ -50,7 +50,7 @@ class PowerPoint2007 implements WriterInterface
      *
      * @var \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart[]
      */
-    protected $wParts;
+    protected $writerParts;
 
     /**
      * Private PHPPowerPoint
