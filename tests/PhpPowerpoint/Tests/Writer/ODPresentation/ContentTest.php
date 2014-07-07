@@ -144,56 +144,56 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oRichText1 = $oSlide->createRichTextShape();
         $oRichText1->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $oRichText1->createTextRun('Run1');
-        $P1HashCode = $oRichText1->getActiveParagraph()->getHashCode();
+        $p1HashCode = $oRichText1->getActiveParagraph()->getHashCode();
         
         $oRichText2 = $oSlide->createRichTextShape();
         $oRichText2->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_DISTRIBUTED);
         $oRichText2->createTextRun('Run2');
-        $P2HashCode = $oRichText2->getActiveParagraph()->getHashCode();
+        $p2HashCode = $oRichText2->getActiveParagraph()->getHashCode();
         
         $oRichText3 = $oSlide->createRichTextShape();
         $oRichText3->getActiveParagraph()->getAlignment()->setHorizontal('AAAAA');
         $oRichText3->createTextRun('Run3');
-        $P3HashCode = $oRichText3->getActiveParagraph()->getHashCode();
+        $p3HashCode = $oRichText3->getActiveParagraph()->getHashCode();
         
         $oRichText4 = $oSlide->createRichTextShape();
         $oRichText4->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY);
         $oRichText4->createTextRun('Run4');
-        $P4HashCode = $oRichText4->getActiveParagraph()->getHashCode();
+        $p4HashCode = $oRichText4->getActiveParagraph()->getHashCode();
         
         $oRichText5 = $oSlide->createRichTextShape();
         $oRichText5->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $oRichText5->createTextRun('Run5');
-        $P5HashCode = $oRichText5->getActiveParagraph()->getHashCode();
+        $p5HashCode = $oRichText5->getActiveParagraph()->getHashCode();
         
         $oRichText6 = $oSlide->createRichTextShape();
         $oRichText6->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
         $oRichText6->createTextRun('Run6');
-        $P6HashCode = $oRichText6->getActiveParagraph()->getHashCode();
+        $p6HashCode = $oRichText6->getActiveParagraph()->getHashCode();
         
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
         
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$P1HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p1HashCode.'\']/style:paragraph-properties';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('center', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
         
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$P2HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p2HashCode.'\']/style:paragraph-properties';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('justify', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
         
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$P3HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p3HashCode.'\']/style:paragraph-properties';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('left', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
         
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$P4HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p4HashCode.'\']/style:paragraph-properties';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('justify', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
         
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$P5HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p5HashCode.'\']/style:paragraph-properties';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('left', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
         
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$P6HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p6HashCode.'\']/style:paragraph-properties';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('right', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
     }
