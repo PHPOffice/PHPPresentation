@@ -58,7 +58,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:list/text:list-item/text:p/text:span'; 
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:list/text:list-item/text:p/text:span';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
@@ -92,7 +92,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:list/text:list-item/text:list/text:list-item/text:p/text:span'; 
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:list/text:list-item/text:list/text:list-item/text:p/text:span';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
