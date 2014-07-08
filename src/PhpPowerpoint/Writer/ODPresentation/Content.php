@@ -31,6 +31,7 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shape\Table\Cell;
 use PhpOffice\PhpPowerpoint\Shape\Table\Row;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
+use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
@@ -225,7 +226,7 @@ class Content extends AbstractPart
                             break;
                     }
                     $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
-                    $objWriter->writeAttribute('svg:stroke-width', number_format(SharedDrawing::pixelsToCentimeters((SharedDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3).'cm');
+                    $objWriter->writeAttribute('svg:stroke-width', String::numberFormat(SharedDrawing::pixelsToCentimeters((SharedDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3).'cm');
                     $objWriter->endElement();
             
                     $objWriter->endElement();
@@ -239,7 +240,7 @@ class Content extends AbstractPart
                         
                         // style:table-row-properties
                         $objWriter->startElement('style:table-row-properties');
-                        $objWriter->writeAttribute('style:row-height', number_format(SharedDrawing::pixelsToCentimeters(SharedDrawing::pointsToPixels($shapeRow->getHeight())), 3).'cm');
+                        $objWriter->writeAttribute('style:row-height', String::numberFormat(SharedDrawing::pixelsToCentimeters(SharedDrawing::pointsToPixels($shapeRow->getHeight())), 3).'cm');
                         $objWriter->endElement();
                         
                         $objWriter->endElement();
@@ -269,7 +270,7 @@ class Content extends AbstractPart
                                 && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getLeft()->getHashCode()
                                 && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getRight()->getHashCode()) {
                                 $lineStyle = 'none';
-                                $lineWidth = number_format($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
+                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
                                     case Border::LINE_SINGLE:
@@ -278,7 +279,7 @@ class Content extends AbstractPart
                                 $objWriter->writeAttribute('fo:border', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                             } else {
                                 $lineStyle = 'none';
-                                $lineWidth = number_format($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
+                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
                                     case Border::LINE_SINGLE:
@@ -287,7 +288,7 @@ class Content extends AbstractPart
                                 $objWriter->writeAttribute('fo:border-bottom', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                                 // TOP
                                 $lineStyle = 'none';
-                                $lineWidth = number_format($shapeCell->getBorders()->getTop()->getLineWidth() / 1.75, 2);
+                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getTop()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getTop()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getTop()->getLineStyle()){
                                     case Border::LINE_SINGLE:
@@ -296,7 +297,7 @@ class Content extends AbstractPart
                                 $objWriter->writeAttribute('fo:border-top', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                                 // RIGHT
                                 $lineStyle = 'none';
-                                $lineWidth = number_format($shapeCell->getBorders()->getRight()->getLineWidth() / 1.75, 2);
+                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getRight()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getRight()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getRight()->getLineStyle()){
                                     case Border::LINE_SINGLE:
@@ -305,7 +306,7 @@ class Content extends AbstractPart
                                 $objWriter->writeAttribute('fo:border-right', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                                 // LEFT
                                 $lineStyle = 'none';
-                                $lineWidth = number_format($shapeCell->getBorders()->getLeft()->getLineWidth() / 1.75, 2);
+                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getLeft()->getLineWidth() / 1.75, 2);
                                 $lineColor = $shapeCell->getBorders()->getLeft()->getColor()->getRGB();
                                 switch ($shapeCell->getBorders()->getLeft()->getLineStyle()){
                                     case Border::LINE_SINGLE:
@@ -485,10 +486,10 @@ class Content extends AbstractPart
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:name', $shape->getName());
-        $objWriter->writeAttribute('svg:width', number_format(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', number_format(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         if ($shape->getShadow()->isVisible()) {
             $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
         }
@@ -519,10 +520,10 @@ class Content extends AbstractPart
         // draw:custom-shape
         $objWriter->startElement('draw:custom-shape');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
-        $objWriter->writeAttribute('svg:width', number_format(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', number_format(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
 
         $paragraphs                  = $shape->getParagraphs();
         $paragraphId                 = 0;
@@ -675,10 +676,10 @@ class Content extends AbstractPart
         // draw:line
         $objWriter->startElement('draw:line');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
-        $objWriter->writeAttribute('svg:x1', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y1', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x2', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()+$shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y2', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()+$shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x1', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y1', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x2', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()+$shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y2', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()+$shape->getHeight()), 3) . 'cm');
 
             // text:p
             $objWriter->writeElement('text:p');
@@ -696,10 +697,10 @@ class Content extends AbstractPart
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('svg:x', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', number_format(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', number_format(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:width', number_format(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
         
         // table:table
         $objWriter->startElement('table:table');

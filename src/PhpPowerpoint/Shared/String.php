@@ -65,4 +65,14 @@ class String
 
         return str_replace(array_values(self::$controlCharacters), array_keys(self::$controlCharacters), $value);
     }
+    
+    /**
+     * Return a number formatted for being integrated in xml files
+     * @param float $number
+     * @param integer $decimals
+     */
+    public static function numberFormat($number, $decimals)
+    {
+        return number_format($number, $decimals, '.', '');
+    }
 }

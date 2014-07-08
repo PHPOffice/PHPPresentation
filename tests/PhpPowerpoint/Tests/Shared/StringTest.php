@@ -37,4 +37,11 @@ class StringTest extends \PHPUnit_Framework_TestCase
         $value = rand(0, 8);
         $this->assertEquals('_x'.sprintf('%04s', strtoupper(dechex($value))).'_', String::controlCharacterPHP2OOXML(chr($value)));
     }
+    
+    public function testNumberFormat()
+    {
+        $this->assertEquals('2.1', String::numberFormat('2.06', 1));
+        $this->assertEquals('2.1', String::numberFormat('2.12', 1));
+        $this->assertEquals('1234', String::numberFormat(1234 , 1));
+    }
 }

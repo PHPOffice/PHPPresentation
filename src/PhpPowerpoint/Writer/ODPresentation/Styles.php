@@ -20,6 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
+use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
@@ -140,8 +141,8 @@ class Styles extends AbstractPart
         $objWriter->writeAttribute('fo:margin-bottom', '0cm');
         $objWriter->writeAttribute('fo:margin-left', '0cm');
         $objWriter->writeAttribute('fo:margin-right', '0cm');
-        $objWriter->writeAttribute('fo:page-width', round(SharedDrawing::pixelsToCentimeters(SharedDrawing::emuToPixels($pPHPPowerPoint->getLayout()->getCX())), 1) . 'cm');
-        $objWriter->writeAttribute('fo:page-height', round(SharedDrawing::pixelsToCentimeters(SharedDrawing::emuToPixels($pPHPPowerPoint->getLayout()->getCY())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-width', String::numberFormat(SharedDrawing::pixelsToCentimeters(SharedDrawing::emuToPixels($pPHPPowerPoint->getLayout()->getCX())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-height', String::numberFormat(SharedDrawing::pixelsToCentimeters(SharedDrawing::emuToPixels($pPHPPowerPoint->getLayout()->getCY())), 1) . 'cm');
         if ($pPHPPowerPoint->getLayout()->getCX() > $pPHPPowerPoint->getLayout()->getCY()) {
             $objWriter->writeAttribute('style:print-orientation', 'landscape');
         } else {
