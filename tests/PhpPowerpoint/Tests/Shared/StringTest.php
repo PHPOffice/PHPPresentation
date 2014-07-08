@@ -42,6 +42,6 @@ class StringTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('2.1', String::numberFormat('2.06', 1));
         $this->assertEquals('2.1', String::numberFormat('2.12', 1));
-        $this->assertEquals('1234', String::numberFormat(1234 , 1));
+        $this->assertEquals('1234', String::numberFormat(1234, 1));
     }
 }
