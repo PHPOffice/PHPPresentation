@@ -888,7 +888,6 @@ class Chart extends Slide
         }
 
         $objWriter->endElement();
-
         $objWriter->endElement();
     }
 
@@ -1060,12 +1059,11 @@ class Chart extends Slide
             $axisYData = array_values($series->getValues());
 
             // c:val
-            if (class_exists('PHPExcel_Cell')) {
-                $objWriter->startElement('c:val');
-                $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
-                $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
-                $objWriter->endElement();
-            }
+            $objWriter->startElement('c:val');
+            $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+            $objWriter->endElement();
+            
             $objWriter->endElement();
 
             ++$seriesIndex;

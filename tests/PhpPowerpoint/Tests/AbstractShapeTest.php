@@ -48,6 +48,16 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->getShadow());
     }
 
+    public function testFill()
+    {
+        $object = new RichText();
+
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setFill());
+        $this->assertNull($object->getFill());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setFill(new Fill()));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->getFill());
+    }
+
     public function testHeight()
     {
         $object = new RichText();

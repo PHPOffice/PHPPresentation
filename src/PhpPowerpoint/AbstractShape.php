@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPowerpoint;
 
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
+use PhpOffice\PhpPowerpoint\Style\Fill;
 use PhpOffice\PhpPowerpoint\Style\Shadow;
 
 /**
@@ -305,6 +306,17 @@ abstract class AbstractShape implements ComparableInterface
     public function getFill()
     {
         return $this->fill;
+    }
+
+    /**
+     * Set Fill
+     * @param \PhpOffice\PhpPowerpoint\Style\Fill $pValue
+     * @return \PhpOffice\PhpPowerpoint\AbstractShape
+     */
+    public function setFill(Fill $pValue = null)
+    {
+        $this->fill = $pValue;
+        return $this;
     }
 
     /**

@@ -12,6 +12,7 @@ use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Style\Shadow;
 
 // Create new PHPPowerPoint object
 echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
@@ -30,6 +31,13 @@ $objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
 // Remove first slide
 echo date('H:i:s') . ' Remove first slide'.EOL;
 $objPHPPowerPoint->removeSlideByIndex(0);
+
+// Set Style
+$oFill = new Fill();
+$oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
+
+$oShadow = new Shadow();
+$oShadow->setVisible(true)->setDirection(45)->setDistance(10);
 
 // Create templated slide
 echo date('H:i:s') . ' Create templated slide'.EOL;
@@ -62,13 +70,8 @@ $shape->setName('PHPPowerPoint Monthly Downloads')
       ->setWidth(700)
       ->setOffsetX(120)
       ->setOffsetY(80);
-$shape->getShadow()->setVisible(true)
-                   ->setDirection(45)
-                   ->setDistance(10);
-$shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
-                 ->setStartColor(new Color('FFE06B20'))
-                 ->setEndColor(new Color('FFFFFFFF'))
-                 ->setRotation(270);
+$shape->setShadow($oShadow);
+$shape->setFill($oFill);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
 $shape->getTitle()->getFont()->setItalic(true);
@@ -106,13 +109,8 @@ $shape->setName('PHPPowerPoint Daily Downloads')
       ->setWidth(700)
       ->setOffsetX(120)
       ->setOffsetY(80);
-$shape->getShadow()->setVisible(true)
-                   ->setDirection(45)
-                   ->setDistance(10);
-$shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
-                 ->setStartColor(new Color('FFE06B20'))
-                 ->setEndColor(new Color('FFFFFFFF'))
-                 ->setRotation(270);
+$shape->setShadow($oShadow);
+$shape->setFill($oFill);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
 $shape->getTitle()->getFont()->setItalic(true);
@@ -146,13 +144,8 @@ $shape->setName('PHPPowerPoint Daily Downloads')
       ->setWidth(700)
       ->setOffsetX(120)
       ->setOffsetY(80);
-$shape->getShadow()->setVisible(true)
-                   ->setDirection(45)
-                   ->setDistance(10);
-$shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
-                 ->setStartColor(new Color('FFE06B20'))
-                 ->setEndColor(new Color('FFFFFFFF'))
-                 ->setRotation(270);
+$shape->setShadow($oShadow);
+$shape->setFill($oFill);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
 $shape->getTitle()->getFont()->setItalic(true);
@@ -187,13 +180,8 @@ $shape->setName('PHPPowerPoint Daily Download Distribution')
       ->setWidth(700)
       ->setOffsetX(120)
       ->setOffsetY(80);
-$shape->getShadow()->setVisible(true)
-                   ->setDirection(45)
-                   ->setDistance(10);
-$shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
-                 ->setStartColor(new Color('FFE06B20'))
-                 ->setEndColor(new Color('FFFFFFFF'))
-                 ->setRotation(270);
+$shape->setShadow($oShadow);
+$shape->setFill($oFill);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
 $shape->getTitle()->getFont()->setItalic(true);
