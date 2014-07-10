@@ -60,14 +60,6 @@ class ChartTest extends \PHPUnit_Framework_TestCase
      */
     public function testPlotAreaBadType()
     {
-        $seriesData = array(
-    		'A' => 1,
-    		'B' => 2,
-    		'C' => 4,
-    		'D' => 3,
-    		'E' => 2,
-        );
-        
         $oPHPPowerPoint = new PhpPowerpoint();
         $oSlide = $oPHPPowerPoint->getActiveSlide();
         $oShape = $oSlide->createChartShape();
@@ -75,7 +67,7 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $stub = $this->getMockForAbstractClass('PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType');
         $oShape->getPlotArea()->setType($stub);
         
-        $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
+        TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
     }
     
     public function testTypeBar3D()

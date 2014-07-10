@@ -260,7 +260,6 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     {
         $valEmu10 = Drawing::pixelsToEmu(10);
         $valEmu90 = Drawing::pixelsToEmu(90);
-        $valEmu100 = Drawing::pixelsToEmu(100);
         
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
