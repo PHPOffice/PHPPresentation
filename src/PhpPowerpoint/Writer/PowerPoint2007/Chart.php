@@ -931,12 +931,10 @@ class Chart extends Slide
             $objWriter->endElement();
 
             // c:tx
-            if (class_exists('PHPExcel_Cell')) {
-                $objWriter->startElement('c:tx');
-                $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
-                $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
-                $objWriter->endElement();
-            }
+            $objWriter->startElement('c:tx');
+            $coords = ($includeSheet ? 'Sheet1!$' . PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
+            $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+            $objWriter->endElement();
 
             // Fills for points?
             $dataPointFills = $series->getDataPointFills();
@@ -1316,26 +1314,6 @@ class Chart extends Slide
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
-            // Fills for points?
-            $dataPointFills = $series->getDataPointFills();
-            foreach ($dataPointFills as $key => $value) {
-                // c:dPt
-                $objWriter->startElement('c:dPt');
-
-                // c:idx
-                $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
-
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-
-                // Write fill
-                $this->writeFill($objWriter, $value);
-
-                $objWriter->endElement();
-
-                $objWriter->endElement();
-            }
-
             // c:dLbls
             $objWriter->startElement('c:dLbls');
 
@@ -1530,27 +1508,7 @@ class Chart extends Slide
             $objWriter->endElement();
 
             $objWriter->endElement();
-            /*
-            // Fills for points?
-            $dataPointFills = $series->getDataPointFills();
-            foreach ($dataPointFills as $key => $value) {
-            // c:dPt
-            $objWriter->startElement('c:dPt');
-
-            // c:idx
-            $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
-
-            // c:spPr
-            $objWriter->startElement('c:spPr');
-
-            // Write fill
-            $this->writeFill($objWriter, $value);
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-            }
-            */
+            
             // c:dLbls
             $objWriter->startElement('c:dLbls');
 

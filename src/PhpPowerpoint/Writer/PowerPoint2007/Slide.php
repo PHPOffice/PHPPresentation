@@ -254,11 +254,6 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
 
-        // a:hlinkClick
-        if ($shape->hasHyperlink()) {
-            $this->writeHyperlink($objWriter, $shape);
-        }
-
         $objWriter->endElement();
 
         // p:cNvPicPr
@@ -379,11 +374,6 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', '');
 
-        // a:hlinkClick
-        if ($shape->hasHyperlink()) {
-            $this->writeHyperlink($objWriter, $shape);
-        }
-
         $objWriter->endElement();
 
         // p:cNvSpPr
@@ -421,40 +411,6 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
-
-        $this->writeFill($objWriter, $shape->getFill());
-
-        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->writeBorder($objWriter, $shape->getBorder(), '');
-        }
-
-        if ($shape->getShadow()->isVisible()) {
-            // a:effectLst
-            $objWriter->startElement('a:effectLst');
-
-            // a:outerShdw
-            $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', SharedDrawing::pixelsToEmu($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', SharedDrawing::pixelsToEmu($shape->getShadow()->getDistance()));
-            $objWriter->writeAttribute('dir', SharedDrawing::degreesToAngle($shape->getShadow()->getDirection()));
-            $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
-            $objWriter->writeAttribute('rotWithShape', '0');
-
-            // a:srgbClr
-            $objWriter->startElement('a:srgbClr');
-            $objWriter->writeAttribute('val', $shape->getShadow()->getColor()->getRGB());
-
-            // a:alpha
-            $objWriter->startElement('a:alpha');
-            $objWriter->writeAttribute('val', $shape->getShadow()->getAlpha() * 1000);
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-        }
 
         $objWriter->endElement();
 
@@ -521,11 +477,6 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
 
-        // a:hlinkClick
-        if ($shape->hasHyperlink()) {
-            $this->writeHyperlink($objWriter, $shape);
-        }
-
         $objWriter->endElement();
 
         // p:cNvGraphicFramePr
@@ -574,34 +525,6 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:tblPr');
         $objWriter->writeAttribute('firstRow', '1');
         $objWriter->writeAttribute('bandRow', '1');
-
-        if ($shape->getShadow()->isVisible()) {
-            // a:effectLst
-            $objWriter->startElement('a:effectLst');
-
-            // a:outerShdw
-            $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', SharedDrawing::pixelsToEmu($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', SharedDrawing::pixelsToEmu($shape->getShadow()->getDistance()));
-            $objWriter->writeAttribute('dir', SharedDrawing::degreesToAngle($shape->getShadow()->getDirection()));
-            $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
-            $objWriter->writeAttribute('rotWithShape', '0');
-
-            // a:srgbClr
-            $objWriter->startElement('a:srgbClr');
-            $objWriter->writeAttribute('val', $shape->getShadow()->getColor()->getRGB());
-
-            // a:alpha
-            $objWriter->startElement('a:alpha');
-            $objWriter->writeAttribute('val', $shape->getShadow()->getAlpha() * 1000);
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-        }
 
         $objWriter->endElement();
 
@@ -892,11 +815,6 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', '');
 
-        // a:hlinkClick
-        if ($shape->hasHyperlink()) {
-            $this->writeHyperlink($objWriter, $shape);
-        }
-
         $objWriter->endElement();
 
         // p:cNvCxnSpPr
@@ -981,23 +899,6 @@ class Slide extends AbstractPart
         $objWriter->endElement();
 
         $objWriter->endElement();
-    }
-
-    /**
-     * Write Borders
-     *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPowerpoint\Style\Borders    $pBorders  Borders
-     * @throws \Exception
-     */
-    protected function writeBorders(XMLWriter $objWriter, Borders $pBorders)
-    {
-        $this->writeBorder($objWriter, $pBorders->getLeft(), 'L');
-        $this->writeBorder($objWriter, $pBorders->getRight(), 'R');
-        $this->writeBorder($objWriter, $pBorders->getTop(), 'T');
-        $this->writeBorder($objWriter, $pBorders->getBottom(), 'B');
-        $this->writeBorder($objWriter, $pBorders->getDiagonalDown(), 'TlToBr');
-        $this->writeBorder($objWriter, $pBorders->getDiagonalUp(), 'BlToTr');
     }
 
     /**
