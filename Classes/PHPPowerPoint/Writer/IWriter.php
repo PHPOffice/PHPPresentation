@@ -41,4 +41,20 @@ interface PHPPowerPoint_Writer_IWriter
      * @throws Exception
      */
     public function save($pFilename);
+
+    /**
+     * Save and Download PHPPowerPoint file
+     *
+     * @param  string    $pFilename
+     * @throws Exception
+     */
+    public function saveAndDownload($pFilename);
+
+    /**
+     * Download PHPPowerPoint file
+     *
+     * @param  string    $pFilename
+     * @throws Exception
+     */
+    public function download($pFilename);
 }
