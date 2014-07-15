@@ -298,4 +298,36 @@ class PHPPowerPoint_Writer_ODPresentation implements PHPPowerPoint_Writer_IWrite
     {
         return $this->_diskCachingDirectory;
     }
+
+    /**
+     * Save and Download PHPPowerPoint file
+     *
+     * @param  string    $pFilename
+     * @throws Exception
+     */
+    public function saveAndDownload($pFilename){
+        $this->save($pFilename);
+        $this->download($pFilename);
+    }
+
+    /**
+     * Download PHPPowerPoint file
+     *
+     * @param  string    $pFilename
+     * @throws Exception
+     */
+    public function download($pFilename){
+        //Set Headers:
+        header('Pragma: public');
+        header('Expires: 0');
+        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+        header('Content-Type: application/force-download');
+        header('Content-Disposition: inline; filename="FilePpt.odp"');
+        header('Content-Transfer-Encoding: binary');
+        header('Content-Length: ' . filesize($pFilename.'.odp'));
+        header('Connection: close');
+        readfile($pFilename.'.odp');
+        
+        @unlink($pFilename.'.odp');
+    }
 }
