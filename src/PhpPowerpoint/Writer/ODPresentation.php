@@ -311,13 +311,13 @@ class ODPresentation implements WriterInterface
         return $this->diskCachingDirectory;
     }
 
- /**
+    /**
      * Save and Download PHPPowerPoint file
      *
      * @param  string    $pFilename
-     * @throws Exception
      */
-    public function saveAndDownload($pFilename){
+    public function saveAndDownload($pFilename)
+    {
         $this->save($pFilename);
         $this->download($pFilename);
     }
@@ -326,20 +326,24 @@ class ODPresentation implements WriterInterface
      * Download PHPPowerPoint file
      *
      * @param  string    $pFilename
-     * @throws Exception
      */
-    public function download($pFilename){
-        //Set Headers:
-        header('Pragma: public');
-        header('Expires: 0');
-        header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
-        header('Content-Type: application/force-download');
-        header('Content-Disposition: inline; filename="FilePpt.odp"');
-        header('Content-Transfer-Encoding: binary');
-        header('Content-Length: ' . filesize($pFilename.'.odp'));
-        header('Connection: close');
-        readfile($pFilename.'.odp');
+    public function download($pFilename)
+    {
+        try{
+            //Set Headers:
+            header('Pragma: public');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Content-Type: application/force-download');
+            header('Content-Disposition: inline; filename="FilePpt.odf"');
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Length: ' . filesize($pFilename));
+            header('Connection: close');
+            readfile($pFilename);
 
-        @unlink($pFilename.'.odp');
+            @unlink($pFilename);
+        }catch(new \Exception $e){
+            throw new \Exception("Error download file.");
+        }
     }
 }
