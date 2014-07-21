@@ -119,21 +119,21 @@
         <li class="nav-header">
             <i class="icon-custom icon-method"></i> Methods
             <ul>
-                                                                                                    <li class="method public inherited">
-        <a href="#method_writePart" title="writePart :: ">
-            <span class="description"></span><pre>writePart</pre>
+                                                                                                    <li class="method public">
+        <a href="#method_writePart" title="writePart :: Write content file to XML format">
+            <span class="description">Write content file to XML format</span><pre>writePart</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_writePic" title="writePic :: Write picture">
-            <span class="description">Write picture</span><pre>writePic</pre>
+        <a href="#method_writeShapePic" title="writeShapePic :: Write picture">
+            <span class="description">Write picture</span><pre>writeShapePic</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_writeTxt" title="writeTxt :: Write text">
-            <span class="description">Write text</span><pre>writeTxt</pre>
+        <a href="#method_writeShapeTxt" title="writeShapeTxt :: Write text">
+            <span class="description">Write text</span><pre>writeShapeTxt</pre>
         </a>
     </li>
 
@@ -146,6 +146,12 @@
                                                                                                         <li class="method public">
         <a href="#method_writeShapeTable" title="writeShapeTable :: Write table Shape">
             <span class="description">Write table Shape</span><pre>writeShapeTable</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_writeShapeChart" title="writeShapeChart :: Write table Chart">
+            <span class="description">Write table Chart</span><pre>writeShapeChart</pre>
         </a>
     </li>
 
@@ -165,7 +171,7 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                        <li class="method protected inherited">
+                                                                                                                                                                                                                                                                                                                                                                            <li class="method protected inherited">
                             <a href="#method_getXMLWriter" title="getXMLWriter :: Get XML Writer">
                                 <span class="description">Get XML Writer</span><pre>getXMLWriter</pre>
                             </a>
@@ -174,7 +180,7 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -202,11 +208,11 @@
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_writePart"></a>
-                        <div class="element clickable method public  method_writePart inherited" data-toggle="collapse" data-target=".method_writePart .collapse">
-                            <h2>writePart</h2>
-                            <pre>writePart(\PhpOffice\PhpPowerpoint\PhpPowerpoint $pPHPPowerPoint) </pre>
+                        <div class="element clickable method public  method_writePart" data-toggle="collapse" data-target=".method_writePart .collapse">
+                            <h2>Write content file to XML format</h2>
+                            <pre>writePart(\PhpOffice\PhpPowerpoint\Writer\ODPresentation\PHPPowerPoint $pPHPPowerPoint) : string</pre>
                             <div class="labels">
-                                <span class="label">inherited</span>                                                                                                <span class="label">abstract</span>                                                            </div>
+                                                                                                                                                                                            </div>
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -214,16 +220,11 @@
                                     <table class="table">
                                                                                     <tr>
                                                 <th>
-                                                    
+                                                    throws
                                                 </th>
                                                 <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
                                                                                                     </td>
                                             </tr>
                                                                             </table>
@@ -231,16 +232,18 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$pPHPPowerPoint</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.PhpPowerpoint.html">\PhpOffice\PhpPowerpoint\PhpPowerpoint</a></code><p></p>
+                                                <code>\PhpOffice\PhpPowerpoint\Writer\ODPresentation\PHPPowerPoint</code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>XML Output</p></p>
                                                                     </div>
                             </div>
                         </div>
-                                            <a id="method_writePic"></a>
-                        <div class="element clickable method public  method_writePic" data-toggle="collapse" data-target=".method_writePic .collapse">
+                                            <a id="method_writeShapePic"></a>
+                        <div class="element clickable method public  method_writeShapePic" data-toggle="collapse" data-target=".method_writeShapePic .collapse">
                             <h2>Write picture</h2>
-                            <pre>writePic(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape, int $shapeId) </pre>
+                            <pre>writeShapePic(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape, int $shapeId) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
                             <div class="row collapse">
@@ -274,10 +277,10 @@
                                                                     </div>
                             </div>
                         </div>
-                                            <a id="method_writeTxt"></a>
-                        <div class="element clickable method public  method_writeTxt" data-toggle="collapse" data-target=".method_writeTxt .collapse">
+                                            <a id="method_writeShapeTxt"></a>
+                        <div class="element clickable method public  method_writeShapeTxt" data-toggle="collapse" data-target=".method_writeShapeTxt .collapse">
                             <h2>Write text</h2>
-                            <pre>writeTxt(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\RichText $shape, int $shapeId) </pre>
+                            <pre>writeShapeTxt(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\RichText $shape, int $shapeId) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
                             <div class="row collapse">
@@ -376,6 +379,43 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$shape</h4>
                                                 <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Table.html">\PhpOffice\PhpPowerpoint\Shape\Table</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$shapeId</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_writeShapeChart"></a>
+                        <div class="element clickable method public  method_writeShapeChart" data-toggle="collapse" data-target=".method_writeShapeChart .collapse">
+                            <h2>Write table Chart</h2>
+                            <pre>writeShapeChart(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\Chart $shape, integer $shapeId) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shared.XMLWriter.html">\PhpOffice\PhpPowerpoint\Shared\XMLWriter</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$shape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.html">\PhpOffice\PhpPowerpoint\Shape\Chart</a></code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$shapeId</h4>
@@ -538,7 +578,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 10 Jul 2014 13:50:51 +0000.<br/>
+            generated on Mon, 21 Jul 2014 12:23:22 +0000.<br/>
     </footer>
     </body>
 </html>
