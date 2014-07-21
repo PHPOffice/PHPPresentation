@@ -27,7 +27,7 @@ use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
  */
 abstract class AbstractPart
 {
-    abstract public function writePart(PhpPowerpoint $pPHPPowerPoint);
+//     abstract public function writePart(PhpPowerpoint $pPHPPowerPoint);
     
     /**
      * Parent WriterInterface object

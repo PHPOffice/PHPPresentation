@@ -26,6 +26,7 @@ use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Meta;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation\ObjectsChart;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 
@@ -54,6 +55,11 @@ class ODPresentation implements WriterInterface
      * @var \PhpOffice\PhpPowerpoint\HashTable
      */
     private $drawingHashTable;
+
+    /**
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart[]
+     */
+    public $chartArray = array();
 
     /**
     * Use disk caching where possible?
@@ -88,6 +94,7 @@ class ODPresentation implements WriterInterface
         $this->writerParts['meta']     = new Meta();
         $this->writerParts['mimetype'] = new Mimetype();
         $this->writerParts['styles']   = new Styles();
+        $this->writerParts['charts']   = new ObjectsChart();
 
         $this->writerParts['drawing']  = new Drawing();
 
@@ -155,6 +162,16 @@ class ODPresentation implements WriterInterface
             // Add META-INF/manifest.xml
             $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writePart($this->presentation));
 
+            // Add charts
+            foreach ($this->chartArray as $keyChart => $shapeChart) {
+                $arrayFile = $this->getWriterPart('charts')->writePart($this->presentation, $shapeChart);
+                foreach ($arrayFile as $file => $content) {
+                    if(!empty($content)){
+                        $objZip->addFromString('Object '.$keyChart.'/' . $file, $content);
+                    }
+                }
+            }
+            
             // Add media
             $arrMedia = array();
             for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
@@ -208,7 +225,6 @@ class ODPresentation implements WriterInterface
                 }
                 @unlink($pFilename);
             }
-
         } else {
             throw new \Exception("PHPPowerPoint object unassigned.");
         }

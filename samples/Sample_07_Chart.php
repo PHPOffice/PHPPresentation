@@ -53,11 +53,13 @@ echo date('H:i:s') . ' Create a bar chart (that should be inserted in a chart sh
 $bar3DChart = new Bar3D();
 $series1 = new Series('2009', $series1Data);
 $series1->setShowSeriesName(true);
+$series1->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4F81BD'));
 $series1->getFont()->getColor()->setRGB('00FF00');
 $series1->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
 $series2 = new Series('2010', $series2Data);
 $series2->setShowSeriesName(true);
 $series2->getFont()->getColor()->setRGB('FF0000');
+$series2->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFC0504D'));
 $bar3DChart->addSeries($series1);
 $bar3DChart->addSeries($series2);
 
@@ -98,6 +100,13 @@ echo date('H:i:s') . ' Create a pie chart (that should be inserted in a chart sh
 $pie3DChart = new Pie3D();
 $series = new Series('Downloads', $seriesData);
 $series->setShowSeriesName(true);
+$series->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
+$series->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+$series->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
+$series->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF725990'));
+$series->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4299B0'));
+$series->getDataPointFill(5)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFDC853E'));
+$series->getDataPointFill(6)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF93A9CE'));
 $pie3DChart->addSeries($series);
 
 // Create a shape (chart)

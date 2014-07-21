@@ -452,16 +452,15 @@ class Content extends AbstractPart
 
                 // Check type
                 if ($shape instanceof RichText) {
-                    $this->writeTxt($objWriter, $shape, $shapeId);
+                    $this->writeShapeTxt($objWriter, $shape, $shapeId);
                 } elseif ($shape instanceof Table) {
                     $this->writeShapeTable($objWriter, $shape, $shapeId);
                 } elseif ($shape instanceof Line) {
                     $this->writeShapeLine($objWriter, $shape, $shapeId);
-                /*} elseif ($shape instanceof Chart) {
-                    $this->_writeChart($objWriter, $shape, $shapeId);
-                }*/
+                } elseif ($shape instanceof Chart) {
+                    $this->writeShapeChart($objWriter, $shape, $shapeId);
                 } elseif ($shape instanceof AbstractDrawing) {
-                    $this->writePic($objWriter, $shape, $shapeId);
+                    $this->writeShapePic($objWriter, $shape, $shapeId);
                 }
             }
             $objWriter->endElement();
@@ -481,7 +480,7 @@ class Content extends AbstractPart
      * @param \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
      * @param int $shapeId
      */
-    public function writePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
+    public function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -515,7 +514,7 @@ class Content extends AbstractPart
      * @param \PhpOffice\PhpPowerpoint\Shape\RichText $shape
      * @param int $shapeId
      */
-    public function writeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
+    public function writeShapeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
     {
         // draw:custom-shape
         $objWriter->startElement('draw:custom-shape');
@@ -750,6 +749,36 @@ class Content extends AbstractPart
             $objWriter->endElement();
         }
         // > table:table
+        $objWriter->endElement();
+        // > draw:frame
+        $objWriter->endElement();
+    }
+    
+    /**
+     * Write table Chart
+     * @param XMLWriter $objWriter
+     * @param Chart $shape
+     * @param integer $shapeId
+     */
+    public function writeShapeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
+    {
+        $this->getParentWriter()->chartArray[$shapeId] = $shape;
+        
+        // draw:frame
+        $objWriter->startElement('draw:frame');
+        $objWriter->writeAttribute('draw:name', $shape->getTitle()->getText());
+        $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+    
+        // draw:object
+        $objWriter->startElement('draw:object');
+        $objWriter->writeAttribute('xlink:href', './Object '.$shapeId);
+        $objWriter->writeAttribute('xlink:type', 'simple');
+        $objWriter->writeAttribute('xlink:show', 'embed');
+        
+        // > draw:object
         $objWriter->endElement();
         // > draw:frame
         $objWriter->endElement();
