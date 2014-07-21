@@ -34,7 +34,7 @@ class Manifest extends AbstractPart
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writePart(PhpPowerpoint $pPHPPowerPoint)
+    public function writePart()
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof ODPresentation) {

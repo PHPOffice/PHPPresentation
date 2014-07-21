@@ -95,7 +95,6 @@ class ODPresentation implements WriterInterface
         $this->writerParts['mimetype'] = new Mimetype();
         $this->writerParts['styles']   = new Styles();
         $this->writerParts['charts']   = new ObjectsChart();
-
         $this->writerParts['drawing']  = new Drawing();
 
         // Assign parent WriterInterface
@@ -148,7 +147,7 @@ class ODPresentation implements WriterInterface
 
             // Add mimetype to ZIP file
             //@todo Not in ZIPARCHIVE::CM_STORE mode
-            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writePart($this->presentation));
+            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writePart());
 
             // Add content.xml to ZIP file
             $objZip->addFromString('content.xml', $this->getWriterPart('content')->writePart($this->presentation));
@@ -160,13 +159,13 @@ class ODPresentation implements WriterInterface
             $objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writePart($this->presentation));
 
             // Add META-INF/manifest.xml
-            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writePart($this->presentation));
+            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writePart());
 
             // Add charts
             foreach ($this->chartArray as $keyChart => $shapeChart) {
-                $arrayFile = $this->getWriterPart('charts')->writePart($this->presentation, $shapeChart);
+                $arrayFile = $this->getWriterPart('charts')->writePart(shapeChart);
                 foreach ($arrayFile as $file => $content) {
-                    if(!empty($content)){
+                    if (!empty($content)) {
                         $objZip->addFromString('Object '.$keyChart.'/' . $file, $content);
                     }
                 }

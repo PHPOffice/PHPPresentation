@@ -66,7 +66,7 @@ class ObjectsChart extends AbstractPart
      */
     private $rangeCol;
     
-    public function writePart(PhpPowerpoint $pPHPPowerPoint, Chart $chart)
+    public function writePart(Chart $chart)
     {
         $this->xmlContent = $this->getXMLWriter();
         $this->xmlMeta = $this->getXMLWriter();
@@ -88,7 +88,7 @@ class ObjectsChart extends AbstractPart
     {
         $chartType = $chart->getPlotArea()->getType();
         if (!($chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie3D|| $chartType instanceof Scatter)) {
-        	throw new \Exception('The chart type provided could not be rendered.');
+            throw new \Exception('The chart type provided could not be rendered.');
         }
         
         // Data
@@ -218,7 +218,7 @@ class ObjectsChart extends AbstractPart
         $this->writePlotArea($chart);
 
         //**** Table ****
-        $this->writeTable($chart);
+        $this->writeTable();
         
         // > chart:chart
         $this->xmlContent->endElement();
@@ -484,7 +484,8 @@ class ObjectsChart extends AbstractPart
         }
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries);
         if ($chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Scatter) {
-            if (empty($series->getDataPointFills())) {
+            $dataPointFills = $series->getDataPointFills();
+            if (empty($dataPointFills)) {
                 $incRepeat = $numRange;
             } else {
                 $inc = 0;
@@ -507,7 +508,7 @@ class ObjectsChart extends AbstractPart
                     }
                     $inc++;
                     $incRepeat++;
-                } while($inc < $numRange);
+                } while ($inc < $numRange);
                 $incRepeat--;
             }
             // chart:data-point
@@ -516,14 +517,14 @@ class ObjectsChart extends AbstractPart
             // > chart:data-point
             $this->xmlContent->endElement();
         } elseif ($chartType instanceof Pie3D) {
+            $count = $series->getDataPointFills();
             $inc = 0;
-            foreach ($series->getDataPointFills() as $dataPointFill) {
+            for ($inc = 0 ; $inc < $count ; $inc++) {
                 // chart:data-point
                 $this->xmlContent->startElement('chart:data-point');
                 $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries.'_'.$inc);
                 // > chart:data-point
                 $this->xmlContent->endElement();
-                $inc++;
             }
         }
         
@@ -601,7 +602,7 @@ class ObjectsChart extends AbstractPart
     /**
      * @param Chart $chart
      */
-    private function writeTable(Chart $chart)
+    private function writeTable()
     {
         // table:table
         $this->xmlContent->startElement('table:table');

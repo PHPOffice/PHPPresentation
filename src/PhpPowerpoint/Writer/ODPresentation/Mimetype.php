@@ -30,7 +30,7 @@ class Mimetype extends AbstractPart
      * @return string        Text Output
      * @throws \Exception
      */
-    public function writePart(PhpPowerpoint $pPHPPowerPoint)
+    public function writePart()
     {
         return 'application/vnd.oasis.opendocument.presentation';
     }
