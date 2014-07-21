@@ -517,7 +517,7 @@ class ObjectsChart extends AbstractPart
             // > chart:data-point
             $this->xmlContent->endElement();
         } elseif ($chartType instanceof Pie3D) {
-            $count = $series->getDataPointFills();
+            $count = count($series->getDataPointFills());
             $inc = 0;
             for ($inc = 0; $inc < $count; $inc++) {
                 // chart:data-point
