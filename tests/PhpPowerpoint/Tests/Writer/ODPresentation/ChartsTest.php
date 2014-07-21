@@ -56,7 +56,7 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $oChart = $oSlide->createChartShape();
         $oChart->getPlotArea()->setType($oStub);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
     }
 
     public function testChartBar3D()
