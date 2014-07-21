@@ -519,7 +519,7 @@ class ObjectsChart extends AbstractPart
         } elseif ($chartType instanceof Pie3D) {
             $count = $series->getDataPointFills();
             $inc = 0;
-            for ($inc = 0 ; $inc < $count ; $inc++) {
+            for ($inc = 0; $inc < $count; $inc++) {
                 // chart:data-point
                 $this->xmlContent->startElement('chart:data-point');
                 $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries.'_'.$inc);

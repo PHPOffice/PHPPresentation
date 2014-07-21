@@ -163,7 +163,7 @@ class ODPresentation implements WriterInterface
 
             // Add charts
             foreach ($this->chartArray as $keyChart => $shapeChart) {
-                $arrayFile = $this->getWriterPart('charts')->writePart(shapeChart);
+                $arrayFile = $this->getWriterPart('charts')->writePart($shapeChart);
                 foreach ($arrayFile as $file => $content) {
                     if (!empty($content)) {
                         $objZip->addFromString('Object '.$keyChart.'/' . $file, $content);
