@@ -419,6 +419,7 @@ class Slide extends AbstractPart
 
         // a:bodyPr
         $objWriter->startElement('a:bodyPr');
+    	$objWriter->writeAttribute('anchor', $shape->getActiveParagraph()->getAlignment()->getVertical());
         $objWriter->writeAttribute('wrap', $shape->getWrap());
         $objWriter->writeAttribute('rtlCol', '0');
 

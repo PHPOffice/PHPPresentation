@@ -54,6 +54,57 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oSlide->writeSlide();
     }
     
+    /**
+     * @link https://github.com/PHPOffice/PHPPowerPoint/issues/35
+     */
+    public function testAlignmentShapeBottom()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
+        $oShape->createTextRun('this text should be vertically aligned');
+        $oShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_BOTTOM);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals(Alignment::VERTICAL_BOTTOM, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
+    }
+    
+    /**
+     * @link https://github.com/PHPOffice/PHPPowerPoint/issues/35
+     */
+    public function testAlignmentShapeCenter()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
+        $oShape->createTextRun('this text should be vertically aligned');
+        $oShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals(Alignment::VERTICAL_CENTER, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
+    }
+    
+    /**
+     * @link https://github.com/PHPOffice/PHPPowerPoint/issues/35
+     */
+    public function testAlignmentShapeTop()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
+        $oShape->createTextRun('this text should be vertically aligned');
+        $oShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_TOP);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals(Alignment::VERTICAL_TOP, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
+    }
+    
     public function testDrawingShapeBorder()
     {
         $phpPowerPoint = new PhpPowerpoint();
