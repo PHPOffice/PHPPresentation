@@ -131,12 +131,17 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
         $object = new RichText();
         $oSlide1 = new Slide();
         $oSlide2 = new Slide();
+        $oSlide3 = new Slide();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide());
         $this->assertNull($object->getSlide());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide($oSlide1, true));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide($oSlide2, true));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide($oSlide3, true));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide($oSlide3, true));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
     }
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.0 - Not Released
+
+### Features
+
+### Bugfix
+
+### Miscellaneous
+- QA : Move AbstractType for Chart - @Progi1984
+- QA : Unit Tests - @Progi1984
+
 ## 0.2.0 - 2014-07-22
 
 ### Features

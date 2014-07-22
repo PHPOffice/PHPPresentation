@@ -108,12 +108,16 @@ class HashTableTest extends \PHPUnit_Framework_TestCase
         $object = new HashTable();
         $oSlide1 = new Slide();
         $oSlide2 = new Slide();
+        $oSlide3 = new Slide();
 
         // Add Object
         $this->assertNull($object->add($oSlide1));
         $this->assertNull($object->add($oSlide2));
+        $this->assertNull($object->add($oSlide3));
         // Remove
         $this->assertNull($object->remove($oSlide2));
+        $this->assertCount(2, $object->toArray());
+        $this->assertNull($object->remove($oSlide3));
         $this->assertCount(1, $object->toArray());
     }
 

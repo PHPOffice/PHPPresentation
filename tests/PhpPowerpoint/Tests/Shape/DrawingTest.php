@@ -57,7 +57,6 @@ class DrawingTest extends \PHPUnit_Framework_TestCase
         $object = new Drawing();
 
         $imagePath = PHPPOWERPOINT_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PHPPowerPointLogo.png';
-        //list($width, $height) = getimagesize($imagePath);
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->setPath($imagePath, false));
         $this->assertEquals($imagePath, $object->getPath());

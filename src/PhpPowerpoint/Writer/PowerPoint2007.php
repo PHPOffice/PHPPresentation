@@ -214,16 +214,12 @@ class PowerPoint2007 implements WriterInterface
             $objZip->addFromString('docProps/app.xml', $wPartDocProps->writeDocPropsApp($this->presentation));
             $objZip->addFromString('docProps/core.xml', $wPartDocProps->writeDocPropsCore($this->presentation));
 
-            // Add themes to ZIP file
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {
+                // Add themes to ZIP file
                 $objZip->addFromString('ppt/theme/_rels/theme' . $masterSlide['masterid'] . '.xml.rels', $wPartRels->writeThemeRelationships($masterSlide['masterid']));
                 $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', utf8_encode($wPartTheme->writeTheme($masterSlide['masterid'])));
-            }
-
-            // Add slide masters to ZIP file
-            $masterSlides = $this->getLayoutPack()->getMasterSlides();
-            foreach ($masterSlides as $masterSlide) {
+                // Add slide masters to ZIP file
                 $objZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $masterSlide['masterid'] . '.xml.rels', $wPartRels->writeSlideMasterRelationships($masterSlide['masterid']));
                 $objZip->addFromString('ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', $masterSlide['body']);
             }

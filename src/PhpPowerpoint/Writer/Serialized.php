@@ -53,15 +53,15 @@ class Serialized implements WriterInterface
     public function save ($pFilename)
     {
         if (empty($pFilename)) {
-            throw new \Exception("Filename is empty");
+            throw new \Exception("Filename is empty.");
         }
         if (!is_null($this->presentation)) {
             // Create new ZIP file and open it for writing
             $objZip = new \ZipArchive();
 
             // Try opening the ZIP file
-            if ($objZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
-                if ($objZip->open($pFilename, \ZipArchive::CREATE) !== true) {
+            if ($objZip->open($pFilename, \ZipArchive::CREATE) !== true) {
+                if ($objZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
                     throw new \Exception("Could not open " . $pFilename . " for writing.");
                 }
             }
