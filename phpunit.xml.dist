@@ -1,24 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<phpunit bootstrap="./Tests/bootstrap.php"
-    backupGlobals="true"
-    colors="true"
-    convertErrorsToExceptions="true"
-    convertNoticesToExceptions="true"
-    convertWarningsToExceptions="true"
-    processIsolation="false"
-    syntaxCheck="true"
-    verbose="true"
-    strict="true"
-    stopOnError="false"
-    stopOnFailure="false"
-    stopOnIncomplete="false"
-    stopOnSkipped="false">
-    <testsuite name="PHPPowerPoint Unit Test Suite">
-        <directory>./Tests/PHPPowerPoint</directory>
-    </testsuite>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         bootstrap="./tests/bootstrap.php"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false">
+    <testsuites>
+        <testsuite name="PhpPowerpoint Test Suite">
+            <directory>./tests/PhpPowerpoint</directory>
+        </testsuite>
+    </testsuites>
     <filter>
         <whitelist>
-            <directory suffix=".php">./Classes</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
+    <logging>
+        <log type="coverage-html" target="./build/coverage" charset="UTF-8" highlight="true" />
+        <log type="coverage-clover" target="./build/logs/clover.xml" />
+    </logging>
 </phpunit>

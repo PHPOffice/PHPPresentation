@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 - Not yet released
+## 0.2.0 - 2014-07-22
 
 ### Features
 
@@ -20,11 +20,15 @@
 - Solid Fill support - @maartenba CP-5461
 - Applied patch 8375 - @maartenba CP-8375
 - Implement autoloader - @MarkBaker
-- Implement ODP Writer - @Progi1984
+- ODPresentation Writer : Implement Basic Writer - @Progi1984 GH-1
+- ODPresentation Writer : Implement Support of Charts - @Progi1984 GH-33
+- ODPresentation Writer : Implement Support of Lines - @Progi1984 GH-30
+- ODPresentation Writer : Implement Support of Tables - @Progi1984 GH-31
+- PowerPoint2007 Writer : Implement Support of Fill  - @Progi1984 GH-32
 
 ### Bugfix
 
-- Allow solid colour fill - @MarkBaker
+- Allow solid color fill - @MarkBaker
 - Table width setting Office 2007 - @maartenba CP-3910
 - Bullet characters in Master Slide Layouts of template file become corrupted - @maartenba CP-4598
 - Generated files cannot be opened in Office 08 for Mac OSX - @maartenba CP-3424
@@ -33,7 +37,16 @@
 - Images in Layouts other than first Master Slide within Template file causes corrupted PPTX - @maartenba CP-4596
 - Fixed A3 and A4 formats dimensions - @delphiki GH-16
 - Fixed custom document layout - @delphiki GH-18
-- Filename parameter is required for IWriter::save method
+- Filename parameter is required for IWriter::save method - @sapfeer0k GH-19
+- DocumentLayout: Fix incorrect variable assignment - @kaiesh GH-6
+- Hyperlink: Wrong input parameter object type in setHyperlink  - @nynka GH-23
+- ODPresentation Writer: ODP writer is locale sensitive in the wrong places  - @Progi1984 GH-21
+- ODPresentation Writer: Display InMemory Image  - @Progi1984 GH-29
+- PowerPoint2007 Writer: Bar3D doesn't display  - @Progi1984 GH-32
+- PowerPoint2007 Writer: Changed PowerPoint2007 writer attributes to protected - @delphiki GH-20
+- PowerPoint2007 Writer: Scatter chart with numerical X values not working well  - @Progi1984 GH-3
+- Shape RichText: Support of Vertical Alignment in PowerPoint2007 - @Progi1984 GH-35
+
 
 ### Miscellaneous
 
@@ -42,7 +55,9 @@
 - QA: Prepare `.travis.yml` and `phpcs.xml` for Travis build passing - @Progi1984 @ivanlanin
 - QA: Initiate unit tests - @Progi1984 @ivanlanin
 - QA: Cleanup source code for PSR dan PHPDoc compatibility - @ivanlanin
+- QA: Unit Tests - @Progi1984 & @ivanlanin 
 - Doc: Initiate documentation - @ivanlanin
+- Doc: Move to [Read The Docs](http://phppowerpoint.readthedocs.org) - @Progi1984
 - Refactor: Change PHPPowerPoint_Shape_Shadow to PHPPowerPoint_Style_Shadow because it's a style, not a shape - @ivanlanin
 - Refactor: Change PHPPowerPoint_SlideIterator to PHPPowerPoint_Slide_Iterator - @ivanlanin
 

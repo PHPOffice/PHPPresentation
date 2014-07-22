@@ -1,51 +1,49 @@
 language: php
 
 php:
-  - 5.3.3
   - 5.3
+  - 5.3.3
   - 5.4
   - 5.5
   - 5.6
   - hhvm
 
-
-
 matrix:
   allow_failures:
-    - php: 5.3.3
-    - php: 5.6
     - php: hhvm
 
+env:
+    global:
+        - secure: "LtlUOzC8FtqgbqUTmU7EU281NSCb58UFdvnz8lelNIDltBdP4eayN/TsgNIePB4jXg2d2R56ZA6j/grhE/md6jdUkulV355H3GrH/hIZmmQ+F9+87agnwLzb9+MJbqXoiE7VvjY3zGIO09G897SUfsfu6JWEcscYFlsH6KcXM6M="
+
 before_script:
+  ## Packages
+  - sudo apt-get -qq update > /dev/null
+  - sudo apt-get -qq install graphviz > /dev/null
   ## Composer
-  # - curl -s http://getcomposer.org/installer | php
-  # - php composer.phar install --prefer-source
   - composer self-update
-  - composer install --prefer-source
-  ## PHP_CodeSniffer
-  - pyrus install pear/PHP_CodeSniffer
-  - phpenv rehash
-  ## PHP Copy/Paste Detector
-  - curl -o phpcpd.phar https://phar.phpunit.de/phpcpd.phar
-  ## PHP Mess Detector
-  - pear config-set preferred_state beta
-  - printf "\n" | pecl install imagick
-  - pear channel-discover pear.phpmd.org
-  - pear channel-discover pear.pdepend.org
-  - pear install --alldeps phpmd/PHP_PMD
-  - phpenv rehash
-  ## PHPLOC
-  - curl -o phploc.phar https://phar.phpunit.de/phploc.phar
+  - composer install --prefer-source --dev
+  ## PHPDocumentor
+  - mkdir -p build/docs
+  - mkdir -p build/coverage
 
 script:
   ## PHP_CodeSniffer
-  - phpcs --standard=phpcs.xml -n Classes/
-  - phpcs --standard=phpcs.xml -n Tests/PHPPowerPoint
-  ## PHPUnit
-  - phpunit -c ./ --coverage-text
+  - ./vendor/bin/phpcs src/ tests/ --standard=PSR2 -n
   ## PHP Copy/Paste Detector
-  # - php phpcpd.phar Classes/
+  # - ./vendor/bin/phpcpd src/
   ## PHP Mess Detector
-  # - phpmd Classes/ text codesize,unusedcode,naming,design
+  - ./vendor/bin/phpmd src/,tests/ text ./phpmd.xml.dist
+  ## PHPUnit
+  - ./vendor/bin/phpunit -c ./ --coverage-text --coverage-html ./build/coverage
   ## PHPLOC
-  - php phploc.phar Classes/
+  - ./vendor/bin/phploc src/
+  ## PHPDocumentor
+  - ./vendor/bin/phpdoc -q -d ./src -t ./build/docs --template="responsive-twig"
+
+after_script:
+  ## PHPDocumentor
+  - bash .travis_shell_after_success.sh
+  ## Scrutinizer
+  - wget https://scrutinizer-ci.com/ocular.phar
+  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
