@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 - Not yet released
+## 0.2.0 - 2014-07-22
 
 ### Features
 
