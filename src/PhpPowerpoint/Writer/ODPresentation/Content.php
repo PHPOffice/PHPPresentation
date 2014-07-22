@@ -36,6 +36,7 @@ use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content
@@ -762,7 +763,11 @@ class Content extends AbstractPart
      */
     public function writeShapeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
     {
-        $this->getParentWriter()->chartArray[$shapeId] = $shape;
+        $parentWriter = $this->getParentWriter();
+        if (!$parentWriter instanceof ODPresentation) {
+        	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation');
+        }
+        $parentWriter->chartArray[$shapeId] = $shape;
         
         // draw:frame
         $objWriter->startElement('draw:frame');

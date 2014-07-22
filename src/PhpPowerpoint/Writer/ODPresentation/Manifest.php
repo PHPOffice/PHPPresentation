@@ -74,8 +74,8 @@ class Manifest extends AbstractPart
         $objWriter->writeAttribute('manifest:full-path', 'styles.xml');
         $objWriter->endElement();
         
-        $arrChart = $this->getParentWriter()->chartArray;
-        foreach ($arrChart as $key => $shape) {
+        // Charts
+        foreach ($parentWriter->chartArray as $key => $shape) {
             $objWriter->startElement('manifest:file-entry');
             $objWriter->writeAttribute('manifest:full-path', 'Object '.$key.'/');
             $objWriter->writeAttribute('manifest:media-type', 'application/vnd.oasis.opendocument.chart');
