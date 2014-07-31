@@ -444,7 +444,7 @@ class PowerPoint97 implements ReaderInterface
         $this->streamSummaryInformation = $oOLE->getStream($oOLE->summaryInformation);
         
         // Get additional document summary information data
-        $this->streamDocumentSummaryInformation = $oOLE->getStream($oOLE->docSummaryInformation);
+        $this->streamDocumentSummaryInformation = $oOLE->getStream($oOLE->docSummaryInfos);
         
         // Get pictures data
         $this->streamPictures = $oOLE->getStream($oOLE->pictures);
