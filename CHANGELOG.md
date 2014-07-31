@@ -3,6 +3,7 @@
 ## 0.3.0 - Not Released
 
 ### Features
+- PowerPoint97 Reader : Implement Basic Reader - @Progi1984 GH-15 GH-14 GH-4
 
 ### Bugfix
 
