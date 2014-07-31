@@ -9,6 +9,7 @@ OpenXML
 Known as "ISO/IEC 29500, Third edition, 2012-09-01"
 
 ISO : 
+
 -  `Part 1: Fundamentals and Markup Language Reference
    <http://standards.iso.org/ittf/PubliclyAvailableStandards/c061750_ISO_IEC_29500-1_2012.zip>`__
 -  `Part 2: Open Packaging Conventions
@@ -18,6 +19,7 @@ ISO :
 -  `Part 4: Transitional Migration Features
    <http://standards.iso.org/ittf/PubliclyAvailableStandards/c061798_ISO_IEC_29500-4_2012.zip>`__
 MSDN :
+
 -  `DocumentFormat.OpenXml.Presentation Namespace on
    MSDN <http://msdn.microsoft.com/en-us/library/documentformat.openxml.presentation(v=office.14).aspx>`__
 -  `Open XML SDK 2.5 with Validator <http://www.microsoft.com/en-gb/download/details.aspx?id=30425>`__
