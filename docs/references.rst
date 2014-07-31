@@ -35,4 +35,4 @@ PowerPoint 97
 ---------------
 
 -  `[MS-PPT]: PowerPoint (.ppt) Binary File Format <http://msdn.microsoft.com/en-us/library/cc313106(v=office.12).aspx>`__
--  `OffVis : Microsoft Tool for reading PPT files <http://blogs.technet.com/b/srd/archive/2009/07/31/announcing-offvis.aspx>`
+-  `OffVis : Microsoft Tool for reading PPT files <http://blogs.technet.com/b/srd/archive/2009/07/31/announcing-offvis.aspx>`__
