@@ -765,7 +765,7 @@ class Content extends AbstractPart
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof ODPresentation) {
-        	throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation');
+            throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation');
         }
         $parentWriter->chartArray[$shapeId] = $shape;
         

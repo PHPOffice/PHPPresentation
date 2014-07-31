@@ -43,10 +43,10 @@ class PowerPoint97Test extends \PHPUnit_Framework_TestCase
      */
     public function testCantRead()
     {
-    	$file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
-    	$object = new PowerPoint97();
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
+        $object = new PowerPoint97();
     
-    	$this->assertFalse($object->canRead($file));
+        $this->assertFalse($object->canRead($file));
     }
     
     /**
@@ -94,10 +94,10 @@ class PowerPoint97Test extends \PHPUnit_Framework_TestCase
     
     public function testLoadFile02()
     {
-    	$file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_02.ppt';
-    	$object = new PowerPoint97();
-    	$oPHPPowerPoint = $object->load($file);
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', $oPHPPowerPoint);
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_02.ppt';
+        $object = new PowerPoint97();
+        $oPHPPowerPoint = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', $oPHPPowerPoint);
         $this->assertEquals(4, $oPHPPowerPoint->getSlideCount());
         
         $oSlide = $oPHPPowerPoint->getSlide(0);
@@ -115,10 +115,10 @@ class PowerPoint97Test extends \PHPUnit_Framework_TestCase
     
     public function testLoadFile03()
     {
-    	$file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_03.ppt';
-    	$object = new PowerPoint97();
-    	$oPHPPowerPoint = $object->load($file);
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', $oPHPPowerPoint);
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_03.ppt';
+        $object = new PowerPoint97();
+        $oPHPPowerPoint = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', $oPHPPowerPoint);
         $this->assertEquals(1, $oPHPPowerPoint->getSlideCount());
         
         $oSlide = $oPHPPowerPoint->getSlide(0);
@@ -127,10 +127,10 @@ class PowerPoint97Test extends \PHPUnit_Framework_TestCase
     
     public function testLoadFile04()
     {
-    	$file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_04.ppt';
-    	$object = new PowerPoint97();
-    	$oPHPPowerPoint = $object->load($file);
-    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', $oPHPPowerPoint);
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_04.ppt';
+        $object = new PowerPoint97();
+        $oPHPPowerPoint = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\PhpPowerpoint', $oPHPPowerPoint);
         $this->assertEquals(1, $oPHPPowerPoint->getSlideCount());
         
         $oSlide = $oPHPPowerPoint->getSlide(0);

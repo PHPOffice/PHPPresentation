@@ -35,254 +35,254 @@ use PhpOffice\PhpPowerpoint\Shape\Line;
  */
 class PowerPoint97 implements ReaderInterface
 {
-    const OfficeArtBlipEMF = 0xF01A;
-    const OfficeArtBlipWMF = 0xF01B;
-    const OfficeArtBlipPICT = 0xF01C;
-    const OfficeArtBlipJPG = 0xF01D;
-    const OfficeArtBlipPNG = 0xF01E;
-    const OfficeArtBlipDIB = 0xF01F;
-    const OfficeArtBlipTIFF = 0xF029;
-    const OfficeArtBlipJPEG = 0xF02A;
+    const OFFICEARTBLIPEMF = 0xF01A;
+    const OFFICEARTBLIPWMF = 0xF01B;
+    const OFFICEARTBLIPPICT = 0xF01C;
+    const OFFICEARTBLIPJPG = 0xF01D;
+    const OFFICEARTBLIPPNG = 0xF01E;
+    const OFFICEARTBLIPDIB = 0xF01F;
+    const OFFICEARTBLIPTIFF = 0xF029;
+    const OFFICEARTBLIPJPEG = 0xF02A;
     
     /**
      * @link http://msdn.microsoft.com/en-us/library/dd945336(v=office.12).aspx
      */
-    const RT_AnimationInfo = 0x1014;
-    const RT_AnimationInfoAtom = 0x0FF1;
-    const RT_BinaryTagDataBlob = 0x138B;
-    const RT_BlipCollection9 = 0x07F8;
-    const RT_BlipEntity9Atom = 0x07F9;
-    const RT_BookmarkCollection = 0x07E3;
-    const RT_BookmarkEntityAtom = 0x0FD0;
-    const RT_BookmarkSeedAtom = 0x07E9;
-    const RT_BroadcastDocInfo9 = 0x177E;
-    const RT_BroadcastDocInfo9Atom = 0x177F;
-    const RT_BuildAtom = 0x2B03;
-    const RT_BuildList = 0x2B02;
-    const RT_ChartBuild = 0x2B04;
-    const RT_ChartBuildAtom = 0x2B05;
-    const RT_ColorSchemeAtom = 0x07F0;
-    const RT_Comment10 = 0x2EE0;
-    const RT_Comment10Atom = 0x2EE1;
-    const RT_CommentIndex10 = 0x2EE4;
-    const RT_CommentIndex10Atom = 0x2EE5;
-    const RT_CryptSession10Container = 0x2F14;
-    const RT_CurrentUserAtom = 0x0FF6;
-    const RT_CString = 0x0FBA;
-    const RT_DateTimeMetaCharAtom = 0x0FF7;
-    const RT_DefaultRulerAtom = 0x0FAB;
-    const RT_DocRoutingSlipAtom = 0x0406;
-    const RT_DiagramBuild = 0x2B06;
-    const RT_DiagramBuildAtom = 0x2B07;
-    const RT_Diff10 = 0x2EED;
-    const RT_Diff10Atom = 0x2EEE;
-    const RT_DiffTree10 = 0x2EEC;
-    const RT_DocToolbarStates10Atom = 0x36B1;
-    const RT_Document = 0x03E8;
-    const RT_DocumentAtom = 0x03E9;
-    const RT_Drawing = 0x040C;
-    const RT_DrawingGroup = 0x040B;
-    const RT_EndDocumentAtom = 0x03EA;
-    const RT_ExternalAviMovie = 0x1006;
-    const RT_ExternalCdAudio = 0x100E;
-    const RT_ExternalCdAudioAtom = 0x1012;
-    const RT_ExternalHyperlink = 0x0FD7;
-    const RT_ExternalHyperlink9 = 0x0FE4;
-    const RT_ExternalHyperlinkAtom = 0x0FD3;
-    const RT_ExternalHyperlinkFlagsAtom = 0x1018;
-    const RT_ExternalMciMovie = 0x1007;
-    const RT_ExternalMediaAtom = 0x1004;
-    const RT_ExternalMidiAudio = 0x100D;
-    const RT_ExternalObjectList = 0x0409;
-    const RT_ExternalObjectListAtom = 0x040A;
-    const RT_ExternalObjectRefAtom = 0x0BC1;
-    const RT_ExternalOleControl = 0x0FEE;
-    const RT_ExternalOleControlAtom = 0x0FFB;
-    const RT_ExternalOleEmbed = 0x0FCC;
-    const RT_ExternalOleEmbedAtom = 0x0FCD;
-    const RT_ExternalOleLink = 0x0FCE;
-    const RT_ExternalOleLinkAtom = 0x0FD1;
-    const RT_ExternalOleObjectAtom = 0x0FC3;
-    const RT_ExternalOleObjectStg = 0x1011;
-    const RT_ExternalVideo = 0x1005;
-    const RT_ExternalWavAudioEmbedded = 0x100F;
-    const RT_ExternalWavAudioEmbeddedAtom = 0x1013;
-    const RT_ExternalWavAudioLink = 0x1010;
-    const RT_EnvelopeData9Atom = 0x1785;
-    const RT_EnvelopeFlags9Atom = 0x1784;
-    const RT_Environment = 0x03F2;
-    const RT_FontCollection = 0x07D5;
-    const RT_FontCollection10 = 0x07D6;
-    const RT_FontEmbedDataBlob = 0x0FB8;
-    const RT_FontEmbedFlags10Atom = 0x32C8;
-    const RT_FilterPrivacyFlags10Atom = 0x36B0;
-    const RT_FontEntityAtom = 0x0FB7;
-    const RT_FooterMetaCharAtom = 0x0FFA;
-    const RT_GenericDateMetaCharAtom = 0x0FF8;
-    const RT_GridSpacing10Atom = 0x040D;
-    const RT_GuideAtom = 0x03FB;
-    const RT_Handout = 0x0FC9;
-    const RT_HashCodeAtom = 0x2B00;
-    const RT_HeadersFooters = 0x0FD9;
-    const RT_HeadersFootersAtom = 0x0FDA;
-    const RT_HeaderMetaCharAtom = 0x0FF9;
-    const RT_HtmlDocInfo9Atom = 0x177B;
-    const RT_HtmlPublishInfoAtom = 0x177C;
-    const RT_HtmlPublishInfo9 = 0x177D;
-    const RT_InteractiveInfo = 0x0FF2;
-    const RT_InteractiveInfoAtom = 0x0FF3;
-    const RT_Kinsoku = 0x0FC8;
-    const RT_KinsokuAtom = 0x0FD2;
-    const RT_LevelInfoAtom = 0x2B0A;
-    const RT_LinkedShape10Atom = 0x2EE6;
-    const RT_LinkedSlide10Atom = 0x2EE7;
-    const RT_List = 0x07D0;
-    const RT_MainMaster = 0x03F8;
-    const RT_MasterTextPropAtom = 0x0FA2;
-    const RT_MetaFile = 0x0FC1;
-    const RT_NamedShow = 0x0411;
-    const RT_NamedShows = 0x0410;
-    const RT_NamedShowSlidesAtom = 0x0412;
-    const RT_NormalViewSetInfo9 = 0x0414;
-    const RT_NormalViewSetInfo9Atom = 0x0415;
-    const RT_Notes= 0x03F0;
-    const RT_NotesAtom = 0x03F1;
-    const RT_NotesTextViewInfo9 = 0x0413;
-    const RT_OutlineTextProps9 = 0x0FAE;
-    const RT_OutlineTextProps10 = 0x0FB3;
-    const RT_OutlineTextProps11 = 0x0FB5;
-    const RT_OutlineTextPropsHeader9Atom = 0x0FAF;
-    const RT_OutlineTextRefAtom = 0x0F9E;
-    const RT_OutlineViewInfo = 0x0407;
-    const RT_PersistDirectoryAtom = 0x1772;
-    const RT_ParaBuild = 0x2B08;
-    const RT_ParaBuildAtom = 0x2B09;
-    const RT_PhotoAlbumInfo10Atom = 0x36B2;
-    const RT_PlaceholderAtom = 0x0BC3;
-    const RT_PresentationAdvisorFlags9Atom = 0x177A;
-    const RT_PrintOptionsAtom = 0x1770;
-    const RT_ProgBinaryTag = 0x138A;
-    const RT_ProgStringTag = 0x1389;
-    const RT_ProgTags = 0x1388;
-    const RT_RecolorInfoAtom = 0x0FE7;
-    const RT_RtfDateTimeMetaCharAtom = 0x1015;
-    const RT_RoundTripAnimationAtom12Atom = 0x2B0B;
-    const RT_RoundTripAnimationHashAtom12Atom = 0x2B0D;
-    const RT_RoundTripColorMapping12Atom = 0x040F;
-    const RT_RoundTripCompositeMasterId12Atom = 0x041D;
-    const RT_RoundTripContentMasterId12Atom = 0x0422;
-    const RT_RoundTripContentMasterInfo12Atom = 0x041E;
-    const RT_RoundTripCustomTableStyles12Atom = 0x0428;
-    const RT_RoundTripDocFlags12Atom = 0x0425;
-    const RT_RoundTripHeaderFooterDefaults12Atom = 0x0424;
-    const RT_RoundTripHFPlaceholder12Atom = 0x0420;
-    const RT_RoundTripNewPlaceholderId12Atom = 0x0BDD;
-    const RT_RoundTripNotesMasterTextStyles12Atom = 0x0427;
-    const RT_RoundTripOArtTextStyles12Atom = 0x0423;
-    const RT_RoundTripOriginalMainMasterId12Atom = 0x041C;
-    const RT_RoundTripShapeCheckSumForCL12Atom = 0x0426;
-    const RT_RoundTripShapeId12Atom = 0x041F;
-    const RT_RoundTripSlideSyncInfo12 = 0x3714;
-    const RT_RoundTripSlideSyncInfoAtom12 = 0x3715;
-    const RT_RoundTripTheme12Atom = 0x040E;
-    const RT_ShapeAtom = 0x0BDB;
-    const RT_ShapeFlags10Atom = 0x0BDC;
-    const RT_Slide = 0x03EE;
-    const RT_SlideAtom = 0x03EF;
-    const RT_SlideFlags10Atom = 0x2EEA;
-    const RT_SlideListEntry10Atom = 0x2EF0;
-    const RT_SlideListTable10 = 0x2EF1;
-    const RT_SlideListWithText = 0x0FF0;
-    const RT_SlideListTableSize10Atom = 0x2EEF;
-    const RT_SlideNumberMetaCharAtom = 0x0FD8;
-    const RT_SlidePersistAtom = 0x03F3;
-    const RT_SlideShowDocInfoAtom = 0x0401;
-    const RT_SlideShowSlideInfoAtom = 0x03F9;
-    const RT_SlideTime10Atom = 0x2EEB;
-    const RT_SlideViewInfo = 0x03FA;
-    const RT_SlideViewInfoAtom = 0x03FE;
-    const RT_SmartTagStore11Container = 0x36B3;
-    const RT_Sound = 0x07E6;
-    const RT_SoundCollection = 0x07E4;
-    const RT_SoundCollectionAtom = 0x07E5;
-    const RT_SoundDataBlob = 0x07E7;
-    const RT_SorterViewInfo = 0x0408;
-    const RT_StyleTextPropAtom = 0x0FA1;
-    const RT_StyleTextProp10Atom = 0x0FB1;
-    const RT_StyleTextProp11Atom = 0x0FB6;
-    const RT_StyleTextProp9Atom = 0x0FAC;
-    const RT_Summary = 0x0402;
-    const RT_TextBookmarkAtom = 0x0FA7;
-    const RT_TextBytesAtom = 0x0FA8;
-    const RT_TextCharFormatExceptionAtom = 0x0FA4;
-    const RT_TextCharsAtom = 0x0FA0;
-    const RT_TextDefaults10Atom = 0x0FB4;
-    const RT_TextDefaults9Atom = 0x0FB0;
-    const RT_TextHeaderAtom = 0x0F9F;
-    const RT_TextInteractiveInfoAtom = 0x0FDF;
-    const RT_TextMasterStyleAtom = 0x0FA3;
-    const RT_TextMasterStyle10Atom = 0x0FB2;
-    const RT_TextMasterStyle9Atom = 0x0FAD;
-    const RT_TextParagraphFormatExceptionAtom = 0x0FA5;
-    const RT_TextRulerAtom = 0x0FA6;
-    const RT_TextSpecialInfoAtom = 0x0FAA;
-    const RT_TextSpecialInfoDefaultAtom = 0x0FA9;
-    const RT_TimeAnimateBehavior = 0xF134;
-    const RT_TimeAnimateBehaviorContainer = 0xF12B;
-    const RT_TimeAnimationValue = 0xF143;
-    const RT_TimeAnimationValueList = 0xF13F;
-    const RT_TimeBehavior = 0xF133;
-    const RT_TimeBehaviorContainer = 0xF12A;
-    const RT_TimeColorBehavior = 0xF135;
-    const RT_TimeColorBehaviorContainer = 0xF12C;
-    const RT_TimeClientVisualElement = 0xF13C;
-    const RT_TimeCommandBehavior = 0xF13B;
-    const RT_TimeCommandBehaviorContainer = 0xF132;
-    const RT_TimeCondition = 0xF128;
-    const RT_TimeConditionContainer = 0xF125;
-    const RT_TimeEffectBehavior = 0xF136;
-    const RT_TimeEffectBehaviorContainer = 0xF12D;
-    const RT_TimeExtTimeNodeContainer = 0xF144;
-    const RT_TimeIterateData = 0xF140;
-    const RT_TimeModifier = 0xF129;
-    const RT_TimeMotionBehavior = 0xF137;
-    const RT_TimeMotionBehaviorContainer = 0xF12E;
-    const RT_TimeNode = 0xF127;
-    const RT_TimePropertyList = 0xF13D;
-    const RT_TimeRotationBehavior = 0xF138;
-    const RT_TimeRotationBehaviorContainer = 0xF12F;
-    const RT_TimeScaleBehavior = 0xF139;
-    const RT_TimeScaleBehaviorContainer = 0xF130;
-    const RT_TimeSequenceData = 0xF141;
-    const RT_TimeSetBehavior = 0xF13A;
-    const RT_TimeSetBehaviorContainer = 0xF131;
-    const RT_TimeSubEffectContainer = 0xF145;
-    const RT_TimeVariant = 0xF142;
-    const RT_TimeVariantList = 0xF13E;
-    const RT_UserEditAtom = 0x0FF5;
-    const RT_VbaInfo = 0x03FF;
-    const RT_VbaInfoAtom = 0x0400;
-    const RT_ViewInfoAtom = 0x03FD;
-    const RT_VisualPageAtom = 0x2B01;
-    const RT_VisualShapeAtom = 0x2AFB;
+    const RT_ANIMATIONINFO = 0x1014;
+    const RT_ANIMATIONINFOATOM = 0x0FF1;
+    const RT_BINARYTAGDATABLOB = 0x138B;
+    const RT_BLIPCOLLECTION9 = 0x07F8;
+    const RT_BLIPENTITY9ATOM = 0x07F9;
+    const RT_BOOKMARKCOLLECTION = 0x07E3;
+    const RT_BOOKMARKENTITYATOM = 0x0FD0;
+    const RT_BOOKMARKSEEDATOM = 0x07E9;
+    const RT_BROADCASTDOCINFO9 = 0x177E;
+    const RT_BROADCASTDOCINFO9ATOM = 0x177F;
+    const RT_BUILDATOM = 0x2B03;
+    const RT_BUILDLIST = 0x2B02;
+    const RT_CHARTBUILD = 0x2B04;
+    const RT_CHARTBUILDATOM = 0x2B05;
+    const RT_COLORSCHEMEATOM = 0x07F0;
+    const RT_COMMENT10 = 0x2EE0;
+    const RT_COMMENT10ATOM = 0x2EE1;
+    const RT_COMMENTINDEX10 = 0x2EE4;
+    const RT_COMMENTINDEX10ATOM = 0x2EE5;
+    const RT_CRYPTSESSION10CONTAINER = 0x2F14;
+    const RT_CURRENTUSERATOM = 0x0FF6;
+    const RT_CSTRING = 0x0FBA;
+    const RT_DATETIMEMETACHARATOM = 0x0FF7;
+    const RT_DEFAULTRULERATOM = 0x0FAB;
+    const RT_DOCROUTINGSLIPATOM = 0x0406;
+    const RT_DIAGRAMBUILD = 0x2B06;
+    const RT_DIAGRAMBUILDATOM = 0x2B07;
+    const RT_DIFF10 = 0x2EED;
+    const RT_DIFF10ATOM = 0x2EEE;
+    const RT_DIFFTREE10 = 0x2EEC;
+    const RT_DOCTOOLBARSTATES10ATOM = 0x36B1;
+    const RT_DOCUMENT = 0x03E8;
+    const RT_DOCUMENTATOM = 0x03E9;
+    const RT_DRAWING = 0x040C;
+    const RT_DRAWINGGROUP = 0x040B;
+    const RT_ENDDOCUMENTATOM = 0x03EA;
+    const RT_EXTERNALAVIMOVIE = 0x1006;
+    const RT_EXTERNALCDAUDIO = 0x100E;
+    const RT_EXTERNALCDAUDIOATOM = 0x1012;
+    const RT_EXTERNALHYPERLINK = 0x0FD7;
+    const RT_EXTERNALHYPERLINK9 = 0x0FE4;
+    const RT_EXTERNALHYPERLINKATOM = 0x0FD3;
+    const RT_EXTERNALHYPERLINKFLAGSATOM = 0x1018;
+    const RT_EXTERNALMCIMOVIE = 0x1007;
+    const RT_EXTERNALMEDIAATOM = 0x1004;
+    const RT_EXTERNALMIDIAUDIO = 0x100D;
+    const RT_EXTERNALOBJECTLIST = 0x0409;
+    const RT_EXTERNALOBJECTLISTATOM = 0x040A;
+    const RT_EXTERNALOBJECTREFATOM = 0x0BC1;
+    const RT_EXTERNALOLECONTROL = 0x0FEE;
+    const RT_EXTERNALOLECONTROLATOM = 0x0FFB;
+    const RT_EXTERNALOLEEMBED = 0x0FCC;
+    const RT_EXTERNALOLEEMBEDATOM = 0x0FCD;
+    const RT_EXTERNALOLELINK = 0x0FCE;
+    const RT_EXTERNALOLELINKATOM = 0x0FD1;
+    const RT_EXTERNALOLEOBJECTATOM = 0x0FC3;
+    const RT_EXTERNALOLEOBJECTSTG = 0x1011;
+    const RT_EXTERNALVIDEO = 0x1005;
+    const RT_EXTERNALWAVAUDIOEMBEDDED = 0x100F;
+    const RT_EXTERNALWAVAUDIOEMBEDDEDATOM = 0x1013;
+    const RT_EXTERNALWAVAUDIOLINK = 0x1010;
+    const RT_ENVELOPEDATA9ATOM = 0x1785;
+    const RT_ENVELOPEFLAGS9ATOM = 0x1784;
+    const RT_ENVIRONMENT = 0x03F2;
+    const RT_FONTCOLLECTION = 0x07D5;
+    const RT_FONTCOLLECTION10 = 0x07D6;
+    const RT_FONTEMBEDDATABLOB = 0x0FB8;
+    const RT_FONTEMBEDFLAGS10ATOM = 0x32C8;
+    const RT_FILTERPRIVACYFLAGS10ATOM = 0x36B0;
+    const RT_FONTENTITYATOM = 0x0FB7;
+    const RT_FOOTERMETACHARATOM = 0x0FFA;
+    const RT_GENERICDATEMETACHARATOM = 0x0FF8;
+    const RT_GRIDSPACING10ATOM = 0x040D;
+    const RT_GUIDEATOM = 0x03FB;
+    const RT_HANDOUT = 0x0FC9;
+    const RT_HASHCODEATOM = 0x2B00;
+    const RT_HEADERSFOOTERS = 0x0FD9;
+    const RT_HEADERSFOOTERSATOM = 0x0FDA;
+    const RT_HEADERMETACHARATOM = 0x0FF9;
+    const RT_HTMLDOCINFO9ATOM = 0x177B;
+    const RT_HTMLPUBLISHINFOATOM = 0x177C;
+    const RT_HTMLPUBLISHINFO9 = 0x177D;
+    const RT_INTERACTIVEINFO = 0x0FF2;
+    const RT_INTERACTIVEINFOATOM = 0x0FF3;
+    const RT_KINSOKU = 0x0FC8;
+    const RT_KINSOKUATOM = 0x0FD2;
+    const RT_LEVELINFOATOM = 0x2B0A;
+    const RT_LINKEDSHAPE10ATOM = 0x2EE6;
+    const RT_LINKEDSLIDE10ATOM = 0x2EE7;
+    const RT_LIST = 0x07D0;
+    const RT_MAINMASTER = 0x03F8;
+    const RT_MASTERTEXTPROPATOM = 0x0FA2;
+    const RT_METAFILE = 0x0FC1;
+    const RT_NAMEDSHOW = 0x0411;
+    const RT_NAMEDSHOWS = 0x0410;
+    const RT_NAMEDSHOWSLIDESATOM = 0x0412;
+    const RT_NORMALVIEWSETINFO9 = 0x0414;
+    const RT_NORMALVIEWSETINFO9ATOM = 0x0415;
+    const RT_NOTES= 0x03F0;
+    const RT_NOTESATOM = 0x03F1;
+    const RT_NOTESTEXTVIEWINFO9 = 0x0413;
+    const RT_OUTLINETEXTPROPS9 = 0x0FAE;
+    const RT_OUTLINETEXTPROPS10 = 0x0FB3;
+    const RT_OUTLINETEXTPROPS11 = 0x0FB5;
+    const RT_OUTLINETEXTPROPSHEADER9ATOM = 0x0FAF;
+    const RT_OUTLINETEXTREFATOM = 0x0F9E;
+    const RT_OUTLINEVIEWINFO = 0x0407;
+    const RT_PERSISTDIRECTORYATOM = 0x1772;
+    const RT_PARABUILD = 0x2B08;
+    const RT_PARABUILDATOM = 0x2B09;
+    const RT_PHOTOALBUMINFO10ATOM = 0x36B2;
+    const RT_PLACEHOLDERATOM = 0x0BC3;
+    const RT_PRESENTATIONADVISORFLAGS9ATOM = 0x177A;
+    const RT_PRINTOPTIONSATOM = 0x1770;
+    const RT_PROGBINARYTAG = 0x138A;
+    const RT_PROGSTRINGTAG = 0x1389;
+    const RT_PROGTAGS = 0x1388;
+    const RT_RECOLORINFOATOM = 0x0FE7;
+    const RT_RTFDATETIMEMETACHARATOM = 0x1015;
+    const RT_ROUNDTRIPANIMATIONATOM12ATOM = 0x2B0B;
+    const RT_ROUNDTRIPANIMATIONHASHATOM12ATOM = 0x2B0D;
+    const RT_ROUNDTRIPCOLORMAPPING12ATOM = 0x040F;
+    const RT_ROUNDTRIPCOMPOSITEMASTERID12ATOM = 0x041D;
+    const RT_ROUNDTRIPCONTENTMASTERID12ATOM = 0x0422;
+    const RT_ROUNDTRIPCONTENTMASTERINFO12ATOM = 0x041E;
+    const RT_ROUNDTRIPCUSTOMTABLESTYLES12ATOM = 0x0428;
+    const RT_ROUNDTRIPDOCFLAGS12ATOM = 0x0425;
+    const RT_ROUNDTRIPHEADERFOOTERDEFAULTS12ATOM = 0x0424;
+    const RT_ROUNDTRIPHFPLACEHOLDER12ATOM = 0x0420;
+    const RT_ROUNDTRIPNEWPLACEHOLDERID12ATOM = 0x0BDD;
+    const RT_ROUNDTRIPNOTESMASTERTEXTSTYLES12ATOM = 0x0427;
+    const RT_ROUNDTRIPOARTTEXTSTYLES12ATOM = 0x0423;
+    const RT_ROUNDTRIPORIGINALMAINMASTERID12ATOM = 0x041C;
+    const RT_ROUNDTRIPSHAPECHECKSUMFORCL12ATOM = 0x0426;
+    const RT_ROUNDTRIPSHAPEID12ATOM = 0x041F;
+    const RT_ROUNDTRIPSLIDESYNCINFO12 = 0x3714;
+    const RT_ROUNDTRIPSLIDESYNCINFOATOM12 = 0x3715;
+    const RT_ROUNDTRIPTHEME12ATOM = 0x040E;
+    const RT_SHAPEATOM = 0x0BDB;
+    const RT_SHAPEFLAGS10ATOM = 0x0BDC;
+    const RT_SLIDE = 0x03EE;
+    const RT_SLIDEATOM = 0x03EF;
+    const RT_SLIDEFLAGS10ATOM = 0x2EEA;
+    const RT_SLIDELISTENTRY10ATOM = 0x2EF0;
+    const RT_SLIDELISTTABLE10 = 0x2EF1;
+    const RT_SLIDELISTWITHTEXT = 0x0FF0;
+    const RT_SLIDELISTTABLESIZE10ATOM = 0x2EEF;
+    const RT_SLIDENUMBERMETACHARATOM = 0x0FD8;
+    const RT_SLIDEPERSISTATOM = 0x03F3;
+    const RT_SLIDESHOWDOCINFOATOM = 0x0401;
+    const RT_SLIDESHOWSLIDEINFOATOM = 0x03F9;
+    const RT_SLIDETIME10ATOM = 0x2EEB;
+    const RT_SLIDEVIEWINFO = 0x03FA;
+    const RT_SLIDEVIEWINFOATOM = 0x03FE;
+    const RT_SMARTTAGSTORE11CONTAINER = 0x36B3;
+    const RT_SOUND = 0x07E6;
+    const RT_SOUNDCOLLECTION = 0x07E4;
+    const RT_SOUNDCOLLECTIONATOM = 0x07E5;
+    const RT_SOUNDDATABLOB = 0x07E7;
+    const RT_SORTERVIEWINFO = 0x0408;
+    const RT_STYLETEXTPROPATOM = 0x0FA1;
+    const RT_STYLETEXTPROP10ATOM = 0x0FB1;
+    const RT_STYLETEXTPROP11ATOM = 0x0FB6;
+    const RT_STYLETEXTPROP9ATOM = 0x0FAC;
+    const RT_SUMMARY = 0x0402;
+    const RT_TEXTBOOKMARKATOM = 0x0FA7;
+    const RT_TEXTBYTESATOM = 0x0FA8;
+    const RT_TEXTCHARFORMATEXCEPTIONATOM = 0x0FA4;
+    const RT_TEXTCHARSATOM = 0x0FA0;
+    const RT_TEXTDEFAULTS10ATOM = 0x0FB4;
+    const RT_TEXTDEFAULTS9ATOM = 0x0FB0;
+    const RT_TEXTHEADERATOM = 0x0F9F;
+    const RT_TEXTINTERACTIVEINFOATOM = 0x0FDF;
+    const RT_TEXTMASTERSTYLEATOM = 0x0FA3;
+    const RT_TEXTMASTERSTYLE10ATOM = 0x0FB2;
+    const RT_TEXTMASTERSTYLE9ATOM = 0x0FAD;
+    const RT_TEXTPARAGRAPHFORMATEXCEPTIONATOM = 0x0FA5;
+    const RT_TEXTRULERATOM = 0x0FA6;
+    const RT_TEXTSPECIALINFOATOM = 0x0FAA;
+    const RT_TEXTSPECIALINFODEFAULTATOM = 0x0FA9;
+    const RT_TIMEANIMATEBEHAVIOR = 0xF134;
+    const RT_TIMEANIMATEBEHAVIORCONTAINER = 0xF12B;
+    const RT_TIMEANIMATIONVALUE = 0xF143;
+    const RT_TIMEANIMATIONVALUELIST = 0xF13F;
+    const RT_TIMEBEHAVIOR = 0xF133;
+    const RT_TIMEBEHAVIORCONTAINER = 0xF12A;
+    const RT_TIMECOLORBEHAVIOR = 0xF135;
+    const RT_TIMECOLORBEHAVIORCONTAINER = 0xF12C;
+    const RT_TIMECLIENTVISUALELEMENT = 0xF13C;
+    const RT_TIMECOMMANDBEHAVIOR = 0xF13B;
+    const RT_TIMECOMMANDBEHAVIORCONTAINER = 0xF132;
+    const RT_TIMECONDITION = 0xF128;
+    const RT_TIMECONDITIONCONTAINER = 0xF125;
+    const RT_TIMEEFFECTBEHAVIOR = 0xF136;
+    const RT_TIMEEFFECTBEHAVIORCONTAINER = 0xF12D;
+    const RT_TIMEEXTTIMENODECONTAINER = 0xF144;
+    const RT_TIMEITERATEDATA = 0xF140;
+    const RT_TIMEMODIFIER = 0xF129;
+    const RT_TIMEMOTIONBEHAVIOR = 0xF137;
+    const RT_TIMEMOTIONBEHAVIORCONTAINER = 0xF12E;
+    const RT_TIMENODE = 0xF127;
+    const RT_TIMEPROPERTYLIST = 0xF13D;
+    const RT_TIMEROTATIONBEHAVIOR = 0xF138;
+    const RT_TIMEROTATIONBEHAVIORCONTAINER = 0xF12F;
+    const RT_TIMESCALEBEHAVIOR = 0xF139;
+    const RT_TIMESCALEBEHAVIORCONTAINER = 0xF130;
+    const RT_TIMESEQUENCEDATA = 0xF141;
+    const RT_TIMESETBEHAVIOR = 0xF13A;
+    const RT_TIMESETBEHAVIORCONTAINER = 0xF131;
+    const RT_TIMESUBEFFECTCONTAINER = 0xF145;
+    const RT_TIMEVARIANT = 0xF142;
+    const RT_TIMEVARIANTLIST = 0xF13E;
+    const RT_USEREDITATOM = 0x0FF5;
+    const RT_VBAINFO = 0x03FF;
+    const RT_VBAINFOATOM = 0x0400;
+    const RT_VIEWINFOATOM = 0x03FD;
+    const RT_VISUALPAGEATOM = 0x2B01;
+    const RT_VISUALSHAPEATOM = 0x2AFB;
     
     /**
      * @var http://msdn.microsoft.com/en-us/library/dd926394(v=office.12).aspx
      */
-    const SL_BigObject = 0x0000000F;
-    const SL_Blank = 0x00000010;
-    const SL_ColumnTwoRows = 0x0000000A;
-    const SL_FourObjects = 0x0000000E;
-    const SL_MasterTitle = 0x00000002;
-    const SL_TitleBody = 0x00000001;
-    const SL_TitleOnly = 0x00000007;
-    const SL_TitleSlide = 0x00000000;
-    const SL_TwoColumns = 0x00000008;
-    const SL_TwoColumnsRow = 0x0000000D;
-    const SL_TwoRows = 0x00000009;
-    const SL_TwoRowsColumn = 0x0000000B;
-    const SL_VerticalTitleBody = 0x00000011;
-    const SL_VerticalTwoRows = 0x00000012;
+    const SL_BIGOBJECT = 0x0000000F;
+    const SL_BLANK = 0x00000010;
+    const SL_COLUMNTWOROWS = 0x0000000A;
+    const SL_FOUROBJECTS = 0x0000000E;
+    const SL_MASTERTITLE = 0x00000002;
+    const SL_TITLEBODY = 0x00000001;
+    const SL_TITLEONLY = 0x00000007;
+    const SL_TITLESLIDE = 0x00000000;
+    const SL_TWOCOLUMNS = 0x00000008;
+    const SL_TWOCOLUMNSROW = 0x0000000D;
+    const SL_TWOROWS = 0x00000009;
+    const SL_TWOROWSCOLUMN = 0x0000000B;
+    const SL_VERTICALTITLEBODY = 0x00000011;
+    const SL_VERTICALTWOROWS = 0x00000012;
     
     /**
      * Array with Fonts
@@ -372,7 +372,7 @@ class PowerPoint97 implements ReaderInterface
             // Use ParseXL for the hard work.
             $ole = new OLERead();
             // get excel data
-            $res = $ole->read($pFilename);
+            $ole->read($pFilename);
             return true;
         } catch (\Exception $e) {
             return false;
@@ -444,7 +444,7 @@ class PowerPoint97 implements ReaderInterface
         $this->streamSummaryInformation = $oOLE->getStream($oOLE->summaryInformation);
         
         // Get additional document summary information data
-        $this->streamDocumentSummaryInformation = $oOLE->getStream($oOLE->documentSummaryInformation);
+        $this->streamDocumentSummaryInformation = $oOLE->getStream($oOLE->docSummaryInformation);
         
         // Get pictures data
         $this->streamPictures = $oOLE->getStream($oOLE->pictures);
@@ -470,8 +470,8 @@ class PowerPoint97 implements ReaderInterface
                 if ($arrayRH['recType'] >= 0xF018 && $arrayRH['recType'] <= 0xF117) {
                     //@link : http://msdn.microsoft.com/en-us/library/dd910081(v=office.12).aspx
                     switch ($arrayRH['recType']) {
-                        case self::OfficeArtBlipJPG:
-                        case self::OfficeArtBlipPNG:
+                        case self::OFFICEARTBLIPJPG:
+                        case self::OFFICEARTBLIPPNG:
                             // rgbUid1
                             $pos += 16;
                             $arrayRH['recLen'] -= 16;
@@ -510,9 +510,9 @@ class PowerPoint97 implements ReaderInterface
          * CurrentUserAtom : http://msdn.microsoft.com/en-us/library/dd948895(v=office.12).aspx
          */
         // RecordHeader : http://msdn.microsoft.com/en-us/library/dd926377(v=office.12).aspx
-        $rh = $this->loadRecordHeader($this->streamCurrentUser, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamCurrentUser, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0x0 || $rh['recInstance'] != 0x000 || $rh['recType'] != self::RT_CurrentUserAtom) {
+        if ($rHeader['recVer'] != 0x0 || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != self::RT_CURRENTUSERATOM) {
             throw new \Exception('File PowerPoint 97 in error (Location : CurrentUserAtom > RecordHeader).');
         }
 
@@ -530,7 +530,7 @@ class PowerPoint97 implements ReaderInterface
             throw new \Exception('Feature not implemented (l.'.__LINE__.') : Encrypted file');
         }
 
-        // offsetToCurrentEdit 
+        // offsetToCurrentEdit
         $this->offsetToCurrentEdit = self::getInt4d($this->streamCurrentUser, $pos);
         $pos += 4;
 
@@ -566,7 +566,7 @@ class PowerPoint97 implements ReaderInterface
         $pos += 2;
         
         // ansiUserName
-        $ansiUserName = ''; 
+        $ansiUserName = '';
         $char = false;
         do {
             $char = self::getInt1d($this->streamCurrentUser, $pos);
@@ -587,7 +587,7 @@ class PowerPoint97 implements ReaderInterface
         
         // unicodeUserName
         $unicodeUserName = '';
-        for ($inc = 0; $inc < $lenUserName ; $inc++) {
+        for ($inc = 0; $inc < $lenUserName; $inc++) {
             $char = self::getInt2d($this->streamCurrentUser, $pos);
             if (($char >= 0x00 && $char <= 0x1F) || ($char >= 0x7F && $char <= 0x9F)) {
                 break;
@@ -613,16 +613,16 @@ class PowerPoint97 implements ReaderInterface
             $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
             $pos += 8;
             switch ($rh['recType']) {
-                case self::RT_Document:
+                case self::RT_DOCUMENT:
                     $this->readRTDocument($pos);
                     break;
-                case self::RT_MainMaster:
-                case self::RT_Notes:
-                    break;
-                case self::RT_Slide:
+                case self::RT_SLIDE:
                     $this->readRTSlide($pos);
                     break;
+                case self::RT_MAINMASTER:
+                case self::RT_NOTES:
                 default:
+                    break;
             }
         }
     }
@@ -632,12 +632,13 @@ class PowerPoint97 implements ReaderInterface
      * @link http://msdn.microsoft.com/en-us/library/dd945746(v=office.12).aspx
      * @throws \Exception
      */
-    private function loadUserEditAtom() {
+    private function loadUserEditAtom()
+    {
         $pos = $this->offsetToCurrentEdit;
         
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0x0 || $rh['recInstance'] != 0x000 || $rh['recType'] != self::RT_UserEditAtom || ($rh['recLen'] != 0x0000001C && $rh['recLen'] != 0x00000020)) {
+        if ($rHeader['recVer'] != 0x0 || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != self::RT_USEREDITATOM || ($rHeader['recLen'] != 0x0000001C && $rHeader['recLen'] != 0x00000020)) {
             throw new \Exception('File PowerPoint 97 in error (Location : UserEditAtom > RecordHeader).');
         }
         
@@ -690,9 +691,9 @@ class PowerPoint97 implements ReaderInterface
     {
         $pos = $this->offsetPersistDirectory;
         
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0x0 || $rh['recInstance'] != 0x000 || $rh['recType'] != self::RT_PersistDirectoryAtom) {
+        if ($rHeader['recVer'] != 0x0 || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != self::RT_PERSISTDIRECTORYATOM) {
             throw new \Exception('File PowerPoint 97 in error (Location : PersistDirectoryAtom > RecordHeader).');
         }
         // rgPersistDirEntry
@@ -700,17 +701,17 @@ class PowerPoint97 implements ReaderInterface
         do {
             $data = self::getInt4d($this->streamPowerpointDocument, $pos);
             $pos += 4;
-            $rh['recLen'] -= 4;
-            $persistId  = ($data >> 0) & bindec('11111111111111111111');
+            $rHeader['recLen'] -= 4;
+            //$persistId  = ($data >> 0) & bindec('11111111111111111111');
             $cPersist  = ($data >> 20) & bindec('111111111111');
         
             $rgPersistOffset = array();
-            for ($inc = 0 ; $inc < $cPersist; $inc++) {
+            for ($inc = 0; $inc < $cPersist; $inc++) {
                 $rgPersistOffset[] = self::getInt4d($this->streamPowerpointDocument, $pos);
                 $pos += 4;
-                $rh['recLen'] -= 4;
+                $rHeader['recLen'] -= 4;
             }
-        } while ($rh['recLen'] > 0);
+        } while ($rHeader['recLen'] > 0);
         $this->rgPersistDirEntry = $rgPersistOffset;
     }
     
@@ -719,25 +720,25 @@ class PowerPoint97 implements ReaderInterface
      * @link http://msdn.microsoft.com/en-us/library/dd946323(v=office.12).aspx
      * @param int $pos
      */
-    private function readRTSlide($pos) {
+    private function readRTSlide($pos)
+    {
         $oSlide = $this->oPhpPowerpoint->createSlide();
         // echo '@slide'.EOL;
         
         // *** slideAtom (32 bytes)
         // slideAtom > rh
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0x2 || $rh['recInstance'] != 0x000 || $rh['recType'] != self::RT_SlideAtom) {
+        if ($rHeader['recVer'] != 0x2 || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != self::RT_SLIDEATOM) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > RecordHeader).');
         }
         
         // slideAtom > geom
-        $geom = self::getInt4d($this->streamPowerpointDocument, $pos);
         $pos += 4;
         
         // slideAtom > rgPlaceholderTypes
         $rgPlaceholderTypes = array();
-        for ($inc = 0 ; $inc < 8 ; $inc++) {
+        for ($inc = 0; $inc < 8; $inc++) {
             $rgPlaceholderTypes[] = self::getInt1d($this->streamPowerpointDocument, $pos);
             $pos += 1;
         }
@@ -749,62 +750,62 @@ class PowerPoint97 implements ReaderInterface
         
         // slideAtom > slideFlags
         $slideFlags = self::getInt2d($this->streamPowerpointDocument, $pos);
-        $fMasterObjects = ($slideFlags >> 0) & bindec('1');
-        $fMasterScheme = ($slideFlags >> 1) & bindec('1');
-        $fMasterBackground  = ($slideFlags >> 2) & bindec('1');
-        $reserved   = ($slideFlags >> 3) & bindec('1111111111111');
+        // $fMasterObjects = ($slideFlags >> 0) & bindec('1');
+        // $fMasterScheme = ($slideFlags >> 1) & bindec('1');
+        // $fMasterBackground  = ($slideFlags >> 2) & bindec('1');
+        // $reserved   = ($slideFlags >> 3) & bindec('1111111111111');
         $pos += 2;
         
-        // slideAtom > unused; 
+        // slideAtom > unused;
         $pos += 2;
         // *** slideShowSlideInfoAtom (24 bytes)
         $pos += 24;
         
         // perSlideHFContainer (variable)
         // perSlideHFContainer > rh
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0xF || $rh['recInstance'] != 0x000 || $rh['recType'] != self::RT_HeadersFooters) {
+        if ($rHeader['recVer'] != 0xF || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != self::RT_HEADERSFOOTERS) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > perSlideHFContainer > RT_HeadersFooters).');
         }
-        $pos += $rh['recLen'];
+        $pos += $rHeader['recLen'];
         
         // *** rtSlideSyncInfo12 (variable)
         // *** drawing (variable)
         // drawing > rh
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0xF || $rh['recInstance'] != 0x000 || $rh['recType'] != self::RT_Drawing) {
+        if ($rHeader['recVer'] != 0xF || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != self::RT_DRAWING) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > drawing > rh).');
         }
         // print_r('@PPDrawing'.EOL);
 
         // drawing > OfficeArtDg
         // drawing > OfficeArtDg > rh
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0xF || $rh['recInstance'] != 0x000 || $rh['recType'] != 0xF002) {
+        if ($rHeader['recVer'] != 0xF || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != 0xF002) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > drawing > OfficeArtDg > rh).');
         }
         
         // drawing > OfficeArtDg > drawingData
         // drawing > OfficeArtDg > drawingData > rh
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0x0 || $rh['recInstance'] >= 0xFFE || $rh['recType'] != 0xF008 || $rh['recLen'] != 0x00000008) {
+        if ($rHeader['recVer'] != 0x0 || $rHeader['recInstance'] >= 0xFFE || $rHeader['recType'] != 0xF008 || $rHeader['recLen'] != 0x00000008) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > drawing > OfficeArtDg > drawingData > rh).');
         }
         
         // drawing > OfficeArtDg > drawingData > csp
         $pos += 4;
-        // drawing > OfficeArtDg > drawingData > spidCur 
+        // drawing > OfficeArtDg > drawingData > spidCur
         $pos += 4;
         
         // drawing > OfficeArtDg > groupShape
         // drawing > OfficeArtDg > groupShape > rh
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0xF || $rh['recInstance'] >= 0xF000 || $rh['recType'] != 0xF003) {
+        if ($rHeader['recVer'] != 0xF || $rHeader['recInstance'] >= 0xF000 || $rHeader['recType'] != 0xF003) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > drawing > OfficeArtDg > groupShape > rh).');
         }
         
@@ -822,7 +823,7 @@ class PowerPoint97 implements ReaderInterface
             
             $rhFB = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
             $pos += 8;
-            $rh['recLen'] -= 8;
+            $rHeader['recLen'] -= 8;
 
             // print_r(EOL);
             // print_r($rhFB);
@@ -842,71 +843,58 @@ class PowerPoint97 implements ReaderInterface
                     if ($shapeGroup['recVer'] == 0x1 && $shapeGroup['recInstance'] == 0x0000 && $shapeGroup['recType'] == 0xF009 && $shapeGroup['recLen'] == 0x00000010) {
                         // print_r('$shapeGroup'.EOL);
                         $pos += 8;
-                        $rh['recLen'] -= 8;
+                        $rHeader['recLen'] -= 8;
                         $arrShapeGroup['xLeft'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                         $pos += 4;
-                        $rh['recLen'] -= 4;
+                        $rHeader['recLen'] -= 4;
                         $arrShapeGroup['yTop'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                         $pos += 4;
-                        $rh['recLen'] -= 4;
+                        $rHeader['recLen'] -= 4;
                         $arrShapeGroup['xRight'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                         $pos += 4;
-                        $rh['recLen'] -= 4;
+                        $rHeader['recLen'] -= 4;
                         $arrShapeGroup['yBottom'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                         $pos += 4;
-                        $rh['recLen'] -= 4;
+                        $rHeader['recLen'] -= 4;
                     }
                     
                     // shapeProp
                     $shapeProp = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     if ($shapeProp['recVer'] == 0x2 && $shapeProp['recType'] == 0xF00A && $shapeProp['recLen'] == 0x00000008) {
                         $pos += 8;
-                        $rh['recLen'] -= 8;
+                        $rHeader['recLen'] -= 8;
                         // print_r('$shapeProp'.EOL);
                         
-                        $spid = self::getInt4d($this->streamPowerpointDocument, $pos);
+                        // spid
                         $pos += 4;
-                        $rh['recLen'] -= 4;
-                        $data = self::getInt4d($this->streamPowerpointDocument, $pos);
+                        $rHeader['recLen'] -= 4;
+                        // data
                         $pos += 4;
-                        $rh['recLen'] -= 4;
-                        
-                        $fGroup = ($data >> 0) & bindec('1');
-                        $fChild = ($data >> 1) & bindec('1');
-                        $fPatriarch = ($data >> 2) & bindec('1');
-                        $fDeleted = ($data >> 3) & bindec('1');
-                        $fOleShape = ($data >> 4) & bindec('1');
-                        $fHaveMaster = ($data >> 5) & bindec('1');
-                        $fFlipH = ($data >> 6) & bindec('1');
-                        $fFlipV = ($data >> 7) & bindec('1');
-                        $fConnector = ($data >> 8) & bindec('1');
-                        $fHaveAnchor = ($data >> 9) & bindec('1');
-                        $fBackground = ($data >> 10) & bindec('1');
-                        $fHaveSpt = ($data >> 11) & bindec('1');
+                        $rHeader['recLen'] -= 4;
                     }
                     
-                    // shapePrimaryOptions 
+                    // shapePrimaryOptions
                     $shapePrimaryOptions = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     if ($shapePrimaryOptions['recVer'] == 0x3 && $shapePrimaryOptions['recType'] == 0xF00B) {
                         $pos += 8;
-                        $rh['recLen'] -= 8;
+                        $rHeader['recLen'] -= 8;
                         // print_r('$shapePrimaryOptions'.EOL);
                         //@link : http://msdn.microsoft.com/en-us/library/dd906086(v=office.12).aspx
                         $OfficeArtFOPTE = array();
                         for ($inc = 0; $inc < $shapePrimaryOptions['recInstance']; $inc++) {
                             $opid = self::getInt2d($this->streamPowerpointDocument, $pos);
                             $pos += 2;
-                            $rh['recLen'] -= 2;
+                            $rHeader['recLen'] -= 2;
                             $shapePrimaryOptions['recLen'] -= 2;
-                            $op = self::getInt4d($this->streamPowerpointDocument, $pos);
+                            $optOp = self::getInt4d($this->streamPowerpointDocument, $pos);
                             $pos += 4;
-                            $rh['recLen'] -= 4;
+                            $rHeader['recLen'] -= 4;
                             $shapePrimaryOptions['recLen'] -= 4;
                             $OfficeArtFOPTE[] = array(
                                 'opid' => ($opid >> 0) & bindec('11111111111111'),
                                 'fBid' => ($opid >> 14) & bindec('1'),
                                 'fComplex' => ($opid >> 15) & bindec('1'),
-                                'op' => $op,
+                                'op' => $optOp,
                             );
                         }
                         //@link : http://code.metager.de/source/xref/kde/calligra/filters/libmso/OPID
@@ -945,7 +933,7 @@ class PowerPoint97 implements ReaderInterface
                                     //@link : http://msdn.microsoft.com/en-us/library/dd924770(v=office.12).aspx
                                     break;
                                 case 0x0087:
-                                    // Text : anchorText 
+                                    // Text : anchorText
                                     //@link : http://msdn.microsoft.com/en-us/library/dd948575(v=office.12).aspx
                                     break;
                                 case 0x00BF:
@@ -991,7 +979,7 @@ class PowerPoint97 implements ReaderInterface
                                     //@link : http://msdn.microsoft.com/en-us/library/dd949814(v=office.12).aspx
                                     if ($opt['fComplex'] == 1) {
                                         $pos += $opt['op'];
-                                        $rh['recLen'] -= $opt['op'];
+                                        $rHeader['recLen'] -= $opt['op'];
                                         $shapePrimaryOptions['recLen'] -= $opt['op'];
                                     }
                                     break;
@@ -1000,7 +988,7 @@ class PowerPoint97 implements ReaderInterface
                                     //@link : http://msdn.microsoft.com/en-us/library/dd905742(v=office.12).aspx
                                     if ($opt['fComplex'] == 1) {
                                         $pos += $opt['op'];
-                                        $rh['recLen'] -= $opt['op'];
+                                        $rHeader['recLen'] -= $opt['op'];
                                         $shapePrimaryOptions['recLen'] -= $opt['op'];
                                     }
                                     break;
@@ -1009,7 +997,7 @@ class PowerPoint97 implements ReaderInterface
                                     //@link : http://msdn.microsoft.com/en-us/library/dd905890(v=office.12).aspx
                                     if ($opt['fComplex'] == 1) {
                                         $pos += $opt['op'];
-                                        $rh['recLen'] -= $opt['op'];
+                                        $rHeader['recLen'] -= $opt['op'];
                                         $shapePrimaryOptions['recLen'] -= $opt['op'];
                                     }
                                     break;
@@ -1018,7 +1006,7 @@ class PowerPoint97 implements ReaderInterface
                                     //@link : http://msdn.microsoft.com/en-us/library/dd910801(v=office.12).aspx
                                     if ($opt['fComplex'] == 1) {
                                         $pos += $opt['op'];
-                                        $rh['recLen'] -= $opt['op'];
+                                        $rHeader['recLen'] -= $opt['op'];
                                         $shapePrimaryOptions['recLen'] -= $opt['op'];
                                     }
                                     break;
@@ -1027,7 +1015,7 @@ class PowerPoint97 implements ReaderInterface
                                     //@link : http://msdn.microsoft.com/en-us/library/dd904889(v=office.12).aspx
                                     if ($opt['fComplex'] == 1) {
                                         $pos += $opt['op'];
-                                        $rh['recLen'] -= $opt['op'];
+                                        $rHeader['recLen'] -= $opt['op'];
                                         $shapePrimaryOptions['recLen'] -= $opt['op'];
                                     }
                                     break;
@@ -1064,12 +1052,12 @@ class PowerPoint97 implements ReaderInterface
                                     // echo 'fillBackColor  : '.$strColor.EOL;
                                     break;
                                 case 0x0193:
-                                    // Fill : fillRectRight 
+                                    // Fill : fillRectRight
                                     //@link : http://msdn.microsoft.com/en-us/library/dd951294(v=office.12).aspx
                                     // echo 'fillRectRight  : '.\PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']).EOL;
                                     break;
                                 case 0x0194:
-                                    // Fill : fillRectBottom  
+                                    // Fill : fillRectBottom
                                     //@link : http://msdn.microsoft.com/en-us/library/dd910194(v=office.12).aspx
                                     // echo 'fillRectBottom   : '.\PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']).EOL;
                                     break;
@@ -1100,7 +1088,7 @@ class PowerPoint97 implements ReaderInterface
                                     //@link : http://msdn.microsoft.com/en-us/library/dd947669(v=office.12).aspx
                                     break;
                                 case 0x01CB:
-                                    // Line Style : lineWidth 
+                                    // Line Style : lineWidth
                                     //@link : http://msdn.microsoft.com/en-us/library/dd926964(v=office.12).aspx
                                     $arrShpPrimaryOpt['lineWidth'] = \PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']);
                                     break;
@@ -1152,37 +1140,37 @@ class PowerPoint97 implements ReaderInterface
                             }
                         }
                         $pos += $shapePrimaryOptions['recLen'];
-                        $rh['recLen'] -= $shapePrimaryOptions['recLen'];
+                        $rHeader['recLen'] -= $shapePrimaryOptions['recLen'];
                     }
                     
-                    $rhShapeSecondaryOptions1 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                    $bShapeSecondaryOptions1 = false;
-                    if ($rhShapeSecondaryOptions1['recVer'] == 0x3 && $rhShapeSecondaryOptions1['recType'] == 0xF121) {
+                    $shpSecondaryOptions1 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+                    $bShpSecondaryOptions1 = false;
+                    if ($shpSecondaryOptions1['recVer'] == 0x3 && $shpSecondaryOptions1['recType'] == 0xF121) {
                         $pos += 8;
-                        $rh['recLen'] -= 8;
-                        $bShapeSecondaryOptions1 = true;
+                        $rHeader['recLen'] -= 8;
+                        $bShpSecondaryOptions1 = true;
                         // echo '@$rhShapeSecondaryOptions1'.EOL;
                     }
                     
-                    $rhShapeTertiaryOptions1 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                    $bShapeTertiaryOptions1 = false;
-                    if ($rhShapeTertiaryOptions1['recVer'] == 0x3 && $rhShapeTertiaryOptions1['recType'] == 0xF122) {
+                    $shpTertiaryOptions1 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+                    $bShpTertiaryOptions1 = false;
+                    if ($shpTertiaryOptions1['recVer'] == 0x3 && $shpTertiaryOptions1['recType'] == 0xF122) {
                         $pos += 8;
-                        $rh['recLen'] -= 8;
-                        $bShapeTertiaryOptions1 = true;
+                        $rHeader['recLen'] -= 8;
+                        $bShpTertiaryOptions1 = true;
                         // echo '@$rhShapeTertiaryOptions1'.EOL;
                     }
                     
                     $rhChildAnchor = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     if ($rhChildAnchor['recVer'] == 0x0 && $rhChildAnchor['recInstance'] == 0x000 && $rhChildAnchor['recType'] == 0xF00F && $rhChildAnchor['recLen'] == 0x00000010) {
                         $pos += 8;
-                        $rh['recLen'] -= 8;
+                        $rHeader['recLen'] -= 8;
                         // echo '@$rhChildAnchor'.EOL;
                     }
                     
                     $rhClientAnchor = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
-                    $rh['recLen'] -= 8;
+                    $rHeader['recLen'] -= 8;
                     //@link : http://msdn.microsoft.com/en-us/library/dd922797(v=office.12).aspx
                     if ($rhClientAnchor['recVer'] == 0x0 && $rhClientAnchor['recInstance'] == 0x000 && $rhClientAnchor['recType'] == 0xF010 && ($rhClientAnchor['recLen'] == 0x00000008 || $rhClientAnchor['recLen'] == 0x00000010)) {
                         // echo '$rhClientAnchor'.EOL;
@@ -1202,65 +1190,65 @@ class PowerPoint97 implements ReaderInterface
                         }
                     } else {
                         $pos -= 8;
-                        $rh['recLen'] += 8;
+                        $rHeader['recLen'] += 8;
                     }
                     
                     //@link : http://msdn.microsoft.com/en-us/library/dd950927(v=office.12).aspx
                     $clientData = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
-                    $rh['recLen'] -= 8;
+                    $rHeader['recLen'] -= 8;
                     if ($clientData['recVer'] == 0xF && $clientData['recInstance'] == 0x000 && $clientData['recType'] == 0xF011) {
                         // echo '@$clientData'.EOL;
                     } else {
                         $pos -= 8;
-                        $rh['recLen'] += 8;
+                        $rHeader['recLen'] += 8;
                     }
                     
                     //@link : http://msdn.microsoft.com/en-us/library/dd910958(v=office.12).aspx
                     $clientTextbox = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
-                    $rh['recLen'] -= 8;
+                    $rHeader['recLen'] -= 8;
                     if ($clientTextbox['recVer'] == 0xF && $clientTextbox['recInstance'] == 0x000 && $clientTextbox['recType'] == 0xF00D) {
                         // echo '@$clientTextbox'.EOL;
                         $strLen = 0;
                         do {
                             $rhRgChildRec = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                             $pos += 8;
-                            $rh['recLen'] -= 8;
+                            $rHeader['recLen'] -= 8;
                             $clientTextbox['recLen'] -= 8;
                             switch ($rhRgChildRec['recType']) {
-                                case self::RT_InteractiveInfo:
+                                case self::RT_INTERACTIVEINFO:
                                     // echo '$clientTextbox:RT_InteractiveInfo'.EOL;
                                     //@link : http://msdn.microsoft.com/en-us/library/dd948623(v=office.12).aspx
                                     if ($rhRgChildRec['recInstance'] == 0x0000) {
                                         //@link : http://msdn.microsoft.com/en-us/library/dd952348(v=office.12).aspx
                                         $rhInteractiveAtom = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                                         $pos += 8;
-                                        $rh['recLen'] -= 8;
+                                        $rHeader['recLen'] -= 8;
                                         $clientTextbox['recLen'] -= 8;
-                                        if ($rhInteractiveAtom['recVer'] != 0x0 || $rhInteractiveAtom['recInstance'] != 0x000 ||$rhInteractiveAtom['recType'] != self::RT_InteractiveInfoAtom ||$rhInteractiveAtom['recLen'] != 0x00000010) {
+                                        if ($rhInteractiveAtom['recVer'] != 0x0 || $rhInteractiveAtom['recInstance'] != 0x000 || $rhInteractiveAtom['recType'] != self::RT_INTERACTIVEINFOATOM || $rhInteractiveAtom['recLen'] != 0x00000010) {
                                             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > drawing > OfficeArtDg > groupShape > rgfb > shapePrimaryOptions > clientTextbox).');
                                         }
                                         // soundIdRef
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         // exHyperlinkIdRef
                                         $exHyperlinkIdRef = self::getInt4d($this->streamPowerpointDocument, $pos);
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         // action
                                         $pos += 1;
-                                        $rh['recLen'] -= 1;
+                                        $rHeader['recLen'] -= 1;
                                         $clientTextbox['recLen'] -= 1;
                                         // oleVerb
                                         $pos += 1;
-                                        $rh['recLen'] -= 1;
+                                        $rHeader['recLen'] -= 1;
                                         $clientTextbox['recLen'] -= 1;
                                         // jump
                                         $pos += 1;
-                                        $rh['recLen'] -= 1;
+                                        $rHeader['recLen'] -= 1;
                                         $clientTextbox['recLen'] -= 1;
                                         // fAnimated (1 bit)
                                         // fStopSound (1 bit)
@@ -1268,15 +1256,15 @@ class PowerPoint97 implements ReaderInterface
                                         // fVisited (1 bit)
                                         // reserved (4 bits)
                                         $pos += 1;
-                                        $rh['recLen'] -= 1;
+                                        $rHeader['recLen'] -= 1;
                                         $clientTextbox['recLen'] -= 1;
                                         // hyperlinkType
                                         $pos += 1;
-                                        $rh['recLen'] -= 1;
+                                        $rHeader['recLen'] -= 1;
                                         $clientTextbox['recLen'] -= 1;
                                         // unused
                                         $pos += 3;
-                                        $rh['recLen'] -= 3;
+                                        $rHeader['recLen'] -= 3;
                                         $clientTextbox['recLen'] -= 3;
                                         
                                         // Shape
@@ -1286,28 +1274,28 @@ class PowerPoint97 implements ReaderInterface
                                         // echo '@todo l.'.__LINE__;
                                     }
                                     break;
-                                case self::RT_StyleTextPropAtom:
+                                case self::RT_STYLETEXTPROPATOM:
                                     // echo '$clientTextbox:RT_StyleTextPropAtom'.EOL;
                                     // @link : http://msdn.microsoft.com/en-us/library/dd950647(v=office.12).aspx
                                     $strLenRT = $strLen + 1;
                                     do {
-                                        // rgTextPFRun 
+                                        // rgTextPFRun
                                         $countRgTextPFRun = self::getInt4d($this->streamPowerpointDocument, $pos);
                                         $strLenRT -= $countRgTextPFRun;
                                         $arrClientTextBox['numTexts']++;
                                         $arrClientTextBox['text'.$arrClientTextBox['numTexts']] = array();
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         
                                         // indent
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                         
                                         $masks = self::getInt4d($this->streamPowerpointDocument, $pos);
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         
                                         $masksData = array();
@@ -1339,10 +1327,10 @@ class PowerPoint97 implements ReaderInterface
                                         $masksData['bulletHasScheme'] = ($masks >> 25) & bindec('1');
     
                                         $bulletFlags = array();
-                                        if ($masksData['hasBullet'] == 1 || $masksData['bulletHasFont'] == 1  || $masksData['bulletHasColor'] == 1  || $masksData['bulletHasSize '] == 1 ) {
+                                        if ($masksData['hasBullet'] == 1 || $masksData['bulletHasFont'] == 1  || $masksData['bulletHasColor'] == 1  || $masksData['bulletHasSize '] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                             
                                             $bulletFlags['fHasBullet'] = ($data >> 0) & bindec('1');
@@ -1353,38 +1341,38 @@ class PowerPoint97 implements ReaderInterface
                                         if ($masksData['bulletChar'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
-                                            $arrClientTextBox['text'.$arrClientTextBox['numTexts']]['bulletChar'] = chr($data); 
+                                            $arrClientTextBox['text'.$arrClientTextBox['numTexts']]['bulletChar'] = chr($data);
                                         }
                                         if ($masksData['bulletFont'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['bulletSize'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['bulletColor'] == 1) {
                                             $red = self::getInt1d($this->streamPowerpointDocument, $pos);
                                             $pos += 1;
-                                            $rh['recLen'] -= 1;
+                                            $rHeader['recLen'] -= 1;
                                             $clientTextbox['recLen'] -= 1;
                                             $green = self::getInt1d($this->streamPowerpointDocument, $pos);
                                             $pos += 1;
-                                            $rh['recLen'] -= 1;
+                                            $rHeader['recLen'] -= 1;
                                             $clientTextbox['recLen'] -= 1;
                                             $blue = self::getInt1d($this->streamPowerpointDocument, $pos);
                                             $pos += 1;
-                                            $rh['recLen'] -= 1;
+                                            $rHeader['recLen'] -= 1;
                                             $clientTextbox['recLen'] -= 1;
                                             $index = self::getInt1d($this->streamPowerpointDocument, $pos);
                                             $pos += 1;
-                                            $rh['recLen'] -= 1;
+                                            $rHeader['recLen'] -= 1;
                                             $clientTextbox['recLen'] -= 1;
                                             
                                             if ($index == 0xFE) {
@@ -1396,7 +1384,7 @@ class PowerPoint97 implements ReaderInterface
                                         if ($masksData['align'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                             switch ($data) {
                                                 case 0x0000:
@@ -1427,39 +1415,39 @@ class PowerPoint97 implements ReaderInterface
                                         if ($masksData['lineSpacing'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['spaceBefore'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['spaceAfter'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['leftMargin'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                             $arrClientTextBox['text'.$arrClientTextBox['numTexts']]['leftMargin'] = (int)round($data/6);
                                         }
                                         if ($masksData['indent'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                             $arrClientTextBox['text'.$arrClientTextBox['numTexts']]['indent'] = (int)round($data/6);
                                         }
                                         if ($masksData['defaultTabSize'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['tabStops'] == 1) {
@@ -1468,13 +1456,13 @@ class PowerPoint97 implements ReaderInterface
                                         if ($masksData['fontAlign'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['charWrap'] == 1 || $masksData['wordWrap'] == 1 || $masksData['overflow'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['textDirection'] == 1) {
@@ -1490,13 +1478,13 @@ class PowerPoint97 implements ReaderInterface
                                         $arrClientTextBox['numParts']++;
                                         $arrClientTextBox['part'.$arrClientTextBox['numParts']] = array();
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         $arrClientTextBox['part'.$arrClientTextBox['numParts']]['length'] = $countRgTextCFRun;
                                         
                                         $masks = self::getInt4d($this->streamPowerpointDocument, $pos);
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         
                                         $masksData = array();
@@ -1523,10 +1511,10 @@ class PowerPoint97 implements ReaderInterface
                                         $masksData['newEATypeface'] = ($masks >> 24) & bindec('1');
                                         $masksData['csTypeface'] = ($masks >> 25) & bindec('1');
                                         $masksData['pp11ext'] = ($masks >> 26) & bindec('1');
-                                        if ($masksData['bold'] == 1 || $masksData['italic'] == 1 || $masksData['underline'] == 1 || $masksData['shadow'] == 1 || $masksData['fehint'] == 1 ||  $masksData['kumi'] == 1 ||  $masksData['emboss'] == 1 ||  $masksData['fHasStyle'] == 1 ) {
+                                        if ($masksData['bold'] == 1 || $masksData['italic'] == 1 || $masksData['underline'] == 1 || $masksData['shadow'] == 1 || $masksData['fehint'] == 1 ||  $masksData['kumi'] == 1 ||  $masksData['emboss'] == 1 ||  $masksData['fHasStyle'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                              
                                             $fontStyleFlags['bold'] = ($data >> 0) & bindec('1');
@@ -1549,7 +1537,7 @@ class PowerPoint97 implements ReaderInterface
                                         if ($masksData['typeface'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                             $arrClientTextBox['part'.$arrClientTextBox['numParts']]['fontName'] = isset($this->arrayFonts[$data]) ? $this->arrayFonts[$data] : '';
                                         }
@@ -1565,25 +1553,25 @@ class PowerPoint97 implements ReaderInterface
                                         if ($masksData['size'] == 1) {
                                             $arrClientTextBox['part'.$arrClientTextBox['numParts']]['fontSize'] = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['color'] == 1) {
                                             $red = self::getInt1d($this->streamPowerpointDocument, $pos);
                                             $pos += 1;
-                                            $rh['recLen'] -= 1;
+                                            $rHeader['recLen'] -= 1;
                                             $clientTextbox['recLen'] -= 1;
                                             $green = self::getInt1d($this->streamPowerpointDocument, $pos);
                                             $pos += 1;
-                                            $rh['recLen'] -= 1;
+                                            $rHeader['recLen'] -= 1;
                                             $clientTextbox['recLen'] -= 1;
                                             $blue = self::getInt1d($this->streamPowerpointDocument, $pos);
                                             $pos += 1;
-                                            $rh['recLen'] -= 1;
+                                            $rHeader['recLen'] -= 1;
                                             $clientTextbox['recLen'] -= 1;
                                             $index = self::getInt1d($this->streamPowerpointDocument, $pos);
                                             $pos += 1;
-                                            $rh['recLen'] -= 1;
+                                            $rHeader['recLen'] -= 1;
                                             $clientTextbox['recLen'] -= 1;
                                             
                                             if ($index == 0xFE) {
@@ -1599,62 +1587,62 @@ class PowerPoint97 implements ReaderInterface
                                         }
                                     } while ($strLenRT > 0);
                                     break;
-                                case self::RT_TextCharsAtom:
+                                case self::RT_TEXTCHARSATOM:
                                     // echo '$clientTextbox:RT_TextCharsAtom'.EOL;
                                     // @link : http://msdn.microsoft.com/en-us/library/dd772921(v=office.12).aspx
                                     $strLen = (int)($rhRgChildRec['recLen']/2);
-                                    for ($inc = 0; $inc < $rhRgChildRec['recLen']/2 ; $inc++) {
+                                    for ($inc = 0; $inc < $rhRgChildRec['recLen']/2; $inc++) {
                                         $char = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         if ($char == 0x0B) {
                                             $char = 0x20;
                                         }
                                         $arrClientTextBox['text'] .= chr($char);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     // echo $arrClientTextBox['text'].EOL;
                                     break;
-                                case self::RT_TextHeaderAtom:
+                                case self::RT_TEXTHEADERATOM:
                                     // echo '$clientTextbox:RT_TextHeaderAtom'.EOL;
                                     // @link : http://msdn.microsoft.com/en-us/library/dd905272(v=office.12).aspx
-                                    $textType = self::getInt4d($this->streamPowerpointDocument, $pos);
+                                    // textType
                                     $pos += 4;
-                                    $rh['recLen'] -= 4;
+                                    $rHeader['recLen'] -= 4;
                                     $clientTextbox['recLen'] -= 4;
                                     break;
-                                case self::RT_TextInteractiveInfoAtom:
+                                case self::RT_TEXTINTERACTIVEINFOATOM:
                                     // echo '$clientTextbox:RT_TextInteractiveInfoAtom'.EOL;
                                     //@link : http://msdn.microsoft.com/en-us/library/dd947973(v=office.12).aspx
                                     if ($rhRgChildRec['recInstance'] == 0x0000) {
                                         //@link : http://msdn.microsoft.com/en-us/library/dd944072(v=office.12).aspx
                                         $arrClientTextBox['hyperlink'][count($arrClientTextBox['hyperlink']) - 1]['start'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         
                                         $arrClientTextBox['hyperlink'][count($arrClientTextBox['hyperlink']) - 1]['end'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                     }
                                     if ($rhRgChildRec['recInstance'] == 0x0001) {
                                         // echo '@todo l.'.__LINE__;
                                     }
                                     break;
-                                case self::RT_TextSpecialInfoAtom:
+                                case self::RT_TEXTSPECIALINFOATOM:
                                     // echo '$clientTextbox:RT_TextSpecialInfoAtom'.EOL;
                                     // @link : http://msdn.microsoft.com/en-us/library/dd945296(v=office.12).aspx
                                     $strLenRT = $strLen + 1;
                                     do {
                                         $count = self::getInt4d($this->streamPowerpointDocument, $pos);
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         $strLenRT -= $count;
                                         $data = self::getInt4d($this->streamPowerpointDocument, $pos);
                                         $pos += 4;
-                                        $rh['recLen'] -= 4;
+                                        $rHeader['recLen'] -= 4;
                                         $clientTextbox['recLen'] -= 4;
                                         $masksData = array();
                                         $masksData['spell'] = ($data >> 0) & bindec('1');
@@ -1671,7 +1659,7 @@ class PowerPoint97 implements ReaderInterface
                                         if ($masksData['spell'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                             $masksSpell = array();
                                             $masksSpell['error'] = ($data >> 0) & bindec('1');
@@ -1681,13 +1669,13 @@ class PowerPoint97 implements ReaderInterface
                                         if ($masksData['lang'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['altLang'] == 1) {
                                             $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['fBidi'] == 1) {
@@ -1701,12 +1689,12 @@ class PowerPoint97 implements ReaderInterface
                                         }
                                     } while ($strLenRT > 0);
                                     break;
-                                case self::RT_TextRulerAtom:
+                                case self::RT_TEXTRULERATOM:
                                     // echo '$clientTextbox:RT_TextRulerAtom'.EOL;
                                     // @link : http://msdn.microsoft.com/en-us/library/dd953212(v=office.12).aspx
                                     $data = self::getInt4d($this->streamPowerpointDocument, $pos);
                                     $pos += 4;
-                                    $rh['recLen'] -= 4;
+                                    $rHeader['recLen'] -= 4;
                                     $clientTextbox['recLen'] -= 4;
                                     $masksData = array();
                                     $masksData['fDefaultTabSize'] = ($data >> 0) & bindec('1');
@@ -1732,17 +1720,17 @@ class PowerPoint97 implements ReaderInterface
                                     if ($masksData['fTabStops'] == 1) {
                                         $count = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                         $arrayTabStops = array();
-                                        for ($inc = 0; $inc < $count ; $inc++) {
+                                        for ($inc = 0; $inc < $count; $inc++) {
                                             $position = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                             $type = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
-                                            $rh['recLen'] -= 2;
+                                            $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                             $arrayTabStops[] = array(
                                                 'position' => $position,
@@ -1753,61 +1741,61 @@ class PowerPoint97 implements ReaderInterface
                                     if ($masksData['fLeftMargin1'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent1'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fLeftMargin2'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent2'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fLeftMargin3'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent3'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fLeftMargin4'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent4'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fLeftMargin5'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent5'] == 1) {
                                         $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
-                                        $rh['recLen'] -= 2;
+                                        $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     break;
@@ -1820,24 +1808,24 @@ class PowerPoint97 implements ReaderInterface
                         } while ($clientTextbox['recLen'] > 0);
                     } else {
                         $pos -= 8;
-                        $rh['recLen'] += 8;
+                        $rHeader['recLen'] += 8;
                     }
-                    $shapeSecondaryOptions2 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+                    $shpSecondaryOptions2 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
-                    $rh['recLen'] -= 8;
-                    if ($bShapeSecondaryOptions1 == true && $shapeSecondaryOptions2['recVer'] == 0x3 && $shapeSecondaryOptions2['recType'] == 0xF121) {
+                    $rHeader['recLen'] -= 8;
+                    if ($shpSecondaryOptions2 == true && $shpSecondaryOptions2['recVer'] == 0x3 && $shpSecondaryOptions2['recType'] == 0xF121) {
                     } else {
                         $pos -= 8;
-                        $rh['recLen'] += 8;
+                        $rHeader['recLen'] += 8;
                     }
                     
-                    $shapeTertiaryOptions2 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+                    $shpTertiaryOptions2 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
-                    $rh['recLen'] -= 8;
-                    if ($bShapeTertiaryOptions1 == true && $shapeTertiaryOptions2['recVer'] == 0x3 && $shapeTertiaryOptions2['recType'] == 0xF122) {
+                    $rHeader['recLen'] -= 8;
+                    if ($bShpTertiaryOptions1 == true && $shpTertiaryOptions2['recVer'] == 0x3 && $shpTertiaryOptions2['recType'] == 0xF122) {
                     } else {
                         $pos -= 8;
-                        $rh['recLen'] += 8;
+                        $rHeader['recLen'] += 8;
                     }
                     break;
             }
@@ -1892,7 +1880,7 @@ class PowerPoint97 implements ReaderInterface
                 
                 $lastLevel = -1;
                 $lastMarginLeft = 0;
-                for ($inc = 1 ; $inc <= $arrClientTextBox['numParts'] ; $inc++) {
+                for ($inc = 1; $inc <= $arrClientTextBox['numParts']; $inc++) {
                     if ($arrClientTextBox['numParts'] == $arrClientTextBox['numTexts'] && isset($arrClientTextBox['text'.$inc])) {
                         if (isset($arrClientTextBox['text'.$inc]['bulletChar'])) {
                             $shape->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
@@ -1959,7 +1947,7 @@ class PowerPoint97 implements ReaderInterface
                     if (isset($arrClientTextBox['part'.$inc]['color'])) {
                         $txtRun->getFont()->setColor($arrClientTextBox['part'.$inc]['color']);
                     }
-                    // Hyperlink 
+                    // Hyperlink
                     if (!empty($sHyperlinkURL)) {
                         $txtRun->setHyperlink(new Hyperlink($sHyperlinkURL));
                     }
@@ -2008,19 +1996,19 @@ class PowerPoint97 implements ReaderInterface
                 $oSlide->addShape($shape);
             }
             // echo '//END.....'.EOL.EOL.EOL;
-        } while ($rh['recLen'] > 0);
+        } while ($rHeader['recLen'] > 0);
         
         
         // *** slideSchemeColorSchemeAtom (40 bytes)
         // slideSchemeColorSchemeAtom > rh
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0x0 || $rh['recInstance'] != 0x001 || $rh['recType'] != self::RT_ColorSchemeAtom || $rh['recLen'] != 0x00000020) {
+        if ($rHeader['recVer'] != 0x0 || $rHeader['recInstance'] != 0x001 || $rHeader['recType'] != self::RT_COLORSCHEMEATOM || $rHeader['recLen'] != 0x00000020) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > slideSchemeColorSchemeAtom > rh).');
         }
         // slideSchemeColorSchemeAtom > rgSchemeColor
         $rgSchemeColor = array();
-        for ($inc = 0 ; $inc <= 7 ; $inc++) {
+        for ($inc = 0; $inc <= 7; $inc++) {
             $rgSchemeColor[] = array(
                 'red' => self::getInt1d($this->streamPowerpointDocument, $pos + $inc * 4),
                 'green' => self::getInt1d($this->streamPowerpointDocument, $pos + $inc * 4 + 1),
@@ -2032,9 +2020,9 @@ class PowerPoint97 implements ReaderInterface
         // *** slideNameAtom (variable)
         // *** slideProgTagsContainer (variable).
         // slideProgTagsContainer > rh
-        $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+        $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($rh['recVer'] != 0xF || $rh['recInstance'] != 0x000 || $rh['recType'] != self::RT_ProgTags) {
+        if ($rHeader['recVer'] != 0xF || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != self::RT_PROGTAGS) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > slideProgTagsContainer > rh).');
         }
     }
@@ -2048,17 +2036,17 @@ class PowerPoint97 implements ReaderInterface
     {
         $documentAtom = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         $pos += 8;
-        if ($documentAtom['recVer'] != 0x1 || $documentAtom['recInstance'] != 0x000 || $documentAtom['recType'] != self::RT_DocumentAtom) {
+        if ($documentAtom['recVer'] != 0x1 || $documentAtom['recInstance'] != 0x000 || $documentAtom['recType'] != self::RT_DOCUMENTATOM) {
             throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > DocumentAtom).');
         }
         $pos += $documentAtom['recLen'];
         
         $exObjList = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-        if ($exObjList['recVer'] == 0xF && $exObjList['recInstance'] == 0x000 && $exObjList['recType'] == self::RT_ExternalObjectList) {
+        if ($exObjList['recVer'] == 0xF && $exObjList['recInstance'] == 0x000 && $exObjList['recType'] == self::RT_EXTERNALOBJECTLIST) {
             $pos += 8;
             // exObjListAtom > rh
             $exObjListAtom = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-            if ($exObjListAtom['recVer'] != 0x0 || $exObjListAtom['recInstance'] != 0x000 || $exObjListAtom['recType'] != self::RT_ExternalObjectListAtom || $exObjListAtom['recLen'] != 0x00000004) {
+            if ($exObjListAtom['recVer'] != 0x0 || $exObjListAtom['recInstance'] != 0x000 || $exObjListAtom['recType'] != self::RT_EXTERNALOBJECTLISTATOM || $exObjListAtom['recLen'] != 0x00000004) {
                 throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > DocumentAtom > exObjList > exObjListAtom).');
             }
             $pos += 8;
@@ -2071,11 +2059,11 @@ class PowerPoint97 implements ReaderInterface
                 $pos += 8;
                 $exObjList['recLen'] -= 8;
                 switch ($childRec['recType']) {
-                    case self::RT_ExternalHyperlink:
+                    case self::RT_EXTERNALHYPERLINK:
                         //@link : http://msdn.microsoft.com/en-us/library/dd944995(v=office.12).aspx
                         // exHyperlinkAtom > rh
                         $exHyperlinkAtom = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                        if ($exHyperlinkAtom['recVer'] != 0x0 || $exHyperlinkAtom['recInstance'] != 0x000 || $exHyperlinkAtom['recType'] != self::RT_ExternalHyperlinkAtom || $exObjListAtom['recLen'] != 0x00000004) {
+                        if ($exHyperlinkAtom['recVer'] != 0x0 || $exHyperlinkAtom['recInstance'] != 0x000 || $exHyperlinkAtom['recType'] != self::RT_EXTERNALHYPERLINKATOM || $exObjListAtom['recLen'] != 0x00000004) {
                             throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > DocumentAtom > exObjList > rgChildRec > RT_ExternalHyperlink).');
                         }
                         $pos += 8;
@@ -2088,11 +2076,11 @@ class PowerPoint97 implements ReaderInterface
                         $this->arrayHyperlinks[$exHyperlinkId] = array();
                         // friendlyNameAtom
                         $friendlyNameAtom  = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                        if ($friendlyNameAtom['recVer'] == 0x0 && $friendlyNameAtom['recInstance'] == 0x000 && $friendlyNameAtom['recType'] == self::RT_CString && $friendlyNameAtom['recLen'] % 2 == 0) {
+                        if ($friendlyNameAtom['recVer'] == 0x0 && $friendlyNameAtom['recInstance'] == 0x000 && $friendlyNameAtom['recType'] == self::RT_CSTRING && $friendlyNameAtom['recLen'] % 2 == 0) {
                             $pos += 8;
                             $exObjList['recLen'] -= 8;
                             $this->arrayHyperlinks[$exHyperlinkId]['text'] = '';
-                            for ($inc = 0 ; $inc < ($friendlyNameAtom['recLen'] / 2); $inc++) {
+                            for ($inc = 0; $inc < ($friendlyNameAtom['recLen'] / 2); $inc++) {
                                 $char = self::getInt2d($this->streamPowerpointDocument, $pos);
                                 $pos += 2;
                                 $exObjList['recLen'] -= 2;
@@ -2101,11 +2089,11 @@ class PowerPoint97 implements ReaderInterface
                         }
                         // targetAtom
                         $targetAtom  = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                        if ($targetAtom['recVer'] == 0x0 && $targetAtom['recInstance'] == 0x001 && $targetAtom['recType'] == self::RT_CString && $targetAtom['recLen'] % 2 == 0) {
+                        if ($targetAtom['recVer'] == 0x0 && $targetAtom['recInstance'] == 0x001 && $targetAtom['recType'] == self::RT_CSTRING && $targetAtom['recLen'] % 2 == 0) {
                             $pos += 8;
                             $exObjList['recLen'] -= 8;
                             $this->arrayHyperlinks[$exHyperlinkId]['url'] = '';
-                            for ($inc = 0 ; $inc < ($targetAtom['recLen'] / 2); $inc++) {
+                            for ($inc = 0; $inc < ($targetAtom['recLen'] / 2); $inc++) {
                                 $char = self::getInt2d($this->streamPowerpointDocument, $pos);
                                 $pos += 2;
                                 $exObjList['recLen'] -= 2;
@@ -2114,11 +2102,11 @@ class PowerPoint97 implements ReaderInterface
                         }
                         // locationAtom
                         $locationAtom  = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                        if ($locationAtom['recVer'] == 0x0 && $locationAtom['recInstance'] == 0x003 && $locationAtom['recType'] == self::RT_CString && $locationAtom['recLen'] % 2 == 0) {
+                        if ($locationAtom['recVer'] == 0x0 && $locationAtom['recInstance'] == 0x003 && $locationAtom['recType'] == self::RT_CSTRING && $locationAtom['recLen'] % 2 == 0) {
                             $pos += 8;
                             $exObjList['recLen'] -= 8;
                             $string = '';
-                            for ($inc = 0 ; $inc < ($locationAtom['recLen'] / 2); $inc++) {
+                            for ($inc = 0; $inc < ($locationAtom['recLen'] / 2); $inc++) {
                                 $char = self::getInt2d($this->streamPowerpointDocument, $pos);
                                 $pos += 2;
                                 $exObjList['recLen'] -= 2;
@@ -2134,28 +2122,28 @@ class PowerPoint97 implements ReaderInterface
         
         //@link : http://msdn.microsoft.com/en-us/library/dd907813(v=office.12).aspx
         $documentTextInfo = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-        if ($documentTextInfo['recVer'] == 0xF && $documentTextInfo['recInstance'] == 0x000 && $documentTextInfo['recType'] == self::RT_Environment) {
+        if ($documentTextInfo['recVer'] == 0xF && $documentTextInfo['recInstance'] == 0x000 && $documentTextInfo['recType'] == self::RT_ENVIRONMENT) {
             $pos += 8;
             //@link : http://msdn.microsoft.com/en-us/library/dd952717(v=office.12).aspx
             $kinsoku = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-            if ($kinsoku['recVer'] == 0xF && $kinsoku['recInstance'] == 0x002 && $kinsoku['recType'] == self::RT_Kinsoku) {
+            if ($kinsoku['recVer'] == 0xF && $kinsoku['recInstance'] == 0x002 && $kinsoku['recType'] == self::RT_KINSOKU) {
                 $pos += 8;
                 $pos += $kinsoku['recLen'];
             }
             
             //@link : http://msdn.microsoft.com/en-us/library/dd948152(v=office.12).aspx
             $fontCollection = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-            if ($fontCollection['recVer'] == 0xF && $fontCollection['recInstance'] == 0x000 && $fontCollection['recType'] == self::RT_FontCollection) {
+            if ($fontCollection['recVer'] == 0xF && $fontCollection['recInstance'] == 0x000 && $fontCollection['recType'] == self::RT_FONTCOLLECTION) {
                 $pos += 8;
                 do {
                     $fontEntityAtom = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
                     $fontCollection['recLen'] -= 8;
-                    if ($fontEntityAtom['recVer'] != 0x0 || $fontEntityAtom['recInstance'] > 128 || $fontEntityAtom['recType'] != self::RT_FontEntityAtom) {
+                    if ($fontEntityAtom['recVer'] != 0x0 || $fontEntityAtom['recInstance'] > 128 || $fontEntityAtom['recType'] != self::RT_FONTENTITYATOM) {
                         throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > RT_Environment > RT_FontCollection > RT_FontEntityAtom).');
                     } else {
                         $string = '';
-                        for ($inc = 0 ; $inc < 32 ; $inc++) {
+                        for ($inc = 0; $inc < 32; $inc++) {
                             $char = self::getInt2d($this->streamPowerpointDocument, $pos);
                             $pos += 2;
                             $fontCollection['recLen'] -= 2;
@@ -2186,7 +2174,7 @@ class PowerPoint97 implements ReaderInterface
                     }
                     
                     $fontEmbedData1 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                    if ($fontEmbedData1['recVer'] == 0x0 && $fontEmbedData1['recInstance'] >= 0x000 && $fontEmbedData1['recInstance'] <= 0x003 && $fontEmbedData1['recType'] == self::RT_FontEmbedDataBlob) {
+                    if ($fontEmbedData1['recVer'] == 0x0 && $fontEmbedData1['recInstance'] >= 0x000 && $fontEmbedData1['recInstance'] <= 0x003 && $fontEmbedData1['recType'] == self::RT_FONTEMBEDDATABLOB) {
                         $pos += 8;
                         $fontCollection['recLen'] -= 8;
                         $pos += $fontEmbedData1['recLen'];
@@ -2194,7 +2182,7 @@ class PowerPoint97 implements ReaderInterface
                     }
                     
                     $fontEmbedData2 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                    if ($fontEmbedData2['recVer'] == 0x0 && $fontEmbedData2['recInstance'] >= 0x000 && $fontEmbedData2['recInstance'] <= 0x003 && $fontEmbedData2['recType'] == self::RT_FontEmbedDataBlob) {
+                    if ($fontEmbedData2['recVer'] == 0x0 && $fontEmbedData2['recInstance'] >= 0x000 && $fontEmbedData2['recInstance'] <= 0x003 && $fontEmbedData2['recType'] == self::RT_FONTEMBEDDATABLOB) {
                         $pos += 8;
                         $fontCollection['recLen'] -= 8;
                         $pos += $fontEmbedData2['recLen'];
@@ -2202,7 +2190,7 @@ class PowerPoint97 implements ReaderInterface
                     }
                     
                     $fontEmbedData3 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                    if ($fontEmbedData3['recVer'] == 0x0 && $fontEmbedData3['recInstance'] >= 0x000 && $fontEmbedData3['recInstance'] <= 0x003 && $fontEmbedData3['recType'] == self::RT_FontEmbedDataBlob) {
+                    if ($fontEmbedData3['recVer'] == 0x0 && $fontEmbedData3['recInstance'] >= 0x000 && $fontEmbedData3['recInstance'] <= 0x003 && $fontEmbedData3['recType'] == self::RT_FONTEMBEDDATABLOB) {
                         $pos += 8;
                         $fontCollection['recLen'] -= 8;
                         $pos += $fontEmbedData3['recLen'];
@@ -2210,7 +2198,7 @@ class PowerPoint97 implements ReaderInterface
                     }
                     
                     $fontEmbedData4 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                    if ($fontEmbedData4['recVer'] == 0x0 && $fontEmbedData4['recInstance'] >= 0x000 && $fontEmbedData4['recInstance'] <= 0x003 && $fontEmbedData4['recType'] == self::RT_FontEmbedDataBlob) {
+                    if ($fontEmbedData4['recVer'] == 0x0 && $fontEmbedData4['recInstance'] >= 0x000 && $fontEmbedData4['recInstance'] <= 0x003 && $fontEmbedData4['recType'] == self::RT_FONTEMBEDDATABLOB) {
                         $pos += 8;
                         $fontCollection['recLen'] -= 8;
                         $pos += $fontEmbedData4['recLen'];
@@ -2277,13 +2265,13 @@ class PowerPoint97 implements ReaderInterface
         // FIX: represent numbers correctly on 64-bit system
         // http://sourceforge.net/tracker/index.php?func=detail&aid=1487372&group_id=99160&atid=623334
         // Hacked by Andreas Rehm 2006 to ensure correct result of the <<24 block on 32 and 64bit systems
-        $_or_24 = ord($data[$pos + 3]);
-        if ($_or_24 >= 128) {
+        $or24 = ord($data[$pos + 3]);
+        if ($or24 >= 128) {
             // negative number
-            $_ord_24 = -abs((256 - $_or_24) << 24);
+            $ord24 = -abs((256 - $or24) << 24);
         } else {
-            $_ord_24 = ($_or_24 & 127) << 24;
+            $ord24 = ($or24 & 127) << 24;
         }
-        return ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | $_ord_24;
+        return ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | $ord24;
     }
 }

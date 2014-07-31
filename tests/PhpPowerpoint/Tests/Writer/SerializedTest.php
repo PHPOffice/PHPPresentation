@@ -78,7 +78,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Could not close zip file
+     * @expectedExceptionMessage Could not
      */
     public function testSaveNoRightFile()
     {
