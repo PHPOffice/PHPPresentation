@@ -747,15 +747,8 @@ class PowerPoint97 implements ReaderInterface
         $pos += 4;
         // slideAtom > notesIdRef
         $pos += 4;
-        
         // slideAtom > slideFlags
-        $slideFlags = self::getInt2d($this->streamPowerpointDocument, $pos);
-        // $fMasterObjects = ($slideFlags >> 0) & bindec('1');
-        // $fMasterScheme = ($slideFlags >> 1) & bindec('1');
-        // $fMasterBackground  = ($slideFlags >> 2) & bindec('1');
-        // $reserved   = ($slideFlags >> 3) & bindec('1111111111111');
         $pos += 2;
-        
         // slideAtom > unused;
         $pos += 2;
         // *** slideShowSlideInfoAtom (24 bytes)
@@ -880,7 +873,7 @@ class PowerPoint97 implements ReaderInterface
                         $rHeader['recLen'] -= 8;
                         // print_r('$shapePrimaryOptions'.EOL);
                         //@link : http://msdn.microsoft.com/en-us/library/dd906086(v=office.12).aspx
-                        $OfficeArtFOPTE = array();
+                        $officeArtFOPTE = array();
                         for ($inc = 0; $inc < $shapePrimaryOptions['recInstance']; $inc++) {
                             $opid = self::getInt2d($this->streamPowerpointDocument, $pos);
                             $pos += 2;
@@ -890,7 +883,7 @@ class PowerPoint97 implements ReaderInterface
                             $pos += 4;
                             $rHeader['recLen'] -= 4;
                             $shapePrimaryOptions['recLen'] -= 4;
-                            $OfficeArtFOPTE[] = array(
+                            $officeArtFOPTE[] = array(
                                 'opid' => ($opid >> 0) & bindec('11111111111111'),
                                 'fBid' => ($opid >> 14) & bindec('1'),
                                 'fComplex' => ($opid >> 15) & bindec('1'),
@@ -898,7 +891,7 @@ class PowerPoint97 implements ReaderInterface
                             );
                         }
                         //@link : http://code.metager.de/source/xref/kde/calligra/filters/libmso/OPID
-                        foreach ($OfficeArtFOPTE as $opt) {
+                        foreach ($officeArtFOPTE as $opt) {
                             switch ($opt['opid']) {
                                 case 0x007F:
                                     // Transform : Protection Boolean Properties
@@ -1144,11 +1137,11 @@ class PowerPoint97 implements ReaderInterface
                     }
                     
                     $shpSecondaryOptions1 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-                    $bShpSecondaryOptions1 = false;
+                    $bShpSecondaryOpt1 = false;
                     if ($shpSecondaryOptions1['recVer'] == 0x3 && $shpSecondaryOptions1['recType'] == 0xF121) {
                         $pos += 8;
                         $rHeader['recLen'] -= 8;
-                        $bShpSecondaryOptions1 = true;
+                        $bShpSecondaryOpt1 = true;
                         // echo '@$rhShapeSecondaryOptions1'.EOL;
                     }
                     
@@ -1813,7 +1806,7 @@ class PowerPoint97 implements ReaderInterface
                     $shpSecondaryOptions2 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
                     $rHeader['recLen'] -= 8;
-                    if ($shpSecondaryOptions2 == true && $shpSecondaryOptions2['recVer'] == 0x3 && $shpSecondaryOptions2['recType'] == 0xF121) {
+                    if ($bShpSecondaryOpt1 == true && $shpSecondaryOptions2['recVer'] == 0x3 && $shpSecondaryOptions2['recType'] == 0xF121) {
                     } else {
                         $pos -= 8;
                         $rHeader['recLen'] += 8;

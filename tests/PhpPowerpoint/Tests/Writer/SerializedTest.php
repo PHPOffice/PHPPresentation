@@ -78,26 +78,6 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Could not
-     */
-    public function testSaveNoRightFile()
-    {
-        $oPHPPowerPoint = new PhpPowerpoint();
-        $oSlide = $oPHPPowerPoint->getActiveSlide();
-        $oImage = $oSlide->createDrawingShape();
-        $oImage->setPath(PHPPOWERPOINT_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PHPPowerPointLogo.png');
-        $object = new Serialized($oPHPPowerPoint);
-        
-        $file = tempnam(sys_get_temp_dir(), 'PhpPowerpoint_Serialized');
-        
-        file_put_contents($file, '');
-        chmod($file, 0000);
-        
-        $this->assertFileExists($file, $object->save($file));
-    }
-    
-    /**
-     * @expectedException \Exception
      * @expectedExceptionMessage Could not open 
      */
     public function testSaveNotExistingDir()

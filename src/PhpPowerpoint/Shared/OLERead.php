@@ -31,7 +31,7 @@ namespace PhpOffice\PhpPowerpoint\Shared;
 defined('IDENTIFIER_OLE') ||
     define('IDENTIFIER_OLE', pack('CCCCCCCC', 0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1));
 
-class OLERead 
+class OLERead
 {
     private $data = '';
 
@@ -65,7 +65,7 @@ class OLERead
     const SIZE_POS                          = 0x78;
 
     public $summaryInformation              = null;
-    public $docSummaryInformation           = null;
+    public $docSummaryInfos                 = null;
     public $powerpointDocument              = null;
     public $currentUser                     = null;
     public $pictures                        = null;
@@ -285,7 +285,7 @@ class OLERead
                     $this->summaryInformation = count($this->props) - 1;
                     break;
                 case chr(5).'DOCUMENTSUMMARYINFORMATION':
-                    $this->docSummaryInformation = count($this->props) - 1;
+                    $this->docSummaryInfos = count($this->props) - 1;
                     break;
                 case 'CURRENT USER':
                     $this->currentUser = count($this->props) - 1;
