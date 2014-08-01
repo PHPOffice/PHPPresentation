@@ -6,6 +6,7 @@
 - PowerPoint97 Reader : Implement Basic Reader - @Progi1984 GH-15 GH-14 GH-4
 
 ### Bugfix
+- PowerPoint2007 Writer : Powerpoint Repair Error in Office 2010 - @Progi1984 GH-39
 
 ### Miscellaneous
 - QA : Move AbstractType for Chart - @Progi1984
