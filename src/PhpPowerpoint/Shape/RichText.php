@@ -603,27 +603,30 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set horizontal auto shrink
      * @param bool $value
      */
-    public function setAutoShrinkHorizontal($value = null){
-    	if(is_bool($value)){
-    		$this->autoShrinkHorizontal = $value;
-    	}
-    	return $this;
+    public function setAutoShrinkHorizontal($value = null)
+    {
+        if (is_bool($value)) {
+            $this->autoShrinkHorizontal = $value;
+        }
+        return $this;
     }
     
     /**
      * Get horizontal auto shrink
      * @return bool
      */
-    public function getAutoShrinkHorizontal(){
-    	return $this->autoShrinkHorizontal;
+    public function hasAutoShrinkHorizontal()
+    {
+        return $this->autoShrinkHorizontal;
     }
     
     /**
      * Set vertical auto shrink
      * @param bool $value
      */
-    public function setAutoShrinkVertical($value = null){
-        if(is_bool($value)){
+    public function setAutoShrinkVertical($value = null)
+    {
+        if (is_bool($value)) {
             $this->autoShrinkVertical = $value;
         }
         return $this;
@@ -633,7 +636,8 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set vertical auto shrink
      * @return bool
      */
-    public function getAutoShrinkVertical(){
+    public function hasAutoShrinkVertical()
+    {
         return $this->autoShrinkVertical;
     }
     
