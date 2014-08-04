@@ -120,10 +120,10 @@ class Content extends AbstractPart
                     // style:graphic-properties
                     $objWriter->startElement('style:graphic-properties');
                     if (is_bool($shape->hasAutoShrinkVertical())) {
-                        $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->getAutoShrinkVertical(), true));
+                        $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
                     }
                     if (is_bool($shape->hasAutoShrinkHorizontal())) {
-                        $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->getAutoShrinkHorizontal(), true));
+                        $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
                     }
                     switch ($shape->getFill()->getFillType()){
                         case Fill::FILL_NONE:
