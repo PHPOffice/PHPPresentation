@@ -146,6 +146,39 @@ class RichTextTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(RichText::AUTOFIT_NORMAL, $object->getAutoFit());
     }
 
+    public function testGetSetHAutoShrink()
+    {
+    	$object = new RichText();
+    
+    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setAutoShrinkHorizontal());
+    	$this->assertNull($object->getAutoShrinkHorizontal());
+    
+    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setAutoShrinkHorizontal(2));
+    	$this->assertNull($object->getAutoShrinkHorizontal());
+    
+    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setAutoShrinkHorizontal(true));
+    	$this->assertTrue($object->getAutoShrinkHorizontal());
+    
+    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setAutoShrinkHorizontal(false));
+    	$this->assertFalse($object->getAutoShrinkHorizontal());
+    }
+    public function testGetSetVAutoShrink()
+    {
+    	$object = new RichText();
+    
+    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setAutoShrinkVertical());
+    	$this->assertNull($object->getAutoShrinkVertical());
+    
+    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setAutoShrinkVertical(2));
+    	$this->assertNull($object->getAutoShrinkVertical());
+    
+    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setAutoShrinkVertical(true));
+    	$this->assertTrue($object->getAutoShrinkVertical());
+    
+    	$this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->setAutoShrinkVertical(false));
+    	$this->assertFalse($object->getAutoShrinkVertical());
+    }
+    
     public function testGetSetHOverflow()
     {
         $object = new RichText();

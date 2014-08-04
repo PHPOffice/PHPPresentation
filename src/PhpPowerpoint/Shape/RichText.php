@@ -133,6 +133,18 @@ class RichText extends AbstractShape implements ComparableInterface
     private $topInset = 4.8;
 
     /**
+     * Horizontal Auto Shrink
+     * @var boolean
+     */
+    private $autoShrinkHorizontal;
+
+    /**
+     * Vertical Auto Shrink
+     * @var boolean
+     */
+    private $autoShrinkVertical;
+
+    /**
      * Create a new \PhpOffice\PhpPowerpoint\Shape\RichText instance
      */
     public function __construct()
@@ -587,6 +599,44 @@ class RichText extends AbstractShape implements ComparableInterface
         return $this;
     }
 
+    /**
+     * Set horizontal auto shrink
+     * @param bool $value
+     */
+    public function setAutoShrinkHorizontal($value = null){
+    	if(is_bool($value)){
+    		$this->autoShrinkHorizontal = $value;
+    	}
+    	return $this;
+    }
+    
+    /**
+     * Get horizontal auto shrink
+     * @return bool
+     */
+    public function getAutoShrinkHorizontal(){
+    	return $this->autoShrinkHorizontal;
+    }
+    
+    /**
+     * Set vertical auto shrink
+     * @param bool $value
+     */
+    public function setAutoShrinkVertical($value = null){
+        if(is_bool($value)){
+            $this->autoShrinkVertical = $value;
+        }
+        return $this;
+    }
+    
+    /**
+     * Set vertical auto shrink
+     * @return bool
+     */
+    public function getAutoShrinkVertical(){
+        return $this->autoShrinkVertical;
+    }
+    
     /**
      * Get hash code
      *

@@ -44,6 +44,8 @@ Below are the properties that you can set for a rich text shape.
 - ``leftInset`` in pixels
 - ``rightInset`` in pixels
 - ``topInset`` in pixels
+- ``autoShrinkHorizontal`` (boolean)
+- ``autoShrinkVertical`` (boolean)
 
 Properties that can be set for each paragraphs are as follow.
 
