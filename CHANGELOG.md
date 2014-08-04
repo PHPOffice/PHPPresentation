@@ -5,6 +5,7 @@
 ### Features
 - PowerPoint97 Reader : Implement Basic Reader - @Progi1984 GH-15 GH-14 GH-4
 - ODPresentation Writer : Ability to set auto shrink text - @Progi1984 GH-28
+- Make package PSR-4 compliant. Autoload classes by composer out of the box - @Djuki GH-41
 
 ### Bugfix
 - PowerPoint2007 Writer : Powerpoint Repair Error in Office 2010 - @Progi1984 GH-39
