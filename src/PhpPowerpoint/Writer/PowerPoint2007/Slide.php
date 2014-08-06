@@ -419,7 +419,10 @@ class Slide extends AbstractPart
 
         // a:bodyPr
         $objWriter->startElement('a:bodyPr');
-        $objWriter->writeAttribute('anchor', $shape->getActiveParagraph()->getAlignment()->getVertical());
+        $verticalAlign = $shape->getActiveParagraph()->getAlignment()->getVertical();
+        if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
+            $objWriter->writeAttribute('anchor', $verticalAlign);
+        }
         $objWriter->writeAttribute('wrap', $shape->getWrap());
         $objWriter->writeAttribute('rtlCol', '0');
 
@@ -624,9 +627,9 @@ class Slide extends AbstractPart
                 $objWriter->startElement('a:tcPr');
                 // Alignment (horizontal)
                 $firstParagraph  = $currentCell->getParagraph(0);
-                $horizontalAlign = $firstParagraph->getAlignment()->getVertical();
-                if ($horizontalAlign != Alignment::VERTICAL_BASE && $horizontalAlign != Alignment::VERTICAL_AUTO) {
-                    $objWriter->writeAttribute('anchor', $horizontalAlign);
+                $verticalAlign = $firstParagraph->getAlignment()->getVertical();
+                if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
+                    $objWriter->writeAttribute('anchor', $verticalAlign);
                 }
 
                 // Determine borders
