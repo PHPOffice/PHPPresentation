@@ -28,6 +28,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\DocProps;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Drawing;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\LayoutPack\PackDefault;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\PptProps;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Presentation;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
@@ -105,6 +106,7 @@ class PowerPoint2007 implements WriterInterface
 
         // Initialise writer parts
         $this->writerParts['contenttypes'] = new ContentTypes();
+        $this->writerParts['pptprops']     = new PptProps();
         $this->writerParts['docprops']     = new DocProps();
         $this->writerParts['rels']         = new Rels();
         $this->writerParts['theme']        = new Theme();
@@ -190,6 +192,10 @@ class PowerPoint2007 implements WriterInterface
             if (!$wPartChart instanceof Chart) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart');
             }
+            $wPptProps = $this->getWriterPart('PptProps');
+            if (!$wPptProps instanceof PptProps) {
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\PptProps');
+            }
             
             // Create drawing dictionary
             $this->drawingHashTable->addFromSource($wPartDrawing->allDrawings($this->presentation));
@@ -207,9 +213,14 @@ class PowerPoint2007 implements WriterInterface
             // Add [Content_Types].xml to ZIP file
             $objZip->addFromString('[Content_Types].xml', $wPartContentTypes->writeContentTypes($this->presentation));
 
+            // Add PPT properties and styles to ZIP file - Required for Apple Keynote compatibility.
+            $objZip->addFromString('ppt/presProps.xml', $wPptProps->writePresProps($this->presentation));
+            $objZip->addFromString('ppt/tableStyles.xml', $wPptProps->writeTableStyles($this->presentation));
+
             // Add relationships to ZIP file
             $objZip->addFromString('_rels/.rels', $wPartRels->writeRelationships());
             $objZip->addFromString('ppt/_rels/presentation.xml.rels', $wPartRels->writePresentationRelationships($this->presentation));
+
             // Add document properties to ZIP file
             $objZip->addFromString('docProps/app.xml', $wPartDocProps->writeDocPropsApp($this->presentation));
             $objZip->addFromString('docProps/core.xml', $wPartDocProps->writeDocPropsCore($this->presentation));

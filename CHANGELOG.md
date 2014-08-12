@@ -10,6 +10,7 @@
 ### Bugfix
 - PowerPoint2007 Writer : Powerpoint Repair Error in Office 2010 - @Progi1984 GH-39
 - PowerPoint2007 Writer : BUG: Repair Error / Wrong anchor if you don't set vertical alignment different to VERTICAL_BASE - @fregge GH-42
+- PowerPoint2007 Writer : Keynote incompatibility - @catrane CP#237322
 
 ### Miscellaneous
 - QA : Move AbstractType for Chart - @Progi1984
