@@ -18,16 +18,8 @@
 namespace PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shared\Drawing;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Bullet;
-use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\Style\Fill;
 use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
-use PhpOffice\PhpPowerpoint\Style\Border;
-use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
 
 /**
  * Test class for PowerPoint2007

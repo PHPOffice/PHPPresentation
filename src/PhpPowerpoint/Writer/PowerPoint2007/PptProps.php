@@ -28,7 +28,7 @@ class PptProps extends AbstractPart
      * @return     string         XML Output
      * @throws     \Exception
      */
-    public function writePresProps(PhpPowerpoint $pPHPPowerPoint = null)
+    public function writePresProps()
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
@@ -85,7 +85,7 @@ class PptProps extends AbstractPart
      * @return     string XML Output
      * @throws     \Exception
      */
-    public function writeTableStyles(PhpPowerpoint $pPHPPowerPoint = null)
+    public function writeTableStyles()
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
