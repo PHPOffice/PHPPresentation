@@ -34,7 +34,7 @@ class PptProps extends AbstractPart
         $objWriter = $this->getXMLWriter();
 
         // XML header
-        $objWriter->startDocument('1.0','UTF-8','yes');
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
 
         // p:presentationPr
         $objWriter->startElement('p:presentationPr');
@@ -52,7 +52,7 @@ class PptProps extends AbstractPart
         // p14:discardImageEditData
         $objWriter->startElement('p14:discardImageEditData');
         $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
-        $objWriter->writeAttribute('val',     '0');
+        $objWriter->writeAttribute('val', '0');
         $objWriter->endElement();
 
         // > p:ext
@@ -65,7 +65,7 @@ class PptProps extends AbstractPart
         // p14:defaultImageDpi
         $objWriter->startElement('p14:defaultImageDpi');
         $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
-        $objWriter->writeAttribute('val',     '220');
+        $objWriter->writeAttribute('val', '220');
         $objWriter->endElement();
 
         // > p:ext
@@ -90,7 +90,7 @@ class PptProps extends AbstractPart
         // Create XML writer
         $objWriter = $this->getXMLWriter();
         // XML header
-        $objWriter->startDocument('1.0','UTF-8','yes');
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
 
         // a:tblStyleLst
         $objWriter->startElement('a:tblStyleLst');
