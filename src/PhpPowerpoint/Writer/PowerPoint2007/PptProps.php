@@ -21,7 +21,7 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 
 class PptProps extends AbstractPart
 {
-/**
+    /**
      * Write ppt/presProps.xml to XML format
      *
      * @param     PhpPowerpoint    $pPHPPowerPoint
@@ -96,6 +96,33 @@ class PptProps extends AbstractPart
         $objWriter->startElement('a:tblStyleLst');
         $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
         $objWriter->writeAttribute('def', '{5C22544A-7EE6-4342-B048-85BDC9FD1C3A}');
+        $objWriter->endElement();
+
+        return $objWriter->getData();
+    }
+    /**
+     * Write ppt/viewProps.xml to XML format
+     *
+     * @param     PhpPowerpoint    $pPHPPowerPoint
+     * @return     string         XML Output
+     * @throws     \Exception
+     */
+    public function writeViewProps()
+    {
+        // Create XML writer
+        $objWriter = $this->getXMLWriter();
+
+        // XML header
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+
+        // p:viewPr
+        $objWriter->startElement('p:viewPr');
+        $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
+        $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
+        $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
+        $objWriter->writeAttribute('showComments', '0');
+
+        // > p:viewPr
         $objWriter->endElement();
 
         return $objWriter->getData();
