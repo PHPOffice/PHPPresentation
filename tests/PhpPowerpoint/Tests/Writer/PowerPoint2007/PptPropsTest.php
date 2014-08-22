@@ -63,6 +63,6 @@ class PptPropsTest extends \PHPUnit_Framework_TestCase
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
         $element = '/p:viewPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/viewProps.xml'));
-        $this->assertEquals('0', $pres->getElementAttribute($element, 'showComments', 'ppt/tableStyles.xml'));
+        $this->assertEquals('0', $pres->getElementAttribute($element, 'showComments', 'ppt/viewProps.xml'));
     }
 }
