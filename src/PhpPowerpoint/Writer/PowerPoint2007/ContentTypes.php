@@ -77,7 +77,6 @@ class ContentTypes extends AbstractPart
         $this->writeOverrideContentType($objWriter, '/docProps/app.xml', 'application/vnd.openxmlformats-officedocument.extended-properties+xml');
         $this->writeOverrideContentType($objWriter, '/docProps/core.xml', 'application/vnd.openxmlformats-package.core-properties+xml');
         
-        
         // Slide masters
         $masterSlides = $parentWriter->getLayoutPack()->getMasterSlides();
         foreach ($masterSlides as $masterSlide) {

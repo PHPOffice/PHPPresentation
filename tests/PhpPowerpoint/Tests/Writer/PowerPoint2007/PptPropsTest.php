@@ -55,4 +55,14 @@ class PptPropsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/tableStyles.xml'));
         $this->assertEquals('{5C22544A-7EE6-4342-B048-85BDC9FD1C3A}', $pres->getElementAttribute($element, 'def', 'ppt/tableStyles.xml'));
     }
+    
+    public function testViewProps()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $element = '/p:viewPr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/viewProps.xml'));
+        $this->assertEquals('0', $pres->getElementAttribute($element, 'showComments', 'ppt/tableStyles.xml'));
+    }
 }

@@ -100,6 +100,7 @@ class PptProps extends AbstractPart
 
         return $objWriter->getData();
     }
+    
     /**
      * Write ppt/viewProps.xml to XML format
      *
