@@ -59,7 +59,7 @@ the following lines to your ``composer.json``.
 ```
 
 Alternatively, you can download the latest release from the [releases page](https://github.com/PHPOffice/PHPPowerPoint/releases).
-In this case, you will have to register the autoloader.
+In this case, you will have to register the autoloader. Register autoloading is required only if you do not use composer in your project.
 
 ```php
 require_once 'path/to/PhpPowerpoint/src/PhpPowerpoint/Autoloader.php';

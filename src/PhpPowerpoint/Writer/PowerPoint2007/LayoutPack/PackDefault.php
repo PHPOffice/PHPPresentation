@@ -57,7 +57,7 @@ class PackDefault extends AbstractLayoutPack
                 </a:xfrm>
             </p:grpSpPr>
             <p:sp>
-                <p:nvSpPr
+                <p:nvSpPr>
                     <p:cNvPr id="2" name="Title Placeholder 1" />
                     <p:cNvSpPr>
                         <a:spLocks noGrp="1" />

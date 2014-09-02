@@ -67,4 +67,16 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $object = new Serialized();
         $object->fileSupportsUnserializePHPPowerPoint('');
     }
+    
+    public function testLoadSerializedFileNotExists()
+    {
+        $file = tempnam(sys_get_temp_dir(), 'PhpPowerpoint_Serialized');
+        $oArchive = new \ZipArchive();
+        $oArchive->open($file, \ZipArchive::CREATE);
+        $oArchive->addFromString('PHPPowerPoint.xml', '');
+        $oArchive->close();
+        
+        $object = new Serialized();
+        $this->assertNull($object->load($file));
+    }
 }

@@ -92,7 +92,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
     /**
      * Set image resource
      *
-     * @param                                    $value resource
+     * @param $value resource
      * @return \PhpOffice\PhpPowerpoint\Shape\MemoryDrawing
      */
     public function setImageResource($value = null)

@@ -18,57 +18,12 @@
 namespace PhpOffice\PhpPowerpoint\Shape\Chart\Type;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
-use PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
 
 /**
  * \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line
  */
 class Line extends AbstractType implements ComparableInterface
 {
-    /**
-     * Data
-     *
-     * @var array
-     */
-    private $data = array();
-
-    /**
-     * Get Data
-     *
-     * @return array
-     */
-    public function getData()
-    {
-        return $this->data;
-    }
-
-    /**
-     * Set Data
-     *
-     * @param  array $value Array of \PhpOffice\PhpPowerpoint\Shape\Chart\Series
-     * @return self
-     */
-    public function setData($value = array())
-    {
-        $this->data = $value;
-
-        return $this;
-    }
-
-    /**
-     * Add Series
-     *
-     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Series $value
-     * @return self
-     */
-    public function addSeries(Series $value)
-    {
-        $this->data[] = $value;
-
-        return $this;
-    }
-
     /**
      * Get hash code
      *
@@ -77,10 +32,9 @@ class Line extends AbstractType implements ComparableInterface
     public function getHashCode()
     {
         $hash = '';
-        foreach ($this->data as $series) {
+        foreach ($this->getData() as $series) {
             $hash .= $series->getHashCode();
         }
-
         return md5($hash . __CLASS__);
     }
 }

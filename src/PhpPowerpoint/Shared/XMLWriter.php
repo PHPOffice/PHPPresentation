@@ -17,10 +17,6 @@
 
 namespace PhpOffice\PhpPowerpoint\Shared;
 
-if (!defined('DATE_W3C')) {
-    define('DATE_W3C', 'Y-m-d\TH:i:sP');
-}
-
 /**
  * XMLWriter
  *
@@ -77,10 +73,7 @@ class XMLWriter
             $this->tempFileName = @tempnam($pTemporaryStorageDir, 'xml');
 
             // Open storage
-            if ($this->xmlWriter->openUri($this->tempFileName) === false) {
-                // Fallback to memory...
-                $this->xmlWriter->openMemory();
-            }
+            $this->xmlWriter->openUri($this->tempFileName);
         }
 
         // Set default values
