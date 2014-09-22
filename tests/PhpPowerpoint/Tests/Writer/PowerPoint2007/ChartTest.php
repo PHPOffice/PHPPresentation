@@ -64,7 +64,7 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $oSlide = $oPHPPowerPoint->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
-        $stub = $this->getMockForAbstractClass('PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType');
+        $stub = $this->getMockForAbstractClass('PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType');
         $oShape->getPlotArea()->setType($stub);
         
         TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');

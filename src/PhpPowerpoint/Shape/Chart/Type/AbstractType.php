@@ -15,9 +15,10 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPowerpoint\Shape\Chart;
+namespace PhpOffice\PhpPowerpoint\Shape\Chart\Type;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
 
 /**
  * \PhpOffice\PhpPowerpoint\Shape\Chart\Type
@@ -44,6 +45,13 @@ abstract class AbstractType implements ComparableInterface
      * @var string
      */
     private $hashIndex;
+    
+    /**
+     * Data
+     *
+     * @var array
+     */
+    private $data = array();
 
     /**
      * Has Axis X?
@@ -89,6 +97,40 @@ abstract class AbstractType implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+        return $this;
+    }
+
+    /**
+     * Add Series
+     *
+     * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Series $value
+     * @return self
+     */
+    public function addSeries(Series $value)
+    {
+        $this->data[] = $value;
+        return $this;
+    }
+    
+    /**
+     * Get Data
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+    
+    /**
+     * Set Data
+     *
+     * @param  array $value Array of \PhpOffice\PhpPowerpoint\Shape\Chart\Series
+     * @return self
+     */
+    public function setData($value = array())
+    {
+        $this->data = $value;
         return $this;
     }
 }

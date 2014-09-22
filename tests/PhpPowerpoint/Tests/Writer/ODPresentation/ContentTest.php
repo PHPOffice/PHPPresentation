@@ -55,10 +55,10 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-bullet';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:list/text:list-item/text:p/text:span';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
@@ -89,10 +89,10 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-bullet';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:list/text:list-item/text:list/text:list-item/text:p/text:span';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:list/text:list-item/text:p/text:span';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
@@ -110,10 +110,10 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:p/text:span/text:line-break';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:line-break';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:p/text:span/text:a';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:a';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('http://www.google.fr', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
     }
@@ -131,12 +131,43 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
         
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:list/text:list-item/text:p/text:span/text:a';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span/text:a';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:custom-shape/text:list/text:list-item/text:p/text:span/text:line-break';
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span/text:line-break';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
+    public function testRichtextAutoShrink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText1 = $oSlide->createRichTextShape();
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertFalse($pres->attributeElementExists($element, 'draw:auto-grow-height', 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
+
+        $oRichText1->setAutoShrinkHorizontal(false);
+        $oRichText1->setAutoShrinkVertical(true);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-height', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-height', 'content.xml'));
+        $this->assertEquals('false', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
+        
+
+        $oRichText1->setAutoShrinkHorizontal(true);
+        $oRichText1->setAutoShrinkVertical(false);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-height', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
+        $this->assertEquals('false', $pres->getElementAttribute($element, 'draw:auto-grow-height', 'content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
+    }
+    
     public function testStyleAlignment()
     {
         $phpPowerPoint = new PhpPowerpoint();

@@ -85,7 +85,7 @@ class PlotAreaTest extends \PHPUnit_Framework_TestCase
         $object = new PlotArea();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->setType(new Bar3D()));
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\AbstractType', $object->getType());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\AbstractType', $object->getType());
     }
 
     /**

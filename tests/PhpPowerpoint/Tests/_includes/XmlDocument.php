@@ -148,6 +148,19 @@ class XmlDocument
     }
 
     /**
+     * Get element attribute
+     *
+     * @param   string  $path
+     * @param   string  $attribute
+     * @param   string  $file
+     * @return  string
+     */
+    public function attributeElementExists($path, $attribute, $file = 'word/document.xml')
+    {
+        return $this->getElement($path, $file)->hasAttribute($attribute);
+    }
+
+    /**
      * Check if element exists
      *
      * @param   string  $path

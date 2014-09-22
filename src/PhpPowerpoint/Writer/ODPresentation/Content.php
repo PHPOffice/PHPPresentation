@@ -36,6 +36,7 @@ use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content
@@ -118,10 +119,30 @@ class Content extends AbstractPart
                     $objWriter->writeAttribute('style:parent-style-name', 'standard');
                     // style:graphic-properties
                     $objWriter->startElement('style:graphic-properties');
-                    $objWriter->writeAttribute('draw:auto-grow-height', 'true');
+                    if (is_bool($shape->hasAutoShrinkVertical())) {
+                        $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
+                    }
+                    if (is_bool($shape->hasAutoShrinkHorizontal())) {
+                        $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
+                    }
+                    switch ($shape->getFill()->getFillType()){
+                        case Fill::FILL_NONE:
+                        default:
+                            $objWriter->writeAttribute('draw:fill', 'none');
+                            $objWriter->writeAttribute('draw:fill-color', '#'.$shape->getFill()->getStartColor()->getRGB());
+                            break;
+                    }
+                    switch ($shape->getBorder()->getLineStyle()){
+                        case Border::LINE_NONE:
+                        default:
+                            $objWriter->writeAttribute('draw:stroke', 'none');
+                            $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
+                    }
+                    
                     $objWriter->writeAttribute('fo:wrap-option', 'wrap');
-
+                    // > style:graphic-properties
                     $objWriter->endElement();
+                    // > style:style
                     $objWriter->endElement();
 
                     $paragraphs  = $shape->getParagraphs();
@@ -516,16 +537,18 @@ class Content extends AbstractPart
      */
     public function writeShapeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
     {
-        // draw:custom-shape
-        $objWriter->startElement('draw:custom-shape');
+        // draw:frame
+        $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
         $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-
-        $paragraphs                  = $shape->getParagraphs();
-        $paragraphId                 = 0;
+        // draw:text-box
+        $objWriter->startElement('draw:text-box');
+        
+        $paragraphs             = $shape->getParagraphs();
+        $paragraphId            = 0;
         $sCstShpLastBullet      = '';
         $iCstShpLastBulletLvl = 0;
         $bCstShpHasBullet       = false;
@@ -661,6 +684,10 @@ class Content extends AbstractPart
                 $objWriter->endElement();
             }
         }
+        
+        // > draw:text-box
+        $objWriter->endElement();
+        // > draw:frame
         $objWriter->endElement();
     }
 
@@ -762,7 +789,11 @@ class Content extends AbstractPart
      */
     public function writeShapeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
     {
-        $this->getParentWriter()->chartArray[$shapeId] = $shape;
+        $parentWriter = $this->getParentWriter();
+        if (!$parentWriter instanceof ODPresentation) {
+            throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation');
+        }
+        $parentWriter->chartArray[$shapeId] = $shape;
         
         // draw:frame
         $objWriter->startElement('draw:frame');

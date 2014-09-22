@@ -49,7 +49,7 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
      */
     public function testNoChart()
     {
-        $oStub = $this->getMockForAbstractClass('PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType');
+        $oStub = $this->getMockForAbstractClass('PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType');
         
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();

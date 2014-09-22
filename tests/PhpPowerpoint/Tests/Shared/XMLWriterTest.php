@@ -30,12 +30,14 @@ class XMLWriterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
+        // Memory
         $object = new XMLWriter();
         $object->startElement('element');
             $object->text('AAA');
         $object->endElement();
         $this->assertEquals('<element>AAA</element>'.chr(10), $object->getData());
 
+        // Disk
         $object = new XMLWriter(XMLWriter::STORAGE_DISK);
         $object->startElement('element');
             $object->text('BBB');
