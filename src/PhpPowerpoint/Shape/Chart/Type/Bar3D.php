@@ -24,6 +24,39 @@ use PhpOffice\PhpPowerpoint\ComparableInterface;
  */
 class Bar3D extends AbstractType implements ComparableInterface
 {
+    /** Orientation of bars */
+    const DIRECTION_VERTICAL = 'col';
+    const DIRECTION_HORIZONTAL = 'bar';
+
+    /**
+     * Orientation of bars
+     *
+     * @var string
+     */
+    protected $barDirection = self::DIRECTION_VERTICAL;
+
+    /**
+     * Set bar orientation
+     *
+     * @param string                          $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D
+     */
+    public function setBarDirection($value = self::DIRECTION_VERTICAL)
+    {
+        $this->barDirection = $value;
+        return $this;
+    }
+
+    /**
+     * Get orientation
+     *
+     * @return string
+     */
+    public function getBarDirection()
+    {
+        return $this->barDirection;
+    }
+    
     /**
      * Get hash code
      *
