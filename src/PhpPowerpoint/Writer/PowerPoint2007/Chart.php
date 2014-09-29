@@ -906,7 +906,7 @@ class Chart extends Slide
 
         // c:barDir
         $objWriter->startElement('c:barDir');
-        $objWriter->writeAttribute('val', 'col');
+        $objWriter->writeAttribute('val', $subject->getBarDirection());
         $objWriter->endElement();
 
         // c:grouping
