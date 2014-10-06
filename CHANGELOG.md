@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.0 - NOT RELEASED
+
+### Features
+
+### Bugfix
+- PSR-0 via composer broken - @Progi1984 GH-51
+
+### Miscellaneous
+
 ## 0.3.0 - 2014-09-22
 
 ### Features

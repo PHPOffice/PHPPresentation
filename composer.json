@@ -37,7 +37,7 @@
     },
     "autoload": {
         "psr-0": {
-            "PHPPowerPoint": "src/"
+            "PhpOffice\\PhpPowerpoint\\": "src/PhpPowerpoint/"
         },
         "psr-4": {
             "PhpOffice\\PhpPowerpoint\\": "src/PhpPowerpoint/"
