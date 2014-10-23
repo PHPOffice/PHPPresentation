@@ -18,3 +18,32 @@ PHPPowerPoint requires PHP 5.3+ since 0.2, while PHPPowerPoint 0.1 from CodePlex
 can run with PHP 5.2. There’s a lot of new features that we can get from
 PHP 5.3 and it’s been around since 2009! You should upgrade your PHP
 version to use PHPPowerPoint 0.2+.
+
+Why am I getting a class not found error?
+-------------------------------------------------------
+
+If you have followed the instructions for either adding this package to your
+`composer.json` or registering the autoloader, then perhaps you forgot to
+include a `use` statement for the class(es) you are trying to access.
+
+Here's an example that allows you to refer to the `MemoryDrawing` class
+without having to specify the full class name in your code:
+
+```
+use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing as MemoryDrawing;
+```
+
+If you *have* followed the installation instructions and you *have* added
+the necessary `use` statements to your code, then maybe you are still
+referencing the PHPPowerPoint classes using the old PEAR/PSR-0 approach.
+The 0.1 approach to naming classes used verbose class names to avoid
+namespace collisions with other libraries. For example, the `MemoryDrawing`
+class was actually called `PHPPowerPoint_Shape_MemoryDrawing`. Version
+0.2 of the library renamed the classes, moved to a namespaced approach
+and switched to the PSR-0 autoloader. Interestingly, old code that was
+still referencing classes using the verbose approach *still worked* (which
+was pretty cool!). This is because the PSR-0 autoloader was correctly
+translating the verbose class references into the correct file name and
+location. However, `PHPPowerPoint` now relies exclusively on the PSR-4
+autoloader, so old code that may have been referencing the classes with
+the verbose class names will need to be updated accordingly.
