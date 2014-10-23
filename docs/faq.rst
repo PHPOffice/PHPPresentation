@@ -16,5 +16,5 @@ I’ve been running PHPPowerPoint from CodePlex flawlessly, but I can’t use th
 
 PHPPowerPoint requires PHP 5.3+ since 0.2, while PHPPowerPoint 0.1 from CodePlex
 can run with PHP 5.2. There’s a lot of new features that we can get from
-PHP 5.3 and it’s been around since 2014! You should upgrade your PHP
+PHP 5.3 and it’s been around since 2009! You should upgrade your PHP
 version to use PHPPowerPoint 0.2+.
