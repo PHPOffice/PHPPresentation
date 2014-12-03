@@ -147,7 +147,7 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage A \PhpOffice\PhpPowerpoint\Slide has already been assigned. Shapes can only exist on one \PhpOffice\PhpPowerpoint\Slide.
+     * @expectedExceptionMessage A \PhpOffice\PhpPowerpoint\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPowerpoint\ShapeContainerInterface.
      */
     public function testSlideException()
     {

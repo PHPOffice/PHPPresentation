@@ -17,8 +17,10 @@
 
 namespace PhpOffice\PhpPowerpoint;
 
+use PhpOffice\PhpPowerpoint\GeometryCalculator;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Line;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\Table;
@@ -27,7 +29,7 @@ use PhpOffice\PhpPowerpoint\Slide\Layout;
 /**
  * Slide class
  */
-class Slide implements ComparableInterface
+class Slide implements ComparableInterface, ShapeContainerInterface
 {
     /**
      * Parent presentation
@@ -72,6 +74,34 @@ class Slide implements ComparableInterface
     private $hashIndex;
 
     /**
+     * Offset X
+     *
+     * @var int
+     */
+    protected $offsetX;
+
+    /**
+     * Offset Y
+     *
+     * @var int
+     */
+    protected $offsetY;
+
+    /**
+     * Extent X
+     *
+     * @var int
+     */
+    protected $extentX;
+
+    /**
+     * Extent Y
+     *
+     * @var int
+     */
+    protected $extentY;
+
+    /**
      * Create a new slide
      *
      * @param PHPPowerPoint $pParent
@@ -108,7 +138,7 @@ class Slide implements ComparableInterface
      */
     public function addShape(AbstractShape $shape)
     {
-        $shape->setSlide($this);
+        $shape->setContainer($this);
 
         return $shape;
     }
@@ -180,6 +210,18 @@ class Slide implements ComparableInterface
         $shape = new Table($columns);
         $this->addShape($shape);
 
+        return $shape;
+    }
+    
+    /**
+     * Creates a group within this slide
+     *
+     * @return \PhpOffice\PhpPowerpoint\Shape\Group
+     */
+    public function createGroup() {
+        $shape = new Group();
+        $this->addShape($shape);
+        
         return $shape;
     }
 
@@ -299,5 +341,69 @@ class Slide implements ComparableInterface
         $copied = clone $this;
 
         return $copied;
+    }
+
+    /**
+     * Get X Offset
+     *
+     * @return int
+     */
+    public function getOffsetX()
+    {
+        if ($this->offsetX === null)
+        {
+            $offsets = GeometryCalculator::calculateOffsets($this);
+            $this->offsetX = $offsets[GeometryCalculator::X];
+            $this->offsetY = $offsets[GeometryCalculator::Y];
+        }
+        return $this->offsetX;
+    }
+
+    /**
+     * Get Y Offset
+     *
+     * @return int
+     */
+    public function getOffsetY()
+    {
+        if ($this->offsetY === null)
+        {
+            $offsets = GeometryCalculator::calculateOffsets($this);
+            $this->offsetX = $offsets[GeometryCalculator::X];
+            $this->offsetY = $offsets[GeometryCalculator::Y];
+        }
+        return $this->offsetY;
+    }
+
+    /**
+     * Get X Extent
+     *
+     * @return int
+     */
+    public function getExtentX()
+    {
+        if ($this->extentX === null)
+        {
+            $extents = GeometryCalculator::calculateExtents($this);
+            $this->extentX = $extents[GeometryCalculator::X];
+            $this->extentY = $extents[GeometryCalculator::Y];
+        }
+        return $this->extentX;
+    }
+
+    /**
+     * Get Y Extent
+     *
+     * @return int
+     */
+    public function getExtentY()
+    {
+        if ($this->extentY === null)
+        {
+            $extents = GeometryCalculator::calculateExtents($this);
+            $this->extentX = $extents[GeometryCalculator::X];
+            $this->extentY = $extents[GeometryCalculator::Y];
+        }
+        return $this->extentY;
     }
 }

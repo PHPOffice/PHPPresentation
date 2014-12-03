@@ -1,5 +1,11 @@
 # Changelog
 
+## (New Work)
+
+### Features
+- Added support for grouping shapes together in a Group - @Pr0phet
+- Added support for calculating the offset and extent on a Slide. - @Pr0phet
+
 ## 0.3.0 - 2014-09-22
 
 ### Features
