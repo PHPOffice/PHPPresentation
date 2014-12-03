@@ -1,10 +1,14 @@
 # Changelog
-
-## (New Work)
+## 0.4.0 - NOT RELEASED
 
 ### Features
 - Added support for grouping shapes together in a Group - @Pr0phet
 - Added support for calculating the offset and extent on a Slide. - @Pr0phet
+
+### Bugfix
+- PSR-0 via composer broken - @Progi1984 GH-51
+
+### Miscellaneous
 
 ## 0.3.0 - 2014-09-22
 
