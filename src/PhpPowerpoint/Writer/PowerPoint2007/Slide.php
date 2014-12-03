@@ -175,83 +175,83 @@ class Slide extends AbstractPart
      */
     private function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
     {
-      // p:grpSp
-      $objWriter->startElement('p:grpSp');
-      
-      // p:nvGrpSpPr
-      $objWriter->startElement('p:nvGrpSpPr');
+        // p:grpSp
+        $objWriter->startElement('p:grpSp');
 
-      // p:cNvPr
-      $objWriter->startElement('p:cNvPr');
-      $objWriter->writeAttribute('name', 'Group '.$shapeId++);
-      $objWriter->writeAttribute('id', $shapeId);
-      $objWriter->endElement(); // p:cNvPr
-      // NOTE: Re: $shapeId This seems to be how PowerPoint 2010 does business.
+        // p:nvGrpSpPr
+        $objWriter->startElement('p:nvGrpSpPr');
 
-      // p:cNvGrpSpPr
-      $objWriter->writeElement('p:cNvGrpSpPr', null);
+        // p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('name', 'Group '.$shapeId++);
+        $objWriter->writeAttribute('id', $shapeId);
+        $objWriter->endElement(); // p:cNvPr
+        // NOTE: Re: $shapeId This seems to be how PowerPoint 2010 does business.
 
-      // p:nvPr
-      $objWriter->writeElement('p:nvPr', null);
+        // p:cNvGrpSpPr
+        $objWriter->writeElement('p:cNvGrpSpPr', null);
 
-      $objWriter->endElement(); // p:nvGrpSpPr
+        // p:nvPr
+        $objWriter->writeElement('p:nvPr', null);
 
-      // p:grpSpPr
-      $objWriter->startElement('p:grpSpPr');
+        $objWriter->endElement(); // p:nvGrpSpPr
 
-      // a:xfrm
-      $objWriter->startElement('a:xfrm');
+        // p:grpSpPr
+        $objWriter->startElement('p:grpSpPr');
 
-      // a:off
-      $objWriter->startElement('a:off');
-      $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($group->getOffsetX()));
-      $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($group->getOffsetY()));
-      $objWriter->endElement(); // a:off
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
 
-      // a:ext
-      $objWriter->startElement('a:ext');
-      $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($group->getExtentX()));
-      $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($group->getExtentY()));
-      $objWriter->endElement(); // a:ext
+        // a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->endElement(); // a:off
 
-      // a:chOff
-      $objWriter->startElement('a:chOff');
-      $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($group->getOffsetX()));
-      $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($group->getOffsetY()));
-      $objWriter->endElement(); // a:chOff
+        // a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->endElement(); // a:ext
 
-      // a:chExt
-      $objWriter->startElement('a:chExt');
-      $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($group->getExtentX()));
-      $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($group->getExtentY()));
-      $objWriter->endElement(); // a:chExt
+        // a:chOff
+        $objWriter->startElement('a:chOff');
+        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->endElement(); // a:chOff
 
-      $objWriter->endElement(); // a:xfrm
+        // a:chExt
+        $objWriter->startElement('a:chExt');
+        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->endElement(); // a:chExt
 
-      $objWriter->endElement(); // p:grpSpPr
-      
-      $shapes  = $group->getShapeCollection();
-      foreach ($shapes as $shape) {
-          // Increment $shapeId
-          ++$shapeId;
+        $objWriter->endElement(); // a:xfrm
 
-          // Check type
-          if ($shape instanceof RichText) {
-              $this->writeShapeText($objWriter, $shape, $shapeId);
-          } elseif ($shape instanceof Table) {
-              $this->writeShapeTable($objWriter, $shape, $shapeId);
-          } elseif ($shape instanceof Line) {
-              $this->writeShapeLine($objWriter, $shape, $shapeId);
-          } elseif ($shape instanceof ShapeChart) {
-              $this->writeShapeChart($objWriter, $shape, $shapeId);
-          } elseif ($shape instanceof AbstractDrawing) {
-              $this->writeShapePic($objWriter, $shape, $shapeId);
-          } elseif ($shape instanceof Group) {
-              $this->writeShapeGroup($objWriter, $shape, $shapeId);
-          }
-      }
-      
-      $objWriter->endElement(); // p:grpSp
+        $objWriter->endElement(); // p:grpSpPr
+
+        $shapes  = $group->getShapeCollection();
+        foreach ($shapes as $shape) {
+            // Increment $shapeId
+            ++$shapeId;
+
+            // Check type
+            if ($shape instanceof RichText) {
+                $this->writeShapeText($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Table) {
+                $this->writeShapeTable($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Line) {
+                $this->writeShapeLine($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof ShapeChart) {
+                $this->writeShapeChart($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof AbstractDrawing) {
+                $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Group) {
+                $this->writeShapeGroup($objWriter, $shape, $shapeId);
+            }
+        }
+
+        $objWriter->endElement(); // p:grpSp
     }
 
     /**

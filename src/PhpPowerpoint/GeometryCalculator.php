@@ -66,7 +66,7 @@ class GeometryCalculator
     */
     public static function calculateExtents(ShapeContainerInterface $container)
     {
-        $offsets = array(self::X => 0, self::Y => 0);
+        $extents = array(self::X => 0, self::Y => 0);
 
         if ($container !== null && count($container->getShapeCollection()) != 0) {
             $shapes = $container->getShapeCollection();

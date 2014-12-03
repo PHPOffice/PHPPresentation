@@ -123,7 +123,7 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     /**
      * Get collection of shapes
      *
-     * @return \PhpOffice\PhpPowerpoint\AbstractShape[]
+     * @return \ArrayObject|\PhpOffice\PhpPowerpoint\AbstractShape[]
      */
     public function getShapeCollection()
     {
@@ -218,7 +218,8 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      *
      * @return \PhpOffice\PhpPowerpoint\Shape\Group
      */
-    public function createGroup() {
+    public function createGroup()
+    {
         $shape = new Group();
         $this->addShape($shape);
         

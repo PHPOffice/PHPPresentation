@@ -22,46 +22,46 @@ namespace PhpOffice\PhpPowerpoint;
  */
 interface ShapeContainerInterface
 {
-  /**
-   * Get collection of shapes
-   *
-   * @return \PhpOffice\PhpPowerpoint\AbstractShape[]
-   */
-  public function getShapeCollection();
-  
-  /**
-   * Add shape to slide
-   *
-   * @param  \PhpOffice\PhpPowerpoint\AbstractShape $shape
-   * @return \PhpOffice\PhpPowerpoint\AbstractShape
-   */
-  public function addShape(AbstractShape $shape);
+    /**
+    * Get collection of shapes
+    *
+    * @return \ArrayObject|\PhpOffice\PhpPowerpoint\AbstractShape[]
+    */
+    public function getShapeCollection();
 
-  /**
-   * Get X Offset
-   *
-   * @return int
-   */
-  public function getOffsetX();
+    /**
+    * Add shape to slide
+    *
+    * @param  \PhpOffice\PhpPowerpoint\AbstractShape $shape
+    * @return \PhpOffice\PhpPowerpoint\AbstractShape
+    */
+    public function addShape(AbstractShape $shape);
 
-  /**
-   * Get Y Offset
-   *
-   * @return int
-   */
-  public function getOffsetY();
+    /**
+    * Get X Offset
+    *
+    * @return int
+    */
+    public function getOffsetX();
 
-  /**
-   * Get X Extent
-   *
-   * @return int
-   */
-  public function getExtentX();
+    /**
+    * Get Y Offset
+    *
+    * @return int
+    */
+    public function getOffsetY();
 
-  /**
-   * Get Y Extent
-   *
-   * @return int
-   */
-  public function getExtentY();
+    /**
+    * Get X Extent
+    *
+    * @return int
+    */
+    public function getExtentX();
+
+    /**
+    * Get Y Extent
+    *
+    * @return int
+    */
+    public function getExtentY();
 }
