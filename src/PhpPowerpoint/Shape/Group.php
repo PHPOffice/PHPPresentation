@@ -48,7 +48,8 @@ class Group extends AbstractShape implements ShapeContainerInterface
     */
     protected $extentY;
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
 
         // For logic purposes.
@@ -56,7 +57,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
         $this->offsetY = null;
 
         // Shape collection
-        $this->shapeCollection = new \ArrayObject(); 
+        $this->shapeCollection = new \ArrayObject();
     }
 
     /**
