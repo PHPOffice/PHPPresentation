@@ -35,26 +35,20 @@ class GeometryCalculator
     {
         $offsets = array(self::X => 0, self::Y => 0);
 
-        if ($container !== null && count($container->getShapeCollection()) != 0)
-        {
+        if ($container !== null && count($container->getShapeCollection()) != 0) {
             $shapes = $container->getShapeCollection();
-            if ($shapes[0] !== null)
-            {
+            if ($shapes[0] !== null) {
                 $offsets[self::X] = $shapes[0]->getOffsetX();
                 $offsets[self::Y] = $shapes[0]->getOffsetY();
             }
 
-            foreach ($shapes as $shape)
-            {
-                if ($shape !== null)
-                {
-                    if ($shape->getOffsetX() < $offsets[self::X])
-                    {
+            foreach ($shapes as $shape) {
+                if ($shape !== null) {
+                    if ($shape->getOffsetX() < $offsets[self::X]) {
                         $offsets[self::X] = $shape->getOffsetX();
                     }
 
-                    if ($shape->getOffsetY() < $offsets[self::Y])
-                    {
+                    if ($shape->getOffsetY() < $offsets[self::Y]) {
                         $offsets[self::Y] = $shape->getOffsetY();
                     }
                 }
@@ -74,29 +68,23 @@ class GeometryCalculator
     {
         $offsets = array(self::X => 0, self::Y => 0);
 
-        if ($container !== null && count($container->getShapeCollection()) != 0)
-        {
+        if ($container !== null && count($container->getShapeCollection()) != 0) {
             $shapes = $container->getShapeCollection();
-            if ($shapes[0] !== null)
-            {
+            if ($shapes[0] !== null) {
                 $extents[self::X] = $shapes[0]->getOffsetX() + $shapes[0]->getWidth();
                 $extents[self::Y] = $shapes[0]->getOffsetY() + $shapes[0]->getHeight();
             }
 
-            foreach ($shapes as $shape)
-            {
-                if ($shape !== null)
-                {
+            foreach ($shapes as $shape) {
+                if ($shape !== null) {
                     $extentX = $shape->getOffsetX() + $shape->getWidth();
                     $extentY = $shape->getOffsetY() + $shape->getHeight();
 
-                    if ($extentX > $extents[self::X])
-                    {
+                    if ($extentX > $extents[self::X]) {
                         $extents[self::X] = $extentX;
                     }
 
-                    if ($extentY > $extents[self::Y])
-                    {
+                    if ($extentY > $extents[self::Y]) {
                         $extents[self::Y] = $extentY;
                     }
                 }

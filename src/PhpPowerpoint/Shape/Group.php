@@ -89,8 +89,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
    */
   public function getOffsetX()
   {
-      if ($this->offsetX === null)
-      {
+      if ($this->offsetX === null) {
           $offsets = GeometryCalculator::calculateOffsets($this);
           $this->offsetX = $offsets[GeometryCalculator::X];
           $this->offsetY = $offsets[GeometryCalculator::Y];
@@ -117,8 +116,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
    */
   public function getOffsetY()
   {
-      if ($this->offsetY === null)
-      {
+      if ($this->offsetY === null) {
           $offsets = GeometryCalculator::calculateOffsets($this);
           $this->offsetX = $offsets[GeometryCalculator::X];
           $this->offsetY = $offsets[GeometryCalculator::Y];
@@ -144,8 +142,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
    */
   public function getExtentX()
   {
-      if ($this->extentX === null)
-      {
+      if ($this->extentX === null) {
           $extents = GeometryCalculator::calculateExtents($this);
           $this->extentX = $extents[GeometryCalculator::X];
           $this->extentY = $extents[GeometryCalculator::Y];
@@ -160,8 +157,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
    */
   public function getExtentY()
   {
-      if ($this->extentY === null)
-      {
+      if ($this->extentY === null) {
           $extents = GeometryCalculator::calculateExtents($this);
           $this->extentX = $extents[GeometryCalculator::X];
           $this->extentY = $extents[GeometryCalculator::Y];
