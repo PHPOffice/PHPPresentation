@@ -35,7 +35,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $object->getOffsetY());
         $this->assertEquals(0, $object->getExtentX());
         $this->assertEquals(0, $object->getExtentY());
-        $this->assertEmpty($object->getShapeCollection());
+        $this->assertEquals(0, $object->getShapeCollection()->count());
     }
     
     public function testExtentsAndOffsetsForOneShape()
@@ -61,7 +61,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
 
     public function testExtentsAndOffsetsForTwoShapes()
     {
-        // Since Groups and Slides cache offsets and extents on first 
+        // Since Groups and Slides cache offsets and extents on first
         // calculation, this test is separate from the above.
         // Should the calculation be performed every GET, this test can be
         // combined with the above.
