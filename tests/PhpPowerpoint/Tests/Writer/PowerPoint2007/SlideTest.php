@@ -198,49 +198,49 @@ class SlideTest extends \PHPUnit_Framework_TestCase
      */
     public function testFillGradientLinearRichText()
     {
-    	$expected1 = 'E06B20';
-    	$expected2 = strrev($expected1);
+        $expected1 = 'E06B20';
+        $expected2 = strrev($expected1);
     
-    	$phpPowerPoint = new PhpPowerpoint();
-    	$oSlide = $phpPowerPoint->getActiveSlide();
-    	$oShape = $oSlide->createRichTextShape();
-    	$oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
-    	$oFill = $oShape->getFill();
-    	$oFill->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
     
-    	$pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
     
-    	$element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
-    	$this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-    	$this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
-    	$element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
-    	$this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-    	$this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
     public function testFillGradientPathTable()
     {
-    	$expected1 = 'E06B20';
-    	$expected2 = strrev($expected1);
+        $expected1 = 'E06B20';
+        $expected2 = strrev($expected1);
     
-    	$phpPowerPoint = new PhpPowerpoint();
-    	$oSlide = $phpPowerPoint->getActiveSlide();
-    	$oShape = $oSlide->createTableShape(1);
-    	$oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
-    	$oRow = $oShape->createRow();
-    	$oCell = $oRow->getCell();
-    	$oCell->createTextRun('R1C1');
-    	$oFill = $oCell->getFill();
-    	$oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape(1);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oCell->createTextRun('R1C1');
+        $oFill = $oCell->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
     
-    	$pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
     
-    	$element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
-    	$this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-    	$this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
-    	$element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
-    	$this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-    	$this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
     /**
@@ -319,20 +319,20 @@ class SlideTest extends \PHPUnit_Framework_TestCase
      */
     public function testFillSolidText()
     {
-    	$expected = 'E06B20';
+        $expected = 'E06B20';
     
-    	$phpPowerPoint = new PhpPowerpoint();
-    	$oSlide = $phpPowerPoint->getActiveSlide();
-    	$oShape = $oSlide->createRichTextShape();
-    	$oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
-    	$oFill = $oShape->getFill();
-    	$oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF'.$expected));
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF'.$expected));
     
-    	$pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
     
-    	$element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:solidFill/a:srgbClr';
-    	$this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-    	$this->assertEquals($expected, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:solidFill/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
     public function testHyperlink()
