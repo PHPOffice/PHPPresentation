@@ -18,9 +18,11 @@
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Shared\String;
+use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
@@ -28,6 +30,13 @@ use PhpOffice\PhpPowerpoint\Style\Fill;
  */
 class Styles extends AbstractPart
 {
+    /**
+     * Stores font styles draw:gradient nodes
+     *
+     * @var array
+     */
+    private $arrayGradient = array();
+    
     /**
      * Write Meta file to XML format
      *
@@ -95,31 +104,13 @@ class Styles extends AbstractPart
         $objWriter->endElement();
         // > style:style
         $objWriter->endElement();
-        // draw:gradient
-        $arrayGradient = array();
+
         foreach ($pPHPPowerPoint->getAllSlides() as $slide) {
             foreach ($slide->getShapeCollection() as $shape) {
                 if ($shape instanceof Table) {
-                    foreach ($shape->getRows() as $row) {
-                        foreach ($row->getCells() as $cell) {
-                            if ($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
-                                if (!in_array($cell->getFill()->getHashCode(), $arrayGradient)) {
-                                    $objWriter->startElement('draw:gradient');
-                                    $objWriter->writeAttribute('draw:name', 'gradient_'.$cell->getFill()->getHashCode());
-                                    $objWriter->writeAttribute('draw:display-name', 'gradient_'.$cell->getFill()->getHashCode());
-                                    $objWriter->writeAttribute('draw:style', 'linear');
-                                    $objWriter->writeAttribute('draw:start-intensity', '100%');
-                                    $objWriter->writeAttribute('draw:end-intensity', '100%');
-                                    $objWriter->writeAttribute('draw:start-color', '#'.$cell->getFill()->getStartColor()->getRGB());
-                                    $objWriter->writeAttribute('draw:end-color', '#'.$cell->getFill()->getEndColor()->getRGB());
-                                    $objWriter->writeAttribute('draw:border', '0%');
-                                    $objWriter->writeAttribute('draw:angle', $cell->getFill()->getRotation() - 90);
-                                    $objWriter->endElement();
-                                    $arrayGradient[] = $cell->getFill()->getHashCode();
-                                }
-                            }
-                        }
-                    }
+                    $this->writeTableStyle($objWriter, $shape);
+                } elseif ($shape instanceof Group) {
+                    $this->writeGroupStyle($objWriter, $shape);
                 }
             }
         }
@@ -171,5 +162,53 @@ class Styles extends AbstractPart
 
         // Return
         return $objWriter->getData();
+    }
+    
+    /**
+     * Write the default style information for a Table shape
+     *
+     * @param XMLWriter $objWriter
+     * @param Table $shape
+     */
+    public function writeTableStyle(XMLWriter $objWriter, Table $shape)
+    {
+        foreach ($shape->getRows() as $row) {
+            foreach ($row->getCells() as $cell) {
+                if ($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
+                    if (!in_array($cell->getFill()->getHashCode(), $this->arrayGradient)) {
+                        $objWriter->startElement('draw:gradient');
+                        $objWriter->writeAttribute('draw:name', 'gradient_'.$cell->getFill()->getHashCode());
+                        $objWriter->writeAttribute('draw:display-name', 'gradient_'.$cell->getFill()->getHashCode());
+                        $objWriter->writeAttribute('draw:style', 'linear');
+                        $objWriter->writeAttribute('draw:start-intensity', '100%');
+                        $objWriter->writeAttribute('draw:end-intensity', '100%');
+                        $objWriter->writeAttribute('draw:start-color', '#'.$cell->getFill()->getStartColor()->getRGB());
+                        $objWriter->writeAttribute('draw:end-color', '#'.$cell->getFill()->getEndColor()->getRGB());
+                        $objWriter->writeAttribute('draw:border', '0%');
+                        $objWriter->writeAttribute('draw:angle', $cell->getFill()->getRotation() - 90);
+                        $objWriter->endElement();
+                        $this->arrayGradient[] = $cell->getFill()->getHashCode();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Writes the style information for a group of shapes
+     *
+     * @param XMLWriter $objWriter
+     * @param Group $group
+     */
+    public function writeGroupStyle(XMLWriter $objWriter, Group $group)
+    {
+        $shapes = $group->getShapeCollection();
+        foreach ($shapes as $shape) {
+            if ($shape instanceof Table) {
+                $this->writeTableStyle($objWriter, $shape);
+            } elseif ($shape instanceof Group) {
+                $this->writeGroupStyle($objWriter, $shape);
+            }
+        }
     }
 }

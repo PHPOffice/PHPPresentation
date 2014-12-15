@@ -20,6 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
@@ -300,8 +301,28 @@ class Rels extends AbstractPart
                     $iterator->current()->relationId = 'rId' . $relId;
 
                     ++$relId;
-                }
+                } elseif ($iterator->current() instanceof Group) {
+                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        if ($iterator2->current() instanceof ShapeDrawing || $iterator2->current() instanceof MemoryDrawing) {
+                            // Write relationship for image drawing
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator2->current()->getIndexedFilename()));
 
+                            $iterator2->current()->relationId = 'rId' . $relId;
+
+                            ++$relId;
+                        } elseif ($iterator2->current() instanceof ShapeChart) {
+                            // Write relationship for chart drawing
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator2->current()->getIndexedFilename());
+
+                            $iterator2->current()->relationId = 'rId' . $relId;
+
+                            ++$relId;
+                        }
+                        $iterator2->next();
+                    }
+                }
+                
                 $iterator->next();
             }
         }
@@ -347,6 +368,52 @@ class Rels extends AbstractPart
                             }
                         }
                     }
+                }
+                
+                if ($iterator->current() instanceof Group) {
+
+                    $iterator2 = $pSlide->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        // Hyperlink on shape
+                        if ($iterator2->current()->hasHyperlink()) {
+                            // Write relationship for hyperlink
+                            $hyperlink             = $iterator2->current()->getHyperlink();
+                            $hyperlink->relationId = 'rId' . $relId;
+
+                            if (!$hyperlink->isInternal()) {
+                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                            } else {
+                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                            }
+
+                            ++$relId;
+                        }
+
+                        // Hyperlink on rich text run
+                        if ($iterator2->current() instanceof RichText) {
+                            foreach ($iterator2->current()->getParagraphs() as $paragraph) {
+                                foreach ($paragraph->getRichTextElements() as $element) {
+                                    if ($element instanceof Run || $element instanceof TextElement) {
+                                        if ($element->hasHyperlink()) {
+                                            // Write relationship for hyperlink
+                                            $hyperlink              = $element->getHyperlink();
+                                            $hyperlink->relationId = 'rId' . $relId;
+
+                                            if (!$hyperlink->isInternal()) {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                            } else {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                            }
+
+                                            ++$relId;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        $iterator2->next();
+                    }
+                    
                 }
 
                 $iterator->next();

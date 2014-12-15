@@ -21,6 +21,7 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Line;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
@@ -43,6 +44,37 @@ use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
  */
 class Content extends AbstractPart
 {
+
+    /**
+     * Stores bullet styles for text shapes that include lists.
+     *
+     * @var array
+     */
+    private $arrStyleBullet    = array();
+    
+    
+    /**
+     * Stores paragraph information for text shapes.
+     *
+     * @var array
+     */
+    private $arrStyleParagraph = array();
+
+    /**
+     * Stores font styles for text shapes that include lists.
+     *
+     * @var array
+     */
+    private $arrStyleTextFont  = array();
+    
+    /**
+     * Used to track the current shape ID.
+     *
+     * @var integer
+     */
+    private $shapeId;
+    
+
     /**
      * Write content file to XML format
      *
@@ -92,271 +124,38 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('xmlns:field', 'urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0');
         $objWriter->writeAttribute('office:version', '1.2');
 
-        //===============================================
-        // Styles
-        //===============================================
-        $arrStyleBullet    = array();
-        $arrStyleParagraph = array();
-        $arrStyleTextFont  = array();
-
         // office:automatic-styles
         $objWriter->startElement('office:automatic-styles');
 
-        $shapeId    = 0;
+        $this->shapeId    = 0;
         foreach ($pPHPPowerPoint->getAllSlides() as $pSlide) {
             // Images
             $shapes = $pSlide->getShapeCollection();
             foreach ($shapes as $shape) {
-                // Increment $shapeId
-                ++$shapeId;
+                // Increment $this->shapeId
+                ++$this->shapeId;
 
                 // Check type
                 if ($shape instanceof RichText) {
-                    // style:style
-                    $objWriter->startElement('style:style');
-                    $objWriter->writeAttribute('style:name', 'gr' . $shapeId);
-                    $objWriter->writeAttribute('style:family', 'graphic');
-                    $objWriter->writeAttribute('style:parent-style-name', 'standard');
-                    // style:graphic-properties
-                    $objWriter->startElement('style:graphic-properties');
-                    if (is_bool($shape->hasAutoShrinkVertical())) {
-                        $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
-                    }
-                    if (is_bool($shape->hasAutoShrinkHorizontal())) {
-                        $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
-                    }
-                    switch ($shape->getFill()->getFillType()){
-                        case Fill::FILL_NONE:
-                        default:
-                            $objWriter->writeAttribute('draw:fill', 'none');
-                            $objWriter->writeAttribute('draw:fill-color', '#'.$shape->getFill()->getStartColor()->getRGB());
-                            break;
-                    }
-                    switch ($shape->getBorder()->getLineStyle()){
-                        case Border::LINE_NONE:
-                        default:
-                            $objWriter->writeAttribute('draw:stroke', 'none');
-                            $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
-                    }
-                    
-                    $objWriter->writeAttribute('fo:wrap-option', 'wrap');
-                    // > style:graphic-properties
-                    $objWriter->endElement();
-                    // > style:style
-                    $objWriter->endElement();
-
-                    $paragraphs  = $shape->getParagraphs();
-                    $paragraphId = 0;
-                    foreach ($paragraphs as $paragraph) {
-                        ++$paragraphId;
-
-                        // Style des paragraphes
-                        if (!isset($arrStyleParagraph[$paragraph->getHashCode()])) {
-                            $arrStyleParagraph[$paragraph->getHashCode()] = $paragraph;
-                        }
-
-                        // Style des listes
-                        if (!isset($arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()])) {
-                            $arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['oStyle'] = $paragraph->getBulletStyle();
-                            $arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level']  = '';
-                        }
-                        if (strpos($arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'], ';' . $paragraph->getAlignment()->getLevel()) === false) {
-                            $arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'] .= ';' . $paragraph->getAlignment()->getLevel();
-                            $arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['oAlign_' . $paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
-                        }
-
-                        $richtexts  = $paragraph->getRichTextElements();
-                        $richtextId = 0;
-                        foreach ($richtexts as $richtext) {
-                            ++$richtextId;
-                            // Not a line break
-                            if ($richtext instanceof Run) {
-                                // Style des font text
-                                if (!isset($arrStyleTextFont[$richtext->getFont()->getHashCode()])) {
-                                    $arrStyleTextFont[$richtext->getFont()->getHashCode()] = $richtext->getFont();
-                                }
-                            }
-                        }
-                    }
+                    $this->writeTxtStyle($objWriter, $shape);
                 }
                 if ($shape instanceof AbstractDrawing) {
-                    if ($shape->getShadow()->isVisible()) {
-                        // style:style
-                        $objWriter->startElement('style:style');
-                        $objWriter->writeAttribute('style:name', 'gr' . $shapeId);
-                        $objWriter->writeAttribute('style:family', 'graphic');
-                        $objWriter->writeAttribute('style:parent-style-name', 'standard');
-
-                        // style:graphic-properties
-                        $objWriter->startElement('style:graphic-properties');
-                        $objWriter->writeAttribute('draw:stroke', 'none');
-                        $objWriter->writeAttribute('draw:fill', 'none');
-                        $objWriter->writeAttribute('draw:shadow', 'visible');
-                        $objWriter->writeAttribute('draw:shadow-color', '#' . $shape->getShadow()->getColor()->getRGB());
-                        if ($shape->getShadow()->getDirection() == 0 || $shape->getShadow()->getDirection() == 360) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
-                        } elseif ($shape->getShadow()->getDirection() == 45) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                        } elseif ($shape->getShadow()->getDirection() == 90) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                        } elseif ($shape->getShadow()->getDirection() == 135) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                        } elseif ($shape->getShadow()->getDirection() == 180) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
-                        } elseif ($shape->getShadow()->getDirection() == 225) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                        } elseif ($shape->getShadow()->getDirection() == 270) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                        } elseif ($shape->getShadow()->getDirection() == 315) {
-                            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                        }
-                        $objWriter->writeAttribute('draw:shadow-opacity', (100 - $shape->getShadow()->getAlpha()) . '%');
-                        $objWriter->writeAttribute('style:mirror', 'none');
-                        $objWriter->endElement();
-
-                        $objWriter->endElement();
-                    }
+                    $this->writeDrawingStyle($objWriter, $shape);
                 }
                 if ($shape instanceof Line) {
-                    // style:style
-                    $objWriter->startElement('style:style');
-                    $objWriter->writeAttribute('style:name', 'gr' . $shapeId);
-                    $objWriter->writeAttribute('style:family', 'graphic');
-                    $objWriter->writeAttribute('style:parent-style-name', 'standard');
-            
-                    // style:graphic-properties
-                    $objWriter->startElement('style:graphic-properties');
-                    $objWriter->writeAttribute('draw:fill', 'none');
-                    switch ($shape->getBorder()->getLineStyle()) {
-                        case Border::LINE_NONE:
-                            $objWriter->writeAttribute('draw:stroke', 'none');
-                            break;
-                        case Border::LINE_SINGLE:
-                            $objWriter->writeAttribute('draw:stroke', 'solid');
-                            break;
-                        default:
-                            $objWriter->writeAttribute('draw:stroke', 'none');
-                            break;
-                    }
-                    $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
-                    $objWriter->writeAttribute('svg:stroke-width', String::numberFormat(SharedDrawing::pixelsToCentimeters((SharedDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3).'cm');
-                    $objWriter->endElement();
-            
-                    $objWriter->endElement();
+                    $this->writeLineStyle($objWriter, $shape);
                 }
                 if ($shape instanceof Table) {
-                    foreach ($shape->getRows() as $keyRow => $shapeRow) {
-                        // style:style
-                        $objWriter->startElement('style:style');
-                        $objWriter->writeAttribute('style:name', 'gr' . $shapeId.'r'.$keyRow);
-                        $objWriter->writeAttribute('style:family', 'table-row');
-                        
-                        // style:table-row-properties
-                        $objWriter->startElement('style:table-row-properties');
-                        $objWriter->writeAttribute('style:row-height', String::numberFormat(SharedDrawing::pixelsToCentimeters(SharedDrawing::pointsToPixels($shapeRow->getHeight())), 3).'cm');
-                        $objWriter->endElement();
-                        
-                        $objWriter->endElement();
-                        
-                        foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
-                            // style:style
-                            $objWriter->startElement('style:style');
-                            $objWriter->writeAttribute('style:name', 'gr' . $shapeId.'r'.$keyRow.'c'.$keyCell);
-                            $objWriter->writeAttribute('style:family', 'table-cell');
-                            
-                            // style:graphic-properties
-                            $objWriter->startElement('style:graphic-properties');
-                            if ($shapeCell->getFill()->getFillType() == Fill::FILL_SOLID) {
-                                $objWriter->writeAttribute('draw:fill', 'solid');
-                                $objWriter->writeAttribute('draw:fill-color', '#'.$shapeCell->getFill()->getStartColor()->getRGB());
-                            }
-                            if ($shapeCell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
-                                $objWriter->writeAttribute('draw:fill', 'gradient');
-                                $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_'.$shapeCell->getFill()->getHashCode());
-                            }
-                            $objWriter->endElement();
-                            // <style:graphic-properties
-                            
-                            // style:paragraph-properties
-                            $objWriter->startElement('style:paragraph-properties');
-                            if ($shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getTop()->getHashCode()
-                                && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getLeft()->getHashCode()
-                                && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getRight()->getHashCode()) {
-                                $lineStyle = 'none';
-                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
-                                $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
-                                switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
-                                    case Border::LINE_SINGLE:
-                                        $lineStyle = 'solid';
-                                }
-                                $objWriter->writeAttribute('fo:border', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
-                            } else {
-                                $lineStyle = 'none';
-                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
-                                $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
-                                switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
-                                    case Border::LINE_SINGLE:
-                                        $lineStyle = 'solid';
-                                }
-                                $objWriter->writeAttribute('fo:border-bottom', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
-                                // TOP
-                                $lineStyle = 'none';
-                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getTop()->getLineWidth() / 1.75, 2);
-                                $lineColor = $shapeCell->getBorders()->getTop()->getColor()->getRGB();
-                                switch ($shapeCell->getBorders()->getTop()->getLineStyle()){
-                                    case Border::LINE_SINGLE:
-                                        $lineStyle = 'solid';
-                                }
-                                $objWriter->writeAttribute('fo:border-top', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
-                                // RIGHT
-                                $lineStyle = 'none';
-                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getRight()->getLineWidth() / 1.75, 2);
-                                $lineColor = $shapeCell->getBorders()->getRight()->getColor()->getRGB();
-                                switch ($shapeCell->getBorders()->getRight()->getLineStyle()){
-                                    case Border::LINE_SINGLE:
-                                        $lineStyle = 'solid';
-                                }
-                                $objWriter->writeAttribute('fo:border-right', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
-                                // LEFT
-                                $lineStyle = 'none';
-                                $lineWidth = String::numberFormat($shapeCell->getBorders()->getLeft()->getLineWidth() / 1.75, 2);
-                                $lineColor = $shapeCell->getBorders()->getLeft()->getColor()->getRGB();
-                                switch ($shapeCell->getBorders()->getLeft()->getLineStyle()){
-                                    case Border::LINE_SINGLE:
-                                        $lineStyle = 'solid';
-                                }
-                                $objWriter->writeAttribute('fo:border-left', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
-                            }
-                            $objWriter->endElement();
-                            
-                            $objWriter->endElement();
-                            
-                            foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
-                                foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
-                                    if ($shapeRichText instanceof Run) {
-                                        // Style des font text
-                                        if (!isset($arrStyleTextFont[$shapeRichText->getFont()->getHashCode()])) {
-                                            $arrStyleTextFont[$shapeRichText->getFont()->getHashCode()] = $shapeRichText->getFont();
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    $this->writeTableStyle($objWriter, $shape);
+                }
+                if ($shape instanceof Group) {
+                    $this->writeGroupStyle($objWriter, $shape);
                 }
             }
         }
         // Style : Bullet
-        if (!empty($arrStyleBullet)) {
-            foreach ($arrStyleBullet as $key => $item) {
+        if (!empty($this->arrStyleBullet)) {
+            foreach ($this->arrStyleBullet as $key => $item) {
                 $oStyle   = $item['oStyle'];
                 $arrLevel = explode(';', $item['level']);
                 // style:style
@@ -394,8 +193,8 @@ class Content extends AbstractPart
             }
         }
         // Style : Paragraph
-        if (!empty($arrStyleParagraph)) {
-            foreach ($arrStyleParagraph as $key => $item) {
+        if (!empty($this->arrStyleParagraph)) {
+            foreach ($this->arrStyleParagraph as $key => $item) {
                 // style:style
                 $objWriter->startElement('style:style');
                 $objWriter->writeAttribute('style:name', 'P_' . $key);
@@ -427,8 +226,8 @@ class Content extends AbstractPart
             }
         }
         // Style : Text : Font
-        if (!empty($arrStyleTextFont)) {
-            foreach ($arrStyleTextFont as $key => $item) {
+        if (!empty($this->arrStyleTextFont)) {
+            foreach ($this->arrStyleTextFont as $key => $item) {
                 // style:style
                 $objWriter->startElement('style:style');
                 $objWriter->writeAttribute('style:name', 'T_' . $key);
@@ -459,7 +258,7 @@ class Content extends AbstractPart
 
         // Write slides
         $slideCount = $pPHPPowerPoint->getSlideCount();
-        $shapeId    = 0;
+        $this->shapeId    = 0;
         for ($i = 0; $i < $slideCount; ++$i) {
             $pSlide = $pPHPPowerPoint->getSlide($i);
             $objWriter->startElement('draw:page');
@@ -468,20 +267,22 @@ class Content extends AbstractPart
             // Images
             $shapes = $pSlide->getShapeCollection();
             foreach ($shapes as $shape) {
-                // Increment $shapeId
-                ++$shapeId;
+                // Increment $this->shapeId
+                ++$this->shapeId;
 
                 // Check type
                 if ($shape instanceof RichText) {
-                    $this->writeShapeTxt($objWriter, $shape, $shapeId);
+                    $this->writeShapeTxt($objWriter, $shape);
                 } elseif ($shape instanceof Table) {
-                    $this->writeShapeTable($objWriter, $shape, $shapeId);
+                    $this->writeShapeTable($objWriter, $shape);
                 } elseif ($shape instanceof Line) {
-                    $this->writeShapeLine($objWriter, $shape, $shapeId);
+                    $this->writeShapeLine($objWriter, $shape);
                 } elseif ($shape instanceof Chart) {
-                    $this->writeShapeChart($objWriter, $shape, $shapeId);
+                    $this->writeShapeChart($objWriter, $shape);
                 } elseif ($shape instanceof AbstractDrawing) {
-                    $this->writeShapePic($objWriter, $shape, $shapeId);
+                    $this->writeShapePic($objWriter, $shape);
+                } elseif ($shape instanceof Group) {
+                    $this->writeShapeGroup($objWriter, $shape);
                 }
             }
             $objWriter->endElement();
@@ -499,9 +300,8 @@ class Content extends AbstractPart
      *
      * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
      * @param \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
-     * @param int $shapeId
      */
-    public function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
+    public function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -511,7 +311,7 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         if ($shape->getShadow()->isVisible()) {
-            $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
+            $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         }
         // draw:image
         $objWriter->startElement('draw:image');
@@ -533,13 +333,12 @@ class Content extends AbstractPart
      *
      * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
      * @param \PhpOffice\PhpPowerpoint\Shape\RichText $shape
-     * @param int $shapeId
      */
-    public function writeShapeTxt(XMLWriter $objWriter, RichText $shape, $shapeId)
+    public function writeShapeTxt(XMLWriter $objWriter, RichText $shape)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
+        $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
@@ -695,13 +494,12 @@ class Content extends AbstractPart
      * 
      * @param XMLWriter $objWriter
      * @param Line $shape
-     * @param integer $shapeId
      */
-    public function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
+    public function writeShapeLine(XMLWriter $objWriter, Line $shape)
     {
         // draw:line
         $objWriter->startElement('draw:line');
-        $objWriter->writeAttribute('draw:style-name', 'gr' . $shapeId);
+        $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         $objWriter->writeAttribute('svg:x1', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y1', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x2', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()+$shape->getWidth()), 3) . 'cm');
@@ -717,9 +515,8 @@ class Content extends AbstractPart
      * Write table Shape
      * @param XMLWriter $objWriter
      * @param Table $shape
-     * @param integer $shapeId
      */
-    public function writeShapeTable(XMLWriter $objWriter, Table $shape, $shapeId)
+    public function writeShapeTable(XMLWriter $objWriter, Table $shape)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -734,7 +531,7 @@ class Content extends AbstractPart
         foreach ($shape->getRows() as $keyRow => $shapeRow) {
             // table:table-row
             $objWriter->startElement('table:table-row');
-            $objWriter->writeAttribute('table:style-name', 'gr'.$shapeId.'r'.$keyRow);
+            $objWriter->writeAttribute('table:style-name', 'gr'.$this->shapeId.'r'.$keyRow);
             //@todo getFill
             
             $numColspan = 0;
@@ -742,7 +539,7 @@ class Content extends AbstractPart
                 if ($numColspan == 0) {
                     // table:table-cell
                     $objWriter->startElement('table:table-cell');
-                    $objWriter->writeAttribute('table:style-name', 'gr' . $shapeId.'r'.$keyRow.'c'.$keyCell);
+                    $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
                     if ($shapeCell->getColspan() > 1) {
                         $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
                         $numColspan = $shapeCell->getColspan() - 1;
@@ -785,15 +582,14 @@ class Content extends AbstractPart
      * Write table Chart
      * @param XMLWriter $objWriter
      * @param Chart $shape
-     * @param integer $shapeId
      */
-    public function writeShapeChart(XMLWriter $objWriter, Chart $shape, $shapeId)
+    public function writeShapeChart(XMLWriter $objWriter, Chart $shape)
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof ODPresentation) {
             throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation');
         }
-        $parentWriter->chartArray[$shapeId] = $shape;
+        $parentWriter->chartArray[$this->shapeId] = $shape;
         
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -805,7 +601,7 @@ class Content extends AbstractPart
     
         // draw:object
         $objWriter->startElement('draw:object');
-        $objWriter->writeAttribute('xlink:href', './Object '.$shapeId);
+        $objWriter->writeAttribute('xlink:href', './Object '.$this->shapeId);
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         
@@ -813,5 +609,349 @@ class Content extends AbstractPart
         $objWriter->endElement();
         // > draw:frame
         $objWriter->endElement();
+    }
+
+    /**
+     * Writes a group of shapes
+     *
+     * @param XMLWriter $objWriter
+     * @param Group $group
+     */
+    public function writeShapeGroup(XMLWriter $objWriter, Group $group)
+    {
+        echo "writeShapeGroup()";
+
+        // draw:g
+        $objWriter->startElement('draw:g');
+
+        $shapes = $group->getShapeCollection();
+        foreach ($shapes as $shape) {
+            // Increment $this->shapeId
+            ++$this->shapeId;
+
+            // Check type
+            if ($shape instanceof RichText) {
+                $this->writeShapeTxt($objWriter, $shape, $this->shapeId);
+            } elseif ($shape instanceof Table) {
+                $this->writeShapeTable($objWriter, $shape, $this->shapeId);
+            } elseif ($shape instanceof Line) {
+                $this->writeShapeLine($objWriter, $shape, $this->shapeId);
+            } elseif ($shape instanceof Chart) {
+                $this->writeShapeChart($objWriter, $shape, $this->shapeId);
+            } elseif ($shape instanceof AbstractDrawing) {
+                $this->writeShapePic($objWriter, $shape, $this->shapeId);
+            } elseif ($shape instanceof Group) {
+                $this->writeShapeGroup($objWriter, $shape, $this->shapeId);
+            }
+        }
+
+        $objWriter->endElement(); // draw:g
+    }
+
+    /**
+     * Writes the style information for a group of shapes
+     *
+     * @param XMLWriter $objWriter
+     * @param Group $group
+     */
+    public function writeGroupStyle(XMLWriter $objWriter, Group $group)
+    {
+        echo "writeGroupStyle()";
+
+        $shapes = $group->getShapeCollection();
+        foreach ($shapes as $shape) {
+            // Increment $this->shapeId
+            ++$this->shapeId;
+
+            // Check type
+            if ($shape instanceof RichText) {
+                $this->writeTxtStyle($objWriter, $shape, $this->shapeId);
+            }
+            if ($shape instanceof AbstractDrawing) {
+                $this->writeDrawingStyle($objWriter, $shape, $this->shapeId);
+            }
+            if ($shape instanceof Line) {
+                $this->writeLineStyle($objWriter, $shape, $this->shapeId);
+            }
+            if ($shape instanceof Table) {
+                $this->writeTableStyle($objWriter, $shape, $this->shapeId);
+            }
+            if ($shape instanceof Group) {
+                $this->writeGroupStyle($objWriter, $shape, $this->shapeId);
+            }
+        }
+    }
+
+    /**
+     * Write the default style information for a RichText shape
+     *
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\PhpPowerpoint\Shape\RichText $shape
+     */
+    public function writeTxtStyle(XMLWriter $objWriter, RichText $shape)
+    {
+        // style:style
+        $objWriter->startElement('style:style');
+        $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId);
+        $objWriter->writeAttribute('style:family', 'graphic');
+        $objWriter->writeAttribute('style:parent-style-name', 'standard');
+        // style:graphic-properties
+        $objWriter->startElement('style:graphic-properties');
+        if (is_bool($shape->hasAutoShrinkVertical())) {
+            $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
+        }
+        if (is_bool($shape->hasAutoShrinkHorizontal())) {
+            $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
+        }
+        switch ($shape->getFill()->getFillType()){
+            case Fill::FILL_NONE:
+            default:
+                $objWriter->writeAttribute('draw:fill', 'none');
+                $objWriter->writeAttribute('draw:fill-color', '#'.$shape->getFill()->getStartColor()->getRGB());
+                break;
+        }
+        switch ($shape->getBorder()->getLineStyle()){
+            case Border::LINE_NONE:
+            default:
+                $objWriter->writeAttribute('draw:stroke', 'none');
+                $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
+        }
+
+        $objWriter->writeAttribute('fo:wrap-option', 'wrap');
+        // > style:graphic-properties
+        $objWriter->endElement();
+        // > style:style
+        $objWriter->endElement();
+
+        $paragraphs  = $shape->getParagraphs();
+        $paragraphId = 0;
+        foreach ($paragraphs as $paragraph) {
+            ++$paragraphId;
+
+            // Style des paragraphes
+            if (!isset($this->arrStyleParagraph[$paragraph->getHashCode()])) {
+                $this->arrStyleParagraph[$paragraph->getHashCode()] = $paragraph;
+            }
+
+            // Style des listes
+            if (!isset($this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()])) {
+                $this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['oStyle'] = $paragraph->getBulletStyle();
+                $this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level']  = '';
+            }
+            if (strpos($this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'], ';' . $paragraph->getAlignment()->getLevel()) === false) {
+                $this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'] .= ';' . $paragraph->getAlignment()->getLevel();
+                $this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['oAlign_' . $paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
+            }
+
+            $richtexts  = $paragraph->getRichTextElements();
+            $richtextId = 0;
+            foreach ($richtexts as $richtext) {
+                ++$richtextId;
+                // Not a line break
+                if ($richtext instanceof Run) {
+                    // Style des font text
+                    if (!isset($this->arrStyleTextFont[$richtext->getFont()->getHashCode()])) {
+                        $this->arrStyleTextFont[$richtext->getFont()->getHashCode()] = $richtext->getFont();
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Write the default style information for an AbstractDrawing
+     *
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
+     */
+    public function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawing $shape)
+    {
+        if ($shape->getShadow()->isVisible()) {
+            // style:style
+            $objWriter->startElement('style:style');
+            $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId);
+            $objWriter->writeAttribute('style:family', 'graphic');
+            $objWriter->writeAttribute('style:parent-style-name', 'standard');
+
+            // style:graphic-properties
+            $objWriter->startElement('style:graphic-properties');
+            $objWriter->writeAttribute('draw:stroke', 'none');
+            $objWriter->writeAttribute('draw:fill', 'none');
+            $objWriter->writeAttribute('draw:shadow', 'visible');
+            $objWriter->writeAttribute('draw:shadow-color', '#' . $shape->getShadow()->getColor()->getRGB());
+            if ($shape->getShadow()->getDirection() == 0 || $shape->getShadow()->getDirection() == 360) {
+                $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
+            } elseif ($shape->getShadow()->getDirection() == 45) {
+                $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+            } elseif ($shape->getShadow()->getDirection() == 90) {
+                $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
+                $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+            } elseif ($shape->getShadow()->getDirection() == 135) {
+                $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+            } elseif ($shape->getShadow()->getDirection() == 180) {
+                $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
+            } elseif ($shape->getShadow()->getDirection() == 225) {
+                $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+            } elseif ($shape->getShadow()->getDirection() == 270) {
+                $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
+                $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+            } elseif ($shape->getShadow()->getDirection() == 315) {
+                $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+                $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
+            }
+            $objWriter->writeAttribute('draw:shadow-opacity', (100 - $shape->getShadow()->getAlpha()) . '%');
+            $objWriter->writeAttribute('style:mirror', 'none');
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+        }
+    }
+
+    /**
+     * Write the default style information for a Line shape.
+     *
+     * @param XMLWriter $objWriter
+     * @param Line $shape
+     */
+    public function writeLineStyle(XMLWriter $objWriter, Line $shape)
+    {
+        // style:style
+        $objWriter->startElement('style:style');
+        $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId);
+        $objWriter->writeAttribute('style:family', 'graphic');
+        $objWriter->writeAttribute('style:parent-style-name', 'standard');
+
+        // style:graphic-properties
+        $objWriter->startElement('style:graphic-properties');
+        $objWriter->writeAttribute('draw:fill', 'none');
+        switch ($shape->getBorder()->getLineStyle()) {
+            case Border::LINE_NONE:
+                $objWriter->writeAttribute('draw:stroke', 'none');
+                break;
+            case Border::LINE_SINGLE:
+                $objWriter->writeAttribute('draw:stroke', 'solid');
+                break;
+            default:
+                $objWriter->writeAttribute('draw:stroke', 'none');
+                break;
+        }
+        $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
+        $objWriter->writeAttribute('svg:stroke-width', String::numberFormat(SharedDrawing::pixelsToCentimeters((SharedDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3).'cm');
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write the default style information for a Table shape
+     *
+     * @param XMLWriter $objWriter
+     * @param Table $shape
+     */
+    public function writeTableStyle(XMLWriter $objWriter, Table $shape)
+    {
+        foreach ($shape->getRows() as $keyRow => $shapeRow) {
+            // style:style
+            $objWriter->startElement('style:style');
+            $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId.'r'.$keyRow);
+            $objWriter->writeAttribute('style:family', 'table-row');
+
+            // style:table-row-properties
+            $objWriter->startElement('style:table-row-properties');
+            $objWriter->writeAttribute('style:row-height', String::numberFormat(SharedDrawing::pixelsToCentimeters(SharedDrawing::pointsToPixels($shapeRow->getHeight())), 3).'cm');
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+            foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
+                // style:style
+                $objWriter->startElement('style:style');
+                $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
+                $objWriter->writeAttribute('style:family', 'table-cell');
+
+                // style:graphic-properties
+                $objWriter->startElement('style:graphic-properties');
+                if ($shapeCell->getFill()->getFillType() == Fill::FILL_SOLID) {
+                    $objWriter->writeAttribute('draw:fill', 'solid');
+                    $objWriter->writeAttribute('draw:fill-color', '#'.$shapeCell->getFill()->getStartColor()->getRGB());
+                }
+                if ($shapeCell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
+                    $objWriter->writeAttribute('draw:fill', 'gradient');
+                    $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_'.$shapeCell->getFill()->getHashCode());
+                }
+                $objWriter->endElement();
+                // <style:graphic-properties
+
+                // style:paragraph-properties
+                $objWriter->startElement('style:paragraph-properties');
+                if ($shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getTop()->getHashCode()
+                    && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getLeft()->getHashCode()
+                    && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getRight()->getHashCode()) {
+                    $lineStyle = 'none';
+                    $lineWidth = String::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
+                    $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
+                    switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
+                        case Border::LINE_SINGLE:
+                            $lineStyle = 'solid';
+                    }
+                    $objWriter->writeAttribute('fo:border', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                } else {
+                    $lineStyle = 'none';
+                    $lineWidth = String::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
+                    $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
+                    switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
+                        case Border::LINE_SINGLE:
+                            $lineStyle = 'solid';
+                    }
+                    $objWriter->writeAttribute('fo:border-bottom', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                    // TOP
+                    $lineStyle = 'none';
+                    $lineWidth = String::numberFormat($shapeCell->getBorders()->getTop()->getLineWidth() / 1.75, 2);
+                    $lineColor = $shapeCell->getBorders()->getTop()->getColor()->getRGB();
+                    switch ($shapeCell->getBorders()->getTop()->getLineStyle()){
+                        case Border::LINE_SINGLE:
+                            $lineStyle = 'solid';
+                    }
+                    $objWriter->writeAttribute('fo:border-top', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                    // RIGHT
+                    $lineStyle = 'none';
+                    $lineWidth = String::numberFormat($shapeCell->getBorders()->getRight()->getLineWidth() / 1.75, 2);
+                    $lineColor = $shapeCell->getBorders()->getRight()->getColor()->getRGB();
+                    switch ($shapeCell->getBorders()->getRight()->getLineStyle()){
+                        case Border::LINE_SINGLE:
+                            $lineStyle = 'solid';
+                    }
+                    $objWriter->writeAttribute('fo:border-right', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                    // LEFT
+                    $lineStyle = 'none';
+                    $lineWidth = String::numberFormat($shapeCell->getBorders()->getLeft()->getLineWidth() / 1.75, 2);
+                    $lineColor = $shapeCell->getBorders()->getLeft()->getColor()->getRGB();
+                    switch ($shapeCell->getBorders()->getLeft()->getLineStyle()){
+                        case Border::LINE_SINGLE:
+                            $lineStyle = 'solid';
+                    }
+                    $objWriter->writeAttribute('fo:border-left', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                }
+                $objWriter->endElement();
+
+                $objWriter->endElement();
+
+                foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
+                    foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
+                        if ($shapeRichText instanceof Run) {
+                            // Style des font text
+                            if (!isset($this->arrStyleTextFont[$shapeRichText->getFont()->getHashCode()])) {
+                                $this->arrStyleTextFont[$shapeRichText->getFont()->getHashCode()] = $shapeRichText->getFont();
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

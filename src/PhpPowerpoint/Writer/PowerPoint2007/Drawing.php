@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Table;
 
 /**
@@ -46,6 +47,14 @@ class Drawing extends AbstractPart
             while ($iterator->valid()) {
                 if ($iterator->current() instanceof AbstractDrawing && !($iterator->current() instanceof Table)) {
                     $aDrawings[] = $iterator->current();
+                } elseif ($iterator->current() instanceof Group) {
+                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        if ($iterator2->current() instanceof AbstractDrawing && !($iterator2->current() instanceof Table)) {
+                            $aDrawings[] = $iterator2->current();
+                        }
+                        $iterator2->next();
+                    }
                 }
 
                 $iterator->next();
