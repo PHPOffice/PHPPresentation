@@ -6,6 +6,7 @@
 
 ### Bugfix
 - PSR-0 via composer broken - @Progi1984 GH-51
+- PowerPoint2007 Writer : Fill don't work for RichTextShapes - @Progi1984 GH-61
 
 ### Miscellaneous
 

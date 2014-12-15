@@ -411,6 +411,10 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
+        
+        if ($shape->getFill()) {
+            $this->writeFill($objWriter, $shape->getFill());
+        }
 
         $objWriter->endElement();
 
