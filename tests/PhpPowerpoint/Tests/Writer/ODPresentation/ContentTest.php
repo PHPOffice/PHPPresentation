@@ -279,21 +279,21 @@ class ContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testTableWithHyperlink()
     {
-    	$phpPowerPoint = new PhpPowerpoint();
-    	$oSlide = $phpPowerPoint->getActiveSlide();
-    	$oShape = $oSlide->createTableShape(4);
-    	$oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
-    	$oRow = $oShape->createRow();
-    	$oCell = $oRow->getCell();
-    	$oTextRun = $oCell->createTextRun('AAA');
-    	$oHyperlink = $oTextRun->getHyperlink();
-    	$oHyperlink->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape(4);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oTextRun = $oCell->createTextRun('AAA');
+        $oHyperlink = $oTextRun->getHyperlink();
+        $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
     
-    	$pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
     
-    	$element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
-    	$this->assertTrue($pres->elementExists($element, 'content.xml'));
-    	$this->assertEquals('https://github.com/PHPOffice/PHPPowerPoint/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('https://github.com/PHPOffice/PHPPowerPoint/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
     }
     
     public function testTableWithText()
