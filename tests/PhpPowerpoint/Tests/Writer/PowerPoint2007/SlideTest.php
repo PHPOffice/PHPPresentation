@@ -610,4 +610,26 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element.'[@rowSpan="2"]', 'ppt/slides/slide1.xml'));
         $this->assertTrue($pres->elementExists($element.'[@vMerge="1"]', 'ppt/slides/slide1.xml'));
     }
+
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/70
+     */
+    public function testTableWithHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape(4);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oTextRun = $oCell->createTextRun('AAA');
+        $oHyperlink = $oTextRun->getHyperlink();
+        $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId2', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
+    }
 }

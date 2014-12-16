@@ -24,6 +24,7 @@ use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
+use PhpOffice\PhpPowerpoint\Shape\Table as ShapeTable;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
@@ -343,6 +344,39 @@ class Rels extends AbstractPart
                                     }
 
                                     ++$relId;
+                                }
+                            }
+                        }
+                    }
+                }
+                
+                // Hyperlink in table
+                if ($iterator->current() instanceof ShapeTable) {
+                    // Rows
+                    for ($row = 0; $row < count($iterator->current()->getRows()); $row++) {
+                        // Cells in rows
+                        for ($cell = 0; $cell < count($iterator->current()->getRow($row)->getCells()); $cell++) {
+                            $currentCell = $iterator->current()->getRow($row)->getCell($cell);
+                            // Paragraphs in cell
+                            foreach ($currentCell->getParagraphs() as $paragraph) {
+                                // RichText in paragraph
+                                foreach ($paragraph->getRichTextElements() as $element) {
+                                    // Run or Text in RichText
+                                    if ($element instanceof Run || $element instanceof TextElement) {
+                                        if ($element->hasHyperlink()) {
+                                            // Write relationship for hyperlink
+                                            $hyperlink               = $element->getHyperlink();
+                                            $hyperlink->relationId = 'rId' . $relId;
+                            
+                                            if (!$hyperlink->isInternal()) {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                            } else {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                            }
+                            
+                                            ++$relId;
+                                        }
+                                    }
                                 }
                             }
                         }
