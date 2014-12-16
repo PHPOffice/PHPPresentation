@@ -412,6 +412,8 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
 
+        $this->writeFill($objWriter, $shape->getFill());
+
         $objWriter->endElement();
 
         // p:txBody
