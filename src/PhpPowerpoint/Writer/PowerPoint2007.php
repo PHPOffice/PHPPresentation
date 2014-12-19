@@ -483,4 +483,40 @@ class PowerPoint2007 implements WriterInterface
 
         return implode('/', $absolutes);
     }
+
+    /**
+     * Save and Download PHPPowerPoint file
+     *
+     * @param  string    $pFilename
+     */
+    public function saveAndDownload($pFilename)
+    {
+        $this->save($pFilename);
+        $this->download($pFilename);
+    }
+
+    /**
+     * Download PHPPowerPoint file
+     *
+     * @param  string    $pFilename
+     */
+    public function download($pFilename)
+    {
+        try{
+            //Set Headers:
+            header('Pragma: public');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
+            header('Content-Type: application/force-download');
+            header('Content-Disposition: inline; filename="FilePpt.pptx"');
+            header('Content-Transfer-Encoding: binary');
+            header('Content-Length: ' . filesize($pFilename));
+            header('Connection: close');
+            readfile($pFilename);
+
+            @unlink($pFilename);
+        }catch(new \Exception $e){
+            throw new \Exception("Error download file.");
+        }
+    }
 }

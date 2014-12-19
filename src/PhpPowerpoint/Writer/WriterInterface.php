@@ -29,4 +29,18 @@ interface WriterInterface
      * @throws \Exception
      */
     public function save($pFilename);
+
+	/**
+     * Save and Download PHPPowerPoint file
+     *
+     * @param  string    $pFilename
+     */
+    public function saveAndDownload($pFilename);
+
+    /**
+     * Download PHPPowerPoint file
+     *
+     * @param  string    $pFilename
+     */
+    public function download($pFilename);
 }
