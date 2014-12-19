@@ -415,6 +415,10 @@ class Slide extends AbstractPart
         if ($shape->getFill()) {
             $this->writeFill($objWriter, $shape->getFill());
         }
+        
+        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
+            $this->writeBorder($objWriter, $shape->getBorder(), '');
+        }
 
         $objWriter->endElement();
 
@@ -422,16 +426,23 @@ class Slide extends AbstractPart
         $objWriter->startElement('p:txBody');
 
         // a:bodyPr
+        //@link :http://msdn.microsoft.com/en-us/library/documentformat.openxml.drawing.bodyproperties%28v=office.14%29.aspx
         $objWriter->startElement('a:bodyPr');
         $verticalAlign = $shape->getActiveParagraph()->getAlignment()->getVertical();
         if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
             $objWriter->writeAttribute('anchor', $verticalAlign);
         }
-        $objWriter->writeAttribute('wrap', $shape->getWrap());
+        if($shape->getWrap() != RichText::WRAP_SQUARE){
+            $objWriter->writeAttribute('wrap', $shape->getWrap());
+        }
         $objWriter->writeAttribute('rtlCol', '0');
 
-        $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
-        $objWriter->writeAttribute('vertOverflow', $shape->getVerticalOverflow());
+        if ($shape->getHorizontalOverflow() != RichText::OVERFLOW_OVERFLOW) {
+            $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
+        }
+        if ($shape->getVerticalOverflow() != RichText::OVERFLOW_OVERFLOW) {
+            $objWriter->writeAttribute('vertOverflow', $shape->getVerticalOverflow());
+        }
 
         if ($shape->isUpright()) {
             $objWriter->writeAttribute('upright', '1');
@@ -445,16 +456,28 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('rIns', SharedDrawing::pixelsToEmu($shape->getInsetRight()));
         $objWriter->writeAttribute('tIns', SharedDrawing::pixelsToEmu($shape->getInsetTop()));
 
-        $objWriter->writeAttribute('numCol', $shape->getColumns());
+        if($shape->getColumns() <> 1){
+            $objWriter->writeAttribute('numCol', $shape->getColumns());
+        }
 
         // a:spAutoFit
-        $objWriter->writeElement('a:' . $shape->getAutoFit(), null);
+        $objWriter->startElement('a:' . $shape->getAutoFit());
+        if($shape->getAutoFit() == RichText::AUTOFIT_NORMAL){
+            if (!is_null($shape->getFontScale())) {
+                $objWriter->writeAttribute('fontScale', (int)($shape->getFontScale() * 1000));
+            }
+            if (!is_null($shape->getLineSpaceReduction())) {
+                $objWriter->writeAttribute('lnSpcReduction', (int)($shape->getLineSpaceReduction() * 1000));
+            }
+        }
+        
+        $objWriter->endElement();
 
         $objWriter->endElement();
 
         // a:lstStyle
         $objWriter->writeElement('a:lstStyle', null);
-
+        
         // Write paragraphs
         $this->writeParagraphs($objWriter, $shape->getParagraphs());
 

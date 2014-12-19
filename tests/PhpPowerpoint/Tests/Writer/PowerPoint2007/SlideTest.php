@@ -28,6 +28,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
 
 /**
  * Test class for PowerPoint2007
@@ -440,6 +441,21 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
 
+    public function testRichTextAutoFitNormal()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->setAutoFit(RichText::AUTOFIT_NORMAL, 47.5, 20);
+        $oRichText->createTextRun('This is my text for the test.');
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr/a:normAutofit';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals(47500, $pres->getElementAttribute($element, 'fontScale', 'ppt/slides/slide1.xml'));
+        $this->assertEquals(20000, $pres->getElementAttribute($element, 'lnSpcReduction', 'ppt/slides/slide1.xml'));
+    }
+    
     public function testRichTextBreak()
     {
         $phpPowerPoint = new PhpPowerpoint();

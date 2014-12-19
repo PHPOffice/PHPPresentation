@@ -35,6 +35,8 @@ Below are the properties that you can set for a rich text shape.
 
 - ``wrap``
 - ``autoFit``
+- ``fontScale`` : font scale (in percentage) when autoFit = RichText::AUTOFIT_NORMAL
+- ``lnSpcReduction`` : line spacing reduction (in percentage) when autoFit = RichText::AUTOFIT_NORMAL
 - ``horizontalOverflow``
 - ``verticalOverflow``
 - ``upright``
