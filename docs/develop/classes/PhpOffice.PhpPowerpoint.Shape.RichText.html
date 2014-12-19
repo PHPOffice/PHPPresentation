@@ -222,6 +222,18 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_getFontScale" title="getFontScale :: Get pourcentage of fontScale">
+            <span class="description">Get pourcentage of fontScale</span><pre>getFontScale</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getLineSpaceReduction" title="getLineSpaceReduction :: Get pourcentage of the line space reduction">
+            <span class="description">Get pourcentage of the line space reduction</span><pre>getLineSpaceReduction</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_setAutoFit" title="setAutoFit :: Set autofit">
             <span class="description">Set autofit</span><pre>setAutoFit</pre>
         </a>
@@ -507,11 +519,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -1075,10 +1087,62 @@
                                                                     </div>
                             </div>
                         </div>
+                                            <a id="method_getFontScale"></a>
+                        <div class="element clickable method public  method_getFontScale" data-toggle="collapse" data-target=".method_getFontScale .collapse">
+                            <h2>Get pourcentage of fontScale</h2>
+                            <pre>getFontScale() : float</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>float</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_getLineSpaceReduction"></a>
+                        <div class="element clickable method public  method_getLineSpaceReduction" data-toggle="collapse" data-target=".method_getLineSpaceReduction .collapse">
+                            <h2>Get pourcentage of the line space reduction</h2>
+                            <pre>getLineSpaceReduction() : float</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>float</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
                                             <a id="method_setAutoFit"></a>
                         <div class="element clickable method public  method_setAutoFit" data-toggle="collapse" data-target=".method_setAutoFit .collapse">
                             <h2>Set autofit</h2>
-                            <pre>setAutoFit(mixed $value = self::AUTOFIT_DEFAULT) : \PhpOffice\PhpPowerpoint\Shape\RichText</pre>
+                            <pre>setAutoFit(mixed $value = self::AUTOFIT_DEFAULT, mixed $fontScale = null, mixed $lnSpcReduction = null) : \PhpOffice\PhpPowerpoint\Shape\RichText</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
                             <div class="row collapse">
@@ -1092,6 +1156,14 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$value</h4>
                                                 <code>mixed</code><p><p>string</p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$fontScale</h4>
+                                                <code>mixed</code><p><p>float</p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$lnSpcReduction</h4>
+                                                <code>mixed</code><p><p>float</p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -2883,6 +2955,58 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                                                             </div>
                                 </div>
                             </div>
+                                                    <a id="property_fontScale"> </a>
+                            <div class="element clickable property  private property_fontScale" data-toggle="collapse" data-target=".property_fontScale .collapse">
+                                <h2>The percentage of the original font size to which the text is scaled</h2>
+                                <pre>fontScale : float</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>float</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_lnSpcReduction"> </a>
+                            <div class="element clickable property  private property_lnSpcReduction" data-toggle="collapse" data-target=".property_lnSpcReduction .collapse">
+                                <h2>The percentage of the reduction of the line spacing</h2>
+                                <pre>lnSpcReduction : float</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>float</code>
+                                                                            </div>
+                                </div>
+                            </div>
                                                     <a id="property_slide"> </a>
                             <div class="element clickable property  protected property_slide inherited" data-toggle="collapse" data-target=".property_slide .collapse">
                                 <h2>Slide</h2>
@@ -3189,7 +3313,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Tue, 16 Dec 2014 12:47:02 +0000.<br/>
+            generated on Fri, 19 Dec 2014 11:33:02 +0000.<br/>
     </footer>
     </body>
 </html>
