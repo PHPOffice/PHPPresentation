@@ -418,11 +418,11 @@ class RichText extends AbstractShape implements ComparableInterface
     {
         $this->autoFit = $value;
         
-        if(!is_null($fontScale)){
+        if (!is_null($fontScale)) {
             $this->fontScale = $fontScale;
         }
         
-        if(!is_null($lnSpcReduction)){
+        if (!is_null($lnSpcReduction)) {
             $this->lnSpcReduction = $lnSpcReduction;
         }
 

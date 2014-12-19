@@ -432,7 +432,7 @@ class Slide extends AbstractPart
         if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
             $objWriter->writeAttribute('anchor', $verticalAlign);
         }
-        if($shape->getWrap() != RichText::WRAP_SQUARE){
+        if ($shape->getWrap() != RichText::WRAP_SQUARE) {
             $objWriter->writeAttribute('wrap', $shape->getWrap());
         }
         $objWriter->writeAttribute('rtlCol', '0');
@@ -456,13 +456,13 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('rIns', SharedDrawing::pixelsToEmu($shape->getInsetRight()));
         $objWriter->writeAttribute('tIns', SharedDrawing::pixelsToEmu($shape->getInsetTop()));
 
-        if($shape->getColumns() <> 1){
+        if ($shape->getColumns() <> 1) {
             $objWriter->writeAttribute('numCol', $shape->getColumns());
         }
 
         // a:spAutoFit
         $objWriter->startElement('a:' . $shape->getAutoFit());
-        if($shape->getAutoFit() == RichText::AUTOFIT_NORMAL){
+        if ($shape->getAutoFit() == RichText::AUTOFIT_NORMAL) {
             if (!is_null($shape->getFontScale())) {
                 $objWriter->writeAttribute('fontScale', (int)($shape->getFontScale() * 1000));
             }
