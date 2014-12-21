@@ -28,6 +28,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
 
 /**
  * Test class for PowerPoint2007
@@ -168,7 +169,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
     
-    public function testFillGradientLinear()
+    public function testFillGradientLinearTable()
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -193,11 +194,36 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
-    public function testFillGradientPath()
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/61
+     */
+    public function testFillGradientLinearRichText()
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
-        
+    
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+    
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+    }
+    
+    public function testFillGradientPathTable()
+    {
+        $expected1 = 'E06B20';
+        $expected2 = strrev($expected1);
+    
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
         $oShape = $oSlide->createTableShape(1);
@@ -207,9 +233,9 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oCell->createTextRun('R1C1');
         $oFill = $oCell->getFill();
         $oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
-        
+    
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
-        
+    
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
@@ -218,7 +244,32 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
-    public function testFillPattern()
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/61
+     */
+    public function testFillGradientPathText()
+    {
+        $expected1 = 'E06B20';
+        $expected2 = strrev($expected1);
+        
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+    }
+    
+    public function testFillPatternTable()
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -243,7 +294,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
-    public function testFillSolid()
+    public function testFillSolidTable()
     {
         $expected = 'E06B20';
     
@@ -260,6 +311,27 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:solidFill/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+    }
+
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/61
+     */
+    public function testFillSolidText()
+    {
+        $expected = 'E06B20';
+    
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF'.$expected));
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+    
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:solidFill/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals($expected, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
@@ -369,6 +441,21 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
 
+    public function testRichTextAutoFitNormal()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->setAutoFit(RichText::AUTOFIT_NORMAL, 47.5, 20);
+        $oRichText->createTextRun('This is my text for the test.');
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr/a:normAutofit';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals(47500, $pres->getElementAttribute($element, 'fontScale', 'ppt/slides/slide1.xml'));
+        $this->assertEquals(20000, $pres->getElementAttribute($element, 'lnSpcReduction', 'ppt/slides/slide1.xml'));
+    }
+    
     public function testRichTextBreak()
     {
         $phpPowerPoint = new PhpPowerpoint();
@@ -538,5 +625,27 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc';
         $this->assertTrue($pres->elementExists($element.'[@rowSpan="2"]', 'ppt/slides/slide1.xml'));
         $this->assertTrue($pres->elementExists($element.'[@vMerge="1"]', 'ppt/slides/slide1.xml'));
+    }
+
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/70
+     */
+    public function testTableWithHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape(4);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oTextRun = $oCell->createTextRun('AAA');
+        $oHyperlink = $oTextRun->getHyperlink();
+        $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId2', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
     }
 }

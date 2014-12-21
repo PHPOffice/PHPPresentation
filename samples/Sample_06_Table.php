@@ -90,6 +90,15 @@ $row->nextCell()->createTextRun('R3C1');
 $row->nextCell()->createTextRun('R3C2');
 $row->nextCell()->createTextRun('R3C3');
 
+// Add row
+echo date('H:i:s') . ' Add row'.EOL;
+$row = $shape->createRow();
+$row->getFill()->setFillType(Fill::FILL_SOLID)
+			   ->setStartColor(new Color( 'FFE06B20' ))
+               ->setEndColor(new Color('FFE06B20'));
+$textRun = $row->nextCell()->createTextRun('Link');
+$textRun->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/')->setTooltip('PHPPowerPoint');
+
 // Save file
 echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
 if (!CLI) {

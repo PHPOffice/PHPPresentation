@@ -35,7 +35,7 @@ class RichText extends AbstractShape implements ComparableInterface
     const AUTOFIT_DEFAULT = 'spAutoFit';
     const AUTOFIT_SHAPE = 'spAutoFit';
     const AUTOFIT_NOAUTOFIT = 'noAutofit';
-    const AUTOFIT_NORMAL = 'normAutoFit';
+    const AUTOFIT_NORMAL = 'normAutofit';
 
     /** Overflow */
     const OVERFLOW_CLIP = 'clip';
@@ -143,6 +143,18 @@ class RichText extends AbstractShape implements ComparableInterface
      * @var boolean
      */
     private $autoShrinkVertical;
+    
+    /**
+     * The percentage of the original font size to which the text is scaled
+     * @var float
+     */
+    private $fontScale;
+    
+    /**
+     * The percentage of the reduction of the line spacing
+     * @var float
+     */
+    private $lnSpcReduction;
 
     /**
      * Create a new \PhpOffice\PhpPowerpoint\Shape\RichText instance
@@ -375,14 +387,44 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
+     * Get pourcentage of fontScale
+     *
+     * @return float
+     */
+    public function getFontScale()
+    {
+        return $this->fontScale;
+    }
+
+    /**
+     * Get pourcentage of the line space reduction
+     *
+     * @return float
+     */
+    public function getLineSpaceReduction()
+    {
+        return $this->lnSpcReduction;
+    }
+
+    /**
      * Set autofit
      *
      * @param $value string
+     * @param $fontScale float
+     * @param $lnSpcReduction float
      * @return \PhpOffice\PhpPowerpoint\Shape\RichText
      */
-    public function setAutoFit($value = self::AUTOFIT_DEFAULT)
+    public function setAutoFit($value = self::AUTOFIT_DEFAULT, $fontScale = null, $lnSpcReduction = null)
     {
         $this->autoFit = $value;
+        
+        if (!is_null($fontScale)) {
+            $this->fontScale = $fontScale;
+        }
+        
+        if (!is_null($lnSpcReduction)) {
+            $this->lnSpcReduction = $lnSpcReduction;
+        }
 
         return $this;
     }

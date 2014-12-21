@@ -552,8 +552,18 @@ class Content extends AbstractPart
                     foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
                         foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
                             $objWriter->startElement('text:span');
-                            $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getFont()->getHashCode());
-                            $objWriter->text($shapeRichText->getText());
+                            if ($shapeRichText instanceof Run) {
+                                $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getFont()->getHashCode());
+                            }
+                            if ($shapeRichText->hasHyperlink() == true && $shapeRichText->getHyperlink()->getUrl() != '') {
+                                // text:a
+                                $objWriter->startElement('text:a');
+                                $objWriter->writeAttribute('xlink:href', $shapeRichText->getHyperlink()->getUrl());
+                                $objWriter->text($shapeRichText->getText());
+                                $objWriter->endElement();
+                            } else {
+                                $objWriter->text($shapeRichText->getText());
+                            }
                             $objWriter->endElement();
                         }
                     }
