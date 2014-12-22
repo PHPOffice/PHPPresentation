@@ -378,6 +378,18 @@
     </li>
 
                                                                                                         <li class="method public inherited">
+        <a href="#method_getContainer" title="getContainer :: Get Container, Slide or Group">
+            <span class="description">Get Container, Slide or Group</span><pre>getContainer</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_setContainer" title="setContainer :: Set Container, Slide or Group">
+            <span class="description">Set Container, Slide or Group</span><pre>setContainer</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
         <a href="#method_getSlide" title="getSlide :: Get Slide">
             <span class="description">Get Slide</span><pre>getSlide</pre>
         </a>
@@ -519,11 +531,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -1766,10 +1778,10 @@
                                                                     </div>
                             </div>
                         </div>
-                                            <a id="method_getSlide"></a>
-                        <div class="element clickable method public  method_getSlide inherited" data-toggle="collapse" data-target=".method_getSlide .collapse">
-                            <h2>Get Slide</h2>
-                            <pre>getSlide() : \PhpOffice\PhpPowerpoint\Slide</pre>
+                                            <a id="method_getContainer"></a>
+                        <div class="element clickable method public  method_getContainer inherited" data-toggle="collapse" data-target=".method_getContainer .collapse">
+                            <h2>Get Container, Slide or Group</h2>
+                            <pre>getContainer() : \PhpOffice\PhpPowerpoint\Container</pre>
                             <div class="labels">
                                 <span class="label">inherited</span>                                                                                                                                                            </div>
                             <div class="row collapse">
@@ -1788,12 +1800,84 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Slide.html">\PhpOffice\PhpPowerpoint\Slide</a></code><p></p>
+                                        <code>\PhpOffice\PhpPowerpoint\Container</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_setContainer"></a>
+                        <div class="element clickable method public  method_setContainer inherited" data-toggle="collapse" data-target=".method_setContainer .collapse">
+                            <h2>Set Container, Slide or Group</h2>
+                            <pre>setContainer(\PhpOffice\PhpPowerpoint\ShapeContainerInterface $pValue = null, bool $pOverrideOld = false) : self</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pValue</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.ShapeContainerInterface.html">\PhpOffice\PhpPowerpoint\ShapeContainerInterface</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pOverrideOld</h4>
+                                                <code>bool</code><p><p>If a Slide has already been assigned, overwrite it and remove image from old Slide?</p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>self</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_getSlide"></a>
+                        <div class="element clickable method public deprecated method_getSlide inherited" data-toggle="collapse" data-target=".method_getSlide .collapse">
+                            <h2>Get Slide</h2>
+                            <pre>getSlide() : \PhpOffice\PhpPowerpoint\Container</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    deprecated
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>\PhpOffice\PhpPowerpoint\Container</code><p></p>
                                                                     </div>
                             </div>
                         </div>
                                             <a id="method_setSlide"></a>
-                        <div class="element clickable method public  method_setSlide inherited" data-toggle="collapse" data-target=".method_setSlide .collapse">
+                        <div class="element clickable method public deprecated method_setSlide inherited" data-toggle="collapse" data-target=".method_setSlide .collapse">
                             <h2>Set Slide</h2>
                             <pre>setSlide(\PhpOffice\PhpPowerpoint\Slide $pValue = null, bool $pOverrideOld = false) : self</pre>
                             <div class="labels">
@@ -1806,6 +1890,15 @@
                                                                                     <tr>
                                                 <th>
                                                     throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    deprecated
                                                 </th>
                                                 <td>
                                                                                                                                                                         
@@ -3007,10 +3100,10 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                                                             </div>
                                 </div>
                             </div>
-                                                    <a id="property_slide"> </a>
-                            <div class="element clickable property  protected property_slide inherited" data-toggle="collapse" data-target=".property_slide .collapse">
-                                <h2>Slide</h2>
-                                <pre>slide : \PhpOffice\PhpPowerpoint\Slide</pre>
+                                                    <a id="property_container"> </a>
+                            <div class="element clickable property  protected property_container inherited" data-toggle="collapse" data-target=".property_container .collapse">
+                                <h2>Container</h2>
+                                <pre>container : \PhpOffice\PhpPowerpoint\ShapeContainerInterface</pre>
                                 <div class="labels">
                                     <span class="label">inherited</span>                                                                    </div>
                                 <div class="row collapse">
@@ -3029,7 +3122,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                                                                     </table>
 
                                                                                     <h3>Type(s)</h3>
-                                            <code><a href="../classes/PhpOffice.PhpPowerpoint.Slide.html">\PhpOffice\PhpPowerpoint\Slide</a></code>
+                                            <code><a href="../classes/PhpOffice.PhpPowerpoint.ShapeContainerInterface.html">\PhpOffice\PhpPowerpoint\ShapeContainerInterface</a></code>
                                                                             </div>
                                 </div>
                             </div>
@@ -3313,7 +3406,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 19 Dec 2014 12:39:30 +0000.<br/>
+            generated on Mon, 22 Dec 2014 10:35:34 +0000.<br/>
     </footer>
     </body>
 </html>

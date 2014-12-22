@@ -168,6 +168,12 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_createGroup" title="createGroup :: Creates a group within this slide">
+            <span class="description">Creates a group within this slide</span><pre>createGroup</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_getParent" title="getParent :: Get parent">
             <span class="description">Get parent</span><pre>getParent</pre>
         </a>
@@ -227,15 +233,39 @@
         </a>
     </li>
 
+                                                                                                        <li class="method public">
+        <a href="#method_getOffsetX" title="getOffsetX :: Get X Offset">
+            <span class="description">Get X Offset</span><pre>getOffsetX</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getOffsetY" title="getOffsetY :: Get Y Offset">
+            <span class="description">Get Y Offset</span><pre>getOffsetY</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getExtentX" title="getExtentX :: Get X Extent">
+            <span class="description">Get X Extent</span><pre>getExtentX</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getExtentY" title="getExtentY :: Get Y Extent">
+            <span class="description">Get Y Extent</span><pre>getExtentY</pre>
+        </a>
+    </li>
+
                                                 </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -251,7 +281,7 @@
             <div class="element class">
                 <h1>Slide</h1>
                 <small style="display: block; text-align: right">
-                                                                Implements <a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a>
+                                                                Implements <a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a>, <a href="../classes/PhpOffice.PhpPowerpoint.ShapeContainerInterface.html">\PhpOffice\PhpPowerpoint\ShapeContainerInterface</a>
                                     </small>
                 <p class="short_description">Slide class</p>
                 <div class="details">
@@ -294,7 +324,7 @@
                                             <a id="method_getShapeCollection"></a>
                         <div class="element clickable method public  method_getShapeCollection" data-toggle="collapse" data-target=".method_getShapeCollection .collapse">
                             <h2>Get collection of shapes</h2>
-                            <pre>getShapeCollection() : \PhpOffice\PhpPowerpoint\AbstractShape[]</pre>
+                            <pre>getShapeCollection() : \ArrayObject|\PhpOffice\PhpPowerpoint\AbstractShape[]</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
                             <div class="row collapse">
@@ -313,7 +343,7 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code>\PhpOffice\PhpPowerpoint\AbstractShape[]</code><p></p>
+                                        <code>\ArrayObject|\PhpOffice\PhpPowerpoint\AbstractShape[]</code><p></p>
                                                                     </div>
                             </div>
                         </div>
@@ -476,6 +506,32 @@
                                                                             
                                                                             <h3>Response</h3>
                                         <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Table.html">\PhpOffice\PhpPowerpoint\Shape\Table</a></code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_createGroup"></a>
+                        <div class="element clickable method public  method_createGroup" data-toggle="collapse" data-target=".method_createGroup .collapse">
+                            <h2>Creates a group within this slide</h2>
+                            <pre>createGroup() : \PhpOffice\PhpPowerpoint\Shape\Group</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>\PhpOffice\PhpPowerpoint\Shape\Group</code><p></p>
                                                                     </div>
                             </div>
                         </div>
@@ -738,6 +794,110 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                                                     </div>
                             </div>
                         </div>
+                                            <a id="method_getOffsetX"></a>
+                        <div class="element clickable method public  method_getOffsetX" data-toggle="collapse" data-target=".method_getOffsetX .collapse">
+                            <h2>Get X Offset</h2>
+                            <pre>getOffsetX() : int</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>int</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_getOffsetY"></a>
+                        <div class="element clickable method public  method_getOffsetY" data-toggle="collapse" data-target=".method_getOffsetY .collapse">
+                            <h2>Get Y Offset</h2>
+                            <pre>getOffsetY() : int</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>int</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_getExtentX"></a>
+                        <div class="element clickable method public  method_getExtentX" data-toggle="collapse" data-target=".method_getExtentX .collapse">
+                            <h2>Get X Extent</h2>
+                            <pre>getExtentX() : int</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>int</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
+                                            <a id="method_getExtentY"></a>
+                        <div class="element clickable method public  method_getExtentY" data-toggle="collapse" data-target=".method_getExtentY .collapse">
+                            <h2>Get Y Extent</h2>
+                            <pre>getExtentY() : int</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>int</code><p></p>
+                                                                    </div>
+                            </div>
+                        </div>
                     
                     
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
@@ -897,6 +1057,110 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                                                             </div>
                                 </div>
                             </div>
+                                                    <a id="property_offsetX"> </a>
+                            <div class="element clickable property  protected property_offsetX" data-toggle="collapse" data-target=".property_offsetX .collapse">
+                                <h2>Offset X</h2>
+                                <pre>offsetX : int</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>int</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_offsetY"> </a>
+                            <div class="element clickable property  protected property_offsetY" data-toggle="collapse" data-target=".property_offsetY .collapse">
+                                <h2>Offset Y</h2>
+                                <pre>offsetY : int</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>int</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_extentX"> </a>
+                            <div class="element clickable property  protected property_extentX" data-toggle="collapse" data-target=".property_extentX .collapse">
+                                <h2>Extent X</h2>
+                                <pre>extentX : int</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>int</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_extentY"> </a>
+                            <div class="element clickable property  protected property_extentY" data-toggle="collapse" data-target=".property_extentY .collapse">
+                                <h2>Extent Y</h2>
+                                <pre>extentY : int</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>int</code>
+                                                                            </div>
+                                </div>
+                            </div>
                                                             </div>
             </div>
             <a id="\PhpOffice\PhpPowerpoint\Slide"></a>
@@ -917,7 +1181,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 19 Dec 2014 12:39:29 +0000.<br/>
+            generated on Mon, 22 Dec 2014 10:35:37 +0000.<br/>
     </footer>
     </body>
 </html>
