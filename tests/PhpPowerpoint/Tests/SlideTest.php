@@ -58,4 +58,12 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->setSlideMasterId($value));
         $this->assertEquals($value, $object->getSlideMasterId());
     }
+    
+    public function testGroup()
+    {
+        $value = rand(1, 100);
+        
+        $object = new Slide();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Group', $object->createGroup());
+    }
 }

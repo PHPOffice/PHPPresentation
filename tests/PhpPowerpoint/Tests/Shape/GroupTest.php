@@ -38,6 +38,18 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $object->getShapeCollection()->count());
     }
     
+    public function testAdd()
+    {
+        $object = new Group();
+        
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart', $object->createChartShape());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Drawing', $object->createDrawingShape());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Line', $object->createLineShape(10, 10, 10, 10));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\RichText', $object->createRichTextShape());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Table', $object->createTableShape());
+        $this->assertEquals(5, $object->getShapeCollection()->count());
+    }
+    
     public function testExtentsAndOffsetsForOneShape()
     {
         // We record initial values here because

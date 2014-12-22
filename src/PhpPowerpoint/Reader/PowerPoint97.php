@@ -308,7 +308,7 @@ class PowerPoint97 implements ReaderInterface
     private $rgPersistDirEntry;
     /**
      * Offset (in bytes) from the beginning of the PowerPoint Document Stream to the PersistDirectoryAtom record for this user edit
-     * @var int[]
+     * @var int
      */
     private $offsetPersistDirectory;
     /**
@@ -426,7 +426,7 @@ class PowerPoint97 implements ReaderInterface
     
     /**
      * Read OLE Part
-     * @param unknown $pFilename
+     * @param string $pFilename
      */
     private function loadOLE($pFilename)
     {
@@ -489,7 +489,6 @@ class PowerPoint97 implements ReaderInterface
                             break;
                         default:
                             throw new \Exception('Feature not implemented (l.'.__LINE__.' : '.dechex($arrayRH['recType'].')'));
-                            break;
                     }
                 }
             } else {
@@ -567,7 +566,6 @@ class PowerPoint97 implements ReaderInterface
         
         // ansiUserName
         $ansiUserName = '';
-        $char = false;
         do {
             $char = self::getInt1d($this->streamCurrentUser, $pos);
             if (($char >= 0x00 && $char <= 0x1F) || ($char >= 0x7F && $char <= 0x9F)) {
@@ -664,7 +662,7 @@ class PowerPoint97 implements ReaderInterface
         // offsetLastEdit
         $pos += 4;
         // offsetPersistDirectory
-        $this->offsetPersistDirectory  = self::getInt4d($this->streamPowerpointDocument, $pos);
+        $this->offsetPersistDirectory = self::getInt4d($this->streamPowerpointDocument, $pos);
         $pos += 4;
         
         // docPersistIdRef
@@ -837,16 +835,16 @@ class PowerPoint97 implements ReaderInterface
                         // print_r('$shapeGroup'.EOL);
                         $pos += 8;
                         $rHeader['recLen'] -= 8;
-                        $arrShapeGroup['xLeft'] = self::getInt4d($this->streamPowerpointDocument, $pos);
+                        //$arrShapeGroup['xLeft'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                         $pos += 4;
                         $rHeader['recLen'] -= 4;
-                        $arrShapeGroup['yTop'] = self::getInt4d($this->streamPowerpointDocument, $pos);
+                        //$arrShapeGroup['yTop'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                         $pos += 4;
                         $rHeader['recLen'] -= 4;
-                        $arrShapeGroup['xRight'] = self::getInt4d($this->streamPowerpointDocument, $pos);
+                        //$arrShapeGroup['xRight'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                         $pos += 4;
                         $rHeader['recLen'] -= 4;
-                        $arrShapeGroup['yBottom'] = self::getInt4d($this->streamPowerpointDocument, $pos);
+                        //$arrShapeGroup['yBottom'] = self::getInt4d($this->streamPowerpointDocument, $pos);
                         $pos += 4;
                         $rHeader['recLen'] -= 4;
                     }
@@ -1129,7 +1127,6 @@ class PowerPoint97 implements ReaderInterface
                                     break;
                                 default:
                                     throw new \Exception('Feature not implemented (l.'.__LINE__.' : '.dechex($opt['opid'].')'));
-                                    break;
                             }
                         }
                         $pos += $shapePrimaryOptions['recLen'];
@@ -1339,13 +1336,13 @@ class PowerPoint97 implements ReaderInterface
                                             $arrClientTextBox['text'.$arrClientTextBox['numTexts']]['bulletChar'] = chr($data);
                                         }
                                         if ($masksData['bulletFont'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['bulletSize'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
@@ -1406,19 +1403,19 @@ class PowerPoint97 implements ReaderInterface
                                             }
                                         }
                                         if ($masksData['lineSpacing'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['spaceBefore'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['spaceAfter'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
@@ -1438,7 +1435,7 @@ class PowerPoint97 implements ReaderInterface
                                             $arrClientTextBox['text'.$arrClientTextBox['numTexts']]['indent'] = (int)round($data/6);
                                         }
                                         if ($masksData['defaultTabSize'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
@@ -1453,7 +1450,7 @@ class PowerPoint97 implements ReaderInterface
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['charWrap'] == 1 || $masksData['wordWrap'] == 1 || $masksData['overflow'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
@@ -1509,7 +1506,8 @@ class PowerPoint97 implements ReaderInterface
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
-                                             
+                                            
+                                            $fontStyleFlags = array();
                                             $fontStyleFlags['bold'] = ($data >> 0) & bindec('1');
                                             $fontStyleFlags['italic'] = ($data >> 1) & bindec('1');
                                             $fontStyleFlags['underline'] = ($data >> 2) & bindec('1');
@@ -1660,13 +1658,13 @@ class PowerPoint97 implements ReaderInterface
                                             $masksSpell['grammar'] = ($data >> 2) & bindec('1');
                                         }
                                         if ($masksData['lang'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
                                         }
                                         if ($masksData['altLang'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
@@ -1732,61 +1730,61 @@ class PowerPoint97 implements ReaderInterface
                                         }
                                     }
                                     if ($masksData['fLeftMargin1'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent1'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fLeftMargin2'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent2'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fLeftMargin3'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent3'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fLeftMargin4'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent4'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fLeftMargin5'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
                                     }
                                     if ($masksData['fIndent5'] == 1) {
-                                        $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                        // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                         $pos += 2;
                                         $rHeader['recLen'] -= 2;
                                         $clientTextbox['recLen'] -= 2;
@@ -1971,18 +1969,21 @@ class PowerPoint97 implements ReaderInterface
                 }
             }
             
-            if (isset($arrShpPrimaryOpt['insetBottom'])) {
-                $shape->setInsetBottom($arrShpPrimaryOpt['insetBottom']);
+            if($shape instanceof RichText){
+                if (isset($arrShpPrimaryOpt['insetBottom'])) {
+                    $shape->setInsetBottom($arrShpPrimaryOpt['insetBottom']);
+                }
+                if (isset($arrShpPrimaryOpt['insetLeft'])) {
+                    $shape->setInsetLeft($arrShpPrimaryOpt['insetLeft']);
+                }
+                if (isset($arrShpPrimaryOpt['insetRight'])) {
+                    $shape->setInsetRight($arrShpPrimaryOpt['insetRight']);
+                }
+                if (isset($arrShpPrimaryOpt['insetTop'])) {
+                    $shape->setInsetTop($arrShpPrimaryOpt['insetTop']);
+                }
             }
-            if (isset($arrShpPrimaryOpt['insetLeft'])) {
-                $shape->setInsetLeft($arrShpPrimaryOpt['insetLeft']);
-            }
-            if (isset($arrShpPrimaryOpt['insetRight'])) {
-                $shape->setInsetRight($arrShpPrimaryOpt['insetRight']);
-            }
-            if (isset($arrShpPrimaryOpt['insetTop'])) {
-                $shape->setInsetTop($arrShpPrimaryOpt['insetTop']);
-            }
+            
             
             if (!is_null($shape) && $shape instanceof AbstractShape) {
                 // echo '//SHAPE'.EOL;
@@ -2206,7 +2207,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Read a record header
      * @param string $stream
-     * @param intger $pos
+     * @param integer $pos
      * @return multitype:boolean Ambigous <number, boolean>
      */
     private function loadRecordHeader($stream, $pos)

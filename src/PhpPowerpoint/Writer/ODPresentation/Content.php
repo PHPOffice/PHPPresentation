@@ -629,8 +629,6 @@ class Content extends AbstractPart
      */
     public function writeShapeGroup(XMLWriter $objWriter, Group $group)
     {
-        echo "writeShapeGroup()";
-
         // draw:g
         $objWriter->startElement('draw:g');
 
@@ -666,8 +664,6 @@ class Content extends AbstractPart
      */
     public function writeGroupStyle(XMLWriter $objWriter, Group $group)
     {
-        echo "writeGroupStyle()";
-
         $shapes = $group->getShapeCollection();
         foreach ($shapes as $shape) {
             // Increment $this->shapeId
