@@ -1444,7 +1444,7 @@ class PowerPoint97 implements ReaderInterface
                                             // echo '@todo l.'.__LINE__;
                                         }
                                         if ($masksData['fontAlign'] == 1) {
-                                            $data = self::getInt2d($this->streamPowerpointDocument, $pos);
+                                            // $data = self::getInt2d($this->streamPowerpointDocument, $pos);
                                             $pos += 2;
                                             $rHeader['recLen'] -= 2;
                                             $clientTextbox['recLen'] -= 2;
@@ -1902,7 +1902,7 @@ class PowerPoint97 implements ReaderInterface
                     $sHyperlinkURL = '';
                     if (empty($sText)) {
                         // Is there a hyperlink ?
-                        if (!empty($arrClientTextBox['hyperlink'])) {
+                        if (isset($arrClientTextBox['hyperlink']) && is_array($arrClientTextBox['hyperlink']) && !empty($arrClientTextBox['hyperlink'])) {
                             foreach ($arrClientTextBox['hyperlink'] as $itmHyperlink) {
                                 if ($itmHyperlink['start'] == $start && ($itmHyperlink['end'] - $itmHyperlink['start']) == $arrClientTextBox['part'.$inc]['length']) {
                                     $sText = $this->arrayHyperlinks[$itmHyperlink['id']]['text'];
@@ -1969,7 +1969,7 @@ class PowerPoint97 implements ReaderInterface
                 }
             }
             
-            if($shape instanceof RichText){
+            if ($shape instanceof RichText) {
                 if (isset($arrShpPrimaryOpt['insetBottom'])) {
                     $shape->setInsetBottom($arrShpPrimaryOpt['insetBottom']);
                 }
@@ -2208,7 +2208,7 @@ class PowerPoint97 implements ReaderInterface
      * Read a record header
      * @param string $stream
      * @param integer $pos
-     * @return multitype:boolean Ambigous <number, boolean>
+     * @return multitype
      */
     private function loadRecordHeader($stream, $pos)
     {

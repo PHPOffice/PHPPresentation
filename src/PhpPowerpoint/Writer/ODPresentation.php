@@ -131,6 +131,14 @@ class ODPresentation implements WriterInterface
             if (!$writerPartDrawing instanceof Drawing) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing');
             }
+            $writerPartMimetype = $this->getWriterPart('mimetype');
+            if (!$writerPartMimetype instanceof Mimetype) {
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype');
+            }
+            $writerPartContent = $this->getWriterPart('content');
+            if (!$writerPartContent instanceof Content) {
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content');
+            }
 
             // Create drawing dictionary
             $this->drawingHashTable->addFromSource($writerPartDrawing->allDrawings($this->presentation));
@@ -147,10 +155,10 @@ class ODPresentation implements WriterInterface
 
             // Add mimetype to ZIP file
             //@todo Not in ZIPARCHIVE::CM_STORE mode
-            $objZip->addFromString('mimetype', $this->getWriterPart('mimetype')->writePart());
+            $objZip->addFromString('mimetype', $writerPartMimetype->writePart());
 
             // Add content.xml to ZIP file
-            $objZip->addFromString('content.xml', $this->getWriterPart('content')->writePart($this->presentation));
+            $objZip->addFromString('content.xml', $writerPartContent->writePart($this->presentation));
 
             // Add meta.xml to ZIP file
             $objZip->addFromString('meta.xml', $this->getWriterPart('meta')->writePart($this->presentation));

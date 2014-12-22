@@ -102,7 +102,7 @@ class PlotArea implements ComparableInterface
     /**
      * Set type
      *
-     * @param \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType $value
+     * @param \PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
      */
     public function setType(AbstractType $value)
