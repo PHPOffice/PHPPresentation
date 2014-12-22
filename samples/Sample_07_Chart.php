@@ -87,6 +87,40 @@ $shape->getView3D()->setRotationY(20);
 $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getLegend()->getFont()->setItalic(true);
 
+
+// Create templated slide
+echo date('H:i:s') . ' Create templated slide'.EOL;
+$currentSlide = createTemplatedSlide($objPHPPowerPoint);
+
+// Create a bar chart (that should be inserted in a shape)
+echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) '.EOL;
+$bar3DChartHorz = clone $bar3DChart;
+$bar3DChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
+
+// Create a shape (chart)
+echo date('H:i:s') . ' Create a shape (chart)'.EOL;
+$shape = $currentSlide->createChartShape();
+$shape->setName('PHPPowerPoint Monthly Downloads')
+        ->setResizeProportional(false)
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
+$shape->setShadow($oShadow);
+$shape->setFill($oFill);
+$shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
+$shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+$shape->getTitle()->getFont()->setItalic(true);
+$shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+$shape->getPlotArea()->getAxisX()->setTitle('Month');
+$shape->getPlotArea()->getAxisY()->setTitle('Downloads');
+$shape->getPlotArea()->setType($bar3DChartHorz);
+$shape->getView3D()->setRightAngleAxes(true);
+$shape->getView3D()->setRotationX(20);
+$shape->getView3D()->setRotationY(20);
+$shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
+$shape->getLegend()->getFont()->setItalic(true);
+
 // Create templated slide
 echo date('H:i:s') . ' Create templated slide'.EOL;
 $currentSlide = createTemplatedSlide($objPHPPowerPoint);

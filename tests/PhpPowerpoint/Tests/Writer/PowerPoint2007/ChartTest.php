@@ -162,6 +162,33 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('30000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
     
+    public function testTypeBar3DBarDirection()
+    {
+        $seriesData = array(
+                'A' => 1,
+                'B' => 2,
+                'C' => 4,
+                'D' => 3,
+                'E' => 2,
+        );
+    
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oBar3D = new Bar3D();
+        $oBar3D->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
+        $oSeries = new Series('Downloads', $seriesData);
+        $oBar3D->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar3D);
+    
+        $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
+    
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:barDir';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals(Bar3D::DIRECTION_HORIZONTAL, $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+    }
+    
     public function testTypeLine()
     {
         $seriesData = array(

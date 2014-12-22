@@ -61,8 +61,6 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testGroup()
     {
-        $value = rand(1, 100);
-        
         $object = new Slide();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Group', $object->createGroup());
     }

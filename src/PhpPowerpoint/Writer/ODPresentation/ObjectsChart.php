@@ -437,6 +437,7 @@ class ObjectsChart extends AbstractPart
     
     /**
      * @param Chart $chart
+     * @link : http://books.evc-cit.info/odbook/ch08.html#chart-plot-area-section
      */
     private function writePlotAreaStyle(Chart $chart)
     {
@@ -451,6 +452,13 @@ class ObjectsChart extends AbstractPart
         if ($chartType instanceof Bar3D || $chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
             $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
+        }
+        if ($chartType instanceof Bar3D) {
+            if ($chartType->getBarDirection() == Bar3D::DIRECTION_HORIZONTAL) {
+                $this->xmlContent->writeAttribute('chart:vertical', 'true');
+            } else {
+                $this->xmlContent->writeAttribute('chart:vertical', 'false');
+            }
         }
         $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
         // > style:text-properties
