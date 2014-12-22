@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Line;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
@@ -97,27 +98,27 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', '0');
-        $objWriter->writeAttribute('y', '0');
-        $objWriter->endElement();
+        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($pSlide->getOffsetX()));
+        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->endElement(); // a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', '0');
-        $objWriter->writeAttribute('cy', '0');
-        $objWriter->endElement();
+        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($pSlide->getExtentX()));
+        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->endElement(); // a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', '0');
-        $objWriter->writeAttribute('y', '0');
-        $objWriter->endElement();
+        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($pSlide->getOffsetX()));
+        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->endElement(); // a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', '0');
-        $objWriter->writeAttribute('cy', '0');
-        $objWriter->endElement();
+        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($pSlide->getExtentX()));
+        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->endElement(); // a:chExt
 
         $objWriter->endElement();
 
@@ -141,6 +142,8 @@ class Slide extends AbstractPart
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof AbstractDrawing) {
                 $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Group) {
+                $this->writeShapeGroup($objWriter, $shape, $shapeId);
             }
         }
 
@@ -161,6 +164,94 @@ class Slide extends AbstractPart
 
         // Return
         return $objWriter->getData();
+    }
+
+    /**
+     * Write group
+     *
+     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\PhpPowerpoint\Shape\Group $shape
+     * @param  int $shapeId
+     */
+    private function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
+    {
+        // p:grpSp
+        $objWriter->startElement('p:grpSp');
+
+        // p:nvGrpSpPr
+        $objWriter->startElement('p:nvGrpSpPr');
+
+        // p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('name', 'Group '.$shapeId++);
+        $objWriter->writeAttribute('id', $shapeId);
+        $objWriter->endElement(); // p:cNvPr
+        // NOTE: Re: $shapeId This seems to be how PowerPoint 2010 does business.
+
+        // p:cNvGrpSpPr
+        $objWriter->writeElement('p:cNvGrpSpPr', null);
+
+        // p:nvPr
+        $objWriter->writeElement('p:nvPr', null);
+
+        $objWriter->endElement(); // p:nvGrpSpPr
+
+        // p:grpSpPr
+        $objWriter->startElement('p:grpSpPr');
+
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        // a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->endElement(); // a:off
+
+        // a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->endElement(); // a:ext
+
+        // a:chOff
+        $objWriter->startElement('a:chOff');
+        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->endElement(); // a:chOff
+
+        // a:chExt
+        $objWriter->startElement('a:chExt');
+        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->endElement(); // a:chExt
+
+        $objWriter->endElement(); // a:xfrm
+
+        $objWriter->endElement(); // p:grpSpPr
+
+        $shapes  = $group->getShapeCollection();
+        foreach ($shapes as $shape) {
+            // Increment $shapeId
+            ++$shapeId;
+
+            // Check type
+            if ($shape instanceof RichText) {
+                $this->writeShapeText($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Table) {
+                $this->writeShapeTable($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Line) {
+                $this->writeShapeLine($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof ShapeChart) {
+                $this->writeShapeChart($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof AbstractDrawing) {
+                $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Group) {
+                $this->writeShapeGroup($objWriter, $shape, $shapeId);
+            }
+        }
+
+        $objWriter->endElement(); // p:grpSp
     }
 
     /**
