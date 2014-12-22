@@ -449,16 +449,17 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('style:family', 'chart');
         // style:text-properties
         $this->xmlContent->startElement('style:chart-properties');
-        if ($chartType instanceof Bar3D || $chartType instanceof Pie3D) {
+        if ($chartType instanceof Bar3D) {
             $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
             $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
-        }
-        if ($chartType instanceof Bar3D) {
             if ($chartType->getBarDirection() == Bar3D::DIRECTION_HORIZONTAL) {
                 $this->xmlContent->writeAttribute('chart:vertical', 'true');
             } else {
                 $this->xmlContent->writeAttribute('chart:vertical', 'false');
             }
+        } elseif ($chartType instanceof Pie3D) {
+            $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
+            $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
         }
         $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
         // > style:text-properties
