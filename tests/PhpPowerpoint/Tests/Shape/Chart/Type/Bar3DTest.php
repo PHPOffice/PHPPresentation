@@ -61,7 +61,7 @@ class Bar3DTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Bar3D::DIRECTION_HORIZONTAL, $object->getBarDirection());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarDirection(Bar3D::DIRECTION_VERTICAL));
         $this->assertEquals(Bar3D::DIRECTION_VERTICAL, $object->getBarDirection());
-    } 
+    }
 
     public function testHashCode()
     {
