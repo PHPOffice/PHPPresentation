@@ -36,6 +36,7 @@ $shape->setName('PHPPowerPoint logo')
 $shape->getShadow()->setVisible(true)
                    ->setDirection(45)
                    ->setDistance(10);
+$shape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/')->setTooltip('PHPPowerPoint');
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;

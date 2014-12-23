@@ -325,6 +325,24 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');
         $objWriter->writeElement('text:p');
         $objWriter->endElement();
+        
+        if ($shape->getHyperlink()) {
+            // office:event-listeners
+            $objWriter->startElement('office:event-listeners');
+            // presentation:event-listener
+            $objWriter->startElement('presentation:event-listener');
+            $objWriter->writeAttribute('script:event-name', 'dom:click');
+            $objWriter->writeAttribute('presentation:action', 'show');
+            $objWriter->writeAttribute('xlink:href', $shape->getHyperlink()->getUrl());
+            $objWriter->writeAttribute('xlink:type', 'simple');
+            $objWriter->writeAttribute('xlink:show', 'embed');
+            $objWriter->writeAttribute('xlink:actuate', 'onRequest');
+            // > presentation:event-listener
+            $objWriter->endElement();
+            // > office:event-listeners
+            $objWriter->endElement();
+        }
+        
         $objWriter->endElement();
     }
 

@@ -345,6 +345,11 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
 
+        // a:hlinkClick
+        if ($shape->hasHyperlink()) {
+            $this->writeHyperlink($objWriter, $shape);
+        }
+        
         $objWriter->endElement();
 
         // p:cNvPicPr
@@ -359,7 +364,6 @@ class Slide extends AbstractPart
 
         // p:nvPr
         $objWriter->writeElement('p:nvPr', null);
-
         $objWriter->endElement();
 
         // p:blipFill

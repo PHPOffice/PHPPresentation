@@ -140,6 +140,21 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Alignment::VERTICAL_TOP, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
     }
     
+    public function testDrawingWithHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createDrawingShape();
+        $oShape->setPath(PHPPOWERPOINT_TESTS_BASE_DIR.'/resources/images/PHPPowerPointLogo.png');
+        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:hlinkClick';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId3', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
+    }
+    
     public function testDrawingShapeBorder()
     {
         $phpPowerPoint = new PhpPowerpoint();

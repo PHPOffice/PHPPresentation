@@ -39,6 +39,21 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         TestHelperDOCX::clear();
     }
 
+    public function testDrawingWithHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createDrawingShape();
+        $oShape->setPath(PHPPOWERPOINT_TESTS_BASE_DIR.'/resources/images/PHPPowerPointLogo.png');
+        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+    
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('https://github.com/PHPOffice/PHPPowerPoint/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+    }
+    
     public function testList()
     {
         $phpPowerPoint = new PhpPowerpoint();

@@ -5,6 +5,7 @@
 - Added support for grouping shapes together in a Group - @Pr0phet GH-68
 - Added support for calculating the offset and extent on a Slide. - @Pr0phet GH-68
 - Added support for Horizontal bar chart - @rdoepke @Progi1984 GH-58
+- Added support for hyperlink on picture (ODPresentation & PowerPoint2007) - @Progi1984 GH-49
 
 ### Bugfix
 - PSR-0 via composer broken - @Progi1984 GH-51
