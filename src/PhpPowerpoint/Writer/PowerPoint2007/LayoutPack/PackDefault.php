@@ -82,7 +82,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -116,35 +116,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -185,7 +185,7 @@ class PackDefault extends AbstractLayoutPack
                     </a:lstStyle>
                     <a:p>
                         <a:fld id="{C6430DBB-9FD5-43E7-88F1-55A569E9525E}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -263,7 +263,7 @@ class PackDefault extends AbstractLayoutPack
                     </a:lstStyle>
                     <a:p>
                         <a:fld id="{EE336665-E7E9-4861-9ADF-F11A47CBAD79}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>&lt;#&gt;</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -876,7 +876,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -995,7 +995,7 @@ class PackDefault extends AbstractLayoutPack
                     </a:lstStyle>
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master subtitle style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -1018,7 +1018,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -1060,7 +1060,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -1111,7 +1111,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -1135,35 +1135,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -1186,7 +1186,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -1228,7 +1228,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -1288,7 +1288,7 @@ class PackDefault extends AbstractLayoutPack
                     </a:lstStyle>
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -1408,7 +1408,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
@@ -1430,7 +1430,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -1472,7 +1472,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -1523,7 +1523,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -1580,35 +1580,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -1665,35 +1665,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -1716,7 +1716,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -1758,7 +1758,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -1813,7 +1813,7 @@ class PackDefault extends AbstractLayoutPack
                     </a:lstStyle>
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -1879,7 +1879,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
@@ -1935,35 +1935,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -2029,7 +2029,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
@@ -2085,35 +2085,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -2136,7 +2136,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2178,7 +2178,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2229,7 +2229,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -2252,7 +2252,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2294,7 +2294,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2345,7 +2345,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2387,7 +2387,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2447,7 +2447,7 @@ class PackDefault extends AbstractLayoutPack
                     </a:lstStyle>
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -2504,35 +2504,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -2598,7 +2598,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
@@ -2620,7 +2620,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2662,7 +2662,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2722,7 +2722,7 @@ class PackDefault extends AbstractLayoutPack
                     </a:lstStyle>
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -2849,7 +2849,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
@@ -2871,7 +2871,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2913,7 +2913,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -2964,7 +2964,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -2988,35 +2988,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -3039,7 +3039,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -3081,7 +3081,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -3137,7 +3137,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master title style</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -3166,35 +3166,35 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:pPr lvl="0" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Click to edit Master text styles</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="1" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Second level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="2" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Third level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="3" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fourth level</a:t>
                         </a:r>
                     </a:p>
                     <a:p>
                         <a:pPr lvl="4" />
                         <a:r>
-                            <a:rPr lang="en-US" smtClean="0" />
+                            <a:rPr lang="en-US" />
                             <a:t>Fifth level</a:t>
                         </a:r>
                         <a:endParaRPr lang="nl-BE" />
@@ -3217,7 +3217,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{6F0DA8BB-0D18-469F-8022-DD923457DE3A}" type="datetimeFigureOut">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>16/04/2009</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
@@ -3259,7 +3259,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:lstStyle />
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
-                            <a:rPr lang="nl-BE" smtClean="0" />
+                            <a:rPr lang="nl-BE" />
                             <a:t>?#?</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />

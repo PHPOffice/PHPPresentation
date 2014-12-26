@@ -29,6 +29,7 @@ use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Border;
+use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Chart
@@ -945,14 +946,16 @@ class Chart extends Slide
                 // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
 
-                // c:spPr
-                $objWriter->startElement('c:spPr');
+                if($value->getFillType() != Fill::FILL_NONE) {
+                    // c:spPr
+                    $objWriter->startElement('c:spPr');
+                    // Write fill
+                    $this->writeFill($objWriter, $value);
+                    // ## c:spPr
+                    $objWriter->endElement();
+                }
 
-                // Write fill
-                $this->writeFill($objWriter, $value);
-
-                $objWriter->endElement();
-
+                // ## c:dPt
                 $objWriter->endElement();
             }
 
@@ -1037,13 +1040,13 @@ class Chart extends Slide
 
             $objWriter->endElement();
 
-            // c:spPr
-            $objWriter->startElement('c:spPr');
+//             // c:spPr
+//             $objWriter->startElement('c:spPr');
 
-            // Write fill
-            $this->writeFill($objWriter, $series->getFill());
+//             // Write fill
+//             $this->writeFill($objWriter, $series->getFill());
 
-            $objWriter->endElement();
+//             $objWriter->endElement();
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -1395,13 +1398,14 @@ class Chart extends Slide
 
             $objWriter->endElement();
 
-            // c:spPr
-            $objWriter->startElement('c:spPr');
-
-            // Write fill
-            $this->writeFill($objWriter, $series->getFill());
-
-            $objWriter->endElement();
+            if($series->getFill()->getFillType() != Fill::FILL_NONE) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $series->getFill());
+                // ## c:spPr
+                $objWriter->endElement();
+            }
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -1443,11 +1447,6 @@ class Chart extends Slide
         // c:axId
         $objWriter->startElement('c:axId');
         $objWriter->writeAttribute('val', '52749440');
-        $objWriter->endElement();
-
-        // c:axId
-        $objWriter->startElement('c:axId');
-        $objWriter->writeAttribute('val', '0');
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1592,15 +1591,16 @@ class Chart extends Slide
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             $objWriter->endElement();
-            /*
-            // c:spPr
-            $objWriter->startElement('c:spPr');
+            
+            if($series->getFill()->getFillType() != Fill::FILL_NONE) {
+                // c:spPr
+                // $objWriter->startElement('c:spPr');
+                // Write fill
+                // $this->writeFill($objWriter, $series->getFill());
+                // ## c:spPr
+                // $objWriter->endElement();
+            }
 
-            // Write fill
-            $this->writeFill($objWriter, $series->getFill());
-
-            $objWriter->endElement();
-            */
             // Write X axis data
             $axisXData = array_keys($series->getValues());
 
