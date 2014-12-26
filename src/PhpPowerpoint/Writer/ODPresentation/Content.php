@@ -17,7 +17,6 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
-use PhpOffice\PhpPowerpoint\Note;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
@@ -35,6 +34,7 @@ use PhpOffice\PhpPowerpoint\Shape\Table\Row;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Slide\Note;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
@@ -989,7 +989,7 @@ class Content extends AbstractPart
     public function writeSlideNote(XMLWriter $objWriter, Note $note)
     {
         $shapesNote = $note->getShapeCollection();
-        if(count($shapesNote) > 0){
+        if (count($shapesNote) > 0) {
             $objWriter->startElement('presentation:notes');
             
             foreach ($shapesNote as $shape) {

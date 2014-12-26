@@ -17,9 +17,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Tests;
 
-use PhpOffice\PhpPowerpoint\Note;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
+use PhpOffice\PhpPowerpoint\Slide\Note;
 
 /**
  * Test class for PhpPowerpoint

@@ -15,8 +15,13 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPowerpoint;
+namespace PhpOffice\PhpPowerpoint\Slide;
 
+use PhpOffice\PhpPowerpoint\AbstractShape;
+use PhpOffice\PhpPowerpoint\ComparableInterface;
+use PhpOffice\PhpPowerpoint\GeometryCalculator;
+use PhpOffice\PhpPowerpoint\ShapeContainerInterface;
+use PhpOffice\PhpPowerpoint\Slide;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 
 /**
@@ -163,12 +168,12 @@ class Note implements ComparableInterface, ShapeContainerInterface
      */
     public function getOffsetX ()
     {
-    	if ($this->offsetX === null) {
-    		$offsets = GeometryCalculator::calculateOffsets($this);
-    		$this->offsetX = $offsets[GeometryCalculator::X];
-    		$this->offsetY = $offsets[GeometryCalculator::Y];
-    	}
-    	return $this->offsetX;
+        if ($this->offsetX === null) {
+            $offsets = GeometryCalculator::calculateOffsets($this);
+            $this->offsetX = $offsets[GeometryCalculator::X];
+            $this->offsetY = $offsets[GeometryCalculator::Y];
+        }
+        return $this->offsetX;
     }
     
     /**
@@ -178,12 +183,12 @@ class Note implements ComparableInterface, ShapeContainerInterface
      */
     public function getOffsetY ()
     {
-    	if ($this->offsetY === null) {
-    		$offsets = GeometryCalculator::calculateOffsets($this);
-    		$this->offsetX = $offsets[GeometryCalculator::X];
-    		$this->offsetY = $offsets[GeometryCalculator::Y];
-    	}
-    	return $this->offsetY;
+        if ($this->offsetY === null) {
+            $offsets = GeometryCalculator::calculateOffsets($this);
+            $this->offsetX = $offsets[GeometryCalculator::X];
+            $this->offsetY = $offsets[GeometryCalculator::Y];
+        }
+        return $this->offsetY;
     }
     
     /**
@@ -193,12 +198,12 @@ class Note implements ComparableInterface, ShapeContainerInterface
      */
     public function getExtentX ()
     {
-    	if ($this->extentX === null) {
-    		$extents = GeometryCalculator::calculateExtents($this);
-    		$this->extentX = $extents[GeometryCalculator::X];
-    		$this->extentY = $extents[GeometryCalculator::Y];
-    	}
-    	return $this->extentX;
+        if ($this->extentX === null) {
+            $extents = GeometryCalculator::calculateExtents($this);
+            $this->extentX = $extents[GeometryCalculator::X];
+            $this->extentY = $extents[GeometryCalculator::Y];
+        }
+        return $this->extentX;
     }
     
     /**
@@ -208,12 +213,12 @@ class Note implements ComparableInterface, ShapeContainerInterface
      */
     public function getExtentY ()
     {
-    	if ($this->extentY === null) {
-    		$extents = GeometryCalculator::calculateExtents($this);
-    		$this->extentX = $extents[GeometryCalculator::X];
-    		$this->extentY = $extents[GeometryCalculator::Y];
-    	}
-    	return $this->extentY;
+        if ($this->extentY === null) {
+            $extents = GeometryCalculator::calculateExtents($this);
+            $this->extentX = $extents[GeometryCalculator::X];
+            $this->extentY = $extents[GeometryCalculator::Y];
+        }
+        return $this->extentY;
     }
 
     /**

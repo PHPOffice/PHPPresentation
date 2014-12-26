@@ -54,8 +54,6 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     
     public function testExtentX()
     {
-        $value = rand(1, 100);
-        
         $object = new Group();
         $line1  = new Line(10, 20, 30, 40);
         $object->addShape($line1);
@@ -65,8 +63,6 @@ class GroupTest extends \PHPUnit_Framework_TestCase
     
     public function testExtentY()
     {
-        $value = rand(1, 100);
-        
         $object = new Group();
         $line1  = new Line(10, 20, 30, 40);
         $object->addShape($line1);

@@ -17,7 +17,6 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPowerpoint\Note;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Group;
@@ -31,6 +30,7 @@ use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
+use PhpOffice\PhpPowerpoint\Slide\Note;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Borders;
 use PhpOffice\PhpPowerpoint\Style\Border;
@@ -1250,11 +1250,11 @@ class Slide extends AbstractPart
      * @param Note $pNote
      * @throws \Exception
      */
-    private function writeNote(Note $pNote = null)
+    public function writeNote(Note $pNote = null)
     {
         // Check slide
         if (is_null($pNote)) {
-            throw new \Exception("Invalid \PhpOffice\PhpPowerpoint\Note object passed.");
+            throw new \Exception("Invalid \PhpOffice\PhpPowerpoint\Slide\Note object passed.");
         }
 
         // Create XML writer

@@ -25,6 +25,7 @@ use PhpOffice\PhpPowerpoint\Shape\Line;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Slide\Layout;
+use PhpOffice\PhpPowerpoint\Slide\Note;
 
 /**
  * Slide class
@@ -65,9 +66,10 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      * @var integer
      */
     private $slideMasterId = 1;
+    
     /**
      *
-     * @var \PhpOffice\PhpPowerpoint\Note
+     * @var \PhpOffice\PhpPowerpoint\Slide\Note
      */
     private $slideNote;
     
@@ -411,26 +413,26 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     
     /**
      *
-     * @return \PhpOffice\PhpPowerpoint\Note
+     * @return \PhpOffice\PhpPowerpoint\Slide\Note
      */
     public function getNote()
     {
-    	if (is_null($this->slideNote)) {
-    		$this->setNote();
-    	}
-    	return $this->slideNote;
+        if (is_null($this->slideNote)) {
+            $this->setNote();
+        }
+        return $this->slideNote;
     }
     
     /**
      *
-     * @param \PhpOffice\PhpPowerpoint\Note $note
+     * @param \PhpOffice\PhpPowerpoint\Slide\Note $note
      * @return \PhpOffice\PhpPowerpoint\Slide
      */
     public function setNote (Note $note = null)
     {
-    	$this->slideNote = (is_null($note) ? new Note() : $note);
-    	$this->slideNote->setParent($this);
+        $this->slideNote = (is_null($note) ? new Note() : $note);
+        $this->slideNote->setParent($this);
     
-    	return $this;
+        return $this;
     }
 }

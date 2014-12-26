@@ -946,7 +946,7 @@ class Chart extends Slide
                 // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
 
-                if($value->getFillType() != Fill::FILL_NONE) {
+                if ($value->getFillType() != Fill::FILL_NONE) {
                     // c:spPr
                     $objWriter->startElement('c:spPr');
                     // Write fill
@@ -1398,7 +1398,7 @@ class Chart extends Slide
 
             $objWriter->endElement();
 
-            if($series->getFill()->getFillType() != Fill::FILL_NONE) {
+            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
                 // c:spPr
                 $objWriter->startElement('c:spPr');
                 // Write fill
@@ -1592,7 +1592,7 @@ class Chart extends Slide
 
             $objWriter->endElement();
             
-            if($series->getFill()->getFillType() != Fill::FILL_NONE) {
+            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
                 // c:spPr
                 // $objWriter->startElement('c:spPr');
                 // Write fill
