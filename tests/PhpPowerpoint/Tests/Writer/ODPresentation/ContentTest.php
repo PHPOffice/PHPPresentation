@@ -152,6 +152,21 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
+    public function testNote()
+    {
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oNote = $oSlide->getNote();
+        $oRichText = $oNote->createRichTextShape()->setHeight(300)->setWidth(600);
+        $oRichText->createTextRun('testNote');
+        
+        $pres = TestHelperDOCX::getDocument($oPHPPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:body/office:presentation/draw:page/presentation:notes';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $element = '/office:document-content/office:body/office:presentation/draw:page/presentation:notes/draw:frame/draw:text-box/text:p/text:span';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+    }
+
     public function testRichtextAutoShrink()
     {
         $phpPowerPoint = new PhpPowerpoint();

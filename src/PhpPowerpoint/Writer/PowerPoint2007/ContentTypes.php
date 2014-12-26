@@ -93,6 +93,9 @@ class ContentTypes extends AbstractPart
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
             $this->writeOverrideContentType($objWriter, '/ppt/slides/slide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slide+xml');
+            if ($pPHPPowerPoint->getSlide($i)->getNote()->getShapeCollection()->count() > 0) {
+                $this->writeOverrideContentType($objWriter, '/ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml');
+            }
         }
 
         // Add layoutpack content types

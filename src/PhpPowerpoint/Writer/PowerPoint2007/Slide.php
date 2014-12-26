@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
+use PhpOffice\PhpPowerpoint\Note;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Group;
@@ -1242,5 +1243,121 @@ class Slide extends AbstractPart
             $objWriter->writeAttribute('action', $shape->getHyperlink()->getUrl());
         }
         $objWriter->endElement();
+    }
+
+    /**
+     * Write Note Slide
+     * @param Note $pNote
+     * @throws \Exception
+     */
+    private function writeNote(Note $pNote = null)
+    {
+        // Check slide
+        if (is_null($pNote)) {
+            throw new \Exception("Invalid \PhpOffice\PhpPowerpoint\Note object passed.");
+        }
+
+        // Create XML writer
+        $objWriter = $this->getXMLWriter();
+
+        // XML header
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+
+        // p:notes
+        $objWriter->startElement('p:notes');
+        $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
+        $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
+        $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
+
+        // p:cSld
+        $objWriter->startElement('p:cSld');
+
+        // p:spTree
+        $objWriter->startElement('p:spTree');
+
+        // p:nvGrpSpPr
+        $objWriter->startElement('p:nvGrpSpPr');
+
+        // p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', '1');
+        $objWriter->writeAttribute('name', '');
+        $objWriter->endElement();
+
+        // p:cNvGrpSpPr
+        $objWriter->writeElement('p:cNvGrpSpPr', null);
+
+        // p:nvPr
+        $objWriter->startElement('p:nvPr');
+        
+        // p:ph
+        $objWriter->startElement('p:ph');
+        $objWriter->writeAttribute('type', 'body');
+        $objWriter->endElement();
+        
+        // ## p:nvPr
+        $objWriter->endElement();
+        
+        // ## p:cNvGrpSpPr
+        $objWriter->endElement();
+
+        // p:grpSpPr
+        $objWriter->startElement('p:grpSpPr');
+
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        // a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->endElement(); // a:off
+
+        // a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($pNote->getExtentX()));
+        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($pNote->getExtentY()));
+        $objWriter->endElement(); // a:ext
+
+        // a:chOff
+        $objWriter->startElement('a:chOff');
+        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->endElement(); // a:chOff
+
+        // a:chExt
+        $objWriter->startElement('a:chExt');
+        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($pNote->getExtentX()));
+        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($pNote->getExtentY()));
+        $objWriter->endElement(); // a:chExt
+
+        // ## a:xfrm
+        $objWriter->endElement();
+
+        // ## p:grpSpPr
+        $objWriter->endElement();
+
+        // Loop shapes
+        $shapeId = 0;
+        $shapes  = $pNote->getShapeCollection();
+        foreach ($shapes as $shape) {
+            // Increment $shapeId
+            ++$shapeId;
+
+            // Check type
+            if ($shape instanceof RichText) {
+                $this->writeShapeText($objWriter, $shape, $shapeId);
+            }
+        }
+
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+
+        // > p:notes
+        $objWriter->endElement();
+
+        // Return
+        return $objWriter->getData();
     }
 }

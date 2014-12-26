@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
+use PhpOffice\PhpPowerpoint\Note;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
@@ -51,8 +52,7 @@ class Content extends AbstractPart
      * @var array
      */
     private $arrStyleBullet    = array();
-    
-    
+
     /**
      * Stores paragraph information for text shapes.
      *
@@ -66,14 +66,13 @@ class Content extends AbstractPart
      * @var array
      */
     private $arrStyleTextFont  = array();
-    
+
     /**
      * Used to track the current shape ID.
      *
      * @var integer
      */
     private $shapeId;
-    
 
     /**
      * Write content file to XML format
@@ -285,6 +284,9 @@ class Content extends AbstractPart
                     $this->writeShapeGroup($objWriter, $shape);
                 }
             }
+            // Slide Note
+            $this->writeSlideNote($objWriter, $pSlide->getNote());
+            
             $objWriter->endElement();
         }
         $objWriter->endElement();
@@ -976,6 +978,30 @@ class Content extends AbstractPart
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Write the slide note
+     * @param XMLWriter $objWriter
+     * @param PhpOffice\PhpPowerpoint\Note $note
+     */
+    public function writeSlideNote(XMLWriter $objWriter, Note $note)
+    {
+        $shapesNote = $note->getShapeCollection();
+        if(count($shapesNote) > 0){
+            $objWriter->startElement('presentation:notes');
+            
+            foreach ($shapesNote as $shape) {
+                // Increment $this->shapeId
+                ++$this->shapeId;
+                
+                if ($shape instanceof RichText) {
+                    $this->writeShapeTxt($objWriter, $shape);
+                }
+            }
+            
+            $objWriter->endElement();
         }
     }
 }

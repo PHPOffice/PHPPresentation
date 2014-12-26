@@ -273,6 +273,7 @@ class Rels extends AbstractPart
 
         // Starting relation id
         $relId = 1;
+        $idxSlide = $pSlide->getParent()->getIndex($pSlide);
 
         // Write slideLayout relationship
         $parentWriter = $this->getParentWriter();
@@ -486,6 +487,11 @@ class Rels extends AbstractPart
 
                 $iterator->next();
             }
+        }
+        
+        if ($pSlide->getNote()->getShapeCollection()->count() > 0) {
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide', '../notesSlides/notesSlide'.($idxSlide + 1).'.xml');
+            ++$relId;
         }
 
         $objWriter->endElement();

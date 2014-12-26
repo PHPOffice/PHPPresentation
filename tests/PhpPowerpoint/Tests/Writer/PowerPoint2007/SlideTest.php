@@ -456,6 +456,28 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
 
+    public function testNote()
+    {
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oNote = $oSlide->getNote();
+        $oRichText = $oNote->createRichTextShape()->setHeight(300)->setWidth(600);
+        $oRichText->createTextRun('testNote');
+    
+        $pres = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
+        // Content Types
+        // $element = '/Types/Override[@PartName="/ppt/notesSlides/notesSlide1.xml"][@ContentType="application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml"]';
+        // $this->assertTrue($pres->elementExists($element, '[Content_Types].xml'));
+        // Rels
+        // $element = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide"][@Target="../notesSlides/notesSlide1.xml"]';
+        // $this->assertTrue($pres->elementExists($element, 'ppt/slides/_rels/slide1.xml.rels'));
+        // Slide
+        $element = '/p:notes';
+        $this->assertTrue($pres->elementExists($element, 'ppt/notesSlides/notesSlide1.xml'));
+        $element = '/p:notes/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:t';
+        $this->assertTrue($pres->elementExists($element, 'ppt/notesSlides/notesSlide1.xml'));
+    }
+    
     public function testRichTextAutoFitNormal()
     {
         $phpPowerPoint = new PhpPowerpoint();

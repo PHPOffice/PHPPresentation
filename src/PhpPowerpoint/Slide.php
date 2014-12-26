@@ -65,7 +65,12 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      * @var integer
      */
     private $slideMasterId = 1;
-
+    /**
+     *
+     * @var \PhpOffice\PhpPowerpoint\Note
+     */
+    private $slideNote;
+    
     /**
      * Hash index
      *
@@ -402,5 +407,30 @@ class Slide implements ComparableInterface, ShapeContainerInterface
             $this->extentY = $extents[GeometryCalculator::Y];
         }
         return $this->extentY;
+    }
+    
+    /**
+     *
+     * @return \PhpOffice\PhpPowerpoint\Note
+     */
+    public function getNote()
+    {
+    	if (is_null($this->slideNote)) {
+    		$this->setNote();
+    	}
+    	return $this->slideNote;
+    }
+    
+    /**
+     *
+     * @param \PhpOffice\PhpPowerpoint\Note $note
+     * @return \PhpOffice\PhpPowerpoint\Slide
+     */
+    public function setNote (Note $note = null)
+    {
+    	$this->slideNote = (is_null($note) ? new Note() : $note);
+    	$this->slideNote->setParent($this);
+    
+    	return $this;
     }
 }

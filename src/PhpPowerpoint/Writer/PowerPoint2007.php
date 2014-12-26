@@ -271,6 +271,9 @@ class PowerPoint2007 implements WriterInterface
                 // Add slide
                 $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $wPartRels->writeSlideRelationships($this->presentation->getSlide($i)));
                 $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $wPartSlide->writeSlide($this->presentation->getSlide($i)));
+                if ($this->presentation->getSlide($i)->getNote()->getShapeCollection()->count() > 0) {
+                    $objZip->addFromString('ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', $wPartSlide->writeNote($this->presentation->getSlide($i)->getNote()));
+                }
             }
 
             // Add media
