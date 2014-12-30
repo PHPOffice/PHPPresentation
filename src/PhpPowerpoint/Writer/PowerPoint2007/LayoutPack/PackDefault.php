@@ -593,10 +593,10 @@ class PackDefault extends AbstractLayoutPack
     <a:latin typeface="Calibri"/>
     <a:ea typeface=""/>
     <a:cs typeface=""/>
-    <a:font script="Jpan" typeface="?? ?????"/>
-    <a:font script="Hang" typeface="?? ??"/>
-    <a:font script="Hans" typeface="??"/>
-    <a:font script="Hant" typeface="????"/>
+    <a:font script="Jpan" typeface="ＭＳ Ｐゴシック"/>
+    <a:font script="Hang" typeface="맑은 고딕"/>
+    <a:font script="Hans" typeface="宋体"/>
+    <a:font script="Hant" typeface="新細明體"/>
     <a:font script="Arab" typeface="Times New Roman"/>
     <a:font script="Hebr" typeface="Times New Roman"/>
     <a:font script="Thai" typeface="Angsana New"/>
@@ -627,10 +627,10 @@ class PackDefault extends AbstractLayoutPack
     <a:latin typeface="Calibri"/>
     <a:ea typeface=""/>
     <a:cs typeface=""/>
-    <a:font script="Jpan" typeface="?? ?????"/>
-    <a:font script="Hang" typeface="?? ??"/>
-    <a:font script="Hans" typeface="??"/>
-    <a:font script="Hant" typeface="????"/>
+    <a:font script="Jpan" typeface="ＭＳ Ｐゴシック"/>
+    <a:font script="Hang" typeface="맑은 고딕"/>
+    <a:font script="Hans" typeface="宋体"/>
+    <a:font script="Hant" typeface="新細明體"/>
     <a:font script="Arab" typeface="Arial"/>
     <a:font script="Hebr" typeface="Arial"/>
     <a:font script="Thai" typeface="Cordia New"/>
