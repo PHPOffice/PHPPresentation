@@ -163,6 +163,29 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
     }
     
+    public function testChartPie3DExplosion()
+    {
+        $value = rand(0, 100);
+        
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+    
+        $oPie3D = new Pie3D();
+        $oPie3D->setExplosion($value);
+        $oPie3D->addSeries($oSeries);
+    
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oPie3D);
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+    
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals($value, $pres->getElementAttribute($element, 'chart:pie-offset', 'Object 1/content.xml'));
+    }
+    
     public function testChartScatter()
     {
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));

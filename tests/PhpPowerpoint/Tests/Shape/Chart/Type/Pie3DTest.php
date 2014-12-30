@@ -45,12 +45,23 @@ class Pie3DTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(count($array), $object->getData());
     }
 
-    public function testSerties()
+    public function testSeries()
     {
         $object = new Pie3D();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Pie3D', $object->addSeries(new Series()));
         $this->assertCount(1, $object->getData());
+    }
+
+    public function testExplosion()
+    {
+        $value = rand(0, 100);
+        
+        $object = new Pie3D();
+
+        $this->assertEquals(0, $object->getExplosion());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Pie3D', $object->setExplosion($value));
+        $this->assertEquals($value, $object->getExplosion());
     }
 
     public function testHashCode()

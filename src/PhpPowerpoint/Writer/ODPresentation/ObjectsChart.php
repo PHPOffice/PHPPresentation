@@ -557,8 +557,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
         $this->xmlContent->writeAttribute('chart:label-position', 'right');
         if ($chartType instanceof Pie3D) {
-            //@todo : Permit edit the offset of a pie
-            $this->xmlContent->writeAttribute('chart:pie-offset', '20');
+            $this->xmlContent->writeAttribute('chart:pie-offset', $chartType->getExplosion());
         }
         if ($chartType instanceof Line) {
             //@todo : Permit edit the symbol of a line

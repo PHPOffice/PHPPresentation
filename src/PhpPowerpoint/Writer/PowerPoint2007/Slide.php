@@ -157,7 +157,7 @@ class Slide extends AbstractPart
         $objWriter->startElement('p:clrMapOvr');
 
         // a:masterClrMapping
-        $objWriter->writeElement('a:masterClrMapping', '');
+        $objWriter->writeElement('a:masterClrMapping', null);
 
         $objWriter->endElement();
 

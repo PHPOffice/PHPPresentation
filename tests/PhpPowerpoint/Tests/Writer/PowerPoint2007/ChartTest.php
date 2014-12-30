@@ -312,6 +312,34 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
     }
     
+    public function testTypePie3DExplosion()
+    {
+        $value = rand(1, 100);
+        $seriesData = array(
+            'A' => 1,
+            'B' => 2,
+            'C' => 4,
+            'D' => 3,
+            'E' => 2,
+        );
+
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oPie3D = new Pie3D();
+        $oPie3D->setExplosion($value);
+        $oSeries = new Series('Downloads', $seriesData);
+        $oPie3D->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oPie3D);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:explosion';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($value, $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+    }
+    
     public function testTypePie3DSubScript()
     {
         $seriesData = array(

@@ -132,6 +132,7 @@ $seriesData = array('Monday' => 12, 'Tuesday' => 15, 'Wednesday' => 13, 'Thursda
 // Create a pie chart (that should be inserted in a shape)
 echo date('H:i:s') . ' Create a pie chart (that should be inserted in a chart shape)'.EOL;
 $pie3DChart = new Pie3D();
+$pie3DChart->setExplosion(20);
 $series = new Series('Downloads', $seriesData);
 $series->setShowSeriesName(true);
 $series->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
@@ -176,6 +177,7 @@ echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart s
 $lineChart = new Line();
 $series = new Series('Downloads', $seriesData);
 $series->setShowSeriesName(true);
+$series->setShowValue(false);
 $lineChart->addSeries($series);
 
 // Create a shape (chart)
