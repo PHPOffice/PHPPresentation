@@ -122,7 +122,8 @@ abstract class AbstractShape implements ComparableInterface
         $this->border->setLineStyle(Style\Border::LINE_NONE);
     }
     
-    public function __clone() {
+    public function __clone()
+    {
         $this->container = null;
         $this->fill      = clone $this->fill;
         $this->border    = clone $this->border;
@@ -166,7 +167,7 @@ abstract class AbstractShape implements ComparableInterface
                         $this->container = null;
                         break;
                     }
-                   $iterator->next();
+                    $iterator->next();
                 }
 
                 // Set new \PhpOffice\PhpPowerpoint\Slide

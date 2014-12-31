@@ -78,7 +78,8 @@ class Chart extends AbstractDrawing implements ComparableInterface
         parent::__construct();
     }
     
-    public function __clone() {
+    public function __clone()
+    {
         parent::__clone();
         
         $this->title     = clone $this->title;
