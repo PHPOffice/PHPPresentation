@@ -82,6 +82,11 @@ class PlotArea implements ComparableInterface
         $this->axisX = new Axis();
         $this->axisY = new Axis();
     }
+    
+    public function __clone() {
+        $this->axisX     = clone $this->axisX;
+        $this->axisY     = clone $this->axisY;
+    }
 
     /**
      * Get type

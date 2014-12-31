@@ -636,6 +636,7 @@ class Chart extends Slide
             $objWriter->writeAttribute('val', 'minMax');
             $objWriter->endElement();
 
+            // ## c:scaling
             $objWriter->endElement();
 
             // c:axPos
@@ -648,10 +649,6 @@ class Chart extends Slide
             $objWriter->writeAttribute('formatCode', $subject->getAxisY()->getFormatCode());
             $objWriter->writeAttribute('sourceLinked', '0');
             $objWriter->endElement();
-
-            // c:majorGridlines
-            //$objWriter->startElement('c:majorGridlines');
-            //$objWriter->endElement();
 
             // c:majorTickMark
             $objWriter->startElement('c:majorTickMark');
@@ -681,6 +678,7 @@ class Chart extends Slide
             // a:defRPr
             $objWriter->writeElement('a:defRPr', null);
 
+            // ## a:pPr
             $objWriter->endElement();
 
             // a:r
@@ -695,6 +693,7 @@ class Chart extends Slide
             // a:t
             $objWriter->writeElement('a:t', $subject->getAxisY()->getTitle());
 
+            // ## a:r
             $objWriter->endElement();
 
             // a:endParaRPr
@@ -703,8 +702,10 @@ class Chart extends Slide
             $objWriter->writeAttribute('dirty', '0');
             $objWriter->endElement();
 
+            // ## a:p
             $objWriter->endElement();
 
+            // ## c:txPr
             $objWriter->endElement();
 
             // c:crossAx
@@ -1288,11 +1289,6 @@ class Chart extends Slide
         // c:grouping
         $objWriter->startElement('c:grouping');
         $objWriter->writeAttribute('val', 'standard');
-        $objWriter->endElement();
-
-        // c:varyColors
-        $objWriter->startElement('c:varyColors');
-        $objWriter->writeAttribute('val', '0');
         $objWriter->endElement();
 
         // Write series

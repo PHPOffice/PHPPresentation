@@ -81,6 +81,7 @@ class HashTable
     {
         // Determine hashcode
         $hashIndex = $pSource->getHashIndex();
+
         if (is_null($hashIndex)) {
             $hashCode = $pSource->getHashCode();
         } elseif (isset($this->keyMap[$hashIndex])) {

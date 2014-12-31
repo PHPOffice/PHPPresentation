@@ -82,8 +82,6 @@ class Presentation extends AbstractPart
 
         // p:sldSz
         $objWriter->startElement('p:sldSz');
-        //$objWriter->writeAttribute('cx', '9144000');
-        //$objWriter->writeAttribute('cy', '6858000');
         $objWriter->writeAttribute('cx', $pPHPPowerPoint->getLayout()->getCX());
         $objWriter->writeAttribute('cy', $pPHPPowerPoint->getLayout()->getCY());
         if ($pPHPPowerPoint->getLayout()->getDocumentLayout() != DocumentLayout::LAYOUT_CUSTOM) {
