@@ -327,8 +327,24 @@ class Rels extends AbstractPart
                 }
 
                 // Hyperlink on rich text run
-                if ($iterator->current() instanceof RichText) {
-                    foreach ($iterator->current()->getParagraphs() as $paragraph) {
+                if ($iterator->current() instanceof PHPPowerPoint_Shape_RichText ||
+                    $iterator->current() instanceof PHPPowerPoint_Shape_Table
+                ) {
+                    if ($iterator->current() instanceof PHPPowerPoint_Shape_Table) {
+                        // Table cells can have hyperlinks too
+                        // coalesce all paragraphs in all cells
+                        $paragraphs = array();
+                        $rows = $iterator->current()->getRows();
+                        foreach ($rows as $row) {
+                            $cells = $row->getCells();
+                            foreach ($cells as $cell) {
+                                $paragraphs = array_merge($paragraphs, array_values($cell->getParagraphs()));
+                            }
+                        }
+                    } else {
+                        $paragraphs = $iterator->current()->getParagraphs();
+                    }
+                    foreach ($paragraphs as $paragraph) {
                         foreach ($paragraph->getRichTextElements() as $element) {
                             if ($element instanceof Run || $element instanceof TextElement) {
                                 if ($element->hasHyperlink()) {
