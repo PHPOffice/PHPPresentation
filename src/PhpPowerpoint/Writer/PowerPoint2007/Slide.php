@@ -1288,17 +1288,9 @@ class Slide extends AbstractPart
         $objWriter->writeElement('p:cNvGrpSpPr', null);
 
         // p:nvPr
-        $objWriter->startElement('p:nvPr');
-        
-        // p:ph
-        $objWriter->startElement('p:ph');
-        $objWriter->writeAttribute('type', 'body');
-        $objWriter->endElement();
-        
-        // ## p:nvPr
-        $objWriter->endElement();
-        
-        // ## p:cNvGrpSpPr
+        $objWriter->writeElement('p:nvPr', null);
+
+        // ## p:nvGrpSpPr
         $objWriter->endElement();
 
         // p:grpSpPr
@@ -1337,24 +1329,73 @@ class Slide extends AbstractPart
         // ## p:grpSpPr
         $objWriter->endElement();
 
+        // p:sp
+        $objWriter->startElement('p:sp');
+
+        // p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', '1');
+        $objWriter->writeAttribute('name', 'Notes Placeholder');
+        $objWriter->endElement();
+
+        // p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+
+        //a:spLocks
+        $objWriter->startElement('a:spLocks');
+        $objWriter->writeAttribute('noGrp', '1');
+        $objWriter->endElement();
+
+        // ## p:cNvSpPr
+        $objWriter->endElement();
+
+        // p:nvPr
+        $objWriter->startElement('p:nvPr');
+
+        $objWriter->startElement('p:ph');
+        $objWriter->writeAttribute('type', 'body');
+        $objWriter->writeAttribute('idx', '1');
+        $objWriter->endElement();
+
+        // ## p:nvPr
+        $objWriter->endElement();
+
+        // ## p:nvSpPr
+        $objWriter->endElement();
+
+        $objWriter->writeElement('p:spPr', null);
+
+        // p:txBody
+        $objWriter->startElement('p:txBody');
+
+        $objWriter->writeElement('a:bodyPr', null);
+        $objWriter->writeElement('a:lstStyle', null);
+
         // Loop shapes
-        $shapeId = 0;
         $shapes  = $pNote->getShapeCollection();
         foreach ($shapes as $shape) {
-            // Increment $shapeId
-            ++$shapeId;
-
             // Check type
             if ($shape instanceof RichText) {
-                $this->writeShapeText($objWriter, $shape, $shapeId);
+                $paragraphs = $shape->getParagraphs();
+                $this->writeParagraphs($objWriter, $paragraphs);
             }
         }
 
+        // ## p:txBody
         $objWriter->endElement();
 
+        // ## p:sp
         $objWriter->endElement();
 
-        // > p:notes
+        // ## p:spTree
+        $objWriter->endElement();
+
+        // ## p:cSld
+        $objWriter->endElement();
+
+        // ## p:notes
         $objWriter->endElement();
 
         // Return

@@ -6,7 +6,7 @@
 - Added support for calculating the offset and extent on a Slide. - @Pr0phet GH-68
 - Added support for Horizontal bar chart - @rdoepke @Progi1984 GH-58
 - Added support for hyperlink on picture (ODPresentation & PowerPoint2007) - @Progi1984 GH-49
-- Added support for notes slide (ODPresentation & PowerPoint2007) - @Progi1984 GH-63
+- Added support for notes slide (ODPresentation & PowerPoint2007) - @Progi1984 @JewrassicPark GH-63
 - Added option for explosion in Pie3D Chart (ODPresentation & PowerPoint2007) - @Progi1984 GH-76
 
 ### Bugfix
