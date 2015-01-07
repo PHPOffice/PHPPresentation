@@ -126,20 +126,14 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_addFromSource" title="addFromSource :: Add HashTable items from source">
-            <span class="description">Add HashTable items from source</span><pre>addFromSource</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
         <a href="#method_add" title="add :: Add HashTable item">
             <span class="description">Add HashTable item</span><pre>add</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_remove" title="remove :: Remove HashTable item">
-            <span class="description">Remove HashTable item</span><pre>remove</pre>
+        <a href="#method_addFromSource" title="addFromSource :: Add HashTable items from source">
+            <span class="description">Add HashTable items from source</span><pre>addFromSource</pre>
         </a>
     </li>
 
@@ -156,8 +150,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getIndexForHashCode" title="getIndexForHashCode :: Get index for hash code">
-            <span class="description">Get index for hash code</span><pre>getIndexForHashCode</pre>
+        <a href="#method_getByHashCode" title="getByHashCode :: Get by hashcode">
+            <span class="description">Get by hashcode</span><pre>getByHashCode</pre>
         </a>
     </li>
 
@@ -168,8 +162,14 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getByHashCode" title="getByHashCode :: Get by hashcode">
-            <span class="description">Get by hashcode</span><pre>getByHashCode</pre>
+        <a href="#method_getIndexForHashCode" title="getIndexForHashCode :: Get index for hash code">
+            <span class="description">Get index for hash code</span><pre>getIndexForHashCode</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_remove" title="remove :: Remove HashTable item">
+            <span class="description">Remove HashTable item</span><pre>remove</pre>
         </a>
     </li>
 
@@ -210,15 +210,26 @@
                         
                     </div>
                     <table class="table table-bordered">
-                                                                                                                                                                                                        </table>
+                                                                                    <tr>
+                                    <th>
+                                        package
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Default</p>
+                                    </td>
+                                </tr>
+                                                                                                                                                                                </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method___construct"></a>
                         <div class="element clickable method public  method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
                             <h2>Create a new \PhpOffice\PhpPowerpoint\HashTable</h2>
-                            <pre>__construct(\PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource = null) </pre>
+                            <pre>__construct(array&lt;mixed,\PhpOffice\PhpPowerpoint\ComparableInterface&gt; $pSource = null) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -245,49 +256,12 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$pSource</h4>
-                                                <code>\PhpOffice\PhpPowerpoint\ComparableInterface[]</code><p><p>Optional source array to create HashTable from</p></p>
+                                                <code>array&lt;mixed,<a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a>&gt;</code><p><p>Optional source array to create HashTable from</p></p>
                                             </div>
                                                                             
                                                                     </div>
                             </div>
-                        </div>
-                                            <a id="method_addFromSource"></a>
-                        <div class="element clickable method public  method_addFromSource" data-toggle="collapse" data-target=".method_addFromSource .collapse">
-                            <h2>Add HashTable items from source</h2>
-                            <pre>addFromSource(\PhpOffice\PhpPowerpoint\ComparableInterface[] $pSource = null) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
 
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pSource</h4>
-                                                <code>\PhpOffice\PhpPowerpoint\ComparableInterface[]</code><p><p>Source array to create HashTable from</p></p>
-                                            </div>
-                                                                            
-                                                                    </div>
-                            </div>
                         </div>
                                             <a id="method_add"></a>
                         <div class="element clickable method public  method_add" data-toggle="collapse" data-target=".method_add .collapse">
@@ -295,6 +269,8 @@
                             <pre>add(\PhpOffice\PhpPowerpoint\ComparableInterface $pSource) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -317,6 +293,192 @@
                                                                             
                                                                     </div>
                             </div>
+
+                        </div>
+                                            <a id="method_addFromSource"></a>
+                        <div class="element clickable method public  method_addFromSource" data-toggle="collapse" data-target=".method_addFromSource .collapse">
+                            <h2>Add HashTable items from source</h2>
+                            <pre>addFromSource(array&lt;mixed,\PhpOffice\PhpPowerpoint\ComparableInterface&gt; $pSource = null) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pSource</h4>
+                                                <code>array&lt;mixed,<a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a>&gt;</code><p><p>Source array to create HashTable from</p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_clear"></a>
+                        <div class="element clickable method public  method_clear" data-toggle="collapse" data-target=".method_clear .collapse">
+                            <h2>Clear HashTable</h2>
+                            <pre>clear() </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_count"></a>
+                        <div class="element clickable method public  method_count" data-toggle="collapse" data-target=".method_count .collapse">
+                            <h2>Count</h2>
+                            <pre>count() : integer</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getByHashCode"></a>
+                        <div class="element clickable method public  method_getByHashCode" data-toggle="collapse" data-target=".method_getByHashCode .collapse">
+                            <h2>Get by hashcode</h2>
+                            <pre>getByHashCode(string $pHashCode = &#039;&#039;) : \PhpOffice\PhpPowerpoint\ComparableInterface</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pHashCode</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getByIndex"></a>
+                        <div class="element clickable method public  method_getByIndex" data-toggle="collapse" data-target=".method_getByIndex .collapse">
+                            <h2>Get by index</h2>
+                            <pre>getByIndex(integer $pIndex) : \PhpOffice\PhpPowerpoint\ComparableInterface</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pIndex</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getIndexForHashCode"></a>
+                        <div class="element clickable method public  method_getIndexForHashCode" data-toggle="collapse" data-target=".method_getIndexForHashCode .collapse">
+                            <h2>Get index for hash code</h2>
+                            <pre>getIndexForHashCode(string $pHashCode = &#039;&#039;) : integer</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pHashCode</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p><p>Index</p></p>
+                                                                    </div>
+                            </div>
+
                         </div>
                                             <a id="method_remove"></a>
                         <div class="element clickable method public  method_remove" data-toggle="collapse" data-target=".method_remove .collapse">
@@ -324,6 +486,8 @@
                             <pre>remove(\PhpOffice\PhpPowerpoint\ComparableInterface $pSource) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -355,142 +519,16 @@
                                                                             
                                                                     </div>
                             </div>
-                        </div>
-                                            <a id="method_clear"></a>
-                        <div class="element clickable method public  method_clear" data-toggle="collapse" data-target=".method_clear .collapse">
-                            <h2>Clear HashTable</h2>
-                            <pre>clear() </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
 
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                    
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_count"></a>
-                        <div class="element clickable method public  method_count" data-toggle="collapse" data-target=".method_count .collapse">
-                            <h2>Count</h2>
-                            <pre>count() : int</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                    
-                                                                            <h3>Response</h3>
-                                        <code>int</code><p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_getIndexForHashCode"></a>
-                        <div class="element clickable method public  method_getIndexForHashCode" data-toggle="collapse" data-target=".method_getIndexForHashCode .collapse">
-                            <h2>Get index for hash code</h2>
-                            <pre>getIndexForHashCode(string $pHashCode = &#039;&#039;) : int</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pHashCode</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>int</code><p><p>Index</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_getByIndex"></a>
-                        <div class="element clickable method public  method_getByIndex" data-toggle="collapse" data-target=".method_getByIndex .collapse">
-                            <h2>Get by index</h2>
-                            <pre>getByIndex(int $pIndex) : \PhpOffice\PhpPowerpoint\ComparableInterface</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pIndex</h4>
-                                                <code>int</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a></code><p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_getByHashCode"></a>
-                        <div class="element clickable method public  method_getByHashCode" data-toggle="collapse" data-target=".method_getByHashCode .collapse">
-                            <h2>Get by hashcode</h2>
-                            <pre>getByHashCode(string $pHashCode = &#039;&#039;) : \PhpOffice\PhpPowerpoint\ComparableInterface</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pHashCode</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a></code><p></p>
-                                                                    </div>
-                            </div>
                         </div>
                                             <a id="method_toArray"></a>
                         <div class="element clickable method public  method_toArray" data-toggle="collapse" data-target=".method_toArray .collapse">
                             <h2>HashTable to array</h2>
-                            <pre>toArray() : \PhpOffice\PhpPowerpoint\ComparableInterface[]</pre>
+                            <pre>toArray() : array&lt;mixed,\PhpOffice\PhpPowerpoint\ComparableInterface&gt;</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -507,9 +545,10 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code>\PhpOffice\PhpPowerpoint\ComparableInterface[]</code><p></p>
+                                        <code>array&lt;mixed,<a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a>&gt;</code><p></p>
                                                                     </div>
                             </div>
+
                         </div>
                     
                     
@@ -586,7 +625,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 31 Dec 2014 14:27:25 +0000.<br/>
+            generated on Wed, 07 Jan 2015 11:54:30 +0000.<br/>
     </footer>
     </body>
 </html>

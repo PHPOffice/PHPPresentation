@@ -132,12 +132,6 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_load" title="load :: Loads PHPPowerPoint Serialized file">
-            <span class="description">Loads PHPPowerPoint Serialized file</span><pre>load</pre>
-        </a>
-    </li>
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <li class="method public">
         <a href="#method_getInt1d" title="getInt1d :: Read 8-bit unsigned integer">
             <span class="description">Read 8-bit unsigned integer</span><pre>getInt1d</pre>
         </a>
@@ -155,7 +149,13 @@
         </a>
     </li>
 
-                                                </ul>
+                                                                                                        <li class="method public">
+        <a href="#method_load" title="load :: Loads PHPPowerPoint Serialized file">
+            <span class="description">Loads PHPPowerPoint Serialized file</span><pre>load</pre>
+        </a>
+    </li>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
@@ -163,7 +163,12 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                        <li class="method private">
+                                                                                                                                                                                                                                                                                                    <li class="method private">
+                            <a href="#method_loadCurrentUserStream" title="loadCurrentUserStream :: Stream Current User">
+                                <span class="description">Stream Current User</span><pre>loadCurrentUserStream</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
                             <a href="#method_loadFile" title="loadFile :: Load PHPPowerPoint Serialized file">
                                 <span class="description">Load PHPPowerPoint Serialized file</span><pre>loadFile</pre>
                             </a>
@@ -174,13 +179,13 @@
                             </a>
                         </li>
                                                                                 <li class="method private">
-                            <a href="#method_loadPicturesStream" title="loadPicturesStream :: Stream Pictures">
-                                <span class="description">Stream Pictures</span><pre>loadPicturesStream</pre>
+                            <a href="#method_loadPersistDirectoryAtom" title="loadPersistDirectoryAtom :: PersistDirectoryAtom">
+                                <span class="description">PersistDirectoryAtom</span><pre>loadPersistDirectoryAtom</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
-                            <a href="#method_loadCurrentUserStream" title="loadCurrentUserStream :: Stream Current User">
-                                <span class="description">Stream Current User</span><pre>loadCurrentUserStream</pre>
+                            <a href="#method_loadPicturesStream" title="loadPicturesStream :: Stream Pictures">
+                                <span class="description">Stream Pictures</span><pre>loadPicturesStream</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
@@ -189,18 +194,13 @@
                             </a>
                         </li>
                                                                                 <li class="method private">
+                            <a href="#method_loadRecordHeader" title="loadRecordHeader :: Read a record header">
+                                <span class="description">Read a record header</span><pre>loadRecordHeader</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method private">
                             <a href="#method_loadUserEditAtom" title="loadUserEditAtom :: UserEditAtom">
                                 <span class="description">UserEditAtom</span><pre>loadUserEditAtom</pre>
-                            </a>
-                        </li>
-                                                                                <li class="method private">
-                            <a href="#method_loadPersistDirectoryAtom" title="loadPersistDirectoryAtom :: PersistDirectoryAtom">
-                                <span class="description">PersistDirectoryAtom</span><pre>loadPersistDirectoryAtom</pre>
-                            </a>
-                        </li>
-                                                                                <li class="method private">
-                            <a href="#method_readRTSlide" title="readRTSlide :: SlideContainer">
-                                <span class="description">SlideContainer</span><pre>readRTSlide</pre>
                             </a>
                         </li>
                                                                                 <li class="method private">
@@ -209,28 +209,28 @@
                             </a>
                         </li>
                                                                                 <li class="method private">
-                            <a href="#method_loadRecordHeader" title="loadRecordHeader :: Read a record header">
-                                <span class="description">Read a record header</span><pre>loadRecordHeader</pre>
+                            <a href="#method_readRTSlide" title="readRTSlide :: SlideContainer">
+                                <span class="description">SlideContainer</span><pre>readRTSlide</pre>
                             </a>
                         </li>
-                                                                                                                                                            </ul>
+                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
             <ul>
+                                <li class="constant ">
+                    <a href="#constant_OFFICEARTBLIPDIB" title="OFFICEARTBLIPDIB :: ">
+                        <span class="description"></span><pre>OFFICEARTBLIPDIB</pre>
+                    </a>
+                </li>
                                 <li class="constant ">
                     <a href="#constant_OFFICEARTBLIPEMF" title="OFFICEARTBLIPEMF :: ">
                         <span class="description"></span><pre>OFFICEARTBLIPEMF</pre>
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_OFFICEARTBLIPWMF" title="OFFICEARTBLIPWMF :: ">
-                        <span class="description"></span><pre>OFFICEARTBLIPWMF</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
-                    <a href="#constant_OFFICEARTBLIPPICT" title="OFFICEARTBLIPPICT :: ">
-                        <span class="description"></span><pre>OFFICEARTBLIPPICT</pre>
+                    <a href="#constant_OFFICEARTBLIPJPEG" title="OFFICEARTBLIPJPEG :: ">
+                        <span class="description"></span><pre>OFFICEARTBLIPJPEG</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -239,13 +239,13 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_OFFICEARTBLIPPNG" title="OFFICEARTBLIPPNG :: ">
-                        <span class="description"></span><pre>OFFICEARTBLIPPNG</pre>
+                    <a href="#constant_OFFICEARTBLIPPICT" title="OFFICEARTBLIPPICT :: ">
+                        <span class="description"></span><pre>OFFICEARTBLIPPICT</pre>
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_OFFICEARTBLIPDIB" title="OFFICEARTBLIPDIB :: ">
-                        <span class="description"></span><pre>OFFICEARTBLIPDIB</pre>
+                    <a href="#constant_OFFICEARTBLIPPNG" title="OFFICEARTBLIPPNG :: ">
+                        <span class="description"></span><pre>OFFICEARTBLIPPNG</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -254,8 +254,8 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_OFFICEARTBLIPJPEG" title="OFFICEARTBLIPJPEG :: ">
-                        <span class="description"></span><pre>OFFICEARTBLIPJPEG</pre>
+                    <a href="#constant_OFFICEARTBLIPWMF" title="OFFICEARTBLIPWMF :: ">
+                        <span class="description"></span><pre>OFFICEARTBLIPWMF</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -359,13 +359,13 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_CURRENTUSERATOM" title="RT_CURRENTUSERATOM :: ">
-                        <span class="description"></span><pre>RT_CURRENTUSERATOM</pre>
+                    <a href="#constant_RT_CSTRING" title="RT_CSTRING :: ">
+                        <span class="description"></span><pre>RT_CSTRING</pre>
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_CSTRING" title="RT_CSTRING :: ">
-                        <span class="description"></span><pre>RT_CSTRING</pre>
+                    <a href="#constant_RT_CURRENTUSERATOM" title="RT_CURRENTUSERATOM :: ">
+                        <span class="description"></span><pre>RT_CURRENTUSERATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -376,11 +376,6 @@
                                 <li class="constant ">
                     <a href="#constant_RT_DEFAULTRULERATOM" title="RT_DEFAULTRULERATOM :: ">
                         <span class="description"></span><pre>RT_DEFAULTRULERATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
-                    <a href="#constant_RT_DOCROUTINGSLIPATOM" title="RT_DOCROUTINGSLIPATOM :: ">
-                        <span class="description"></span><pre>RT_DOCROUTINGSLIPATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -406,6 +401,11 @@
                                 <li class="constant ">
                     <a href="#constant_RT_DIFFTREE10" title="RT_DIFFTREE10 :: ">
                         <span class="description"></span><pre>RT_DIFFTREE10</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RT_DOCROUTINGSLIPATOM" title="RT_DOCROUTINGSLIPATOM :: ">
+                        <span class="description"></span><pre>RT_DOCROUTINGSLIPATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -436,6 +436,21 @@
                                 <li class="constant ">
                     <a href="#constant_RT_ENDDOCUMENTATOM" title="RT_ENDDOCUMENTATOM :: ">
                         <span class="description"></span><pre>RT_ENDDOCUMENTATOM</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RT_ENVELOPEDATA9ATOM" title="RT_ENVELOPEDATA9ATOM :: ">
+                        <span class="description"></span><pre>RT_ENVELOPEDATA9ATOM</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RT_ENVELOPEFLAGS9ATOM" title="RT_ENVELOPEFLAGS9ATOM :: ">
+                        <span class="description"></span><pre>RT_ENVELOPEFLAGS9ATOM</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RT_ENVIRONMENT" title="RT_ENVIRONMENT :: ">
+                        <span class="description"></span><pre>RT_ENVIRONMENT</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -564,18 +579,8 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_ENVELOPEDATA9ATOM" title="RT_ENVELOPEDATA9ATOM :: ">
-                        <span class="description"></span><pre>RT_ENVELOPEDATA9ATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
-                    <a href="#constant_RT_ENVELOPEFLAGS9ATOM" title="RT_ENVELOPEFLAGS9ATOM :: ">
-                        <span class="description"></span><pre>RT_ENVELOPEFLAGS9ATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
-                    <a href="#constant_RT_ENVIRONMENT" title="RT_ENVIRONMENT :: ">
-                        <span class="description"></span><pre>RT_ENVIRONMENT</pre>
+                    <a href="#constant_RT_FILTERPRIVACYFLAGS10ATOM" title="RT_FILTERPRIVACYFLAGS10ATOM :: ">
+                        <span class="description"></span><pre>RT_FILTERPRIVACYFLAGS10ATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -596,11 +601,6 @@
                                 <li class="constant ">
                     <a href="#constant_RT_FONTEMBEDFLAGS10ATOM" title="RT_FONTEMBEDFLAGS10ATOM :: ">
                         <span class="description"></span><pre>RT_FONTEMBEDFLAGS10ATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
-                    <a href="#constant_RT_FILTERPRIVACYFLAGS10ATOM" title="RT_FILTERPRIVACYFLAGS10ATOM :: ">
-                        <span class="description"></span><pre>RT_FILTERPRIVACYFLAGS10ATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -639,6 +639,11 @@
                     </a>
                 </li>
                                 <li class="constant ">
+                    <a href="#constant_RT_HEADERMETACHARATOM" title="RT_HEADERMETACHARATOM :: ">
+                        <span class="description"></span><pre>RT_HEADERMETACHARATOM</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
                     <a href="#constant_RT_HEADERSFOOTERS" title="RT_HEADERSFOOTERS :: ">
                         <span class="description"></span><pre>RT_HEADERSFOOTERS</pre>
                     </a>
@@ -649,23 +654,18 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_HEADERMETACHARATOM" title="RT_HEADERMETACHARATOM :: ">
-                        <span class="description"></span><pre>RT_HEADERMETACHARATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
                     <a href="#constant_RT_HTMLDOCINFO9ATOM" title="RT_HTMLDOCINFO9ATOM :: ">
                         <span class="description"></span><pre>RT_HTMLDOCINFO9ATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_HTMLPUBLISHINFOATOM" title="RT_HTMLPUBLISHINFOATOM :: ">
-                        <span class="description"></span><pre>RT_HTMLPUBLISHINFOATOM</pre>
+                    <a href="#constant_RT_HTMLPUBLISHINFO9" title="RT_HTMLPUBLISHINFO9 :: ">
+                        <span class="description"></span><pre>RT_HTMLPUBLISHINFO9</pre>
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_HTMLPUBLISHINFO9" title="RT_HTMLPUBLISHINFO9 :: ">
-                        <span class="description"></span><pre>RT_HTMLPUBLISHINFO9</pre>
+                    <a href="#constant_RT_HTMLPUBLISHINFOATOM" title="RT_HTMLPUBLISHINFOATOM :: ">
+                        <span class="description"></span><pre>RT_HTMLPUBLISHINFOATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -764,11 +764,6 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_OUTLINETEXTPROPS9" title="RT_OUTLINETEXTPROPS9 :: ">
-                        <span class="description"></span><pre>RT_OUTLINETEXTPROPS9</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
                     <a href="#constant_RT_OUTLINETEXTPROPS10" title="RT_OUTLINETEXTPROPS10 :: ">
                         <span class="description"></span><pre>RT_OUTLINETEXTPROPS10</pre>
                     </a>
@@ -776,6 +771,11 @@
                                 <li class="constant ">
                     <a href="#constant_RT_OUTLINETEXTPROPS11" title="RT_OUTLINETEXTPROPS11 :: ">
                         <span class="description"></span><pre>RT_OUTLINETEXTPROPS11</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RT_OUTLINETEXTPROPS9" title="RT_OUTLINETEXTPROPS9 :: ">
+                        <span class="description"></span><pre>RT_OUTLINETEXTPROPS9</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -794,11 +794,6 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_PERSISTDIRECTORYATOM" title="RT_PERSISTDIRECTORYATOM :: ">
-                        <span class="description"></span><pre>RT_PERSISTDIRECTORYATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
                     <a href="#constant_RT_PARABUILD" title="RT_PARABUILD :: ">
                         <span class="description"></span><pre>RT_PARABUILD</pre>
                     </a>
@@ -806,6 +801,11 @@
                                 <li class="constant ">
                     <a href="#constant_RT_PARABUILDATOM" title="RT_PARABUILDATOM :: ">
                         <span class="description"></span><pre>RT_PARABUILDATOM</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RT_PERSISTDIRECTORYATOM" title="RT_PERSISTDIRECTORYATOM :: ">
+                        <span class="description"></span><pre>RT_PERSISTDIRECTORYATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -846,11 +846,6 @@
                                 <li class="constant ">
                     <a href="#constant_RT_RECOLORINFOATOM" title="RT_RECOLORINFOATOM :: ">
                         <span class="description"></span><pre>RT_RECOLORINFOATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
-                    <a href="#constant_RT_RTFDATETIMEMETACHARATOM" title="RT_RTFDATETIMEMETACHARATOM :: ">
-                        <span class="description"></span><pre>RT_RTFDATETIMEMETACHARATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -949,6 +944,11 @@
                     </a>
                 </li>
                                 <li class="constant ">
+                    <a href="#constant_RT_RTFDATETIMEMETACHARATOM" title="RT_RTFDATETIMEMETACHARATOM :: ">
+                        <span class="description"></span><pre>RT_RTFDATETIMEMETACHARATOM</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
                     <a href="#constant_RT_SHAPEATOM" title="RT_SHAPEATOM :: ">
                         <span class="description"></span><pre>RT_SHAPEATOM</pre>
                     </a>
@@ -984,13 +984,13 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_SLIDELISTWITHTEXT" title="RT_SLIDELISTWITHTEXT :: ">
-                        <span class="description"></span><pre>RT_SLIDELISTWITHTEXT</pre>
+                    <a href="#constant_RT_SLIDELISTTABLESIZE10ATOM" title="RT_SLIDELISTTABLESIZE10ATOM :: ">
+                        <span class="description"></span><pre>RT_SLIDELISTTABLESIZE10ATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_SLIDELISTTABLESIZE10ATOM" title="RT_SLIDELISTTABLESIZE10ATOM :: ">
-                        <span class="description"></span><pre>RT_SLIDELISTTABLESIZE10ATOM</pre>
+                    <a href="#constant_RT_SLIDELISTWITHTEXT" title="RT_SLIDELISTWITHTEXT :: ">
+                        <span class="description"></span><pre>RT_SLIDELISTWITHTEXT</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -1034,6 +1034,11 @@
                     </a>
                 </li>
                                 <li class="constant ">
+                    <a href="#constant_RT_SORTERVIEWINFO" title="RT_SORTERVIEWINFO :: ">
+                        <span class="description"></span><pre>RT_SORTERVIEWINFO</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
                     <a href="#constant_RT_SOUND" title="RT_SOUND :: ">
                         <span class="description"></span><pre>RT_SOUND</pre>
                     </a>
@@ -1054,16 +1059,6 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_SORTERVIEWINFO" title="RT_SORTERVIEWINFO :: ">
-                        <span class="description"></span><pre>RT_SORTERVIEWINFO</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
-                    <a href="#constant_RT_STYLETEXTPROPATOM" title="RT_STYLETEXTPROPATOM :: ">
-                        <span class="description"></span><pre>RT_STYLETEXTPROPATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
                     <a href="#constant_RT_STYLETEXTPROP10ATOM" title="RT_STYLETEXTPROP10ATOM :: ">
                         <span class="description"></span><pre>RT_STYLETEXTPROP10ATOM</pre>
                     </a>
@@ -1076,6 +1071,11 @@
                                 <li class="constant ">
                     <a href="#constant_RT_STYLETEXTPROP9ATOM" title="RT_STYLETEXTPROP9ATOM :: ">
                         <span class="description"></span><pre>RT_STYLETEXTPROP9ATOM</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RT_STYLETEXTPROPATOM" title="RT_STYLETEXTPROPATOM :: ">
+                        <span class="description"></span><pre>RT_STYLETEXTPROPATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -1124,11 +1124,6 @@
                     </a>
                 </li>
                                 <li class="constant ">
-                    <a href="#constant_RT_TEXTMASTERSTYLEATOM" title="RT_TEXTMASTERSTYLEATOM :: ">
-                        <span class="description"></span><pre>RT_TEXTMASTERSTYLEATOM</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
                     <a href="#constant_RT_TEXTMASTERSTYLE10ATOM" title="RT_TEXTMASTERSTYLE10ATOM :: ">
                         <span class="description"></span><pre>RT_TEXTMASTERSTYLE10ATOM</pre>
                     </a>
@@ -1136,6 +1131,11 @@
                                 <li class="constant ">
                     <a href="#constant_RT_TEXTMASTERSTYLE9ATOM" title="RT_TEXTMASTERSTYLE9ATOM :: ">
                         <span class="description"></span><pre>RT_TEXTMASTERSTYLE9ATOM</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RT_TEXTMASTERSTYLEATOM" title="RT_TEXTMASTERSTYLEATOM :: ">
+                        <span class="description"></span><pre>RT_TEXTMASTERSTYLEATOM</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -1189,6 +1189,11 @@
                     </a>
                 </li>
                                 <li class="constant ">
+                    <a href="#constant_RT_TIMECLIENTVISUALELEMENT" title="RT_TIMECLIENTVISUALELEMENT :: ">
+                        <span class="description"></span><pre>RT_TIMECLIENTVISUALELEMENT</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
                     <a href="#constant_RT_TIMECOLORBEHAVIOR" title="RT_TIMECOLORBEHAVIOR :: ">
                         <span class="description"></span><pre>RT_TIMECOLORBEHAVIOR</pre>
                     </a>
@@ -1196,11 +1201,6 @@
                                 <li class="constant ">
                     <a href="#constant_RT_TIMECOLORBEHAVIORCONTAINER" title="RT_TIMECOLORBEHAVIORCONTAINER :: ">
                         <span class="description"></span><pre>RT_TIMECOLORBEHAVIORCONTAINER</pre>
-                    </a>
-                </li>
-                                <li class="constant ">
-                    <a href="#constant_RT_TIMECLIENTVISUALELEMENT" title="RT_TIMECLIENTVISUALELEMENT :: ">
-                        <span class="description"></span><pre>RT_TIMECLIENTVISUALELEMENT</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -1437,7 +1437,16 @@
                         
                     </div>
                     <table class="table table-bordered">
-                                                                                                                                                                                                        </table>
+                                                                                    <tr>
+                                    <th>
+                                        package
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Default</p>
+                                    </td>
+                                </tr>
+                                                                                                                                                                                </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
                                                                 <a id="method_canRead"></a>
@@ -1446,6 +1455,8 @@
                             <pre>canRead(string $pFilename) : boolean</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -1472,6 +1483,7 @@
                                         <code>boolean</code><p></p>
                                                                     </div>
                             </div>
+
                         </div>
                                             <a id="method_fileSupportsUnserializePHPPowerPoint"></a>
                         <div class="element clickable method public  method_fileSupportsUnserializePHPPowerPoint" data-toggle="collapse" data-target=".method_fileSupportsUnserializePHPPowerPoint .collapse">
@@ -1479,6 +1491,8 @@
                             <pre>fileSupportsUnserializePHPPowerPoint(string $pFilename = &#039;&#039;) : boolean</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -1505,6 +1519,100 @@
                                         <code>boolean</code><p></p>
                                                                     </div>
                             </div>
+
+                        </div>
+                                            <a id="method_getInt1d"></a>
+                        <div class="element clickable method public  method_getInt1d" data-toggle="collapse" data-target=".method_getInt1d .collapse">
+                            <h2>Read 8-bit unsigned integer</h2>
+                            <pre>getInt1d(string $data, integer $pos) : integer</pre>
+                            <div class="labels">
+                                                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$data</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pos</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getInt2d"></a>
+                        <div class="element clickable method public  method_getInt2d" data-toggle="collapse" data-target=".method_getInt2d .collapse">
+                            <h2>Read 16-bit unsigned integer</h2>
+                            <pre>getInt2d(string $data, integer $pos) : integer</pre>
+                            <div class="labels">
+                                                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$data</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pos</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getInt4d"></a>
+                        <div class="element clickable method public  method_getInt4d" data-toggle="collapse" data-target=".method_getInt4d .collapse">
+                            <h2>Read 32-bit signed integer</h2>
+                            <pre>getInt4d(string $data, integer $pos) : integer</pre>
+                            <div class="labels">
+                                                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$data</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pos</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p></p>
+                                                                    </div>
+                            </div>
+
                         </div>
                                             <a id="method_load"></a>
                         <div class="element clickable method public  method_load" data-toggle="collapse" data-target=".method_load .collapse">
@@ -1512,6 +1620,8 @@
                             <pre>load(string $pFilename) : \PhpOffice\PhpPowerpoint\PhpPowerpoint</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -1538,99 +1648,7 @@
                                         <code><a href="../classes/PhpOffice.PhpPowerpoint.PhpPowerpoint.html">\PhpOffice\PhpPowerpoint\PhpPowerpoint</a></code><p></p>
                                                                     </div>
                             </div>
-                        </div>
-                                            <a id="method_loadFile"></a>
-                        <div class="element clickable method private  method_loadFile" data-toggle="collapse" data-target=".method_loadFile .collapse">
-                            <h2>Load PHPPowerPoint Serialized file</h2>
-                            <pre>loadFile(string $pFilename) : \PhpOffice\PhpPowerpoint\PhpPowerpoint</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
 
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pFilename</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.PhpPowerpoint.html">\PhpOffice\PhpPowerpoint\PhpPowerpoint</a></code><p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_loadOLE"></a>
-                        <div class="element clickable method private  method_loadOLE" data-toggle="collapse" data-target=".method_loadOLE .collapse">
-                            <h2>Read OLE Part</h2>
-                            <pre>loadOLE(string $pFilename) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pFilename</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                            
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_loadPicturesStream"></a>
-                        <div class="element clickable method private  method_loadPicturesStream" data-toggle="collapse" data-target=".method_loadPicturesStream .collapse">
-                            <h2>Stream Pictures</h2>
-                            <pre>loadPicturesStream() </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    link
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        <p><a href="http://msdn.microsoft.com/en-us/library/dd920746(v=office.12).aspx">http://msdn.microsoft.com/en-us/library/dd920746(v=office.12).aspx</a></p>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                    
-                                                                    </div>
-                            </div>
                         </div>
                                             <a id="method_loadCurrentUserStream"></a>
                         <div class="element clickable method private  method_loadCurrentUserStream" data-toggle="collapse" data-target=".method_loadCurrentUserStream .collapse">
@@ -1638,6 +1656,8 @@
                             <pre>loadCurrentUserStream() </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -1671,34 +1691,48 @@
                                     
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_loadPowerpointDocumentStream"></a>
-                        <div class="element clickable method private  method_loadPowerpointDocumentStream" data-toggle="collapse" data-target=".method_loadPowerpointDocumentStream .collapse">
-                            <h2>Stream Powerpoint Document</h2>
-                            <pre>loadPowerpointDocumentStream() </pre>
+                                            <a id="method_loadFile"></a>
+                        <div class="element clickable method private  method_loadFile" data-toggle="collapse" data-target=".method_loadFile .collapse">
+                            <h2>Load PHPPowerPoint Serialized file</h2>
+                            <pre>loadFile(string $pFilename) : \PhpOffice\PhpPowerpoint\PhpPowerpoint</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    link
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        <p><a href="http://msdn.microsoft.com/en-us/library/dd921564(v=office.12).aspx">http://msdn.microsoft.com/en-us/library/dd921564(v=office.12).aspx</a></p>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pFilename</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.PhpPowerpoint.html">\PhpOffice\PhpPowerpoint\PhpPowerpoint</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_loadOLE"></a>
+                        <div class="element clickable method private  method_loadOLE" data-toggle="collapse" data-target=".method_loadOLE .collapse">
+                            <h2>Read OLE Part</h2>
+                            <pre>loadOLE(string $pFilename) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
                                                                                     <tr>
                                                 <th>
                                                     
@@ -1708,58 +1742,15 @@
                                             </tr>
                                                                             </table>
 
-                                    
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pFilename</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
-                        </div>
-                                            <a id="method_loadUserEditAtom"></a>
-                        <div class="element clickable method private  method_loadUserEditAtom" data-toggle="collapse" data-target=".method_loadUserEditAtom .collapse">
-                            <h2>UserEditAtom</h2>
-                            <pre>loadUserEditAtom() </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
 
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    link
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        <p><a href="http://msdn.microsoft.com/en-us/library/dd945746(v=office.12).aspx">http://msdn.microsoft.com/en-us/library/dd945746(v=office.12).aspx</a></p>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                    
-                                                                    </div>
-                            </div>
                         </div>
                                             <a id="method_loadPersistDirectoryAtom"></a>
                         <div class="element clickable method private  method_loadPersistDirectoryAtom" data-toggle="collapse" data-target=".method_loadPersistDirectoryAtom .collapse">
@@ -1767,6 +1758,8 @@
                             <pre>loadPersistDirectoryAtom() </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -1809,13 +1802,16 @@
                                     
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_readRTSlide"></a>
-                        <div class="element clickable method private  method_readRTSlide" data-toggle="collapse" data-target=".method_readRTSlide .collapse">
-                            <h2>SlideContainer</h2>
-                            <pre>readRTSlide(int $pos) </pre>
+                                            <a id="method_loadPicturesStream"></a>
+                        <div class="element clickable method private  method_loadPicturesStream" data-toggle="collapse" data-target=".method_loadPicturesStream .collapse">
+                            <h2>Stream Pictures</h2>
+                            <pre>loadPicturesStream() </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -1827,7 +1823,14 @@
                                                 </th>
                                                 <td>
                                                                                                                                                                         
-                                                                                                                                                                        <p><a href="http://msdn.microsoft.com/en-us/library/dd946323(v=office.12).aspx">http://msdn.microsoft.com/en-us/library/dd946323(v=office.12).aspx</a></p>
+                                                                                                                                                                        <p><a href="http://msdn.microsoft.com/en-us/library/dd920746(v=office.12).aspx">http://msdn.microsoft.com/en-us/library/dd920746(v=office.12).aspx</a></p>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
                                                                                                     </td>
                                             </tr>
                                                                                     <tr>
@@ -1839,14 +1842,136 @@
                                             </tr>
                                                                             </table>
 
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pos</h4>
-                                                <code>int</code><p></p>
-                                            </div>
-                                                                            
+                                    
                                                                     </div>
                             </div>
+
+                        </div>
+                                            <a id="method_loadPowerpointDocumentStream"></a>
+                        <div class="element clickable method private  method_loadPowerpointDocumentStream" data-toggle="collapse" data-target=".method_loadPowerpointDocumentStream .collapse">
+                            <h2>Stream Powerpoint Document</h2>
+                            <pre>loadPowerpointDocumentStream() </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    link
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        <p><a href="http://msdn.microsoft.com/en-us/library/dd921564(v=office.12).aspx">http://msdn.microsoft.com/en-us/library/dd921564(v=office.12).aspx</a></p>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_loadRecordHeader"></a>
+                        <div class="element clickable method private  method_loadRecordHeader" data-toggle="collapse" data-target=".method_loadRecordHeader .collapse">
+                            <h2>Read a record header</h2>
+                            <pre>loadRecordHeader(string $stream, integer $pos) : \PhpOffice\PhpPowerpoint\Reader\multitype</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$stream</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pos</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>\PhpOffice\PhpPowerpoint\Reader\multitype</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_loadUserEditAtom"></a>
+                        <div class="element clickable method private  method_loadUserEditAtom" data-toggle="collapse" data-target=".method_loadUserEditAtom .collapse">
+                            <h2>UserEditAtom</h2>
+                            <pre>loadUserEditAtom() </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    link
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        <p><a href="http://msdn.microsoft.com/en-us/library/dd945746(v=office.12).aspx">http://msdn.microsoft.com/en-us/library/dd945746(v=office.12).aspx</a></p>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
                         </div>
                                             <a id="method_readRTDocument"></a>
                         <div class="element clickable method private  method_readRTDocument" data-toggle="collapse" data-target=".method_readRTDocument .collapse">
@@ -1854,6 +1979,8 @@
                             <pre>readRTDocument(integer $pos) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -1885,118 +2012,48 @@
                                                                             
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_loadRecordHeader"></a>
-                        <div class="element clickable method private  method_loadRecordHeader" data-toggle="collapse" data-target=".method_loadRecordHeader .collapse">
-                            <h2>Read a record header</h2>
-                            <pre>loadRecordHeader(string $stream, integer $pos) : \PhpOffice\PhpPowerpoint\Reader\multitype</pre>
+                                            <a id="method_readRTSlide"></a>
+                        <div class="element clickable method private  method_readRTSlide" data-toggle="collapse" data-target=".method_readRTSlide .collapse">
+                            <h2>SlideContainer</h2>
+                            <pre>readRTSlide(integer $pos) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
 
                                     <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    link
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        <p><a href="http://msdn.microsoft.com/en-us/library/dd946323(v=office.12).aspx">http://msdn.microsoft.com/en-us/library/dd946323(v=office.12).aspx</a></p>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$stream</h4>
-                                                <code>string</code><p></p>
-                                            </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$pos</h4>
                                                 <code>integer</code><p></p>
                                             </div>
                                                                             
-                                                                            <h3>Response</h3>
-                                        <code>\PhpOffice\PhpPowerpoint\Reader\multitype</code><p></p>
                                                                     </div>
                             </div>
-                        </div>
-                                            <a id="method_getInt1d"></a>
-                        <div class="element clickable method public  method_getInt1d" data-toggle="collapse" data-target=".method_getInt1d .collapse">
-                            <h2>Read 8-bit unsigned integer</h2>
-                            <pre>getInt1d(string $data, int $pos) : int</pre>
-                            <div class="labels">
-                                                                <span class="label">static</span>                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
 
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$data</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pos</h4>
-                                                <code>int</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>int</code><p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_getInt2d"></a>
-                        <div class="element clickable method public  method_getInt2d" data-toggle="collapse" data-target=".method_getInt2d .collapse">
-                            <h2>Read 16-bit unsigned integer</h2>
-                            <pre>getInt2d(string $data, int $pos) : int</pre>
-                            <div class="labels">
-                                                                <span class="label">static</span>                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$data</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pos</h4>
-                                                <code>int</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>int</code><p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_getInt4d"></a>
-                        <div class="element clickable method public  method_getInt4d" data-toggle="collapse" data-target=".method_getInt4d .collapse">
-                            <h2>Read 32-bit signed integer</h2>
-                            <pre>getInt4d(string $data, int $pos) : int</pre>
-                            <div class="labels">
-                                                                <span class="label">static</span>                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$data</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pos</h4>
-                                                <code>int</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>int</code><p></p>
-                                                                    </div>
-                            </div>
                         </div>
                     
                                             <h3><i class="icon-custom icon-constant"></i> Constants</h3>
@@ -7071,6 +7128,8 @@
                                                 </tr>
                                                                                     </table>
 
+                                                                                    <h3>Type(s)</h3>
+                                            <code></code>
                                                                             </div>
                                 </div>
                             </div>
@@ -7094,6 +7153,8 @@
                                                 </tr>
                                                                                     </table>
 
+                                                                                    <h3>Type(s)</h3>
+                                            <code></code>
                                                                             </div>
                                 </div>
                             </div>
@@ -7117,13 +7178,15 @@
                                                 </tr>
                                                                                     </table>
 
+                                                                                    <h3>Type(s)</h3>
+                                            <code></code>
                                                                             </div>
                                 </div>
                             </div>
                                                     <a id="property_offsetToCurrentEdit"> </a>
                             <div class="element clickable property  private property_offsetToCurrentEdit" data-toggle="collapse" data-target=".property_offsetToCurrentEdit .collapse">
                                 <h2>Offset (in bytes) from the beginning of the PowerPoint Document Stream to the UserEditAtom record for the most recent user edit.</h2>
-                                <pre>offsetToCurrentEdit : int</pre>
+                                <pre>offsetToCurrentEdit : integer</pre>
                                 <div class="labels">
                                                                                                         </div>
                                 <div class="row collapse">
@@ -7142,14 +7205,14 @@
                                                                                     </table>
 
                                                                                     <h3>Type(s)</h3>
-                                            <code>int</code>
+                                            <code>integer</code>
                                                                             </div>
                                 </div>
                             </div>
                                                     <a id="property_rgPersistDirEntry"> </a>
                             <div class="element clickable property  private property_rgPersistDirEntry" data-toggle="collapse" data-target=".property_rgPersistDirEntry .collapse">
                                 <h2>A structure that specifies a compressed table of sequential persist object identifiers and stream offsets to associated persist objects.</h2>
-                                <pre>rgPersistDirEntry : int[]</pre>
+                                <pre>rgPersistDirEntry : array&lt;mixed,integer&gt;</pre>
                                 <div class="labels">
                                                                                                         </div>
                                 <div class="row collapse">
@@ -7168,14 +7231,14 @@
                                                                                     </table>
 
                                                                                     <h3>Type(s)</h3>
-                                            <code>int[]</code>
+                                            <code>array&lt;mixed,integer&gt;</code>
                                                                             </div>
                                 </div>
                             </div>
                                                     <a id="property_offsetPersistDirectory"> </a>
                             <div class="element clickable property  private property_offsetPersistDirectory" data-toggle="collapse" data-target=".property_offsetPersistDirectory .collapse">
                                 <h2>Offset (in bytes) from the beginning of the PowerPoint Document Stream to the PersistDirectoryAtom record for this user edit</h2>
-                                <pre>offsetPersistDirectory : int</pre>
+                                <pre>offsetPersistDirectory : integer</pre>
                                 <div class="labels">
                                                                                                         </div>
                                 <div class="row collapse">
@@ -7194,7 +7257,7 @@
                                                                                     </table>
 
                                                                                     <h3>Type(s)</h3>
-                                            <code>int</code>
+                                            <code>integer</code>
                                                                             </div>
                                 </div>
                             </div>
@@ -7374,7 +7437,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 31 Dec 2014 14:27:24 +0000.<br/>
+            generated on Wed, 07 Jan 2015 11:54:28 +0000.<br/>
     </footer>
     </body>
 </html>

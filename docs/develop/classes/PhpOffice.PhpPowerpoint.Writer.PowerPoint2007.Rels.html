@@ -119,9 +119,21 @@
         <li class="nav-header">
             <i class="icon-custom icon-method"></i> Methods
             <ul>
-                                                                                                    <li class="method public">
-        <a href="#method_writeRelationships" title="writeRelationships :: Write relationships to XML format">
-            <span class="description">Write relationships to XML format</span><pre>writeRelationships</pre>
+                                                                                                    <li class="method public inherited">
+        <a href="#method_getParentWriter" title="getParentWriter :: Get parent WriterInterface object">
+            <span class="description">Get parent WriterInterface object</span><pre>getParentWriter</pre>
+        </a>
+    </li>
+
+                                                                                                                                                                <li class="method public inherited">
+        <a href="#method_setParentWriter" title="setParentWriter :: Set parent WriterInterface object">
+            <span class="description">Set parent WriterInterface object</span><pre>setParentWriter</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_writeChartRelationships" title="writeChartRelationships :: Write chart relationships to XML format">
+            <span class="description">Write chart relationships to XML format</span><pre>writeChartRelationships</pre>
         </a>
     </li>
 
@@ -131,9 +143,9 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_writeSlideMasterRelationships" title="writeSlideMasterRelationships :: Write slide master relationships to XML format">
-            <span class="description">Write slide master relationships to XML format</span><pre>writeSlideMasterRelationships</pre>
+                                                                                                                                                                <li class="method public">
+        <a href="#method_writeRelationships" title="writeRelationships :: Write relationships to XML format">
+            <span class="description">Write relationships to XML format</span><pre>writeRelationships</pre>
         </a>
     </li>
 
@@ -144,8 +156,8 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_writeThemeRelationships" title="writeThemeRelationships :: Write theme relationships to XML format">
-            <span class="description">Write theme relationships to XML format</span><pre>writeThemeRelationships</pre>
+        <a href="#method_writeSlideMasterRelationships" title="writeSlideMasterRelationships :: Write slide master relationships to XML format">
+            <span class="description">Write slide master relationships to XML format</span><pre>writeSlideMasterRelationships</pre>
         </a>
     </li>
 
@@ -156,42 +168,30 @@
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_writeChartRelationships" title="writeChartRelationships :: Write chart relationships to XML format">
-            <span class="description">Write chart relationships to XML format</span><pre>writeChartRelationships</pre>
+        <a href="#method_writeThemeRelationships" title="writeThemeRelationships :: Write theme relationships to XML format">
+            <span class="description">Write theme relationships to XML format</span><pre>writeThemeRelationships</pre>
         </a>
     </li>
 
-                                                                                                                                                                <li class="method public inherited">
-        <a href="#method_setParentWriter" title="setParentWriter :: Set parent WriterInterface object">
-            <span class="description">Set parent WriterInterface object</span><pre>setParentWriter</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public inherited">
-        <a href="#method_getParentWriter" title="getParentWriter :: Get parent WriterInterface object">
-            <span class="description">Get parent WriterInterface object</span><pre>getParentWriter</pre>
-        </a>
-    </li>
-
-                                                                                                        </ul>
+                                                </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                    <li class="method protected inherited">
+                                                                                                                <li class="method protected inherited">
                             <a href="#method_getXMLWriter" title="getXMLWriter :: Get XML writer">
                                 <span class="description">Get XML writer</span><pre>getXMLWriter</pre>
                             </a>
                         </li>
-                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                        <li class="method private">
+                                                                                                                                                                                                                                                                <li class="method private">
                             <a href="#method_writeRelationship" title="writeRelationship :: Write relationship">
                                 <span class="description">Write relationship</span><pre>writeRelationship</pre>
                             </a>
                         </li>
-                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -215,15 +215,26 @@
                         
                     </div>
                     <table class="table table-bordered">
-                                                                                                                                                                                                        </table>
+                                                                                    <tr>
+                                    <th>
+                                        package
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Default</p>
+                                    </td>
+                                </tr>
+                                                                                                                                                                                </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
-                                                                <a id="method_writeRelationships"></a>
-                        <div class="element clickable method public  method_writeRelationships" data-toggle="collapse" data-target=".method_writeRelationships .collapse">
-                            <h2>Write relationships to XML format</h2>
-                            <pre>writeRelationships() : string</pre>
+                                                                <a id="method_getParentWriter"></a>
+                        <div class="element clickable method public  method_getParentWriter inherited" data-toggle="collapse" data-target=".method_getParentWriter .collapse">
+                            <h2>Get parent WriterInterface object</h2>
+                            <pre>getParentWriter() : \PhpOffice\PhpPowerpoint\Writer\WriterInterface</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -249,16 +260,19 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
+                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a></code><p></p>
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_writePresentationRelationships"></a>
-                        <div class="element clickable method public  method_writePresentationRelationships" data-toggle="collapse" data-target=".method_writePresentationRelationships .collapse">
-                            <h2>Write presentation relationships to XML format</h2>
-                            <pre>writePresentationRelationships(\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\PHPPowerPoint $pPHPPowerPoint = null) : string</pre>
+                                            <a id="method_getXMLWriter"></a>
+                        <div class="element clickable method protected  method_getXMLWriter inherited" data-toggle="collapse" data-target=".method_getXMLWriter .collapse">
+                            <h2>Get XML writer</h2>
+                            <pre>getXMLWriter() </pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -266,213 +280,9 @@
                                     <table class="table">
                                                                                     <tr>
                                                 <th>
-                                                    throws
+                                                    
                                                 </th>
                                                 <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pPHPPowerPoint</h4>
-                                                <code>\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\PHPPowerPoint</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_writeSlideMasterRelationships"></a>
-                        <div class="element clickable method public  method_writeSlideMasterRelationships" data-toggle="collapse" data-target=".method_writeSlideMasterRelationships .collapse">
-                            <h2>Write slide master relationships to XML format</h2>
-                            <pre>writeSlideMasterRelationships(int $masterId = 1) : string</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$masterId</h4>
-                                                <code>int</code><p><p>Master slide id</p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_writeSlideLayoutRelationships"></a>
-                        <div class="element clickable method public  method_writeSlideLayoutRelationships" data-toggle="collapse" data-target=".method_writeSlideLayoutRelationships .collapse">
-                            <h2>Write slide layout relationships to XML format</h2>
-                            <pre>writeSlideLayoutRelationships(int $slideLayoutIndex, int $masterId = 1) : string</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$slideLayoutIndex</h4>
-                                                <code>int</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$masterId</h4>
-                                                <code>int</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_writeThemeRelationships"></a>
-                        <div class="element clickable method public  method_writeThemeRelationships" data-toggle="collapse" data-target=".method_writeThemeRelationships .collapse">
-                            <h2>Write theme relationships to XML format</h2>
-                            <pre>writeThemeRelationships(int $masterId = 1) : string</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$masterId</h4>
-                                                <code>int</code><p><p>Master slide id</p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_writeSlideRelationships"></a>
-                        <div class="element clickable method public  method_writeSlideRelationships" data-toggle="collapse" data-target=".method_writeSlideRelationships .collapse">
-                            <h2>Write slide relationships to XML format</h2>
-                            <pre>writeSlideRelationships(\PhpOffice\PhpPowerpoint\Slide $pSlide) : string</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pSlide</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Slide.html">\PhpOffice\PhpPowerpoint\Slide</a></code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_writeChartRelationships"></a>
-                        <div class="element clickable method public  method_writeChartRelationships" data-toggle="collapse" data-target=".method_writeChartRelationships .collapse">
-                            <h2>Write chart relationships to XML format</h2>
-                            <pre>writeChartRelationships(\PhpOffice\PhpPowerpoint\Shape\Chart $pChart) : string</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pChart</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.html">\PhpOffice\PhpPowerpoint\Shape\Chart</a></code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_writeRelationship"></a>
-                        <div class="element clickable method private  method_writeRelationship" data-toggle="collapse" data-target=".method_writeRelationship .collapse">
-                            <h2>Write relationship</h2>
-                            <pre>writeRelationship(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, int $pId = 1, string $pType = &#039;&#039;, string $pTarget = &#039;&#039;, string $pTargetMode = &#039;&#039;) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
                                                                                                     </td>
                                             </tr>
                                                                                     <tr>
@@ -484,30 +294,10 @@
                                             </tr>
                                                                             </table>
 
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$objWriter</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shared.XMLWriter.html">\PhpOffice\PhpPowerpoint\Shared\XMLWriter</a></code><p><p>XML Writer</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pId</h4>
-                                                <code>int</code><p><p>Relationship ID. rId will be prepended!</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pType</h4>
-                                                <code>string</code><p><p>Relationship type</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pTarget</h4>
-                                                <code>string</code><p><p>Relationship target</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pTargetMode</h4>
-                                                <code>string</code><p><p>Relationship target mode</p></p>
-                                            </div>
-                                                                            
+                                    
                                                                     </div>
                             </div>
+
                         </div>
                                             <a id="method_setParentWriter"></a>
                         <div class="element clickable method public  method_setParentWriter inherited" data-toggle="collapse" data-target=".method_setParentWriter .collapse">
@@ -515,6 +305,8 @@
                             <pre>setParentWriter(\PhpOffice\PhpPowerpoint\Writer\WriterInterface $pWriter = null) </pre>
                             <div class="labels">
                                 <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -546,13 +338,145 @@
                                                                             
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_getParentWriter"></a>
-                        <div class="element clickable method public  method_getParentWriter inherited" data-toggle="collapse" data-target=".method_getParentWriter .collapse">
-                            <h2>Get parent WriterInterface object</h2>
-                            <pre>getParentWriter() : \PhpOffice\PhpPowerpoint\Writer\WriterInterface</pre>
+                                            <a id="method_writeChartRelationships"></a>
+                        <div class="element clickable method public  method_writeChartRelationships" data-toggle="collapse" data-target=".method_writeChartRelationships .collapse">
+                            <h2>Write chart relationships to XML format</h2>
+                            <pre>writeChartRelationships(\PhpOffice\PhpPowerpoint\Shape\Chart $pChart) : string</pre>
                             <div class="labels">
-                                <span class="label">inherited</span>                                                                                                                                                            </div>
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pChart</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.html">\PhpOffice\PhpPowerpoint\Shape\Chart</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>XML Output</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writePresentationRelationships"></a>
+                        <div class="element clickable method public  method_writePresentationRelationships" data-toggle="collapse" data-target=".method_writePresentationRelationships .collapse">
+                            <h2>Write presentation relationships to XML format</h2>
+                            <pre>writePresentationRelationships(\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\PHPPowerPoint $pPHPPowerPoint = null) : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pPHPPowerPoint</h4>
+                                                <code>\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\PHPPowerPoint</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>XML Output</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeRelationship"></a>
+                        <div class="element clickable method private  method_writeRelationship" data-toggle="collapse" data-target=".method_writeRelationship .collapse">
+                            <h2>Write relationship</h2>
+                            <pre>writeRelationship(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, integer $pId = 1, string $pType = &#039;&#039;, string $pTarget = &#039;&#039;, string $pTargetMode = &#039;&#039;) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shared.XMLWriter.html">\PhpOffice\PhpPowerpoint\Shared\XMLWriter</a></code><p><p>XML Writer</p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pId</h4>
+                                                <code>integer</code><p><p>Relationship ID. rId will be prepended!</p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pType</h4>
+                                                <code>string</code><p><p>Relationship type</p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pTarget</h4>
+                                                <code>string</code><p><p>Relationship target</p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pTargetMode</h4>
+                                                <code>string</code><p><p>Relationship target mode</p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeRelationships"></a>
+                        <div class="element clickable method public  method_writeRelationships" data-toggle="collapse" data-target=".method_writeRelationships .collapse">
+                            <h2>Write relationships to XML format</h2>
+                            <pre>writeRelationships() : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -578,16 +502,19 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a></code><p></p>
+                                        <code>string</code><p><p>XML Output</p></p>
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_getXMLWriter"></a>
-                        <div class="element clickable method protected  method_getXMLWriter inherited" data-toggle="collapse" data-target=".method_getXMLWriter .collapse">
-                            <h2>Get XML writer</h2>
-                            <pre>getXMLWriter() </pre>
+                                            <a id="method_writeSlideLayoutRelationships"></a>
+                        <div class="element clickable method public  method_writeSlideLayoutRelationships" data-toggle="collapse" data-target=".method_writeSlideLayoutRelationships .collapse">
+                            <h2>Write slide layout relationships to XML format</h2>
+                            <pre>writeSlideLayoutRelationships(integer $slideLayoutIndex, integer $masterId = 1) : string</pre>
                             <div class="labels">
-                                <span class="label">inherited</span>                                                                                                                                                            </div>
+                                                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -595,23 +522,138 @@
                                     <table class="table">
                                                                                     <tr>
                                                 <th>
-                                                    
+                                                    throws
                                                 </th>
                                                 <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
                                                                                                     </td>
                                             </tr>
                                                                             </table>
 
-                                    
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$slideLayoutIndex</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$masterId</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>XML Output</p></p>
                                                                     </div>
                             </div>
+
+                        </div>
+                                            <a id="method_writeSlideMasterRelationships"></a>
+                        <div class="element clickable method public  method_writeSlideMasterRelationships" data-toggle="collapse" data-target=".method_writeSlideMasterRelationships .collapse">
+                            <h2>Write slide master relationships to XML format</h2>
+                            <pre>writeSlideMasterRelationships(integer $masterId = 1) : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$masterId</h4>
+                                                <code>integer</code><p><p>Master slide id</p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>XML Output</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeSlideRelationships"></a>
+                        <div class="element clickable method public  method_writeSlideRelationships" data-toggle="collapse" data-target=".method_writeSlideRelationships .collapse">
+                            <h2>Write slide relationships to XML format</h2>
+                            <pre>writeSlideRelationships(\PhpOffice\PhpPowerpoint\Slide $pSlide) : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pSlide</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Slide.html">\PhpOffice\PhpPowerpoint\Slide</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>XML Output</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeThemeRelationships"></a>
+                        <div class="element clickable method public  method_writeThemeRelationships" data-toggle="collapse" data-target=".method_writeThemeRelationships .collapse">
+                            <h2>Write theme relationships to XML format</h2>
+                            <pre>writeThemeRelationships(integer $masterId = 1) : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$masterId</h4>
+                                                <code>integer</code><p><p>Master slide id</p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>XML Output</p></p>
+                                                                    </div>
+                            </div>
+
                         </div>
                     
                     
@@ -662,7 +704,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 31 Dec 2014 14:27:25 +0000.<br/>
+            generated on Wed, 07 Jan 2015 11:54:25 +0000.<br/>
     </footer>
     </body>
 </html>

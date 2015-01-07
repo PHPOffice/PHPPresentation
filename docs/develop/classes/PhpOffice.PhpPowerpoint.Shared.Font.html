@@ -120,6 +120,12 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
+        <a href="#method_centimeterSizeToPixels" title="centimeterSizeToPixels :: Calculate an (approximate) pixel size, based on centimeter size">
+            <span class="description">Calculate an (approximate) pixel size, based on centimeter size</span><pre>centimeterSizeToPixels</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_fontSizeToPixels" title="fontSizeToPixels :: Calculate an (approximate) pixel size, based on a font points size">
             <span class="description">Calculate an (approximate) pixel size, based on a font points size</span><pre>fontSizeToPixels</pre>
         </a>
@@ -128,12 +134,6 @@
                                                                                                         <li class="method public">
         <a href="#method_inchSizeToPixels" title="inchSizeToPixels :: Calculate an (approximate) pixel size, based on inch size">
             <span class="description">Calculate an (approximate) pixel size, based on inch size</span><pre>inchSizeToPixels</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_centimeterSizeToPixels" title="centimeterSizeToPixels :: Calculate an (approximate) pixel size, based on centimeter size">
-            <span class="description">Calculate an (approximate) pixel size, based on centimeter size</span><pre>centimeterSizeToPixels</pre>
         </a>
     </li>
 
@@ -168,63 +168,26 @@
                         
                     </div>
                     <table class="table table-bordered">
-                                                                                                                                                                                                        </table>
+                                                                                    <tr>
+                                    <th>
+                                        package
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Default</p>
+                                    </td>
+                                </tr>
+                                                                                                                                                                                </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
-                                                                <a id="method_fontSizeToPixels"></a>
-                        <div class="element clickable method public  method_fontSizeToPixels" data-toggle="collapse" data-target=".method_fontSizeToPixels .collapse">
-                            <h2>Calculate an (approximate) pixel size, based on a font points size</h2>
-                            <pre>fontSizeToPixels(int $fontSizeInPoints = 12) : int</pre>
-                            <div class="labels">
-                                                                <span class="label">static</span>                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$fontSizeInPoints</h4>
-                                                <code>int</code><p><p>Font size (in points)</p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>int</code><p><p>Font size (in pixels)</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_inchSizeToPixels"></a>
-                        <div class="element clickable method public  method_inchSizeToPixels" data-toggle="collapse" data-target=".method_inchSizeToPixels .collapse">
-                            <h2>Calculate an (approximate) pixel size, based on inch size</h2>
-                            <pre>inchSizeToPixels(int $sizeInInch = 1) : int</pre>
-                            <div class="labels">
-                                                                <span class="label">static</span>                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$sizeInInch</h4>
-                                                <code>int</code><p><p>Font size (in inch)</p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>int</code><p><p>Size (in pixels)</p></p>
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_centimeterSizeToPixels"></a>
+                                                                <a id="method_centimeterSizeToPixels"></a>
                         <div class="element clickable method public  method_centimeterSizeToPixels" data-toggle="collapse" data-target=".method_centimeterSizeToPixels .collapse">
                             <h2>Calculate an (approximate) pixel size, based on centimeter size</h2>
-                            <pre>centimeterSizeToPixels(int $sizeInCm = 1) : int</pre>
+                            <pre>centimeterSizeToPixels(integer $sizeInCm = 1) : integer</pre>
                             <div class="labels">
                                                                 <span class="label">static</span>                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -235,13 +198,68 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$sizeInCm</h4>
-                                                <code>int</code><p><p>Font size (in centimeters)</p></p>
+                                                <code>integer</code><p><p>Font size (in centimeters)</p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>int</code><p><p>Size (in pixels)</p></p>
+                                        <code>integer</code><p><p>Size (in pixels)</p></p>
                                                                     </div>
                             </div>
+
+                        </div>
+                                            <a id="method_fontSizeToPixels"></a>
+                        <div class="element clickable method public  method_fontSizeToPixels" data-toggle="collapse" data-target=".method_fontSizeToPixels .collapse">
+                            <h2>Calculate an (approximate) pixel size, based on a font points size</h2>
+                            <pre>fontSizeToPixels(integer $fontSizeInPoints = 12) : integer</pre>
+                            <div class="labels">
+                                                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$fontSizeInPoints</h4>
+                                                <code>integer</code><p><p>Font size (in points)</p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p><p>Font size (in pixels)</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_inchSizeToPixels"></a>
+                        <div class="element clickable method public  method_inchSizeToPixels" data-toggle="collapse" data-target=".method_inchSizeToPixels .collapse">
+                            <h2>Calculate an (approximate) pixel size, based on inch size</h2>
+                            <pre>inchSizeToPixels(integer $sizeInInch = 1) : integer</pre>
+                            <div class="labels">
+                                                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$sizeInInch</h4>
+                                                <code>integer</code><p><p>Font size (in inch)</p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>integer</code><p><p>Size (in pixels)</p></p>
+                                                                    </div>
+                            </div>
+
                         </div>
                     
                     
@@ -265,7 +283,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 31 Dec 2014 14:27:24 +0000.<br/>
+            generated on Wed, 07 Jan 2015 11:54:30 +0000.<br/>
     </footer>
     </body>
 </html>

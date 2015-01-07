@@ -177,7 +177,7 @@ div.element.private
     border-left-color: red;
 }
 
-div.element.class, div.element.interface
+div.element.class, div.element.interface, div.element.trait
 {
     border-left-color: #e0e0e0;
 }
@@ -359,6 +359,9 @@ i.icon-class     { background-image: url('../img/icons/class.png'); }
 
 div.element.interface h1,
 i.icon-interface { background-image: url('../img/icons/interface.png'); }
+
+div.element.trait h1,
+i.icon-trait { background-image: url('../img/icons/trait.png'); }
 
 div.element.property h1,
 i.icon-property  { background-image: url('../img/icons/property.png'); }
