@@ -410,7 +410,6 @@ class Rels extends AbstractPart
                 }
 
                 if ($iterator->current() instanceof Group) {
-
                     $iterator2 = $pSlide->getShapeCollection()->getIterator();
                     while ($iterator2->valid()) {
                         // Hyperlink on shape

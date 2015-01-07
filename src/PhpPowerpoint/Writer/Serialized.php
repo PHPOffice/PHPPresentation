@@ -38,7 +38,7 @@ class Serialized implements WriterInterface
      *
      * @param \PhpOffice\PhpPowerpoint\PhpPowerpoint $pPHPPowerPoint
      */
-    public function __construct (PhpPowerpoint $pPHPPowerPoint = null)
+    public function __construct(PhpPowerpoint $pPHPPowerPoint = null)
     {
         // Assign PHPPowerPoint
         $this->setPHPPowerPoint($pPHPPowerPoint);
@@ -50,7 +50,7 @@ class Serialized implements WriterInterface
      * @param  string    $pFilename
      * @throws \Exception
      */
-    public function save ($pFilename)
+    public function save($pFilename)
     {
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty.");
@@ -95,7 +95,7 @@ class Serialized implements WriterInterface
      * @return PHPPowerPoint
      * @throws \Exception
      */
-    public function getPHPPowerPoint ()
+    public function getPHPPowerPoint()
     {
         if (!is_null($this->presentation)) {
             return $this->presentation;
@@ -111,7 +111,7 @@ class Serialized implements WriterInterface
      * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Writer\Serialized
      */
-    public function setPHPPowerPoint (PhpPowerpoint $pPHPPowerPoint = null)
+    public function setPHPPowerPoint(PhpPowerpoint $pPHPPowerPoint = null)
     {
         $this->presentation = $pPHPPowerPoint;
 
@@ -126,7 +126,7 @@ class Serialized implements WriterInterface
      * @return string        XML Output
      * @throws \Exception
      */
-    private function writeSerialized (PhpPowerpoint $pPHPPowerPoint = null, $pFilename = '')
+    private function writeSerialized(PhpPowerpoint $pPHPPowerPoint = null, $pFilename = '')
     {
         // Clone $pPHPPowerPoint
         $pPHPPowerPoint = clone $pPHPPowerPoint;

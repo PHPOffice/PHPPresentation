@@ -166,7 +166,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return int
      */
-    public function getOffsetX ()
+    public function getOffsetX()
     {
         if ($this->offsetX === null) {
             $offsets = GeometryCalculator::calculateOffsets($this);
@@ -181,7 +181,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return int
      */
-    public function getOffsetY ()
+    public function getOffsetY()
     {
         if ($this->offsetY === null) {
             $offsets = GeometryCalculator::calculateOffsets($this);
@@ -196,7 +196,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return int
      */
-    public function getExtentX ()
+    public function getExtentX()
     {
         if ($this->extentX === null) {
             $extents = GeometryCalculator::calculateExtents($this);
@@ -211,7 +211,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return int
      */
-    public function getExtentY ()
+    public function getExtentY()
     {
         if ($this->extentY === null) {
             $extents = GeometryCalculator::calculateExtents($this);

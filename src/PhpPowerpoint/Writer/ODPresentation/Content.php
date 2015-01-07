@@ -511,7 +511,6 @@ class Content extends AbstractPart
     }
 
     /**
-     * 
      * @param XMLWriter $objWriter
      * @param Line $shape
      */

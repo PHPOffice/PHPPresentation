@@ -428,7 +428,7 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      * @param \PhpOffice\PhpPowerpoint\Slide\Note $note
      * @return \PhpOffice\PhpPowerpoint\Slide
      */
-    public function setNote (Note $note = null)
+    public function setNote(Note $note = null)
     {
         $this->slideNote = (is_null($note) ? new Note() : $note);
         $this->slideNote->setParent($this);

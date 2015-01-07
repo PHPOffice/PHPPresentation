@@ -681,7 +681,7 @@ class PowerPoint97 implements ReaderInterface
     }
     
     /**
-     * PersistDirectoryAtom 
+     * PersistDirectoryAtom
      * @link http://msdn.microsoft.com/en-us/library/dd952680(v=office.12).aspx
      * @throws \Exception
      */
