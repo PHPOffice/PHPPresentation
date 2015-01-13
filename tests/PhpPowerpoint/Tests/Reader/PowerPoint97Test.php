@@ -61,7 +61,7 @@ class PowerPoint97Test extends \PHPUnit_Framework_TestCase
     
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized:
+     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPowerpoint\Reader\PowerPoint97:
      */
     public function testLoadFileBadFormat()
     {

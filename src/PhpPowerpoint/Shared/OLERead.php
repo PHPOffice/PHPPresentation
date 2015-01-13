@@ -261,44 +261,44 @@ class OLERead
             $size = self::getInt4d($data, self::SIZE_POS);
 
             $name = str_replace("\x00", "", substr($data, 0, $nameSize));
-
-
-            $this->props[] = array (
-                'name' => $name,
-                'type' => $type,
-                'startBlock' => $startBlock,
-                'size' => $size);
-
-            // tmp helper to simplify checks
-            $upName = strtoupper($name);
-
-            switch ($upName){
-                case 'ROOT ENTRY':
-                case 'R':
-                    $this->rootentry = count($this->props) - 1;
-                    break;
-                case chr(1).'COMPOBJ':
-                    break;
-                case chr(1).'OLE':
-                    break;
-                case chr(5).'SUMMARYINFORMATION':
-                    $this->summaryInformation = count($this->props) - 1;
-                    break;
-                case chr(5).'DOCUMENTSUMMARYINFORMATION':
-                    $this->docSummaryInfos = count($this->props) - 1;
-                    break;
-                case 'CURRENT USER':
-                    $this->currentUser = count($this->props) - 1;
-                    break;
-                case 'PICTURES':
-                    $this->pictures = count($this->props) - 1;
-                    break;
-                case 'POWERPOINT DOCUMENT':
-                    $this->powerpointDocument = count($this->props) - 1;
-                    break;
-                default:
-                    throw new \Exception('OLE Block Not defined: $upName : '.$upName. ' - $name : "'.$name.'"');
-                    break;
+            if($size > 0){
+                $this->props[] = array (
+                        'name' => $name,
+                        'type' => $type,
+                        'startBlock' => $startBlock,
+                        'size' => $size);
+                
+                // tmp helper to simplify checks
+                $upName = strtoupper($name);
+                
+                switch ($upName){
+                    case 'ROOT ENTRY':
+                    case 'R':
+                        $this->rootentry = count($this->props) - 1;
+                        break;
+                    case chr(1).'COMPOBJ':
+                        break;
+                    case chr(1).'OLE':
+                        break;
+                    case chr(5).'SUMMARYINFORMATION':
+                        $this->summaryInformation = count($this->props) - 1;
+                        break;
+                    case chr(5).'DOCUMENTSUMMARYINFORMATION':
+                        $this->docSummaryInfos = count($this->props) - 1;
+                        break;
+                    case 'CURRENT USER':
+                        $this->currentUser = count($this->props) - 1;
+                        break;
+                    case 'PICTURES':
+                        $this->pictures = count($this->props) - 1;
+                        break;
+                    case 'POWERPOINT DOCUMENT':
+                        $this->powerpointDocument = count($this->props) - 1;
+                        break;
+                    default:
+                        throw new \Exception('OLE Block Not defined: $upName : '.$upName. ' - $name : "'.$name.'"');
+                        break;
+                }
             }
 
             $offset += self::PROPERTY_STORAGE_BLOCK_SIZE;

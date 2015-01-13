@@ -395,7 +395,7 @@ class PowerPoint97 implements ReaderInterface
 
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePHPPowerPoint($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPowerpoint\Reader\PowerPoint97: " . $pFilename . ".");
         }
 
         return $this->loadFile($pFilename);
@@ -752,16 +752,15 @@ class PowerPoint97 implements ReaderInterface
         // *** slideShowSlideInfoAtom (24 bytes)
         $pos += 24;
         
-        // perSlideHFContainer (variable)
+        // perSlideHFContainer (variable) : optional 
         // perSlideHFContainer > rh
         $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
-        $pos += 8;
-        if ($rHeader['recVer'] != 0xF || $rHeader['recInstance'] != 0x000 || $rHeader['recType'] != self::RT_HEADERSFOOTERS) {
-            throw new \Exception('File PowerPoint 97 in error (Location : RTSlide > perSlideHFContainer > RT_HeadersFooters).');
+        if ($rHeader['recVer'] == 0xF && $rHeader['recInstance'] == 0x000 && $rHeader['recType'] == self::RT_HEADERSFOOTERS) {
+            $pos += 8;
+            $pos += $rHeader['recLen'];
         }
-        $pos += $rHeader['recLen'];
         
-        // *** rtSlideSyncInfo12 (variable)
+        // *** rtSlideSyncInfo12 (variable) : optional 
         // *** drawing (variable)
         // drawing > rh
         $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
@@ -1125,8 +1124,21 @@ class PowerPoint97 implements ReaderInterface
                                     // Shape Boolean Properties
                                     //@link : http://msdn.microsoft.com/en-us/library/dd951345(v=office.12).aspx
                                     break;
+                                case 0x0380:
+                                    // Group Shape Property Set : wzName
+                                    //@link : http://msdn.microsoft.com/en-us/library/dd950681(v=office.12).aspx
+                                    if ($opt['fComplex'] == 1) {
+                                        $pos += $opt['op'];
+                                        $rHeader['recLen'] -= $opt['op'];
+                                        $shapePrimaryOptions['recLen'] -= $opt['op'];
+                                    }
+                                    break;
+                                case 0x03BF:
+                                    // Group Shape Property Set : Group Shape Boolean Properties
+                                    //@link : http://msdn.microsoft.com/en-us/library/dd949807(v=office.12).aspx
+                                    break;
                                 default:
-                                    throw new \Exception('Feature not implemented (l.'.__LINE__.' : '.dechex($opt['opid'].')'));
+                                    throw new \Exception('Feature not implemented (l.'.__LINE__.' : 0x'.dechex($opt['opid']).')');
                             }
                         }
                         $pos += $shapePrimaryOptions['recLen'];
