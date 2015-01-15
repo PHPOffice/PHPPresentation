@@ -506,6 +506,19 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
     
+    public function testRichTextHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->getHyperLink()->setUrl('http://www.google.fr');
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp//a:hlinkClick';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+    }
+    
     public function testRichTextUpright()
     {
         $phpPowerPoint = new PhpPowerpoint();

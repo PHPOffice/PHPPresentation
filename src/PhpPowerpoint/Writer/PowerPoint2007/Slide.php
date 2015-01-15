@@ -470,6 +470,11 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', '');
 
+        // Hyperlink
+        if ($shape->hasHyperlink()) {
+            $this->writeHyperlink($objWriter, $shape);
+        }
+        
         $objWriter->endElement();
 
         // p:cNvSpPr
