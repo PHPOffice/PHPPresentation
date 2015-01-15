@@ -752,7 +752,7 @@ class PowerPoint97 implements ReaderInterface
         // *** slideShowSlideInfoAtom (24 bytes)
         $pos += 24;
         
-        // perSlideHFContainer (variable) : optional 
+        // perSlideHFContainer (variable) : optional
         // perSlideHFContainer > rh
         $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
         if ($rHeader['recVer'] == 0xF && $rHeader['recInstance'] == 0x000 && $rHeader['recType'] == self::RT_HEADERSFOOTERS) {
@@ -760,7 +760,7 @@ class PowerPoint97 implements ReaderInterface
             $pos += $rHeader['recLen'];
         }
         
-        // *** rtSlideSyncInfo12 (variable) : optional 
+        // *** rtSlideSyncInfo12 (variable) : optional
         // *** drawing (variable)
         // drawing > rh
         $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);

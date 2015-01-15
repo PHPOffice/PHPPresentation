@@ -261,7 +261,7 @@ class OLERead
             $size = self::getInt4d($data, self::SIZE_POS);
 
             $name = str_replace("\x00", "", substr($data, 0, $nameSize));
-            if($size > 0){
+            if ($size > 0) {
                 $this->props[] = array (
                         'name' => $name,
                         'type' => $type,
