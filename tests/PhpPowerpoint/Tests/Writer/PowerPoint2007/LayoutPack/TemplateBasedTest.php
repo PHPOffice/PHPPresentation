@@ -32,7 +32,6 @@ class TemplateBasedTest extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
-
         $templateBased = new TemplateBased($file);
         $layouts = $templateBased->getLayouts();
 
@@ -41,5 +40,57 @@ class TemplateBasedTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($expectedSlideLayoutId, $layoutId);
             ++$expectedSlideLayoutId;
         }
+
+        $this->markTestIncomplete(
+          'This test has not been fully implemented yet.'
+        );
+    }
+
+    public function testFindLayout()
+    {
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
+        $templateBased = new TemplateBased($file);
+        $layouts = $templateBased->getLayouts();
+
+        foreach ($layouts as $layoutId => $layout) {
+            $foundLayout = $templateBased->findLayout($layout['name']);
+            $this->assertEquals($layout, $foundLayout);
+        }
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testFindLayoutException()
+    {
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
+        $templateBased = new TemplateBased($file);
+        $name = 'Invalid';
+        $templateBased->findLayout($name);
+    }
+
+    public function testFindLayoutIndex()
+    {
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
+        $templateBased = new TemplateBased($file);
+        $layouts = $templateBased->getLayouts();
+
+        $expectedSlideLayoutId = 1;
+        foreach ($layouts as $layoutId => $layout) {
+            $layoutIndex = $templateBased->findLayoutIndex($layout['name']);
+            $this->assertEquals($expectedSlideLayoutId, ($layoutIndex + 1));
+            ++$expectedSlideLayoutId;
+        }
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testFindLayoutIndexException()
+    {
+        $file = PHPPOWERPOINT_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
+        $templateBased = new TemplateBased($file);
+        $name = 'Invalid';
+        $templateBased->findLayoutIndex($name);
     }
 }
