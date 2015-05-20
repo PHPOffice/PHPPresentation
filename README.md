@@ -1,5 +1,7 @@
 # ![PHPPowerPoint](https://github.com/PHPOffice/PHPPowerPoint/raw/master/docs/images/PHPPowerPointLogo.png "PHPPowerPoint")
 
+[![Join the chat at https://gitter.im/PHPOffice/PHPPowerPoint](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PHPOffice/PHPPowerPoint?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Latest Stable Version](https://poser.pugx.org/phpoffice/phppowerpoint/v/stable.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
 [![Build Status](https://travis-ci.org/PHPOffice/PHPPowerPoint.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPowerPoint)
 [![Code Quality](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/quality-score.png?s=b5997ce59ac2816b4514f3a38de9900f6d492c1d)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
