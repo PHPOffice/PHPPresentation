@@ -153,6 +153,8 @@ class TemplateBased extends AbstractLayoutPack
             "cmpMaster"
         ));
 
+        ksort($this->layouts);
+
         // Close package
         $package->close();
     }
