@@ -6,6 +6,7 @@
 [![Code Coverage](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/coverage.png?s=742a98745725c562955440edc8d2c39d7ff5ae25)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
 [![Total Downloads](https://poser.pugx.org/phpoffice/phppowerpoint/downloads.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
 [![License](https://poser.pugx.org/phpoffice/phppowerpoint/license.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
+[![Join the chat at https://gitter.im/PHPOffice/PHPPowerPoint](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PHPOffice/PHPPowerPoint?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 PHPPowerPoint is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF). 
