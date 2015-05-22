@@ -32,7 +32,7 @@ class TemplateBasedTest extends \PHPUnit_Framework_TestCase
         $templateBased = new TemplateBased($file);
         $layouts = $templateBased->getLayouts();
 
-        foreach ($layouts as $layoutId => $layout) {
+        foreach ($layouts as $layout) {
             $foundLayout = $templateBased->findLayout($layout['name']);
             $this->assertEquals($layout, $foundLayout);
         }
@@ -55,7 +55,7 @@ class TemplateBasedTest extends \PHPUnit_Framework_TestCase
         $templateBased = new TemplateBased($file);
         $layouts = $templateBased->getLayouts();
 
-        foreach ($layouts as $layoutId => $layout) {
+        foreach ($layouts as $layout) {
             $foundLayoutId = $templateBased->findLayoutId($layout['name']);
             $this->assertEquals($layout['id'], $foundLayoutId);
         }

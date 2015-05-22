@@ -15,8 +15,8 @@
 - PowerPoint2007 Writer : Fill don't work for RichTextShapes - @Progi1984 GH-61
 - PowerPoint2007 Writer : Border don't work for RichTextShapes - @Progi1984 GH-61
 - PowerPoint2007 Writer : Hyperlink in table doesn't work - @Progi1984 GH-70
-- ODPresentation Writer : Hyperlink in table doesn't work - @Progi1984 GH-70
 - PowerPoint2007 Writer : AutoFitNormal works with options (fontScale & lineSpacingReduction) - @Progi1984 @desigennaro GH-71
+- Refactor findLayoutIndex to findLayoutId where it assumes the slideLayout order was sorted. IMPROVED: unit tests - @kenliau GH-95
 
 ### Miscellaneous
 
