@@ -283,9 +283,9 @@ class Rels extends AbstractPart
         $parentWriter = $this->getParentWriter();
         if ($parentWriter instanceof PowerPoint2007) {
             $layoutPack  = $parentWriter->getLayoutPack();
-            $layoutIndex = $layoutPack->findlayoutIndex($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
+            $layoutId = $layoutPack->findlayoutId($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
     
-            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . ($layoutIndex + 1) . '.xml');
+            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
         }
 
         // Write drawing relationships?

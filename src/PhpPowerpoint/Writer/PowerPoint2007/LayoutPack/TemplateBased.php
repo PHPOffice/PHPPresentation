@@ -97,9 +97,10 @@ class TemplateBased extends AbstractLayoutPack
                                 // Found slide layout!
                                 $layoutId  = str_replace('slideLayout', '', basename($masterRel["Target"], '.xml'));
                                 $layout    = array(
-                                    'masterid' => $slideMasterId,
-                                    'name' => '-unknown-',
-                                    'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
+                                    'id'        => $layoutId,
+                                    'masterid'  => $slideMasterId,
+                                    'name'      => '-unknown-',
+                                    'body'      => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
                                 );
                                 if (utf8_encode(utf8_decode($layout['body'])) == $layout['body']) {
                                     $layoutXml = simplexml_load_string($layout['body']);
