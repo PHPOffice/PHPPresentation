@@ -205,4 +205,31 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $this->assertEquals('chart:scatter', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
     }
+    
+    public function testLegend()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+        
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oLine);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+    
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+    }
 }

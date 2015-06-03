@@ -12,6 +12,7 @@
 
 ### Bugfix
 - PSR-0 via composer broken - @Progi1984 GH-51
+- ODPresentation Writer : Title in Legend in chart doesn't displayed - @Progi1984 GH-79
 - PowerPoint2007 Writer : Fill don't work for RichTextShapes - @Progi1984 GH-61
 - PowerPoint2007 Writer : Border don't work for RichTextShapes - @Progi1984 GH-61
 - PowerPoint2007 Writer : Hyperlink in table doesn't work - @Progi1984 GH-70

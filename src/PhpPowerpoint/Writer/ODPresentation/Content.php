@@ -328,7 +328,7 @@ class Content extends AbstractPart
         $objWriter->writeElement('text:p');
         $objWriter->endElement();
         
-        if ($shape->getHyperlink()) {
+        if ($shape->hasHyperlink()) {
             // office:event-listeners
             $objWriter->startElement('office:event-listeners');
             // presentation:event-listener
@@ -574,7 +574,7 @@ class Content extends AbstractPart
                             if ($shapeRichText instanceof Run) {
                                 $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getFont()->getHashCode());
                             }
-                            if ($shapeRichText->hasHyperlink() == true && $shapeRichText->getHyperlink()->getUrl() != '') {
+                            if ($shapeRichText->hasHyperlink()) {
                                 // text:a
                                 $objWriter->startElement('text:a');
                                 $objWriter->writeAttribute('xlink:href', $shapeRichText->getHyperlink()->getUrl());

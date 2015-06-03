@@ -623,6 +623,19 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->endElement();
         // > table:table-header-columns
         $this->xmlContent->endElement();
+        
+        // table:table-columns
+        $this->xmlContent->startElement('table:table-columns');
+        // table:table-column
+        $this->xmlContent->startElement('table:table-column');
+        if (!empty($this->arrayData)) {
+            $rowFirst = reset($this->arrayData);
+            $this->xmlContent->writeAttribute('table:number-columns-repeated', count($rowFirst) - 1);
+        }
+        // > table:table-column
+        $this->xmlContent->endElement();
+        // > table:table-columns
+        $this->xmlContent->endElement();
     
         // table:table-header-rows
         $this->xmlContent->startElement('table:table-header-rows');
@@ -633,7 +646,9 @@ class ObjectsChart extends AbstractPart
             foreach ($rowFirst as $key => $cell) {
                 // table:table-cell
                 $this->xmlContent->startElement('table:table-cell');
-                $this->xmlContent->writeAttribute('office:value', 'string');
+                if (isset($this->arrayTitle[$key - 1])) {
+                    $this->xmlContent->writeAttribute('office:value-type', 'string');
+                }
                 // text:p
                 $this->xmlContent->startElement('text:p');
                 if (isset($this->arrayTitle[$key - 1])) {
