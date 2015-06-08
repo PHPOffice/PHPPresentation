@@ -159,7 +159,7 @@ class ObjectsChart extends AbstractPart
         $this->writeChartStyle($chart);
         
         // Axis
-        $this->writeAxisStyle();
+        $this->writeAxisStyle($chart);
         
         // Series
         $this->numSeries = 0;
@@ -267,8 +267,10 @@ class ObjectsChart extends AbstractPart
         }
     }
     
-    private function writeAxisStyle()
+    private function writeAxisStyle(Chart $chart)
     {
+        $chartType = $chart->getPlotArea()->getType();
+        
         // AxisX
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -277,6 +279,9 @@ class ObjectsChart extends AbstractPart
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
+        if ($chartType instanceof Pie3D) {
+            $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
+        }
         // > style:chart-properties
         $this->xmlContent->endElement();
         // > style:style
@@ -290,6 +295,9 @@ class ObjectsChart extends AbstractPart
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
+        if ($chartType instanceof Pie3D) {
+            $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
+        }
         // > style:chart-properties
         $this->xmlContent->endElement();
         // > style:style
@@ -555,7 +563,7 @@ class ObjectsChart extends AbstractPart
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
-        $this->xmlContent->writeAttribute('chart:label-position', 'right');
+        $this->xmlContent->writeAttribute('chart:label-position', 'center');
         if ($chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:pie-offset', $chartType->getExplosion());
         }

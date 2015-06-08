@@ -161,6 +161,14 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
     }
     
     public function testChartPie3DExplosion()
