@@ -267,6 +267,10 @@ class ObjectsChart extends AbstractPart
         }
     }
     
+    /**
+     * @param Chart $chart
+     * @todo Set function in \PhpPowerpoint\Shape\Chart\Axis for defining width and color of the axis
+     */
     private function writeAxisStyle(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
@@ -279,10 +283,18 @@ class ObjectsChart extends AbstractPart
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
+        $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
+        $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
         if ($chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
         // > style:chart-properties
+        $this->xmlContent->endElement();
+        // style:graphic-properties
+        $this->xmlContent->startElement('style:graphic-properties');
+        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
+        // > style:graphic-properties
         $this->xmlContent->endElement();
         // > style:style
         $this->xmlContent->endElement();
@@ -295,10 +307,18 @@ class ObjectsChart extends AbstractPart
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
+        $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
+        $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
         if ($chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
         // > style:chart-properties
+        $this->xmlContent->endElement();
+        // style:graphic-properties
+        $this->xmlContent->startElement('style:graphic-properties');
+        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
+        // > style:graphic-properties
         $this->xmlContent->endElement();
         // > style:style
         $this->xmlContent->endElement();

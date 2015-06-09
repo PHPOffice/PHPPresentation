@@ -135,6 +135,22 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:body/office:chart/chart:chart';
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $this->assertEquals('chart:line', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('false', $pres->getElementAttribute($element, 'chart:tick-marks-major-inner', 'Object 1/content.xml'));
+        $this->assertEquals('false', $pres->getElementAttribute($element, 'chart:tick-marks-major-outer', 'Object 1/content.xml'));
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('0.026cm', $pres->getElementAttribute($element, 'svg:stroke-width', 'Object 1/content.xml'));
+        $this->assertEquals('#878787', $pres->getElementAttribute($element, 'svg:stroke-color', 'Object 1/content.xml'));
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('false', $pres->getElementAttribute($element, 'chart:tick-marks-major-inner', 'Object 1/content.xml'));
+        $this->assertEquals('false', $pres->getElementAttribute($element, 'chart:tick-marks-major-outer', 'Object 1/content.xml'));
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('0.026cm', $pres->getElementAttribute($element, 'svg:stroke-width', 'Object 1/content.xml'));
+        $this->assertEquals('#878787', $pres->getElementAttribute($element, 'svg:stroke-color', 'Object 1/content.xml'));
     }
     
     public function testChartPie3D()

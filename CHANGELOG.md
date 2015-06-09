@@ -19,6 +19,7 @@
 - Refactor findLayoutIndex to findLayoutId where it assumes the slideLayout order was sorted. IMPROVED: unit tests - @kenliau GH-95
 - ODPresentation Writer : Title in Legend in chart doesn't displayed - @Progi1984 GH-79
 - ODPresentation Writer : Segments in Pie3D Chart are now in clockwise order, as in PowerPoint2007 Writer - @Progi1984 GH-79
+- ODPresentation Writer : Axis in Line Chart have not tick marks displayed, as in PowerPoint2007 Writer - @Progi1984 GH-79
 
 ### Miscellaneous
 
