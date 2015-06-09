@@ -24,6 +24,7 @@ use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles
@@ -111,6 +112,8 @@ class Styles extends AbstractPart
                     $this->writeTableStyle($objWriter, $shape);
                 } elseif ($shape instanceof Group) {
                     $this->writeGroupStyle($objWriter, $shape);
+                } elseif ($shape instanceof RichText) {
+                    $this->writeRichTextStyle($objWriter, $shape);
                 }
             }
         }
@@ -165,6 +168,21 @@ class Styles extends AbstractPart
     }
     
     /**
+     * Write the default style information for a RichText shape
+     *
+     * @param XMLWriter $objWriter
+     * @param RichText $shape
+     */
+    public function writeRichTextStyle(XMLWriter $objWriter, RichText $shape)
+    {
+        if ($shape->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR || $shape->getFill()->getFillType() == Fill::FILL_GRADIENT_PATH) {
+            if (!in_array($shape->getFill()->getHashCode(), $this->arrayGradient)) {
+                $this->writeGradientFill($objWriter, $shape->getFill());
+            }
+        }
+    }
+    
+    /**
      * Write the default style information for a Table shape
      *
      * @param XMLWriter $objWriter
@@ -176,18 +194,7 @@ class Styles extends AbstractPart
             foreach ($row->getCells() as $cell) {
                 if ($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
                     if (!in_array($cell->getFill()->getHashCode(), $this->arrayGradient)) {
-                        $objWriter->startElement('draw:gradient');
-                        $objWriter->writeAttribute('draw:name', 'gradient_'.$cell->getFill()->getHashCode());
-                        $objWriter->writeAttribute('draw:display-name', 'gradient_'.$cell->getFill()->getHashCode());
-                        $objWriter->writeAttribute('draw:style', 'linear');
-                        $objWriter->writeAttribute('draw:start-intensity', '100%');
-                        $objWriter->writeAttribute('draw:end-intensity', '100%');
-                        $objWriter->writeAttribute('draw:start-color', '#'.$cell->getFill()->getStartColor()->getRGB());
-                        $objWriter->writeAttribute('draw:end-color', '#'.$cell->getFill()->getEndColor()->getRGB());
-                        $objWriter->writeAttribute('draw:border', '0%');
-                        $objWriter->writeAttribute('draw:angle', $cell->getFill()->getRotation() - 90);
-                        $objWriter->endElement();
-                        $this->arrayGradient[] = $cell->getFill()->getHashCode();
+                        $this->writeGradientFill($objWriter, $cell->getFill());
                     }
                 }
             }
@@ -210,5 +217,26 @@ class Styles extends AbstractPart
                 $this->writeGroupStyle($objWriter, $shape);
             }
         }
+    }
+    
+    /**
+     * Write the gradient style
+     * @param XMLWriter $objWriter
+     * @param Fill $oFill
+     */
+    protected function writeGradientFill(XMLWriter $objWriter, Fill $oFill)
+    {
+        $objWriter->startElement('draw:gradient');
+        $objWriter->writeAttribute('draw:name', 'gradient_'.$oFill->getHashCode());
+        $objWriter->writeAttribute('draw:display-name', 'gradient_'.$oFill->getHashCode());
+        $objWriter->writeAttribute('draw:style', 'linear');
+        $objWriter->writeAttribute('draw:start-intensity', '100%');
+        $objWriter->writeAttribute('draw:end-intensity', '100%');
+        $objWriter->writeAttribute('draw:start-color', '#'.$oFill->getStartColor()->getRGB());
+        $objWriter->writeAttribute('draw:end-color', '#'.$oFill->getEndColor()->getRGB());
+        $objWriter->writeAttribute('draw:border', '0%');
+        $objWriter->writeAttribute('draw:angle', $oFill->getRotation() - 90);
+        $objWriter->endElement();
+        $this->arrayGradient[] = $oFill->getHashCode();
     }
 }

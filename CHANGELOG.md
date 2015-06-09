@@ -9,6 +9,7 @@
 - Added support for hyperlink on richtext (PowerPoint2007) - @JewrassicPark GH-49
 - Added support for notes slide (ODPresentation & PowerPoint2007) - @Progi1984 @JewrassicPark GH-63
 - Added option for explosion in Pie3D Chart (ODPresentation & PowerPoint2007) - @Progi1984 GH-76
+- ODPresentation Writer : Support for fill in RichText - @Progi1984 GH-79
 
 ### Bugfix
 - PSR-0 via composer broken - @Progi1984 GH-51

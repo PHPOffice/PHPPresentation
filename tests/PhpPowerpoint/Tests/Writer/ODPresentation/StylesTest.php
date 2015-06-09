@@ -39,20 +39,6 @@ class StylesTest extends \PHPUnit_Framework_TestCase
         TestHelperDOCX::clear();
     }
     
-    public function testGradient()
-    {
-        $phpPowerPoint = new PhpPowerpoint();
-        $oSlide = $phpPowerPoint->getActiveSlide();
-        $oShape = $oSlide->createTableShape();
-        $oRow = $oShape->createRow();
-        $oCell = $oRow->getCell();
-        $oCell->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
-        
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
-        $element = "/office:document-styles/office:styles/draw:gradient";
-        $this->assertEquals('gradient_'.$oCell->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:name', 'styles.xml'));
-    }
-    
     public function testDocumentLayout()
     {
         $element = "/office:document-styles/office:automatic-styles/style:page-layout/style:page-layout-properties";
@@ -88,5 +74,51 @@ class StylesTest extends \PHPUnit_Framework_TestCase
         $element = "/office:document-styles/office:master-styles/style:master-page";
         $this->assertTrue($pres->elementExists($element, 'styles.xml'));
         $this->assertEquals('sPL0', $pres->getElementAttribute($element, 'style:page-layout-name', 'styles.xml'));
+    }
+    
+    public function testFillGradientLinearRichText()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-styles/office:styles/draw:gradient';
+        $this->assertEquals('gradient_'.$oShape->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:name', 'styles.xml'));
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('gradient', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
+        $this->assertEquals('gradient_'.$oShape->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:fill-gradient-name', 'content.xml'));
+    }
+    
+    public function testFillSolidRichText()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF4672A8'));
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
+        $this->assertEquals('#'.$oShape->getFill()->getStartColor()->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+        $this->assertEquals('#'.$oShape->getFill()->getEndColor()->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+    }
+    
+    public function testGradientTable()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape();
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oCell->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = "/office:document-styles/office:styles/draw:gradient";
+        $this->assertEquals('gradient_'.$oCell->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:name', 'styles.xml'));
     }
 }

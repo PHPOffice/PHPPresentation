@@ -729,6 +729,15 @@ class Content extends AbstractPart
             $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
         }
         switch ($shape->getFill()->getFillType()){
+            case Fill::FILL_GRADIENT_LINEAR:
+            case Fill::FILL_GRADIENT_PATH:
+                $objWriter->writeAttribute('draw:fill', 'gradient');
+                $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_'.$shape->getFill()->getHashCode());
+                break;
+            case Fill::FILL_SOLID:
+                $objWriter->writeAttribute('draw:fill', 'solid');
+                $objWriter->writeAttribute('draw:fill-color', '#'.$shape->getFill()->getStartColor()->getRGB());
+                break;
             case Fill::FILL_NONE:
             default:
                 $objWriter->writeAttribute('draw:fill', 'none');
