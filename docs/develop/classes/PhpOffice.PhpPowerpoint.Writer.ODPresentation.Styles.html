@@ -131,7 +131,7 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                                                                                <li class="method public">
         <a href="#method_writeGroupStyle" title="writeGroupStyle :: Writes the style information for a group of shapes">
             <span class="description">Writes the style information for a group of shapes</span><pre>writeGroupStyle</pre>
         </a>
@@ -140,6 +140,12 @@
                                                                                                         <li class="method public">
         <a href="#method_writePart" title="writePart :: Write Meta file to XML format">
             <span class="description">Write Meta file to XML format</span><pre>writePart</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_writeRichTextStyle" title="writeRichTextStyle :: Write the default style information for a RichText shape">
+            <span class="description">Write the default style information for a RichText shape</span><pre>writeRichTextStyle</pre>
         </a>
     </li>
 
@@ -158,11 +164,16 @@
                                 <span class="description">Get XML Writer</span><pre>getXMLWriter</pre>
                             </a>
                         </li>
+                                                                                                                    <li class="method protected">
+                            <a href="#method_writeGradientFill" title="writeGradientFill :: Write the gradient style">
+                                <span class="description">Write the gradient style</span><pre>writeGradientFill</pre>
+                            </a>
+                        </li>
                                                                                                                                                                                                 </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -311,6 +322,42 @@
                             </div>
 
                         </div>
+                                            <a id="method_writeGradientFill"></a>
+                        <div class="element clickable method protected  method_writeGradientFill" data-toggle="collapse" data-target=".method_writeGradientFill .collapse">
+                            <h2>Write the gradient style</h2>
+                            <pre>writeGradientFill(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Style\Fill $oFill) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shared.XMLWriter.html">\PhpOffice\PhpPowerpoint\Shared\XMLWriter</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oFill</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Style.Fill.html">\PhpOffice\PhpPowerpoint\Style\Fill</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_writeGroupStyle"></a>
                         <div class="element clickable method public  method_writeGroupStyle" data-toggle="collapse" data-target=".method_writeGroupStyle .collapse">
                             <h2>Writes the style information for a group of shapes</h2>
@@ -379,6 +426,42 @@
                                                                             
                                                                             <h3>Response</h3>
                                         <code>string</code><p><p>XML Output</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeRichTextStyle"></a>
+                        <div class="element clickable method public  method_writeRichTextStyle" data-toggle="collapse" data-target=".method_writeRichTextStyle .collapse">
+                            <h2>Write the default style information for a RichText shape</h2>
+                            <pre>writeRichTextStyle(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\RichText $shape) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shared.XMLWriter.html">\PhpOffice\PhpPowerpoint\Shared\XMLWriter</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$shape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.RichText.html">\PhpOffice\PhpPowerpoint\Shape\RichText</a></code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
 
@@ -494,7 +577,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 08 Jun 2015 12:50:03 +0000.<br/>
+            generated on Tue, 09 Jun 2015 13:04:55 +0000.<br/>
     </footer>
     </body>
 </html>
