@@ -142,7 +142,7 @@ class StylesTest extends \PHPUnit_Framework_TestCase
             Border::DASH_SYSDOT,
         );
         
-        foreach ($arrayDashStyle as $style){
+        foreach ($arrayDashStyle as $style) {
             $oRichText1->getBorder()->setDashStyle($style);
 
             $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');

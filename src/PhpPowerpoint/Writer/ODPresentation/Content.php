@@ -746,7 +746,7 @@ class Content extends AbstractPart
                 break;
         }
         // Border
-        if($shape->getBorder()->getLineStyle() == Border::LINE_NONE){
+        if ($shape->getBorder()->getLineStyle() == Border::LINE_NONE) {
             $objWriter->writeAttribute('draw:stroke', 'none');
         } else {
             $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
