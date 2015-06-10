@@ -20,9 +20,12 @@ namespace PhpOffice\PhpPowerpoint\Tests\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
+use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
+use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 
 /**
  * Test class for PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest
@@ -196,6 +199,43 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
         $this->assertEquals('false', $pres->getElementAttribute($element, 'draw:auto-grow-height', 'content.xml'));
         $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
+    }
+
+    public function testRichtextBorder()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText1 = $oSlide->createRichTextShape();
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+
+        $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_NONE);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'svg:stroke-color', 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke', 'content.xml'));
+        $this->assertEquals('none', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
+        
+        $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_SINGLE);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'svg:stroke-color', 'content.xml'));
+        $this->assertEquals('#'.$oRichText1->getBorder()->getColor()->getRGB(), $pres->getElementAttribute($element, 'svg:stroke-color', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertStringEndsWith('cm', $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertStringStartsWith((string) number_format(SharedDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''), $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke', 'content.xml'));
+        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'draw:stroke-dash', 'content.xml'));
+
+        $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_DASH);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertEquals('dash', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke-dash', 'content.xml'));
+        $this->assertStringStartsWith('strokeDash_', $pres->getElementAttribute($element, 'draw:stroke-dash', 'content.xml'));
+        $this->assertStringEndsWith($oRichText1->getBorder()->getDashStyle(), $pres->getElementAttribute($element, 'draw:stroke-dash', 'content.xml'));
     }
     
     public function testStyleAlignment()

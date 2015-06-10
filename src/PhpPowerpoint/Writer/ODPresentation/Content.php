@@ -728,6 +728,7 @@ class Content extends AbstractPart
         if (is_bool($shape->hasAutoShrinkHorizontal())) {
             $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
         }
+        // Fill
         switch ($shape->getFill()->getFillType()){
             case Fill::FILL_GRADIENT_LINEAR:
             case Fill::FILL_GRADIENT_PATH:
@@ -744,11 +745,33 @@ class Content extends AbstractPart
                 $objWriter->writeAttribute('draw:fill-color', '#'.$shape->getFill()->getStartColor()->getRGB());
                 break;
         }
-        switch ($shape->getBorder()->getLineStyle()){
-            case Border::LINE_NONE:
-            default:
-                $objWriter->writeAttribute('draw:stroke', 'none');
-                $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
+        // Border
+        if($shape->getBorder()->getLineStyle() == Border::LINE_NONE){
+            $objWriter->writeAttribute('draw:stroke', 'none');
+        } else {
+            $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
+            $objWriter->writeAttribute('svg:stroke-width', number_format(SharedDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '').'cm');
+            switch ($shape->getBorder()->getDashStyle()){
+                case Border::DASH_SOLID:
+                    $objWriter->writeAttribute('draw:stroke', 'solid');
+                    break;
+                case Border::DASH_DASH:
+                case Border::DASH_DASHDOT:
+                case Border::DASH_DOT:
+                case Border::DASH_LARGEDASH:
+                case Border::DASH_LARGEDASHDOT:
+                case Border::DASH_LARGEDASHDOTDOT:
+                case Border::DASH_SYSDASH:
+                case Border::DASH_SYSDASHDOT:
+                case Border::DASH_SYSDASHDOTDOT:
+                case Border::DASH_SYSDOT:
+                    $objWriter->writeAttribute('draw:stroke', 'dash');
+                    $objWriter->writeAttribute('draw:stroke-dash', 'strokeDash_'.$shape->getBorder()->getDashStyle());
+                    break;
+                default:
+                    $objWriter->writeAttribute('draw:stroke', 'none');
+                    break;
+            }
         }
 
         $objWriter->writeAttribute('fo:wrap-option', 'wrap');

@@ -62,6 +62,21 @@ class Drawing
     }
 
     /**
+     * Convert points width to centimeters
+     *
+     * @param  int $pValue Value in points
+     * @return int Value in centimeters
+     */
+    public static function pointsToCentimeters($pValue = 0)
+    {
+        if ($pValue != 0) {
+            return ((($pValue * 1.333333333) / self::DPI_96) * 2.54);
+        } else {
+            return 0;
+        }
+    }
+    
+    /**
      * Convert points width to pixels
      *
      * @param  int $pValue Value in points

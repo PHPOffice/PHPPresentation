@@ -25,6 +25,7 @@ use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
+use PhpOffice\PhpPowerpoint\Style\Border;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles
@@ -37,6 +38,12 @@ class Styles extends AbstractPart
      * @var array
      */
     private $arrayGradient = array();
+    /**
+     * Stores font styles draw:stroke-dash nodes
+     *
+     * @var array
+     */
+    private $arrayStrokeDash = array();
     
     /**
      * Write Meta file to XML format
@@ -178,6 +185,77 @@ class Styles extends AbstractPart
         if ($shape->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR || $shape->getFill()->getFillType() == Fill::FILL_GRADIENT_PATH) {
             if (!in_array($shape->getFill()->getHashCode(), $this->arrayGradient)) {
                 $this->writeGradientFill($objWriter, $shape->getFill());
+            }
+        }
+        if ($shape->getBorder()->getDashStyle() != Border::DASH_SOLID) {
+            if (!in_array($shape->getBorder()->getDashStyle(), $this->arrayStrokeDash)) {
+                $objWriter->startElement('draw:stroke-dash');
+                $objWriter->writeAttribute('draw:name', 'strokeDash_'.$shape->getBorder()->getDashStyle());
+                $objWriter->writeAttribute('draw:style', 'rect');
+                switch ($shape->getBorder()->getDashStyle()){
+                    case Border::DASH_DASH:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.14cm');
+                        break;
+                    case Border::DASH_DASHDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.14cm');
+                        break;
+                    case Border::DASH_DOT:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        break;
+                    case Border::DASH_LARGEDASH:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+                        break;
+                    case Border::DASH_LARGEDASHDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+                        break;
+                    case Border::DASH_LARGEDASHDOTDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots1', '2');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+                        break;
+                    case Border::DASH_SYSDASH:
+                        $objWriter->writeAttribute('draw:distance', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+                        break;
+                    case Border::DASH_SYSDASHDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+                        break;
+                    case Border::DASH_SYSDASHDOTDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots1', '2');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+                        break;
+                    case Border::DASH_SYSDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        break;
+                }
+                $objWriter->endElement();
+                $this->arrayStrokeDash[] = $shape->getBorder()->getDashStyle();
             }
         }
     }
