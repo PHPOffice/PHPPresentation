@@ -20,6 +20,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
@@ -88,7 +89,7 @@ class ObjectsChart extends AbstractPart
     private function writeContentPart(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        if (!($chartType instanceof Area || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie3D || $chartType instanceof Scatter)) {
+        if (!($chartType instanceof Area || $chartType instanceof Bar || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie3D || $chartType instanceof Scatter)) {
             throw new \Exception('The chart type provided could not be rendered.');
         }
         
@@ -201,7 +202,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:style-name', 'styleChart');
         if ($chartType instanceof Area) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:area');
-        } elseif ($chartType instanceof Bar3D) {
+        } elseif ($chartType instanceof Bar || $chartType instanceof Bar3D) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
@@ -483,14 +484,16 @@ class ObjectsChart extends AbstractPart
         if ($chartType instanceof Bar3D) {
             $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
             $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
+        } elseif ($chartType instanceof Pie3D) {
+            $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
+            $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
+        }
+        if ($chartType instanceof Bar || $chartType instanceof Bar3D) {
             if ($chartType->getBarDirection() == Bar3D::DIRECTION_HORIZONTAL) {
                 $this->xmlContent->writeAttribute('chart:vertical', 'true');
             } else {
                 $this->xmlContent->writeAttribute('chart:vertical', 'false');
             }
-        } elseif ($chartType instanceof Pie3D) {
-            $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
-            $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
         }
         $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
         // > style:text-properties
@@ -515,7 +518,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:label-cell-address', 'table-local.$'.$this->rangeCol.'$1');
         if ($chartType instanceof Area) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:area');
-        } elseif ($chartType instanceof Bar3D) {
+        } elseif ($chartType instanceof Bar || $chartType instanceof Bar3D) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
@@ -525,7 +528,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
         }
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries);
-        if ($chartType instanceof Area || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Scatter) {
+        if ($chartType instanceof Area || $chartType instanceof Bar || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Scatter) {
             $dataPointFills = $series->getDataPointFills();
             if (empty($dataPointFills)) {
                 $incRepeat = $numRange;

@@ -87,6 +87,10 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $this->assertEquals('false', $pres->getElementAttribute($element, 'chart:vertical', 'Object 1/content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'chart:three-dimensional', 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:three-dimensional', 'Object 1/content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'chart:right-angled-axes', 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:right-angled-axes', 'Object 1/content.xml'));
     }
 
     public function testChartBar3DHorizontal()
@@ -115,6 +119,10 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:vertical', 'Object 1/content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'chart:three-dimensional', 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:three-dimensional', 'Object 1/content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'chart:right-angled-axes', 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:right-angled-axes', 'Object 1/content.xml'));
     }
     
     public function testChartLine()

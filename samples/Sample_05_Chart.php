@@ -4,6 +4,7 @@ include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
@@ -61,19 +62,104 @@ function fnSlide_Area(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_Bar(PhpPowerpoint $objPHPPowerPoint) {
     global $oFill;
     global $oShadow;
-    
+
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
     $currentSlide = createTemplatedSlide($objPHPPowerPoint);
-    
+
     // Generate sample data for first chart
     echo date('H:i:s') . ' Generate sample data for first chart'.EOL;
     $series1Data = array('Jan' => 133, 'Feb' => 99, 'Mar' => 191, 'Apr' => 205, 'May' => 167, 'Jun' => 201, 'Jul' => 240, 'Aug' => 226, 'Sep' => 255, 'Oct' => 264, 'Nov' => 283, 'Dec' => 293);
     $series2Data = array('Jan' => 266, 'Feb' => 198, 'Mar' => 271, 'Apr' => 305, 'May' => 267, 'Jun' => 301, 'Jul' => 340, 'Aug' => 326, 'Sep' => 344, 'Oct' => 364, 'Nov' => 383, 'Dec' => 379);
-    
+
+    // Create a bar chart (that should be inserted in a shape)
+    echo date('H:i:s') . ' Create a bar chart (that should be inserted in a chart shape)'.EOL;
+    $barChart = new Bar();
+    $series1 = new Series('2009', $series1Data);
+    $series1->setShowSeriesName(true);
+    $series1->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4F81BD'));
+    $series1->getFont()->getColor()->setRGB('00FF00');
+    $series1->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
+    $series2 = new Series('2010', $series2Data);
+    $series2->setShowSeriesName(true);
+    $series2->getFont()->getColor()->setRGB('FF0000');
+    $series2->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFC0504D'));
+    $barChart->addSeries($series1);
+    $barChart->addSeries($series2);
+
+    // Create a shape (chart)
+    echo date('H:i:s') . ' Create a shape (chart)'.EOL;
+    $shape = $currentSlide->createChartShape();
+    $shape->setName('PHPPowerPoint Monthly Downloads')
+        ->setResizeProportional(false)
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
+    $shape->setShadow($oShadow);
+    $shape->setFill($oFill);
+    $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+    $shape->getTitle()->getFont()->setItalic(true);
+    $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+    $shape->getPlotArea()->getAxisX()->setTitle('Month');
+    $shape->getPlotArea()->getAxisY()->setTitle('Downloads');
+    $shape->getPlotArea()->setType($barChart);
+    $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getLegend()->getFont()->setItalic(true);
+}
+
+function fnSlide_BarHorizontal(PhpPowerpoint $objPHPPowerPoint) {
+    global $oFill;
+    global $oShadow;
+
+    // Create a bar chart (that should be inserted in a shape)
+    echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) '.EOL;
+    $barChartHorz = clone $objPHPPowerPoint->getSlide(1)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
+    $barChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
+
+    // Create templated slide
+    echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
+    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+
+    // Create a shape (chart)
+    echo date('H:i:s') . ' Create a shape (chart)'.EOL;
+    $shape = $currentSlide->createChartShape();
+    $shape->setName('PHPPowerPoint Monthly Downloads')
+        ->setResizeProportional(false)
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
+    $shape->setShadow($oShadow);
+    $shape->setFill($oFill);
+    $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+    $shape->getTitle()->getFont()->setItalic(true);
+    $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+    $shape->getPlotArea()->getAxisX()->setTitle('Month');
+    $shape->getPlotArea()->getAxisY()->setTitle('Downloads');
+    $shape->getPlotArea()->setType($barChartHorz);
+    $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getLegend()->getFont()->setItalic(true);
+}
+
+function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
+    global $oFill;
+    global $oShadow;
+
+    // Create templated slide
+    echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
+    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+
+    // Generate sample data for first chart
+    echo date('H:i:s') . ' Generate sample data for first chart'.EOL;
+    $series1Data = array('Jan' => 133, 'Feb' => 99, 'Mar' => 191, 'Apr' => 205, 'May' => 167, 'Jun' => 201, 'Jul' => 240, 'Aug' => 226, 'Sep' => 255, 'Oct' => 264, 'Nov' => 283, 'Dec' => 293);
+    $series2Data = array('Jan' => 266, 'Feb' => 198, 'Mar' => 271, 'Apr' => 305, 'May' => 267, 'Jun' => 301, 'Jul' => 340, 'Aug' => 326, 'Sep' => 344, 'Oct' => 364, 'Nov' => 383, 'Dec' => 379);
+
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a bar chart (that should be inserted in a chart shape)'.EOL;
     $bar3DChart = new Bar3D();
@@ -88,16 +174,16 @@ function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
     $series2->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFC0504D'));
     $bar3DChart->addSeries($series1);
     $bar3DChart->addSeries($series2);
-    
+
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
     $shape->setName('PHPPowerPoint Monthly Downloads')
-            ->setResizeProportional(false)
-            ->setHeight(550)
-            ->setWidth(700)
-            ->setOffsetX(120)
-            ->setOffsetY(80);
+        ->setResizeProportional(false)
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
@@ -120,8 +206,8 @@ function fnSlide_Bar3DHorizontal(PhpPowerpoint $objPHPPowerPoint) {
     
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) '.EOL;
-    $bar3DChartHorz = $objPHPPowerPoint->getSlide(1)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
-    //$bar3DChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
+    $bar3DChartHorz = clone $objPHPPowerPoint->getSlide(3)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
+    $bar3DChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
     
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
@@ -266,6 +352,10 @@ $oShadow = new Shadow();
 $oShadow->setVisible(true)->setDirection(45)->setDistance(10);
 
 fnSlide_Area($objPHPPowerPoint);
+
+fnSlide_Bar($objPHPPowerPoint);
+
+fnSlide_BarHorizontal($objPHPPowerPoint);
 
 fnSlide_Bar3D($objPHPPowerPoint);
 
