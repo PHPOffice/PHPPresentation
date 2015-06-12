@@ -16,6 +16,7 @@
  */
 
 namespace PhpOffice\PhpPowerpoint;
+
 use PhpOffice\PhpPowerpoint\Shared\Drawing;
 
 /**
