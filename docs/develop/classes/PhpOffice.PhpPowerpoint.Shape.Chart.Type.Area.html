@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta charset="utf-8"/>
-    <title>    API Documentation &raquo; \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes
+    <title>    API Documentation &raquo; \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area
 </title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
@@ -119,53 +119,63 @@
         <li class="nav-header">
             <i class="icon-custom icon-method"></i> Methods
             <ul>
-                                                                                                                                                            <li class="method public inherited">
-        <a href="#method_getParentWriter" title="getParentWriter :: Get parent WriterInterface object">
-            <span class="description">Get parent WriterInterface object</span><pre>getParentWriter</pre>
+                                                                                                    <li class="method public inherited">
+        <a href="#method_addSeries" title="addSeries :: Add Series">
+            <span class="description">Add Series</span><pre>addSeries</pre>
         </a>
     </li>
 
-                                                                                                                                                                <li class="method public inherited">
-        <a href="#method_setParentWriter" title="setParentWriter :: Set parent WriterInterface object">
-            <span class="description">Set parent WriterInterface object</span><pre>setParentWriter</pre>
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getData" title="getData :: Get Data">
+            <span class="description">Get Data</span><pre>getData</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_writeContentTypes" title="writeContentTypes :: Write content types to XML format">
-            <span class="description">Write content types to XML format</span><pre>writeContentTypes</pre>
+        <a href="#method_getHashCode" title="getHashCode :: Get hash code">
+            <span class="description">Get hash code</span><pre>getHashCode</pre>
         </a>
     </li>
 
-                                                                                                                                                                </ul>
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getHashIndex" title="getHashIndex :: Get hash index">
+            <span class="description">Get hash index</span><pre>getHashIndex</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_hasAxisX" title="hasAxisX :: Has Axis X?">
+            <span class="description">Has Axis X?</span><pre>hasAxisX</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_hasAxisY" title="hasAxisY :: Has Axis Y?">
+            <span class="description">Has Axis Y?</span><pre>hasAxisY</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_setData" title="setData :: Set Data">
+            <span class="description">Set Data</span><pre>setData</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_setHashIndex" title="setHashIndex :: Set hash index">
+            <span class="description">Set hash index</span><pre>setHashIndex</pre>
+        </a>
+    </li>
+
+                                                </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                    <li class="method protected inherited">
-                            <a href="#method_getXMLWriter" title="getXMLWriter :: Get XML writer">
-                                <span class="description">Get XML writer</span><pre>getXMLWriter</pre>
-                            </a>
-                        </li>
-                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                            <li class="method private">
-                            <a href="#method_getImageMimeType" title="getImageMimeType :: Get image mime type">
-                                <span class="description">Get image mime type</span><pre>getImageMimeType</pre>
-                            </a>
-                        </li>
-                                                                                                                                                                                                                                <li class="method private">
-                            <a href="#method_writeDefaultContentType" title="writeDefaultContentType :: Write Default content type">
-                                <span class="description">Write Default content type</span><pre>writeDefaultContentType</pre>
-                            </a>
-                        </li>
-                                                                                <li class="method private">
-                            <a href="#method_writeOverrideContentType" title="writeOverrideContentType :: Write Override content type">
-                                <span class="description">Write Override content type</span><pre>writeOverrideContentType</pre>
-                            </a>
-                        </li>
-                                                </ul>
+                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -179,11 +189,12 @@
 
         <div class="span8">
             <div class="element class">
-                <h1>ContentTypes</h1>
+                <h1>Area</h1>
                 <small style="display: block; text-align: right">
-                                            Extends <a href="../classes/PhpOffice.PhpPowerpoint.Writer.PowerPoint2007.AbstractPart.html">\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\AbstractPart</a>
-                                                        </small>
-                <p class="short_description">\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes</p>
+                                            Extends <a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Type.AbstractType.html">\PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType</a>
+                                                                Implements <a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a>
+                                    </small>
+                <p class="short_description">\PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area</p>
                 <div class="details">
                     <div class="long_description">
                         
@@ -201,46 +212,10 @@
                                                                                                                                                                                 </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
-                                                                <a id="method_getImageMimeType"></a>
-                        <div class="element clickable method private  method_getImageMimeType" data-toggle="collapse" data-target=".method_getImageMimeType .collapse">
-                            <h2>Get image mime type</h2>
-                            <pre>getImageMimeType(string $pFile = &#039;&#039;) : string</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pFile</h4>
-                                                <code>string</code><p><p>Filename</p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>string</code><p><p>Mime Type</p></p>
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_getParentWriter"></a>
-                        <div class="element clickable method public  method_getParentWriter inherited" data-toggle="collapse" data-target=".method_getParentWriter .collapse">
-                            <h2>Get parent WriterInterface object</h2>
-                            <pre>getParentWriter() : \PhpOffice\PhpPowerpoint\Writer\WriterInterface</pre>
+                                                                <a id="method_addSeries"></a>
+                        <div class="element clickable method public  method_addSeries inherited" data-toggle="collapse" data-target=".method_addSeries .collapse">
+                            <h2>Add Series</h2>
+                            <pre>addSeries(\PhpOffice\PhpPowerpoint\Shape\Chart\Series $value) : self</pre>
                             <div class="labels">
                                 <span class="label">inherited</span>                                                                                                                                                            </div>
 
@@ -250,15 +225,33 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$value</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Series.html">\PhpOffice\PhpPowerpoint\Shape\Chart\Series</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>self</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getData"></a>
+                        <div class="element clickable method public  method_getData inherited" data-toggle="collapse" data-target=".method_getData .collapse">
+                            <h2>Get Data</h2>
+                            <pre>getData() : array&lt;mixed,\PhpOffice\PhpPowerpoint\Shape\Chart\Series&gt;</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
                                                                                     <tr>
                                                 <th>
                                                     
@@ -270,17 +263,17 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a></code><p></p>
+                                        <code>array&lt;mixed,<a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Series.html">\PhpOffice\PhpPowerpoint\Shape\Chart\Series</a>&gt;</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
-                                            <a id="method_getXMLWriter"></a>
-                        <div class="element clickable method protected  method_getXMLWriter inherited" data-toggle="collapse" data-target=".method_getXMLWriter .collapse">
-                            <h2>Get XML writer</h2>
-                            <pre>getXMLWriter() </pre>
+                                            <a id="method_getHashCode"></a>
+                        <div class="element clickable method public  method_getHashCode" data-toggle="collapse" data-target=".method_getHashCode .collapse">
+                            <h2>Get hash code</h2>
+                            <pre>getHashCode() : string</pre>
                             <div class="labels">
-                                <span class="label">inherited</span>                                                                                                                                                            </div>
+                                                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -288,13 +281,6 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                                     <tr>
                                                 <th>
                                                     
@@ -305,14 +291,46 @@
                                                                             </table>
 
                                     
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>Hash code</p></p>
                                                                     </div>
                             </div>
 
                         </div>
-                                            <a id="method_setParentWriter"></a>
-                        <div class="element clickable method public  method_setParentWriter inherited" data-toggle="collapse" data-target=".method_setParentWriter .collapse">
-                            <h2>Set parent WriterInterface object</h2>
-                            <pre>setParentWriter(\PhpOffice\PhpPowerpoint\Writer\WriterInterface $pWriter = null) </pre>
+                                            <a id="method_getHashIndex"></a>
+                        <div class="element clickable method public  method_getHashIndex inherited" data-toggle="collapse" data-target=".method_getHashIndex .collapse">
+                            <h2>Get hash index</h2>
+                            <pre>getHashIndex() : string</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"><p>Note that this index may vary during script execution! Only reliable moment is
+while doing a write of a workbook and when changes are not allowed.</p></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p><p>Hash index</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_hasAxisX"></a>
+                        <div class="element clickable method public  method_hasAxisX inherited" data-toggle="collapse" data-target=".method_hasAxisX .collapse">
+                            <h2>Has Axis X?</h2>
+                            <pre>hasAxisX() : boolean</pre>
                             <div class="labels">
                                 <span class="label">inherited</span>                                                                                                                                                            </div>
 
@@ -324,15 +342,6 @@
                                     <table class="table">
                                                                                     <tr>
                                                 <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
                                                     
                                                 </th>
                                                 <td>
@@ -340,22 +349,19 @@
                                             </tr>
                                                                             </table>
 
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pWriter</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a></code><p></p>
-                                            </div>
-                                                                            
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>boolean</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
-                                            <a id="method_writeContentTypes"></a>
-                        <div class="element clickable method public  method_writeContentTypes" data-toggle="collapse" data-target=".method_writeContentTypes .collapse">
-                            <h2>Write content types to XML format</h2>
-                            <pre>writeContentTypes(\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\PHPPowerPoint $pPHPPowerPoint = null) : string</pre>
+                                            <a id="method_hasAxisY"></a>
+                        <div class="element clickable method public  method_hasAxisY inherited" data-toggle="collapse" data-target=".method_hasAxisY .collapse">
+                            <h2>Has Axis Y?</h2>
+                            <pre>hasAxisY() : boolean</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -365,49 +371,61 @@
                                     <table class="table">
                                                                                     <tr>
                                                 <th>
-                                                    throws
+                                                    
                                                 </th>
                                                 <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
                                                                                                     </td>
                                             </tr>
                                                                             </table>
 
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>boolean</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setData"></a>
+                        <div class="element clickable method public  method_setData inherited" data-toggle="collapse" data-target=".method_setData .collapse">
+                            <h2>Set Data</h2>
+                            <pre>setData(array $value = array()) : self</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$pPHPPowerPoint</h4>
-                                                <code>\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\PHPPowerPoint</code><p></p>
+                                                <h4>$value</h4>
+                                                <code>array</code><p><p>Array of \PhpOffice\PhpPowerpoint\Shape\Chart\Series</p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
+                                        <code>self</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
-                                            <a id="method_writeDefaultContentType"></a>
-                        <div class="element clickable method private  method_writeDefaultContentType" data-toggle="collapse" data-target=".method_writeDefaultContentType .collapse">
-                            <h2>Write Default content type</h2>
-                            <pre>writeDefaultContentType(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, string $pPartname = &#039;&#039;, string $pContentType = &#039;&#039;) </pre>
+                                            <a id="method_setHashIndex"></a>
+                        <div class="element clickable method public  method_setHashIndex inherited" data-toggle="collapse" data-target=".method_setHashIndex .collapse">
+                            <h2>Set hash index</h2>
+                            <pre>setHashIndex(string $value) </pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
                                 <div class="detail-description">
-                                    <div class="long_description"></div>
+                                    <div class="long_description"><p>Note that this index may vary during script execution! Only reliable moment is
+while doing a write of a workbook and when changes are not allowed.</p></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
                                                                                     <tr>
                                                 <th>
                                                     
@@ -419,65 +437,8 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$objWriter</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shared.XMLWriter.html">\PhpOffice\PhpPowerpoint\Shared\XMLWriter</a></code><p><p>XML Writer</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pPartname</h4>
-                                                <code>string</code><p><p>Part name</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pContentType</h4>
-                                                <code>string</code><p><p>Content type</p></p>
-                                            </div>
-                                                                            
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_writeOverrideContentType"></a>
-                        <div class="element clickable method private  method_writeOverrideContentType" data-toggle="collapse" data-target=".method_writeOverrideContentType .collapse">
-                            <h2>Write Override content type</h2>
-                            <pre>writeOverrideContentType(\PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter, string $pPartname = &#039;&#039;, string $pContentType = &#039;&#039;) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$objWriter</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shared.XMLWriter.html">\PhpOffice\PhpPowerpoint\Shared\XMLWriter</a></code><p><p>XML Writer</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pPartname</h4>
-                                                <code>string</code><p><p>Part name</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pContentType</h4>
-                                                <code>string</code><p><p>Content type</p></p>
+                                                <h4>$value</h4>
+                                                <code>string</code><p><p>Hash index</p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -487,10 +448,10 @@
                     
                     
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
-                                                    <a id="property_parentWriter"> </a>
-                            <div class="element clickable property  private property_parentWriter inherited" data-toggle="collapse" data-target=".property_parentWriter .collapse">
-                                <h2>Parent WriterInterface object</h2>
-                                <pre>parentWriter : \PhpOffice\PhpPowerpoint\Writer\WriterInterface</pre>
+                                                    <a id="property_hasAxisX"> </a>
+                            <div class="element clickable property  protected property_hasAxisX inherited" data-toggle="collapse" data-target=".property_hasAxisX .collapse">
+                                <h2>Has Axis X?</h2>
+                                <pre>hasAxisX : boolean</pre>
                                 <div class="labels">
                                     <span class="label">inherited</span>                                                                    </div>
                                 <div class="row collapse">
@@ -509,20 +470,98 @@
                                                                                     </table>
 
                                                                                     <h3>Type(s)</h3>
-                                            <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a></code>
+                                            <code>boolean</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_hasAxisY"> </a>
+                            <div class="element clickable property  protected property_hasAxisY inherited" data-toggle="collapse" data-target=".property_hasAxisY .collapse">
+                                <h2>Has Axis Y?</h2>
+                                <pre>hasAxisY : boolean</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>boolean</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_hashIndex"> </a>
+                            <div class="element clickable property  private property_hashIndex inherited" data-toggle="collapse" data-target=".property_hashIndex .collapse">
+                                <h2>Hash index</h2>
+                                <pre>hashIndex : string</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>string</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_data"> </a>
+                            <div class="element clickable property  private property_data inherited" data-toggle="collapse" data-target=".property_data .collapse">
+                                <h2>Data</h2>
+                                <pre>data : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
                                                                             </div>
                                 </div>
                             </div>
                                                             </div>
             </div>
-            <a id="\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\ContentTypes"></a>
+            <a id="\PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area"></a>
             <ul class="breadcrumb">
                 <li><a href="../index.html"><i class="icon-custom icon-class"></i></a></li>
                     
     
-    <li><span class="divider">\</span><a href="../namespaces/PhpOffice.PhpPowerpoint.Writer.PowerPoint2007.html">PowerPoint2007</a></li>
+    <li><span class="divider">\</span><a href="../namespaces/PhpOffice.PhpPowerpoint.Shape.Chart.Type.html">Type</a></li>
 
-                <li class="active"><span class="divider">\</span><a href="../classes/PhpOffice.PhpPowerpoint.Writer.PowerPoint2007.ContentTypes.html">ContentTypes</a></li>
+                <li class="active"><span class="divider">\</span><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Type.Area.html">Area</a></li>
             </ul>
         </div>
     </div>
@@ -533,7 +572,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 12 Jun 2015 12:27:33 +0000.<br/>
+            generated on Fri, 12 Jun 2015 12:27:29 +0000.<br/>
     </footer>
     </body>
 </html>
