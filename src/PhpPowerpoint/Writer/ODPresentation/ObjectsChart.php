@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
@@ -87,7 +88,7 @@ class ObjectsChart extends AbstractPart
     private function writeContentPart(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        if (!($chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie3D|| $chartType instanceof Scatter)) {
+        if (!($chartType instanceof Area || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie3D || $chartType instanceof Scatter)) {
             throw new \Exception('The chart type provided could not be rendered.');
         }
         
@@ -198,7 +199,9 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('xlink:href', '.');
         $this->xmlContent->writeAttribute('xlink:type', 'simple');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleChart');
-        if ($chartType instanceof Bar3D) {
+        if ($chartType instanceof Area) {
+            $this->xmlContent->writeAttribute('chart:class', 'chart:area');
+        } elseif ($chartType instanceof Bar3D) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
@@ -425,13 +428,13 @@ class ObjectsChart extends AbstractPart
         if ($chartType instanceof Bar3D || $chartType instanceof Pie3D) {
             // dr3d:light
             $arrayLight = array(
-                    array('#808080', '(0 0 1)', 'false', 'true'),
-                    array('#666666', '(0.2 0.4 1)', 'true', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'true'),
+                array('#666666', '(0.2 0.4 1)', 'true', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
             );
             foreach ($arrayLight as $light) {
                 $this->xmlContent->startElement('dr3d:light');
@@ -510,7 +513,9 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->startElement('chart:series');
         $this->xmlContent->writeAttribute('chart:values-cell-range-address', 'table-local.$'.$this->rangeCol.'$2:.$'.$this->rangeCol.'$'.($numRange+1));
         $this->xmlContent->writeAttribute('chart:label-cell-address', 'table-local.$'.$this->rangeCol.'$1');
-        if ($chartType instanceof Bar3D) {
+        if ($chartType instanceof Area) {
+            $this->xmlContent->writeAttribute('chart:class', 'chart:area');
+        } elseif ($chartType instanceof Bar3D) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
@@ -520,7 +525,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
         }
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries);
-        if ($chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Scatter) {
+        if ($chartType instanceof Area || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Scatter) {
             $dataPointFills = $series->getDataPointFills();
             if (empty($dataPointFills)) {
                 $incRepeat = $numRange;
@@ -599,12 +604,13 @@ class ObjectsChart extends AbstractPart
             //@todo : Permit edit the color and width of a line
             $this->xmlContent->writeAttribute('svg:stroke-width', '0.079cm');
             $this->xmlContent->writeAttribute('svg:stroke-color', '#4a7ebb');
-            $this->xmlContent->writeAttribute('draw:fill-color', '#4a7ebb');
         } else {
             $this->xmlContent->writeAttribute('draw:stroke', 'none');
-            $this->xmlContent->writeAttribute('draw:fill', $series->getFill()->getFillType());
-            $this->xmlContent->writeAttribute('draw:fill-color', '#'.$series->getFill()->getStartColor()->getRGB());
+            if (!($chartType instanceof Area)) {
+                $this->xmlContent->writeAttribute('draw:fill', $series->getFill()->getFillType());
+            }
         }
+        $this->xmlContent->writeAttribute('draw:fill-color', '#'.$series->getFill()->getStartColor()->getRGB());
         // > style:graphic-properties
         $this->xmlContent->endElement();
         // style:text-properties

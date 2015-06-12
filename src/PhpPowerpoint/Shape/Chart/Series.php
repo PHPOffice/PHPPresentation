@@ -171,6 +171,18 @@ class Series implements ComparableInterface
     }
 
     /**
+     * Set Fill
+     *
+     * @param \PhpOffice\PhpPowerpoint\Style\Fill $value
+     * @return Series
+     */
+    public function setFill(Fill $fill = null)
+    {
+    	$this->fill = $fill;
+        return $this;
+    }
+
+    /**
      * Get DataPointFill
      *
      * @param  int                      $dataPointIndex Data point index.

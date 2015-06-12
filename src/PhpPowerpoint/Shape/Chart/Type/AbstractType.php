@@ -115,7 +115,7 @@ abstract class AbstractType implements ComparableInterface
     /**
      * Get Data
      *
-     * @return array
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series[]
      */
     public function getData()
     {
