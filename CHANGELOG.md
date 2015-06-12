@@ -11,7 +11,7 @@
 - Added option for explosion in Pie3D Chart (ODPresentation & PowerPoint2007) - @Progi1984 GH-76
 - ODPresentation Writer : Support for fill in RichText - @Progi1984 GH-79
 - ODPresentation Writer : Support for border style in RichText - @Progi1984 GH-79
-- ODPresentation Writer : Support for Area Chart - @Progi1984 GH-79
+- ODPresentation Writer : Support for Area Chart - @Progi1984 GH-82
 
 ### Bugfix
 - PSR-0 via composer broken - @Progi1984 GH-51

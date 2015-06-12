@@ -178,7 +178,7 @@ class Series implements ComparableInterface
      */
     public function setFill(Fill $fill = null)
     {
-    	$this->fill = $fill;
+        $this->fill = $fill;
         return $this;
     }
 
