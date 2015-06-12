@@ -47,11 +47,60 @@ class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
     {
         $object = new DocumentLayout();
         $object->setDocumentLayout(array('cx' => 6858000, 'cy' => 9144000), false);
-        $object->setLayoutXmilli(6858000 / 36000);
-        $object->setLayoutYmilli(9144000 / 36000);
-
-        $this->assertEquals('', $object->getDocumentLayout());
+        $this->assertEquals(DocumentLayout::LAYOUT_CUSTOM, $object->getDocumentLayout());
+        $this->assertEquals(9144000, $object->getCX());
+        $this->assertEquals(6858000, $object->getCY());
+        $object->setDocumentLayout(array('cx' => 6858000, 'cy' => 9144000), true);
+        $this->assertEquals(DocumentLayout::LAYOUT_CUSTOM, $object->getDocumentLayout());
         $this->assertEquals(6858000, $object->getCX());
         $this->assertEquals(9144000, $object->getCY());
+    }
+
+    public function testCX()
+    {
+        $value = rand(1, 100000);
+        $object = new DocumentLayout();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCX($value));
+        $this->assertEquals($value, $object->getCX());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCX($value, DocumentLayout::UNIT_CENTIMETER));
+        $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_CENTIMETER));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCX($value, DocumentLayout::UNIT_EMU));
+        $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_EMU));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCX($value, DocumentLayout::UNIT_INCH));
+        $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_INCH));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCX($value, DocumentLayout::UNIT_MILLIMETER));
+        $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_MILLIMETER));
+        $this->assertEquals($value, $object->getLayoutXmilli());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCX($value, DocumentLayout::UNIT_POINT));
+        $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_POINT));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCX($value, DocumentLayout::UNIT_PIXEL));
+        $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_PIXEL));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setLayoutXmilli($value));
+        $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_MILLIMETER));
+        $this->assertEquals($value, $object->getLayoutXmilli());
+    }
+
+    public function testCY()
+    {
+        $value = rand(1, 100000);
+        $object = new DocumentLayout();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCY($value));
+        $this->assertEquals($value, $object->getCY());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCY($value, DocumentLayout::UNIT_CENTIMETER));
+        $this->assertEquals($value, $object->getCY(DocumentLayout::UNIT_CENTIMETER));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCY($value, DocumentLayout::UNIT_EMU));
+        $this->assertEquals($value, $object->getCY(DocumentLayout::UNIT_EMU));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCY($value, DocumentLayout::UNIT_INCH));
+        $this->assertEquals($value, $object->getCY(DocumentLayout::UNIT_INCH));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCY($value, DocumentLayout::UNIT_MILLIMETER));
+        $this->assertEquals($value, $object->getCY(DocumentLayout::UNIT_MILLIMETER));
+        $this->assertEquals($value, $object->getLayoutYmilli());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCY($value, DocumentLayout::UNIT_POINT));
+        $this->assertEquals($value, $object->getCY(DocumentLayout::UNIT_POINT));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setCY($value, DocumentLayout::UNIT_PIXEL));
+        $this->assertEquals($value, $object->getCY(DocumentLayout::UNIT_PIXEL));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\DocumentLayout', $object->setLayoutYmilli($value));
+        $this->assertEquals($value, $object->getCY(DocumentLayout::UNIT_MILLIMETER));
+        $this->assertEquals($value, $object->getLayoutYmilli());
     }
 }

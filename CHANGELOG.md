@@ -15,6 +15,7 @@
 - PowerPoint2007 Writer : Support for Area Chart - @Progi1984 GH-82
 - ODPresentation Writer : Support for Bar Chart - @Progi1984 GH-82
 - PowerPoint2007 Writer : Support for Bar Chart - @Progi1984 GH-82
+- Added units in DocumentLayout - @Progi1984 GH-87
 
 ### Bugfix
 - PSR-0 via composer broken - @Progi1984 GH-51
