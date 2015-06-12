@@ -38,25 +38,25 @@ for($inc = 1 ; $inc <= 4 ; $inc++){
         $shape->setOffsetX(320);
     }
     if($inc == 1 || $inc == 2){
-    	$shape->setOffsetY(10);
+        $shape->setOffsetY(10);
     } else {
-    	$shape->setOffsetY(220);
+        $shape->setOffsetY(220);
     }
     $shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
     
     switch ($inc) {
-    	case 1 :
-    	    $shape->getFill()->setFillType(Fill::FILL_NONE);
-    	    break;
-    	case 2 :
-    	    $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF000000' ));
-    	    break;
-    	case 3 :
-    	    $shape->getFill()->setFillType(Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF000000' ));
-    	    break;
-    	case 4 :
-    	    $shape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF4672A8' ));
-    	    break;
+        case 1 :
+            $shape->getFill()->setFillType(Fill::FILL_NONE);
+            break;
+        case 2 :
+            $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF000000' ));
+            break;
+        case 3 :
+            $shape->getFill()->setFillType(Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF000000' ));
+            break;
+        case 4 :
+            $shape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF4672A8' ));
+            break;
     }
     
     $textRun = $shape->createTextRun('Use PHPPowerPoint!');
@@ -68,5 +68,5 @@ for($inc = 1 ; $inc <= 4 ; $inc++){
 // Save file
 echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
-	include_once 'Sample_Footer.php';
+    include_once 'Sample_Footer.php';
 }

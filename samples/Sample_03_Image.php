@@ -3,21 +3,12 @@
 include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Drawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 
 // Create new PHPPowerPoint object
 echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
 $objPHPPowerPoint = new PhpPowerpoint();
-
-// Set properties
-echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
-                                  ->setLastModifiedBy('PHPPowerPoint Team')
-                                  ->setTitle('Sample 04 Title')
-                                  ->setSubject('Sample 04 Subject')
-                                  ->setDescription('Sample 04 Description')
-                                  ->setKeywords('office 2007 openxml libreoffice odt php')
-                                  ->setCategory('Sample Category');
 
 // Create slide
 echo date('H:i:s') . ' Create slide'.EOL;
@@ -29,7 +20,7 @@ $gdImage = @imagecreatetruecolor(140, 20) or die('Cannot Initialize new GD image
 $textColor = imagecolorallocate($gdImage, 255, 255, 255);
 imagestring($gdImage, 1, 5, 5,  'Created with PHPPowerPoint', $textColor);
 
-// Add a drawing to the worksheet
+// Add a generated drawing to the slide
 echo date('H:i:s') . ' Add a drawing to the worksheet'.EOL;
 $shape = new MemoryDrawing();
 $shape->setName('Sample image')
@@ -40,6 +31,16 @@ $shape->setName('Sample image')
       ->setHeight(36)
       ->setOffsetX(10)
       ->setOffsetY(10);
+$currentSlide->addShape($shape);
+
+// Add a file drawing (GIF) to the slide
+$shape = new Drawing();
+$shape->setName('PHPPowerPoint logo')
+      ->setDescription('PHPPowerPoint logo')
+      ->setPath('./resources/phppowerpoint_logo.gif')
+      ->setHeight(36)
+      ->setOffsetX(10)
+      ->setOffsetY(100);
 $currentSlide->addShape($shape);
 
 // Save file
