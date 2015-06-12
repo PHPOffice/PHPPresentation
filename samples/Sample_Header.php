@@ -44,7 +44,7 @@ if ($handle = opendir('.')) {
 /**
  * Write documents
  *
- * @param \PhpOffice\PhpWord\PhpWord $phpWord
+ * @param \PhpOffice\PhpPowerPoint\PhpPowerPoint $phpPowerPoint
  * @param string $filename
  * @param array $writers
  */
