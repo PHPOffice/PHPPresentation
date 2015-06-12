@@ -69,7 +69,7 @@ class ChartAreaTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart/c:ser';
         $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart/c:ser/c:dPt/c:spPr';
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:v';
         $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart/c:ser/c:tx/c:v';
         $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
