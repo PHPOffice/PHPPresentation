@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta charset="utf-8"/>
-    <title>    API Documentation &raquo; \PhpOffice\PhpPowerpoint\Writer\ODPresentation
+    <title>    API Documentation &raquo; \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar
 </title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
@@ -119,57 +119,63 @@
         <li class="nav-header">
             <i class="icon-custom icon-method"></i> Methods
             <ul>
-                                                                                                    <li class="method public">
-        <a href="#method___construct" title="__construct :: Create a new \PhpOffice\PhpPowerpoint\Writer\ODPresentation">
-            <span class="description">Create a new \PhpOffice\PhpPowerpoint\Writer\ODPresentation</span><pre>__construct</pre>
+                                                                                                    <li class="method public inherited">
+        <a href="#method_addSeries" title="addSeries :: Add Series">
+            <span class="description">Add Series</span><pre>addSeries</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getDiskCachingDirectory" title="getDiskCachingDirectory :: Get disk caching directory">
-            <span class="description">Get disk caching directory</span><pre>getDiskCachingDirectory</pre>
+        <a href="#method_getBarDirection" title="getBarDirection :: Get orientation">
+            <span class="description">Get orientation</span><pre>getBarDirection</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getData" title="getData :: Get Data">
+            <span class="description">Get Data</span><pre>getData</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getDrawingHashTable" title="getDrawingHashTable :: Get drawing hash table">
-            <span class="description">Get drawing hash table</span><pre>getDrawingHashTable</pre>
+        <a href="#method_getHashCode" title="getHashCode :: Get hash code">
+            <span class="description">Get hash code</span><pre>getHashCode</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getHashIndex" title="getHashIndex :: Get hash index">
+            <span class="description">Get hash index</span><pre>getHashIndex</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_hasAxisX" title="hasAxisX :: Has Axis X?">
+            <span class="description">Has Axis X?</span><pre>hasAxisX</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_hasAxisY" title="hasAxisY :: Has Axis Y?">
+            <span class="description">Has Axis Y?</span><pre>hasAxisY</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
-        <a href="#method_getPHPPowerPoint" title="getPHPPowerPoint :: Get PHPPowerPoint object">
-            <span class="description">Get PHPPowerPoint object</span><pre>getPHPPowerPoint</pre>
+        <a href="#method_setBarDirection" title="setBarDirection :: Set bar orientation">
+            <span class="description">Set bar orientation</span><pre>setBarDirection</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_getWriterPart" title="getWriterPart :: Get writer part">
-            <span class="description">Get writer part</span><pre>getWriterPart</pre>
+                                                                                                        <li class="method public inherited">
+        <a href="#method_setData" title="setData :: Set Data">
+            <span class="description">Set Data</span><pre>setData</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
-        <a href="#method_hasDiskCaching" title="hasDiskCaching :: Get use disk caching where possible?">
-            <span class="description">Get use disk caching where possible?</span><pre>hasDiskCaching</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_save" title="save :: Save PHPPowerPoint to file">
-            <span class="description">Save PHPPowerPoint to file</span><pre>save</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_setPHPPowerPoint" title="setPHPPowerPoint :: Get PHPPowerPoint object">
-            <span class="description">Get PHPPowerPoint object</span><pre>setPHPPowerPoint</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
-        <a href="#method_setUseDiskCaching" title="setUseDiskCaching :: Set use disk caching where possible?">
-            <span class="description">Set use disk caching where possible?</span><pre>setUseDiskCaching</pre>
+                                                                                                        <li class="method public inherited">
+        <a href="#method_setHashIndex" title="setHashIndex :: Set hash index">
+            <span class="description">Set hash index</span><pre>setHashIndex</pre>
         </a>
     </li>
 
@@ -177,15 +183,25 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
             <ul>
+                                <li class="constant ">
+                    <a href="#constant_DIRECTION_HORIZONTAL" title="DIRECTION_HORIZONTAL :: ">
+                        <span class="description"></span><pre>DIRECTION_HORIZONTAL</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_DIRECTION_VERTICAL" title="DIRECTION_VERTICAL :: Orientation of bars">
+                        <span class="description">Orientation of bars</span><pre>DIRECTION_VERTICAL</pre>
+                    </a>
+                </li>
                             </ul>
         </li>
     </ul>
@@ -195,11 +211,12 @@
 
         <div class="span8">
             <div class="element class">
-                <h1>ODPresentation</h1>
+                <h1>Bar</h1>
                 <small style="display: block; text-align: right">
-                                                                Implements <a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a>
+                                            Extends <a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Type.AbstractType.html">\PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType</a>
+                                                                Implements <a href="../classes/PhpOffice.PhpPowerpoint.ComparableInterface.html">\PhpOffice\PhpPowerpoint\ComparableInterface</a>
                                     </small>
-                <p class="short_description">ODPresentation writer</p>
+                <p class="short_description">\PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar</p>
                 <div class="details">
                     <div class="long_description">
                         
@@ -217,12 +234,12 @@
                                                                                                                                                                                 </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
-                                                                <a id="method___construct"></a>
-                        <div class="element clickable method public  method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
-                            <h2>Create a new \PhpOffice\PhpPowerpoint\Writer\ODPresentation</h2>
-                            <pre>__construct(\PhpOffice\PhpPowerpoint\Writer\PHPPowerPoint $pPHPPowerPoint = null) </pre>
+                                                                <a id="method_addSeries"></a>
+                        <div class="element clickable method public  method_addSeries inherited" data-toggle="collapse" data-target=".method_addSeries .collapse">
+                            <h2>Add Series</h2>
+                            <pre>addSeries(\PhpOffice\PhpPowerpoint\Shape\Chart\Series $value) : self</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -230,29 +247,24 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$pPHPPowerPoint</h4>
-                                                <code>\PhpOffice\PhpPowerpoint\Writer\PHPPowerPoint</code><p></p>
+                                                <h4>$value</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Series.html">\PhpOffice\PhpPowerpoint\Shape\Chart\Series</a></code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code>self</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
-                                            <a id="method_getDiskCachingDirectory"></a>
-                        <div class="element clickable method public  method_getDiskCachingDirectory" data-toggle="collapse" data-target=".method_getDiskCachingDirectory .collapse">
-                            <h2>Get disk caching directory</h2>
-                            <pre>getDiskCachingDirectory() : string</pre>
+                                            <a id="method_getBarDirection"></a>
+                        <div class="element clickable method public  method_getBarDirection" data-toggle="collapse" data-target=".method_getBarDirection .collapse">
+                            <h2>Get orientation</h2>
+                            <pre>getBarDirection() : string</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -278,10 +290,39 @@
                             </div>
 
                         </div>
-                                            <a id="method_getDrawingHashTable"></a>
-                        <div class="element clickable method public  method_getDrawingHashTable" data-toggle="collapse" data-target=".method_getDrawingHashTable .collapse">
-                            <h2>Get drawing hash table</h2>
-                            <pre>getDrawingHashTable() : \PhpOffice\PhpPowerpoint\HashTable</pre>
+                                            <a id="method_getData"></a>
+                        <div class="element clickable method public  method_getData inherited" data-toggle="collapse" data-target=".method_getData .collapse">
+                            <h2>Get Data</h2>
+                            <pre>getData() : array&lt;mixed,\PhpOffice\PhpPowerpoint\Shape\Chart\Series&gt;</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>array&lt;mixed,<a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Series.html">\PhpOffice\PhpPowerpoint\Shape\Chart\Series</a>&gt;</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getHashCode"></a>
+                        <div class="element clickable method public  method_getHashCode" data-toggle="collapse" data-target=".method_getHashCode .collapse">
+                            <h2>Get hash code</h2>
+                            <pre>getHashCode() : string</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -302,33 +343,25 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.HashTable.html">\PhpOffice\PhpPowerpoint\HashTable</a></code><p></p>
+                                        <code>string</code><p><p>Hash code</p></p>
                                                                     </div>
                             </div>
 
                         </div>
-                                            <a id="method_getPHPPowerPoint"></a>
-                        <div class="element clickable method public  method_getPHPPowerPoint" data-toggle="collapse" data-target=".method_getPHPPowerPoint .collapse">
-                            <h2>Get PHPPowerPoint object</h2>
-                            <pre>getPHPPowerPoint() : \PhpOffice\PhpPowerpoint\Writer\PHPPowerPoint</pre>
+                                            <a id="method_getHashIndex"></a>
+                        <div class="element clickable method public  method_getHashIndex inherited" data-toggle="collapse" data-target=".method_getHashIndex .collapse">
+                            <h2>Get hash index</h2>
+                            <pre>getHashIndex() : string</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
                                 <div class="detail-description">
-                                    <div class="long_description"></div>
+                                    <div class="long_description"><p>Note that this index may vary during script execution! Only reliable moment is
+while doing a write of a workbook and when changes are not allowed.</p></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
                                                                                     <tr>
                                                 <th>
                                                     
@@ -340,44 +373,17 @@
 
                                     
                                                                             <h3>Response</h3>
-                                        <code>\PhpOffice\PhpPowerpoint\Writer\PHPPowerPoint</code><p></p>
+                                        <code>string</code><p><p>Hash index</p></p>
                                                                     </div>
                             </div>
 
                         </div>
-                                            <a id="method_getWriterPart"></a>
-                        <div class="element clickable method public  method_getWriterPart" data-toggle="collapse" data-target=".method_getWriterPart .collapse">
-                            <h2>Get writer part</h2>
-                            <pre>getWriterPart(string $pPartName = &#039;&#039;) : \PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart</pre>
+                                            <a id="method_hasAxisX"></a>
+                        <div class="element clickable method public  method_hasAxisX inherited" data-toggle="collapse" data-target=".method_hasAxisX .collapse">
+                            <h2>Has Axis X?</h2>
+                            <pre>hasAxisX() : boolean</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pPartName</h4>
-                                                <code>string</code><p><p>Writer part name</p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.ODPresentation.AbstractPart.html">\PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart</a></code><p></p>
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_hasDiskCaching"></a>
-                        <div class="element clickable method public  method_hasDiskCaching" data-toggle="collapse" data-target=".method_hasDiskCaching .collapse">
-                            <h2>Get use disk caching where possible?</h2>
-                            <pre>hasDiskCaching() : boolean</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -401,12 +407,12 @@
                             </div>
 
                         </div>
-                                            <a id="method_save"></a>
-                        <div class="element clickable method public  method_save" data-toggle="collapse" data-target=".method_save .collapse">
-                            <h2>Save PHPPowerPoint to file</h2>
-                            <pre>save(string $pFilename) </pre>
+                                            <a id="method_hasAxisY"></a>
+                        <div class="element clickable method public  method_hasAxisY inherited" data-toggle="collapse" data-target=".method_hasAxisY .collapse">
+                            <h2>Has Axis Y?</h2>
+                            <pre>hasAxisY() : boolean</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -416,13 +422,88 @@
                                     <table class="table">
                                                                                     <tr>
                                                 <th>
-                                                    throws
+                                                    
                                                 </th>
                                                 <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
                                                                                                     </td>
                                             </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>boolean</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setBarDirection"></a>
+                        <div class="element clickable method public  method_setBarDirection" data-toggle="collapse" data-target=".method_setBarDirection .collapse">
+                            <h2>Set bar orientation</h2>
+                            <pre>setBarDirection(string $value = self::DIRECTION_VERTICAL) : \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$value</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Type.Bar.html">\PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setData"></a>
+                        <div class="element clickable method public  method_setData inherited" data-toggle="collapse" data-target=".method_setData .collapse">
+                            <h2>Set Data</h2>
+                            <pre>setData(array $value = array()) : self</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$value</h4>
+                                                <code>array</code><p><p>Array of \PhpOffice\PhpPowerpoint\Shape\Chart\Series</p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>self</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setHashIndex"></a>
+                        <div class="element clickable method public  method_setHashIndex inherited" data-toggle="collapse" data-target=".method_setHashIndex .collapse">
+                            <h2>Set hash index</h2>
+                            <pre>setHashIndex(string $value) </pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"><p>Note that this index may vary during script execution! Only reliable moment is
+while doing a write of a workbook and when changes are not allowed.</p></div>
+
+                                    <table class="table">
                                                                                     <tr>
                                                 <th>
                                                     
@@ -434,227 +515,64 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$pFilename</h4>
-                                                <code>string</code><p></p>
+                                                <h4>$value</h4>
+                                                <code>string</code><p><p>Hash index</p></p>
                                             </div>
                                                                             
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_setPHPPowerPoint"></a>
-                        <div class="element clickable method public  method_setPHPPowerPoint" data-toggle="collapse" data-target=".method_setPHPPowerPoint .collapse">
-                            <h2>Get PHPPowerPoint object</h2>
-                            <pre>setPHPPowerPoint(\PhpOffice\PhpPowerpoint\Writer\PHPPowerPoint $pPHPPowerPoint = null) : \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pPHPPowerPoint</h4>
-                                                <code>\PhpOffice\PhpPowerpoint\Writer\PHPPowerPoint</code><p><p>PHPPowerPoint object</p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.PowerPoint2007.html">\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007</a></code><p></p>
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_setUseDiskCaching"></a>
-                        <div class="element clickable method public  method_setUseDiskCaching" data-toggle="collapse" data-target=".method_setUseDiskCaching .collapse">
-                            <h2>Set use disk caching where possible?</h2>
-                            <pre>setUseDiskCaching(boolean $pValue = false, string $pDirectory = null) : \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pValue</h4>
-                                                <code>boolean</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pDirectory</h4>
-                                                <code>string</code><p><p>Disk caching directory</p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.PowerPoint2007.html">\PhpOffice\PhpPowerpoint\Writer\PowerPoint2007</a></code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                     
-                    
+                                            <h3><i class="icon-custom icon-constant"></i> Constants</h3>
+                                                    <a id="constant_DIRECTION_VERTICAL"> </a>
+                            <div class="element clickable constant  constant_DIRECTION_VERTICAL" data-toggle="collapse" data-target=".constant_DIRECTION_VERTICAL .collapse">
+                                <h2>Orientation of bars</h2>
+                                <pre>DIRECTION_VERTICAL</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_DIRECTION_HORIZONTAL"> </a>
+                            <div class="element clickable constant  constant_DIRECTION_HORIZONTAL" data-toggle="collapse" data-target=".constant_DIRECTION_HORIZONTAL .collapse">
+                                <h2>DIRECTION_HORIZONTAL</h2>
+                                <pre>DIRECTION_HORIZONTAL</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                            
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
-                                                    <a id="property_presentation"> </a>
-                            <div class="element clickable property  private property_presentation" data-toggle="collapse" data-target=".property_presentation .collapse">
-                                <h2>Private PHPPowerPoint</h2>
-                                <pre>presentation : \PhpOffice\PhpPowerpoint\Writer\PHPPowerPoint</pre>
-                                <div class="labels">
-                                                                                                        </div>
-                                <div class="row collapse">
-                                    <div class="detail-description">
-                                        <div class="long_description"></div>
-
-                                        <table class="table">
-                                                                                            <tr>
-                                                    <th>
-                                                        var
-                                                    </th>
-                                                    <td>
-                                                                                                                    
-                                                                                                            </td>
-                                                </tr>
-                                                                                    </table>
-
-                                                                                    <h3>Type(s)</h3>
-                                            <code>\PhpOffice\PhpPowerpoint\Writer\PHPPowerPoint</code>
-                                                                            </div>
-                                </div>
-                            </div>
-                                                    <a id="property_writerParts"> </a>
-                            <div class="element clickable property  private property_writerParts" data-toggle="collapse" data-target=".property_writerParts .collapse">
-                                <h2>Private writer parts</h2>
-                                <pre>writerParts : array&lt;mixed,\PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart&gt;</pre>
-                                <div class="labels">
-                                                                                                        </div>
-                                <div class="row collapse">
-                                    <div class="detail-description">
-                                        <div class="long_description"></div>
-
-                                        <table class="table">
-                                                                                            <tr>
-                                                    <th>
-                                                        var
-                                                    </th>
-                                                    <td>
-                                                                                                                    
-                                                                                                            </td>
-                                                </tr>
-                                                                                    </table>
-
-                                                                                    <h3>Type(s)</h3>
-                                            <code>array&lt;mixed,<a href="../classes/PhpOffice.PhpPowerpoint.Writer.ODPresentation.AbstractPart.html">\PhpOffice\PhpPowerpoint\Writer\ODPresentation\AbstractPart</a>&gt;</code>
-                                                                            </div>
-                                </div>
-                            </div>
-                                                    <a id="property_drawingHashTable"> </a>
-                            <div class="element clickable property  private property_drawingHashTable" data-toggle="collapse" data-target=".property_drawingHashTable .collapse">
-                                <h2>Private unique hashtable</h2>
-                                <pre>drawingHashTable : \PhpOffice\PhpPowerpoint\HashTable</pre>
-                                <div class="labels">
-                                                                                                        </div>
-                                <div class="row collapse">
-                                    <div class="detail-description">
-                                        <div class="long_description"></div>
-
-                                        <table class="table">
-                                                                                            <tr>
-                                                    <th>
-                                                        var
-                                                    </th>
-                                                    <td>
-                                                                                                                    
-                                                                                                            </td>
-                                                </tr>
-                                                                                    </table>
-
-                                                                                    <h3>Type(s)</h3>
-                                            <code><a href="../classes/PhpOffice.PhpPowerpoint.HashTable.html">\PhpOffice\PhpPowerpoint\HashTable</a></code>
-                                                                            </div>
-                                </div>
-                            </div>
-                                                    <a id="property_chartArray"> </a>
-                            <div class="element clickable property  public property_chartArray" data-toggle="collapse" data-target=".property_chartArray .collapse">
-                                <h2>chartArray</h2>
-                                <pre>chartArray : array&lt;mixed,\PhpOffice\PhpPowerpoint\Shape\Chart&gt;</pre>
-                                <div class="labels">
-                                                                                                        </div>
-                                <div class="row collapse">
-                                    <div class="detail-description">
-                                        <div class="long_description"></div>
-
-                                        <table class="table">
-                                                                                            <tr>
-                                                    <th>
-                                                        var
-                                                    </th>
-                                                    <td>
-                                                                                                                    
-                                                                                                            </td>
-                                                </tr>
-                                                                                    </table>
-
-                                                                                    <h3>Type(s)</h3>
-                                            <code>array&lt;mixed,<a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.html">\PhpOffice\PhpPowerpoint\Shape\Chart</a>&gt;</code>
-                                                                            </div>
-                                </div>
-                            </div>
-                                                    <a id="property_useDiskCaching"> </a>
-                            <div class="element clickable property  private property_useDiskCaching" data-toggle="collapse" data-target=".property_useDiskCaching .collapse">
-                                <h2>Use disk caching where possible?</h2>
-                                <pre>useDiskCaching : boolean</pre>
-                                <div class="labels">
-                                                                                                        </div>
-                                <div class="row collapse">
-                                    <div class="detail-description">
-                                        <div class="long_description"></div>
-
-                                        <table class="table">
-                                                                                            <tr>
-                                                    <th>
-                                                        var
-                                                    </th>
-                                                    <td>
-                                                                                                                    
-                                                                                                            </td>
-                                                </tr>
-                                                                                    </table>
-
-                                                                                    <h3>Type(s)</h3>
-                                            <code>boolean</code>
-                                                                            </div>
-                                </div>
-                            </div>
-                                                    <a id="property_diskCachingDirectory"> </a>
-                            <div class="element clickable property  private property_diskCachingDirectory" data-toggle="collapse" data-target=".property_diskCachingDirectory .collapse">
-                                <h2>Disk caching directory</h2>
-                                <pre>diskCachingDirectory : string</pre>
+                                                    <a id="property_barDirection"> </a>
+                            <div class="element clickable property  protected property_barDirection" data-toggle="collapse" data-target=".property_barDirection .collapse">
+                                <h2>Orientation of bars</h2>
+                                <pre>barDirection : string</pre>
                                 <div class="labels">
                                                                                                         </div>
                                 <div class="row collapse">
@@ -677,16 +595,120 @@
                                                                             </div>
                                 </div>
                             </div>
+                                                    <a id="property_hasAxisX"> </a>
+                            <div class="element clickable property  protected property_hasAxisX inherited" data-toggle="collapse" data-target=".property_hasAxisX .collapse">
+                                <h2>Has Axis X?</h2>
+                                <pre>hasAxisX : boolean</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>boolean</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_hasAxisY"> </a>
+                            <div class="element clickable property  protected property_hasAxisY inherited" data-toggle="collapse" data-target=".property_hasAxisY .collapse">
+                                <h2>Has Axis Y?</h2>
+                                <pre>hasAxisY : boolean</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>boolean</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_hashIndex"> </a>
+                            <div class="element clickable property  private property_hashIndex inherited" data-toggle="collapse" data-target=".property_hashIndex .collapse">
+                                <h2>Hash index</h2>
+                                <pre>hashIndex : string</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>string</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_data"> </a>
+                            <div class="element clickable property  private property_data inherited" data-toggle="collapse" data-target=".property_data .collapse">
+                                <h2>Data</h2>
+                                <pre>data : array</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
                                                             </div>
             </div>
-            <a id="\PhpOffice\PhpPowerpoint\Writer\ODPresentation"></a>
+            <a id="\PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar"></a>
             <ul class="breadcrumb">
                 <li><a href="../index.html"><i class="icon-custom icon-class"></i></a></li>
                     
     
-    <li><span class="divider">\</span><a href="../namespaces/PhpOffice.PhpPowerpoint.Writer.html">Writer</a></li>
+    <li><span class="divider">\</span><a href="../namespaces/PhpOffice.PhpPowerpoint.Shape.Chart.Type.html">Type</a></li>
 
-                <li class="active"><span class="divider">\</span><a href="../classes/PhpOffice.PhpPowerpoint.Writer.ODPresentation.html">ODPresentation</a></li>
+                <li class="active"><span class="divider">\</span><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Type.Bar.html">Bar</a></li>
             </ul>
         </div>
     </div>
@@ -697,7 +719,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 12 Jun 2015 20:34:07 +0000.<br/>
+            generated on Fri, 12 Jun 2015 20:34:10 +0000.<br/>
     </footer>
     </body>
 </html>
