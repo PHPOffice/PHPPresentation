@@ -1057,7 +1057,7 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('style:name', 'stylePage'.$incPage);
         // style:style/style:drawing-page-properties
         $objWriter->startElement('style:drawing-page-properties');
-        if (!is_null($oTransition = $slide->getTransition())){
+        if (!is_null($oTransition = $slide->getTransition())) {
             $objWriter->writeAttribute('presentation:duration', 'PT'.number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '').'S');
             if ($oTransition->hasManualTrigger()) {
                 $objWriter->writeAttribute('presentation:transition-type', 'manual');
@@ -1065,13 +1065,13 @@ class Content extends AbstractPart
                 $objWriter->writeAttribute('presentation:transition-type', 'automatic');
             }
             switch($oTransition->getSpeed()) {
-                case Transition::SPEED_FAST;
+                case Transition::SPEED_FAST:
                     $objWriter->writeAttribute('presentation:transition-speed', 'fast');
                     break;
-                case Transition::SPEED_MEDIUM;
+                case Transition::SPEED_MEDIUM:
                     $objWriter->writeAttribute('presentation:transition-speed', 'medium');
                     break;
-                case Transition::SPEED_SLOW;
+                case Transition::SPEED_SLOW:
                     $objWriter->writeAttribute('presentation:transition-speed', 'slow');
                     break;
             }
