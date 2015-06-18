@@ -33,6 +33,8 @@ use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Slide\Note;
+use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
@@ -1022,7 +1024,7 @@ class Content extends AbstractPart
      * @param XMLWriter $objWriter
      * @param |PhpOffice\PhpPowerpoint\Slide\Note $note
      */
-    public function writeSlideNote(XMLWriter $objWriter, Slide\Note $note)
+    public function writeSlideNote(XMLWriter $objWriter, Note $note)
     {
         $shapesNote = $note->getShapeCollection();
         if (count($shapesNote) > 0) {
@@ -1055,7 +1057,7 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('style:name', 'stylePage'.$incPage);
         // style:style/style:drawing-page-properties
         $objWriter->startElement('style:drawing-page-properties');
-        if (!is_null($oTransition = $slide->getTransition())) {
+        if (!is_null($oTransition = $slide->getTransition())){
             $objWriter->writeAttribute('presentation:duration', 'PT'.number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '').'S');
             if ($oTransition->hasManualTrigger()) {
                 $objWriter->writeAttribute('presentation:transition-type', 'manual');
@@ -1063,13 +1065,13 @@ class Content extends AbstractPart
                 $objWriter->writeAttribute('presentation:transition-type', 'automatic');
             }
             switch($oTransition->getSpeed()) {
-                case Slide\Transition::SPEED_FAST:
+                case Transition::SPEED_FAST;
                     $objWriter->writeAttribute('presentation:transition-speed', 'fast');
                     break;
-                case Slide\Transition::SPEED_MEDIUM:
+                case Transition::SPEED_MEDIUM;
                     $objWriter->writeAttribute('presentation:transition-speed', 'medium');
                     break;
-                case Slide\Transition::SPEED_SLOW:
+                case Transition::SPEED_SLOW;
                     $objWriter->writeAttribute('presentation:transition-speed', 'slow');
                     break;
             }
@@ -1078,148 +1080,148 @@ class Content extends AbstractPart
              * http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#property-presentation_transition-style
              */
             switch($oTransition->getTransitionType()) {
-                case Slide\Transition::TRANSITION_BLINDS_HORIZONTAL:
+                case Transition::TRANSITION_BLINDS_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'horizontal-stripes');
                     break;
-                case Slide\Transition::TRANSITION_BLINDS_VERTICAL:
+                case Transition::TRANSITION_BLINDS_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'vertical-stripes');
                     break;
-                case Slide\Transition::TRANSITION_CHECKER_HORIZONTAL:
+                case Transition::TRANSITION_CHECKER_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'horizontal-checkerboard');
                     break;
-                case Slide\Transition::TRANSITION_CHECKER_VERTICAL:
+                case Transition::TRANSITION_CHECKER_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'vertical-checkerboard');
                     break;
-                case Slide\Transition::TRANSITION_CIRCLE_HORIZONTAL:
+                case Transition::TRANSITION_CIRCLE_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_CIRCLE_VERTICAL:
+                case Transition::TRANSITION_CIRCLE_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_COMB_HORIZONTAL:
+                case Transition::TRANSITION_COMB_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_COMB_VERTICAL:
+                case Transition::TRANSITION_COMB_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_COVER_DOWN:
+                case Transition::TRANSITION_COVER_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-bottom');
                     break;
-                case Slide\Transition::TRANSITION_COVER_LEFT:
+                case Transition::TRANSITION_COVER_LEFT:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-left');
                     break;
-                case Slide\Transition::TRANSITION_COVER_LEFT_DOWN:
+                case Transition::TRANSITION_COVER_LEFT_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-lowerleft');
                     break;
-                case Slide\Transition::TRANSITION_COVER_LEFT_UP:
+                case Transition::TRANSITION_COVER_LEFT_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-upperleft');
                     break;
-                case Slide\Transition::TRANSITION_COVER_RIGHT:
+                case Transition::TRANSITION_COVER_RIGHT:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-right');
                     break;
-                case Slide\Transition::TRANSITION_COVER_RIGHT_DOWN:
+                case Transition::TRANSITION_COVER_RIGHT_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-lowerright');
                     break;
-                case Slide\Transition::TRANSITION_COVER_RIGHT_UP:
+                case Transition::TRANSITION_COVER_RIGHT_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-upperright');
                     break;
-                case Slide\Transition::TRANSITION_COVER_UP:
+                case Transition::TRANSITION_COVER_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-top');
                     break;
-                case Slide\Transition::TRANSITION_CUT:
+                case Transition::TRANSITION_CUT:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_DIAMOND:
+                case Transition::TRANSITION_DIAMOND:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_DISSOLVE:
+                case Transition::TRANSITION_DISSOLVE:
                     $objWriter->writeAttribute('presentation:transition-style', 'dissolve');
                     break;
-                case Slide\Transition::TRANSITION_FADE:
+                case Transition::TRANSITION_FADE:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-center');
                     break;
-                case Slide\Transition::TRANSITION_NEWSFLASH:
+                case Transition::TRANSITION_NEWSFLASH:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_PLUS:
+                case Transition::TRANSITION_PLUS:
                     $objWriter->writeAttribute('presentation:transition-style', 'close');
                     break;
-                case Slide\Transition::TRANSITION_PULL_DOWN:
+                case Transition::TRANSITION_PULL_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-bottom');
                     break;
-                case Slide\Transition::TRANSITION_PULL_LEFT:
+                case Transition::TRANSITION_PULL_LEFT:
                     $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-left');
                     break;
-                case Slide\Transition::TRANSITION_PULL_RIGHT:
+                case Transition::TRANSITION_PULL_RIGHT:
                     $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-right');
                     break;
-                case Slide\Transition::TRANSITION_PULL_UP:
+                case Transition::TRANSITION_PULL_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-top');
                     break;
-                case Slide\Transition::TRANSITION_PUSH_DOWN:
+                case Transition::TRANSITION_PUSH_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'roll-from-bottom');
                     break;
-                case Slide\Transition::TRANSITION_PUSH_LEFT:
+                case Transition::TRANSITION_PUSH_LEFT:
                     $objWriter->writeAttribute('presentation:transition-style', 'roll-from-left');
                     break;
-                case Slide\Transition::TRANSITION_PUSH_RIGHT:
+                case Transition::TRANSITION_PUSH_RIGHT:
                     $objWriter->writeAttribute('presentation:transition-style', 'roll-from-right');
                     break;
-                case Slide\Transition::TRANSITION_PUSH_UP:
+                case Transition::TRANSITION_PUSH_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'roll-from-top');
                     break;
-                case Slide\Transition::TRANSITION_RANDOM:
+                case Transition::TRANSITION_RANDOM:
                     $objWriter->writeAttribute('presentation:transition-style', 'random');
                     break;
-                case Slide\Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
+                case Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'horizontal-lines');
                     break;
-                case Slide\Transition::TRANSITION_RANDOMBAR_VERTICAL:
+                case Transition::TRANSITION_RANDOMBAR_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'vertical-lines');
                     break;
-                case Slide\Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
+                case Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'close-horizontal');
                     break;
-                case Slide\Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
+                case Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'open-horizontal');
                     break;
-                case Slide\Transition::TRANSITION_SPLIT_IN_VERTICAL:
+                case Transition::TRANSITION_SPLIT_IN_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'close-vertical');
                     break;
-                case Slide\Transition::TRANSITION_SPLIT_OUT_VERTICAL:
+                case Transition::TRANSITION_SPLIT_OUT_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'open-vertical');
                     break;
-                case Slide\Transition::TRANSITION_STRIPS_LEFT_DOWN:
+                case Transition::TRANSITION_STRIPS_LEFT_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_STRIPS_LEFT_UP:
+                case Transition::TRANSITION_STRIPS_LEFT_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_STRIPS_RIGHT_DOWN:
+                case Transition::TRANSITION_STRIPS_RIGHT_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_STRIPS_RIGHT_UP:
+                case Transition::TRANSITION_STRIPS_RIGHT_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_WEDGE:
+                case Transition::TRANSITION_WEDGE:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_WIPE_DOWN:
+                case Transition::TRANSITION_WIPE_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-bottom');
                     break;
-                case Slide\Transition::TRANSITION_WIPE_LEFT:
+                case Transition::TRANSITION_WIPE_LEFT:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-left');
                     break;
-                case Slide\Transition::TRANSITION_WIPE_RIGHT:
+                case Transition::TRANSITION_WIPE_RIGHT:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-right');
                     break;
-                case Slide\Transition::TRANSITION_WIPE_UP:
+                case Transition::TRANSITION_WIPE_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-top');
                     break;
-                case Slide\Transition::TRANSITION_ZOOM_IN:
+                case Transition::TRANSITION_ZOOM_IN:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
-                case Slide\Transition::TRANSITION_ZOOM_OUT:
+                case Transition::TRANSITION_ZOOM_OUT:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
             }
