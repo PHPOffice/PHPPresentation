@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPowerpoint\Tests\Writer\ODPresentation;
 
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
+use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
@@ -382,5 +383,206 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('Test', $pres->getElement($element, 'content.xml')->nodeValue);
+    }
+
+    public function testTransition()
+    {
+        $value = rand(1000, 5000);
+
+        $oTransition = new Transition();
+
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'presentation:duration', 'content.xml'));
+
+        $oTransition->setTimeTrigger(true, $value);
+        $oSlide->setTransition($oTransition);
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'presentation:duration', 'content.xml'));
+        $this->assertStringStartsWith('PT', $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
+        $this->assertStringEndsWith('S', $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
+        $this->assertContains(number_format($value / 1000, 6, '.', ''), $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
+        $this->assertContains('automatic', $pres->getElementAttribute($element, 'presentation:transition-type', 'content.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_FAST);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertContains('fast', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_MEDIUM);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertContains('medium', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_SLOW);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertContains('slow', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+
+        $rcTransition = new \ReflectionClass('PhpOffice\PhpPowerpoint\Slide\Transition');
+        $arrayConstants = $rcTransition->getConstants();
+        foreach ($arrayConstants as $key => $value) {
+            if(strpos($key, 'TRANSITION_') !== 0) {
+                continue;
+            }
+
+            $oTransition->setTransitionType($rcTransition->getConstant($key));
+            $oSlide->setTransition($oTransition);
+            $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+            switch($key) {
+                case 'TRANSITION_BLINDS_HORIZONTAL':
+                    $this->assertContains('horizontal-stripes', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_BLINDS_VERTICAL':
+                    $this->assertContains('vertical-stripes', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CHECKER_HORIZONTAL':
+                    $this->assertContains('horizontal-checkerboard', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CHECKER_VERTICAL':
+                    $this->assertContains('vertical-checkerboard', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CIRCLE_HORIZONTAL':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CIRCLE_VERTICAL':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COMB_HORIZONTAL':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COMB_VERTICAL':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_DOWN':
+                    $this->assertContains('uncover-to-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT':
+                    $this->assertContains('uncover-to-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT_DOWN':
+                    $this->assertContains('uncover-to-lowerleft', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT_UP':
+                    $this->assertContains('uncover-to-upperleft', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT':
+                    $this->assertContains('uncover-to-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT_DOWN':
+                    $this->assertContains('uncover-to-lowerright', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT_UP':
+                    $this->assertContains('uncover-to-upperright', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_UP':
+                    $this->assertContains('uncover-to-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CUT':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_DIAMOND':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_DISSOLVE':
+                    $this->assertContains('dissolve', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_FADE':
+                    $this->assertContains('fade-from-center', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_NEWSFLASH':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PLUS':
+                    $this->assertContains('close', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PULL_DOWN':
+                    $this->assertContains('stretch-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PULL_LEFT':
+                    $this->assertContains('stretch-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PULL_RIGHT':
+                    $this->assertContains('stretch-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PULL_UP':
+                    $this->assertContains('stretch-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PUSH_DOWN':
+                    $this->assertContains('roll-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PUSH_LEFT':
+                    $this->assertContains('roll-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PUSH_RIGHT':
+                    $this->assertContains('roll-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PUSH_UP':
+                    $this->assertContains('roll-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_RANDOM':
+                    $this->assertContains('random', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_RANDOMBAR_HORIZONTAL':
+                    $this->assertContains('horizontal-lines', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_RANDOMBAR_VERTICAL':
+                    $this->assertContains('vertical-lines', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_IN_HORIZONTAL':
+                    $this->assertContains('close-horizontal', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_OUT_HORIZONTAL':
+                    $this->assertContains('open-horizontal', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_IN_VERTICAL':
+                    $this->assertContains('close-vertical', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_OUT_VERTICAL':
+                    $this->assertContains('open-vertical', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_LEFT_DOWN':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_LEFT_UP':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_RIGHT_DOWN':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_RIGHT_UP':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WEDGE':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WIPE_DOWN':
+                    $this->assertContains('fade-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WIPE_LEFT':
+                    $this->assertContains('fade-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WIPE_RIGHT':
+                    $this->assertContains('fade-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WIPE_UP':
+                    $this->assertContains('fade-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_ZOOM_IN':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_ZOOM_OUT':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+            }
+        }
+
+        $oTransition->setManualTrigger(true);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertContains('manual', $pres->getElementAttribute($element, 'presentation:transition-type', 'content.xml'));
     }
 }

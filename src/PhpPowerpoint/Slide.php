@@ -17,15 +17,14 @@
 
 namespace PhpOffice\PhpPowerpoint;
 
-use PhpOffice\PhpPowerpoint\GeometryCalculator;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
-use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Line;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\Table;
 use PhpOffice\PhpPowerpoint\Slide\Layout;
 use PhpOffice\PhpPowerpoint\Slide\Note;
+use PhpOffice\PhpPowerpoint\Slide\Transition;
 
 /**
  * Slide class
@@ -66,12 +65,17 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      * @var integer
      */
     private $slideMasterId = 1;
-    
+
     /**
      *
      * @var \PhpOffice\PhpPowerpoint\Slide\Note
      */
     private $slideNote;
+    /**
+     *
+     * @var \PhpOffice\PhpPowerpoint\Slide\Transition
+     */
+    private $slideTransition;
     
     /**
      * Hash index
@@ -410,7 +414,7 @@ class Slide implements ComparableInterface, ShapeContainerInterface
         }
         return $this->extentY;
     }
-    
+
     /**
      *
      * @return \PhpOffice\PhpPowerpoint\Slide\Note
@@ -422,7 +426,7 @@ class Slide implements ComparableInterface, ShapeContainerInterface
         }
         return $this->slideNote;
     }
-    
+
     /**
      *
      * @param \PhpOffice\PhpPowerpoint\Slide\Note $note
@@ -432,7 +436,28 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     {
         $this->slideNote = (is_null($note) ? new Note() : $note);
         $this->slideNote->setParent($this);
-    
+
+        return $this;
+    }
+
+    /**
+     *
+     * @return \PhpOffice\PhpPowerpoint\Slide\Transition
+     */
+    public function getTransition()
+    {
+        return $this->slideTransition;
+    }
+
+    /**
+     *
+     * @param \PhpOffice\PhpPowerpoint\Slide\Transition $transition
+     * @return \PhpOffice\PhpPowerpoint\Slide
+     */
+    public function setTransition(Transition $transition = null)
+    {
+        $this->slideTransition = $transition;
+
         return $this;
     }
 }

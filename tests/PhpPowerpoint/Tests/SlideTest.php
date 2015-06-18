@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Tests;
 
 use PhpOffice\PhpPowerpoint\Slide;
+use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 
 /**
@@ -63,5 +64,18 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Slide();
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Group', $object->createGroup());
+    }
+
+    public function testTransition()
+    {
+        $object = new Slide();
+        $oTransition = new Transition();
+        $this->assertNull($object->getTransition());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->setTransition());
+        $this->assertNull($object->getTransition());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->setTransition($oTransition));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide\\Transition', $object->getTransition());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->setTransition(null));
+        $this->assertNull($object->getTransition());
     }
 }

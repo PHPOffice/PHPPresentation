@@ -16,6 +16,7 @@
 - ODPresentation Writer : Support for Bar Chart - @Progi1984 GH-82
 - PowerPoint2007 Writer : Support for Bar Chart - @Progi1984 GH-82
 - Added units in DocumentLayout - @Progi1984 GH-87
+- Added support for transitions between slides - @Progi1984
 
 ### Bugfix
 - PSR-0 via composer broken - @Progi1984 GH-51
