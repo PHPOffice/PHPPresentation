@@ -105,7 +105,7 @@ class Transition
 
     public function setSpeed($speed = self::SPEED_MEDIUM)
     {
-        if(in_array($speed, array(self::SPEED_FAST, self::SPEED_MEDIUM, self::SPEED_SLOW))){
+        if (in_array($speed, array(self::SPEED_FAST, self::SPEED_MEDIUM, self::SPEED_SLOW))) {
             $this->speed = $speed;
         } else {
             $this->speed = null;
@@ -121,7 +121,7 @@ class Transition
 
     public function setManualTrigger($value = false)
     {
-        if(is_bool($value)) {
+        if (is_bool($value)) {
             $this->hasManualTrigger = $value;
         }
         return $this;
@@ -134,11 +134,11 @@ class Transition
 
     public function setTimeTrigger($value = false, $advanceTime = 1000)
     {
-        if(is_bool($value)) {
+        if (is_bool($value)) {
             $this->hasTimeTrigger = $value;
         }
         $this->advanceTimeTrigger = null;
-        if($this->hasTimeTrigger === true) {
+        if ($this->hasTimeTrigger === true) {
             $this->advanceTimeTrigger = (int) $advanceTime;
         }
         return $this;

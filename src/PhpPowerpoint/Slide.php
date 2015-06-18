@@ -17,8 +17,10 @@
 
 namespace PhpOffice\PhpPowerpoint;
 
+use PhpOffice\PhpPowerpoint\GeometryCalculator;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Line;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\Table;

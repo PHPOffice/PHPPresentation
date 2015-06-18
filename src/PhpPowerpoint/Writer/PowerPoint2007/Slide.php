@@ -1420,11 +1420,11 @@ class Slide extends AbstractPart
     public function writeTransition(XMLWriter $objWriter, Transition $transition)
     {
         $objWriter->startElement('p:transition');
-        if(!is_null($transition->getSpeed())){
+        if (!is_null($transition->getSpeed())) {
             $objWriter->writeAttribute('spd', $transition->getSpeed());
         }
         $objWriter->writeAttribute('advClick', $transition->hasManualTrigger() ? '1' : '0');
-        if($transition->hasTimeTrigger()) {
+        if ($transition->hasTimeTrigger()) {
             $objWriter->writeAttribute('advTm', $transition->getAdvanceTimeTrigger());
         }
 

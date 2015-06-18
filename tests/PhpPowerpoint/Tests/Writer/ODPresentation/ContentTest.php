@@ -426,7 +426,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $rcTransition = new \ReflectionClass('PhpOffice\PhpPowerpoint\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
         foreach ($arrayConstants as $key => $value) {
-            if(strpos($key, 'TRANSITION_') !== 0) {
+            if (strpos($key, 'TRANSITION_') !== 0) {
                 continue;
             }
 
