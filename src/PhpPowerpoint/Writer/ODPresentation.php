@@ -127,8 +127,8 @@ class ODPresentation implements WriterInterface
                 }
             }
 
-            $writerPartObjectsChart = $this->getWriterPart('charts');
-            if (!$writerPartObjectsChart instanceof ObjectsChart) {
+            $writerPartChart = $this->getWriterPart('charts');
+            if (!$writerPartChart instanceof ObjectsChart) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\ObjectsChart');
             }
             $writerPartContent = $this->getWriterPart('content');
@@ -187,7 +187,7 @@ class ODPresentation implements WriterInterface
 
             // Add charts
             foreach ($this->chartArray as $keyChart => $shapeChart) {
-                $arrayFile = $writerPartObjectsChart->writePart($shapeChart);
+                $arrayFile = $writerPartChart->writePart($shapeChart);
                 foreach ($arrayFile as $file => $content) {
                     if (!empty($content)) {
                         $objZip->addFromString('Object '.$keyChart.'/' . $file, $content);

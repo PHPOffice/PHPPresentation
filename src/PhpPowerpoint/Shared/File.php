@@ -68,7 +68,7 @@ class File
         if ($returnValue == '' || is_null($returnValue)) {
             $pathArray = explode('/', $pFilename);
             while (in_array('..', $pathArray) && $pathArray[0] != '..') {
-            	$numPathArray = count($pathArray);
+                $numPathArray = count($pathArray);
                 for ($i = 0; $i < $numPathArray; ++$i) {
                     if ($pathArray[$i] == '..' && $i > 0) {
                         unset($pathArray[$i]);
