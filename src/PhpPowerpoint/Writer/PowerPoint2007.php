@@ -56,7 +56,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Private PHPPowerPoint
      *
-     * @var PHPPowerPoint
+     * @var PhpPowerPoint
      */
     protected $presentation;
 

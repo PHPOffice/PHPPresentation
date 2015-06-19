@@ -38,7 +38,7 @@ class ODPresentation implements WriterInterface
     /**
     * Private PHPPowerPoint
     *
-    * @var PHPPowerPoint
+    * @var PhpPowerPoint
     */
     private $presentation;
 
