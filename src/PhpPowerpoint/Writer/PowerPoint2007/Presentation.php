@@ -34,7 +34,7 @@ class Presentation extends AbstractPart
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writePresentation(PhpPowerpoint $pPHPPowerPoint = null)
+    public function writePresentation(PhpPowerpoint $pPHPPowerPoint)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();

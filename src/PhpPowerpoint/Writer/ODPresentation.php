@@ -78,7 +78,7 @@ class ODPresentation implements WriterInterface
     /**
      * Create a new \PhpOffice\PhpPowerpoint\Writer\ODPresentation
      *
-     * @param PHPPowerPoint $pPHPPowerPoint
+     * @param PhpPowerpoint $pPHPPowerPoint
      */
     public function __construct(PHPPowerPoint $pPHPPowerPoint = null)
     {

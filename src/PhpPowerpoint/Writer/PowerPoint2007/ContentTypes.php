@@ -37,7 +37,7 @@ class ContentTypes extends AbstractPart
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writeContentTypes(PhpPowerpoint $pPHPPowerPoint = null)
+    public function writeContentTypes(PhpPowerpoint $pPHPPowerPoint)
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof PowerPoint2007) {

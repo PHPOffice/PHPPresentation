@@ -186,7 +186,7 @@ class OLERead
         $streamData = '';
 
         if ($this->props[$stream]['size'] < self::SMALL_BLOCK_THRESHOLD) {
-            $rootdata = $this->readData($this->props[$this->rootentry]['startBlock']);
+            $rootdata = $this->readData($this->props[$this->rootEntry]['startBlock']);
 
             $block = $this->props[$stream]['startBlock'];
 
@@ -278,7 +278,7 @@ class OLERead
                 switch ($upName){
                     case 'ROOT ENTRY':
                     case 'R':
-                        $this->rootentry = count($this->props) - 1;
+                        $this->rootEntry = count($this->props) - 1;
                         break;
                     case chr(1).'COMPOBJ':
                         break;

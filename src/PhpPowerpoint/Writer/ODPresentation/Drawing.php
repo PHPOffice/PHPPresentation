@@ -34,14 +34,10 @@ class Drawing extends AbstractPart
      * @return \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing[] All drawings in PHPPowerPoint
      * @throws \Exception
      */
-    public function allDrawings(PhpPowerPoint $pPHPPowerPoint = null)
+    public function allDrawings(PhpPowerPoint $pPHPPowerPoint)
     {
         // Get an array of all drawings
         $aDrawings  = array();
-        
-        if (is_null($pPHPPowerPoint)) {
-            return $aDrawings;
-        }
 
         // Loop trough PHPPowerPoint
         $slideCount = $pPHPPowerPoint->getSlideCount();

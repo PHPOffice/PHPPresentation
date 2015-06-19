@@ -476,7 +476,7 @@ class Content extends AbstractPart
                         if ($richtext instanceof Run) {
                             $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getFont()->getHashCode());
                         }
-                        if ($richtext->hasHyperlink() == true && $richtext->getHyperlink()->getUrl() != '') {
+                        if ($richtext->hasHyperlink() === true && $richtext->getHyperlink()->getUrl() != '') {
                             // text:a
                             $objWriter->startElement('text:a');
                             $objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
