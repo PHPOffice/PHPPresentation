@@ -351,7 +351,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Get PHPPowerPoint object
      *
-     * @param  PhpPowerpoint                       $pPHPPowerPoint PHPPowerPoint object
+     * @param  PhpPowerpoint $pPHPPowerPoint PhpPowerpoint object
      * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */

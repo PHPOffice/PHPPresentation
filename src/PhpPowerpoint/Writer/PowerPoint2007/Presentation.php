@@ -105,11 +105,11 @@ class Presentation extends AbstractPart
      * Write slides
      *
      * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter       XML Writer
-     * @param  PHPPowerPoint                  $pPHPPowerPoint
+     * @param  PhpPowerpoint                  $pPHPPowerPoint
      * @param  int                            $startRelationId
      * @throws \Exception
      */
-    private function writeSlides(XMLWriter $objWriter, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
+    private function writeSlides(XMLWriter $objWriter, PhpPowerpoint $pPHPPowerPoint, $startRelationId = 2)
     {
         // Write slides
         $slideCount = $pPHPPowerPoint->getSlideCount();

@@ -123,11 +123,11 @@ class DocProps extends AbstractPart
     /**
      * Write docProps/core.xml to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @param  PhpPowerpoint $pPHPPowerPoint
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writeDocPropsCore(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writeDocPropsCore(PhpPowerpoint $pPHPPowerPoint = null)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
