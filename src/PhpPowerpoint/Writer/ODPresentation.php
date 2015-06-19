@@ -38,7 +38,7 @@ class ODPresentation implements WriterInterface
     /**
     * Private PHPPowerPoint
     *
-    * @var PhpPowerPoint
+    * @var \PhpOffice\PhpPowerpoint\PhpPowerpoint
     */
     private $presentation;
 
@@ -80,7 +80,7 @@ class ODPresentation implements WriterInterface
      *
      * @param PhpPowerpoint $pPHPPowerPoint
      */
-    public function __construct(PHPPowerPoint $pPHPPowerPoint = null)
+    public function __construct(PhpPowerpoint $pPHPPowerPoint = null)
     {
         // Assign PHPPowerPoint
         $this->setPHPPowerPoint($pPHPPowerPoint);

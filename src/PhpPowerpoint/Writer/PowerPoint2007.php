@@ -93,7 +93,7 @@ class PowerPoint2007 implements WriterInterface
      *
      * @param PhpPowerpoint $pPHPPowerPoint
      */
-    public function __construct(PHPPowerPoint $pPHPPowerPoint = null)
+    public function __construct(PhpPowerpoint $pPHPPowerPoint = null)
     {
         // Assign PHPPowerPoint
         $this->setPHPPowerPoint($pPHPPowerPoint);
