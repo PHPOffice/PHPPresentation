@@ -27,7 +27,7 @@ class PlotArea implements ComparableInterface
     /**
      * Type
      *
-     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType
      */
     private $type;
 

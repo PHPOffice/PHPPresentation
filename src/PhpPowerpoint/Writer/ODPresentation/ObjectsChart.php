@@ -644,7 +644,6 @@ class ObjectsChart extends AbstractPart
     }
     
     /**
-     * @param Chart $chart
      */
     private function writeTable()
     {

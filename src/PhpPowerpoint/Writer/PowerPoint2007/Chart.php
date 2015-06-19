@@ -244,13 +244,15 @@ class Chart extends Slide
 
             // X-axis
             $axisXData = array_keys($series->getValues());
-            for ($i = 0; $i < count($axisXData); $i++) {
+            $numAxisXData = count($axisXData);
+            for ($i = 0; $i < $numAxisXData; $i++) {
                 $sheet->setCellValueByColumnAndRow(0, $i + 2, $axisXData[$i]);
             }
 
             // Y-axis
             $axisYData = array_values($series->getValues());
-            for ($i = 0; $i < count($axisYData); $i++) {
+            $numAxisYData = count($axisYData);
+            for ($i = 0; $i < $numAxisYData; $i++) {
                 $sheet->setCellValueByColumnAndRow(1 + $seriesIndex, $i + 2, $axisYData[$i]);
             }
 
@@ -263,7 +265,9 @@ class Chart extends Slide
 
         // Load file in memory
         $returnValue = file_get_contents($tempName);
-        @unlink($tempName);
+        if (@unlink($tempName) === false) {
+            throw new \Exception('The file '.$tempName.' could not removed.');
+        }
 
         return $returnValue;
     }
@@ -333,6 +337,7 @@ class Chart extends Slide
         }
         $objWriter->startElement('c:' . $dataType . $referenceType);
 
+        $numValues = count($values);
         if (!$isReference) {
             // Value
 
@@ -342,7 +347,7 @@ class Chart extends Slide
             $objWriter->endElement();
 
             // Add points
-            for ($i = 0; $i < count($values); $i++) {
+            for ($i = 0; $i < $numValues; $i++) {
                 // c:pt
                 $objWriter->startElement('c:pt');
                 $objWriter->writeAttribute('idx', $i);
@@ -360,7 +365,7 @@ class Chart extends Slide
             $objWriter->endElement();
 
             // Add points
-            for ($i = 0; $i < count($values); $i++) {
+            for ($i = 0; $i < $numValues; $i++) {
                 // c:pt
                 $objWriter->startElement('c:pt');
                 $objWriter->writeAttribute('idx', $i);

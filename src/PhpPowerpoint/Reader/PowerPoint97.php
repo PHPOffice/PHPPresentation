@@ -494,7 +494,7 @@ class PowerPoint97 implements ReaderInterface
             } else {
                 $readSuccess = false;
             }
-        } while ($readSuccess == true);
+        } while ($readSuccess === true);
     }
     
     /**
@@ -574,7 +574,7 @@ class PowerPoint97 implements ReaderInterface
                 $ansiUserName .= chr($char);
                 $pos += 1;
             }
-        } while ($char != false);
+        } while ($char !== false);
 
         // relVersion
         $relVersion = self::getInt4d($this->streamCurrentUser, $pos);
@@ -1816,7 +1816,7 @@ class PowerPoint97 implements ReaderInterface
                     $shpSecondaryOptions2 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
                     $rHeader['recLen'] -= 8;
-                    if ($bShpSecondaryOpt1 == true && $shpSecondaryOptions2['recVer'] == 0x3 && $shpSecondaryOptions2['recType'] == 0xF121) {
+                    if ($bShpSecondaryOpt1 === true && $shpSecondaryOptions2['recVer'] == 0x3 && $shpSecondaryOptions2['recType'] == 0xF121) {
                     } else {
                         $pos -= 8;
                         $rHeader['recLen'] += 8;
@@ -1825,7 +1825,7 @@ class PowerPoint97 implements ReaderInterface
                     $shpTertiaryOptions2 = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     $pos += 8;
                     $rHeader['recLen'] -= 8;
-                    if ($bShpTertiaryOptions1 == true && $shpTertiaryOptions2['recVer'] == 0x3 && $shpTertiaryOptions2['recType'] == 0xF122) {
+                    if ($bShpTertiaryOptions1 === true && $shpTertiaryOptions2['recVer'] == 0x3 && $shpTertiaryOptions2['recType'] == 0xF122) {
                     } else {
                         $pos -= 8;
                         $rHeader['recLen'] += 8;
@@ -1926,7 +1926,7 @@ class PowerPoint97 implements ReaderInterface
                     }
                     // New paragraph
                     $bCreateParagraph = false;
-                    if (strpos($sText, "\r") != false) {
+                    if (strpos($sText, "\r") !== false) {
                         $bCreateParagraph = true;
                         $sText = str_replace("\r", '', $sText);
                     }

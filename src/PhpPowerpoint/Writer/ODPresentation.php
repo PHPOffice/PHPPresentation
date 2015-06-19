@@ -127,17 +127,33 @@ class ODPresentation implements WriterInterface
                 }
             }
 
+            $writerPartObjectsChart = $this->getWriterPart('charts');
+            if (!$writerPartObjectsChart instanceof ObjectsChart) {
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\ObjectsChart');
+            }
+            $writerPartContent = $this->getWriterPart('content');
+            if (!$writerPartContent instanceof Content) {
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content');
+            }
             $writerPartDrawing = $this->getWriterPart('Drawing');
             if (!$writerPartDrawing instanceof Drawing) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing');
+            }
+            $writerPartManifest = $this->getWriterPart('manifest');
+            if (!$writerPartManifest instanceof Manifest) {
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest');
+            }
+            $writerPartMeta = $this->getWriterPart('meta');
+            if (!$writerPartMeta instanceof Meta) {
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Meta');
             }
             $writerPartMimetype = $this->getWriterPart('mimetype');
             if (!$writerPartMimetype instanceof Mimetype) {
                 throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Mimetype');
             }
-            $writerPartContent = $this->getWriterPart('content');
-            if (!$writerPartContent instanceof Content) {
-                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Content');
+            $writerPartStyles = $this->getWriterPart('styles');
+            if (!$writerPartStyles instanceof Styles) {
+                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles');
             }
 
             // Create drawing dictionary
@@ -161,17 +177,17 @@ class ODPresentation implements WriterInterface
             $objZip->addFromString('content.xml', $writerPartContent->writePart($this->presentation));
 
             // Add meta.xml to ZIP file
-            $objZip->addFromString('meta.xml', $this->getWriterPart('meta')->writePart($this->presentation));
+            $objZip->addFromString('meta.xml', $writerPartMeta->writePart($this->presentation));
 
             // Add styles.xml to ZIP file
-            $objZip->addFromString('styles.xml', $this->getWriterPart('styles')->writePart($this->presentation));
+            $objZip->addFromString('styles.xml', $writerPartStyles->writePart($this->presentation));
 
             // Add META-INF/manifest.xml
-            $objZip->addFromString('META-INF/manifest.xml', $this->getWriterPart('manifest')->writePart());
+            $objZip->addFromString('META-INF/manifest.xml', $writerPartManifest->writePart());
 
             // Add charts
             foreach ($this->chartArray as $keyChart => $shapeChart) {
-                $arrayFile = $this->getWriterPart('charts')->writePart($shapeChart);
+                $arrayFile = $writerPartObjectsChart->writePart($shapeChart);
                 foreach ($arrayFile as $file => $content) {
                     if (!empty($content)) {
                         $objZip->addFromString('Object '.$keyChart.'/' . $file, $content);
@@ -230,7 +246,9 @@ class ODPresentation implements WriterInterface
                 if (copy($pFilename, $originalFilename) === false) {
                     throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
                 }
-                @unlink($pFilename);
+                if (@unlink($pFilename) === false) {
+                    throw new \Exception('The file '.$pFilename.' could not be deleted.');
+                }
             }
         } else {
             throw new \Exception("PHPPowerPoint object unassigned.");
@@ -240,7 +258,7 @@ class ODPresentation implements WriterInterface
     /**
      * Get PHPPowerPoint object
      *
-     * @return PHPPowerPoint
+     * @return PhpPowerpoint
      * @throws \Exception
      */
     public function getPHPPowerPoint()
@@ -255,11 +273,11 @@ class ODPresentation implements WriterInterface
     /**
      * Get PHPPowerPoint object
      *
-     * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
+     * @param  PhpPowerpoint                       $pPHPPowerPoint PHPPowerPoint object
      * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
-    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
+    public function setPHPPowerPoint(PhpPowerpoint $pPHPPowerPoint = null)
     {
         $this->presentation = $pPHPPowerPoint;
 

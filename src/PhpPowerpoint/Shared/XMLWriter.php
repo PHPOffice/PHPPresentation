@@ -90,7 +90,9 @@ class XMLWriter
 
         // Unlink temporary files
         if ($this->tempFileName != '') {
-            @unlink($this->tempFileName);
+            if (@unlink($this->tempFileName) === false) {
+                throw new \Exception('The file '.$this->tempFileName.' could not be deleted.');
+            }
         }
     }
 
@@ -103,10 +105,9 @@ class XMLWriter
     public function __call($function, $args)
     {
         try {
-            @call_user_func_array(array(
-                $this->xmlWriter,
-                $function
-            ), $args);
+            if (@call_user_func_array(array($this->xmlWriter, $function), $args) === false) {
+                throw new \Exception('The method '.$function.' doesn\'t exist.');
+            }
         } catch (\Exception $ex) {
             // Do nothing!
         }

@@ -175,7 +175,7 @@ class Slide extends AbstractPart
      * Write group
      *
      * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
-     * @param \PhpOffice\PhpPowerpoint\Shape\Group $shape
+     * @param \PhpOffice\PhpPowerpoint\Shape\Group $group
      * @param  int $shapeId
      */
     private function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
@@ -668,7 +668,8 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:tblGrid');
 
         // Write cell widths
-        for ($cell = 0; $cell < count($shape->getRow(0)->getCells()); $cell++) {
+        $countCells = count($shape->getRow(0)->getCells());
+        for ($cell = 0; $cell < $countCells; $cell++) {
             // a:gridCol
             $objWriter->startElement('a:gridCol');
 
@@ -694,13 +695,15 @@ class Slide extends AbstractPart
         $defaultBorder = new Border();
 
         // Write rows
-        for ($row = 0; $row < count($shape->getRows()); $row++) {
+        $countRows = count($shape->getRows());
+        for ($row = 0; $row < $countRows; $row++) {
             // a:tr
             $objWriter->startElement('a:tr');
             $objWriter->writeAttribute('h', SharedDrawing::pixelsToEmu($shape->getRow($row)->getHeight()));
 
             // Write cells
-            for ($cell = 0; $cell < count($shape->getRow($row)->getCells()); $cell++) {
+            $countCells = count($shape->getRow($row)->getCells());
+            for ($cell = 0; $cell < $countCells; $cell++) {
                 // Current cell
                 $currentCell = $shape->getRow($row)->getCell($cell);
 

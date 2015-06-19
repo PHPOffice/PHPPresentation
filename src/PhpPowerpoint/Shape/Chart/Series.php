@@ -173,7 +173,7 @@ class Series implements ComparableInterface
     /**
      * Set Fill
      *
-     * @param \PhpOffice\PhpPowerpoint\Style\Fill $value
+     * @param \PhpOffice\PhpPowerpoint\Style\Fill $fill
      * @return Series
      */
     public function setFill(Fill $fill = null)

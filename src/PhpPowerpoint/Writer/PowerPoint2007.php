@@ -324,7 +324,9 @@ class PowerPoint2007 implements WriterInterface
                 if (copy($pFilename, $originalFilename) === false) {
                     throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
                 }
-                @unlink($pFilename);
+                if (@unlink($pFilename) === false) {
+                    throw new \Exception('The file '.$pFilename.' could not be removed.');
+                }
             }
         } else {
             throw new \Exception("PHPPowerPoint object unassigned.");
@@ -349,11 +351,11 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Get PHPPowerPoint object
      *
-     * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
+     * @param  PhpPowerpoint                       $pPHPPowerPoint PHPPowerPoint object
      * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
-    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
+    public function setPHPPowerPoint(PhpPowerpoint $pPHPPowerPoint = null)
     {
         $this->presentation = $pPHPPowerPoint;
 

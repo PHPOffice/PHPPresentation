@@ -33,11 +33,11 @@ class ContentTypes extends AbstractPart
     /**
      * Write content types to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @param  PhpPowerpoint $pPHPPowerPoint
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writeContentTypes(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writeContentTypes(PhpPowerpoint $pPHPPowerPoint = null)
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof PowerPoint2007) {
@@ -85,7 +85,8 @@ class ContentTypes extends AbstractPart
 
         // Slide layouts
         $slideLayouts = $parentWriter->getLayoutPack()->getLayouts();
-        for ($i = 0; $i < count($slideLayouts); ++$i) {
+        $numSlideLayouts = count($slideLayouts);
+        for ($i = 0; $i < $numSlideLayouts; ++$i) {
             $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/slideLayout' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml');
         }
 

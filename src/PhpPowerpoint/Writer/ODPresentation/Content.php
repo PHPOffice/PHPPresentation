@@ -292,7 +292,9 @@ class Content extends AbstractPart
                 }
             }
             // Slide Note
-            $this->writeSlideNote($objWriter, $pSlide->getNote());
+            if ($pSlide->getNote() instanceof Note) {
+                $this->writeSlideNote($objWriter, $pSlide->getNote());
+            }
             
             $objWriter->endElement();
         }
@@ -376,12 +378,12 @@ class Content extends AbstractPart
         $paragraphs             = $shape->getParagraphs();
         $paragraphId            = 0;
         $sCstShpLastBullet      = '';
-        $iCstShpLastBulletLvl = 0;
+        $iCstShpLastBulletLvl   = 0;
         $bCstShpHasBullet       = false;
 
         foreach ($paragraphs as $paragraph) {
             // Close the bullet list
-            if ($sCstShpLastBullet != 'bullet' && $bCstShpHasBullet == true) {
+            if ($sCstShpLastBullet != 'bullet' && $bCstShpHasBullet === true) {
                 for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; $iInc--) {
                     // text:list-item
                     $objWriter->endElement();
@@ -409,7 +411,7 @@ class Content extends AbstractPart
                         if ($richtext instanceof Run) {
                             $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getFont()->getHashCode());
                         }
-                        if ($richtext->hasHyperlink() == true && $richtext->getHyperlink()->getUrl() != '') {
+                        if ($richtext->hasHyperlink() === true && $richtext->getHyperlink()->getUrl() != '') {
                             // text:a
                             $objWriter->startElement('text:a');
                             $objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
@@ -502,7 +504,7 @@ class Content extends AbstractPart
         }
 
         // Close the bullet list
-        if ($sCstShpLastBullet == 'bullet' && $bCstShpHasBullet == true) {
+        if ($sCstShpLastBullet == 'bullet' && $bCstShpHasBullet === true) {
             for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; $iInc--) {
                 // text:list-item
                 $objWriter->endElement();
@@ -581,7 +583,7 @@ class Content extends AbstractPart
                             if ($shapeRichText instanceof Run) {
                                 $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getFont()->getHashCode());
                             }
-                            if ($shapeRichText->hasHyperlink()) {
+                            if ($shapeRichText instanceof TextElement && $shapeRichText->hasHyperlink()) {
                                 // text:a
                                 $objWriter->startElement('text:a');
                                 $objWriter->writeAttribute('xlink:href', $shapeRichText->getHyperlink()->getUrl());
@@ -665,17 +667,17 @@ class Content extends AbstractPart
 
             // Check type
             if ($shape instanceof RichText) {
-                $this->writeShapeTxt($objWriter, $shape, $this->shapeId);
+                $this->writeShapeTxt($objWriter, $shape);
             } elseif ($shape instanceof Table) {
-                $this->writeShapeTable($objWriter, $shape, $this->shapeId);
+                $this->writeShapeTable($objWriter, $shape);
             } elseif ($shape instanceof Line) {
-                $this->writeShapeLine($objWriter, $shape, $this->shapeId);
+                $this->writeShapeLine($objWriter, $shape);
             } elseif ($shape instanceof Chart) {
-                $this->writeShapeChart($objWriter, $shape, $this->shapeId);
+                $this->writeShapeChart($objWriter, $shape);
             } elseif ($shape instanceof AbstractDrawing) {
-                $this->writeShapePic($objWriter, $shape, $this->shapeId);
+                $this->writeShapePic($objWriter, $shape);
             } elseif ($shape instanceof Group) {
-                $this->writeShapeGroup($objWriter, $shape, $this->shapeId);
+                $this->writeShapeGroup($objWriter, $shape);
             }
         }
 
@@ -697,19 +699,19 @@ class Content extends AbstractPart
 
             // Check type
             if ($shape instanceof RichText) {
-                $this->writeTxtStyle($objWriter, $shape, $this->shapeId);
+                $this->writeTxtStyle($objWriter, $shape);
             }
             if ($shape instanceof AbstractDrawing) {
-                $this->writeDrawingStyle($objWriter, $shape, $this->shapeId);
+                $this->writeDrawingStyle($objWriter, $shape);
             }
             if ($shape instanceof Line) {
-                $this->writeLineStyle($objWriter, $shape, $this->shapeId);
+                $this->writeLineStyle($objWriter, $shape);
             }
             if ($shape instanceof Table) {
-                $this->writeTableStyle($objWriter, $shape, $this->shapeId);
+                $this->writeTableStyle($objWriter, $shape);
             }
             if ($shape instanceof Group) {
-                $this->writeGroupStyle($objWriter, $shape, $this->shapeId);
+                $this->writeGroupStyle($objWriter, $shape);
             }
         }
     }
@@ -1022,7 +1024,7 @@ class Content extends AbstractPart
     /**
      * Write the slide note
      * @param XMLWriter $objWriter
-     * @param |PhpOffice\PhpPowerpoint\Slide\Note $note
+     * @param \PhpOffice\PhpPowerpoint\Slide\Note $note
      */
     public function writeSlideNote(XMLWriter $objWriter, Note $note)
     {

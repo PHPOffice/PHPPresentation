@@ -28,8 +28,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Shared;
 
-defined('IDENTIFIER_OLE') ||
-    define('IDENTIFIER_OLE', pack('CCCCCCCC', 0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1));
+if (!defined('IDENTIFIER_OLE')){
+	define('IDENTIFIER_OLE', pack('CCCCCCCC', 0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1));
+}
 
 class OLERead
 {
@@ -69,6 +70,8 @@ class OLERead
     public $powerpointDocument              = null;
     public $currentUser                     = null;
     public $pictures                        = null;
+    public $rootEntry                       = null;
+    public $props                           = array();
 
     /**
      * Read the file
@@ -96,26 +99,26 @@ class OLERead
         $this->data = file_get_contents($sFileName);
 
         // Total number of sectors used for the SAT
-        $this->numBigBlockDepotBlocks = self::getInt4d($this->data, self::NUM_BIG_BLOCK_DEPOT_BLOCKS_POS);
+        $numBigBlockDepotBlocks = self::getInt4d($this->data, self::NUM_BIG_BLOCK_DEPOT_BLOCKS_POS);
 
         // SecID of the first sector of the directory stream
-        $this->rootStartBlock = self::getInt4d($this->data, self::ROOT_START_BLOCK_POS);
+        $rootStartBlock = self::getInt4d($this->data, self::ROOT_START_BLOCK_POS);
 
         // SecID of the first sector of the SSAT (or -2 if not extant)
-        $this->sbdStartBlock = self::getInt4d($this->data, self::SMALL_BLOCK_DEPOT_BLOCK_POS);
+        $sbdStartBlock = self::getInt4d($this->data, self::SMALL_BLOCK_DEPOT_BLOCK_POS);
 
         // SecID of the first sector of the MSAT (or -2 if no additional sectors are used)
-        $this->extensionBlock = self::getInt4d($this->data, self::EXTENSION_BLOCK_POS);
+        $extensionBlock = self::getInt4d($this->data, self::EXTENSION_BLOCK_POS);
 
         // Total number of sectors used by MSAT
-        $this->numExtensionBlocks = self::getInt4d($this->data, self::NUM_EXTENSION_BLOCK_POS);
+        $numExtensionBlocks = self::getInt4d($this->data, self::NUM_EXTENSION_BLOCK_POS);
 
         $bigBlockDepotBlocks = array();
         $pos = self::BIG_BLOCK_DEPOT_BLOCKS_POS;
 
-        $bbdBlocks = $this->numBigBlockDepotBlocks;
+        $bbdBlocks = $numBigBlockDepotBlocks;
 
-        if ($this->numExtensionBlocks != 0) {
+        if ($numExtensionBlocks != 0) {
             $bbdBlocks = (self::BIG_BLOCK_SIZE - self::BIG_BLOCK_DEPOT_BLOCKS_POS)/4;
         }
 
@@ -124,9 +127,9 @@ class OLERead
               $pos += 4;
         }
 
-        for ($j = 0; $j < $this->numExtensionBlocks; ++$j) {
-            $pos = ($this->extensionBlock + 1) * self::BIG_BLOCK_SIZE;
-            $blocksToRead = min($this->numBigBlockDepotBlocks - $bbdBlocks, self::BIG_BLOCK_SIZE / 4 - 1);
+        for ($j = 0; $j < $numExtensionBlocks; ++$j) {
+            $pos = ($extensionBlock + 1) * self::BIG_BLOCK_SIZE;
+            $blocksToRead = min($numBigBlockDepotBlocks - $bbdBlocks, self::BIG_BLOCK_SIZE / 4 - 1);
 
             for ($i = $bbdBlocks; $i < $bbdBlocks + $blocksToRead; ++$i) {
                 $bigBlockDepotBlocks[$i] = self::getInt4d($this->data, $pos);
@@ -134,36 +137,34 @@ class OLERead
             }
 
             $bbdBlocks += $blocksToRead;
-            if ($bbdBlocks < $this->numBigBlockDepotBlocks) {
-                $this->extensionBlock = self::getInt4d($this->data, $pos);
+            if ($bbdBlocks < $numBigBlockDepotBlocks) {
+                $extensionBlock = self::getInt4d($this->data, $pos);
             }
         }
 
-        $pos = 0;
-        $this->bigBlockChain = '';
+        $bigBlockChain = '';
         $bbs = self::BIG_BLOCK_SIZE / 4;
-        for ($i = 0; $i < $this->numBigBlockDepotBlocks; ++$i) {
+        for ($i = 0; $i < $numBigBlockDepotBlocks; ++$i) {
             $pos = ($bigBlockDepotBlocks[$i] + 1) * self::BIG_BLOCK_SIZE;
 
-            $this->bigBlockChain .= substr($this->data, $pos, 4*$bbs);
+            $bigBlockChain .= substr($this->data, $pos, 4*$bbs);
             $pos += 4*$bbs;
         }
 
-        $pos = 0;
-        $sbdBlock = $this->sbdStartBlock;
-        $this->smallBlockChain = '';
+        $sbdBlock = $sbdStartBlock;
+        $smallBlockChain = '';
         while ($sbdBlock != -2) {
             $pos = ($sbdBlock + 1) * self::BIG_BLOCK_SIZE;
 
-            $this->smallBlockChain .= substr($this->data, $pos, 4*$bbs);
+            $smallBlockChain .= substr($this->data, $pos, 4*$bbs);
             $pos += 4*$bbs;
 
-            $sbdBlock = self::getInt4d($this->bigBlockChain, $sbdBlock*4);
+            $sbdBlock = self::getInt4d($bigBlockChain, $sbdBlock*4);
         }
 
         // read the directory stream
-        $block = $this->rootStartBlock;
-        $this->entry = $this->readData($block);
+        $block = $rootStartBlock;
+        $entry = $this->readData($block);
 
         $this->readPropertySets();
     }
@@ -297,7 +298,6 @@ class OLERead
                         break;
                     default:
                         throw new \Exception('OLE Block Not defined: $upName : '.$upName. ' - $name : "'.$name.'"');
-                        break;
                 }
             }
 

@@ -194,7 +194,8 @@ class DocumentLayout
     /**
      * Convert EMUs to differents units
      * @param $value
-     * @param string $unit
+     * @param string $fromUnit
+     * @param string $toUnit
      */
     protected function convertUnit($value, $fromUnit, $toUnit)
     {

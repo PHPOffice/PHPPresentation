@@ -71,11 +71,11 @@ class Rels extends AbstractPart
     /**
      * Write presentation relationships to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @param  PhpPowerpoint $pPHPPowerPoint
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writePresentationRelationships(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writePresentationRelationships(PhpPowerpoint $pPHPPowerPoint = null)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
@@ -379,9 +379,11 @@ class Rels extends AbstractPart
                 // Hyperlink in table
                 if ($iterator->current() instanceof ShapeTable) {
                     // Rows
-                    for ($row = 0; $row < count($iterator->current()->getRows()); $row++) {
+                    $countRows = count($iterator->current()->getRows());
+                    for ($row = 0; $row < $countRows; $row++) {
                         // Cells in rows
-                        for ($cell = 0; $cell < count($iterator->current()->getRow($row)->getCells()); $cell++) {
+                        $countCells = count($iterator->current()->getRow($row)->getCells());
+                        for ($cell = 0; $cell < $countCells; $cell++) {
                             $currentCell = $iterator->current()->getRow($row)->getCell($cell);
                             // Paragraphs in cell
                             foreach ($currentCell->getParagraphs() as $paragraph) {
@@ -453,9 +455,11 @@ class Rels extends AbstractPart
                         // Hyperlink in table
                         if ($iterator2->current() instanceof ShapeTable) {
                             // Rows
-                            for ($row = 0; $row < count($iterator2->current()->getRows()); $row++) {
+                            $countRows = count($iterator2->current()->getRows());
+                            for ($row = 0; $row < $countRows; $row++) {
                                 // Cells in rows
-                                for ($cell = 0; $cell < count($iterator2->current()->getRow($row)->getCells()); $cell++) {
+                                $countCells = count($iterator2->current()->getRow($row)->getCells());
+                                for ($cell = 0; $cell < $countCells; $cell++) {
                                     $currentCell = $iterator2->current()->getRow($row)->getCell($cell);
                                     // Paragraphs in cell
                                     foreach ($currentCell->getParagraphs() as $paragraph) {
