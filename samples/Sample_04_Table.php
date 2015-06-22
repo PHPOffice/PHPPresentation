@@ -95,8 +95,18 @@ $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
 			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
-$textRun = $row->nextCell()->createTextRun('Link');
-$textRun->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/')->setTooltip('PHPPowerPoint');
+$textRunC1 = $row->nextCell()->createTextRun('Link');
+$textRunC1->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/')->setTooltip('PHPPowerPoint');
+$cellC2 = $row->nextCell();
+$textRunC2 = $cellC2->createTextRun('RichText with');
+$textRunC2->getFont()->setBold(true);
+$textRunC2->getFont()->setSize(12);
+$textRunC2->getFont()->setColor(new Color('FF000000'));
+$cellC2->createBreak();
+$textRunC2 = $cellC2->createTextRun('Multiline');
+$textRunC2->getFont()->setBold(true);
+$textRunC2->getFont()->setSize(14);
+$textRunC2->getFont()->setColor(new Color('FF0088FF'));
 
 // Save file
 echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);

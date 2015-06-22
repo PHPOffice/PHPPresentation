@@ -32,6 +32,7 @@
 - Refactor findLayoutIndex to findLayoutId where it assumes the slideLayout order was sorted. IMPROVED: unit tests - @kenliau GH-95
 
 ### Miscellaneous
+- Improved the sample 04-Table for having a Text Run in a Cell - @Progi1984 GH-84
 
 ## 0.3.0 - 2014-09-22
 

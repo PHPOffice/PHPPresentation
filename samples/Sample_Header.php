@@ -5,6 +5,7 @@
 use PhpOffice\PhpPowerpoint\Autoloader;
 use PhpOffice\PhpPowerpoint\Settings;
 use PhpOffice\PhpPowerpoint\IOFactory;
+use PhpOffice\PhpPowerpoint\Slide;
 
 error_reporting(E_ALL);
 define('CLI', (PHP_SAPI == 'cli') ? true : false);
@@ -112,7 +113,7 @@ function getEndingNotes($writers)
  * Creates a templated slide
  *
  * @param PHPPowerPoint $objPHPPowerPoint
- * @return PHPPowerPoint_Slide
+ * @return \PhpOffice\PhpPowerpoint\Slide
  */
 function createTemplatedSlide(PhpOffice\PhpPowerpoint\PhpPowerpoint $objPHPPowerPoint)
 {
