@@ -502,7 +502,7 @@ class Slide extends AbstractPart
         }
         if ($shape->getShadow()) {
             $this->writeShadow($objWriter, $shape->getShadow());
-        } 
+        }
         // > p:sp\p:spPr
         $objWriter->endElement();
 
@@ -1245,7 +1245,7 @@ class Slide extends AbstractPart
         $objWriter->endElement();
         
         $objWriter->endElement();
-    } 
+    }
     
     /**
      * Write hyperlink
