@@ -519,6 +519,20 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
     
+    public function testRichTextShadow()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+        $oRichText->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:effectLst/a:outerShdw';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+    }
+    
     public function testRichTextUpright()
     {
         $phpPowerPoint = new PhpPowerpoint();

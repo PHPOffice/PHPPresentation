@@ -38,6 +38,7 @@ use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Style\Shadow;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 /**
@@ -321,9 +322,7 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        if ($shape->getShadow()->isVisible()) {
-            $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
-        }
+        $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         // draw:image
         $objWriter->startElement('draw:image');
         if ($shape instanceof ShapeDrawing) {
@@ -731,6 +730,9 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('style:parent-style-name', 'standard');
         // style:graphic-properties
         $objWriter->startElement('style:graphic-properties');
+        if ($shape->getShadow()->isVisible()) {
+            $this->writeStylePartShadow($objWriter, $shape->getShadow());
+        }
         if (is_bool($shape->hasAutoShrinkVertical())) {
             $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
         }
@@ -832,50 +834,22 @@ class Content extends AbstractPart
      */
     public function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawing $shape)
     {
+        // style:style
+        $objWriter->startElement('style:style');
+        $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId);
+        $objWriter->writeAttribute('style:family', 'graphic');
+        $objWriter->writeAttribute('style:parent-style-name', 'standard');
+
+        // style:graphic-properties
+        $objWriter->startElement('style:graphic-properties');
+        $objWriter->writeAttribute('draw:stroke', 'none');
+        $objWriter->writeAttribute('draw:fill', 'none');
         if ($shape->getShadow()->isVisible()) {
-            // style:style
-            $objWriter->startElement('style:style');
-            $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId);
-            $objWriter->writeAttribute('style:family', 'graphic');
-            $objWriter->writeAttribute('style:parent-style-name', 'standard');
-
-            // style:graphic-properties
-            $objWriter->startElement('style:graphic-properties');
-            $objWriter->writeAttribute('draw:stroke', 'none');
-            $objWriter->writeAttribute('draw:fill', 'none');
-            $objWriter->writeAttribute('draw:shadow', 'visible');
-            $objWriter->writeAttribute('draw:shadow-color', '#' . $shape->getShadow()->getColor()->getRGB());
-            if ($shape->getShadow()->getDirection() == 0 || $shape->getShadow()->getDirection() == 360) {
-                $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
-            } elseif ($shape->getShadow()->getDirection() == 45) {
-                $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-            } elseif ($shape->getShadow()->getDirection() == 90) {
-                $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-                $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-            } elseif ($shape->getShadow()->getDirection() == 135) {
-                $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-            } elseif ($shape->getShadow()->getDirection() == 180) {
-                $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
-            } elseif ($shape->getShadow()->getDirection() == 225) {
-                $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-            } elseif ($shape->getShadow()->getDirection() == 270) {
-                $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-                $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-            } elseif ($shape->getShadow()->getDirection() == 315) {
-                $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-                $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($shape->getShadow()->getDistance()) . 'cm');
-            }
-            $objWriter->writeAttribute('draw:shadow-opacity', (100 - $shape->getShadow()->getAlpha()) . '%');
-            $objWriter->writeAttribute('style:mirror', 'none');
-            $objWriter->endElement();
-
-            $objWriter->endElement();
+            $this->writeStylePartShadow($objWriter, $shape->getShadow());
         }
+        $objWriter->endElement();
+
+        $objWriter->endElement();
     }
 
     /**
@@ -1231,5 +1205,40 @@ class Content extends AbstractPart
         $objWriter->endElement();
         // > style:style
         $objWriter->endElement();
+    }
+    
+
+    protected function writeStylePartShadow(XMLWriter $objWriter, Shadow $oShadow)
+    {
+        $objWriter->writeAttribute('draw:shadow', 'visible');
+        $objWriter->writeAttribute('draw:shadow-color', '#' . $oShadow->getColor()->getRGB());
+        if ($oShadow->getDirection() == 0 || $oShadow->getDirection() == 360) {
+            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
+        } elseif ($oShadow->getDirection() == 45) {
+            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+        } elseif ($oShadow->getDirection() == 90) {
+            $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+        } elseif ($oShadow->getDirection() == 135) {
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+        } elseif ($oShadow->getDirection() == 180) {
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
+        } elseif ($oShadow->getDirection() == 225) {
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+        } elseif ($oShadow->getDirection() == 270) {
+            $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+        } elseif ($oShadow->getDirection() == 315) {
+            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+        }
+        $objWriter->writeAttribute('draw:shadow-opacity', (100 - $oShadow->getAlpha()) . '%');
+        $objWriter->writeAttribute('style:mirror', 'none');
+    
     }
 }

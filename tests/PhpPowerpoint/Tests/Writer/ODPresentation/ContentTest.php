@@ -239,6 +239,22 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertStringEndsWith($oRichText1->getBorder()->getDashStyle(), $pres->getElementAttribute($element, 'draw:stroke-dash', 'content.xml'));
     }
     
+    public function testRichTextShadow()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+        $oRichText->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('visible', $pres->getElementAttribute($element, 'draw:shadow', 'content.xml'));
+        $this->assertStringStartsWith('#', $pres->getElementAttribute($element, 'draw:shadow-color', 'content.xml'));
+    }
+    
     public function testStyleAlignment()
     {
         $phpPowerPoint = new PhpPowerpoint();
