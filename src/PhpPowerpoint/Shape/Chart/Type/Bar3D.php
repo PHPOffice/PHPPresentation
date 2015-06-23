@@ -79,7 +79,8 @@ class Bar3D extends AbstractType implements ComparableInterface
      * @param string $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar
      */
-    public function setBarGrouping($value = self::GROUPING_CLUSTERED) {
+    public function setBarGrouping($value = self::GROUPING_CLUSTERED)
+    {
         $this->barGrouping = $value;
         return $this;
     }
@@ -89,7 +90,8 @@ class Bar3D extends AbstractType implements ComparableInterface
      *
      * @return string
      */
-    public function getBarGrouping() {
+    public function getBarGrouping()
+    {
         return $this->barGrouping;
     }
 

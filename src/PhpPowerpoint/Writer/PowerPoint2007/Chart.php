@@ -1231,13 +1231,15 @@ class Chart extends Slide
 
             $objWriter->endElement();
 
-//             // c:spPr
-//             $objWriter->startElement('c:spPr');
-
-//             // Write fill
-//             $this->writeFill($objWriter, $series->getFill());
-
-//             $objWriter->endElement();
+            // c:spPr
+            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $series->getFill());
+                // ## c:spPr
+                $objWriter->endElement();
+            }
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -1263,10 +1265,10 @@ class Chart extends Slide
 
         // c:overlap
         $objWriter->startElement('c:overlap');
-        if ( $subject->getBarGrouping() == Bar::GROUPING_CLUSTERED ) {
-            $objWriter->writeAttribute( 'val', '0' );
-        } elseif ( $subject->getBarGrouping() == Bar::GROUPING_STACKED || $subject->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED ) {
-            $objWriter->writeAttribute( 'val', '100' );
+        if ($subject->getBarGrouping() == Bar::GROUPING_CLUSTERED) {
+            $objWriter->writeAttribute('val', '0');
+        } elseif ($subject->getBarGrouping() == Bar::GROUPING_STACKED || $subject->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED) {
+            $objWriter->writeAttribute('val', '100');
         }
         $objWriter->endElement();
 
@@ -1446,13 +1448,15 @@ class Chart extends Slide
 
             $objWriter->endElement();
 
-//             // c:spPr
-//             $objWriter->startElement('c:spPr');
-
-//             // Write fill
-//             $this->writeFill($objWriter, $series->getFill());
-
-//             $objWriter->endElement();
+             // c:spPr
+            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
+            // c:spPr
+            $objWriter->startElement('c:spPr');
+            // Write fill
+            $this->writeFill($objWriter, $series->getFill());
+            // ## c:spPr
+            $objWriter->endElement();
+            }
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -2161,14 +2165,14 @@ class Chart extends Slide
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             $objWriter->endElement();
-            
+
             if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
                 // c:spPr
-                // $objWriter->startElement('c:spPr');
+                $objWriter->startElement('c:spPr');
                 // Write fill
-                // $this->writeFill($objWriter, $series->getFill());
+                $this->writeFill($objWriter, $series->getFill());
                 // ## c:spPr
-                // $objWriter->endElement();
+                $objWriter->endElement();
             }
 
             // Write X axis data
