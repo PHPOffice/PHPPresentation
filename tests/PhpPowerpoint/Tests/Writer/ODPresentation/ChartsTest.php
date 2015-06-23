@@ -21,6 +21,7 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPowerpoint\Style\Color;
@@ -161,7 +162,7 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('#878787', $pres->getElementAttribute($element, 'svg:stroke-color', 'Object 1/content.xml'));
     }
     
-    public function testChartPie3D()
+    public function testChartPie()
     {
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
         $oSeries->setShowSeriesName(true);
@@ -169,13 +170,13 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
         $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
     
-        $oPie3D = new Pie3D();
-        $oPie3D->addSeries($oSeries);
+        $oPie = new Pie();
+        $oPie->addSeries($oSeries);
     
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
         $oChart = $oSlide->createChartShape();
-        $oChart->getPlotArea()->setType($oPie3D);
+        $oChart->getPlotArea()->setType($oPie);
     
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
     
@@ -190,6 +191,40 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
         
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
+    }
+
+    public function testChartPie3D()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
+
+        $oPie3D = new Pie3D();
+        $oPie3D->addSeries($oSeries);
+
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oPie3D);
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:circle', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));

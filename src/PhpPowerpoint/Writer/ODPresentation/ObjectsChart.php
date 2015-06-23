@@ -23,6 +23,7 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
@@ -89,7 +90,7 @@ class ObjectsChart extends AbstractPart
     private function writeContentPart(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        if (!($chartType instanceof Area || $chartType instanceof Bar || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie3D || $chartType instanceof Scatter)) {
+        if (!($chartType instanceof Area || $chartType instanceof Bar || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie || $chartType instanceof Pie3D || $chartType instanceof Scatter)) {
             throw new \Exception('The chart type provided could not be rendered.');
         }
         
@@ -206,7 +207,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof Pie || $chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
         } elseif ($chartType instanceof Scatter) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
@@ -522,7 +523,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof Pie || $chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
         } elseif ($chartType instanceof Scatter) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
@@ -561,7 +562,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
             // > chart:data-point
             $this->xmlContent->endElement();
-        } elseif ($chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof Pie || $chartType instanceof Pie3D) {
             $count = count($series->getDataPointFills());
             for ($inc = 0; $inc < $count; $inc++) {
                 // chart:data-point
