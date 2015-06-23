@@ -495,6 +495,18 @@ class ObjectsChart extends AbstractPart
             } else {
                 $this->xmlContent->writeAttribute('chart:vertical', 'false');
             }
+            if ( $chartType->getBarGrouping() == Bar::GROUPING_CLUSTERED ) {
+                $this->xmlContent->writeAttribute( 'chart:stacked', 'false' );
+                $this->xmlContent->writeAttribute( 'chart:overlap', '0' );
+            } elseif ( $chartType->getBarGrouping() == Bar::GROUPING_STACKED ) {
+                $this->xmlContent->writeAttribute( 'chart:stacked', 'true' );
+                $this->xmlContent->writeAttribute( 'chart:overlap', '100' );
+            } elseif ( $chartType->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED ) {
+                $this->xmlContent->writeAttribute( 'chart:stacked', 'true' );
+                $this->xmlContent->writeAttribute( 'chart:overlap', '100' );
+                $this->xmlContent->writeAttribute( 'chart:percentage', 'true' );
+            }
+
         }
         $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
         // > style:text-properties

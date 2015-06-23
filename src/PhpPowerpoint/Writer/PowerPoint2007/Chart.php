@@ -1103,7 +1103,7 @@ class Chart extends Slide
 
         // c:grouping
         $objWriter->startElement('c:grouping');
-        $objWriter->writeAttribute('val', 'clustered');
+        $objWriter->writeAttribute('val', $subject->getBarGrouping());
         $objWriter->endElement();
 
         // Write series
@@ -1261,6 +1261,15 @@ class Chart extends Slide
             ++$seriesIndex;
         }
 
+        // c:overlap
+        $objWriter->startElement('c:overlap');
+        if ( $subject->getBarGrouping() == Bar::GROUPING_CLUSTERED ) {
+            $objWriter->writeAttribute( 'val', '0' );
+        } elseif ( $subject->getBarGrouping() == Bar::GROUPING_STACKED || $subject->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED ) {
+            $objWriter->writeAttribute( 'val', '100' );
+        }
+        $objWriter->endElement();
+
         // c:gapWidth
         $objWriter->startElement('c:gapWidth');
         $objWriter->writeAttribute('val', '75');
@@ -1309,7 +1318,7 @@ class Chart extends Slide
 
         // c:grouping
         $objWriter->startElement('c:grouping');
-        $objWriter->writeAttribute('val', 'clustered');
+        $objWriter->writeAttribute('val', $subject->getBarGrouping());
         $objWriter->endElement();
 
         // Write series
