@@ -1450,12 +1450,12 @@ class Chart extends Slide
 
              // c:spPr
             if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
-            // c:spPr
-            $objWriter->startElement('c:spPr');
-            // Write fill
-            $this->writeFill($objWriter, $series->getFill());
-            // ## c:spPr
-            $objWriter->endElement();
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $series->getFill());
+                // ## c:spPr
+                $objWriter->endElement();
             }
 
             // Write X axis data
