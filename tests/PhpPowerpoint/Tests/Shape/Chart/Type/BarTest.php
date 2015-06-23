@@ -67,11 +67,11 @@ class BarTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Bar();
         $this->assertEquals(Bar::GROUPING_CLUSTERED, $object->getBarGrouping());
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar', $object->setBarGrouping( Bar::GROUPING_CLUSTERED));
-        $this->assertEquals(Bar::GROUPING_CLUSTERED, $object->getBarGrouping() );
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar', $object->setBarGrouping( Bar::GROUPING_STACKED));
-        $this->assertEquals(Bar::GROUPING_STACKED, $object->getBarGrouping() );
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar', $object->setBarGrouping( Bar::GROUPING_PERCENTSTACKED));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar', $object->setBarGrouping(Bar::GROUPING_CLUSTERED));
+        $this->assertEquals(Bar::GROUPING_CLUSTERED, $object->getBarGrouping());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar', $object->setBarGrouping(Bar::GROUPING_STACKED));
+        $this->assertEquals(Bar::GROUPING_STACKED, $object->getBarGrouping());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar', $object->setBarGrouping(Bar::GROUPING_PERCENTSTACKED));
         $this->assertEquals(Bar::GROUPING_PERCENTSTACKED, $object->getBarGrouping());
     }
 
