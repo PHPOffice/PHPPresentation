@@ -290,7 +290,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
-        if ($chartType instanceof Pie3D) {
+        if ($chartType instanceof Pie || $chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
         // > style:chart-properties
@@ -314,7 +314,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
-        if ($chartType instanceof Pie3D) {
+        if ($chartType instanceof Pie || $chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
         // > style:chart-properties
