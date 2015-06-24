@@ -8,6 +8,7 @@ To create a table, use `createTableShape` method of slide.
 Example:
 
 .. code-block:: php
+
 	$tableShape = $slide->createTableShape($columns);
 
 Rows
@@ -16,6 +17,7 @@ Rows
 A row is a child of a table. For creating a row, use `createRow` method of a Table shape.
 
 .. code-block:: php
+
 	$tableShape = $slide->createTableShape($columns);
 	$row = $tableShape->createRow();
 	
@@ -24,7 +26,9 @@ Cells
 A cell is a child of a row.
 
 You can access cell objects with `nextCell` method of a Row object.
+
 .. code-block:: php
+
 	$tableShape = $slide->createTableShape($columns);
 	$row = $tableShape->createRow();
 	// Get the first cell
@@ -33,7 +37,9 @@ You can access cell objects with `nextCell` method of a Row object.
 	$cellA2 = $row->nextCell();
 	
 You can access cell object directly
+
 .. code-block:: php
+
 	$tableShape = $slide->createTableShape($columns);
 	$row = $tableShape->createRow();
 	// Get the first cell
@@ -51,6 +57,7 @@ For defining the width of cell, you can use the `setWidth` method of a Cell obje
 The width is in pixels.
 
 .. code-block:: php
+
 	$tableShape = $slide->createTableShape($columns);
 	$row = $tableShape->createRow();
 	$cellA1 = $row->nextCell();
