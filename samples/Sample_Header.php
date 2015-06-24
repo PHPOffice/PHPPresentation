@@ -16,6 +16,8 @@ define('IS_INDEX', SCRIPT_FILENAME == 'index');
 require_once __DIR__ . '/../src/PhpPowerpoint/Autoloader.php';
 Autoloader::register();
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 // Set writers
 $writers = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
 

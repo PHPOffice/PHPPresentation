@@ -578,20 +578,30 @@ class Content extends AbstractPart
                     // text:span
                     foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
                         foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
-                            $objWriter->startElement('text:span');
-                            if ($shapeRichText instanceof Run) {
-                                $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getFont()->getHashCode());
-                            }
-                            if ($shapeRichText instanceof TextElement && $shapeRichText->hasHyperlink()) {
-                                // text:a
-                                $objWriter->startElement('text:a');
-                                $objWriter->writeAttribute('xlink:href', $shapeRichText->getHyperlink()->getUrl());
-                                $objWriter->text($shapeRichText->getText());
+                            if ($shapeRichText instanceof TextElement || $shapeRichText instanceof Run) {
+                                // text:span
+                                $objWriter->startElement('text:span');
+                                if ($shapeRichText instanceof Run) {
+                                    $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getFont()->getHashCode());
+                                }
+                                if ($shapeRichText->hasHyperlink() === true && $shapeRichText->getHyperlink()->getUrl() != '') {
+                                    // text:a
+                                    $objWriter->startElement('text:a');
+                                    $objWriter->writeAttribute('xlink:href', $shapeRichText->getHyperlink()->getUrl());
+                                    $objWriter->text($shapeRichText->getText());
+                                    $objWriter->endElement();
+                                } else {
+                                    $objWriter->text($shapeRichText->getText());
+                                }
                                 $objWriter->endElement();
-                            } else {
-                                $objWriter->text($shapeRichText->getText());
+                            } elseif ($shapeRichText instanceof BreakElement) {
+                                // text:span
+                                $objWriter->startElement('text:span');
+                                // text:line-break
+                                $objWriter->startElement('text:line-break');
+                                $objWriter->endElement();
+                                $objWriter->endElement();
                             }
-                            $objWriter->endElement();
                         }
                     }
                     

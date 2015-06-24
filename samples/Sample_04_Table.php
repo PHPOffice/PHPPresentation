@@ -95,7 +95,8 @@ $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
 			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
-$textRunC1 = $row->nextCell()->createTextRun('Link');
+$cellC1 = $row->nextCell();
+$textRunC1 = $cellC1->createTextRun('Link');
 $textRunC1->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/')->setTooltip('PHPPowerPoint');
 $cellC2 = $row->nextCell();
 $textRunC2 = $cellC2->createTextRun('RichText with');
@@ -107,6 +108,12 @@ $textRunC2 = $cellC2->createTextRun('Multiline');
 $textRunC2->getFont()->setBold(true);
 $textRunC2->getFont()->setSize(14);
 $textRunC2->getFont()->setColor(new Color('FF0088FF'));
+$cellC3 = $row->nextCell();
+$textRunC3 = $cellC3->createTextRun('Link Github');
+$textRunC3->getHyperlink()->setUrl('https://github.com')->setTooltip('GitHub');
+$cellC3->createBreak();
+$textRunC3 = $cellC3->createTextRun('Link Google');
+$textRunC3->getHyperlink()->setUrl('https://google.com')->setTooltip('Google');
 
 // Save file
 echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);

@@ -33,6 +33,7 @@
 
 ### Miscellaneous
 - Improved the sample 04-Table for having a Text Run in a Cell - @Progi1984 GH-84
+- Improved the sample 04-Table for having two links in a Cell - @Progi1984 GH-93
 - Some parts of code shared between PHPOffice projects have been moved to PhpOffice/Common - @Progi1984
 
 ## 0.3.0 - 2014-09-22
