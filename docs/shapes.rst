@@ -76,10 +76,7 @@ To create a drawing, use `createDrawingShape` method of slide.
 		->setDescription('Description of the drawing')
 		->setPath('/path/to/drawing.filename');
 		
-Drawing
+Table
 -------
 
-To create a table, use `createTableShape` method of slide.
-
-.. code-block:: php
-	$table = $slide->createTableShape($columns);	
+The Table has now :shapes_table:`its own page`. 
