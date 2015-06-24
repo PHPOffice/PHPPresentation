@@ -151,7 +151,7 @@ class StylesTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals('rect', $pres->getElementAttribute($element, 'draw:style', 'styles.xml'));
             $this->assertTrue($pres->attributeElementExists($element, 'draw:distance', 'styles.xml'));
             
-            switch($style){
+            switch ($style) {
                 case Border::DASH_DOT:
                 case Border::DASH_SYSDOT:
                     $this->assertTrue($pres->attributeElementExists($element, 'draw:dots1', 'styles.xml'));

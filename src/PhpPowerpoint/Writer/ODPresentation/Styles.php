@@ -192,7 +192,7 @@ class Styles extends AbstractPart
                 $objWriter->startElement('draw:stroke-dash');
                 $objWriter->writeAttribute('draw:name', 'strokeDash_'.$shape->getBorder()->getDashStyle());
                 $objWriter->writeAttribute('draw:style', 'rect');
-                switch ($shape->getBorder()->getDashStyle()){
+                switch ($shape->getBorder()->getDashStyle()) {
                     case Border::DASH_DASH:
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
                         $objWriter->writeAttribute('draw:dots2', '1');

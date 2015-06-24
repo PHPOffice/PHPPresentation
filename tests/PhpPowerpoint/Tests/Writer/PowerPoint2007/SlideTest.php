@@ -758,7 +758,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
             $oTransition->setTransitionType($rcTransition->getConstant($key));
             $oSlide->setTransition($oTransition);
             $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
-            switch($key) {
+            switch ($key) {
                 case 'TRANSITION_BLINDS_HORIZONTAL':
                     $this->assertTrue($pres->elementExists($element.'/p:blinds[@dir=\'horz\']', 'ppt/slides/slide1.xml'));
                     break;

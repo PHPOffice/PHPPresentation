@@ -449,7 +449,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
             $oTransition->setTransitionType($rcTransition->getConstant($key));
             $oSlide->setTransition($oTransition);
             $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
-            switch($key) {
+            switch ($key) {
                 case 'TRANSITION_BLINDS_HORIZONTAL':
                     $this->assertContains('horizontal-stripes', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
                     break;

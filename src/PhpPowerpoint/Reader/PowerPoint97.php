@@ -823,11 +823,13 @@ class PowerPoint97 implements ReaderInterface
             }
             
             switch ($rhFB['recType']) {
-                case 0xF003: // OfficeArtSpgrContainer
+                case 0xF003:
+                    // OfficeArtSpgrContainer
                     // OfficeArtSpgrContainer
                     // print_r('@OfficeArtSpgrContainer'.EOL);
                     break;
-                case 0xF004: // OfficeArtSpContainer
+                case 0xF004:
+                    // OfficeArtSpContainer
                     // shapeGroup
                     $shapeGroup = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
                     if ($shapeGroup['recVer'] == 0x1 && $shapeGroup['recInstance'] == 0x0000 && $shapeGroup['recType'] == 0xF009 && $shapeGroup['recLen'] == 0x00000010) {

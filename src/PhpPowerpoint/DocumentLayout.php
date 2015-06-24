@@ -200,7 +200,7 @@ class DocumentLayout
     protected function convertUnit($value, $fromUnit, $toUnit)
     {
         // Convert from $fromUnit to EMU
-        switch($fromUnit){
+        switch ($fromUnit) {
             case self::UNIT_MILLIMETER:
                 $value *= 36000;
                 break;
@@ -222,7 +222,7 @@ class DocumentLayout
         }
 
         // Convert from EMU to $toUnit
-        switch($toUnit){
+        switch ($toUnit) {
             case self::UNIT_MILLIMETER:
                 $value /= 36000;
                 break;

@@ -1439,7 +1439,7 @@ class Slide extends AbstractPart
             $objWriter->writeAttribute('advTm', $transition->getAdvanceTimeTrigger());
         }
 
-        switch($transition->getTransitionType()) {
+        switch ($transition->getTransitionType()) {
             case Transition::TRANSITION_BLINDS_HORIZONTAL:
                 $objWriter->startElement('p:blinds');
                 $objWriter->writeAttribute('dir', 'horz');

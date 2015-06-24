@@ -740,7 +740,7 @@ class Content extends AbstractPart
             $objWriter->writeAttribute('draw:auto-grow-width', var_export($shape->hasAutoShrinkHorizontal(), true));
         }
         // Fill
-        switch ($shape->getFill()->getFillType()){
+        switch ($shape->getFill()->getFillType()) {
             case Fill::FILL_GRADIENT_LINEAR:
             case Fill::FILL_GRADIENT_PATH:
                 $objWriter->writeAttribute('draw:fill', 'gradient');
@@ -762,7 +762,7 @@ class Content extends AbstractPart
         } else {
             $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
             $objWriter->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '').'cm');
-            switch ($shape->getBorder()->getDashStyle()){
+            switch ($shape->getBorder()->getDashStyle()) {
                 case Border::DASH_SOLID:
                     $objWriter->writeAttribute('draw:stroke', 'solid');
                     break;
@@ -935,7 +935,7 @@ class Content extends AbstractPart
                     $lineStyle = 'none';
                     $lineWidth = String::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
                     $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
+                    switch ($shapeCell->getBorders()->getBottom()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
@@ -944,7 +944,7 @@ class Content extends AbstractPart
                     $lineStyle = 'none';
                     $lineWidth = String::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
                     $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getBottom()->getLineStyle()){
+                    switch ($shapeCell->getBorders()->getBottom()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
@@ -953,7 +953,7 @@ class Content extends AbstractPart
                     $lineStyle = 'none';
                     $lineWidth = String::numberFormat($shapeCell->getBorders()->getTop()->getLineWidth() / 1.75, 2);
                     $lineColor = $shapeCell->getBorders()->getTop()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getTop()->getLineStyle()){
+                    switch ($shapeCell->getBorders()->getTop()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
@@ -962,7 +962,7 @@ class Content extends AbstractPart
                     $lineStyle = 'none';
                     $lineWidth = String::numberFormat($shapeCell->getBorders()->getRight()->getLineWidth() / 1.75, 2);
                     $lineColor = $shapeCell->getBorders()->getRight()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getRight()->getLineStyle()){
+                    switch ($shapeCell->getBorders()->getRight()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
@@ -971,7 +971,7 @@ class Content extends AbstractPart
                     $lineStyle = 'none';
                     $lineWidth = String::numberFormat($shapeCell->getBorders()->getLeft()->getLineWidth() / 1.75, 2);
                     $lineColor = $shapeCell->getBorders()->getLeft()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getLeft()->getLineStyle()){
+                    switch ($shapeCell->getBorders()->getLeft()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
@@ -1040,7 +1040,7 @@ class Content extends AbstractPart
             } elseif ($oTransition->hasTimeTrigger()) {
                 $objWriter->writeAttribute('presentation:transition-type', 'automatic');
             }
-            switch($oTransition->getSpeed()) {
+            switch ($oTransition->getSpeed()) {
                 case Transition::SPEED_FAST:
                     $objWriter->writeAttribute('presentation:transition-speed', 'fast');
                     break;
@@ -1055,7 +1055,7 @@ class Content extends AbstractPart
             /**
              * http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#property-presentation_transition-style
              */
-            switch($oTransition->getTransitionType()) {
+            switch ($oTransition->getTransitionType()) {
                 case Transition::TRANSITION_BLINDS_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'horizontal-stripes');
                     break;
