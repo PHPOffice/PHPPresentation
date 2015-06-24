@@ -248,16 +248,16 @@
      <tr><td><div align="right"><a name="17"></a><a href="#17">17</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="18"></a><a href="#18">18</a></div></td><td class="codeLine">namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;</td></tr>
      <tr><td><div align="right"><a name="19"></a><a href="#19">19</a></div></td><td class="codeLine"></td></tr>
-     <tr><td><div align="right"><a name="20"></a><a href="#20">20</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\PhpPowerpoint;</td></tr>
-     <tr><td><div align="right"><a name="21"></a><a href="#21">21</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;</td></tr>
-     <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;</td></tr>
-     <tr><td><div align="right"><a name="23"></a><a href="#23">23</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Group;</td></tr>
-     <tr><td><div align="right"><a name="24"></a><a href="#24">24</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;</td></tr>
-     <tr><td><div align="right"><a name="25"></a><a href="#25">25</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\RichText\Run;</td></tr>
-     <tr><td><div align="right"><a name="26"></a><a href="#26">26</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\RichText;</td></tr>
-     <tr><td><div align="right"><a name="27"></a><a href="#27">27</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;</td></tr>
-     <tr><td><div align="right"><a name="28"></a><a href="#28">28</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Table as ShapeTable;</td></tr>
-     <tr><td><div align="right"><a name="29"></a><a href="#29">29</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shared\XMLWriter;</td></tr>
+     <tr><td><div align="right"><a name="20"></a><a href="#20">20</a></div></td><td class="codeLine">use PhpOffice\Common\XMLWriter;</td></tr>
+     <tr><td><div align="right"><a name="21"></a><a href="#21">21</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\PhpPowerpoint;</td></tr>
+     <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;</td></tr>
+     <tr><td><div align="right"><a name="23"></a><a href="#23">23</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;</td></tr>
+     <tr><td><div align="right"><a name="24"></a><a href="#24">24</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Group;</td></tr>
+     <tr><td><div align="right"><a name="25"></a><a href="#25">25</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;</td></tr>
+     <tr><td><div align="right"><a name="26"></a><a href="#26">26</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\RichText\Run;</td></tr>
+     <tr><td><div align="right"><a name="27"></a><a href="#27">27</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\RichText;</td></tr>
+     <tr><td><div align="right"><a name="28"></a><a href="#28">28</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;</td></tr>
+     <tr><td><div align="right"><a name="29"></a><a href="#29">29</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Shape\Table as ShapeTable;</td></tr>
      <tr><td><div align="right"><a name="30"></a><a href="#30">30</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Slide as SlideElement;</td></tr>
      <tr><td><div align="right"><a name="31"></a><a href="#31">31</a></div></td><td class="codeLine">use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;</td></tr>
      <tr><td><div align="right"><a name="32"></a><a href="#32">32</a></div></td><td class="codeLine"></td></tr>
@@ -771,7 +771,7 @@
      <tr><td><div align="right"><a name="540"></a><a href="#540">540</a></div></td><td class="codeLine">    /**</td></tr>
      <tr><td><div align="right"><a name="541"></a><a href="#541">541</a></div></td><td class="codeLine">     * Write relationship</td></tr>
      <tr><td><div align="right"><a name="542"></a><a href="#542">542</a></div></td><td class="codeLine">     *</td></tr>
-     <tr><td><div align="right"><a name="543"></a><a href="#543">543</a></div></td><td class="codeLine">     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer</td></tr>
+     <tr><td><div align="right"><a name="543"></a><a href="#543">543</a></div></td><td class="codeLine">     * @param  \PhpOffice\Common\XMLWriter $objWriter   XML Writer</td></tr>
      <tr><td><div align="right"><a name="544"></a><a href="#544">544</a></div></td><td class="codeLine">     * @param  int                            $pId         Relationship ID. rId will be prepended!</td></tr>
      <tr><td><div align="right"><a name="545"></a><a href="#545">545</a></div></td><td class="codeLine">     * @param  string                         $pType       Relationship type</td></tr>
      <tr><td><div align="right"><a name="546"></a><a href="#546">546</a></div></td><td class="codeLine">     * @param  string                         $pTarget     Relationship target</td></tr>
@@ -812,7 +812,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.18</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.21</a> and <a href="http://phpunit.de/">PHPUnit 3.7.38</a> at Mon Jun 22 11:58:21 UTC 2015.</small>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.18</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.21</a> and <a href="http://phpunit.de/">PHPUnit 3.7.38</a> at Wed Jun 24 12:37:00 UTC 2015.</small>
     </p>
    </footer>
   </div>
