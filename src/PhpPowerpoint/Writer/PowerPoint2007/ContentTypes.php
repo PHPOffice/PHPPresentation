@@ -21,8 +21,8 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
-use PhpOffice\PhpPowerpoint\Shared\File;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\Common\File;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
@@ -200,7 +200,7 @@ class ContentTypes extends AbstractPart
     /**
      * Write Default content type
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
      * @throws \Exception
@@ -221,7 +221,7 @@ class ContentTypes extends AbstractPart
     /**
      * Write Override content type
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
      * @throws \Exception

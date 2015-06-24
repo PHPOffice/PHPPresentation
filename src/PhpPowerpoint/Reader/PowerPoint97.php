@@ -17,7 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Reader;
 
-use PhpOffice\PhpPowerpoint\Shared\OLERead;
+use PhpOffice\Common\Microsoft\OLERead;
 use PhpOffice\PhpPowerpoint\Shape\Drawing;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
@@ -901,22 +901,22 @@ class PowerPoint97 implements ReaderInterface
                                 case 0x0081:
                                     // Text : dxTextLeft
                                     //@link : http://msdn.microsoft.com/en-us/library/dd953234(v=office.12).aspx
-                                    $arrShpPrimaryOpt['insetLeft'] = \PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']);
+                                    $arrShpPrimaryOpt['insetLeft'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
                                     break;
                                 case 0x0082:
                                     // Text : dyTextTop
                                     //@link : http://msdn.microsoft.com/en-us/library/dd925068(v=office.12).aspx
-                                    $arrShpPrimaryOpt['insetTop'] = \PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']);
+                                    $arrShpPrimaryOpt['insetTop'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
                                     break;
                                 case 0x0083:
                                     // Text : dxTextRight
                                     //@link : http://msdn.microsoft.com/en-us/library/dd906782(v=office.12).aspx
-                                    $arrShpPrimaryOpt['insetRight'] = \PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']);
+                                    $arrShpPrimaryOpt['insetRight'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
                                     break;
                                 case 0x0084:
                                     // Text : dyTextBottom
                                     //@link : http://msdn.microsoft.com/en-us/library/dd772858(v=office.12).aspx
-                                    $arrShpPrimaryOpt['insetBottom'] = \PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']);
+                                    $arrShpPrimaryOpt['insetBottom'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
                                     break;
                                 case 0x0085:
                                     // Text : WrapText
@@ -1044,12 +1044,12 @@ class PowerPoint97 implements ReaderInterface
                                 case 0x0193:
                                     // Fill : fillRectRight
                                     //@link : http://msdn.microsoft.com/en-us/library/dd951294(v=office.12).aspx
-                                    // echo 'fillRectRight  : '.\PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']).EOL;
+                                    // echo 'fillRectRight  : '.\PhpOffice\Common\Drawing::emuToPixels($opt['op']).EOL;
                                     break;
                                 case 0x0194:
                                     // Fill : fillRectBottom
                                     //@link : http://msdn.microsoft.com/en-us/library/dd910194(v=office.12).aspx
-                                    // echo 'fillRectBottom   : '.\PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']).EOL;
+                                    // echo 'fillRectBottom   : '.\PhpOffice\Common\Drawing::emuToPixels($opt['op']).EOL;
                                     break;
                                 case 0x01BF:
                                     // Fill : Fill Style Boolean Properties
@@ -1080,7 +1080,7 @@ class PowerPoint97 implements ReaderInterface
                                 case 0x01CB:
                                     // Line Style : lineWidth
                                     //@link : http://msdn.microsoft.com/en-us/library/dd926964(v=office.12).aspx
-                                    $arrShpPrimaryOpt['lineWidth'] = \PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']);
+                                    $arrShpPrimaryOpt['lineWidth'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
                                     break;
                                 case 0x01D6:
                                     // Line Style : lineJoinStyle
@@ -1105,12 +1105,12 @@ class PowerPoint97 implements ReaderInterface
                                 case 0x0205:
                                     // Shadow Style : shadowOffsetX
                                     //@link : http://msdn.microsoft.com/en-us/library/dd945280(v=office.12).aspx
-                                    $arrShpPrimaryOpt['shadowOffsetX'] = \PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']);
+                                    $arrShpPrimaryOpt['shadowOffsetX'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
                                     break;
                                 case 0x0206:
                                     // Shadow Style : shadowOffsetY
                                     //@link : http://msdn.microsoft.com/en-us/library/dd907855(v=office.12).aspx
-                                    $arrShpPrimaryOpt['shadowOffsetY'] = \PhpOffice\PhpPowerpoint\Shared\Drawing::emuToPixels($opt['op']);
+                                    $arrShpPrimaryOpt['shadowOffsetY'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
                                     break;
                                 case 0x023F:
                                     // Shadow Style : Shadow Style Boolean Properties

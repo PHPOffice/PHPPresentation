@@ -17,10 +17,10 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
+use PhpOffice\Common\File;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
-use PhpOffice\PhpPowerpoint\Shared\File;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 /**

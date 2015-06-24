@@ -28,8 +28,8 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
-use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 
@@ -157,9 +157,9 @@ class Chart extends Slide
 
             // a:outerShdw
             $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', SharedDrawing::pixelsToEmu($chart->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', SharedDrawing::pixelsToEmu($chart->getShadow()->getDistance()));
-            $objWriter->writeAttribute('dir', SharedDrawing::degreesToAngle($chart->getShadow()->getDirection()));
+            $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($chart->getShadow()->getBlurRadius()));
+            $objWriter->writeAttribute('dist', CommonDrawing::pixelsToEmu($chart->getShadow()->getDistance()));
+            $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($chart->getShadow()->getDirection()));
             $objWriter->writeAttribute('algn', $chart->getShadow()->getAlignment());
             $objWriter->writeAttribute('rotWithShape', '0');
 
@@ -275,7 +275,7 @@ class Chart extends Slide
     /**
      * Write element with value attribute
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
+     * @param \PhpOffice\Common\XMLWriter $objWriter   XML Writer
      * @param string                         $elementName
      * @param string                         $value
      */
@@ -289,7 +289,7 @@ class Chart extends Slide
     /**
      * Write single value or reference
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
+     * @param \PhpOffice\Common\XMLWriter $objWriter   XML Writer
      * @param boolean                        $isReference
      * @param mixed                          $value
      * @param string                         $reference
@@ -320,7 +320,7 @@ class Chart extends Slide
     /**
      * Write series value or reference
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
+     * @param \PhpOffice\Common\XMLWriter $objWriter   XML Writer
      * @param boolean                        $isReference
      * @param mixed                          $values
      * @param string                         $reference
@@ -382,7 +382,7 @@ class Chart extends Slide
     /**
      * Write Title
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter  $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter  $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Title $subject
      * @throws \Exception
      */
@@ -410,9 +410,9 @@ class Chart extends Slide
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $subject->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr
@@ -490,7 +490,7 @@ class Chart extends Slide
     /**
      * Write Plot Area
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter     $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter     $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea $subject
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart          $chart
      * @throws \Exception
@@ -743,7 +743,7 @@ class Chart extends Slide
     /**
      * Write Legend
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter   $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter   $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Legend $subject
      * @throws \Exception
      */
@@ -794,9 +794,9 @@ class Chart extends Slide
         $objWriter->startElement('a:pPr');
         $objWriter->writeAttribute('algn', $subject->getAlignment()->getHorizontal());
         $objWriter->writeAttribute('fontAlgn', $subject->getAlignment()->getVertical());
-        $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
-        $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
-        $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
+        $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginLeft()));
+        $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($subject->getAlignment()->getMarginRight()));
+        $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($subject->getAlignment()->getIndent()));
         $objWriter->writeAttribute('lvl', $subject->getAlignment()->getLevel());
 
         // a:defRPr
@@ -851,7 +851,7 @@ class Chart extends Slide
     /**
      * Write Layout
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  mixed                          $subject
      * @throws \Exception
      */
@@ -907,7 +907,7 @@ class Chart extends Slide
     /**
      * Write Type Line
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter      $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter      $objWriter    XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area $subject
      * @param  boolean                             $includeSheet
      * @throws \Exception
@@ -1083,7 +1083,7 @@ class Chart extends Slide
     /**
      * Write Type Bar3D
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar $subject
      * @param  boolean                              $includeSheet
      * @throws \Exception
@@ -1289,7 +1289,7 @@ class Chart extends Slide
     /**
      * Write Type Bar3D
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D $subject
      * @param  boolean                              $includeSheet
      * @throws \Exception
@@ -1495,7 +1495,7 @@ class Chart extends Slide
     /**
      * Write Type Pie3D
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D $subject
      * @param  boolean                              $includeSheet
      * @throws \Exception
@@ -1669,7 +1669,7 @@ class Chart extends Slide
     /**
      * Write Type Line
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter      $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter      $objWriter    XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line $subject
      * @param  boolean                             $includeSheet
      * @throws \Exception
@@ -1844,7 +1844,7 @@ class Chart extends Slide
     /**
      * Write Type Scatter
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter         $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter         $objWriter    XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter $subject
      * @param  boolean                                $includeSheet
      * @throws \Exception

@@ -17,10 +17,10 @@
 
 namespace PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
-use PhpOffice\PhpPowerpoint\Shared\Drawing;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Style\Color;

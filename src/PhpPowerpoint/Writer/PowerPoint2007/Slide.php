@@ -17,6 +17,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\String;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Group;
@@ -26,9 +29,6 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
 use PhpOffice\PhpPowerpoint\Shape\Table;
-use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
-use PhpOffice\PhpPowerpoint\Shared\String;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
 use PhpOffice\PhpPowerpoint\Slide\Note;
 use PhpOffice\PhpPowerpoint\Slide\Transition;
@@ -100,26 +100,26 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($pSlide->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
         $objWriter->endElement(); // a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($pSlide->getExtentX()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
         $objWriter->endElement(); // a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($pSlide->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
         $objWriter->endElement(); // a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($pSlide->getExtentX()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
         $objWriter->endElement(); // a:chExt
 
         $objWriter->endElement();
@@ -175,7 +175,7 @@ class Slide extends AbstractPart
     /**
      * Write group
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPowerpoint\Shape\Group $group
      * @param  int $shapeId
      */
@@ -210,26 +210,26 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($group->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($group->getOffsetY()));
         $objWriter->endElement(); // a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($group->getExtentX()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($group->getExtentY()));
         $objWriter->endElement(); // a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($group->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($group->getOffsetY()));
         $objWriter->endElement(); // a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($group->getExtentX()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($group->getExtentY()));
         $objWriter->endElement(); // a:chExt
 
         $objWriter->endElement(); // a:xfrm
@@ -263,7 +263,7 @@ class Slide extends AbstractPart
     /**
      * Write chart
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPowerpoint\Shape\Chart $shape
      * @param  int $shapeId
      */
@@ -292,18 +292,18 @@ class Slide extends AbstractPart
 
         // p:xfrm
         $objWriter->startElement('p:xfrm');
-        $objWriter->writeAttribute('rot', SharedDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -332,7 +332,7 @@ class Slide extends AbstractPart
     /**
      * Write pic
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter  $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter  $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
      * @param  int $shapeId
      * @throws \Exception
@@ -392,18 +392,18 @@ class Slide extends AbstractPart
 
         // a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttribute('rot', SharedDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -433,7 +433,7 @@ class Slide extends AbstractPart
     /**
      * Write txt
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\RichText   $shape
      * @param  int                            $shapeId
      * @throws \Exception
@@ -472,18 +472,18 @@ class Slide extends AbstractPart
 
         // p:sp\p:spPr\a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttribute('rot', SharedDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
         
         // p:sp\p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
         
         // p:sp\p:spPr\a:xfrm\a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
         
         // > p:sp\p:spPr\a:xfrm
@@ -535,10 +535,10 @@ class Slide extends AbstractPart
             $objWriter->writeAttribute('vert', 'vert');
         }
 
-        $objWriter->writeAttribute('bIns', SharedDrawing::pixelsToEmu($shape->getInsetBottom()));
-        $objWriter->writeAttribute('lIns', SharedDrawing::pixelsToEmu($shape->getInsetLeft()));
-        $objWriter->writeAttribute('rIns', SharedDrawing::pixelsToEmu($shape->getInsetRight()));
-        $objWriter->writeAttribute('tIns', SharedDrawing::pixelsToEmu($shape->getInsetTop()));
+        $objWriter->writeAttribute('bIns', CommonDrawing::pixelsToEmu($shape->getInsetBottom()));
+        $objWriter->writeAttribute('lIns', CommonDrawing::pixelsToEmu($shape->getInsetLeft()));
+        $objWriter->writeAttribute('rIns', CommonDrawing::pixelsToEmu($shape->getInsetRight()));
+        $objWriter->writeAttribute('tIns', CommonDrawing::pixelsToEmu($shape->getInsetTop()));
 
         if ($shape->getColumns() <> 1) {
             $objWriter->writeAttribute('numCol', $shape->getColumns());
@@ -573,7 +573,7 @@ class Slide extends AbstractPart
     /**
      * Write table
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Table      $shape
      * @param  int                            $shapeId
      * @throws \Exception
@@ -614,14 +614,14 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -660,7 +660,7 @@ class Slide extends AbstractPart
                 $width      = $totalWidth / $colCount;
             }
 
-            $objWriter->writeAttribute('w', SharedDrawing::pixelsToEmu($width));
+            $objWriter->writeAttribute('w', CommonDrawing::pixelsToEmu($width));
             $objWriter->endElement();
         }
 
@@ -678,7 +678,7 @@ class Slide extends AbstractPart
         for ($row = 0; $row < $countRows; $row++) {
             // a:tr
             $objWriter->startElement('a:tr');
-            $objWriter->writeAttribute('h', SharedDrawing::pixelsToEmu($shape->getRow($row)->getHeight()));
+            $objWriter->writeAttribute('h', CommonDrawing::pixelsToEmu($shape->getRow($row)->getHeight()));
 
             // Write cells
             $countCells = count($shape->getRow($row)->getCells());
@@ -793,7 +793,7 @@ class Slide extends AbstractPart
     /**
      * Write paragraphs
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter           $objWriter  XML Writer
+     * @param  \PhpOffice\Common\XMLWriter           $objWriter  XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[] $paragraphs
      * @throws \Exception
      */
@@ -808,9 +808,9 @@ class Slide extends AbstractPart
             $objWriter->startElement('a:pPr');
             $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
             $objWriter->writeAttribute('fontAlgn', $paragraph->getAlignment()->getVertical());
-            $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
-            $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
-            $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
+            $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
+            $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
+            $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
             $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
             // Bullet type specified?
@@ -916,7 +916,7 @@ class Slide extends AbstractPart
     /**
      * Write Line Shape
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPowerpoint\Shape\Line $shape
      * @param  int $shapeId
      */
@@ -952,54 +952,54 @@ class Slide extends AbstractPart
         if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-            $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getHeight() < 0) {
             $objWriter->writeAttribute('flipV', 1);
 
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-            $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0) {
             $objWriter->writeAttribute('flipV', 1);
 
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         }
 
@@ -1022,7 +1022,7 @@ class Slide extends AbstractPart
     /**
      * Write Border
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Border     $pBorder      Border
      * @param  string                         $pElementName Element name
      * @throws \Exception
@@ -1089,7 +1089,7 @@ class Slide extends AbstractPart
     /**
      * Write Fill
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
@@ -1119,7 +1119,7 @@ class Slide extends AbstractPart
     /**
      * Write Solid Fill
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
@@ -1139,7 +1139,7 @@ class Slide extends AbstractPart
     /**
      * Write Gradient Fill
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
@@ -1176,7 +1176,7 @@ class Slide extends AbstractPart
 
         // a:lin
         $objWriter->startElement('a:lin');
-        $objWriter->writeAttribute('ang', SharedDrawing::degreesToAngle($pFill->getRotation()));
+        $objWriter->writeAttribute('ang', CommonDrawing::degreesToAngle($pFill->getRotation()));
         $objWriter->writeAttribute('scaled', '0');
         $objWriter->endElement();
 
@@ -1186,7 +1186,7 @@ class Slide extends AbstractPart
     /**
      * Write Pattern Fill
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
@@ -1225,9 +1225,9 @@ class Slide extends AbstractPart
         
         // a:outerShdw
         $objWriter->startElement('a:outerShdw');
-        $objWriter->writeAttribute('blurRad', SharedDrawing::pixelsToEmu($oShadow->getBlurRadius()));
-        $objWriter->writeAttribute('dist', SharedDrawing::pixelsToEmu($oShadow->getDistance()));
-        $objWriter->writeAttribute('dir', SharedDrawing::degreesToAngle($oShadow->getDirection()));
+        $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
+        $objWriter->writeAttribute('dist', CommonDrawing::pixelsToEmu($oShadow->getDistance()));
+        $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($oShadow->getDirection()));
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
         
@@ -1250,7 +1250,7 @@ class Slide extends AbstractPart
     /**
      * Write hyperlink
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter                               $objWriter XML Writer
+     * @param \PhpOffice\Common\XMLWriter                               $objWriter XML Writer
      * @param \PhpOffice\PhpPowerpoint\AbstractShape|\PhpOffice\PhpPowerpoint\Shape\RichText\TextElement $shape
      */
     private function writeHyperlink(XMLWriter $objWriter, $shape)
@@ -1321,26 +1321,26 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($pNote->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
         $objWriter->endElement(); // a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($pNote->getExtentX()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($pNote->getExtentY()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
         $objWriter->endElement(); // a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($pNote->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
         $objWriter->endElement(); // a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($pNote->getExtentX()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($pNote->getExtentY()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
         $objWriter->endElement(); // a:chExt
 
         // ## a:xfrm

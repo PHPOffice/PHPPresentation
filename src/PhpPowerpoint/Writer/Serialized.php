@@ -17,9 +17,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer;
 
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\Serialized

@@ -17,6 +17,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\String;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
@@ -30,9 +33,6 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\Table;
-use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
-use PhpOffice\PhpPowerpoint\Shared\String;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide\Note;
 use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
@@ -177,11 +177,11 @@ class Content extends AbstractPart
                         // style:list-level-properties
                         $objWriter->startElement('style:list-level-properties');
                         if ($oAlign->getIndent() < 0) {
-                            $objWriter->writeAttribute('text:space-before', SharedDrawing::pixelsToCentimeters($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent())) . 'cm');
-                            $objWriter->writeAttribute('text:min-label-width', SharedDrawing::pixelsToCentimeters(-1 * $oAlign->getIndent()) . 'cm');
+                            $objWriter->writeAttribute('text:space-before', CommonDrawing::pixelsToCentimeters($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent())) . 'cm');
+                            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters(-1 * $oAlign->getIndent()) . 'cm');
                         } else {
-                            $objWriter->writeAttribute('text:space-before', (SharedDrawing::pixelsToCentimeters($oAlign->getMarginLeft() - $oAlign->getIndent())) . 'cm');
-                            $objWriter->writeAttribute('text:min-label-width', SharedDrawing::pixelsToCentimeters($oAlign->getIndent()) . 'cm');
+                            $objWriter->writeAttribute('text:space-before', (CommonDrawing::pixelsToCentimeters($oAlign->getMarginLeft() - $oAlign->getIndent())) . 'cm');
+                            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters($oAlign->getIndent()) . 'cm');
                         }
 
                         $objWriter->endElement();
@@ -310,7 +310,7 @@ class Content extends AbstractPart
     /**
      * Write picture
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\Common\XMLWriter $objWriter
      * @param \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
      */
     public function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape)
@@ -318,10 +318,10 @@ class Content extends AbstractPart
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:name', $shape->getName());
-        $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         // draw:image
         $objWriter->startElement('draw:image');
@@ -359,7 +359,7 @@ class Content extends AbstractPart
     /**
      * Write text
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\Common\XMLWriter $objWriter
      * @param \PhpOffice\PhpPowerpoint\Shape\RichText $shape
      */
     public function writeShapeTxt(XMLWriter $objWriter, RichText $shape)
@@ -367,10 +367,10 @@ class Content extends AbstractPart
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
-        $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         // draw:text-box
         $objWriter->startElement('draw:text-box');
         
@@ -527,10 +527,10 @@ class Content extends AbstractPart
         // draw:line
         $objWriter->startElement('draw:line');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
-        $objWriter->writeAttribute('svg:x1', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y1', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x2', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()+$shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y2', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()+$shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x1', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y1', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x2', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()+$shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y2', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()+$shape->getHeight()), 3) . 'cm');
 
             // text:p
             $objWriter->writeElement('text:p');
@@ -547,10 +547,10 @@ class Content extends AbstractPart
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
         
         // table:table
         $objWriter->startElement('table:table');
@@ -631,10 +631,10 @@ class Content extends AbstractPart
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:name', $shape->getTitle()->getText());
-        $objWriter->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', String::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
     
         // draw:object
         $objWriter->startElement('draw:object');
@@ -718,7 +718,7 @@ class Content extends AbstractPart
     /**
      * Write the default style information for a RichText shape
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\Common\XMLWriter $objWriter
      * @param \PhpOffice\PhpPowerpoint\Shape\RichText $shape
      */
     public function writeTxtStyle(XMLWriter $objWriter, RichText $shape)
@@ -761,7 +761,7 @@ class Content extends AbstractPart
             $objWriter->writeAttribute('draw:stroke', 'none');
         } else {
             $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
-            $objWriter->writeAttribute('svg:stroke-width', number_format(SharedDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '').'cm');
+            $objWriter->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '').'cm');
             switch ($shape->getBorder()->getDashStyle()){
                 case Border::DASH_SOLID:
                     $objWriter->writeAttribute('draw:stroke', 'solid');
@@ -829,7 +829,7 @@ class Content extends AbstractPart
     /**
      * Write the default style information for an AbstractDrawing
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter
+     * @param \PhpOffice\Common\XMLWriter $objWriter
      * @param \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
      */
     public function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawing $shape)
@@ -881,7 +881,7 @@ class Content extends AbstractPart
                 break;
         }
         $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
-        $objWriter->writeAttribute('svg:stroke-width', String::numberFormat(SharedDrawing::pixelsToCentimeters((SharedDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3).'cm');
+        $objWriter->writeAttribute('svg:stroke-width', String::numberFormat(CommonDrawing::pixelsToCentimeters((CommonDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3).'cm');
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -903,7 +903,7 @@ class Content extends AbstractPart
 
             // style:table-row-properties
             $objWriter->startElement('style:table-row-properties');
-            $objWriter->writeAttribute('style:row-height', String::numberFormat(SharedDrawing::pixelsToCentimeters(SharedDrawing::pointsToPixels($shapeRow->getHeight())), 3).'cm');
+            $objWriter->writeAttribute('style:row-height', String::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::pointsToPixels($shapeRow->getHeight())), 3).'cm');
             $objWriter->endElement();
 
             $objWriter->endElement();
@@ -1213,29 +1213,29 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('draw:shadow', 'visible');
         $objWriter->writeAttribute('draw:shadow-color', '#' . $oShadow->getColor()->getRGB());
         if ($oShadow->getDirection() == 0 || $oShadow->getDirection() == 360) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
         } elseif ($oShadow->getDirection() == 45) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
         } elseif ($oShadow->getDirection() == 90) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
         } elseif ($oShadow->getDirection() == 135) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
         } elseif ($oShadow->getDirection() == 180) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
         } elseif ($oShadow->getDirection() == 225) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
         } elseif ($oShadow->getDirection() == 270) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
         } elseif ($oShadow->getDirection() == 315) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . SharedDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
         }
         $objWriter->writeAttribute('draw:shadow-opacity', (100 - $oShadow->getAlpha()) . '%');
         $objWriter->writeAttribute('style:mirror', 'none');

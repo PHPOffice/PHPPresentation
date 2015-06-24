@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
@@ -26,7 +27,6 @@ use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
 use PhpOffice\PhpPowerpoint\Shape\Table as ShapeTable;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
@@ -540,7 +540,7 @@ class Rels extends AbstractPart
     /**
      * Write relationship
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter   XML Writer
      * @param  int                            $pId         Relationship ID. rId will be prepended!
      * @param  string                         $pType       Relationship type
      * @param  string                         $pTarget     Relationship target

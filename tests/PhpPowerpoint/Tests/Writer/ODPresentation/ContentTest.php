@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPowerpoint\Tests\Writer\ODPresentation;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Slide\Transition;
@@ -26,7 +27,6 @@ use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
-use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
 
 /**
  * Test class for PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest
@@ -225,7 +225,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('#'.$oRichText1->getBorder()->getColor()->getRGB(), $pres->getElementAttribute($element, 'svg:stroke-color', 'content.xml'));
         $this->assertTrue($pres->attributeElementExists($element, 'svg:stroke-width', 'content.xml'));
         $this->assertStringEndsWith('cm', $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
-        $this->assertStringStartsWith((string) number_format(SharedDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''), $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertStringStartsWith((string) number_format(CommonDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''), $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
         $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke', 'content.xml'));
         $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
         $this->assertFalse($pres->attributeElementExists($element, 'draw:stroke-dash', 'content.xml'));
