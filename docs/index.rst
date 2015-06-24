@@ -25,7 +25,7 @@ PHPPowerPoint is a library written in pure PHP that provides a set of classes to
    credits
    references
    
-.. _shapes-docs:
+.. _shapesdocs:
 
 .. toctree::
    :maxdepth: 2

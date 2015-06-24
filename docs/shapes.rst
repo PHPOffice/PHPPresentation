@@ -28,7 +28,7 @@ Example:
 		->setOffsetY(180);
 
 Rich text
--------
+---------
 
 Rich text shapes contain paragraphs of texts. To create a rich text shape, use ``createRichTextShape`` method of slide.
 
