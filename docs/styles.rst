@@ -4,11 +4,12 @@ Styles
 ======
 
 Fill
--------
+----
 
 Use this style to define fill of a shape as example below.
 
 .. code-block:: php
+
 	$shape->getFill()
 		->setFillType(Fill::FILL_GRADIENT_LINEAR)
 		->setRotation(270)
@@ -23,11 +24,12 @@ Properties:
 - ``endColor``
 
 Border
--------
+------
 
 Use this style to define border of a shape as example below.
 
 .. code-block:: php
+
 	$shape->getBorder()
 		->setLineStyle(Border::LINE_SINGLE)
 		->setLineWidth(4)
@@ -41,11 +43,12 @@ Properties:
 - ``color``
 
 Shadow
--------
+------
 
 Use this style to define shadow of a shape as example below.
 
 .. code-block:: php
+
 	$shape->getShadow()
 		->setVisible(true)
 		->setDirection(45)
@@ -62,7 +65,7 @@ Properties:
 - ``alpha``
 
 Alignment
--------
+---------
 
 - ``horizontal``
 - ``vertical``
@@ -72,7 +75,7 @@ Alignment
 - ``marginRight``
 
 Font
--------
+----
 
 - ``name``
 - ``bold``
@@ -84,7 +87,7 @@ Font
 - ``color``
 
 Bullet
--------
+------
 
 - ``bulletType``
 - ``bulletFont``
@@ -93,10 +96,11 @@ Bullet
 - ``bulletNumericStartAt``
 
 Color
--------
+-----
 
 Colors can be applied to different objects, e.g. font or border.
 
 .. code-block:: php
+
 	$textRun = $shape->createTextRun('Text');
 	$textRun->getFont()->setColor(new Color('C00000'));

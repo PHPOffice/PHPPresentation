@@ -15,11 +15,12 @@ Every shapes have common properties that you can set by using fluent interface.
 - ``fill`` see *[Fill](#fill)*
 - ``border`` see *[Border](#border)*
 - ``shadow`` see *[Shadow](#shadow)*
-- ``hyperlink`
+- ``hyperlink``
 
 Example:
 
 .. code-block:: php
+
 	$richtext = $slide->createRichTextShape()
 		->setHeight(300)
 		->setWidth(600)
@@ -71,6 +72,7 @@ Drawing
 To create a drawing, use `createDrawingShape` method of slide.
 
 .. code-block:: php
+
 	$drawing = $slide->createDrawingShape();
 	$drawing->setName('Unique name')
 		->setDescription('Description of the drawing')
@@ -79,4 +81,4 @@ To create a drawing, use `createDrawingShape` method of slide.
 Table
 -------
 
-The Table has now :shapes_table:`its own page`. 
+The Table has now :ref:`its own page <shapes_table>`. 

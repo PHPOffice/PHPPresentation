@@ -1,4 +1,4 @@
-.. _shapes:
+.. _shapes_table:
 
 Tables
 ======
