@@ -172,7 +172,8 @@ class Series implements ComparableInterface
      *
      * @return string
      */
-    public function getDlblNumFormat() {
+    public function getDlblNumFormat()
+    {
         return $this->DlblNumFormat;
     }
 
@@ -181,7 +182,8 @@ class Series implements ComparableInterface
      *
      * @return string
      */
-    public function hasDlblNumFormat() {
+    public function hasDlblNumFormat()
+    {
         return !empty($this->DlblNumFormat);
     }
 
@@ -191,7 +193,8 @@ class Series implements ComparableInterface
      * @param  string $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
      */
-    public function setDlblNumFormat($value = '') {
+    public function setDlblNumFormat($value = '')
+    {
         $this->DlblNumFormat = $value;
         return $this;
     }
