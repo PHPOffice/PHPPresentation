@@ -7,6 +7,7 @@ use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
@@ -71,7 +72,7 @@ function fnSlide_Bar(PhpPowerpoint $objPHPPowerPoint) {
     $currentSlide = createTemplatedSlide($objPHPPowerPoint);
 
     // Generate sample data for first chart
-    echo date('H:i:s') . ' Generate sample data for first chart'.EOL;
+    echo date('H:i:s') . ' Generate sample data for chart'.EOL;
     $series1Data = array('Jan' => 133, 'Feb' => 99, 'Mar' => 191, 'Apr' => 205, 'May' => 167, 'Jun' => 201, 'Jul' => 240, 'Aug' => 226, 'Sep' => 255, 'Oct' => 264, 'Nov' => 283, 'Dec' => 293);
     $series2Data = array('Jan' => 266, 'Feb' => 198, 'Mar' => 271, 'Apr' => 305, 'May' => 267, 'Jun' => 301, 'Jul' => 340, 'Aug' => 326, 'Sep' => 344, 'Oct' => 364, 'Nov' => 383, 'Dec' => 379);
 
@@ -147,6 +148,144 @@ function fnSlide_BarHorizontal(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
+function fnSlide_BarStacked(PhpPowerpoint $objPHPPowerPoint) {
+    global $oFill;
+    global $oShadow;
+
+    // Create templated slide
+    echo EOL . date( 'H:i:s' ) . ' Create templated slide' . EOL;
+    $currentSlide = createTemplatedSlide( $objPHPPowerPoint );
+
+    // Generate sample data for first chart
+    echo date( 'H:i:s' ) . ' Generate sample data for chart' . EOL;
+    $series1Data = array('Jan' => 133, 'Feb' => 99, 'Mar' => 191, 'Apr' => 205, 'May' => 167, 'Jun' => 201, 'Jul' => 240, 'Aug' => 226, 'Sep' => 255, 'Oct' => 264, 'Nov' => 283, 'Dec' => 293);
+    $series2Data = array('Jan' => 266, 'Feb' => 198, 'Mar' => 271, 'Apr' => 305, 'May' => 267, 'Jun' => 301, 'Jul' => 340, 'Aug' => 326, 'Sep' => 344, 'Oct' => 364, 'Nov' => 383, 'Dec' => 379);
+    $series3Data = array('Jan' => 233, 'Feb' => 146, 'Mar' => 238, 'Apr' => 175, 'May' => 108, 'Jun' => 257, 'Jul' => 199, 'Aug' => 201, 'Sep' => 88, 'Oct' => 147, 'Nov' => 287, 'Dec' => 105);
+
+    // Create a bar chart (that should be inserted in a shape)
+    echo date( 'H:i:s' ) . ' Create a stacked bar chart (that should be inserted in a chart shape)' . EOL;
+    $StackedBarChart = new Bar();
+    $series1 = new Series( '2009', $series1Data );
+    $series1->setShowSeriesName( false );
+    $series1->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF4F81BD' ) );
+    $series1->getFont()->getColor()->setRGB( '00FF00' );
+    $series1->setShowValue( true );
+    $series1->setShowPercentage( false );
+    $series2 = new Series( '2010', $series2Data );
+    $series2->setShowSeriesName( false );
+    $series2->getFont()->getColor()->setRGB( 'FF0000' );
+    $series2->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FFC0504D' ) );
+    $series2->setShowValue( true );
+    $series2->setShowPercentage( false );
+    $series3 = new Series( '2011', $series3Data );
+    $series3->setShowSeriesName( false );
+    $series3->getFont()->getColor()->setRGB( 'FF0000' );
+    $series3->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF804DC0' ) );
+    $series3->setShowValue( true );
+    $series3->setShowPercentage( false );
+    $StackedBarChart->addSeries( $series1 );
+    $StackedBarChart->addSeries( $series2 );
+    $StackedBarChart->addSeries( $series3 );
+    $StackedBarChart->setBarGrouping( Bar::GROUPING_STACKED );
+    // Create a shape (chart)
+    echo date( 'H:i:s' ) . ' Create a shape (chart)' . EOL;
+    $shape = $currentSlide->createChartShape();
+    $shape->setName( 'PHPPowerPoint Monthly Downloads' )
+        ->setResizeProportional( false )
+        ->setHeight( 550 )
+        ->setWidth( 700 )
+        ->setOffsetX( 120 )
+        ->setOffsetY( 80 );
+    $shape->setShadow( $oShadow );
+    $shape->setFill( $oFill );
+    $shape->getBorder()->setLineStyle( Border::LINE_SINGLE );
+    $shape->getTitle()->setText( 'PHPPowerPoint Monthly Downloads' );
+    $shape->getTitle()->getFont()->setItalic( true );
+    $shape->getTitle()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_RIGHT );
+    $shape->getPlotArea()->getAxisX()->setTitle( 'Month' );
+    $shape->getPlotArea()->getAxisY()->setTitle( 'Downloads' );
+    $shape->getPlotArea()->setType( $StackedBarChart );
+    $shape->getLegend()->getBorder()->setLineStyle( Border::LINE_SINGLE );
+    $shape->getLegend()->getFont()->setItalic( true );
+}
+function fnSlide_BarPercentStacked(PhpPowerpoint $objPHPPowerPoint) {
+    global $oFill;
+    global $oShadow;
+
+    // Create templated slide
+    echo EOL . date( 'H:i:s' ) . ' Create templated slide' . EOL;
+    $currentSlide = createTemplatedSlide( $objPHPPowerPoint );
+
+    // Generate sample data for first chart
+    echo date( 'H:i:s' ) . ' Generate sample data for chart' . EOL;
+    $series1Data = array('Jan' => 133, 'Feb' => 99, 'Mar' => 191, 'Apr' => 205, 'May' => 167, 'Jun' => 201, 'Jul' => 240, 'Aug' => 226, 'Sep' => 255, 'Oct' => 264, 'Nov' => 283, 'Dec' => 293);
+    $Series1Sum = array_sum($series1Data);
+    foreach ($series1Data as $CatName => $Value) {
+        $series1Data[$CatName]= round($Value / $Series1Sum, 2);
+    }
+    $series2Data = array('Jan' => 266, 'Feb' => 198, 'Mar' => 271, 'Apr' => 305, 'May' => 267, 'Jun' => 301, 'Jul' => 340, 'Aug' => 326, 'Sep' => 344, 'Oct' => 364, 'Nov' => 383, 'Dec' => 379);
+    $Series2Sum = array_sum($series2Data);
+    foreach ($series2Data as $CatName => $Value) {
+        $series2Data[$CatName] = round($Value / $Series2Sum, 2);
+    }
+    $series3Data = array('Jan' => 233, 'Feb' => 146, 'Mar' => 238, 'Apr' => 175, 'May' => 108, 'Jun' => 257, 'Jul' => 199, 'Aug' => 201, 'Sep' => 88, 'Oct' => 147, 'Nov' => 287, 'Dec' => 105);
+    $Series3Sum = array_sum( $series3Data );
+    foreach ($series3Data as $CatName => $Value) {
+        $series3Data[$CatName] = round($Value / $Series3Sum,2);
+    }
+
+    // Create a bar chart (that should be inserted in a shape)
+    echo date( 'H:i:s' ) . ' Create a percent stacked horizontal bar chart (that should be inserted in a chart shape)' . EOL;
+    $PercentStackedBarChartHoriz = new Bar();
+    $series1 = new Series( '2009', $series1Data );
+    $series1->setShowSeriesName( false );
+    $series1->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF4F81BD' ) );
+    $series1->getFont()->getColor()->setRGB( '00FF00' );
+    $series1->setShowValue( true );
+    $series1->setShowPercentage( false );
+    // Set Data Label Format For Chart To Display Percent
+    $series1->setDlblNumFormat( '#%' );
+    $series2 = new Series( '2010', $series2Data );
+    $series2->setShowSeriesName( false );
+    $series2->getFont()->getColor()->setRGB( 'FF0000' );
+    $series2->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FFC0504D' ) );
+    $series2->setShowValue( true );
+    $series2->setShowPercentage( false );
+    $series2->setDlblNumFormat( '#%' );
+    $series3 = new Series( '2011', $series3Data );
+    $series3->setShowSeriesName( false );
+    $series3->getFont()->getColor()->setRGB( 'FF0000' );
+    $series3->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF804DC0' ) );
+    $series3->setShowValue( true );
+    $series3->setShowPercentage( false );
+    $series3->setDlblNumFormat( '#%' );
+    $PercentStackedBarChartHoriz->addSeries( $series1 );
+    $PercentStackedBarChartHoriz->addSeries( $series2 );
+    $PercentStackedBarChartHoriz->addSeries( $series3 );
+    $PercentStackedBarChartHoriz->setBarGrouping( Bar::GROUPING_PERCENTSTACKED );
+    $PercentStackedBarChartHoriz->setBarDirection( Bar3D::DIRECTION_HORIZONTAL );
+    // Create a shape (chart)
+    echo date( 'H:i:s' ) . ' Create a shape (chart)' . EOL;
+    $shape = $currentSlide->createChartShape();
+    $shape->setName( 'PHPPowerPoint Monthly Downloads' )
+        ->setResizeProportional( false )
+        ->setHeight( 550 )
+        ->setWidth( 700 )
+        ->setOffsetX( 120 )
+        ->setOffsetY( 80 );
+    $shape->setShadow( $oShadow );
+    $shape->setFill( $oFill );
+    $shape->getBorder()->setLineStyle( Border::LINE_SINGLE );
+    $shape->getTitle()->setText( 'PHPPowerPoint Monthly Downloads' );
+    $shape->getTitle()->getFont()->setItalic( true );
+    $shape->getTitle()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_RIGHT );
+    $shape->getPlotArea()->getAxisX()->setTitle( 'Month' );
+    $shape->getPlotArea()->getAxisY()->setTitle( 'Downloads' );
+    $shape->getPlotArea()->setType( $PercentStackedBarChartHoriz );
+    $shape->getLegend()->getBorder()->setLineStyle( Border::LINE_SINGLE );
+    $shape->getLegend()->getFont()->setItalic( true );
+}
+
 function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
     global $oFill;
     global $oShadow;
@@ -156,7 +295,7 @@ function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
     $currentSlide = createTemplatedSlide($objPHPPowerPoint);
 
     // Generate sample data for first chart
-    echo date('H:i:s') . ' Generate sample data for first chart'.EOL;
+    echo date('H:i:s') . ' Generate sample data for chart'.EOL;
     $series1Data = array('Jan' => 133, 'Feb' => 99, 'Mar' => 191, 'Apr' => 205, 'May' => 167, 'Jun' => 201, 'Jul' => 240, 'Aug' => 226, 'Sep' => 255, 'Oct' => 264, 'Nov' => 283, 'Dec' => 293);
     $series2Data = array('Jan' => 266, 'Feb' => 198, 'Mar' => 271, 'Apr' => 305, 'May' => 267, 'Jun' => 301, 'Jul' => 340, 'Aug' => 326, 'Sep' => 344, 'Oct' => 364, 'Nov' => 383, 'Dec' => 379);
 
@@ -206,7 +345,7 @@ function fnSlide_Bar3DHorizontal(PhpPowerpoint $objPHPPowerPoint) {
     
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) '.EOL;
-    $bar3DChartHorz = clone $objPHPPowerPoint->getSlide(3)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
+    $bar3DChartHorz = clone $objPHPPowerPoint->getSlide(5)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
     $bar3DChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
     
     // Create templated slide
@@ -247,7 +386,7 @@ function fnSlide_Pie3D(PhpPowerpoint $objPHPPowerPoint) {
     $currentSlide = createTemplatedSlide($objPHPPowerPoint);
     
     // Generate sample data for second chart
-    echo date('H:i:s') . ' Generate sample data for second chart'.EOL;
+    echo date('H:i:s') . ' Generate sample data for chart'.EOL;
     $seriesData = array('Monday' => 12, 'Tuesday' => 15, 'Wednesday' => 13, 'Thursday' => 17, 'Friday' => 14, 'Saturday' => 9, 'Sunday' => 7);
     
     // Create a pie chart (that should be inserted in a shape)
@@ -286,6 +425,54 @@ function fnSlide_Pie3D(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
+function fnSlide_Pie(PhpPowerpoint $objPHPPowerPoint) {
+    global $oFill;
+    global $oShadow;
+
+    // Create templated slide
+    echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
+    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+
+    // Generate sample data for second chart
+    echo date('H:i:s') . ' Generate sample data for chart'.EOL;
+    $seriesData = array('Monday' => 18, 'Tuesday' => 23, 'Wednesday' => 14, 'Thursday' => 12, 'Friday' => 20, 'Saturday' => 8, 'Sunday' => 10);
+
+    // Create a pie chart (that should be inserted in a shape)
+    echo date('H:i:s') . ' Create a non-3D pie chart (that should be inserted in a chart shape)'.EOL;
+    $pieChart = new Pie();
+    $series = new Series('Downloads', $seriesData);
+    $series->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF7CB5EC'));
+    $series->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF434348'));
+    $series->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF90ED7D'));
+    $series->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFF7A35C'));
+    $series->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8085E9'));
+    $series->getDataPointFill(5)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFF15C80'));
+    $series->getDataPointFill(6)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE4D354'));
+    $series->setShowPercentage( true );
+    $series->setShowValue( false );
+    $series->setShowSeriesName( false );
+    $series->setShowCategoryName( true );
+    $pieChart->addSeries($series);
+
+    // Create a shape (chart)
+    echo date('H:i:s') . ' Create a shape (chart)'.EOL;
+    $shape = $currentSlide->createChartShape();
+    $shape->setName('PHPPowerPoint Daily Downloads')
+          ->setResizeProportional(false)
+          ->setHeight(550)
+          ->setWidth(700)
+          ->setOffsetX(120)
+          ->setOffsetY(80);
+    $shape->setShadow($oShadow);
+    $shape->setFill($oFill);
+    $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+    $shape->getTitle()->getFont()->setItalic(true);
+    $shape->getPlotArea()->setType($pieChart);
+    $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getLegend()->getFont()->setItalic(true);
+}
+
 function fnSlide_Scatter(PhpPowerpoint $objPHPPowerPoint) {
     global $oFill;
     global $oShadow;
@@ -295,7 +482,7 @@ function fnSlide_Scatter(PhpPowerpoint $objPHPPowerPoint) {
     $currentSlide = createTemplatedSlide($objPHPPowerPoint); // local function
     
     // Generate sample data for fourth chart
-    echo date('H:i:s') . ' Generate sample data for fourth chart'.EOL;
+    echo date('H:i:s') . ' Generate sample data for chart'.EOL;
     $seriesData = array('Monday' => 0.1, 'Tuesday' => 0.33333, 'Wednesday' => 0.4444, 'Thursday' => 0.5, 'Friday' => 0.4666, 'Saturday' => 0.3666, 'Sunday' => 0.1666);
     
     // Create a scatter chart (that should be inserted in a shape)
@@ -355,6 +542,10 @@ fnSlide_Area($objPHPPowerPoint);
 
 fnSlide_Bar($objPHPPowerPoint);
 
+fnSlide_BarStacked($objPHPPowerPoint);
+
+fnSlide_BarPercentStacked($objPHPPowerPoint);
+
 fnSlide_BarHorizontal($objPHPPowerPoint);
 
 fnSlide_Bar3D($objPHPPowerPoint);
@@ -362,6 +553,8 @@ fnSlide_Bar3D($objPHPPowerPoint);
 fnSlide_Bar3DHorizontal($objPHPPowerPoint);
 
 fnSlide_Pie3D($objPHPPowerPoint);
+
+fnSlide_Pie($objPHPPowerPoint);
 
 fnSlide_Scatter($objPHPPowerPoint);
 

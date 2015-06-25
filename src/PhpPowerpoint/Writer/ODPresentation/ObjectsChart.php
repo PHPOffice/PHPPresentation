@@ -508,7 +508,14 @@ class ObjectsChart extends AbstractPart
             }
 
         }
-        $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
+        $LabelFormat = 'value';
+        if ($chartType instanceof Bar || $chartType instanceof Bar3D) {
+            if ($chartType->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED) {
+                $LabelFormat = 'percentage';
+            }
+        }
+        $this->xmlContent->writeAttribute('chart:data-label-number', $LabelFormat);
+
         // > style:text-properties
         $this->xmlContent->endElement();
         // > style:style
