@@ -22,46 +22,8 @@ use PhpOffice\PhpPowerpoint\ComparableInterface;
 /**
  * self
  */
-class Pie3D extends AbstractType implements ComparableInterface
+class Pie3D extends AbstractTypePie implements ComparableInterface
 {
-    /**
-     * Explosion of the Pie3D
-     *
-     * @var integer
-     */
-    protected $explosion = 0;
-
-    /**
-     * Create a new self instance
-     */
-    public function __construct()
-    {
-        $this->hasAxisX = false;
-        $this->hasAxisY = false;
-    }
-
-    /**
-     * Set explosion
-     *
-     * @param integer $value
-     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D
-     */
-    public function setExplosion($value = 0)
-    {
-        $this->explosion = $value;
-        return $this;
-    }
-    
-    /**
-     * Get orientation
-     *
-     * @return string
-     */
-    public function getExplosion()
-    {
-        return $this->explosion;
-    }
-    
     /**
      * Get hash code
      *
@@ -69,10 +31,6 @@ class Pie3D extends AbstractType implements ComparableInterface
      */
     public function getHashCode()
     {
-        $hash = '';
-        foreach ($this->getData() as $series) {
-            $hash .= $series->getHashCode();
-        }
-        return md5($hash . __CLASS__);
+        return md5(parent::getHashCode() . __CLASS__);
     }
 }

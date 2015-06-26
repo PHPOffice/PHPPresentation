@@ -22,6 +22,8 @@ use PhpOffice\Common\String;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractTypeBar;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractTypePie;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
@@ -90,7 +92,7 @@ class ObjectsChart extends AbstractPart
     private function writeContentPart(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        if (!($chartType instanceof Area || $chartType instanceof Bar || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie || $chartType instanceof Pie3D || $chartType instanceof Scatter)) {
+        if (!($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof AbstractTypePie || $chartType instanceof Scatter)) {
             throw new \Exception('The chart type provided could not be rendered.');
         }
         
@@ -203,11 +205,11 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:style-name', 'styleChart');
         if ($chartType instanceof Area) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:area');
-        } elseif ($chartType instanceof Bar || $chartType instanceof Bar3D) {
+        } elseif ($chartType instanceof AbstractTypeBar) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof Pie || $chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
         } elseif ($chartType instanceof Scatter) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
@@ -290,7 +292,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
-        if ($chartType instanceof Pie || $chartType instanceof Pie3D) {
+        if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
         // > style:chart-properties
@@ -314,7 +316,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
-        if ($chartType instanceof Pie || $chartType instanceof Pie3D) {
+        if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
         // > style:chart-properties
@@ -489,8 +491,8 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
             $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
         }
-        if ($chartType instanceof Bar || $chartType instanceof Bar3D) {
-            if ($chartType->getBarDirection() == Bar3D::DIRECTION_HORIZONTAL) {
+        if ($chartType instanceof AbstractTypeBar) {
+            if ($chartType->getBarDirection() == AbstractTypeBar::DIRECTION_HORIZONTAL) {
                 $this->xmlContent->writeAttribute('chart:vertical', 'true');
             } else {
                 $this->xmlContent->writeAttribute('chart:vertical', 'false');
@@ -506,10 +508,9 @@ class ObjectsChart extends AbstractPart
                 $this->xmlContent->writeAttribute('chart:overlap', '100');
                 $this->xmlContent->writeAttribute('chart:percentage', 'true');
             }
-
         }
         $labelFormat = 'value';
-        if ($chartType instanceof Bar || $chartType instanceof Bar3D) {
+        if ($chartType instanceof AbstractTypeBar) {
             if ($chartType->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED) {
                 $labelFormat = 'percentage';
             }
@@ -538,17 +539,17 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:label-cell-address', 'table-local.$'.$this->rangeCol.'$1');
         if ($chartType instanceof Area) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:area');
-        } elseif ($chartType instanceof Bar || $chartType instanceof Bar3D) {
+        } elseif ($chartType instanceof AbstractTypeBar) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof Pie || $chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
         } elseif ($chartType instanceof Scatter) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
         }
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries);
-        if ($chartType instanceof Area || $chartType instanceof Bar || $chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Scatter) {
+        if ($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof Scatter) {
             $dataPointFills = $series->getDataPointFills();
             if (empty($dataPointFills)) {
                 $incRepeat = $numRange;
@@ -581,7 +582,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
             // > chart:data-point
             $this->xmlContent->endElement();
-        } elseif ($chartType instanceof Pie || $chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof AbstractTypePie) {
             $count = count($series->getDataPointFills());
             for ($inc = 0; $inc < $count; $inc++) {
                 // chart:data-point
@@ -612,7 +613,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
         $this->xmlContent->writeAttribute('chart:label-position', 'center');
-        if ($chartType instanceof Pie3D) {
+        if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:pie-offset', $chartType->getExplosion());
         }
         if ($chartType instanceof Line) {

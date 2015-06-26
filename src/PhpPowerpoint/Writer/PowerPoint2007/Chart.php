@@ -21,6 +21,7 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Legend;
 use PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractTypeBar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;

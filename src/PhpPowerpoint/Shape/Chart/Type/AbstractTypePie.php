@@ -17,13 +17,49 @@
 
 namespace PhpOffice\PhpPowerpoint\Shape\Chart\Type;
 
-use PhpOffice\PhpPowerpoint\ComparableInterface;
-
 /**
  * \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar
  */
-class Bar extends AbstractTypeBar implements ComparableInterface
+class AbstractTypePie extends AbstractType
 {
+    /**
+     * Create a new self instance
+     */
+    public function __construct()
+    {
+        $this->hasAxisX = false;
+        $this->hasAxisY = false;
+    }
+    
+    /**
+     * Explosion of the Pie
+     *
+     * @var integer
+     */
+    protected $explosion = 0;
+    
+    /**
+     * Set explosion
+     *
+     * @param integer $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractTypePie
+     */
+    public function setExplosion($value = 0)
+    {
+        $this->explosion = $value;
+        return $this;
+    }
+    
+    /**
+     * Get orientation
+     *
+     * @return string
+     */
+    public function getExplosion()
+    {
+        return $this->explosion;
+    }
+    
     /**
      * Get hash code
      *
@@ -31,6 +67,10 @@ class Bar extends AbstractTypeBar implements ComparableInterface
      */
     public function getHashCode()
     {
-        return md5(parent::getHashCode() . __CLASS__);
+        $hash = '';
+        foreach ($this->getData() as $series) {
+            $hash .= $series->getHashCode();
+        }
+        return $hash;
     }
 }

@@ -440,6 +440,7 @@ function fnSlide_Pie(PhpPowerpoint $objPHPPowerPoint) {
     // Create a pie chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a non-3D pie chart (that should be inserted in a chart shape)'.EOL;
     $pieChart = new Pie();
+    $pieChart->setExplosion(15);
     $series = new Series('Downloads', $seriesData);
     $series->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF7CB5EC'));
     $series->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF434348'));
