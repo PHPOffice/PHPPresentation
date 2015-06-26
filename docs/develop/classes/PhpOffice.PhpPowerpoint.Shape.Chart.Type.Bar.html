@@ -131,6 +131,12 @@
         </a>
     </li>
 
+                                                                                                        <li class="method public">
+        <a href="#method_getBarGrouping" title="getBarGrouping :: Get grouping  (stack or expanded style bar)">
+            <span class="description">Get grouping  (stack or expanded style bar)</span><pre>getBarGrouping</pre>
+        </a>
+    </li>
+
                                                                                                         <li class="method public inherited">
         <a href="#method_getData" title="getData :: Get Data">
             <span class="description">Get Data</span><pre>getData</pre>
@@ -167,6 +173,12 @@
         </a>
     </li>
 
+                                                                                                        <li class="method public">
+        <a href="#method_setBarGrouping" title="setBarGrouping :: Set bar grouping (stack or expanded style bar)">
+            <span class="description">Set bar grouping (stack or expanded style bar)</span><pre>setBarGrouping</pre>
+        </a>
+    </li>
+
                                                                                                         <li class="method public inherited">
         <a href="#method_setData" title="setData :: Set Data">
             <span class="description">Set Data</span><pre>setData</pre>
@@ -183,11 +195,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -200,6 +212,21 @@
                                 <li class="constant ">
                     <a href="#constant_DIRECTION_VERTICAL" title="DIRECTION_VERTICAL :: Orientation of bars">
                         <span class="description">Orientation of bars</span><pre>DIRECTION_VERTICAL</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_GROUPING_CLUSTERED" title="GROUPING_CLUSTERED :: Grouping of bars">
+                        <span class="description">Grouping of bars</span><pre>GROUPING_CLUSTERED</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_GROUPING_PERCENTSTACKED" title="GROUPING_PERCENTSTACKED :: ">
+                        <span class="description"></span><pre>GROUPING_PERCENTSTACKED</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_GROUPING_STACKED" title="GROUPING_STACKED :: ">
+                        <span class="description"></span><pre>GROUPING_STACKED</pre>
                     </a>
                 </li>
                             </ul>
@@ -265,6 +292,35 @@
                         <div class="element clickable method public  method_getBarDirection" data-toggle="collapse" data-target=".method_getBarDirection .collapse">
                             <h2>Get orientation</h2>
                             <pre>getBarDirection() : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getBarGrouping"></a>
+                        <div class="element clickable method public  method_getBarGrouping" data-toggle="collapse" data-target=".method_getBarGrouping .collapse">
+                            <h2>Get grouping  (stack or expanded style bar)</h2>
+                            <pre>getBarGrouping() : string</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -463,6 +519,33 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                             </div>
 
                         </div>
+                                            <a id="method_setBarGrouping"></a>
+                        <div class="element clickable method public  method_setBarGrouping" data-toggle="collapse" data-target=".method_setBarGrouping .collapse">
+                            <h2>Set bar grouping (stack or expanded style bar)</h2>
+                            <pre>setBarGrouping(string $value = self::GROUPING_CLUSTERED) : \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$value</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Chart.Type.Bar.html">\PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_setData"></a>
                         <div class="element clickable method public  method_setData inherited" data-toggle="collapse" data-target=".method_setData .collapse">
                             <h2>Set Data</h2>
@@ -567,12 +650,101 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                     </div>
                                 </div>
                             </div>
+                                                    <a id="constant_GROUPING_CLUSTERED"> </a>
+                            <div class="element clickable constant  constant_GROUPING_CLUSTERED" data-toggle="collapse" data-target=".constant_GROUPING_CLUSTERED .collapse">
+                                <h2>Grouping of bars</h2>
+                                <pre>GROUPING_CLUSTERED</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_GROUPING_STACKED"> </a>
+                            <div class="element clickable constant  constant_GROUPING_STACKED" data-toggle="collapse" data-target=".constant_GROUPING_STACKED .collapse">
+                                <h2>GROUPING_STACKED</h2>
+                                <pre>GROUPING_STACKED</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_GROUPING_PERCENTSTACKED"> </a>
+                            <div class="element clickable constant  constant_GROUPING_PERCENTSTACKED" data-toggle="collapse" data-target=".constant_GROUPING_PERCENTSTACKED .collapse">
+                                <h2>GROUPING_PERCENTSTACKED</h2>
+                                <pre>GROUPING_PERCENTSTACKED</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
                                             
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
                                                     <a id="property_barDirection"> </a>
                             <div class="element clickable property  protected property_barDirection" data-toggle="collapse" data-target=".property_barDirection .collapse">
                                 <h2>Orientation of bars</h2>
                                 <pre>barDirection : string</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>string</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_barGrouping"> </a>
+                            <div class="element clickable property  protected property_barGrouping" data-toggle="collapse" data-target=".property_barGrouping .collapse">
+                                <h2>Grouping of bars</h2>
+                                <pre>barGrouping : string</pre>
                                 <div class="labels">
                                                                                                         </div>
                                 <div class="row collapse">
@@ -719,7 +891,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Thu, 25 Jun 2015 06:17:27 +0000.<br/>
+            generated on Fri, 26 Jun 2015 08:10:18 +0000.<br/>
     </footer>
     </body>
 </html>
