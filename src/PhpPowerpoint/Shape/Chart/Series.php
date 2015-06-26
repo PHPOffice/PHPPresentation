@@ -45,6 +45,13 @@ class Series implements ComparableInterface
     private $title = 'Series Title';
 
     /**
+     * Data Label Number Format
+     *
+     * @var string
+     */
+    private $DlblNumFormat = '';
+
+    /**
      * Fill
      *
      * @var \PhpOffice\PhpPowerpoint\Style\Fill
@@ -157,6 +164,38 @@ class Series implements ComparableInterface
     {
         $this->title = $value;
 
+        return $this;
+    }
+
+    /**
+     * Get Data Label NumFormat
+     *
+     * @return string
+     */
+    public function getDlblNumFormat()
+    {
+        return $this->DlblNumFormat;
+    }
+
+    /**
+     * Has Data Label NumFormat
+     *
+     * @return string
+     */
+    public function hasDlblNumFormat()
+    {
+        return !empty($this->DlblNumFormat);
+    }
+
+    /**
+     * Set Data Label NumFormat
+     *
+     * @param  string $value
+     * @return \PhpOffice\PhpPowerpoint\Shape\Chart\Series
+     */
+    public function setDlblNumFormat($value = '')
+    {
+        $this->DlblNumFormat = $value;
         return $this;
     }
 

@@ -21,6 +21,7 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPowerpoint\Style\Color;
@@ -274,7 +275,7 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('30000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
     
-    public function testTypePie3D()
+    public function testTypePie()
     {
         $seriesData = array(
             'A' => 1,
@@ -288,6 +289,43 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $oSlide = $oPHPPowerPoint->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oPie = new Pie();
+        $oSeries = new Series('Downloads', $seriesData);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKBLUE));
+        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKGREEN));
+        $oSeries->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
+        $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
+        $oPie->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oPie);
+    
+        $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
+    
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dPt/c:spPr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:tx/c:v';
+        $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+    }
+    public function testTypePie3D()
+    {
+        $seriesData = array(
+            'A' => 1,
+            'B' => 2,
+            'C' => 4,
+            'D' => 3,
+            'E' => 2,
+        );
+
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oPie3D = new Pie3D();
         $oSeries = new Series('Downloads', $seriesData);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
@@ -297,9 +335,9 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
         $oPie3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oPie3D);
-    
+
         $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
-    
+
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart';

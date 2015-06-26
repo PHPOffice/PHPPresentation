@@ -63,6 +63,18 @@ class Bar3DTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Bar3D::DIRECTION_VERTICAL, $object->getBarDirection());
     }
 
+    public function testBarGrouping()
+    {
+        $object = new Bar3D();
+        $this->assertEquals(Bar3D::GROUPING_CLUSTERED, $object->getBarGrouping());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarGrouping(Bar3D::GROUPING_CLUSTERED));
+        $this->assertEquals(Bar3D::GROUPING_CLUSTERED, $object->getBarGrouping());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarGrouping(Bar3D::GROUPING_STACKED));
+        $this->assertEquals(Bar3D::GROUPING_STACKED, $object->getBarGrouping());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarGrouping(Bar3D::GROUPING_PERCENTSTACKED));
+        $this->assertEquals(Bar3D::GROUPING_PERCENTSTACKED, $object->getBarGrouping());
+    }
+
     public function testHashCode()
     {
         $oSeries = new Series();
