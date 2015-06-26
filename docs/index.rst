@@ -31,6 +31,7 @@ PHPPowerPoint is a library written in pure PHP that provides a set of classes to
    :maxdepth: 2
    :caption: Shapes
    
+   shapes_chart
    shapes_table
 
 Indices and tables
