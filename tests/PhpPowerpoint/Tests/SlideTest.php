@@ -28,6 +28,24 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
  */
 class SlideTest extends \PHPUnit_Framework_TestCase
 {
+    public function testExtents()
+    {
+        $object = new Slide();
+        $this->assertNotNull($object->getExtentX());
+        
+        $object = new Slide();
+        $this->assertNotNull($object->getExtentY());
+    }
+    
+    public function testOffset()
+    {
+        $object = new Slide();
+        $this->assertNotNull($object->getOffsetX());
+        
+        $object = new Slide();
+        $this->assertNotNull($object->getOffsetY());
+    }
+    
     public function testParent()
     {
         $object = new Slide();

@@ -78,7 +78,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(10, $object->getOffsetX());
         
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Group', $object->setOffsetY(rand(1, 100)));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Group', $object->setOffsetX(rand(1, 100)));
         $this->assertEquals(10, $object->getOffsetX());
     }
     
