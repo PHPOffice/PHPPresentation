@@ -500,7 +500,7 @@ class Slide extends AbstractPart
         if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
             $this->writeBorder($objWriter, $shape->getBorder(), '');
         }
-        if ($shape->getShadow()) {
+        if ($shape->getShadow()->isVisible()) {
             $this->writeShadow($objWriter, $shape->getShadow());
         }
         // > p:sp\p:spPr
