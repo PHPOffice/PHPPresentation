@@ -1215,13 +1215,13 @@ class PowerPoint97 implements ReaderInterface
                     case self::RT_INTERACTIVEINFO:
                         //@link : http://msdn.microsoft.com/en-us/library/dd948623(v=office.12).aspx
                         if ($rhChild['recInstance'] == 0x0000) {
-                            $mouseClickInteractiveInfo = $this->readRecordMouseClickInteractiveInfoContainer($stream, $pos + $arrayReturn['length']);
-                            $arrayReturn['length'] += $mouseClickInteractiveInfo['length'];
-                            $arrayReturn['hyperlink'][]['id'] = $mouseClickInteractiveInfo['exHyperlinkIdRef'];
+                            $mouseClickInfo = $this->readRecordMouseClickInteractiveInfoContainer($stream, $pos + $arrayReturn['length']);
+                            $arrayReturn['length'] += $mouseClickInfo['length'];
+                            $arrayReturn['hyperlink'][]['id'] = $mouseClickInfo['exHyperlinkIdRef'];
                         }
                         if ($rhChild['recInstance'] == 0x0001) {
-                            $mouseOverInteractiveInfo = $this->readRecordMouseOverInteractiveInfoContainer($stream, $pos + $arrayReturn['length']);
-                            $arrayReturn['length'] += $mouseOverInteractiveInfo['length'];
+                            $mouseOverInfo = $this->readRecordMouseOverInteractiveInfoContainer($stream, $pos + $arrayReturn['length']);
+                            $arrayReturn['length'] += $mouseOverInfo['length'];
                         }
                         break;
                     case self::RT_STYLETEXTPROPATOM:
@@ -2186,12 +2186,12 @@ class PowerPoint97 implements ReaderInterface
             $arrayReturn['length'] += $dataAnimationInfo['length'];
 
             // mouseClickInteractiveInfo (variable)
-            $mouseClickInteractiveInfo = $this->readRecordMouseClickInteractiveInfoContainer($stream, $pos + $arrayReturn['length']);
-            $arrayReturn['length'] += $mouseClickInteractiveInfo['length'];
+            $mouseClickInfo = $this->readRecordMouseClickInteractiveInfoContainer($stream, $pos + $arrayReturn['length']);
+            $arrayReturn['length'] += $mouseClickInfo['length'];
 
             // mouseOverInteractiveInfo (variable)
-            $mouseOverInteractiveInfo = $this->readRecordMouseOverInteractiveInfoContainer($stream, $pos + $arrayReturn['length']);
-            $arrayReturn['length'] += $mouseOverInteractiveInfo['length'];
+            $mouseOverInfo = $this->readRecordMouseOverInteractiveInfoContainer($stream, $pos + $arrayReturn['length']);
+            $arrayReturn['length'] += $mouseOverInfo['length'];
 
             // placeholderAtom (16 bytes)
             $dataPlaceholderAtom = $this->readRecordPlaceholderAtom($stream, $pos + $arrayReturn['length']);
@@ -2576,7 +2576,7 @@ class PowerPoint97 implements ReaderInterface
         $pos += $perSlideHFContainer['length'];
 
         // *** rtSlideSyncInfo12 (variable) : optional
-        $rtSlideSyncInfo12 = $this->readRecordRoundTripSlideSyncInfo12Container ($stream, $pos);
+        $rtSlideSyncInfo12 = $this->readRecordRoundTripSlideSyncInfo12Container($stream, $pos);
         $pos += $rtSlideSyncInfo12['length'];
 
         // *** drawing (variable)
