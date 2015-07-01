@@ -38,6 +38,7 @@
 - Improved the sample 04-Table for having two links in a Cell - @Progi1984 GH-93
 - Improved the documentation about Table Shapes and cell width - @Progi1984 GH-104
 - Some parts of code shared between PHPOffice projects have been moved to PhpOffice/Common - @Progi1984
+- Refactored the PowerPoint97 Reader for managing the group shape and improving evolutions - @Progi1984 GH-110
 
 ## 0.3.0 - 2014-09-22
 
