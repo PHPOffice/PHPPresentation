@@ -71,6 +71,28 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
     }
     
+    public function testTitleVisibility()
+    {
+        $element = '/c:chartSpace/c:chart/c:autoTitleDeleted';
+        
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+        
+        $this->assertTrue($oShape->getTitle()->isVisible());
+        $this->assertInstanceOf('PhpOffice\PhpPowerpoint\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals('0', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        
+        $this->assertInstanceOf('PhpOffice\PhpPowerpoint\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals('1', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+    }
+    
     public function testTypeBar3D()
     {
         $seriesData = array(

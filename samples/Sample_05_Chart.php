@@ -50,6 +50,7 @@ function fnSlide_Area(PhpPowerpoint $objPHPPowerPoint) {
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
+    $shape->getTitle()->setVisible(false);
     $shape->setName('PHPPowerPoint Daily Downloads')->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);

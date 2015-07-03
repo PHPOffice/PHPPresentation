@@ -87,7 +87,7 @@ class Chart extends Slide
 
         // c:autoTitleDeleted
         $objWriter->startElement('c:autoTitleDeleted');
-        $objWriter->writeAttribute('val', '0');
+        $objWriter->writeAttribute('val', $chart->getTitle()->isVisible() ? '0' : '1');
         $objWriter->endElement();
 
         // c:view3D

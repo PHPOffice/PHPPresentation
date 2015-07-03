@@ -22,6 +22,7 @@ use PhpOffice\Common\String;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractTypeBar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractTypePie;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
@@ -184,7 +185,7 @@ class ObjectsChart extends AbstractPart
         $this->writePlotAreaStyle($chart);
         
         // Title
-        $this->writeTitleStyle($chart);
+        $this->writeTitleStyle($chart->getTitle());
         
         // Wall
         $this->writeWallStyle($chart);
@@ -216,7 +217,7 @@ class ObjectsChart extends AbstractPart
         }
         
         //**** Title ****
-        $this->writeTitle($chart);
+        $this->writeTitle($chart->getTitle());
 
         //**** Legend ****
         $this->writeLegend($chart);
@@ -756,43 +757,47 @@ class ObjectsChart extends AbstractPart
     }
     
     /**
-     * @param Chart $chart
+     * @param Title $oTitle
      */
-    private function writeTitle(Chart $chart)
+    private function writeTitle(Title $oTitle)
     {
-        // chart:title
-        $this->xmlContent->startElement('chart:title');
-        $this->xmlContent->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getTitle()->getOffsetX()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getTitle()->getOffsetY()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('chart:style-name', 'styleTitle');
-        // > text:p
-        $this->xmlContent->startElement('text:p');
-        $this->xmlContent->text($chart->getTitle()->getText());
-        // > text:p
-        $this->xmlContent->endElement();
-        // > chart:title
-        $this->xmlContent->endElement();
+        if ($oTitle->isVisible()) {
+            // chart:title
+            $this->xmlContent->startElement('chart:title');
+            $this->xmlContent->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetX()), 3) . 'cm');
+            $this->xmlContent->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetY()), 3) . 'cm');
+            $this->xmlContent->writeAttribute('chart:style-name', 'styleTitle');
+            // > text:p
+            $this->xmlContent->startElement('text:p');
+            $this->xmlContent->text($oTitle->getText());
+            // > text:p
+            $this->xmlContent->endElement();
+            // > chart:title
+            $this->xmlContent->endElement();
+        }
     }
     
     /**
-     * @param Chart $chart
+     * @param Title $oTitle
      */
-    private function writeTitleStyle(Chart $chart)
+    private function writeTitleStyle(Title $oTitle)
     {
-        // style:style
-        $this->xmlContent->startElement('style:style');
-        $this->xmlContent->writeAttribute('style:name', 'styleTitle');
-        $this->xmlContent->writeAttribute('style:family', 'chart');
-        // style:text-properties
-        $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#'.$chart->getTitle()->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $chart->getTitle()->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $chart->getTitle()->getFont()->getSize().'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $chart->getTitle()->getFont()->isItalic() ? 'italic' : 'normal');
-        // > style:text-properties
-        $this->xmlContent->endElement();
-        // > style:style
-        $this->xmlContent->endElement();
+        if ($oTitle->isVisible()) {
+            // style:style
+            $this->xmlContent->startElement('style:style');
+            $this->xmlContent->writeAttribute('style:name', 'styleTitle');
+            $this->xmlContent->writeAttribute('style:family', 'chart');
+            // style:text-properties
+            $this->xmlContent->startElement('style:text-properties');
+            $this->xmlContent->writeAttribute('fo:color', '#'.$oTitle->getFont()->getColor()->getRGB());
+            $this->xmlContent->writeAttribute('fo:font-family', $oTitle->getFont()->getName());
+            $this->xmlContent->writeAttribute('fo:font-size', $oTitle->getFont()->getSize().'pt');
+            $this->xmlContent->writeAttribute('fo:font-style', $oTitle->getFont()->isItalic() ? 'italic' : 'normal');
+            // > style:text-properties
+            $this->xmlContent->endElement();
+            // > style:style
+            $this->xmlContent->endElement();
+        }
     }
     
     private function writeWall()

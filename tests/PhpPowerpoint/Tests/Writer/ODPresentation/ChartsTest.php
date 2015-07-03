@@ -59,6 +59,30 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         
         TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
     }
+    
+    public function testTitleVisibility()
+    {
+        
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+        
+        $elementTitle = '/office:document-content/office:body/office:chart/chart:chart/chart:title';
+        $elementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleTitle\']';
+        
+        $this->assertTrue($oShape->getTitle()->isVisible());
+        $this->assertInstanceOf('PhpOffice\PhpPowerpoint\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->elementExists($elementTitle, 'Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($elementStyle, 'Object 1/content.xml'));
+        
+        $this->assertInstanceOf('PhpOffice\PhpPowerpoint\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPHPPowerPoint, 'ODPresentation');
+        $this->assertFalse($oXMLDoc->elementExists($elementTitle, 'Object 1/content.xml'));
+        $this->assertFalse($oXMLDoc->elementExists($elementStyle, 'Object 1/content.xml'));
+    }
 
     public function testChartBar3D()
     {

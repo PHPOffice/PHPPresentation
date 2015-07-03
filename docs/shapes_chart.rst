@@ -10,7 +10,24 @@ Example:
 .. code-block:: php
 
 	$chartShape = $slide->createChartShape();
+	
+Parts
+-------
 
+Title
+^^^^^
+
+By default, the title of a chart is displayed. 
+For hiding it, you define its visibility to false.
+
+.. code-block:: php
+
+	$chartShape = $slide->createChartShape();
+	$oLine = new Line();
+	$oShape->getPlotArea()->setType($oLine);
+	// Hide the title
+	$oShape->getTitle()->setVisible(false);
+	
 Types
 -------
 
