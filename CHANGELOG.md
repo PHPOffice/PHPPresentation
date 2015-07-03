@@ -31,6 +31,7 @@
 - PowerPoint2007 Writer : Hyperlink in table doesn't work - @Progi1984 GH-70
 - PowerPoint2007 Writer : AutoFitNormal works with options (fontScale & lineSpacingReduction) - @Progi1984 @desigennaro GH-71
 - PowerPoint2007 Writer : Shadow don't work for RichTextShapes - @Progi1984 GH-81
+- PowerPoint2007 Writer : Visibility of the Title doesn't work - @Progi1984 GH-107 
 - Refactor findLayoutIndex to findLayoutId where it assumes the slideLayout order was sorted. IMPROVED: unit tests - @kenliau GH-95
 
 ### Miscellaneous
