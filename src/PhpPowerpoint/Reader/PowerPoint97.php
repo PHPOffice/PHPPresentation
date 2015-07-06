@@ -23,7 +23,6 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\AbstractShape;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
@@ -1174,7 +1173,6 @@ class PowerPoint97 implements ReaderInterface
                     break;
                 case 0x00000010:
                     throw new \Exception('PowerPoint97 Reader : record OfficeArtClientAnchor (0x00000010)');
-                    break;
             }
         }
 
@@ -1405,10 +1403,10 @@ class PowerPoint97 implements ReaderInterface
             if (is_object($this->oCurrentGroup)) {
                 if (!$this->bFirstShapeGroup) {
                     if ($clientAnchor['length'] > 0) {
-                        $this->oCurrentGroup->setOffsetX($clientAnchor['left']);
-                        $this->oCurrentGroup->setOffsetY($clientAnchor['top']);
-                        $this->oCurrentGroup->setHeight($clientAnchor['height']);
-                        $this->oCurrentGroup->setWidth($clientAnchor['width']);
+                        // $this->oCurrentGroup->setOffsetX($clientAnchor['left']);
+                        // $this->oCurrentGroup->setOffsetY($clientAnchor['top']);
+                        // $this->oCurrentGroup->setHeight($clientAnchor['height']);
+                        // $this->oCurrentGroup->setWidth($clientAnchor['width']);
                     }
                     $bIsGroup = true;
                     $this->bFirstShapeGroup = true;
@@ -2238,6 +2236,8 @@ class PowerPoint97 implements ReaderInterface
     /**
      * An atom record that specifies a persist object directory. Each persist object identifier specified MUST be unique in that persist object directory.
      * @link http://msdn.microsoft.com/en-us/library/dd952680(v=office.12).aspx
+     * @param string $stream
+     * @param integer $pos
      * @throws \Exception
      */
     private function readRecordPersistDirectoryAtom($stream, $pos)
@@ -2735,6 +2735,8 @@ class PowerPoint97 implements ReaderInterface
     /**
      * UserEditAtom
      * @link http://msdn.microsoft.com/en-us/library/dd945746(v=office.12).aspx
+     * @param string $stream
+     * @param integer $pos
      * @throws \Exception
      */
     private function readRecordUserEditAtom($stream, $pos)
@@ -2860,15 +2862,15 @@ class PowerPoint97 implements ReaderInterface
             $arrayReturn['fontName'] = isset($this->arrayFonts[$data]) ? $this->arrayFonts[$data] : '';
         }
         if ($masksData['oldEATypeface'] == 1) {
-            $data = self::getInt2d($stream, $pos + $arrayReturn['length']);
+            // $data = self::getInt2d($stream, $pos + $arrayReturn['length']);
             $arrayReturn['length'] += 2;
         }
         if ($masksData['ansiTypeface'] == 1) {
-            $data = self::getInt2d($stream, $pos + $arrayReturn['length']);
+            // $data = self::getInt2d($stream, $pos + $arrayReturn['length']);
             $arrayReturn['length'] += 2;
         }
         if ($masksData['symbolTypeface'] == 1) {
-            $data = self::getInt2d($stream, $pos + $arrayReturn['length']);
+            // $data = self::getInt2d($stream, $pos + $arrayReturn['length']);
             $arrayReturn['length'] += 2;
         }
         if ($masksData['size'] == 1) {
@@ -2903,7 +2905,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A structure that specifies the paragraph-level formatting of a run of text.
      * @param string $stream
-     * @param itn $pos
+     * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd923535(v=office.12).aspx
      */
     private function readStructureTextPFRun($stream, $pos, $strLenRT)
@@ -3068,7 +3070,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A structure that specifies language and spelling information for a run of text.
      * @param string $stream
-     * @param itn $pos
+     * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd909603(v=office.12).aspx
      */
     private function readStructureTextSIRun($stream, $pos, $strLenRT)
@@ -3127,7 +3129,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A structure that specifies tabbing, margins, and indentation for text.
      * @param string $stream
-     * @param int $pos
+     * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd922749(v=office.12).aspx
      */
     private function readStructureTextRuler($stream, $pos)
