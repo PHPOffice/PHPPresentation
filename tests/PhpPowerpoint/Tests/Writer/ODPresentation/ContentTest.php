@@ -261,7 +261,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     
     public function testRichTextShadow()
     {
-        $randAlpha = rand(0,100);
+        $randAlpha = rand(0, 100);
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -269,7 +269,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oRichText->getShadow()->setVisible(true)->setAlpha($randAlpha)->setBlurRadius(2);
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        for ($inc = 0 ; $inc <= 360 ; $inc += 45) {
+        for ($inc = 0; $inc <= 360; $inc += 45) {
             $randDistance = rand(0, 100);
             $oRichText->getShadow()->setDirection($inc)->setDistance($randDistance);
             $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');

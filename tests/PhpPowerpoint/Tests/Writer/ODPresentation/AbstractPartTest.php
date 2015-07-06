@@ -31,7 +31,7 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
  */
 class AbstractPartTest extends \PHPUnit_Framework_TestCase
 {
-    protected function runProtectedMethod ($obj, $method, $args = array())
+    protected function runProtectedMethod($obj, $method, $args = array())
     {
         $method = new \ReflectionMethod(get_class($obj), $method);
         $method->setAccessible(true);
