@@ -21,6 +21,7 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerPoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Drawing;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest;
+use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
@@ -30,6 +31,13 @@ use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
  */
 class AbstractPartTest extends \PHPUnit_Framework_TestCase
 {
+    protected function runProtectedMethod ($obj, $method, $args = array())
+    {
+        $method = new \ReflectionMethod(get_class($obj), $method);
+        $method->setAccessible(true);
+        return $method->invokeArgs($obj, $args);
+    }
+    
     /**
      * Executed before each method of the class
      */
@@ -56,5 +64,26 @@ class AbstractPartTest extends \PHPUnit_Framework_TestCase
         $oManifest = new Manifest();
         $oManifest->setParentWriter(new PowerPoint2007());
         $oManifest->writePart();
+    }
+    
+    /**
+     * @expectedException           \Exception
+     * @expectedExceptionMessage    The $parentWriter is not an instance of \PhpOffice\PhpPowerpoint\Writer\ODPresentation
+     */
+    public function testXMLWriterException()
+    {
+        $oManifest = new Manifest();
+        $oManifest->setParentWriter(new PowerPoint2007());
+        $this->runProtectedMethod($oManifest, 'getXMLWriter');
+    }
+    
+    public function testXMLWriterWithDiskCaching()
+    {
+        $oODPresentation = new ODPresentation();
+        $oODPresentation->setUseDiskCaching(true);
+        $oManifest = new Manifest();
+        $oManifest->setParentWriter($oODPresentation);
+
+        $this->assertNotEmpty(\PHPUnit_Framework_Assert::readAttribute($this->runProtectedMethod($oManifest, 'getXMLWriter'), 'tempFileName'));
     }
 }

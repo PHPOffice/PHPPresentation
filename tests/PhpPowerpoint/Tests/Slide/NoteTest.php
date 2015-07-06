@@ -39,6 +39,30 @@ class NoteTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getParent());
     }
     
+    public function testExtent()
+    {
+        $object = new Note();
+        $this->assertNotNull($object->getExtentX());
+
+        $object = new Note();
+        $this->assertNotNull($object->getExtentY());
+    }
+    
+    public function testHashCode()
+    {
+        $object = new Note();
+        $this->assertInternalType('string', $object->getHashCode());
+    }
+    
+    public function testOffset()
+    {
+        $object = new Note();
+        $this->assertNotNull($object->getOffsetX());
+
+        $object = new Note();
+        $this->assertNotNull($object->getOffsetY());
+    }
+    
     public function testShape()
     {
         $object = new Note();

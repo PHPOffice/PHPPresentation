@@ -27,6 +27,9 @@ use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
+use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Style\PhpOffice\PhpPowerpoint\Style;
 
 /**
  * Test class for PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest
@@ -56,6 +59,23 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('https://github.com/PHPOffice/PHPPowerPoint/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+    }
+
+    public function testGroup()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShapeGroup = $oSlide->createGroup();
+        $oShape = $oShapeGroup->createDrawingShape();
+        $oShape->setPath(PHPPOWERPOINT_TESTS_BASE_DIR.'/resources/images/PHPPowerPointLogo.png');
+        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+    
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g/draw:frame/office:event-listeners/presentation:event-listener';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
     
     public function testList()
@@ -171,7 +191,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
-    public function testRichtextAutoShrink()
+    public function testRichTextAutoShrink()
     {
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
@@ -202,7 +222,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
     }
 
-    public function testRichtextBorder()
+    public function testRichTextBorder()
     {
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
@@ -241,18 +261,49 @@ class ContentTest extends \PHPUnit_Framework_TestCase
     
     public function testRichTextShadow()
     {
+        $randAlpha = rand(0,100);
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->createTextRun('AAA');
-        $oRichText->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
-        
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $oRichText->getShadow()->setVisible(true)->setAlpha($randAlpha)->setBlurRadius(2);
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('visible', $pres->getElementAttribute($element, 'draw:shadow', 'content.xml'));
-        $this->assertStringStartsWith('#', $pres->getElementAttribute($element, 'draw:shadow-color', 'content.xml'));
+        for ($inc = 0 ; $inc <= 360 ; $inc += 45) {
+            $randDistance = rand(0, 100);
+            $oRichText->getShadow()->setDirection($inc)->setDistance($randDistance);
+            $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+            $this->assertTrue($pres->elementExists($element, 'content.xml'));
+            $this->assertEquals('visible', $pres->getElementAttribute($element, 'draw:shadow', 'content.xml'));
+            $this->assertEquals('none', $pres->getElementAttribute($element, 'style:mirror', 'content.xml'));
+            // Opacity
+            $this->assertStringStartsWith((string)(100 - $randAlpha), $pres->getElementAttribute($element, 'draw:shadow-opacity', 'content.xml'));
+            $this->assertStringEndsWith('%', $pres->getElementAttribute($element, 'draw:shadow-opacity', 'content.xml'));
+            // Color
+            $this->assertStringStartsWith('#', $pres->getElementAttribute($element, 'draw:shadow-color', 'content.xml'));
+            // X
+            $xOffset = $pres->getElementAttribute($element, 'draw:shadow-offset-x', 'content.xml');
+            if ($inc == 90 || $inc == 270) {
+                $this->assertEquals('0cm', $xOffset);
+            } else {
+                if ($inc > 90 && $inc < 270) {
+                    $this->assertEquals('-'.Drawing::pixelsToCentimeters($randDistance).'cm', $xOffset);
+                } else {
+                    $this->assertEquals(Drawing::pixelsToCentimeters($randDistance).'cm', $xOffset);
+                }
+            }
+            // Y
+            $yOffset = $pres->getElementAttribute($element, 'draw:shadow-offset-y', 'content.xml');
+            if ($inc == 0 || $inc == 180 || $inc == 360) {
+                $this->assertEquals('0cm', $yOffset);
+            } else {
+                if (($inc > 0 && $inc < 180) || $inc == 360) {
+                    $this->assertEquals(Drawing::pixelsToCentimeters($randDistance).'cm', $yOffset);
+                } else {
+                    $this->assertEquals('-'.Drawing::pixelsToCentimeters($randDistance).'cm', $yOffset);
+                }
+            }
+        }
     }
     
     public function testStyleAlignment()
@@ -344,6 +395,32 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
     
+    public function testTableCellFill()
+    {
+        $oColor = new Color();
+        $oColor->setRGB(Color::COLOR_BLUE);
+        
+        $oFill = new Fill();
+        $oFill->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
+        
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape();
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oCell->setFill($oFill);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('table-cell', $pres->getElementAttribute($element, 'style:family', 'content.xml'));
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
+        $this->assertStringStartsWith('#', $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+        $this->assertStringEndsWith($oColor->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+    }
+    
     public function testTableWithColspan()
     {
         $value = rand(2, 100);
@@ -394,11 +471,14 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oRow = $oShape->createRow();
         $oCell = $oRow->getCell();
         $oCell->addText($oRun);
+        $oCell->createBreak();
         
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('Test', $pres->getElement($element, 'content.xml')->nodeValue);
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:line-break';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
     public function testTransition()

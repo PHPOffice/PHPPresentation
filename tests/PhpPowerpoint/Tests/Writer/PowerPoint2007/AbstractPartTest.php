@@ -21,6 +21,7 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Drawing;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Rels;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
  * Test class for PhpOffice\PhpPowerpoint\Writer\ODPresentation
@@ -29,6 +30,13 @@ use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
  */
 class AbstractPartTest extends \PHPUnit_Framework_TestCase
 {
+    protected function runProtectedMethod ($obj, $method, $args = array())
+    {
+        $method = new \ReflectionMethod(get_class($obj), $method);
+        $method->setAccessible(true);
+        return $method->invokeArgs($obj, $args);
+    }
+    
     /**
      * Executed before each method of the class
      */
@@ -55,5 +63,15 @@ class AbstractPartTest extends \PHPUnit_Framework_TestCase
         $oManifest = new Rels();
         $oManifest->setParentWriter(new ODPresentation());
         $oManifest->writeRelationships();
+    }
+    
+    public function testXMLWriterWithDiskCaching()
+    {
+        $oPowerPoint2007 = new PowerPoint2007();
+        $oPowerPoint2007->setUseDiskCaching(true);
+        $oRels = new Rels();
+        $oRels->setParentWriter($oPowerPoint2007);
+
+        $this->assertNotEmpty(\PHPUnit_Framework_Assert::readAttribute($this->runProtectedMethod($oRels, 'getXMLWriter'), 'tempFileName'));
     }
 }

@@ -719,9 +719,6 @@ class Content extends AbstractPart
             if ($shape instanceof Table) {
                 $this->writeTableStyle($objWriter, $shape);
             }
-            if ($shape instanceof Group) {
-                $this->writeGroupStyle($objWriter, $shape);
-            }
         }
     }
 
