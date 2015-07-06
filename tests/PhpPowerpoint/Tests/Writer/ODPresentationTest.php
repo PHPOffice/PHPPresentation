@@ -87,7 +87,6 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
     public function testSaveEmpty()
     {
         $object = new ODPresentation();
-        $phpPowerPoint = new PhpPowerpoint();
         $object->save('');
     }
 
