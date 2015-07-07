@@ -139,13 +139,13 @@ class FontTest extends \PHPUnit_Framework_TestCase
     public function testSetIsStriketrough()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStrikethrough());
         $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough(''));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStrikethrough(''));
         $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough(false));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStrikethrough(false));
         $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStriketrough(true));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Font', $object->setStrikethrough(true));
         $this->assertTrue($object->isStrikethrough());
     }
 

@@ -316,18 +316,6 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Striketrough
-     *
-     * @deprecated Use setStrikethrough() instead.
-     * @param  boolean                  $pValue
-     * @return \PhpOffice\PhpPowerpoint\Style\Font
-     */
-    public function setStriketrough($pValue = false)
-    {
-        return $this->setStrikethrough($pValue);
-    }
-
-    /**
      * Get Strikethrough
      *
      * @return boolean

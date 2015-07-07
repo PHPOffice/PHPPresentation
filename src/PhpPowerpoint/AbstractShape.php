@@ -181,31 +181,6 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Slide
-     *
-     * @return \PhpOffice\PhpPowerpoint\Container
-     * @deprecated
-     */
-    public function getSlide()
-    {
-        return $this->getContainer();
-    }
-
-    /**
-     * Set Slide
-     *
-     * @param  \PhpOffice\PhpPowerpoint\Slide $pValue
-     * @param  bool                $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
-     * @throws \Exception
-     * @return self
-     * @deprecated
-     */
-    public function setSlide(Slide $pValue = null, $pOverrideOld = false)
-    {
-        return $this->setContainer($pValue, $pOverrideOld);
-    }
-
-    /**
      * Get OffsetX
      *
      * @return int

@@ -36,7 +36,6 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
     {
         $object = new RichText();
 
-        $this->assertNull($object->getSlide());
         $this->assertEquals(0, $object->getOffsetX());
         $this->assertEquals(0, $object->getOffsetY());
         $this->assertEquals(0, $object->getHeight());
@@ -124,36 +123,6 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($object->getShadow());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setShadow(new Shadow()));
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Shadow', $object->getShadow());
-    }
-
-    public function testSlide()
-    {
-        $object = new RichText();
-        $oSlide1 = new Slide();
-        $oSlide2 = new Slide();
-        $oSlide3 = new Slide();
-
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide());
-        $this->assertNull($object->getSlide());
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide($oSlide1, true));
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide($oSlide2, true));
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide($oSlide3, true));
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\AbstractShape', $object->setSlide($oSlide3, true));
-        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->getSlide());
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A \PhpOffice\PhpPowerpoint\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPowerpoint\ShapeContainerInterface.
-     */
-    public function testSlideException()
-    {
-        $object = new RichText();
-        $object->setSlide(new Slide());
-        $object->setSlide(new Slide());
     }
 
     public function testWidth()
