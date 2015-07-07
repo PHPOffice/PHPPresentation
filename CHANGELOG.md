@@ -1,5 +1,5 @@
 # Changelog
-## 0.4.0 - NOT RELEASED
+## 0.4.0 - 2015-07-07
 
 ### Features
 - Added support for grouping shapes together in a Group - @Pr0phet GH-68
