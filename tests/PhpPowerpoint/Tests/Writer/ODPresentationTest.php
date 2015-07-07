@@ -79,6 +79,18 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test get PHPPowerPoint exception
+     *
+     * @expectedException Exception
+     * @expectedExceptionMessage Filename is empty
+     */
+    public function testSaveEmpty()
+    {
+        $object = new ODPresentation();
+        $object->save('');
+    }
+
+    /**
      * Test get writer part null
      */
     public function testGetWriterPartNull()

@@ -49,7 +49,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized: 
+     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPowerpoint\Reader\Serialized:
      */
     public function testLoadFileBadFormat()
     {

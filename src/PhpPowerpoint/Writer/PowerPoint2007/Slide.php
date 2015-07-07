@@ -17,23 +17,26 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\String;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Line;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\BreakElement;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
 use PhpOffice\PhpPowerpoint\Shape\Table;
-use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
-use PhpOffice\PhpPowerpoint\Shared\String;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
+use PhpOffice\PhpPowerpoint\Slide\Note;
+use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Borders;
 use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Style\Shadow;
 
 /**
  * Slide writer
@@ -97,27 +100,27 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', '0');
-        $objWriter->writeAttribute('y', '0');
-        $objWriter->endElement();
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->endElement(); // a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', '0');
-        $objWriter->writeAttribute('cy', '0');
-        $objWriter->endElement();
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->endElement(); // a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', '0');
-        $objWriter->writeAttribute('y', '0');
-        $objWriter->endElement();
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->endElement(); // a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', '0');
-        $objWriter->writeAttribute('cy', '0');
-        $objWriter->endElement();
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->endElement(); // a:chExt
 
         $objWriter->endElement();
 
@@ -141,6 +144,8 @@ class Slide extends AbstractPart
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof AbstractDrawing) {
                 $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Group) {
+                $this->writeShapeGroup($objWriter, $shape, $shapeId);
             }
         }
 
@@ -153,9 +158,13 @@ class Slide extends AbstractPart
         $objWriter->startElement('p:clrMapOvr');
 
         // a:masterClrMapping
-        $objWriter->writeElement('a:masterClrMapping', '');
+        $objWriter->writeElement('a:masterClrMapping', null);
 
         $objWriter->endElement();
+
+        if (!is_null($pSlide->getTransition())) {
+            $this->writeTransition($objWriter, $pSlide->getTransition());
+        }
 
         $objWriter->endElement();
 
@@ -164,9 +173,97 @@ class Slide extends AbstractPart
     }
 
     /**
+     * Write group
+     *
+     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\PhpPowerpoint\Shape\Group $group
+     * @param  int $shapeId
+     */
+    private function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
+    {
+        // p:grpSp
+        $objWriter->startElement('p:grpSp');
+
+        // p:nvGrpSpPr
+        $objWriter->startElement('p:nvGrpSpPr');
+
+        // p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('name', 'Group '.$shapeId++);
+        $objWriter->writeAttribute('id', $shapeId);
+        $objWriter->endElement(); // p:cNvPr
+        // NOTE: Re: $shapeId This seems to be how PowerPoint 2010 does business.
+
+        // p:cNvGrpSpPr
+        $objWriter->writeElement('p:cNvGrpSpPr', null);
+
+        // p:nvPr
+        $objWriter->writeElement('p:nvPr', null);
+
+        $objWriter->endElement(); // p:nvGrpSpPr
+
+        // p:grpSpPr
+        $objWriter->startElement('p:grpSpPr');
+
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        // a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->endElement(); // a:off
+
+        // a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->endElement(); // a:ext
+
+        // a:chOff
+        $objWriter->startElement('a:chOff');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($group->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($group->getOffsetY()));
+        $objWriter->endElement(); // a:chOff
+
+        // a:chExt
+        $objWriter->startElement('a:chExt');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($group->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($group->getExtentY()));
+        $objWriter->endElement(); // a:chExt
+
+        $objWriter->endElement(); // a:xfrm
+
+        $objWriter->endElement(); // p:grpSpPr
+
+        $shapes  = $group->getShapeCollection();
+        foreach ($shapes as $shape) {
+            // Increment $shapeId
+            ++$shapeId;
+
+            // Check type
+            if ($shape instanceof RichText) {
+                $this->writeShapeText($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Table) {
+                $this->writeShapeTable($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Line) {
+                $this->writeShapeLine($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof ShapeChart) {
+                $this->writeShapeChart($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof AbstractDrawing) {
+                $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Group) {
+                $this->writeShapeGroup($objWriter, $shape, $shapeId);
+            }
+        }
+
+        $objWriter->endElement(); // p:grpSp
+    }
+
+    /**
      * Write chart
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPowerpoint\Shape\Chart $shape
      * @param  int $shapeId
      */
@@ -195,18 +292,18 @@ class Slide extends AbstractPart
 
         // p:xfrm
         $objWriter->startElement('p:xfrm');
-        $objWriter->writeAttribute('rot', SharedDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -235,7 +332,7 @@ class Slide extends AbstractPart
     /**
      * Write pic
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter  $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter  $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\AbstractDrawing $shape
      * @param  int $shapeId
      * @throws \Exception
@@ -254,6 +351,11 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
 
+        // a:hlinkClick
+        if ($shape->hasHyperlink()) {
+            $this->writeHyperlink($objWriter, $shape);
+        }
+        
         $objWriter->endElement();
 
         // p:cNvPicPr
@@ -268,7 +370,6 @@ class Slide extends AbstractPart
 
         // p:nvPr
         $objWriter->writeElement('p:nvPr', null);
-
         $objWriter->endElement();
 
         // p:blipFill
@@ -291,18 +392,18 @@ class Slide extends AbstractPart
 
         // a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttribute('rot', SharedDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -321,31 +422,7 @@ class Slide extends AbstractPart
         }
 
         if ($shape->getShadow()->isVisible()) {
-            // a:effectLst
-            $objWriter->startElement('a:effectLst');
-
-            // a:outerShdw
-            $objWriter->startElement('a:outerShdw');
-            $objWriter->writeAttribute('blurRad', SharedDrawing::pixelsToEmu($shape->getShadow()->getBlurRadius()));
-            $objWriter->writeAttribute('dist', SharedDrawing::pixelsToEmu($shape->getShadow()->getDistance()));
-            $objWriter->writeAttribute('dir', SharedDrawing::degreesToAngle($shape->getShadow()->getDirection()));
-            $objWriter->writeAttribute('algn', $shape->getShadow()->getAlignment());
-            $objWriter->writeAttribute('rotWithShape', '0');
-
-            // a:srgbClr
-            $objWriter->startElement('a:srgbClr');
-            $objWriter->writeAttribute('val', $shape->getShadow()->getColor()->getRGB());
-
-            // a:alpha
-            $objWriter->startElement('a:alpha');
-            $objWriter->writeAttribute('val', $shape->getShadow()->getAlpha() * 1000);
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
+            $this->writeShadow($objWriter, $shape->getShadow());
         }
 
         $objWriter->endElement();
@@ -356,7 +433,7 @@ class Slide extends AbstractPart
     /**
      * Write txt
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\RichText   $shape
      * @param  int                            $shapeId
      * @throws \Exception
@@ -366,68 +443,90 @@ class Slide extends AbstractPart
         // p:sp
         $objWriter->startElement('p:sp');
 
-        // p:nvSpPr
+        // p:sp\p:nvSpPr
         $objWriter->startElement('p:nvSpPr');
 
-        // p:cNvPr
+        // p:sp\p:nvSpPr\p:cNvPr
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', '');
 
+        // Hyperlink
+        if ($shape->hasHyperlink()) {
+            $this->writeHyperlink($objWriter, $shape);
+        }
+        // > p:sp\p:nvSpPr
         $objWriter->endElement();
 
-        // p:cNvSpPr
+        // p:sp\p:cNvSpPr
         $objWriter->startElement('p:cNvSpPr');
         $objWriter->writeAttribute('txBox', '1');
         $objWriter->endElement();
-
-        // p:nvPr
+        // p:sp\p:cNvSpPr\p:nvPr
         $objWriter->writeElement('p:nvPr', null);
-
+        // > p:sp\p:cNvSpPr
         $objWriter->endElement();
 
-        // p:spPr
+        // p:sp\p:spPr
         $objWriter->startElement('p:spPr');
 
-        // a:xfrm
+        // p:sp\p:spPr\a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttribute('rot', SharedDrawing::degreesToAngle($shape->getRotation()));
-
-        // a:off
+        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        
+        // p:sp\p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
-
-        // a:ext
+        
+        // p:sp\p:spPr\a:xfrm\a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->endElement();
+        
+        // > p:sp\p:spPr\a:xfrm
         $objWriter->endElement();
 
-        $objWriter->endElement();
-
-        // a:prstGeom
+        // p:sp\p:spPr\a:prstGeom
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
-
+        
+        if ($shape->getFill()) {
+            $this->writeFill($objWriter, $shape->getFill());
+        }
+        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
+            $this->writeBorder($objWriter, $shape->getBorder(), '');
+        }
+        if ($shape->getShadow()->isVisible()) {
+            $this->writeShadow($objWriter, $shape->getShadow());
+        }
+        // > p:sp\p:spPr
         $objWriter->endElement();
 
         // p:txBody
         $objWriter->startElement('p:txBody');
 
         // a:bodyPr
+        //@link :http://msdn.microsoft.com/en-us/library/documentformat.openxml.drawing.bodyproperties%28v=office.14%29.aspx
         $objWriter->startElement('a:bodyPr');
         $verticalAlign = $shape->getActiveParagraph()->getAlignment()->getVertical();
         if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
             $objWriter->writeAttribute('anchor', $verticalAlign);
         }
-        $objWriter->writeAttribute('wrap', $shape->getWrap());
+        if ($shape->getWrap() != RichText::WRAP_SQUARE) {
+            $objWriter->writeAttribute('wrap', $shape->getWrap());
+        }
         $objWriter->writeAttribute('rtlCol', '0');
 
-        $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
-        $objWriter->writeAttribute('vertOverflow', $shape->getVerticalOverflow());
+        if ($shape->getHorizontalOverflow() != RichText::OVERFLOW_OVERFLOW) {
+            $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
+        }
+        if ($shape->getVerticalOverflow() != RichText::OVERFLOW_OVERFLOW) {
+            $objWriter->writeAttribute('vertOverflow', $shape->getVerticalOverflow());
+        }
 
         if ($shape->isUpright()) {
             $objWriter->writeAttribute('upright', '1');
@@ -436,21 +535,33 @@ class Slide extends AbstractPart
             $objWriter->writeAttribute('vert', 'vert');
         }
 
-        $objWriter->writeAttribute('bIns', SharedDrawing::pixelsToEmu($shape->getInsetBottom()));
-        $objWriter->writeAttribute('lIns', SharedDrawing::pixelsToEmu($shape->getInsetLeft()));
-        $objWriter->writeAttribute('rIns', SharedDrawing::pixelsToEmu($shape->getInsetRight()));
-        $objWriter->writeAttribute('tIns', SharedDrawing::pixelsToEmu($shape->getInsetTop()));
+        $objWriter->writeAttribute('bIns', CommonDrawing::pixelsToEmu($shape->getInsetBottom()));
+        $objWriter->writeAttribute('lIns', CommonDrawing::pixelsToEmu($shape->getInsetLeft()));
+        $objWriter->writeAttribute('rIns', CommonDrawing::pixelsToEmu($shape->getInsetRight()));
+        $objWriter->writeAttribute('tIns', CommonDrawing::pixelsToEmu($shape->getInsetTop()));
 
-        $objWriter->writeAttribute('numCol', $shape->getColumns());
+        if ($shape->getColumns() <> 1) {
+            $objWriter->writeAttribute('numCol', $shape->getColumns());
+        }
 
         // a:spAutoFit
-        $objWriter->writeElement('a:' . $shape->getAutoFit(), null);
+        $objWriter->startElement('a:' . $shape->getAutoFit());
+        if ($shape->getAutoFit() == RichText::AUTOFIT_NORMAL) {
+            if (!is_null($shape->getFontScale())) {
+                $objWriter->writeAttribute('fontScale', (int)($shape->getFontScale() * 1000));
+            }
+            if (!is_null($shape->getLineSpaceReduction())) {
+                $objWriter->writeAttribute('lnSpcReduction', (int)($shape->getLineSpaceReduction() * 1000));
+            }
+        }
+        
+        $objWriter->endElement();
 
         $objWriter->endElement();
 
         // a:lstStyle
         $objWriter->writeElement('a:lstStyle', null);
-
+        
         // Write paragraphs
         $this->writeParagraphs($objWriter, $shape->getParagraphs());
 
@@ -462,7 +573,7 @@ class Slide extends AbstractPart
     /**
      * Write table
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\Table      $shape
      * @param  int                            $shapeId
      * @throws \Exception
@@ -503,14 +614,14 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -536,7 +647,8 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:tblGrid');
 
         // Write cell widths
-        for ($cell = 0; $cell < count($shape->getRow(0)->getCells()); $cell++) {
+        $countCells = count($shape->getRow(0)->getCells());
+        for ($cell = 0; $cell < $countCells; $cell++) {
             // a:gridCol
             $objWriter->startElement('a:gridCol');
 
@@ -548,7 +660,7 @@ class Slide extends AbstractPart
                 $width      = $totalWidth / $colCount;
             }
 
-            $objWriter->writeAttribute('w', SharedDrawing::pixelsToEmu($width));
+            $objWriter->writeAttribute('w', CommonDrawing::pixelsToEmu($width));
             $objWriter->endElement();
         }
 
@@ -562,13 +674,15 @@ class Slide extends AbstractPart
         $defaultBorder = new Border();
 
         // Write rows
-        for ($row = 0; $row < count($shape->getRows()); $row++) {
+        $countRows = count($shape->getRows());
+        for ($row = 0; $row < $countRows; $row++) {
             // a:tr
             $objWriter->startElement('a:tr');
-            $objWriter->writeAttribute('h', SharedDrawing::pixelsToEmu($shape->getRow($row)->getHeight()));
+            $objWriter->writeAttribute('h', CommonDrawing::pixelsToEmu($shape->getRow($row)->getHeight()));
 
             // Write cells
-            for ($cell = 0; $cell < count($shape->getRow($row)->getCells()); $cell++) {
+            $countCells = count($shape->getRow($row)->getCells());
+            for ($cell = 0; $cell < $countCells; $cell++) {
                 // Current cell
                 $currentCell = $shape->getRow($row)->getCell($cell);
 
@@ -679,7 +793,7 @@ class Slide extends AbstractPart
     /**
      * Write paragraphs
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter           $objWriter  XML Writer
+     * @param  \PhpOffice\Common\XMLWriter           $objWriter  XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Shape\RichText\Paragraph[] $paragraphs
      * @throws \Exception
      */
@@ -694,9 +808,9 @@ class Slide extends AbstractPart
             $objWriter->startElement('a:pPr');
             $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
             $objWriter->writeAttribute('fontAlgn', $paragraph->getAlignment()->getVertical());
-            $objWriter->writeAttribute('marL', SharedDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
-            $objWriter->writeAttribute('marR', SharedDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
-            $objWriter->writeAttribute('indent', SharedDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
+            $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
+            $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
+            $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
             $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
             // Bullet type specified?
@@ -802,7 +916,7 @@ class Slide extends AbstractPart
     /**
      * Write Line Shape
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPowerpoint\Shape\Line $shape
      * @param  int $shapeId
      */
@@ -838,54 +952,54 @@ class Slide extends AbstractPart
         if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-            $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getHeight() < 0) {
             $objWriter->writeAttribute('flipV', 1);
 
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX()));
-            $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu($shape->getWidth()));
-            $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
             $objWriter->endElement();
         } elseif ($shape->getWidth() < 0) {
             $objWriter->writeAttribute('flipV', 1);
 
             // a:off
             $objWriter->startElement('a:off');
-            $objWriter->writeAttribute('x', SharedDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
-            $objWriter->writeAttribute('y', SharedDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
             $objWriter->endElement();
 
             // a:ext
             $objWriter->startElement('a:ext');
-            $objWriter->writeAttribute('cx', SharedDrawing::pixelsToEmu(-$shape->getWidth()));
-            $objWriter->writeAttribute('cy', SharedDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         }
 
@@ -908,7 +1022,7 @@ class Slide extends AbstractPart
     /**
      * Write Border
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Border     $pBorder      Border
      * @param  string                         $pElementName Element name
      * @throws \Exception
@@ -975,7 +1089,7 @@ class Slide extends AbstractPart
     /**
      * Write Fill
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
@@ -1005,7 +1119,7 @@ class Slide extends AbstractPart
     /**
      * Write Solid Fill
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
@@ -1025,7 +1139,7 @@ class Slide extends AbstractPart
     /**
      * Write Gradient Fill
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
@@ -1062,7 +1176,7 @@ class Slide extends AbstractPart
 
         // a:lin
         $objWriter->startElement('a:lin');
-        $objWriter->writeAttribute('ang', SharedDrawing::degreesToAngle($pFill->getRotation()));
+        $objWriter->writeAttribute('ang', CommonDrawing::degreesToAngle($pFill->getRotation()));
         $objWriter->writeAttribute('scaled', '0');
         $objWriter->endElement();
 
@@ -1072,7 +1186,7 @@ class Slide extends AbstractPart
     /**
      * Write Pattern Fill
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPowerpoint\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
@@ -1104,10 +1218,39 @@ class Slide extends AbstractPart
         $objWriter->endElement();
     }
 
+    protected function writeShadow(XMLWriter $objWriter, Shadow $oShadow)
+    {
+        // a:effectLst
+        $objWriter->startElement('a:effectLst');
+        
+        // a:outerShdw
+        $objWriter->startElement('a:outerShdw');
+        $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
+        $objWriter->writeAttribute('dist', CommonDrawing::pixelsToEmu($oShadow->getDistance()));
+        $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($oShadow->getDirection()));
+        $objWriter->writeAttribute('algn', $oShadow->getAlignment());
+        $objWriter->writeAttribute('rotWithShape', '0');
+        
+        // a:srgbClr
+        $objWriter->startElement('a:srgbClr');
+        $objWriter->writeAttribute('val', $oShadow->getColor()->getRGB());
+        
+        // a:alpha
+        $objWriter->startElement('a:alpha');
+        $objWriter->writeAttribute('val', $oShadow->getAlpha() * 1000);
+        $objWriter->endElement();
+        
+        $objWriter->endElement();
+        
+        $objWriter->endElement();
+        
+        $objWriter->endElement();
+    }
+    
     /**
      * Write hyperlink
      *
-     * @param \PhpOffice\PhpPowerpoint\Shared\XMLWriter                               $objWriter XML Writer
+     * @param \PhpOffice\Common\XMLWriter                               $objWriter XML Writer
      * @param \PhpOffice\PhpPowerpoint\AbstractShape|\PhpOffice\PhpPowerpoint\Shape\RichText\TextElement $shape
      */
     private function writeHyperlink(XMLWriter $objWriter, $shape)
@@ -1119,6 +1262,414 @@ class Slide extends AbstractPart
         if ($shape->getHyperlink()->isInternal()) {
             $objWriter->writeAttribute('action', $shape->getHyperlink()->getUrl());
         }
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write Note Slide
+     * @param Note $pNote
+     * @throws \Exception
+     */
+    public function writeNote(Note $pNote = null)
+    {
+        // Check slide
+        if (is_null($pNote)) {
+            throw new \Exception("Invalid \PhpOffice\PhpPowerpoint\Slide\Note object passed.");
+        }
+
+        // Create XML writer
+        $objWriter = $this->getXMLWriter();
+
+        // XML header
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+
+        // p:notes
+        $objWriter->startElement('p:notes');
+        $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
+        $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
+        $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
+
+        // p:cSld
+        $objWriter->startElement('p:cSld');
+
+        // p:spTree
+        $objWriter->startElement('p:spTree');
+
+        // p:nvGrpSpPr
+        $objWriter->startElement('p:nvGrpSpPr');
+
+        // p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', '1');
+        $objWriter->writeAttribute('name', '');
+        $objWriter->endElement();
+
+        // p:cNvGrpSpPr
+        $objWriter->writeElement('p:cNvGrpSpPr', null);
+
+        // p:nvPr
+        $objWriter->writeElement('p:nvPr', null);
+
+        // ## p:nvGrpSpPr
+        $objWriter->endElement();
+
+        // p:grpSpPr
+        $objWriter->startElement('p:grpSpPr');
+
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        // a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->endElement(); // a:off
+
+        // a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
+        $objWriter->endElement(); // a:ext
+
+        // a:chOff
+        $objWriter->startElement('a:chOff');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->endElement(); // a:chOff
+
+        // a:chExt
+        $objWriter->startElement('a:chExt');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
+        $objWriter->endElement(); // a:chExt
+
+        // ## a:xfrm
+        $objWriter->endElement();
+
+        // ## p:grpSpPr
+        $objWriter->endElement();
+
+        // p:sp
+        $objWriter->startElement('p:sp');
+
+        // p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', '1');
+        $objWriter->writeAttribute('name', 'Notes Placeholder');
+        $objWriter->endElement();
+
+        // p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+
+        //a:spLocks
+        $objWriter->startElement('a:spLocks');
+        $objWriter->writeAttribute('noGrp', '1');
+        $objWriter->endElement();
+
+        // ## p:cNvSpPr
+        $objWriter->endElement();
+
+        // p:nvPr
+        $objWriter->startElement('p:nvPr');
+
+        $objWriter->startElement('p:ph');
+        $objWriter->writeAttribute('type', 'body');
+        $objWriter->writeAttribute('idx', '1');
+        $objWriter->endElement();
+
+        // ## p:nvPr
+        $objWriter->endElement();
+
+        // ## p:nvSpPr
+        $objWriter->endElement();
+
+        $objWriter->writeElement('p:spPr', null);
+
+        // p:txBody
+        $objWriter->startElement('p:txBody');
+
+        $objWriter->writeElement('a:bodyPr', null);
+        $objWriter->writeElement('a:lstStyle', null);
+
+        // Loop shapes
+        $shapes  = $pNote->getShapeCollection();
+        foreach ($shapes as $shape) {
+            // Check type
+            if ($shape instanceof RichText) {
+                $paragraphs = $shape->getParagraphs();
+                $this->writeParagraphs($objWriter, $paragraphs);
+            }
+        }
+
+        // ## p:txBody
+        $objWriter->endElement();
+
+        // ## p:sp
+        $objWriter->endElement();
+
+        // ## p:spTree
+        $objWriter->endElement();
+
+        // ## p:cSld
+        $objWriter->endElement();
+
+        // ## p:notes
+        $objWriter->endElement();
+
+        // Return
+        return $objWriter->getData();
+    }
+
+    /**
+     * Write Transition Slide
+     * @link http://officeopenxml.com/prSlide-transitions.php
+     * @param XMLWriter $objWriter
+     * @param Transition $transition
+     */
+    public function writeTransition(XMLWriter $objWriter, Transition $transition)
+    {
+        $objWriter->startElement('p:transition');
+        if (!is_null($transition->getSpeed())) {
+            $objWriter->writeAttribute('spd', $transition->getSpeed());
+        }
+        $objWriter->writeAttribute('advClick', $transition->hasManualTrigger() ? '1' : '0');
+        if ($transition->hasTimeTrigger()) {
+            $objWriter->writeAttribute('advTm', $transition->getAdvanceTimeTrigger());
+        }
+
+        switch ($transition->getTransitionType()) {
+            case Transition::TRANSITION_BLINDS_HORIZONTAL:
+                $objWriter->startElement('p:blinds');
+                $objWriter->writeAttribute('dir', 'horz');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_BLINDS_VERTICAL:
+                $objWriter->startElement('p:blinds');
+                $objWriter->writeAttribute('dir', 'vert');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_CHECKER_HORIZONTAL:
+                $objWriter->startElement('p:checker');
+                $objWriter->writeAttribute('dir', 'horz');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_CHECKER_VERTICAL:
+                $objWriter->startElement('p:checker');
+                $objWriter->writeAttribute('dir', 'vert');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_CIRCLE_HORIZONTAL:
+                $objWriter->startElement('p:circle');
+                $objWriter->writeAttribute('dir', 'horz');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_CIRCLE_VERTICAL:
+                $objWriter->startElement('p:circle');
+                $objWriter->writeAttribute('dir', 'vert');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COMB_HORIZONTAL:
+                $objWriter->startElement('p:comb');
+                $objWriter->writeAttribute('dir', 'horz');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COMB_VERTICAL:
+                $objWriter->startElement('p:comb');
+                $objWriter->writeAttribute('dir', 'vert');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COVER_DOWN:
+                $objWriter->startElement('p:cover');
+                $objWriter->writeAttribute('dir', 'd');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COVER_LEFT:
+                $objWriter->startElement('p:cover');
+                $objWriter->writeAttribute('dir', 'l');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COVER_LEFT_DOWN:
+                $objWriter->startElement('p:cover');
+                $objWriter->writeAttribute('dir', 'ld');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COVER_LEFT_UP:
+                $objWriter->startElement('p:cover');
+                $objWriter->writeAttribute('dir', 'lu');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COVER_RIGHT:
+                $objWriter->startElement('p:cover');
+                $objWriter->writeAttribute('dir', 'r');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COVER_RIGHT_DOWN:
+                $objWriter->startElement('p:cover');
+                $objWriter->writeAttribute('dir', 'rd');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COVER_RIGHT_UP:
+                $objWriter->startElement('p:cover');
+                $objWriter->writeAttribute('dir', 'ru');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_COVER_UP:
+                $objWriter->startElement('p:cover');
+                $objWriter->writeAttribute('dir', 'u');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_CUT:
+                $objWriter->writeElement('p:cut');
+                break;
+            case Transition::TRANSITION_DIAMOND:
+                $objWriter->writeElement('p:diamond');
+                break;
+            case Transition::TRANSITION_DISSOLVE:
+                $objWriter->writeElement('p:dissolve');
+                break;
+            case Transition::TRANSITION_FADE:
+                $objWriter->writeElement('p:fade');
+                break;
+            case Transition::TRANSITION_NEWSFLASH:
+                $objWriter->writeElement('p:newsflash');
+                break;
+            case Transition::TRANSITION_PLUS:
+                $objWriter->writeElement('p:plus');
+                break;
+            case Transition::TRANSITION_PULL_DOWN:
+                $objWriter->startElement('p:pull');
+                $objWriter->writeAttribute('dir', 'd');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_PULL_LEFT:
+                $objWriter->startElement('p:pull');
+                $objWriter->writeAttribute('dir', 'l');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_PULL_RIGHT:
+                $objWriter->startElement('p:pull');
+                $objWriter->writeAttribute('dir', 'r');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_PULL_UP:
+                $objWriter->startElement('p:pull');
+                $objWriter->writeAttribute('dir', 'u');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_PUSH_DOWN:
+                $objWriter->startElement('p:push');
+                $objWriter->writeAttribute('dir', 'd');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_PUSH_LEFT:
+                $objWriter->startElement('p:push');
+                $objWriter->writeAttribute('dir', 'l');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_PUSH_RIGHT:
+                $objWriter->startElement('p:push');
+                $objWriter->writeAttribute('dir', 'r');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_PUSH_UP:
+                $objWriter->startElement('p:push');
+                $objWriter->writeAttribute('dir', 'u');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_RANDOM:
+                $objWriter->writeElement('p:random');
+                break;
+            case Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
+                $objWriter->startElement('p:randomBar');
+                $objWriter->writeAttribute('dir', 'horz');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_RANDOMBAR_VERTICAL:
+                $objWriter->startElement('p:randomBar');
+                $objWriter->writeAttribute('dir', 'vert');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
+                $objWriter->startElement('p:split');
+                $objWriter->writeAttribute('dir', 'in');
+                $objWriter->writeAttribute('orient', 'horz');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
+                $objWriter->startElement('p:split');
+                $objWriter->writeAttribute('dir', 'out');
+                $objWriter->writeAttribute('orient', 'horz');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_SPLIT_IN_VERTICAL:
+                $objWriter->startElement('p:split');
+                $objWriter->writeAttribute('dir', 'in');
+                $objWriter->writeAttribute('orient', 'vert');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_SPLIT_OUT_VERTICAL:
+                $objWriter->startElement('p:split');
+                $objWriter->writeAttribute('dir', 'out');
+                $objWriter->writeAttribute('orient', 'vert');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_STRIPS_LEFT_DOWN:
+                $objWriter->startElement('p:strips');
+                $objWriter->writeAttribute('dir', 'ld');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_STRIPS_LEFT_UP:
+                $objWriter->startElement('p:strips');
+                $objWriter->writeAttribute('dir', 'lu');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_STRIPS_RIGHT_DOWN:
+                $objWriter->startElement('p:strips');
+                $objWriter->writeAttribute('dir', 'rd');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_STRIPS_RIGHT_UP:
+                $objWriter->startElement('p:strips');
+                $objWriter->writeAttribute('dir', 'ru');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_WEDGE:
+                $objWriter->writeElement('p:wedge');
+                break;
+            case Transition::TRANSITION_WIPE_DOWN:
+                $objWriter->startElement('p:wipe');
+                $objWriter->writeAttribute('dir', 'd');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_WIPE_LEFT:
+                $objWriter->startElement('p:wipe');
+                $objWriter->writeAttribute('dir', 'l');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_WIPE_RIGHT:
+                $objWriter->startElement('p:wipe');
+                $objWriter->writeAttribute('dir', 'r');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_WIPE_UP:
+                $objWriter->startElement('p:wipe');
+                $objWriter->writeAttribute('dir', 'u');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_ZOOM_IN:
+                $objWriter->startElement('p:zoom');
+                $objWriter->writeAttribute('dir', 'in');
+                $objWriter->endElement();
+                break;
+            case Transition::TRANSITION_ZOOM_OUT:
+                $objWriter->startElement('p:zoom');
+                $objWriter->writeAttribute('dir', 'out');
+                $objWriter->endElement();
+                break;
+        }
+
         $objWriter->endElement();
     }
 }

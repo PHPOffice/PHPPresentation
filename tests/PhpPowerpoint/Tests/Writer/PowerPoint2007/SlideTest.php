@@ -17,16 +17,17 @@
 
 namespace PhpOffice\PhpPowerpoint\Tests\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shared\Drawing;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Style\Fill;
-use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
-use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
+use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\Style\Border;
-use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
+use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007\Slide;
 
 /**
@@ -139,6 +140,21 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Alignment::VERTICAL_TOP, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
     }
     
+    public function testDrawingWithHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createDrawingShape();
+        $oShape->setPath(PHPPOWERPOINT_TESTS_BASE_DIR.'/resources/images/PHPPowerPointLogo.png');
+        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:hlinkClick';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId3', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
+    }
+    
     public function testDrawingShapeBorder()
     {
         $phpPowerPoint = new PhpPowerpoint();
@@ -168,7 +184,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
     
-    public function testFillGradientLinear()
+    public function testFillGradientLinearTable()
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -193,11 +209,36 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
-    public function testFillGradientPath()
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/61
+     */
+    public function testFillGradientLinearRichText()
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
-        
+    
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+    
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+    }
+    
+    public function testFillGradientPathTable()
+    {
+        $expected1 = 'E06B20';
+        $expected2 = strrev($expected1);
+    
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
         $oShape = $oSlide->createTableShape(1);
@@ -207,9 +248,9 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oCell->createTextRun('R1C1');
         $oFill = $oCell->getFill();
         $oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
-        
+    
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
-        
+    
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
@@ -218,7 +259,32 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
-    public function testFillPattern()
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/61
+     */
+    public function testFillGradientPathText()
+    {
+        $expected1 = 'E06B20';
+        $expected2 = strrev($expected1);
+        
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected1, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+    }
+    
+    public function testFillPatternTable()
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -243,7 +309,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected2, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
     
-    public function testFillSolid()
+    public function testFillSolidTable()
     {
         $expected = 'E06B20';
     
@@ -260,6 +326,27 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:solidFill/a:srgbClr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expected, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
+    }
+
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/61
+     */
+    public function testFillSolidText()
+    {
+        $expected = 'E06B20';
+    
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oFill = $oShape->getFill();
+        $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF'.$expected));
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+    
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:solidFill/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals($expected, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
@@ -369,6 +456,43 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
 
+    public function testNote()
+    {
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oNote = $oSlide->getNote();
+        $oRichText = $oNote->createRichTextShape()->setHeight(300)->setWidth(600);
+        $oRichText->createTextRun('testNote');
+    
+        $pres = TestHelperDOCX::getDocument($oPHPPowerPoint, 'PowerPoint2007');
+        // Content Types
+        // $element = '/Types/Override[@PartName="/ppt/notesSlides/notesSlide1.xml"][@ContentType="application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml"]';
+        // $this->assertTrue($pres->elementExists($element, '[Content_Types].xml'));
+        // Rels
+        // $element = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide"][@Target="../notesSlides/notesSlide1.xml"]';
+        // $this->assertTrue($pres->elementExists($element, 'ppt/slides/_rels/slide1.xml.rels'));
+        // Slide
+        $element = '/p:notes';
+        $this->assertTrue($pres->elementExists($element, 'ppt/notesSlides/notesSlide1.xml'));
+        $element = '/p:notes/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:t';
+        $this->assertTrue($pres->elementExists($element, 'ppt/notesSlides/notesSlide1.xml'));
+    }
+    
+    public function testRichTextAutoFitNormal()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->setAutoFit(RichText::AUTOFIT_NORMAL, 47.5, 20);
+        $oRichText->createTextRun('This is my text for the test.');
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr/a:normAutofit';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals(47500, $pres->getElementAttribute($element, 'fontScale', 'ppt/slides/slide1.xml'));
+        $this->assertEquals(20000, $pres->getElementAttribute($element, 'lnSpcReduction', 'ppt/slides/slide1.xml'));
+    }
+    
     public function testRichTextBreak()
     {
         $phpPowerPoint = new PhpPowerpoint();
@@ -379,6 +503,33 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:br';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+    }
+    
+    public function testRichTextHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->getHyperLink()->setUrl('http://www.google.fr');
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp//a:hlinkClick';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+    }
+    
+    public function testRichTextShadow()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+        $oRichText->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:effectLst/a:outerShdw';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
     
@@ -538,5 +689,225 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc';
         $this->assertTrue($pres->elementExists($element.'[@rowSpan="2"]', 'ppt/slides/slide1.xml'));
         $this->assertTrue($pres->elementExists($element.'[@vMerge="1"]', 'ppt/slides/slide1.xml'));
+    }
+
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/70
+     */
+    public function testTableWithHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape(4);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oTextRun = $oCell->createTextRun('AAA');
+        $oHyperlink = $oTextRun->getHyperlink();
+        $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId2', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
+    }
+
+    public function testTransition()
+    {
+        $value = rand(1000, 5000);
+
+        $oTransition = new Transition();
+
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+
+        $element = '/p:sld/p:transition';
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $this->assertFalse($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+
+        $oTransition->setTimeTrigger(true, $value);
+        $oSlide->setTransition($oTransition);
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'advTm', 'ppt/slides/slide1.xml'));
+        $this->assertEquals($value, $pres->getElementAttribute($element, 'advTm', 'ppt/slides/slide1.xml'));
+        $this->assertContains('0', $pres->getElementAttribute($element, 'advClick', 'ppt/slides/slide1.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_FAST);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $this->assertContains('fast', $pres->getElementAttribute($element, 'spd', 'ppt/slides/slide1.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_MEDIUM);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $this->assertContains('med', $pres->getElementAttribute($element, 'spd', 'ppt/slides/slide1.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_SLOW);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $this->assertContains('slow', $pres->getElementAttribute($element, 'spd', 'ppt/slides/slide1.xml'));
+
+        $rcTransition = new \ReflectionClass('PhpOffice\PhpPowerpoint\Slide\Transition');
+        $arrayConstants = $rcTransition->getConstants();
+        foreach ($arrayConstants as $key => $value) {
+            if (strpos($key, 'TRANSITION_') !== 0) {
+                continue;
+            }
+
+            $oTransition->setTransitionType($rcTransition->getConstant($key));
+            $oSlide->setTransition($oTransition);
+            $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+            switch ($key) {
+                case 'TRANSITION_BLINDS_HORIZONTAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:blinds[@dir=\'horz\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_BLINDS_VERTICAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:blinds[@dir=\'vert\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_CHECKER_HORIZONTAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:checker[@dir=\'horz\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_CHECKER_VERTICAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:checker[@dir=\'vert\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_CIRCLE_HORIZONTAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:circle[@dir=\'horz\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_CIRCLE_VERTICAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:circle[@dir=\'vert\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COMB_HORIZONTAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:comb[@dir=\'horz\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COMB_VERTICAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:comb[@dir=\'vert\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COVER_DOWN':
+                    $this->assertTrue($pres->elementExists($element.'/p:cover[@dir=\'d\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT':
+                    $this->assertTrue($pres->elementExists($element.'/p:cover[@dir=\'l\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT_DOWN':
+                    $this->assertTrue($pres->elementExists($element.'/p:cover[@dir=\'ld\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT_UP':
+                    $this->assertTrue($pres->elementExists($element.'/p:cover[@dir=\'lu\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT':
+                    $this->assertTrue($pres->elementExists($element.'/p:cover[@dir=\'r\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT_DOWN':
+                    $this->assertTrue($pres->elementExists($element.'/p:cover[@dir=\'rd\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT_UP':
+                    $this->assertTrue($pres->elementExists($element.'/p:cover[@dir=\'ru\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_COVER_UP':
+                    $this->assertTrue($pres->elementExists($element.'/p:cover[@dir=\'u\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_CUT':
+                    $this->assertTrue($pres->elementExists($element.'/p:cut', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_DIAMOND':
+                    $this->assertTrue($pres->elementExists($element.'/p:diamond', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_DISSOLVE':
+                    $this->assertTrue($pres->elementExists($element.'/p:dissolve', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_FADE':
+                    $this->assertTrue($pres->elementExists($element.'/p:fade', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_NEWSFLASH':
+                    $this->assertTrue($pres->elementExists($element.'/p:newsflash', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PLUS':
+                    $this->assertTrue($pres->elementExists($element.'/p:plus', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PULL_DOWN':
+                    $this->assertTrue($pres->elementExists($element.'/p:pull[@dir=\'d\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PULL_LEFT':
+                    $this->assertTrue($pres->elementExists($element.'/p:pull[@dir=\'l\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PULL_RIGHT':
+                    $this->assertTrue($pres->elementExists($element.'/p:pull[@dir=\'r\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PULL_UP':
+                    $this->assertTrue($pres->elementExists($element.'/p:pull[@dir=\'u\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PUSH_DOWN':
+                    $this->assertTrue($pres->elementExists($element.'/p:push[@dir=\'d\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PUSH_LEFT':
+                    $this->assertTrue($pres->elementExists($element.'/p:push[@dir=\'l\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PUSH_RIGHT':
+                    $this->assertTrue($pres->elementExists($element.'/p:push[@dir=\'r\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_PUSH_UP':
+                    $this->assertTrue($pres->elementExists($element.'/p:push[@dir=\'u\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_RANDOM':
+                    $this->assertTrue($pres->elementExists($element.'/p:random', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_RANDOMBAR_HORIZONTAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:randomBar[@dir=\'horz\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_RANDOMBAR_VERTICAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:randomBar[@dir=\'vert\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_IN_HORIZONTAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:split[@dir=\'in\'][@orient=\'horz\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_OUT_HORIZONTAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:split[@dir=\'out\'][@orient=\'horz\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_IN_VERTICAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:split[@dir=\'in\'][@orient=\'vert\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_OUT_VERTICAL':
+                    $this->assertTrue($pres->elementExists($element.'/p:split[@dir=\'out\'][@orient=\'vert\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_LEFT_DOWN':
+                    $this->assertTrue($pres->elementExists($element.'/p:strips[@dir=\'ld\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_LEFT_UP':
+                    $this->assertTrue($pres->elementExists($element.'/p:strips[@dir=\'lu\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_RIGHT_DOWN':
+                    $this->assertTrue($pres->elementExists($element.'/p:strips[@dir=\'rd\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_RIGHT_UP':
+                    $this->assertTrue($pres->elementExists($element.'/p:strips[@dir=\'ru\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_WEDGE':
+                    $this->assertTrue($pres->elementExists($element.'/p:wedge', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_WIPE_DOWN':
+                    $this->assertTrue($pres->elementExists($element.'/p:wipe[@dir=\'d\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_WIPE_LEFT':
+                    $this->assertTrue($pres->elementExists($element.'/p:wipe[@dir=\'l\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_WIPE_RIGHT':
+                    $this->assertTrue($pres->elementExists($element.'/p:wipe[@dir=\'r\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_WIPE_UP':
+                    $this->assertTrue($pres->elementExists($element.'/p:wipe[@dir=\'u\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_ZOOM_IN':
+                    $this->assertTrue($pres->elementExists($element.'/p:zoom[@dir=\'in\']', 'ppt/slides/slide1.xml'));
+                    break;
+                case 'TRANSITION_ZOOM_OUT':
+                    $this->assertTrue($pres->elementExists($element.'/p:zoom[@dir=\'out\']', 'ppt/slides/slide1.xml'));
+                    break;
+            }
+        }
+
+        $oTransition->setManualTrigger(true);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $this->assertContains('1', $pres->getElementAttribute($element, 'advClick', 'ppt/slides/slide1.xml'));
     }
 }

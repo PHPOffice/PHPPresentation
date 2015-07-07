@@ -27,11 +27,11 @@ use PhpOffice\PhpPowerpoint\Style\Shadow;
 abstract class AbstractShape implements ComparableInterface
 {
     /**
-     * Slide
+     * Container
      *
-     * @var \PhpOffice\PhpPowerpoint\Slide
+     * @var \PhpOffice\PhpPowerpoint\ShapeContainerInterface
      */
-    protected $slide;
+    protected $container;
 
     /**
      * Offset X
@@ -109,27 +109,86 @@ abstract class AbstractShape implements ComparableInterface
     public function __construct()
     {
         // Initialise values
-        $this->slide    = null;
-        $this->offsetX  = 0;
-        $this->offsetY  = 0;
-        $this->width    = 0;
-        $this->height   = 0;
-        $this->rotation = 0;
-        $this->fill     = new Style\Fill();
-        $this->border   = new Style\Border();
-        $this->shadow   = new Style\Shadow();
+        $this->container = null;
+        $this->offsetX   = 0;
+        $this->offsetY   = 0;
+        $this->width     = 0;
+        $this->height    = 0;
+        $this->rotation  = 0;
+        $this->fill      = new Style\Fill();
+        $this->border    = new Style\Border();
+        $this->shadow    = new Style\Shadow();
 
         $this->border->setLineStyle(Style\Border::LINE_NONE);
+    }
+    
+    public function __clone()
+    {
+        $this->container = null;
+        $this->fill      = clone $this->fill;
+        $this->border    = clone $this->border;
+        $this->shadow    = clone $this->shadow;
+    }
+
+    /**
+     * Get Container, Slide or Group
+     *
+     * @return \PhpOffice\PhpPowerpoint\Container
+     */
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
+    /**
+     * Set Container, Slide or Group
+     *
+     * @param  \PhpOffice\PhpPowerpoint\ShapeContainerInterface $pValue
+     * @param  bool                $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
+     * @throws \Exception
+     * @return self
+     */
+    public function setContainer(ShapeContainerInterface $pValue = null, $pOverrideOld = false)
+    {
+        if (is_null($this->container)) {
+            // Add drawing to \PhpOffice\PhpPowerpoint\ShapeContainerInterface
+            $this->container = $pValue;
+            if (!is_null($this->container)) {
+                $this->container->getShapeCollection()->append($this);
+            }
+        } else {
+            if ($pOverrideOld) {
+                // Remove drawing from old \PhpOffice\PhpPowerpoint\ShapeContainerInterface
+                $iterator = $this->container->getShapeCollection()->getIterator();
+
+                while ($iterator->valid()) {
+                    if ($iterator->current()->getHashCode() == $this->getHashCode()) {
+                        $this->container->getShapeCollection()->offsetUnset($iterator->key());
+                        $this->container = null;
+                        break;
+                    }
+                    $iterator->next();
+                }
+
+                // Set new \PhpOffice\PhpPowerpoint\Slide
+                $this->setContainer($pValue);
+            } else {
+                throw new \Exception("A \PhpOffice\PhpPowerpoint\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPowerpoint\ShapeContainerInterface.");
+            }
+        }
+
+        return $this;
     }
 
     /**
      * Get Slide
      *
-     * @return \PhpOffice\PhpPowerpoint\Slide
+     * @return \PhpOffice\PhpPowerpoint\Container
+     * @deprecated
      */
     public function getSlide()
     {
-        return $this->slide;
+        return $this->getContainer();
     }
 
     /**
@@ -139,36 +198,11 @@ abstract class AbstractShape implements ComparableInterface
      * @param  bool                $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
      * @throws \Exception
      * @return self
+     * @deprecated
      */
     public function setSlide(Slide $pValue = null, $pOverrideOld = false)
     {
-        if (is_null($this->slide)) {
-            // Add drawing to \PhpOffice\PhpPowerpoint\Slide
-            $this->slide = $pValue;
-            if (!is_null($this->slide)) {
-                $this->slide->getShapeCollection()->append($this);
-            }
-        } else {
-            if ($pOverrideOld) {
-                // Remove drawing from old \PhpOffice\PhpPowerpoint\Slide
-                $iterator = $this->slide->getShapeCollection()->getIterator();
-
-                while ($iterator->valid()) {
-                    if ($iterator->current()->getHashCode() == $this->getHashCode()) {
-                        $this->slide->getShapeCollection()->offsetUnset($iterator->key());
-                        $this->slide = null;
-                        break;
-                    }
-                }
-
-                // Set new \PhpOffice\PhpPowerpoint\Slide
-                $this->setSlide($pValue);
-            } else {
-                throw new \Exception("A \PhpOffice\PhpPowerpoint\Slide has already been assigned. Shapes can only exist on one \PhpOffice\PhpPowerpoint\Slide.");
-            }
-        }
-
-        return $this;
+        return $this->setContainer($pValue, $pOverrideOld);
     }
 
     /**
@@ -395,7 +429,7 @@ abstract class AbstractShape implements ComparableInterface
      */
     public function getHashCode()
     {
-        return md5((is_object($this->slide)?$this->slide->getHashCode():'') . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->rotation . $this->getFill()->getHashCode() . $this->shadow->getHashCode() . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
+        return md5((is_object($this->container)?$this->container->getHashCode():'') . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->rotation . $this->getFill()->getHashCode() . $this->shadow->getHashCode() . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }
 
     /**

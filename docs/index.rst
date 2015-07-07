@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to PHPPowerPoint's documentation
-==================================
+========================================
 
 |PHPPowerPoint|
 
@@ -24,6 +24,15 @@ PHPPowerPoint is a library written in pure PHP that provides a set of classes to
    faq
    credits
    references
+   
+.. _shapesdocs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Shapes
+   
+   shapes_chart
+   shapes_table
 
 Indices and tables
 ==================

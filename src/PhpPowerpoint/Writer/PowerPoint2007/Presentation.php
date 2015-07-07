@@ -17,9 +17,9 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\DocumentLayout;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
@@ -30,11 +30,11 @@ class Presentation extends AbstractPart
     /**
      * Write presentation to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @param  PhpPowerpoint $pPHPPowerPoint
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writePresentation(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writePresentation(PhpPowerpoint $pPHPPowerPoint)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
@@ -82,8 +82,6 @@ class Presentation extends AbstractPart
 
         // p:sldSz
         $objWriter->startElement('p:sldSz');
-        //$objWriter->writeAttribute('cx', '9144000');
-        //$objWriter->writeAttribute('cy', '6858000');
         $objWriter->writeAttribute('cx', $pPHPPowerPoint->getLayout()->getCX());
         $objWriter->writeAttribute('cy', $pPHPPowerPoint->getLayout()->getCY());
         if ($pPHPPowerPoint->getLayout()->getDocumentLayout() != DocumentLayout::LAYOUT_CUSTOM) {
@@ -106,12 +104,12 @@ class Presentation extends AbstractPart
     /**
      * Write slides
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter       XML Writer
-     * @param  PHPPowerPoint                  $pPHPPowerPoint
+     * @param  \PhpOffice\Common\XMLWriter $objWriter       XML Writer
+     * @param  PhpPowerpoint                  $pPHPPowerPoint
      * @param  int                            $startRelationId
      * @throws \Exception
      */
-    private function writeSlides(XMLWriter $objWriter, PHPPowerPoint $pPHPPowerPoint = null, $startRelationId = 2)
+    private function writeSlides(XMLWriter $objWriter, PhpPowerpoint $pPHPPowerPoint, $startRelationId = 2)
     {
         // Write slides
         $slideCount = $pPHPPowerPoint->getSlideCount();
@@ -124,7 +122,7 @@ class Presentation extends AbstractPart
     /**
      * Write slide
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  int                            $pSlideId  Slide id
      * @param  int                            $pRelId    Relationship ID
      * @throws \Exception

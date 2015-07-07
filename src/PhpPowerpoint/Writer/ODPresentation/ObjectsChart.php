@@ -17,15 +17,21 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\String;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Title;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractTypeBar;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractTypePie;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
+use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
-use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
-use PhpOffice\PhpPowerpoint\Shared\String;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
 use PhpOffice\PhpPowerpoint\Style\Fill;
 
 /**
@@ -87,7 +93,7 @@ class ObjectsChart extends AbstractPart
     private function writeContentPart(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        if (!($chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Pie3D|| $chartType instanceof Scatter)) {
+        if (!($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof AbstractTypePie || $chartType instanceof Scatter)) {
             throw new \Exception('The chart type provided could not be rendered.');
         }
         
@@ -159,7 +165,7 @@ class ObjectsChart extends AbstractPart
         $this->writeChartStyle($chart);
         
         // Axis
-        $this->writeAxisStyle();
+        $this->writeAxisStyle($chart);
         
         // Series
         $this->numSeries = 0;
@@ -179,7 +185,7 @@ class ObjectsChart extends AbstractPart
         $this->writePlotAreaStyle($chart);
         
         // Title
-        $this->writeTitleStyle($chart);
+        $this->writeTitleStyle($chart->getTitle());
         
         // Wall
         $this->writeWallStyle($chart);
@@ -193,23 +199,25 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->startElement('office:chart');
         // office:chart
         $this->xmlContent->startElement('chart:chart');
-        $this->xmlContent->writeAttribute('svg:width', String::numberFormat(SharedDrawing::pixelsToCentimeters($chart->getWidth()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:height', String::numberFormat(SharedDrawing::pixelsToCentimeters($chart->getHeight()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:width', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getWidth()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:height', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getHeight()), 3) . 'cm');
         $this->xmlContent->writeAttribute('xlink:href', '.');
         $this->xmlContent->writeAttribute('xlink:type', 'simple');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleChart');
-        if ($chartType instanceof Bar3D) {
+        if ($chartType instanceof Area) {
+            $this->xmlContent->writeAttribute('chart:class', 'chart:area');
+        } elseif ($chartType instanceof AbstractTypeBar) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
         } elseif ($chartType instanceof Scatter) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
         }
         
         //**** Title ****
-        $this->writeTitle($chart);
+        $this->writeTitle($chart->getTitle());
 
         //**** Legend ****
         $this->writeLegend($chart);
@@ -267,8 +275,14 @@ class ObjectsChart extends AbstractPart
         }
     }
     
-    private function writeAxisStyle()
+    /**
+     * @param Chart $chart
+     * @todo Set function in \PhpPowerpoint\Shape\Chart\Axis for defining width and color of the axis
+     */
+    private function writeAxisStyle(Chart $chart)
     {
+        $chartType = $chart->getPlotArea()->getType();
+        
         // AxisX
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -277,7 +291,18 @@ class ObjectsChart extends AbstractPart
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
+        $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
+        $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
+        if ($chartType instanceof AbstractTypePie) {
+            $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
+        }
         // > style:chart-properties
+        $this->xmlContent->endElement();
+        // style:graphic-properties
+        $this->xmlContent->startElement('style:graphic-properties');
+        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
+        // > style:graphic-properties
         $this->xmlContent->endElement();
         // > style:style
         $this->xmlContent->endElement();
@@ -290,7 +315,18 @@ class ObjectsChart extends AbstractPart
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
+        $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
+        $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
+        if ($chartType instanceof AbstractTypePie) {
+            $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
+        }
         // > style:chart-properties
+        $this->xmlContent->endElement();
+        // style:graphic-properties
+        $this->xmlContent->startElement('style:graphic-properties');
+        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
+        // > style:graphic-properties
         $this->xmlContent->endElement();
         // > style:style
         $this->xmlContent->endElement();
@@ -351,8 +387,8 @@ class ObjectsChart extends AbstractPart
         // chart:legend
         $this->xmlContent->startElement('chart:legend');
         $this->xmlContent->writeAttribute('chart:legend-position', 'end');
-        $this->xmlContent->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetX()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetY()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetX()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetY()), 3) . 'cm');
         $this->xmlContent->writeAttribute('style:legend-expansion', 'high');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleLegend');
         // > chart:legend
@@ -397,13 +433,13 @@ class ObjectsChart extends AbstractPart
         if ($chartType instanceof Bar3D || $chartType instanceof Pie3D) {
             // dr3d:light
             $arrayLight = array(
-                    array('#808080', '(0 0 1)', 'false', 'true'),
-                    array('#666666', '(0.2 0.4 1)', 'true', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
-                    array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'true'),
+                array('#666666', '(0.2 0.4 1)', 'true', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
+                array('#808080', '(0 0 1)', 'false', 'false'),
             );
             foreach ($arrayLight as $light) {
                 $this->xmlContent->startElement('dr3d:light');
@@ -437,6 +473,7 @@ class ObjectsChart extends AbstractPart
     
     /**
      * @param Chart $chart
+     * @link : http://books.evc-cit.info/odbook/ch08.html#chart-plot-area-section
      */
     private function writePlotAreaStyle(Chart $chart)
     {
@@ -448,11 +485,39 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('style:family', 'chart');
         // style:text-properties
         $this->xmlContent->startElement('style:chart-properties');
-        if ($chartType instanceof Bar3D || $chartType instanceof Pie3D) {
+        if ($chartType instanceof Bar3D) {
+            $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
+            $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
+        } elseif ($chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
             $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
         }
-        $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
+        if ($chartType instanceof AbstractTypeBar) {
+            if ($chartType->getBarDirection() == AbstractTypeBar::DIRECTION_HORIZONTAL) {
+                $this->xmlContent->writeAttribute('chart:vertical', 'true');
+            } else {
+                $this->xmlContent->writeAttribute('chart:vertical', 'false');
+            }
+            if ($chartType->getBarGrouping() == Bar::GROUPING_CLUSTERED) {
+                $this->xmlContent->writeAttribute('chart:stacked', 'false');
+                $this->xmlContent->writeAttribute('chart:overlap', '0');
+            } elseif ($chartType->getBarGrouping() == Bar::GROUPING_STACKED) {
+                $this->xmlContent->writeAttribute('chart:stacked', 'true');
+                $this->xmlContent->writeAttribute('chart:overlap', '100');
+            } elseif ($chartType->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED) {
+                $this->xmlContent->writeAttribute('chart:stacked', 'true');
+                $this->xmlContent->writeAttribute('chart:overlap', '100');
+                $this->xmlContent->writeAttribute('chart:percentage', 'true');
+            }
+        }
+        $labelFormat = 'value';
+        if ($chartType instanceof AbstractTypeBar) {
+            if ($chartType->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED) {
+                $labelFormat = 'percentage';
+            }
+        }
+        $this->xmlContent->writeAttribute('chart:data-label-number', $labelFormat);
+
         // > style:text-properties
         $this->xmlContent->endElement();
         // > style:style
@@ -473,17 +538,19 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->startElement('chart:series');
         $this->xmlContent->writeAttribute('chart:values-cell-range-address', 'table-local.$'.$this->rangeCol.'$2:.$'.$this->rangeCol.'$'.($numRange+1));
         $this->xmlContent->writeAttribute('chart:label-cell-address', 'table-local.$'.$this->rangeCol.'$1');
-        if ($chartType instanceof Bar3D) {
+        if ($chartType instanceof Area) {
+            $this->xmlContent->writeAttribute('chart:class', 'chart:area');
+        } elseif ($chartType instanceof AbstractTypeBar) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
         } elseif ($chartType instanceof Line) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
         } elseif ($chartType instanceof Scatter) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
         }
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries);
-        if ($chartType instanceof Bar3D || $chartType instanceof Line || $chartType instanceof Scatter) {
+        if ($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof Scatter) {
             $dataPointFills = $series->getDataPointFills();
             if (empty($dataPointFills)) {
                 $incRepeat = $numRange;
@@ -516,7 +583,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
             // > chart:data-point
             $this->xmlContent->endElement();
-        } elseif ($chartType instanceof Pie3D) {
+        } elseif ($chartType instanceof AbstractTypePie) {
             $count = count($series->getDataPointFills());
             for ($inc = 0; $inc < $count; $inc++) {
                 // chart:data-point
@@ -546,10 +613,9 @@ class ObjectsChart extends AbstractPart
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
-        $this->xmlContent->writeAttribute('chart:label-position', 'right');
-        if ($chartType instanceof Pie3D) {
-            //@todo : Permit edit the offset of a pie
-            $this->xmlContent->writeAttribute('chart:pie-offset', '20');
+        $this->xmlContent->writeAttribute('chart:label-position', 'center');
+        if ($chartType instanceof AbstractTypePie) {
+            $this->xmlContent->writeAttribute('chart:pie-offset', $chartType->getExplosion());
         }
         if ($chartType instanceof Line) {
             //@todo : Permit edit the symbol of a line
@@ -563,12 +629,13 @@ class ObjectsChart extends AbstractPart
             //@todo : Permit edit the color and width of a line
             $this->xmlContent->writeAttribute('svg:stroke-width', '0.079cm');
             $this->xmlContent->writeAttribute('svg:stroke-color', '#4a7ebb');
-            $this->xmlContent->writeAttribute('draw:fill-color', '#4a7ebb');
         } else {
             $this->xmlContent->writeAttribute('draw:stroke', 'none');
-            $this->xmlContent->writeAttribute('draw:fill', $series->getFill()->getFillType());
-            $this->xmlContent->writeAttribute('draw:fill-color', '#'.$series->getFill()->getStartColor()->getRGB());
+            if (!($chartType instanceof Area)) {
+                $this->xmlContent->writeAttribute('draw:fill', $series->getFill()->getFillType());
+            }
         }
+        $this->xmlContent->writeAttribute('draw:fill-color', '#'.$series->getFill()->getStartColor()->getRGB());
         // > style:graphic-properties
         $this->xmlContent->endElement();
         // style:text-properties
@@ -599,7 +666,6 @@ class ObjectsChart extends AbstractPart
     }
     
     /**
-     * @param Chart $chart
      */
     private function writeTable()
     {
@@ -615,6 +681,19 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->endElement();
         // > table:table-header-columns
         $this->xmlContent->endElement();
+        
+        // table:table-columns
+        $this->xmlContent->startElement('table:table-columns');
+        // table:table-column
+        $this->xmlContent->startElement('table:table-column');
+        if (!empty($this->arrayData)) {
+            $rowFirst = reset($this->arrayData);
+            $this->xmlContent->writeAttribute('table:number-columns-repeated', count($rowFirst) - 1);
+        }
+        // > table:table-column
+        $this->xmlContent->endElement();
+        // > table:table-columns
+        $this->xmlContent->endElement();
     
         // table:table-header-rows
         $this->xmlContent->startElement('table:table-header-rows');
@@ -625,7 +704,9 @@ class ObjectsChart extends AbstractPart
             foreach ($rowFirst as $key => $cell) {
                 // table:table-cell
                 $this->xmlContent->startElement('table:table-cell');
-                $this->xmlContent->writeAttribute('office:value', 'string');
+                if (isset($this->arrayTitle[$key - 1])) {
+                    $this->xmlContent->writeAttribute('office:value-type', 'string');
+                }
                 // text:p
                 $this->xmlContent->startElement('text:p');
                 if (isset($this->arrayTitle[$key - 1])) {
@@ -676,43 +757,47 @@ class ObjectsChart extends AbstractPart
     }
     
     /**
-     * @param Chart $chart
+     * @param Title $oTitle
      */
-    private function writeTitle(Chart $chart)
+    private function writeTitle(Title $oTitle)
     {
-        // chart:title
-        $this->xmlContent->startElement('chart:title');
-        $this->xmlContent->writeAttribute('svg:x', String::numberFormat(SharedDrawing::pixelsToCentimeters($chart->getTitle()->getOffsetX()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:y', String::numberFormat(SharedDrawing::pixelsToCentimeters($chart->getTitle()->getOffsetY()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('chart:style-name', 'styleTitle');
-        // > text:p
-        $this->xmlContent->startElement('text:p');
-        $this->xmlContent->text($chart->getTitle()->getText());
-        // > text:p
-        $this->xmlContent->endElement();
-        // > chart:title
-        $this->xmlContent->endElement();
+        if ($oTitle->isVisible()) {
+            // chart:title
+            $this->xmlContent->startElement('chart:title');
+            $this->xmlContent->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetX()), 3) . 'cm');
+            $this->xmlContent->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetY()), 3) . 'cm');
+            $this->xmlContent->writeAttribute('chart:style-name', 'styleTitle');
+            // > text:p
+            $this->xmlContent->startElement('text:p');
+            $this->xmlContent->text($oTitle->getText());
+            // > text:p
+            $this->xmlContent->endElement();
+            // > chart:title
+            $this->xmlContent->endElement();
+        }
     }
     
     /**
-     * @param Chart $chart
+     * @param Title $oTitle
      */
-    private function writeTitleStyle(Chart $chart)
+    private function writeTitleStyle(Title $oTitle)
     {
-        // style:style
-        $this->xmlContent->startElement('style:style');
-        $this->xmlContent->writeAttribute('style:name', 'styleTitle');
-        $this->xmlContent->writeAttribute('style:family', 'chart');
-        // style:text-properties
-        $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#'.$chart->getTitle()->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $chart->getTitle()->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $chart->getTitle()->getFont()->getSize().'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $chart->getTitle()->getFont()->isItalic() ? 'italic' : 'normal');
-        // > style:text-properties
-        $this->xmlContent->endElement();
-        // > style:style
-        $this->xmlContent->endElement();
+        if ($oTitle->isVisible()) {
+            // style:style
+            $this->xmlContent->startElement('style:style');
+            $this->xmlContent->writeAttribute('style:name', 'styleTitle');
+            $this->xmlContent->writeAttribute('style:family', 'chart');
+            // style:text-properties
+            $this->xmlContent->startElement('style:text-properties');
+            $this->xmlContent->writeAttribute('fo:color', '#'.$oTitle->getFont()->getColor()->getRGB());
+            $this->xmlContent->writeAttribute('fo:font-family', $oTitle->getFont()->getName());
+            $this->xmlContent->writeAttribute('fo:font-size', $oTitle->getFont()->getSize().'pt');
+            $this->xmlContent->writeAttribute('fo:font-style', $oTitle->getFont()->isItalic() ? 'italic' : 'normal');
+            // > style:text-properties
+            $this->xmlContent->endElement();
+            // > style:style
+            $this->xmlContent->endElement();
+        }
     }
     
     private function writeWall()

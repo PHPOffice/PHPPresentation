@@ -46,8 +46,7 @@ $row->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
                ->setEndColor(new Color('FFFFFFFF'));
 $cell = $row->nextCell();
 $cell->setColSpan(3);
-$cell->createTextRun('Title row')->getFont()->setBold(true)
-                                            ->setSize(16);
+$cell->createTextRun('Title row')->getFont()->setBold(true)->setSize(16);
 $cell->getBorders()->getBottom()->setLineWidth(4)
                                 ->setLineStyle(Border::LINE_SINGLE)
                                 ->setDashStyle(Border::DASH_DASH);
@@ -58,7 +57,7 @@ $row = $shape->createRow();
 $row->setHeight(20);
 $row->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
                ->setRotation(90)
-               ->setStartColor(new Color( 'FFE06B20' ))
+               ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFFFFFFF'));
 $row->nextCell()->createTextRun('R1C1')->getFont()->setBold(true);
 $row->nextCell()->createTextRun('R1C2')->getFont()->setBold(true);
@@ -74,7 +73,7 @@ foreach ($row->getCells() as $cell) {
 echo date('H:i:s') . ' Add row'.EOL;
 $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
-			   ->setStartColor(new Color( 'FFE06B20' ))
+			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
 $row->nextCell()->createTextRun('R2C1');
 $row->nextCell()->createTextRun('R2C2');
@@ -84,11 +83,37 @@ $row->nextCell()->createTextRun('R2C3');
 echo date('H:i:s') . ' Add row'.EOL;
 $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
-			   ->setStartColor(new Color( 'FFE06B20' ))
+			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
 $row->nextCell()->createTextRun('R3C1');
 $row->nextCell()->createTextRun('R3C2');
 $row->nextCell()->createTextRun('R3C3');
+
+// Add row
+echo date('H:i:s') . ' Add row'.EOL;
+$row = $shape->createRow();
+$row->getFill()->setFillType(Fill::FILL_SOLID)
+			   ->setStartColor(new Color('FFE06B20'))
+               ->setEndColor(new Color('FFE06B20'));
+$cellC1 = $row->nextCell();
+$textRunC1 = $cellC1->createTextRun('Link');
+$textRunC1->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/')->setTooltip('PHPPowerPoint');
+$cellC2 = $row->nextCell();
+$textRunC2 = $cellC2->createTextRun('RichText with');
+$textRunC2->getFont()->setBold(true);
+$textRunC2->getFont()->setSize(12);
+$textRunC2->getFont()->setColor(new Color('FF000000'));
+$cellC2->createBreak();
+$textRunC2 = $cellC2->createTextRun('Multiline');
+$textRunC2->getFont()->setBold(true);
+$textRunC2->getFont()->setSize(14);
+$textRunC2->getFont()->setColor(new Color('FF0088FF'));
+$cellC3 = $row->nextCell();
+$textRunC3 = $cellC3->createTextRun('Link Github');
+$textRunC3->getHyperlink()->setUrl('https://github.com')->setTooltip('GitHub');
+$cellC3->createBreak();
+$textRunC3 = $cellC3->createTextRun('Link Google');
+$textRunC3->getHyperlink()->setUrl('https://google.com')->setTooltip('Google');
 
 // Save file
 echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);

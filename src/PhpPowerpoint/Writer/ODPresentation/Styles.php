@@ -17,17 +17,34 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\String;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\Table;
-use PhpOffice\PhpPowerpoint\Shared\Drawing as SharedDrawing;
-use PhpOffice\PhpPowerpoint\Shared\String;
 use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Shape\RichText;
+use PhpOffice\PhpPowerpoint\Style\Border;
 
 /**
  * \PhpOffice\PhpPowerpoint\Writer\ODPresentation\Styles
  */
 class Styles extends AbstractPart
 {
+    /**
+     * Stores font styles draw:gradient nodes
+     *
+     * @var array
+     */
+    private $arrayGradient = array();
+    /**
+     * Stores font styles draw:stroke-dash nodes
+     *
+     * @var array
+     */
+    private $arrayStrokeDash = array();
+    
     /**
      * Write Meta file to XML format
      *
@@ -95,31 +112,15 @@ class Styles extends AbstractPart
         $objWriter->endElement();
         // > style:style
         $objWriter->endElement();
-        // draw:gradient
-        $arrayGradient = array();
+
         foreach ($pPHPPowerPoint->getAllSlides() as $slide) {
             foreach ($slide->getShapeCollection() as $shape) {
                 if ($shape instanceof Table) {
-                    foreach ($shape->getRows() as $row) {
-                        foreach ($row->getCells() as $cell) {
-                            if ($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
-                                if (!in_array($cell->getFill()->getHashCode(), $arrayGradient)) {
-                                    $objWriter->startElement('draw:gradient');
-                                    $objWriter->writeAttribute('draw:name', 'gradient_'.$cell->getFill()->getHashCode());
-                                    $objWriter->writeAttribute('draw:display-name', 'gradient_'.$cell->getFill()->getHashCode());
-                                    $objWriter->writeAttribute('draw:style', 'linear');
-                                    $objWriter->writeAttribute('draw:start-intensity', '100%');
-                                    $objWriter->writeAttribute('draw:end-intensity', '100%');
-                                    $objWriter->writeAttribute('draw:start-color', '#'.$cell->getFill()->getStartColor()->getRGB());
-                                    $objWriter->writeAttribute('draw:end-color', '#'.$cell->getFill()->getEndColor()->getRGB());
-                                    $objWriter->writeAttribute('draw:border', '0%');
-                                    $objWriter->writeAttribute('draw:angle', $cell->getFill()->getRotation() - 90);
-                                    $objWriter->endElement();
-                                    $arrayGradient[] = $cell->getFill()->getHashCode();
-                                }
-                            }
-                        }
-                    }
+                    $this->writeTableStyle($objWriter, $shape);
+                } elseif ($shape instanceof Group) {
+                    $this->writeGroupStyle($objWriter, $shape);
+                } elseif ($shape instanceof RichText) {
+                    $this->writeRichTextStyle($objWriter, $shape);
                 }
             }
         }
@@ -141,8 +142,8 @@ class Styles extends AbstractPart
         $objWriter->writeAttribute('fo:margin-bottom', '0cm');
         $objWriter->writeAttribute('fo:margin-left', '0cm');
         $objWriter->writeAttribute('fo:margin-right', '0cm');
-        $objWriter->writeAttribute('fo:page-width', String::numberFormat(SharedDrawing::pixelsToCentimeters(SharedDrawing::emuToPixels($pPHPPowerPoint->getLayout()->getCX())), 1) . 'cm');
-        $objWriter->writeAttribute('fo:page-height', String::numberFormat(SharedDrawing::pixelsToCentimeters(SharedDrawing::emuToPixels($pPHPPowerPoint->getLayout()->getCY())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-width', String::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels($pPHPPowerPoint->getLayout()->getCX())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-height', String::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels($pPHPPowerPoint->getLayout()->getCY())), 1) . 'cm');
         if ($pPHPPowerPoint->getLayout()->getCX() > $pPHPPowerPoint->getLayout()->getCY()) {
             $objWriter->writeAttribute('style:print-orientation', 'landscape');
         } else {
@@ -171,5 +172,149 @@ class Styles extends AbstractPart
 
         // Return
         return $objWriter->getData();
+    }
+    
+    /**
+     * Write the default style information for a RichText shape
+     *
+     * @param XMLWriter $objWriter
+     * @param RichText $shape
+     */
+    public function writeRichTextStyle(XMLWriter $objWriter, RichText $shape)
+    {
+        if ($shape->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR || $shape->getFill()->getFillType() == Fill::FILL_GRADIENT_PATH) {
+            if (!in_array($shape->getFill()->getHashCode(), $this->arrayGradient)) {
+                $this->writeGradientFill($objWriter, $shape->getFill());
+            }
+        }
+        if ($shape->getBorder()->getDashStyle() != Border::DASH_SOLID) {
+            if (!in_array($shape->getBorder()->getDashStyle(), $this->arrayStrokeDash)) {
+                $objWriter->startElement('draw:stroke-dash');
+                $objWriter->writeAttribute('draw:name', 'strokeDash_'.$shape->getBorder()->getDashStyle());
+                $objWriter->writeAttribute('draw:style', 'rect');
+                switch ($shape->getBorder()->getDashStyle()) {
+                    case Border::DASH_DASH:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.14cm');
+                        break;
+                    case Border::DASH_DASHDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.14cm');
+                        break;
+                    case Border::DASH_DOT:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        break;
+                    case Border::DASH_LARGEDASH:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+                        break;
+                    case Border::DASH_LARGEDASHDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+                        break;
+                    case Border::DASH_LARGEDASHDOTDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.105cm');
+                        $objWriter->writeAttribute('draw:dots1', '2');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.28cm');
+                        break;
+                    case Border::DASH_SYSDASH:
+                        $objWriter->writeAttribute('draw:distance', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+                        break;
+                    case Border::DASH_SYSDASHDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+                        break;
+                    case Border::DASH_SYSDASHDOTDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots1', '2');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots2', '1');
+                        $objWriter->writeAttribute('draw:dots2-length', '0.105cm');
+                        break;
+                    case Border::DASH_SYSDOT:
+                        $objWriter->writeAttribute('draw:distance', '0.035cm');
+                        $objWriter->writeAttribute('draw:dots1', '1');
+                        $objWriter->writeAttribute('draw:dots1-length', '0.035cm');
+                        break;
+                }
+                $objWriter->endElement();
+                $this->arrayStrokeDash[] = $shape->getBorder()->getDashStyle();
+            }
+        }
+    }
+    
+    /**
+     * Write the default style information for a Table shape
+     *
+     * @param XMLWriter $objWriter
+     * @param Table $shape
+     */
+    public function writeTableStyle(XMLWriter $objWriter, Table $shape)
+    {
+        foreach ($shape->getRows() as $row) {
+            foreach ($row->getCells() as $cell) {
+                if ($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
+                    if (!in_array($cell->getFill()->getHashCode(), $this->arrayGradient)) {
+                        $this->writeGradientFill($objWriter, $cell->getFill());
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Writes the style information for a group of shapes
+     *
+     * @param XMLWriter $objWriter
+     * @param Group $group
+     */
+    public function writeGroupStyle(XMLWriter $objWriter, Group $group)
+    {
+        $shapes = $group->getShapeCollection();
+        foreach ($shapes as $shape) {
+            if ($shape instanceof Table) {
+                $this->writeTableStyle($objWriter, $shape);
+            } elseif ($shape instanceof Group) {
+                $this->writeGroupStyle($objWriter, $shape);
+            }
+        }
+    }
+    
+    /**
+     * Write the gradient style
+     * @param XMLWriter $objWriter
+     * @param Fill $oFill
+     */
+    protected function writeGradientFill(XMLWriter $objWriter, Fill $oFill)
+    {
+        $objWriter->startElement('draw:gradient');
+        $objWriter->writeAttribute('draw:name', 'gradient_'.$oFill->getHashCode());
+        $objWriter->writeAttribute('draw:display-name', 'gradient_'.$oFill->getHashCode());
+        $objWriter->writeAttribute('draw:style', 'linear');
+        $objWriter->writeAttribute('draw:start-intensity', '100%');
+        $objWriter->writeAttribute('draw:end-intensity', '100%');
+        $objWriter->writeAttribute('draw:start-color', '#'.$oFill->getStartColor()->getRGB());
+        $objWriter->writeAttribute('draw:end-color', '#'.$oFill->getEndColor()->getRGB());
+        $objWriter->writeAttribute('draw:border', '0%');
+        $objWriter->writeAttribute('draw:angle', $oFill->getRotation() - 90);
+        $objWriter->endElement();
+        $this->arrayGradient[] = $oFill->getHashCode();
     }
 }

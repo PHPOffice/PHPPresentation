@@ -22,17 +22,8 @@ use PhpOffice\PhpPowerpoint\ComparableInterface;
 /**
  * self
  */
-class Pie3D extends AbstractType implements ComparableInterface
+class Pie3D extends AbstractTypePie implements ComparableInterface
 {
-    /**
-     * Create a new self instance
-     */
-    public function __construct()
-    {
-        $this->hasAxisX = false;
-        $this->hasAxisY = false;
-    }
-    
     /**
      * Get hash code
      *
@@ -40,10 +31,6 @@ class Pie3D extends AbstractType implements ComparableInterface
      */
     public function getHashCode()
     {
-        $hash = '';
-        foreach ($this->getData() as $series) {
-            $hash .= $series->getHashCode();
-        }
-        return md5($hash . __CLASS__);
+        return md5(parent::getHashCode() . __CLASS__);
     }
 }

@@ -24,7 +24,6 @@ class PptProps extends AbstractPart
     /**
      * Write ppt/presProps.xml to XML format
      *
-     * @param     PhpPowerpoint    $pPHPPowerPoint
      * @return     string         XML Output
      * @throws     \Exception
      */
@@ -81,7 +80,6 @@ class PptProps extends AbstractPart
     /**
      * Write ppt/tableStyles.xml to XML format
      *
-     * @param     PhpPowerpoint $pPHPPowerPoint
      * @return     string XML Output
      * @throws     \Exception
      */
@@ -104,7 +102,6 @@ class PptProps extends AbstractPart
     /**
      * Write ppt/viewProps.xml to XML format
      *
-     * @param     PhpPowerpoint    $pPHPPowerPoint
      * @return     string         XML Output
      * @throws     \Exception
      */

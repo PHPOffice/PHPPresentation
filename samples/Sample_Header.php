@@ -5,6 +5,7 @@
 use PhpOffice\PhpPowerpoint\Autoloader;
 use PhpOffice\PhpPowerpoint\Settings;
 use PhpOffice\PhpPowerpoint\IOFactory;
+use PhpOffice\PhpPowerpoint\Slide;
 
 error_reporting(E_ALL);
 define('CLI', (PHP_SAPI == 'cli') ? true : false);
@@ -14,6 +15,8 @@ define('IS_INDEX', SCRIPT_FILENAME == 'index');
 
 require_once __DIR__ . '/../src/PhpPowerpoint/Autoloader.php';
 Autoloader::register();
+
+require_once __DIR__ . '/../vendor/autoload.php';
 
 // Set writers
 $writers = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
@@ -44,7 +47,7 @@ if ($handle = opendir('.')) {
 /**
  * Write documents
  *
- * @param \PhpOffice\PhpWord\PhpWord $phpWord
+ * @param \PhpOffice\PhpPowerPoint\PhpPowerPoint $phpPowerPoint
  * @param string $filename
  * @param array $writers
  */
@@ -112,7 +115,7 @@ function getEndingNotes($writers)
  * Creates a templated slide
  *
  * @param PHPPowerPoint $objPHPPowerPoint
- * @return PHPPowerPoint_Slide
+ * @return \PhpOffice\PhpPowerpoint\Slide
  */
 function createTemplatedSlide(PhpOffice\PhpPowerpoint\PhpPowerpoint $objPHPPowerPoint)
 {

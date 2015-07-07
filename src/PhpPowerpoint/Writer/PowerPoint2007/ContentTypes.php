@@ -21,8 +21,8 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
-use PhpOffice\PhpPowerpoint\Shared\File;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\Common\File;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 /**
@@ -33,11 +33,11 @@ class ContentTypes extends AbstractPart
     /**
      * Write content types to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @param  PhpPowerpoint $pPHPPowerPoint
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writeContentTypes(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writeContentTypes(PhpPowerpoint $pPHPPowerPoint)
     {
         $parentWriter = $this->getParentWriter();
         if (!$parentWriter instanceof PowerPoint2007) {
@@ -85,7 +85,8 @@ class ContentTypes extends AbstractPart
 
         // Slide layouts
         $slideLayouts = $parentWriter->getLayoutPack()->getLayouts();
-        for ($i = 0; $i < count($slideLayouts); ++$i) {
+        $numSlideLayouts = count($slideLayouts);
+        for ($i = 0; $i < $numSlideLayouts; ++$i) {
             $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/slideLayout' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml');
         }
 
@@ -93,6 +94,9 @@ class ContentTypes extends AbstractPart
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
             $this->writeOverrideContentType($objWriter, '/ppt/slides/slide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slide+xml');
+            if ($pPHPPowerPoint->getSlide($i)->getNote()->getShapeCollection()->count() > 0) {
+                $this->writeOverrideContentType($objWriter, '/ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml');
+            }
         }
 
         // Add layoutpack content types
@@ -196,7 +200,7 @@ class ContentTypes extends AbstractPart
     /**
      * Write Default content type
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
      * @throws \Exception
@@ -217,7 +221,7 @@ class ContentTypes extends AbstractPart
     /**
      * Write Override content type
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
      * @param  string                         $pPartname    Part name
      * @param  string                         $pContentType Content type
      * @throws \Exception

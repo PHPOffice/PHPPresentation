@@ -45,12 +45,34 @@ class Bar3DTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(count($array), $object->getData());
     }
 
-    public function testSerties()
+    public function testSeries()
     {
         $object = new Bar3D();
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->addSeries(new Series()));
         $this->assertCount(1, $object->getData());
+    }
+    
+    public function testBarDirection()
+    {
+        $object = new Bar3D();
+        $this->assertEquals(Bar3D::DIRECTION_VERTICAL, $object->getBarDirection());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarDirection(Bar3D::DIRECTION_HORIZONTAL));
+        $this->assertEquals(Bar3D::DIRECTION_HORIZONTAL, $object->getBarDirection());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarDirection(Bar3D::DIRECTION_VERTICAL));
+        $this->assertEquals(Bar3D::DIRECTION_VERTICAL, $object->getBarDirection());
+    }
+
+    public function testBarGrouping()
+    {
+        $object = new Bar3D();
+        $this->assertEquals(Bar3D::GROUPING_CLUSTERED, $object->getBarGrouping());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarGrouping(Bar3D::GROUPING_CLUSTERED));
+        $this->assertEquals(Bar3D::GROUPING_CLUSTERED, $object->getBarGrouping());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarGrouping(Bar3D::GROUPING_STACKED));
+        $this->assertEquals(Bar3D::GROUPING_STACKED, $object->getBarGrouping());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Type\\Bar3D', $object->setBarGrouping(Bar3D::GROUPING_PERCENTSTACKED));
+        $this->assertEquals(Bar3D::GROUPING_PERCENTSTACKED, $object->getBarGrouping());
     }
 
     public function testHashCode()

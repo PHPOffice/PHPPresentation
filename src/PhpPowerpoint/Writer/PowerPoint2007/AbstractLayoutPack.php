@@ -78,6 +78,7 @@ abstract class AbstractLayoutPack
      * Array of slide layouts.
      *
      * These are all an array consisting of:
+     * - id (int)
      * - masterid (int)
      * - name (string)
      * - body (string)
@@ -186,21 +187,19 @@ abstract class AbstractLayoutPack
     }
 
     /**
-     * Find specific slide layout index.
+     * Find specific slide layout id.
      *
      * @param string $name
      * @param int $masterId
      * @return int
      * @throws \Exception
      */
-    public function findLayoutIndex($name = '', $masterId = 1)
+    public function findLayoutId($name = '', $masterId = 1)
     {
-        $index = 0;
-        foreach ($this->layouts as $layout) {
+        foreach ($this->layouts as $layoutId => $layout) {
             if ($layout['name'] == $name && $layout['masterid'] == $masterId) {
-                return $index;
+                return $layoutId;
             }
-            ++$index;
         }
 
         throw new \Exception("Could not find slide layout $name in current layout pack.");

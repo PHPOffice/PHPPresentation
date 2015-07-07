@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPowerpoint;
 
+use PhpOffice\Common\Drawing;
+
 /**
  * \PhpOffice\PhpPowerpoint\DocumentLayout
  */
@@ -35,6 +37,12 @@ class DocumentLayout
     const LAYOUT_LETTER = 'letter';
     const LAYOUT_OVERHEAD = 'overhead';
 
+    const UNIT_EMU = 'emu';
+    const UNIT_CENTIMETER = 'cm';
+    const UNIT_INCH = 'in';
+    const UNIT_MILLIMETER = 'mm';
+    const UNIT_PIXEL = 'px';
+    const UNIT_POINT = 'pt';
 
     /**
      * Dimension types
@@ -144,9 +152,9 @@ class DocumentLayout
      *
      * @return integer
      */
-    public function getCX()
+    public function getCX($unit = self::UNIT_EMU)
     {
-        return $this->dimensionX;
+        return $this->convertUnit($this->dimensionX, self::UNIT_EMU, $unit);
     }
 
     /**
@@ -154,15 +162,94 @@ class DocumentLayout
      *
      * @return integer
      */
-    public function getCY()
+    public function getCY($unit = self::UNIT_EMU)
     {
-        return $this->dimensionY;
+        return $this->convertUnit($this->dimensionY, self::UNIT_EMU, $unit);
+    }
+
+    /**
+     * Get Document Layout cx
+     *
+     * @return integer
+     */
+    public function setCX($value, $unit = self::UNIT_EMU)
+    {
+        $this->layout = self::LAYOUT_CUSTOM;
+        $this->dimensionX = $this->convertUnit($value, $unit, self::UNIT_EMU);
+        return $this;
+    }
+
+    /**
+     * Get Document Layout cy
+     *
+     * @return integer
+     */
+    public function setCY($value, $unit = self::UNIT_EMU)
+    {
+        $this->layout = self::LAYOUT_CUSTOM;
+        $this->dimensionY = $this->convertUnit($value, $unit, self::UNIT_EMU);
+        return $this;
+    }
+
+    /**
+     * Convert EMUs to differents units
+     * @param $value
+     * @param string $fromUnit
+     * @param string $toUnit
+     */
+    protected function convertUnit($value, $fromUnit, $toUnit)
+    {
+        // Convert from $fromUnit to EMU
+        switch ($fromUnit) {
+            case self::UNIT_MILLIMETER:
+                $value *= 36000;
+                break;
+            case self::UNIT_CENTIMETER:
+                $value *= 360000;
+                break;
+            case self::UNIT_INCH:
+                $value *= 914400;
+                break;
+            case self::UNIT_PIXEL:
+                $value = Drawing::pixelsToEmu($value);
+                break;
+            case self::UNIT_POINT:
+                $value *= 12700;
+                break;
+            case self::UNIT_EMU:
+            default:
+                // no changes
+        }
+
+        // Convert from EMU to $toUnit
+        switch ($toUnit) {
+            case self::UNIT_MILLIMETER:
+                $value /= 36000;
+                break;
+            case self::UNIT_CENTIMETER:
+                $value /= 360000;
+                break;
+            case self::UNIT_INCH:
+                $value /= 914400;
+                break;
+            case self::UNIT_PIXEL:
+                $value = Drawing::emuToPixels($value);
+                break;
+            case self::UNIT_POINT:
+                $value /= 12700;
+                break;
+            case self::UNIT_EMU:
+            default:
+            // no changes
+        }
+        return $value;
     }
 
     /**
      * Get Document Layout in millimeters
      *
      * @return integer
+     * @deprecated 0.4.0 getCX(DocumentLayout::UNIT_MILLIMETER)
      */
     public function getLayoutXmilli()
     {
@@ -173,6 +260,7 @@ class DocumentLayout
      * Get Document Layout in millimeters
      *
      * @return integer
+     * @deprecated 0.4.0 getCY(DocumentLayout::UNIT_MILLIMETER)
      */
     public function getLayoutYmilli()
     {
@@ -184,6 +272,7 @@ class DocumentLayout
      *
      * @param  integer                      $pValue Layout width
      * @return \PhpOffice\PhpPowerpoint\DocumentLayout
+     * @deprecated 0.4.0 setCY($pValue, DocumentLayout::UNIT_MILLIMETER)
      */
     public function setLayoutXmilli($pValue)
     {
@@ -192,11 +281,13 @@ class DocumentLayout
 
         return $this;
     }
+
     /**
      * Set Document Layout in millimeters
      *
      * @param  integer                      $pValue Layout height
      * @return \PhpOffice\PhpPowerpoint\DocumentLayout
+     * @deprecated 0.4.0 setCY($pValue, DocumentLayout::UNIT_MILLIMETER)
      */
     public function setLayoutYmilli($pValue)
     {

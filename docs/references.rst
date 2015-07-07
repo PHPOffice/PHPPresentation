@@ -18,8 +18,10 @@ ISO :
    <http://standards.iso.org/ittf/PubliclyAvailableStandards/c061797_ISO_IEC_29500-3_2012.zip>`__
 -  `Part 4: Transitional Migration Features
    <http://standards.iso.org/ittf/PubliclyAvailableStandards/c061798_ISO_IEC_29500-4_2012.zip>`__
+
 MSDN :
 
+-  `PowerPoint Viewer <http://www.microsoft.com/en-US/download/details.aspx?id=13>`__
 -  `DocumentFormat.OpenXml.Presentation Namespace on
    MSDN <http://msdn.microsoft.com/en-us/library/documentformat.openxml.presentation(v=office.14).aspx>`__
 -  `Open XML SDK 2.5 with Validator <http://www.microsoft.com/en-gb/download/details.aspx?id=30425>`__

@@ -35,6 +35,20 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $object->getPlotArea());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $object->getView3D());
     }
+    
+
+    public function testClone()
+    {
+        $object = new Chart();
+        
+        $oClone = clone $object;
+    
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart', $oClone);
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Title', $oClone->getTitle());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Legend', $oClone->getLegend());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\PlotArea', $oClone->getPlotArea());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\View3D', $oClone->getView3D());
+    }
 
     public function testIncludeSpreadsheet()
     {

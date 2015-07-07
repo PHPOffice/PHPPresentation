@@ -18,7 +18,6 @@
 namespace PhpOffice\PhpPowerpoint\Shape\Chart;
 
 use PhpOffice\PhpPowerpoint\ComparableInterface;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType;
 
 /**
  * \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
@@ -28,7 +27,7 @@ class PlotArea implements ComparableInterface
     /**
      * Type
      *
-     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType
+     * @var \PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType
      */
     private $type;
 
@@ -83,6 +82,12 @@ class PlotArea implements ComparableInterface
         $this->axisX = new Axis();
         $this->axisY = new Axis();
     }
+    
+    public function __clone()
+    {
+        $this->axisX     = clone $this->axisX;
+        $this->axisY     = clone $this->axisY;
+    }
 
     /**
      * Get type
@@ -102,10 +107,10 @@ class PlotArea implements ComparableInterface
     /**
      * Set type
      *
-     * @param \PhpOffice\PhpPowerpoint\Shape\Chart\AbstractType $value
+     * @param \PhpOffice\PhpPowerpoint\Shape\Chart\Type\AbstractType $value
      * @return \PhpOffice\PhpPowerpoint\Shape\Chart\PlotArea
      */
-    public function setType(AbstractType $value)
+    public function setType(Type\AbstractType $value)
     {
         $this->type = $value;
 

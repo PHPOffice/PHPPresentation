@@ -78,7 +78,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Could not open 
+     * @expectedExceptionMessage Could not open
      */
     public function testSaveNotExistingDir()
     {

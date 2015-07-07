@@ -56,7 +56,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Private PHPPowerPoint
      *
-     * @var PHPPowerPoint
+     * @var \PhpOffice\PhpPowerPoint\PhpPowerpoint
      */
     protected $presentation;
 
@@ -91,9 +91,9 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Create a new \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      *
-     * @param PHPPowerPoint $pPHPPowerPoint
+     * @param PhpPowerpoint $pPHPPowerPoint
      */
-    public function __construct(PHPPowerPoint $pPHPPowerPoint = null)
+    public function __construct(PhpPowerpoint $pPHPPowerPoint = null)
     {
         // Assign PHPPowerPoint
         $this->setPHPPowerPoint($pPHPPowerPoint);
@@ -230,7 +230,7 @@ class PowerPoint2007 implements WriterInterface
             foreach ($masterSlides as $masterSlide) {
                 // Add themes to ZIP file
                 $objZip->addFromString('ppt/theme/_rels/theme' . $masterSlide['masterid'] . '.xml.rels', $wPartRels->writeThemeRelationships($masterSlide['masterid']));
-                $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', utf8_encode($wPartTheme->writeTheme($masterSlide['masterid'])));
+                $objZip->addFromString('ppt/theme/theme' . $masterSlide['masterid'] . '.xml', $wPartTheme->writeTheme($masterSlide['masterid']));
                 // Add slide masters to ZIP file
                 $objZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $masterSlide['masterid'] . '.xml.rels', $wPartRels->writeSlideMasterRelationships($masterSlide['masterid']));
                 $objZip->addFromString('ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', $masterSlide['body']);
@@ -271,6 +271,9 @@ class PowerPoint2007 implements WriterInterface
                 // Add slide
                 $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $wPartRels->writeSlideRelationships($this->presentation->getSlide($i)));
                 $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $wPartSlide->writeSlide($this->presentation->getSlide($i)));
+                if ($this->presentation->getSlide($i)->getNote()->getShapeCollection()->count() > 0) {
+                    $objZip->addFromString('ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', $wPartSlide->writeNote($this->presentation->getSlide($i)->getNote()));
+                }
             }
 
             // Add media
@@ -321,7 +324,9 @@ class PowerPoint2007 implements WriterInterface
                 if (copy($pFilename, $originalFilename) === false) {
                     throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
                 }
-                @unlink($pFilename);
+                if (@unlink($pFilename) === false) {
+                    throw new \Exception('The file '.$pFilename.' could not be removed.');
+                }
             }
         } else {
             throw new \Exception("PHPPowerPoint object unassigned.");
@@ -346,11 +351,11 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Get PHPPowerPoint object
      *
-     * @param  PHPPowerPoint                       $pPHPPowerPoint PHPPowerPoint object
+     * @param  PhpPowerpoint $pPHPPowerPoint PhpPowerpoint object
      * @throws \Exception
      * @return \PhpOffice\PhpPowerpoint\Writer\PowerPoint2007
      */
-    public function setPHPPowerPoint(PHPPowerPoint $pPHPPowerPoint = null)
+    public function setPHPPowerPoint(PhpPowerpoint $pPHPPowerPoint = null)
     {
         $this->presentation = $pPHPPowerPoint;
 

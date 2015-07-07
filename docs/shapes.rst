@@ -15,11 +15,12 @@ Every shapes have common properties that you can set by using fluent interface.
 - ``fill`` see *[Fill](#fill)*
 - ``border`` see *[Border](#border)*
 - ``shadow`` see *[Shadow](#shadow)*
-- ``hyperlink`
+- ``hyperlink``
 
 Example:
 
 .. code-block:: php
+
 	$richtext = $slide->createRichTextShape()
 		->setHeight(300)
 		->setWidth(600)
@@ -27,7 +28,7 @@ Example:
 		->setOffsetY(180);
 
 Rich text
--------
+---------
 
 Rich text shapes contain paragraphs of texts. To create a rich text shape, use ``createRichTextShape`` method of slide.
 
@@ -35,6 +36,8 @@ Below are the properties that you can set for a rich text shape.
 
 - ``wrap``
 - ``autoFit``
+- ``fontScale`` : font scale (in percentage) when autoFit = RichText::AUTOFIT_NORMAL
+- ``lnSpcReduction`` : line spacing reduction (in percentage) when autoFit = RichText::AUTOFIT_NORMAL
 - ``horizontalOverflow``
 - ``verticalOverflow``
 - ``upright``
@@ -61,7 +64,7 @@ To create a line, use `createLineShape` method of slide.
 Chart
 -------
 
-To create a chart, use `createChartShape` method of slide.
+The Chart has now :ref:`its own page <shapes_chart>`. 
 
 Drawing
 -------
@@ -69,15 +72,13 @@ Drawing
 To create a drawing, use `createDrawingShape` method of slide.
 
 .. code-block:: php
+
 	$drawing = $slide->createDrawingShape();
 	$drawing->setName('Unique name')
 		->setDescription('Description of the drawing')
 		->setPath('/path/to/drawing.filename');
 		
-Drawing
+Table
 -------
 
-To create a table, use `createTableShape` method of slide.
-
-.. code-block:: php
-	$table = $slide->createTableShape($columns);	
+The Table has now :ref:`its own page <shapes_table>`. 

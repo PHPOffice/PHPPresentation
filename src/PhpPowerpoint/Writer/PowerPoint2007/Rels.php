@@ -17,14 +17,16 @@
 
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPowerpoint\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPowerpoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
 use PhpOffice\PhpPowerpoint\Shape\RichText;
 use PhpOffice\PhpPowerpoint\Shape\RichText\TextElement;
-use PhpOffice\PhpPowerpoint\Shared\XMLWriter;
+use PhpOffice\PhpPowerpoint\Shape\Table as ShapeTable;
 use PhpOffice\PhpPowerpoint\Slide as SlideElement;
 use PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
@@ -69,11 +71,11 @@ class Rels extends AbstractPart
     /**
      * Write presentation relationships to XML format
      *
-     * @param  PHPPowerPoint $pPHPPowerPoint
+     * @param  PhpPowerpoint $pPHPPowerPoint
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writePresentationRelationships(PHPPowerPoint $pPHPPowerPoint = null)
+    public function writePresentationRelationships(PhpPowerpoint $pPHPPowerPoint)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
@@ -105,8 +107,12 @@ class Rels extends AbstractPart
         // Relationships with slides
         $slideCount = $pPHPPowerPoint->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
-            $this->writeRelationship($objWriter, ($i + $relationId), 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slides/slide' . ($i + 1) . '.xml');
+            $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slides/slide' . ($i + 1) . '.xml');
         }
+
+        $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/presProps', 'presProps.xml');
+        $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/viewProps', 'viewProps.xml');
+        $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles', 'tableStyles.xml');
 
         $objWriter->endElement();
 
@@ -271,14 +277,15 @@ class Rels extends AbstractPart
 
         // Starting relation id
         $relId = 1;
+        $idxSlide = $pSlide->getParent()->getIndex($pSlide);
 
         // Write slideLayout relationship
         $parentWriter = $this->getParentWriter();
         if ($parentWriter instanceof PowerPoint2007) {
             $layoutPack  = $parentWriter->getLayoutPack();
-            $layoutIndex = $layoutPack->findlayoutIndex($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
+            $layoutId = $layoutPack->findlayoutId($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
     
-            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . ($layoutIndex + 1) . '.xml');
+            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
         }
 
         // Write drawing relationships?
@@ -300,6 +307,26 @@ class Rels extends AbstractPart
                     $iterator->current()->relationId = 'rId' . $relId;
 
                     ++$relId;
+                } elseif ($iterator->current() instanceof Group) {
+                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        if ($iterator2->current() instanceof ShapeDrawing || $iterator2->current() instanceof MemoryDrawing) {
+                            // Write relationship for image drawing
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator2->current()->getIndexedFilename()));
+
+                            $iterator2->current()->relationId = 'rId' . $relId;
+
+                            ++$relId;
+                        } elseif ($iterator2->current() instanceof ShapeChart) {
+                            // Write relationship for chart drawing
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator2->current()->getIndexedFilename());
+
+                            $iterator2->current()->relationId = 'rId' . $relId;
+
+                            ++$relId;
+                        }
+                        $iterator2->next();
+                    }
                 }
 
                 $iterator->next();
@@ -348,9 +375,130 @@ class Rels extends AbstractPart
                         }
                     }
                 }
+                
+                // Hyperlink in table
+                if ($iterator->current() instanceof ShapeTable) {
+                    // Rows
+                    $countRows = count($iterator->current()->getRows());
+                    for ($row = 0; $row < $countRows; $row++) {
+                        // Cells in rows
+                        $countCells = count($iterator->current()->getRow($row)->getCells());
+                        for ($cell = 0; $cell < $countCells; $cell++) {
+                            $currentCell = $iterator->current()->getRow($row)->getCell($cell);
+                            // Paragraphs in cell
+                            foreach ($currentCell->getParagraphs() as $paragraph) {
+                                // RichText in paragraph
+                                foreach ($paragraph->getRichTextElements() as $element) {
+                                    // Run or Text in RichText
+                                    if ($element instanceof Run || $element instanceof TextElement) {
+                                        if ($element->hasHyperlink()) {
+                                            // Write relationship for hyperlink
+                                            $hyperlink               = $element->getHyperlink();
+                                            $hyperlink->relationId = 'rId' . $relId;
+                            
+                                            if (!$hyperlink->isInternal()) {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                            } else {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                            }
+                            
+                                            ++$relId;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if ($iterator->current() instanceof Group) {
+                    $iterator2 = $pSlide->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        // Hyperlink on shape
+                        if ($iterator2->current()->hasHyperlink()) {
+                            // Write relationship for hyperlink
+                            $hyperlink             = $iterator2->current()->getHyperlink();
+                            $hyperlink->relationId = 'rId' . $relId;
+
+                            if (!$hyperlink->isInternal()) {
+                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                            } else {
+                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                            }
+
+                            ++$relId;
+                        }
+
+                        // Hyperlink on rich text run
+                        if ($iterator2->current() instanceof RichText) {
+                            foreach ($iterator2->current()->getParagraphs() as $paragraph) {
+                                foreach ($paragraph->getRichTextElements() as $element) {
+                                    if ($element instanceof Run || $element instanceof TextElement) {
+                                        if ($element->hasHyperlink()) {
+                                            // Write relationship for hyperlink
+                                            $hyperlink              = $element->getHyperlink();
+                                            $hyperlink->relationId = 'rId' . $relId;
+
+                                            if (!$hyperlink->isInternal()) {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                            } else {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                            }
+
+                                            ++$relId;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        // Hyperlink in table
+                        if ($iterator2->current() instanceof ShapeTable) {
+                            // Rows
+                            $countRows = count($iterator2->current()->getRows());
+                            for ($row = 0; $row < $countRows; $row++) {
+                                // Cells in rows
+                                $countCells = count($iterator2->current()->getRow($row)->getCells());
+                                for ($cell = 0; $cell < $countCells; $cell++) {
+                                    $currentCell = $iterator2->current()->getRow($row)->getCell($cell);
+                                    // Paragraphs in cell
+                                    foreach ($currentCell->getParagraphs() as $paragraph) {
+                                        // RichText in paragraph
+                                        foreach ($paragraph->getRichTextElements() as $element) {
+                                            // Run or Text in RichText
+                                            if ($element instanceof Run || $element instanceof TextElement) {
+                                                if ($element->hasHyperlink()) {
+                                                    // Write relationship for hyperlink
+                                                    $hyperlink               = $element->getHyperlink();
+                                                    $hyperlink->relationId = 'rId' . $relId;
+                            
+                                                    if (!$hyperlink->isInternal()) {
+                                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                                    } else {
+                                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                                    }
+                            
+                                                    ++$relId;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        
+                        $iterator2->next();
+                    }
+                    
+                }
 
                 $iterator->next();
             }
+        }
+        
+        if ($pSlide->getNote()->getShapeCollection()->count() > 0) {
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide', '../notesSlides/notesSlide'.($idxSlide + 1).'.xml');
+            ++$relId;
         }
 
         $objWriter->endElement();
@@ -392,7 +540,7 @@ class Rels extends AbstractPart
     /**
      * Write relationship
      *
-     * @param  \PhpOffice\PhpPowerpoint\Shared\XMLWriter $objWriter   XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter   XML Writer
      * @param  int                            $pId         Relationship ID. rId will be prepended!
      * @param  string                         $pType       Relationship type
      * @param  string                         $pTarget     Relationship target

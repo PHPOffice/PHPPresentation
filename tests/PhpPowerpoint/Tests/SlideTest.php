@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Tests;
 
 use PhpOffice\PhpPowerpoint\Slide;
+use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 
 /**
@@ -27,6 +28,24 @@ use PhpOffice\PhpPowerpoint\PhpPowerpoint;
  */
 class SlideTest extends \PHPUnit_Framework_TestCase
 {
+    public function testExtents()
+    {
+        $object = new Slide();
+        $this->assertNotNull($object->getExtentX());
+        
+        $object = new Slide();
+        $this->assertNotNull($object->getExtentY());
+    }
+    
+    public function testOffset()
+    {
+        $object = new Slide();
+        $this->assertNotNull($object->getOffsetX());
+        
+        $object = new Slide();
+        $this->assertNotNull($object->getOffsetY());
+    }
+    
     public function testParent()
     {
         $object = new Slide();
@@ -57,5 +76,24 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $object->getSlideMasterId());
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->setSlideMasterId($value));
         $this->assertEquals($value, $object->getSlideMasterId());
+    }
+    
+    public function testGroup()
+    {
+        $object = new Slide();
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Group', $object->createGroup());
+    }
+
+    public function testTransition()
+    {
+        $object = new Slide();
+        $oTransition = new Transition();
+        $this->assertNull($object->getTransition());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->setTransition());
+        $this->assertNull($object->getTransition());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->setTransition($oTransition));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide\\Transition', $object->getTransition());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Slide', $object->setTransition(null));
+        $this->assertNull($object->getTransition());
     }
 }

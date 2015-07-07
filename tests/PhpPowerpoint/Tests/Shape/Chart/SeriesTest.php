@@ -40,6 +40,24 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $object->getValues());
         $this->assertEmpty($object->getValues());
     }
+    
+    public function testDataLabelNumFormat()
+    {
+        $object = new Series();
+        
+        $this->assertEmpty($object->getDlblNumFormat());
+        $this->assertFalse($object->hasDlblNumFormat());
+        
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Series', $object->setDlblNumFormat('#%'));
+        
+        $this->assertEquals('#%', $object->getDlblNumFormat());
+        $this->assertTrue($object->hasDlblNumFormat());
+        
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Series', $object->setDlblNumFormat());
+        
+        $this->assertEmpty($object->getDlblNumFormat());
+        $this->assertFalse($object->hasDlblNumFormat());
+    }
 
     public function testDataPointFills()
     {
@@ -49,6 +67,16 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($object->getDataPointFills());
 
         $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->getDataPointFill(0));
+    }
+
+    public function testFill()
+    {
+        $object = new Series();
+
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Series', $object->setFill());
+        $this->assertNull($object->getFill());
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Shape\\Chart\\Series', $object->setFill(new Fill()));
+        $this->assertInstanceOf('PhpOffice\\PhpPowerpoint\\Style\\Fill', $object->getFill());
     }
 
     public function testFont()

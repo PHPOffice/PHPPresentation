@@ -22,7 +22,7 @@ use PhpOffice\PhpPowerpoint\ComparableInterface;
 /**
  * \PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D
  */
-class Bar3D extends AbstractType implements ComparableInterface
+class Bar3D extends AbstractTypeBar implements ComparableInterface
 {
     /**
      * Get hash code
@@ -31,10 +31,6 @@ class Bar3D extends AbstractType implements ComparableInterface
      */
     public function getHashCode()
     {
-        $hash = '';
-        foreach ($this->getData() as $series) {
-            $hash .= $series->getHashCode();
-        }
-        return md5($hash . __CLASS__);
+        return md5(parent::getHashCode() . __CLASS__);
     }
 }

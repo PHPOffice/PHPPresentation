@@ -17,12 +17,19 @@
 
 namespace PhpOffice\PhpPowerpoint\Tests\Writer\ODPresentation;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\RichText\Run;
+use PhpOffice\PhpPowerpoint\Slide\Transition;
 use PhpOffice\PhpPowerpoint\Style\Alignment;
+use PhpOffice\PhpPowerpoint\Style\Border;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
+use PhpOffice\PhpPowerpoint\Style\Color;
 use PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 use PhpOffice\PhpPowerpoint\Tests\TestHelperDOCX;
+use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPowerpoint\Style\PhpOffice\PhpPowerpoint\Style;
 
 /**
  * Test class for PhpOffice\PhpPowerpoint\Writer\ODPresentation\Manifest
@@ -39,6 +46,38 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         TestHelperDOCX::clear();
     }
 
+    public function testDrawingWithHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createDrawingShape();
+        $oShape->setPath(PHPPOWERPOINT_TESTS_BASE_DIR.'/resources/images/PHPPowerPointLogo.png');
+        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+    
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('https://github.com/PHPOffice/PHPPowerPoint/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+    }
+
+    public function testGroup()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShapeGroup = $oSlide->createGroup();
+        $oShape = $oShapeGroup->createDrawingShape();
+        $oShape->setPath(PHPPOWERPOINT_TESTS_BASE_DIR.'/resources/images/PHPPowerPointLogo.png');
+        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+    
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g/draw:frame/office:event-listeners/presentation:event-listener';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+    }
+    
     public function testList()
     {
         $phpPowerPoint = new PhpPowerpoint();
@@ -137,7 +176,22 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
 
-    public function testRichtextAutoShrink()
+    public function testNote()
+    {
+        $oPHPPowerPoint = new PhpPowerpoint();
+        $oSlide = $oPHPPowerPoint->getActiveSlide();
+        $oNote = $oSlide->getNote();
+        $oRichText = $oNote->createRichTextShape()->setHeight(300)->setWidth(600);
+        $oRichText->createTextRun('testNote');
+        
+        $pres = TestHelperDOCX::getDocument($oPHPPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:body/office:presentation/draw:page/presentation:notes';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $element = '/office:document-content/office:body/office:presentation/draw:page/presentation:notes/draw:frame/draw:text-box/text:p/text:span';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+    }
+
+    public function testRichTextAutoShrink()
     {
         $phpPowerPoint = new PhpPowerpoint();
         $oSlide = $phpPowerPoint->getActiveSlide();
@@ -166,6 +220,90 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
         $this->assertEquals('false', $pres->getElementAttribute($element, 'draw:auto-grow-height', 'content.xml'));
         $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
+    }
+
+    public function testRichTextBorder()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText1 = $oSlide->createRichTextShape();
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+
+        $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_NONE);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'svg:stroke-color', 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke', 'content.xml'));
+        $this->assertEquals('none', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
+        
+        $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_SINGLE);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'svg:stroke-color', 'content.xml'));
+        $this->assertEquals('#'.$oRichText1->getBorder()->getColor()->getRGB(), $pres->getElementAttribute($element, 'svg:stroke-color', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertStringEndsWith('cm', $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertStringStartsWith((string) number_format(CommonDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''), $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke', 'content.xml'));
+        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'draw:stroke-dash', 'content.xml'));
+
+        $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_DASH);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertEquals('dash', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke-dash', 'content.xml'));
+        $this->assertStringStartsWith('strokeDash_', $pres->getElementAttribute($element, 'draw:stroke-dash', 'content.xml'));
+        $this->assertStringEndsWith($oRichText1->getBorder()->getDashStyle(), $pres->getElementAttribute($element, 'draw:stroke-dash', 'content.xml'));
+    }
+    
+    public function testRichTextShadow()
+    {
+        $randAlpha = rand(0, 100);
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+        $oRichText->getShadow()->setVisible(true)->setAlpha($randAlpha)->setBlurRadius(2);
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        for ($inc = 0; $inc <= 360; $inc += 45) {
+            $randDistance = rand(0, 100);
+            $oRichText->getShadow()->setDirection($inc)->setDistance($randDistance);
+            $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+            $this->assertTrue($pres->elementExists($element, 'content.xml'));
+            $this->assertEquals('visible', $pres->getElementAttribute($element, 'draw:shadow', 'content.xml'));
+            $this->assertEquals('none', $pres->getElementAttribute($element, 'style:mirror', 'content.xml'));
+            // Opacity
+            $this->assertStringStartsWith((string)(100 - $randAlpha), $pres->getElementAttribute($element, 'draw:shadow-opacity', 'content.xml'));
+            $this->assertStringEndsWith('%', $pres->getElementAttribute($element, 'draw:shadow-opacity', 'content.xml'));
+            // Color
+            $this->assertStringStartsWith('#', $pres->getElementAttribute($element, 'draw:shadow-color', 'content.xml'));
+            // X
+            $xOffset = $pres->getElementAttribute($element, 'draw:shadow-offset-x', 'content.xml');
+            if ($inc == 90 || $inc == 270) {
+                $this->assertEquals('0cm', $xOffset);
+            } else {
+                if ($inc > 90 && $inc < 270) {
+                    $this->assertEquals('-'.Drawing::pixelsToCentimeters($randDistance).'cm', $xOffset);
+                } else {
+                    $this->assertEquals(Drawing::pixelsToCentimeters($randDistance).'cm', $xOffset);
+                }
+            }
+            // Y
+            $yOffset = $pres->getElementAttribute($element, 'draw:shadow-offset-y', 'content.xml');
+            if ($inc == 0 || $inc == 180 || $inc == 360) {
+                $this->assertEquals('0cm', $yOffset);
+            } else {
+                if (($inc > 0 && $inc < 180) || $inc == 360) {
+                    $this->assertEquals(Drawing::pixelsToCentimeters($randDistance).'cm', $yOffset);
+                } else {
+                    $this->assertEquals('-'.Drawing::pixelsToCentimeters($randDistance).'cm', $yOffset);
+                }
+            }
+        }
     }
     
     public function testStyleAlignment()
@@ -257,6 +395,32 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
     }
     
+    public function testTableCellFill()
+    {
+        $oColor = new Color();
+        $oColor->setRGB(Color::COLOR_BLUE);
+        
+        $oFill = new Fill();
+        $oFill->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
+        
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape();
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oCell->setFill($oFill);
+        
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('table-cell', $pres->getElementAttribute($element, 'style:family', 'content.xml'));
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
+        $this->assertStringStartsWith('#', $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+        $this->assertStringEndsWith($oColor->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+    }
+    
     public function testTableWithColspan()
     {
         $value = rand(2, 100);
@@ -274,6 +438,28 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $pres->getElementAttribute($element, 'table:number-columns-spanned', 'content.xml'));
     }
     
+    /**
+     * @link : https://github.com/PHPOffice/PHPPowerPoint/issues/70
+     */
+    public function testTableWithHyperlink()
+    {
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oShape = $oSlide->createTableShape(4);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oTextRun = $oCell->createTextRun('AAA');
+        $oHyperlink = $oTextRun->getHyperlink();
+        $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPowerPoint/');
+    
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+    
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('https://github.com/PHPOffice/PHPPowerPoint/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+    }
+    
     public function testTableWithText()
     {
         $oRun = new Run();
@@ -285,10 +471,214 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oRow = $oShape->createRow();
         $oCell = $oRow->getCell();
         $oCell->addText($oRun);
+        $oCell->createBreak();
         
         $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('Test', $pres->getElement($element, 'content.xml')->nodeValue);
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:line-break';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+    }
+
+    public function testTransition()
+    {
+        $value = rand(1000, 5000);
+
+        $oTransition = new Transition();
+
+        $phpPowerPoint = new PhpPowerpoint();
+        $oSlide = $phpPowerPoint->getActiveSlide();
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'presentation:duration', 'content.xml'));
+
+        $oTransition->setTimeTrigger(true, $value);
+        $oSlide->setTransition($oTransition);
+
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'presentation:duration', 'content.xml'));
+        $this->assertStringStartsWith('PT', $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
+        $this->assertStringEndsWith('S', $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
+        $this->assertContains(number_format($value / 1000, 6, '.', ''), $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
+        $this->assertContains('automatic', $pres->getElementAttribute($element, 'presentation:transition-type', 'content.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_FAST);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertContains('fast', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_MEDIUM);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertContains('medium', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+
+        $oTransition->setSpeed(Transition::SPEED_SLOW);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertContains('slow', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+
+        $rcTransition = new \ReflectionClass('PhpOffice\PhpPowerpoint\Slide\Transition');
+        $arrayConstants = $rcTransition->getConstants();
+        foreach ($arrayConstants as $key => $value) {
+            if (strpos($key, 'TRANSITION_') !== 0) {
+                continue;
+            }
+
+            $oTransition->setTransitionType($rcTransition->getConstant($key));
+            $oSlide->setTransition($oTransition);
+            $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+            switch ($key) {
+                case 'TRANSITION_BLINDS_HORIZONTAL':
+                    $this->assertContains('horizontal-stripes', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_BLINDS_VERTICAL':
+                    $this->assertContains('vertical-stripes', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CHECKER_HORIZONTAL':
+                    $this->assertContains('horizontal-checkerboard', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CHECKER_VERTICAL':
+                    $this->assertContains('vertical-checkerboard', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CIRCLE_HORIZONTAL':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CIRCLE_VERTICAL':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COMB_HORIZONTAL':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COMB_VERTICAL':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_DOWN':
+                    $this->assertContains('uncover-to-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT':
+                    $this->assertContains('uncover-to-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT_DOWN':
+                    $this->assertContains('uncover-to-lowerleft', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_LEFT_UP':
+                    $this->assertContains('uncover-to-upperleft', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT':
+                    $this->assertContains('uncover-to-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT_DOWN':
+                    $this->assertContains('uncover-to-lowerright', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_RIGHT_UP':
+                    $this->assertContains('uncover-to-upperright', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_COVER_UP':
+                    $this->assertContains('uncover-to-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_CUT':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_DIAMOND':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_DISSOLVE':
+                    $this->assertContains('dissolve', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_FADE':
+                    $this->assertContains('fade-from-center', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_NEWSFLASH':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PLUS':
+                    $this->assertContains('close', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PULL_DOWN':
+                    $this->assertContains('stretch-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PULL_LEFT':
+                    $this->assertContains('stretch-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PULL_RIGHT':
+                    $this->assertContains('stretch-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PULL_UP':
+                    $this->assertContains('stretch-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PUSH_DOWN':
+                    $this->assertContains('roll-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PUSH_LEFT':
+                    $this->assertContains('roll-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PUSH_RIGHT':
+                    $this->assertContains('roll-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_PUSH_UP':
+                    $this->assertContains('roll-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_RANDOM':
+                    $this->assertContains('random', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_RANDOMBAR_HORIZONTAL':
+                    $this->assertContains('horizontal-lines', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_RANDOMBAR_VERTICAL':
+                    $this->assertContains('vertical-lines', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_IN_HORIZONTAL':
+                    $this->assertContains('close-horizontal', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_OUT_HORIZONTAL':
+                    $this->assertContains('open-horizontal', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_IN_VERTICAL':
+                    $this->assertContains('close-vertical', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_SPLIT_OUT_VERTICAL':
+                    $this->assertContains('open-vertical', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_LEFT_DOWN':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_LEFT_UP':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_RIGHT_DOWN':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_STRIPS_RIGHT_UP':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WEDGE':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WIPE_DOWN':
+                    $this->assertContains('fade-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WIPE_LEFT':
+                    $this->assertContains('fade-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WIPE_RIGHT':
+                    $this->assertContains('fade-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_WIPE_UP':
+                    $this->assertContains('fade-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_ZOOM_IN':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+                case 'TRANSITION_ZOOM_OUT':
+                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    break;
+            }
+        }
+
+        $oTransition->setManualTrigger(true);
+        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'ODPresentation');
+        $this->assertContains('manual', $pres->getElementAttribute($element, 'presentation:transition-type', 'content.xml'));
     }
 }
