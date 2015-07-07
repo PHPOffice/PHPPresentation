@@ -120,24 +120,24 @@
             <i class="icon-custom icon-method"></i> Methods
             <ul>
                                                                                                     <li class="method public">
-        <a href="#method_createWriter" title="createWriter :: Create writer">
-            <span class="description">Create writer</span><pre>createWriter</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public">
         <a href="#method_createReader" title="createReader :: Create reader">
             <span class="description">Create reader</span><pre>createReader</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_createWriter" title="createWriter :: Create writer">
+            <span class="description">Create writer</span><pre>createWriter</pre>
+        </a>
+    </li>
+
+                                                                                                                                                                <li class="method public">
         <a href="#method_load" title="load :: Loads PHPPowerPoint from file using automatic \PhpOffice\PhpPowerpoint\Reader\ReaderInterface resolution">
             <span class="description">Loads PHPPowerPoint from file using automatic \PhpOffice\PhpPowerpoint\Reader\ReaderInterface resolution</span><pre>load</pre>
         </a>
     </li>
 
-                                                                                                                                                                </ul>
+                                                                                                        </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
@@ -145,14 +145,14 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                        <li class="method private">
-                            <a href="#method_loadClass" title="loadClass :: Load class">
-                                <span class="description">Load class</span><pre>loadClass</pre>
-                            </a>
-                        </li>
-                                                                                <li class="method private">
+                                                                                                                                                    <li class="method private">
                             <a href="#method_isConcreteClass" title="isConcreteClass :: Is it a concrete class?">
                                 <span class="description">Is it a concrete class?</span><pre>isConcreteClass</pre>
+                            </a>
+                        </li>
+                                                                                                                    <li class="method private">
+                            <a href="#method_loadClass" title="loadClass :: Load class">
+                                <span class="description">Load class</span><pre>loadClass</pre>
                             </a>
                         </li>
                                                 </ul>
@@ -178,15 +178,53 @@
                         
                     </div>
                     <table class="table table-bordered">
-                                                                                                                                                                                                        </table>
+                                                                                    <tr>
+                                    <th>
+                                        package
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Default</p>
+                                    </td>
+                                </tr>
+                                                                                                                                                                                </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
-                                                                <a id="method_createWriter"></a>
+                                                                <a id="method_createReader"></a>
+                        <div class="element clickable method public  method_createReader" data-toggle="collapse" data-target=".method_createReader .collapse">
+                            <h2>Create reader</h2>
+                            <pre>createReader(string $name = &#039;&#039;) : \PhpOffice\PhpPowerpoint\Reader\ReaderInterface</pre>
+                            <div class="labels">
+                                                                <span class="label">static</span>                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$name</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Reader.ReaderInterface.html">\PhpOffice\PhpPowerpoint\Reader\ReaderInterface</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_createWriter"></a>
                         <div class="element clickable method public  method_createWriter" data-toggle="collapse" data-target=".method_createWriter .collapse">
                             <h2>Create writer</h2>
                             <pre>createWriter(\PhpOffice\PhpPowerpoint\PhpPowerpoint $phpPowerPoint, string $name = &#039;PowerPoint2007&#039;) : \PhpOffice\PhpPowerpoint\Writer\WriterInterface</pre>
                             <div class="labels">
                                                                 <span class="label">static</span>                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -208,13 +246,16 @@
                                         <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a></code><p></p>
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_createReader"></a>
-                        <div class="element clickable method public  method_createReader" data-toggle="collapse" data-target=".method_createReader .collapse">
-                            <h2>Create reader</h2>
-                            <pre>createReader(string $name = &#039;&#039;) : \PhpOffice\PhpPowerpoint\Reader\ReaderInterface</pre>
+                                            <a id="method_isConcreteClass"></a>
+                        <div class="element clickable method private  method_isConcreteClass" data-toggle="collapse" data-target=".method_isConcreteClass .collapse">
+                            <h2>Is it a concrete class?</h2>
+                            <pre>isConcreteClass(string $class) : boolean</pre>
                             <div class="labels">
                                                                 <span class="label">static</span>                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -224,14 +265,15 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$name</h4>
+                                                <h4>$class</h4>
                                                 <code>string</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Reader.ReaderInterface.html">\PhpOffice\PhpPowerpoint\Reader\ReaderInterface</a></code><p></p>
+                                        <code>boolean</code><p></p>
                                                                     </div>
                             </div>
+
                         </div>
                                             <a id="method_load"></a>
                         <div class="element clickable method public  method_load" data-toggle="collapse" data-target=".method_load .collapse">
@@ -239,6 +281,8 @@
                             <pre>load(string $pFilename) : \PhpOffice\PhpPowerpoint\PHPPowerPoint</pre>
                             <div class="labels">
                                                                 <span class="label">static</span>                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -265,13 +309,16 @@
                                         <code>\PhpOffice\PhpPowerpoint\PHPPowerPoint</code><p></p>
                                                                     </div>
                             </div>
+
                         </div>
                                             <a id="method_loadClass"></a>
                         <div class="element clickable method private  method_loadClass" data-toggle="collapse" data-target=".method_loadClass .collapse">
                             <h2>Load class</h2>
-                            <pre>loadClass(string $class, string $name, string $type, \PhpOffice\PhpPowerpoint\PhpPowerpoint $phpPowerPoint = null) </pre>
+                            <pre>loadClass(string $class, string $name, string $type, \PhpOffice\PhpPowerpoint\PhpPowerpoint $phpPowerPoint = null) : </pre>
                             <div class="labels">
                                                                 <span class="label">static</span>                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -306,32 +353,11 @@
                                                 <code><a href="../classes/PhpOffice.PhpPowerpoint.PhpPowerpoint.html">\PhpOffice\PhpPowerpoint\PhpPowerpoint</a></code><p></p>
                                             </div>
                                                                             
-                                                                    </div>
-                            </div>
-                        </div>
-                                            <a id="method_isConcreteClass"></a>
-                        <div class="element clickable method private  method_isConcreteClass" data-toggle="collapse" data-target=".method_isConcreteClass .collapse">
-                            <h2>Is it a concrete class?</h2>
-                            <pre>isConcreteClass(string $class) : bool</pre>
-                            <div class="labels">
-                                                                <span class="label">static</span>                                                                                                                            </div>
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$class</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                            
                                                                             <h3>Response</h3>
-                                        <code>bool</code><p></p>
+                                        <code></code><p></p>
                                                                     </div>
                             </div>
+
                         </div>
                     
                     
@@ -382,7 +408,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 24 Sep 2014 14:32:32 +0000.<br/>
+            generated on Tue, 07 Jul 2015 09:23:44 +0000.<br/>
     </footer>
     </body>
 </html>

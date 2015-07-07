@@ -9,7 +9,7 @@ function initializeContents()
     // hide all more buttons because they are not needed with JS
     $(".element a.more").hide();
 
-    $(".clickable.class,.clickable.interface").click(function() {
+    $(".clickable.class,.clickable.interface,.clickable.trait").click(function() {
         document.location = $("a.more", this).attr('href');
     });
 
@@ -17,7 +17,7 @@ function initializeContents()
     // do a background color change on hover to emphasize the clickability eveb more
     // we do not use CSS for this because when JS is disabled this behaviour does not
     // apply and we do not want the hover
-    $(".element.method,.element.function,.element.class.clickable,.element.interface.clickable,.element.property.clickable")
+    $(".element.method,.element.function,.element.class.clickable,.element.interface.clickable,.element.trait.clickable,.element.property.clickable")
         .css("cursor", "pointer")
         .hover(function() {
             $(this).css('backgroundColor', '#F8FDF6')
@@ -46,27 +46,70 @@ function initializeContents()
         .find('i').click(function(){ $(this).parent().click(); });
 
     // set the events for the visibility buttons and enable by default.
-    $('.visibility button.public').click(function(){
-        $('.element.public,.side-nav li.public').toggle($(this).hasClass('active'));
-    }).click();
-    $('.visibility button.protected').click(function(){
-        $('.element.protected,.side-nav li.protected').toggle($(this).hasClass('active'));
-    }).click();
-    $('.visibility button.private').click(function(){
-        $('.element.private,.side-nav li.private').toggle($(this).hasClass('active'));
-    }).click();
-    $('.visibility button.inherited').click(function(){
-        $('.element.inherited,.side-nav li.inherited').toggle($(this).hasClass('active'));
-    }).click();
+    function toggleVisibility(event)
+    {
+        // because the active class is toggled _after_ this event we toggle it for the duration of this event. This
+        // will make the next piece of code generic
+        if (event) {
+            $(this).toggleClass('active');
+        }
 
-    $('.type-filter button.critical').click(function(){
+        $('.element.public,.side-nav li.public').toggle($('.visibility button.public').hasClass('active'));
+        $('.element.protected,.side-nav li.protected').toggle($('.visibility button.protected').hasClass('active'));
+        $('.element.private,.side-nav li.private').toggle($('.visibility button.private').hasClass('active'));
+        $('.element.public.inherited,.side-nav li.public.inherited').toggle(
+            $('.visibility button.public').hasClass('active') && $('.visibility button.inherited').hasClass('active')
+        );
+        $('.element.protected.inherited,.side-nav li.protected.inherited').toggle(
+            $('.visibility button.protected').hasClass('active') && $('.visibility button.inherited').hasClass('active')
+        );
+        $('.element.private.inherited,.side-nav li.private.inherited').toggle(
+            $('.visibility button.private').hasClass('active') && $('.visibility button.inherited').hasClass('active')
+        );
+
+        // and untoggle the active class again so that bootstrap's default handling keeps working
+        if (event) {
+            $(this).toggleClass('active');
+        }
+    }
+    $('.visibility button.public').on("click", toggleVisibility);
+    $('.visibility button.protected').on("click", toggleVisibility);
+    $('.visibility button.private').on("click", toggleVisibility);
+    $('.visibility button.inherited').on("click", toggleVisibility);
+    toggleVisibility();
+
+    $('.type-filter button.critical').click(function() {
+        packageContentDivs = $('.package-contents');
+        packageContentDivs.show();
         $('tr.critical').toggle($(this).hasClass('active'));
+        packageContentDivs.each(function() {
+            var rowCount = $(this).find('tbody tr:visible').length;
+
+            $(this).find('.badge-info').html(rowCount);
+            $(this).toggle(rowCount > 0);
+        });
     });
     $('.type-filter button.error').click(function(){
+        packageContentDivs = $('.package-contents');
+        packageContentDivs.show();
         $('tr.error').toggle($(this).hasClass('active'));
+        packageContentDivs.each(function() {
+            var rowCount = $(this).find('tbody tr:visible').length;
+
+            $(this).find('.badge-info').html(rowCount);
+            $(this).toggle(rowCount > 0);
+        });
     });
     $('.type-filter button.notice').click(function(){
+        packageContentDivs = $('.package-contents');
+        packageContentDivs.show();
         $('tr.notice').toggle($(this).hasClass('active'));
+        packageContentDivs.each(function() {
+            var rowCount = $(this).find('tbody tr:visible').length;
+
+            $(this).find('.badge-info').html(rowCount);
+            $(this).toggle(rowCount > 0);
+        });
     });
 
     $('.view button.details').click(function(){

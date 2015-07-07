@@ -119,38 +119,61 @@
         <li class="nav-header">
             <i class="icon-custom icon-method"></i> Methods
             <ul>
-                                                                                                    <li class="method public">
-        <a href="#method_writePart" title="writePart :: Write Meta file to XML format">
-            <span class="description">Write Meta file to XML format</span><pre>writePart</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public inherited">
-        <a href="#method_setParentWriter" title="setParentWriter :: Set parent WriterInterface object">
-            <span class="description">Set parent WriterInterface object</span><pre>setParentWriter</pre>
-        </a>
-    </li>
-
-                                                                                                        <li class="method public inherited">
+                                                                                                    <li class="method public inherited">
         <a href="#method_getParentWriter" title="getParentWriter :: Get parent WriterInterface object">
             <span class="description">Get parent WriterInterface object</span><pre>getParentWriter</pre>
         </a>
     </li>
 
-                                                                                                        </ul>
+                                                                                                                                                                <li class="method public inherited">
+        <a href="#method_setParentWriter" title="setParentWriter :: Set parent WriterInterface object">
+            <span class="description">Set parent WriterInterface object</span><pre>setParentWriter</pre>
+        </a>
+    </li>
+
+                                                                                                                                                                <li class="method public">
+        <a href="#method_writeGroupStyle" title="writeGroupStyle :: Writes the style information for a group of shapes">
+            <span class="description">Writes the style information for a group of shapes</span><pre>writeGroupStyle</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_writePart" title="writePart :: Write Meta file to XML format">
+            <span class="description">Write Meta file to XML format</span><pre>writePart</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_writeRichTextStyle" title="writeRichTextStyle :: Write the default style information for a RichText shape">
+            <span class="description">Write the default style information for a RichText shape</span><pre>writeRichTextStyle</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_writeTableStyle" title="writeTableStyle :: Write the default style information for a Table shape">
+            <span class="description">Write the default style information for a Table shape</span><pre>writeTableStyle</pre>
+        </a>
+    </li>
+
+                                                </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                        <li class="method protected inherited">
+                                                                                                                <li class="method protected inherited">
                             <a href="#method_getXMLWriter" title="getXMLWriter :: Get XML Writer">
                                 <span class="description">Get XML Writer</span><pre>getXMLWriter</pre>
                             </a>
                         </li>
-                                                </ul>
+                                                                                                                    <li class="method protected">
+                            <a href="#method_writeGradientFill" title="writeGradientFill :: Write the gradient style">
+                                <span class="description">Write the gradient style</span><pre>writeGradientFill</pre>
+                            </a>
+                        </li>
+                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -174,15 +197,26 @@
                         
                     </div>
                     <table class="table table-bordered">
-                                                                                                                                                                                                        </table>
+                                                                                    <tr>
+                                    <th>
+                                        package
+                                                                            </th>
+                                    <td>
+                                                                                    
+                                                                                <p>Default</p>
+                                    </td>
+                                </tr>
+                                                                                                                                                                                </table>
 
                     <h3><i class="icon-custom icon-method"></i> Methods</h3>
-                                                                <a id="method_writePart"></a>
-                        <div class="element clickable method public  method_writePart" data-toggle="collapse" data-target=".method_writePart .collapse">
-                            <h2>Write Meta file to XML format</h2>
-                            <pre>writePart(\PhpOffice\PhpPowerpoint\Writer\ODPresentation\PHPPowerPoint $pPHPPowerPoint) : string</pre>
+                                                                <a id="method_getParentWriter"></a>
+                        <div class="element clickable method public  method_getParentWriter inherited" data-toggle="collapse" data-target=".method_getParentWriter .collapse">
+                            <h2>Get parent WriterInterface object</h2>
+                            <pre>getParentWriter() : \PhpOffice\PhpPowerpoint\Writer\WriterInterface</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -197,18 +231,55 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
                                                                             </table>
 
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$pPHPPowerPoint</h4>
-                                                <code>\PhpOffice\PhpPowerpoint\Writer\ODPresentation\PHPPowerPoint</code><p></p>
-                                            </div>
-                                                                            
+                                    
                                                                             <h3>Response</h3>
-                                        <code>string</code><p><p>XML Output</p></p>
+                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a></code><p></p>
                                                                     </div>
                             </div>
+
+                        </div>
+                                            <a id="method_getXMLWriter"></a>
+                        <div class="element clickable method protected  method_getXMLWriter inherited" data-toggle="collapse" data-target=".method_getXMLWriter .collapse">
+                            <h2>Get XML Writer</h2>
+                            <pre>getXMLWriter() </pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
                         </div>
                                             <a id="method_setParentWriter"></a>
                         <div class="element clickable method public  method_setParentWriter inherited" data-toggle="collapse" data-target=".method_setParentWriter .collapse">
@@ -216,6 +287,8 @@
                             <pre>setParentWriter(\PhpOffice\PhpPowerpoint\Writer\WriterInterface $pWriter = null) </pre>
                             <div class="labels">
                                 <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -247,13 +320,88 @@
                                                                             
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_getParentWriter"></a>
-                        <div class="element clickable method public  method_getParentWriter inherited" data-toggle="collapse" data-target=".method_getParentWriter .collapse">
-                            <h2>Get parent WriterInterface object</h2>
-                            <pre>getParentWriter() : \PhpOffice\PhpPowerpoint\Writer\WriterInterface</pre>
+                                            <a id="method_writeGradientFill"></a>
+                        <div class="element clickable method protected  method_writeGradientFill" data-toggle="collapse" data-target=".method_writeGradientFill .collapse">
+                            <h2>Write the gradient style</h2>
+                            <pre>writeGradientFill(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Style\Fill $oFill) </pre>
                             <div class="labels">
-                                <span class="label">inherited</span>                                                                                                                                                            </div>
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oFill</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Style.Fill.html">\PhpOffice\PhpPowerpoint\Style\Fill</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeGroupStyle"></a>
+                        <div class="element clickable method public  method_writeGroupStyle" data-toggle="collapse" data-target=".method_writeGroupStyle .collapse">
+                            <h2>Writes the style information for a group of shapes</h2>
+                            <pre>writeGroupStyle(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\Group $group) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$group</h4>
+                                                <code>\PhpOffice\PhpPowerpoint\Shape\Group</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writePart"></a>
+                        <div class="element clickable method public  method_writePart" data-toggle="collapse" data-target=".method_writePart .collapse">
+                            <h2>Write Meta file to XML format</h2>
+                            <pre>writePart(\PhpOffice\PhpPowerpoint\Writer\ODPresentation\PHPPowerPoint $pPHPPowerPoint) : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -268,27 +416,28 @@
                                                                                                                                                                         
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
-                                    
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pPHPPowerPoint</h4>
+                                                <code>\PhpOffice\PhpPowerpoint\Writer\ODPresentation\PHPPowerPoint</code><p></p>
+                                            </div>
+                                                                            
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPowerpoint.Writer.WriterInterface.html">\PhpOffice\PhpPowerpoint\Writer\WriterInterface</a></code><p></p>
+                                        <code>string</code><p><p>XML Output</p></p>
                                                                     </div>
                             </div>
+
                         </div>
-                                            <a id="method_getXMLWriter"></a>
-                        <div class="element clickable method protected  method_getXMLWriter inherited" data-toggle="collapse" data-target=".method_getXMLWriter .collapse">
-                            <h2>Get XML Writer</h2>
-                            <pre>getXMLWriter() </pre>
+                                            <a id="method_writeRichTextStyle"></a>
+                        <div class="element clickable method public  method_writeRichTextStyle" data-toggle="collapse" data-target=".method_writeRichTextStyle .collapse">
+                            <h2>Write the default style information for a RichText shape</h2>
+                            <pre>writeRichTextStyle(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\RichText $shape) </pre>
                             <div class="labels">
-                                <span class="label">inherited</span>                                                                                                                                                            </div>
+                                                                                                                                                                                            </div>
+
+                            
                             <div class="row collapse">
                                 <div class="detail-description">
                                     <div class="long_description"></div>
@@ -301,6 +450,35 @@
                                                 <td>
                                                                                                     </td>
                                             </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$shape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.RichText.html">\PhpOffice\PhpPowerpoint\Shape\RichText</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeTableStyle"></a>
+                        <div class="element clickable method public  method_writeTableStyle" data-toggle="collapse" data-target=".method_writeTableStyle .collapse">
+                            <h2>Write the default style information for a Table shape</h2>
+                            <pre>writeTableStyle(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPowerpoint\Shape\Table $shape) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
                                                                                     <tr>
                                                 <th>
                                                     
@@ -310,13 +488,75 @@
                                             </tr>
                                                                             </table>
 
-                                    
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$shape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPowerpoint.Shape.Table.html">\PhpOffice\PhpPowerpoint\Shape\Table</a></code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
+
                         </div>
                     
                     
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
+                                                    <a id="property_arrayGradient"> </a>
+                            <div class="element clickable property  private property_arrayGradient" data-toggle="collapse" data-target=".property_arrayGradient .collapse">
+                                <h2>Stores font styles draw:gradient nodes</h2>
+                                <pre>arrayGradient : array</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_arrayStrokeDash"> </a>
+                            <div class="element clickable property  private property_arrayStrokeDash" data-toggle="collapse" data-target=".property_arrayStrokeDash .collapse">
+                                <h2>Stores font styles draw:stroke-dash nodes</h2>
+                                <pre>arrayStrokeDash : array</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>array</code>
+                                                                            </div>
+                                </div>
+                            </div>
                                                     <a id="property_parentWriter"> </a>
                             <div class="element clickable property  private property_parentWriter inherited" data-toggle="collapse" data-target=".property_parentWriter .collapse">
                                 <h2>Parent WriterInterface object</h2>
@@ -363,7 +603,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Wed, 24 Sep 2014 14:32:28 +0000.<br/>
+            generated on Tue, 07 Jul 2015 09:23:37 +0000.<br/>
     </footer>
     </body>
 </html>
