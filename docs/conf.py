@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = PhpPresentation'
+project = 'PhpPresentation'
 copyright = u'2014, PHPPresentation Contributors'
 
 # The version info for the project you're documenting, acts as replacement for
