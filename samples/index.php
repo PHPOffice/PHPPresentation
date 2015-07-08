@@ -11,11 +11,11 @@ $requirements = array(
 if (!CLI) {
 ?>
 <div class="jumbotron">
-<p>Welcome to PHPPowerPoint, a library written in pure PHP that provides a set of classes to write to and read from different document file formats, i.e. Office Open XML (.pptx) and Open Document Format (.odp).</p>
+<p>Welcome to PHPPresentation, a library written in pure PHP that provides a set of classes to write to and read from different document file formats, i.e. Office Open XML (.pptx) and Open Document Format (.odp).</p>
 <p>&nbsp;</p>
 <p>
-    <a class="btn btn-lg btn-primary" href="https://github.com/PHPOffice/PHPPowerPoint" role="button"><i class="fa fa-github fa-lg" title="GitHub"></i>  Fork us on Github!</a>
-    <a class="btn btn-lg btn-primary" href="http://phppowerpoint.readthedocs.org/en/develop/" role="button"><i class="fa fa-book fa-lg" title="Docs"></i>  Read the Docs</a>
+    <a class="btn btn-lg btn-primary" href="https://github.com/PHPOffice/PHPPresentation" role="button"><i class="fa fa-github fa-lg" title="GitHub"></i>  Fork us on Github!</a>
+    <a class="btn btn-lg btn-primary" href="http://phppresentation.readthedocs.org/en/develop/" role="button"><i class="fa fa-book fa-lg" title="Docs"></i>  Read the Docs</a>
 </p>
 </div>
 <?php

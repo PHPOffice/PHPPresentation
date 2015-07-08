@@ -1,16 +1,16 @@
 <?php
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Bullet;
-use PhpOffice\PhpPowerpoint\Style\Color;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Style\Color;
 
 include_once 'Sample_Header.php';
 
-function fnSlideRichText(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlideRichText(PhpPresentation $objPHPPresentation) {
 	// Create templated slide
 	echo date('H:i:s') . ' Create templated slide'.EOL;
-	$currentSlide = createTemplatedSlide($objPHPPowerPoint);
+	$currentSlide = createTemplatedSlide($objPHPPresentation);
 	
 	// Create a shape (text)
 	echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -34,10 +34,10 @@ function fnSlideRichText(PhpPowerpoint $objPHPPowerPoint) {
 	$textRun->getFont()->setColor(new Color( 'FF000000' ));
 }
 
-function fnSlideRichTextShadow(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlideRichTextShadow(PhpPresentation $objPHPPresentation) {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide'.EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
 
     // Create a shape (text)
     echo date('H:i:s') . ' Create a shape (rich text) with shadow'.EOL;
@@ -53,15 +53,15 @@ function fnSlideRichTextShadow(PhpPowerpoint $objPHPPowerPoint) {
     $textRun->getFont()->setColor(new Color( 'FF000000' ));
 }
 
-// Create new PHPPowerPoint object
-echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
-$objPHPPowerPoint = new PhpPowerpoint();
+// Create new PHPPresentation object
+echo date('H:i:s') . ' Create new PHPPresentation object'.EOL;
+$objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$oProperties = $objPHPPowerPoint->getProperties();
+$oProperties = $objPHPPresentation->getProperties();
 $oProperties->setCreator('PHPOffice')
-            ->setLastModifiedBy('PHPPowerPoint Team')
+            ->setLastModifiedBy('PHPPresentation Team')
             ->setTitle('Sample 11 Title')
             ->setSubject('Sample 11 Subject')
             ->setDescription('Sample 11 Description')
@@ -70,13 +70,13 @@ $oProperties->setCreator('PHPOffice')
 
 // Remove first slide
 echo date('H:i:s') . ' Remove first slide'.EOL;
-$objPHPPowerPoint->removeSlideByIndex(0);
+$objPHPPresentation->removeSlideByIndex(0);
 
-fnSlideRichText($objPHPPowerPoint);
-fnSlideRichTextShadow($objPHPPowerPoint);
+fnSlideRichText($objPHPPresentation);
+fnSlideRichTextShadow($objPHPPresentation);
 
 // Save file
-echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
 	include_once 'Sample_Footer.php';
 }

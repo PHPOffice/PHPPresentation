@@ -2,29 +2,29 @@
 
 include_once 'Sample_Header.php';
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Border;
-use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\Style\Fill;
-use PhpOffice\PhpPowerpoint\Style\Shadow;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
+use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Shadow;
 
-// Create new PHPPowerPoint object
-echo date('H:i:s') . ' Create new PHPPowerPoint object' . EOL;
-$objPHPPowerPoint = new PhpPowerpoint();
+// Create new PHPPresentation object
+echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;
+$objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties' . EOL;
-$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')->setLastModifiedBy('PHPPowerPoint Team')->setTitle('Sample 07 Title')->setSubject('Sample 07 Subject')->setDescription('Sample 07 Description')->setKeywords('office 2007 openxml libreoffice odt php')->setCategory('Sample Category');
+$objPHPPresentation->getProperties()->setCreator('PHPOffice')->setLastModifiedBy('PHPPresentation Team')->setTitle('Sample 07 Title')->setSubject('Sample 07 Subject')->setDescription('Sample 07 Description')->setKeywords('office 2007 openxml libreoffice odt php')->setCategory('Sample Category');
 
 // Remove first slide
 echo date('H:i:s') . ' Remove first slide' . EOL;
-$objPHPPowerPoint->removeSlideByIndex(0);
+$objPHPPresentation->removeSlideByIndex(0);
 
 // Set Style
 $oFill = new Fill();
@@ -47,7 +47,7 @@ $seriesData = array(
 
 // Create templated slide
 echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
-$currentSlide = createTemplatedSlide($objPHPPowerPoint);
+$currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
@@ -60,11 +60,11 @@ $lineChart->addSeries($series);
 // Create a shape (chart)
 echo date('H:i:s') . ' Create a shape (chart)' . EOL;
 $shape = $currentSlide->createChartShape();
-$shape->setName('PHPPowerPoint Daily Downloads')->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+$shape->setName('PHPPresentation Daily Downloads')->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
 $shape->setShadow($oShadow);
 $shape->setFill($oFill);
 $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-$shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+$shape->getTitle()->setText('PHPPresentation Daily Downloads');
 $shape->getTitle()->getFont()->setItalic(true);
 $shape->getPlotArea()->setType($lineChart);
 $shape->getView3D()->setRotationX(30);
@@ -74,7 +74,7 @@ $shape->getLegend()->getFont()->setItalic(true);
 
 // Create templated slide
 echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
-$currentSlide = createTemplatedSlide($objPHPPowerPoint);
+$currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
@@ -85,15 +85,15 @@ echo date('H:i:s') . ' Create a shape (chart)' . EOL;
 echo date('H:i:s') . ' Differences with previous : Values on right axis and Legend hidden' . EOL;
 $shape1 = clone $shape;
 $shape1->getLegend()->setVisible(false);
-$shape1->setName('PHPPowerPoint Weekly Downloads');
-$shape1->getTitle()->setText('PHPPowerPoint Weekly Downloads');
+$shape1->setName('PHPPresentation Weekly Downloads');
+$shape1->getTitle()->setText('PHPPresentation Weekly Downloads');
 $shape1->getPlotArea()->setType($lineChart1);
 $shape1->getPlotArea()->getAxisY()->setFormatCode('#,##0');
 $currentSlide->addShape($shape1);
 
 // Create templated slide
 echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
-$currentSlide = createTemplatedSlide($objPHPPowerPoint);
+$currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
@@ -107,14 +107,14 @@ echo date('H:i:s') . ' Create a shape (chart)' . EOL;
 echo date('H:i:s') . ' Differences with previous : Values on right axis and Legend hidden' . EOL;
 $shape2 = clone $shape;
 $shape2->getLegend()->setVisible(false);
-$shape2->setName('PHPPowerPoint Weekly Downloads');
-$shape2->getTitle()->setText('PHPPowerPoint Weekly Downloads');
+$shape2->setName('PHPPresentation Weekly Downloads');
+$shape2->getTitle()->setText('PHPPresentation Weekly Downloads');
 $shape2->getPlotArea()->setType($lineChart2);
 $shape2->getPlotArea()->getAxisY()->setFormatCode('#,##0');
 $currentSlide->addShape($shape2);
 
 // Save file
-echo EOL . write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
+echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 
 if (!CLI) {
 	include_once 'Sample_Footer.php';

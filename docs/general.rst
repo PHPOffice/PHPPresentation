@@ -6,25 +6,25 @@ General usage
 Basic example
 -------------
 
-The following is a basic example of the PHPPowerPoint library. More examples
+The following is a basic example of the PHPPresentation library. More examples
 are provided in the `samples
-folder <https://github.com/PHPOffice/PHPPowerPoint/tree/master/samples/>`__.
+folder <https://github.com/PHPOffice/PHPPresentation/tree/master/samples/>`__.
 
 .. code-block:: php
 
-    require_once 'src/PhpPowerpoint/Autoloader.php';
-    \PhpOffice\PhpPowerpoint\Autoloader::register();
+    require_once 'src/PhpPresentation/Autoloader.php';
+    \PhpOffice\PhpPresentation\Autoloader::register();
 
-    $objPHPPowerPoint = new PhpPowerpoint();
+    $objPHPPresentation = new PhpPresentation();
 
     // Create slide
-    $currentSlide = $objPHPPowerPoint->getActiveSlide();
+    $currentSlide = $objPHPPresentation->getActiveSlide();
 
     // Create a shape (drawing)
     $shape = $currentSlide->createDrawingShape();
-    $shape->setName('PHPPowerPoint logo')
-          ->setDescription('PHPPowerPoint logo')
-          ->setPath('./resources/phppowerpoint_logo.gif')
+    $shape->setName('PHPPresentation logo')
+          ->setDescription('PHPPresentation logo')
+          ->setPath('./resources/phppresentation_logo.gif')
           ->setHeight(36)
           ->setOffsetX(10)
           ->setOffsetY(10);
@@ -39,14 +39,14 @@ folder <https://github.com/PHPOffice/PHPPowerPoint/tree/master/samples/>`__.
           ->setOffsetX(170)
           ->setOffsetY(180);
     $shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
-    $textRun = $shape->createTextRun('Thank you for using PHPPowerPoint!');
+    $textRun = $shape->createTextRun('Thank you for using PHPPresentation!');
     $textRun->getFont()->setBold(true)
                        ->setSize(60)
                        ->setColor( new Color( 'FFE06B20' ) );
 
-    $oWriterPPTX = IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
+    $oWriterPPTX = IOFactory::createWriter($objPHPPresentation, 'PowerPoint2007');
     $oWriterPPTX->save(__DIR__ . "/sample.pptx");
-    $oWriterODP = IOFactory::createWriter($objPHPPowerPoint, 'ODPresentation');
+    $oWriterODP = IOFactory::createWriter($objPHPPresentation, 'ODPresentation');
     $oWriterODP->save(__DIR__ . "/sample.odp");
 
 Document information
@@ -57,7 +57,7 @@ name. Use the following functions:
 
 .. code-block:: php
 
-    $properties = $phpPowerpoint->getProperties();
+    $properties = $objPHPPresentation->getProperties();
     $properties->setCreator('My name');
     $properties->setCompany('My factory');
     $properties->setTitle('My title');

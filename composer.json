@@ -1,6 +1,6 @@
 {
-    "name": "phpoffice/phppowerpoint",
-    "description": "PHPPowerPoint - Read, Create and Write Presentations documents in PHP",
+    "name": "phpoffice/phppresentation",
+    "description": "PHPPresentation - Read, Create and Write Presentations documents in PHP",
     "keywords": ["PHP","PowerPoint","LibreOffice","pptx","ppt","odp","presentations"],
     "homepage": "http://phpoffice.github.io",
     "type": "library",
@@ -37,7 +37,7 @@
     },
     "autoload": {
         "psr-4": {
-            "PhpOffice\\PhpPowerpoint\\": "src/PhpPowerpoint/"
+            "PhpOffice\\PhpPresentation\\": "src/PhpPresentation/"
         }
     }
 }

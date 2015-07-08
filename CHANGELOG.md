@@ -6,6 +6,7 @@
 ### Bugfix
 
 ### Changes
+- PhpOffice\PhpPowerpoint becomes PhpOffice\PhpPresentation - @Progi1984 GH-25
 - PhpOffice\PhpPowerpoint\Style\Font::setStriketrough has been removed : Use setStrikethrough - @Progi1984
 - PhpOffice\PhpPowerpoint\AbstractShape::getSlide has been removed - @Progi1984
 - PhpOffice\PhpPowerpoint\AbstractShape::setSlide has been removed - @Progi1984

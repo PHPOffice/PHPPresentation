@@ -2,10 +2,10 @@
 /**
  * Header file
 */
-use PhpOffice\PhpPowerpoint\Autoloader;
-use PhpOffice\PhpPowerpoint\Settings;
-use PhpOffice\PhpPowerpoint\IOFactory;
-use PhpOffice\PhpPowerpoint\Slide;
+use PhpOffice\PhpPresentation\Autoloader;
+use PhpOffice\PhpPresentation\Settings;
+use PhpOffice\PhpPresentation\IOFactory;
+use PhpOffice\PhpPresentation\Slide;
 
 error_reporting(E_ALL);
 define('CLI', (PHP_SAPI == 'cli') ? true : false);
@@ -13,7 +13,7 @@ define('EOL', CLI ? PHP_EOL : '<br />');
 define('SCRIPT_FILENAME', basename($_SERVER['SCRIPT_FILENAME'], '.php'));
 define('IS_INDEX', SCRIPT_FILENAME == 'index');
 
-require_once __DIR__ . '/../src/PhpPowerpoint/Autoloader.php';
+require_once __DIR__ . '/../src/PhpPresentation/Autoloader.php';
 Autoloader::register();
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -29,7 +29,7 @@ if (CLI) {
 // Set titles and names
 $pageHeading = str_replace('_', ' ', SCRIPT_FILENAME);
 $pageTitle = IS_INDEX ? 'Welcome to ' : "{$pageHeading} - ";
-$pageTitle .= 'PHPPowerPoint';
+$pageTitle .= 'PHPPresentation';
 $pageHeading = IS_INDEX ? '' : "<h1>{$pageHeading}</h1>";
 
 // Populate samples
@@ -47,11 +47,11 @@ if ($handle = opendir('.')) {
 /**
  * Write documents
  *
- * @param \PhpOffice\PhpPowerPoint\PhpPowerPoint $phpPowerPoint
+ * @param \PhpOffice\PhpPresentation\PhpPresentation $phpPresentation
  * @param string $filename
  * @param array $writers
  */
-function write($phpPowerPoint, $filename, $writers)
+function write($phpPresentation, $filename, $writers)
 {
 	$result = '';
 	
@@ -59,7 +59,7 @@ function write($phpPowerPoint, $filename, $writers)
 	foreach ($writers as $writer => $extension) {
 		$result .= date('H:i:s') . " Write to {$writer} format";
 		if (!is_null($extension)) {
-			$xmlWriter = IOFactory::createWriter($phpPowerPoint, $writer);
+			$xmlWriter = IOFactory::createWriter($phpPresentation, $writer);
 			$xmlWriter->save(__DIR__ . "/{$filename}.{$extension}");
 			rename(__DIR__ . "/{$filename}.{$extension}", __DIR__ . "/results/{$filename}.{$extension}");
 		} else {
@@ -114,18 +114,18 @@ function getEndingNotes($writers)
 /**
  * Creates a templated slide
  *
- * @param PHPPowerPoint $objPHPPowerPoint
- * @return \PhpOffice\PhpPowerpoint\Slide
+ * @param PHPPresentation $objPHPPresentation
+ * @return \PhpOffice\PhpPresentation\Slide
  */
-function createTemplatedSlide(PhpOffice\PhpPowerpoint\PhpPowerpoint $objPHPPowerPoint)
+function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPPresentation)
 {
 	// Create slide
-	$slide = $objPHPPowerPoint->createSlide();
+	$slide = $objPHPPresentation->createSlide();
 	
 	// Add logo
 	$shape = $slide->createDrawingShape();
-	$shape->setName('PHPPowerPoint logo')
-		->setDescription('PHPPowerPoint logo')
+	$shape->setName('PHPPresentation logo')
+		->setDescription('PHPPresentation logo')
 		->setPath('./resources/phppowerpoint_logo.gif')
 		->setHeight(36)
 		->setOffsetX(10)
@@ -144,7 +144,7 @@ function createTemplatedSlide(PhpOffice\PhpPowerpoint\PhpPowerpoint $objPHPPower
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
 <link rel="stylesheet" href="bootstrap/css/font-awesome.min.css" />
-<link rel="stylesheet" href="bootstrap/css/phppowerpoint.css" />
+<link rel="stylesheet" href="bootstrap/css/phppresentation.css" />
 </head>
 <body>
 <div class="container">
@@ -157,7 +157,7 @@ function createTemplatedSlide(PhpOffice\PhpPowerpoint\PhpPowerpoint $objPHPPower
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="./">PHPPowerPoint</a>
+            <a class="navbar-brand" href="./">PHPPresentation</a>
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -167,8 +167,8 @@ function createTemplatedSlide(PhpOffice\PhpPowerpoint\PhpPowerpoint $objPHPPower
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://github.com/PHPOffice/PHPPowerPoint"><i class="fa fa-github fa-lg" title="GitHub"></i>&nbsp;</a></li>
-                <li><a href="http://phppowerpoint.readthedocs.org/en/develop/"><i class="fa fa-book fa-lg" title="Docs"></i>&nbsp;</a></li>
+                <li><a href="https://github.com/PHPOffice/PHPPresentation"><i class="fa fa-github fa-lg" title="GitHub"></i>&nbsp;</a></li>
+                <li><a href="http://phppresentation.readthedocs.org/en/develop/"><i class="fa fa-book fa-lg" title="Docs"></i>&nbsp;</a></li>
                 <li><a href="http://twitter.com/PHPOffice"><i class="fa fa-twitter fa-lg" title="Twitter"></i>&nbsp;</a></li>
             </ul>
         </div>

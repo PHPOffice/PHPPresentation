@@ -4,24 +4,24 @@ set_time_limit(10);
 
 include_once 'Sample_Header.php';
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\DocumentLayout;
-use PhpOffice\PhpPowerpoint\IOFactory;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\Slide;
-use PhpOffice\PhpPowerpoint\AbstractShape;
-use PhpOffice\PhpPowerpoint\Shape\MemoryDrawing;
-use PhpOffice\PhpPowerpoint\Shape\RichText;
-use PhpOffice\PhpPowerPoint\Shape\Group;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\DocumentLayout;
+use PhpOffice\PhpPresentation\IOFactory;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
+use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\Group;
 
 class PhpPptTree {
-    protected $oPhpPowerpoint;
+    protected $oPhpPresentation;
     protected $htmlOutput;
     
-    public function __construct(PhpPowerpoint $oPHPPpt)
+    public function __construct(PhpPresentation $oPHPPpt)
     {
-        $this->oPhpPowerpoint = $oPHPPpt;
+        $this->oPhpPresentation = $oPHPPpt;
     }
     
     public function display()
@@ -31,12 +31,12 @@ class PhpPptTree {
         $this->append('<div class="collapse in col-md-6">');
         $this->append('<div class="tree">');
         $this->append('<ul>');
-        $this->displayPhpPowerpoint($this->oPhpPowerpoint);
+        $this->displayPhpPresentation($this->oPhpPresentation);
         $this->append('</ul>');
         $this->append('</div>');
         $this->append('</div>');
         $this->append('<div class="col-md-6">');
-        $this->displayPhpPowerpointInfo($this->oPhpPowerpoint);
+        $this->displayPhpPresentationInfo($this->oPhpPresentation);
         $this->append('</div>');
         $this->append('</div>');
         $this->append('</div>');
@@ -49,11 +49,11 @@ class PhpPptTree {
         $this->htmlOutput .= $sHTML;
     }
     
-    protected function displayPhpPowerpoint(PhpPowerpoint $oPHPPpt)
+    protected function displayPhpPresentation(PhpPresentation $oPHPPpt)
     {
-        $this->append('<li><span><i class="fa fa-folder-open"></i> PhpPowerpoint</span>');
+        $this->append('<li><span><i class="fa fa-folder-open"></i> PhpPresentation</span>');
         $this->append('<ul>');
-        $this->append('<li><span class="shape" id="divPhpPowerpoint"><i class="fa fa-info-circle"></i> Info "PhpPowerpoint"</span></li>');
+        $this->append('<li><span class="shape" id="divPhpPresentation"><i class="fa fa-info-circle"></i> Info "PhpPresentation"</span></li>');
         foreach ($oPHPPpt->getAllSlides() as $oSlide) {
             $this->append('<li><span><i class="fa fa-minus-square"></i> Slide</span>');
             $this->append('<ul>');
@@ -90,9 +90,9 @@ class PhpPptTree {
         }
     }
     
-    protected function displayPhpPowerpointInfo(PhpPowerpoint $oPHPPpt)
+    protected function displayPhpPresentationInfo(PhpPresentation $oPHPPpt)
     {
-        $this->append('<div class="infoBlk" id="divPhpPowerpointInfo">');
+        $this->append('<div class="infoBlk" id="divPhpPresentationInfo">');
         $this->append('<dl>');
         $this->append('<dt>Number of slides</dt><dd>'.$oPHPPpt->getSlideCount().'</dd>');
         $this->append('<dt>Document Layout Height</dt><dd>'.$oPHPPpt->getLayout()->getCY(DocumentLayout::UNIT_MILLIMETER).' mm</dd>');
@@ -162,10 +162,10 @@ class PhpPptTree {
     }
 }
 
-$pptReader = PhpOffice\PhpPowerpoint\IOFactory::createReader('PowerPoint97');
-$oPHPPowerPoint = $pptReader->load('resources/Sample_12.ppt');
+$pptReader = PhpOffice\PhpPresentation\IOFactory::createReader('PowerPoint97');
+$oPHPPresentation = $pptReader->load('resources/Sample_12.ppt');
 
-$oTree = new PhpPptTree($oPHPPowerPoint);
+$oTree = new PhpPptTree($oPHPPresentation);
 echo $oTree->display();
 if (!CLI) {
 	include_once 'Sample_Footer.php';
