@@ -18,7 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
-use PhpOffice\Common\String;
+use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\Shape\AbstractDrawing;
 use PhpOffice\PhpPowerpoint\Shape\Chart as ShapeChart;
@@ -902,7 +902,7 @@ class Slide extends AbstractPart
 
                     // t
                     $objWriter->startElement('a:t');
-                    $objWriter->writeCData(String::controlCharacterPHP2OOXML($element->getText()));
+                    $objWriter->writeCData(Text::controlCharacterPHP2OOXML($element->getText()));
                     $objWriter->endElement();
 
                     $objWriter->endElement();

@@ -5,14 +5,15 @@
 
 ### Bugfix
 
-### Miscellaneous
-- PhpOffice\PhpPowerpoint\Style\Font::setStriketrough has been removed : Use setStrikethrough
-- PhpOffice\PhpPowerpoint\AbstractShape::getSlide has been removed
-- PhpOffice\PhpPowerpoint\AbstractShape::setSlide has been removed
-- PhpOffice\PhpPowerpoint\DocumentLayout::getLayoutXmilli has been removed : getCX(DocumentLayout::UNIT_MILLIMETER)
-- PhpOffice\PhpPowerpoint\DocumentLayout::getLayoutYmilli has been removed : getCY(DocumentLayout::UNIT_MILLIMETER)
-- PhpOffice\PhpPowerpoint\DocumentLayout::setLayoutXmilli has been removed : setCX(DocumentLayout::UNIT_MILLIMETER)
-- PhpOffice\PhpPowerpoint\DocumentLayout::setLayoutYmilli has been removed : setCY(DocumentLayout::UNIT_MILLIMETER)
+### Changes
+- PhpOffice\PhpPowerpoint\Style\Font::setStriketrough has been removed : Use setStrikethrough - @Progi1984
+- PhpOffice\PhpPowerpoint\AbstractShape::getSlide has been removed - @Progi1984
+- PhpOffice\PhpPowerpoint\AbstractShape::setSlide has been removed - @Progi1984
+- PhpOffice\PhpPowerpoint\DocumentLayout::getLayoutXmilli has been removed : getCX(DocumentLayout::UNIT_MILLIMETER) - @Progi1984
+- PhpOffice\PhpPowerpoint\DocumentLayout::getLayoutYmilli has been removed : getCY(DocumentLayout::UNIT_MILLIMETER) - @Progi1984
+- PhpOffice\PhpPowerpoint\DocumentLayout::setLayoutXmilli has been removed : setCX(DocumentLayout::UNIT_MILLIMETER) - @Progi1984
+- PhpOffice\PhpPowerpoint\DocumentLayout::setLayoutYmilli has been removed : setCY(DocumentLayout::UNIT_MILLIMETER) - @Progi1984
+- Update the dependence PhpOffice\Common to 0.2.* - @Progi1984
 
 ## 0.4.0 - 2015-07-07
 

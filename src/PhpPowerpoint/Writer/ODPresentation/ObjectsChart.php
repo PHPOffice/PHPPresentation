@@ -18,7 +18,7 @@
 namespace PhpOffice\PhpPowerpoint\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
-use PhpOffice\Common\String;
+use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPowerpoint\PhpPowerpoint;
 use PhpOffice\PhpPowerpoint\Shape\Chart;
@@ -199,8 +199,8 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->startElement('office:chart');
         // office:chart
         $this->xmlContent->startElement('chart:chart');
-        $this->xmlContent->writeAttribute('svg:width', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getWidth()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:height', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getHeight()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getWidth()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getHeight()), 3) . 'cm');
         $this->xmlContent->writeAttribute('xlink:href', '.');
         $this->xmlContent->writeAttribute('xlink:type', 'simple');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleChart');
@@ -387,8 +387,8 @@ class ObjectsChart extends AbstractPart
         // chart:legend
         $this->xmlContent->startElement('chart:legend');
         $this->xmlContent->writeAttribute('chart:legend-position', 'end');
-        $this->xmlContent->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetX()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetY()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetX()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetY()), 3) . 'cm');
         $this->xmlContent->writeAttribute('style:legend-expansion', 'high');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleLegend');
         // > chart:legend
@@ -764,8 +764,8 @@ class ObjectsChart extends AbstractPart
         if ($oTitle->isVisible()) {
             // chart:title
             $this->xmlContent->startElement('chart:title');
-            $this->xmlContent->writeAttribute('svg:x', String::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetX()), 3) . 'cm');
-            $this->xmlContent->writeAttribute('svg:y', String::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetY()), 3) . 'cm');
+            $this->xmlContent->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetX()), 3) . 'cm');
+            $this->xmlContent->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetY()), 3) . 'cm');
             $this->xmlContent->writeAttribute('chart:style-name', 'styleTitle');
             // > text:p
             $this->xmlContent->startElement('text:p');

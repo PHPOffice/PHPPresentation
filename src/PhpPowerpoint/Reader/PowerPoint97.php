@@ -28,7 +28,7 @@ use PhpOffice\PhpPowerpoint\AbstractShape;
 use PhpOffice\PhpPowerpoint\Style\Bullet;
 use PhpOffice\PhpPowerpoint\Shape\Hyperlink;
 use PhpOffice\PhpPowerpoint\Shape\Line;
-use PhpOffice\Common\String;
+use PhpOffice\Common\Text;
 use PhpOffice\PhpPowerPoint\Shape\Group;
 use PhpOffice\PhpPowerpoint\Shape\PhpOffice\PhpPowerpoint\Shape;
 
@@ -1256,7 +1256,7 @@ class PowerPoint97 implements ReaderInterface
                             if ($char == 0x0B) {
                                 $char = 0x20;
                             }
-                            $arrayReturn['text'] .= String::chr($char);
+                            $arrayReturn['text'] .= Text::chr($char);
                             $arrayReturn['length'] += 1;
                         }
                         break;
@@ -1269,7 +1269,7 @@ class PowerPoint97 implements ReaderInterface
                             if ($char == 0x0B) {
                                 $char = 0x20;
                             }
-                            $arrayReturn['text'] .= String::chr($char);
+                            $arrayReturn['text'] .= Text::chr($char);
                             $arrayReturn['length'] += 2;
                         }
                         break;
@@ -2623,7 +2623,7 @@ class PowerPoint97 implements ReaderInterface
             for ($inc = 0; $inc < $strLen; $inc++) {
                 $char = self::getInt2d($stream, $pos + $arrayReturn['length']);
                 $arrayReturn['length'] += 2;
-                $arrayReturn['slideName'] .= String::chr($char);
+                $arrayReturn['slideName'] .= Text::chr($char);
             }
         }
 
