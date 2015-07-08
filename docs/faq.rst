@@ -50,5 +50,5 @@ the verbose class names will need to be updated accordingly.
 
 Why PHPPowerPoint become PHPPresentation ?
 ------------------------------------------
-As Roman Syroeshko noticed us, PowerPoint is a `trademark <http://www.microsoft.com/en-us/legal/IntellectualProperty/Trademarks/EN-US.aspx#332b86b0-befe-4b89-862e-d538e2a653e0>`__.
+As `Roman Syroeshko noticed us <https://github.com/PHPOffice/PHPPowerPoint/issues/25>`__, PowerPoint is a `trademark <http://www.microsoft.com/en-us/legal/IntellectualProperty/Trademarks/EN-US.aspx#332b86b0-befe-4b89-862e-d538e2a653e0>`__.
 For avoiding any problems with Microsoft, we decide to change the name to a more logic name, with our panel of readers/writers.

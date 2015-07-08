@@ -60,13 +60,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
      */
     public function testAlignmentShapeAuto()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
         $oShape->createTextRun('this text should be vertically aligned');
         $oShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_AUTO);
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertFalse($pres->attributeElementExists($element, 'anchor', 'ppt/slides/slide1.xml'));
@@ -77,13 +77,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
      */
     public function testAlignmentShapeBase()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
         $oShape->createTextRun('this text should be vertically aligned');
         $oShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_BASE);
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertFalse($pres->attributeElementExists($element, 'anchor', 'ppt/slides/slide1.xml'));
@@ -94,13 +94,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
      */
     public function testAlignmentShapeBottom()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
         $oShape->createTextRun('this text should be vertically aligned');
         $oShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_BOTTOM);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals(Alignment::VERTICAL_BOTTOM, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
@@ -111,13 +111,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
      */
     public function testAlignmentShapeCenter()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
         $oShape->createTextRun('this text should be vertically aligned');
         $oShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_CENTER);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals(Alignment::VERTICAL_CENTER, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
@@ -128,13 +128,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
      */
     public function testAlignmentShapeTop()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
         $oShape->createTextRun('this text should be vertically aligned');
         $oShape->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_TOP);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals(Alignment::VERTICAL_TOP, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
@@ -142,13 +142,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testDrawingWithHyperlink()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
         $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -157,13 +157,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testDrawingShapeBorder()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
         $oShape->getBorder()->setLineStyle(Border::LINE_DOUBLE);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:ln';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -172,13 +172,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testDrawingShapeShadow()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
         $oShape->getShadow()->setVisible(true)->setDirection(45)->setDistance(10);
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:effectLst/a:outerShdw';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -189,8 +189,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
         
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(1);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -199,7 +199,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oFill = $oCell->getFill();
         $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -217,14 +217,14 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
     
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape();
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oFill = $oShape->getFill();
         $oFill->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -239,8 +239,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
     
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(1);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -249,7 +249,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oFill = $oCell->getFill();
         $oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -267,14 +267,14 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
         
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape();
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oFill = $oShape->getFill();
         $oFill->setFillType(Fill::FILL_GRADIENT_PATH)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="0"]/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -289,8 +289,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
         
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(1);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -299,7 +299,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oFill = $oCell->getFill();
         $oFill->setFillType(Fill::FILL_PATTERN_LIGHTTRELLIS)->setStartColor(new Color('FF'.$expected1))->setEndColor(new Color('FF'.$expected2));
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:pattFill/a:fgClr/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -313,8 +313,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'E06B20';
     
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(1);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -323,7 +323,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oFill = $oCell->getFill();
         $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF'.$expected));
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:solidFill/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -337,14 +337,14 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     {
         $expected = 'E06B20';
     
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape();
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oFill = $oShape->getFill();
         $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF'.$expected));
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:solidFill/a:srgbClr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -353,13 +353,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testHyperlink()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRun = $oRichText->createTextRun('Delta');
         $oRun->getHyperlink()->setUrl('http://www.google.fr');
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -367,13 +367,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testHyperlinkInternal()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRun = $oRichText->createTextRun('Delta');
         $oRun->getHyperlink()->setSlideNumber(1);
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -382,8 +382,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
     public function testListBullet()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
         $oExpectedFont = $oRichText->getActiveParagraph()->getBulletStyle()->getBulletFont();
@@ -393,7 +393,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oRichText->createParagraph()->createTextRun('Delta');
         $oRichText->createParagraph()->createTextRun('Epsilon');
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr';
         $this->assertTrue($pres->elementExists($element.'/a:buFont', 'ppt/slides/slide1.xml'));
@@ -404,8 +404,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
     public function testListNumeric()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC);
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletNumericStyle(Bullet::NUMERIC_EA1CHSPERIOD);
@@ -418,7 +418,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oRichText->createParagraph()->createTextRun('Delta');
         $oRichText->createParagraph()->createTextRun('Epsilon');
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr';
         $this->assertTrue($pres->elementExists($element.'/a:buFont', 'ppt/slides/slide1.xml'));
@@ -433,14 +433,14 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $valEmu10 = Drawing::pixelsToEmu(10);
         $valEmu90 = Drawing::pixelsToEmu(90);
         
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oSlide->createLineShape(10, 10, 100, 100);
         $oSlide->createLineShape(100, 10, 10, 100);
         $oSlide->createLineShape(10, 100, 100, 10);
         $oSlide->createLineShape(100, 100, 10, 10);
     
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
     
         $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:prstGeom';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -480,13 +480,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testRichTextAutoFitNormal()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->setAutoFit(RichText::AUTOFIT_NORMAL, 47.5, 20);
         $oRichText->createTextRun('This is my text for the test.');
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr/a:normAutofit';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals(47500, $pres->getElementAttribute($element, 'fontScale', 'ppt/slides/slide1.xml'));
@@ -495,12 +495,12 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testRichTextBreak()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->createBreak();
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:br';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -508,12 +508,12 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testRichTextHyperlink()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->getHyperLink()->setUrl('http://www.google.fr');
 
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp//a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -521,13 +521,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testRichTextShadow()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->createTextRun('AAA');
         $oRichText->getShadow()->setVisible(true)->setAlpha(75)->setBlurRadius(2)->setDirection(45);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:effectLst/a:outerShdw';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -535,13 +535,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testRichTextUpright()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->createTextRun('AAA');
         $oRichText->setUpright(true);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -550,13 +550,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testRichTextVertical()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->createTextRun('AAA');
         $oRichText->setVertical(true);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -565,13 +565,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
     public function testStyleSubScript()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRun = $oRichText->createTextRun('pText');
         $oRun->getFont()->setSubScript(true);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -580,13 +580,13 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
     public function testStyleSuperScript()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRun = $oRichText->createTextRun('pText');
         $oRun->getFont()->setSuperScript(true);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -595,8 +595,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
     public function testTableWithAlignment()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -604,7 +604,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oCell->createTextRun('AAA');
         $oCell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_BOTTOM);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -613,8 +613,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
     public function testTableWithBorder()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -638,7 +638,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oCell->getBorders()->getBottom()->setDashStyle(Border::DASH_LARGEDASHDOTDOT);
         $oCell->getBorders()->getBottom()->setLineStyle(Border::LINE_NONE);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr';
         $this->assertTrue($pres->elementExists($element.'/a:lnL[@cmpd="'.Border::LINE_THINTHICK.'"]', 'ppt/slides/slide1.xml'));
@@ -653,8 +653,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
     public function testTableWithColspan()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -662,7 +662,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oCell->createTextRun('AAA');
         $oCell->setColSpan(2);
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -671,8 +671,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
     public function testTableWithRowspan()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -684,7 +684,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oCell = $oRow->getCell();
         $oCell->createTextRun('BBB');
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc';
         $this->assertTrue($pres->elementExists($element.'[@rowSpan="2"]', 'ppt/slides/slide1.xml'));
@@ -696,8 +696,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
      */
     public function testTableWithHyperlink()
     {
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
@@ -706,7 +706,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oHyperlink = $oTextRun->getHyperlink();
         $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPresentation/');
         
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:txBody/a:p/a:r/a:rPr/a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
@@ -719,33 +719,33 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
         $oTransition = new Transition();
 
-        $phpPowerPoint = new PhpPresentation();
-        $oSlide = $phpPowerPoint->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
 
         $element = '/p:sld/p:transition';
 
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $this->assertFalse($pres->elementExists($element, 'ppt/slides/slide1.xml'));
 
         $oTransition->setTimeTrigger(true, $value);
         $oSlide->setTransition($oTransition);
 
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertTrue($pres->attributeElementExists($element, 'advTm', 'ppt/slides/slide1.xml'));
         $this->assertEquals($value, $pres->getElementAttribute($element, 'advTm', 'ppt/slides/slide1.xml'));
         $this->assertContains('0', $pres->getElementAttribute($element, 'advClick', 'ppt/slides/slide1.xml'));
 
         $oTransition->setSpeed(Transition::SPEED_FAST);
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $this->assertContains('fast', $pres->getElementAttribute($element, 'spd', 'ppt/slides/slide1.xml'));
 
         $oTransition->setSpeed(Transition::SPEED_MEDIUM);
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $this->assertContains('med', $pres->getElementAttribute($element, 'spd', 'ppt/slides/slide1.xml'));
 
         $oTransition->setSpeed(Transition::SPEED_SLOW);
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $this->assertContains('slow', $pres->getElementAttribute($element, 'spd', 'ppt/slides/slide1.xml'));
 
         $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
@@ -757,7 +757,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
             $oTransition->setTransitionType($rcTransition->getConstant($key));
             $oSlide->setTransition($oTransition);
-            $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+            $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
             switch ($key) {
                 case 'TRANSITION_BLINDS_HORIZONTAL':
                     $this->assertTrue($pres->elementExists($element.'/p:blinds[@dir=\'horz\']', 'ppt/slides/slide1.xml'));
@@ -907,7 +907,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         }
 
         $oTransition->setManualTrigger(true);
-        $pres = TestHelperDOCX::getDocument($phpPowerPoint, 'PowerPoint2007');
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $this->assertContains('1', $pres->getElementAttribute($element, 'advClick', 'ppt/slides/slide1.xml'));
     }
 }
