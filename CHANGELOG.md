@@ -4,6 +4,7 @@
 ### Features
 
 ### Bugfix
+- Fixed the sample in Readme.md - @Progi1984 GH-114
 
 ### Changes
 - PhpOffice\PhpPowerpoint becomes PhpOffice\PhpPresentation - @Progi1984 GH-25
