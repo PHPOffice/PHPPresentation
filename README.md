@@ -19,7 +19,6 @@ Read more about PHPPresentation:
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Getting started](#getting-started)
-- [Known issues](#known-issues)
 - [Contributing](#contributing)
 - [Developers' Documentation](http://phppowerpoint.readthedocs.org/)
 - [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/)
@@ -73,8 +72,17 @@ require_once 'path/to/PhpPresentation/src/PhpPresentation/Autoloader.php';
 The following is a basic usage example of the PHPPresentation library.
 
 ```php
+// with your own install
 require_once 'src/PhpPresentation/Autoloader.php';
 \PhpOffice\PhpPresentation\Autoloader::register();
+
+// with Composer
+require_once 'vendor/autoload.php';
+
+use PhpOffice\PhpPresentation\PhpPowerpoint;
+use PhpOffice\PhpPresentation\IOFactory;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Alignment;
 
 $objPHPPowerPoint = new PhpPresentation();
 
