@@ -232,12 +232,12 @@ class RichText extends AbstractShape implements ComparableInterface
      */
     public function createParagraph()
     {
-    	$numParagraphs = count($this->richTextParagraphs);
-    	if ($numParagraphs > 0) {
+        $numParagraphs = count($this->richTextParagraphs);
+        if ($numParagraphs > 0) {
             $alignment   = clone $this->getActiveParagraph()->getAlignment();
             $font        = clone $this->getActiveParagraph()->getFont();
             $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
-    	}
+        }
 
         $this->richTextParagraphs[] = new Paragraph();
         $this->activeParagraph      = count($this->richTextParagraphs) - 1;

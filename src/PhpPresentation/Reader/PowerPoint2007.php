@@ -157,7 +157,7 @@ class PowerPoint2007 implements ReaderInterface
             $oProperties = $this->oPhpPresentation->getProperties();
             foreach ($arrayProperties as $path => $property) {
                 if (is_object($oElement = $xmlReader->getElement($path))) {
-                    if($oElement->hasAttribute('xsi:type') && $oElement->getAttribute('xsi:type') == 'dcterms:W3CDTF') {
+                    if ($oElement->hasAttribute('xsi:type') && $oElement->getAttribute('xsi:type') == 'dcterms:W3CDTF') {
                         $oDateTime = new \DateTime();
                         $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
                         $oProperties->{$property}($oDateTime->getTimestamp());
@@ -222,7 +222,7 @@ class PowerPoint2007 implements ReaderInterface
     }
     
     /**
-     * 
+     *
      * @param XMLReader $document
      * @param \DOMElement $node
      * @param string $baseFile
@@ -236,7 +236,7 @@ class PowerPoint2007 implements ReaderInterface
         $fileRels = 'ppt/slides/_rels/'.$baseFile.'.rels';
         
         $oElement = $document->getElement('p:nvPicPr/p:cNvPr', $node);
-        if($oElement) {
+        if ($oElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
         }
@@ -247,7 +247,7 @@ class PowerPoint2007 implements ReaderInterface
                 $pathImage = 'ppt/slides/'.$this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')];
                 $pathImage = explode('/', $pathImage);
                 foreach ($pathImage as $key => $partPath) {
-                    if($partPath == '..') {
+                    if ($partPath == '..') {
                         unset($pathImage[$key - 1]);
                         unset($pathImage[$key]);
                     }
@@ -387,71 +387,71 @@ class PowerPoint2007 implements ReaderInterface
                     $oParagraph->getAlignment()->setLevel($oSubElement->getAttribute('lvl'));
                 }
                 
-                $oElement_buFont = $document->getElement('a:buFont', $oSubElement);
+                $oElementBuFont = $document->getElement('a:buFont', $oSubElement);
                 $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
-                if ($oElement_buFont) {
-                    if ($oElement_buFont->hasAttribute('typeface')) {
-                        $oParagraph->getBulletStyle()->setBulletFont($oElement_buFont->getAttribute('typeface'));
+                if ($oElementBuFont) {
+                    if ($oElementBuFont->hasAttribute('typeface')) {
+                        $oParagraph->getBulletStyle()->setBulletFont($oElementBuFont->getAttribute('typeface'));
                     }
                 }
-                $oElement_buChar = $document->getElement('a:buChar', $oSubElement);
-                if ($oElement_buChar) {
+                $oElementBuChar = $document->getElement('a:buChar', $oSubElement);
+                if ($oElementBuChar) {
                     $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
-                    if ($oElement_buChar->hasAttribute('char')) {
-                        $oParagraph->getBulletStyle()->setBulletChar($oElement_buChar->getAttribute('char'));
+                    if ($oElementBuChar->hasAttribute('char')) {
+                        $oParagraph->getBulletStyle()->setBulletChar($oElementBuChar->getAttribute('char'));
                     }
                 }
-                /*$oElement_buAutoNum = $document->getElement('a:buAutoNum', $oSubElement);
-                if ($oElement_buAutoNum) {
+                /*$oElementBuAutoNum = $document->getElement('a:buAutoNum', $oSubElement);
+                if ($oElementBuAutoNum) {
                     $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC);
-                    if ($oElement_buAutoNum->hasAttribute('type')) {
-                        $oParagraph->getBulletStyle()->setBulletNumericStyle($oElement_buAutoNum->getAttribute('type'));
+                    if ($oElementBuAutoNum->hasAttribute('type')) {
+                        $oParagraph->getBulletStyle()->setBulletNumericStyle($oElementBuAutoNum->getAttribute('type'));
                     }
-                    if ($oElement_buAutoNum->hasAttribute('startAt') && $oElement_buAutoNum->getAttribute('startAt') != 1) {
-                        $oParagraph->getBulletStyle()->setBulletNumericStartAt($oElement_buAutoNum->getAttribute('startAt'));
+                    if ($oElementBuAutoNum->hasAttribute('startAt') && $oElementBuAutoNum->getAttribute('startAt') != 1) {
+                        $oParagraph->getBulletStyle()->setBulletNumericStartAt($oElementBuAutoNum->getAttribute('startAt'));
                     }
                 }*/
             }
             $arraySubElements = $document->getElements('(a:r|a:br)', $oElement);
             foreach ($arraySubElements as $oSubElement) {
-                if($oSubElement->tagName == 'a:br') {
+                if ($oSubElement->tagName == 'a:br') {
                     $oParagraph->createBreak();
                 }
-                if($oSubElement->tagName == 'a:r') {
-                    $oElement_rPr = $document->getElement('a:rPr', $oSubElement);
-                    if(is_object($oElement_rPr)) {
+                if ($oSubElement->tagName == 'a:r') {
+                    $oElementrPr = $document->getElement('a:rPr', $oSubElement);
+                    if (is_object($oElementrPr)) {
                         $oText = $oParagraph->createTextRun();
 
-                        if ($oElement_rPr->hasAttribute('b')) {
-                            $oText->getFont()->setBold($oElement_rPr->getAttribute('b') == 'true' ? true : false);
+                        if ($oElementrPr->hasAttribute('b')) {
+                            $oText->getFont()->setBold($oElementrPr->getAttribute('b') == 'true' ? true : false);
                         }
-                        if ($oElement_rPr->hasAttribute('i')) {
-                            $oText->getFont()->setItalic($oElement_rPr->getAttribute('i') == 'true' ? true : false);
+                        if ($oElementrPr->hasAttribute('i')) {
+                            $oText->getFont()->setItalic($oElementrPr->getAttribute('i') == 'true' ? true : false);
                         }
-                        if ($oElement_rPr->hasAttribute('strike')) {
-                            $oText->getFont()->setStrikethrough($oElement_rPr->getAttribute('strike') == 'noStrike' ? false : true);
+                        if ($oElementrPr->hasAttribute('strike')) {
+                            $oText->getFont()->setStrikethrough($oElementrPr->getAttribute('strike') == 'noStrike' ? false : true);
                         }
-                        if ($oElement_rPr->hasAttribute('sz')) {
-                            $oText->getFont()->setSize((int)($oElement_rPr->getAttribute('sz') / 100));
+                        if ($oElementrPr->hasAttribute('sz')) {
+                            $oText->getFont()->setSize((int)($oElementrPr->getAttribute('sz') / 100));
                         }
-                        if ($oElement_rPr->hasAttribute('u')) {
-                            $oText->getFont()->setUnderline($oElement_rPr->getAttribute('u'));
+                        if ($oElementrPr->hasAttribute('u')) {
+                            $oText->getFont()->setUnderline($oElementrPr->getAttribute('u'));
                         }
                         // Color
-                        $oElement_srgbClr = $document->getElement('a:solidFill/a:srgbClr', $oElement_rPr);
-                        if (is_object($oElement_srgbClr) && $oElement_srgbClr->hasAttribute('val')) {
+                        $oElementSrgbClr = $document->getElement('a:solidFill/a:srgbClr', $oElementrPr);
+                        if (is_object($oElementSrgbClr) && $oElementSrgbClr->hasAttribute('val')) {
                             $oColor = new Color();
-                            $oColor->setRGB($oElement_srgbClr->getAttribute('val'));
+                            $oColor->setRGB($oElementSrgbClr->getAttribute('val'));
                             $oText->getFont()->setColor($oColor);
                         }
                         // Hyperlink
-                        $oElement_hlinkClick = $document->getElement('a:hlinkClick', $oElement_rPr);
-                        if (is_object($oElement_hlinkClick)) {
-                            if ($oElement_hlinkClick->hasAttribute('tooltip')) {
-                                $oText->getHyperlink()->setTooltip($oElement_hlinkClick->getAttribute('tooltip'));
+                        $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElementrPr);
+                        if (is_object($oElementHlinkClick)) {
+                            if ($oElementHlinkClick->hasAttribute('tooltip')) {
+                                $oText->getHyperlink()->setTooltip($oElementHlinkClick->getAttribute('tooltip'));
                             }
-                            if ($oElement_hlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElement_hlinkClick->getAttribute('r:id')])) {
-                                $oText->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElement_hlinkClick->getAttribute('r:id')]);
+                            if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')])) {
+                                $oText->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]);
                             }
                         }
                     } else {
@@ -461,7 +461,7 @@ class PowerPoint2007 implements ReaderInterface
                     $oSubSubElement = $document->getElement('a:t', $oSubElement);
                     $oText->setText($oSubSubElement->nodeValue);
                 }
-            } 
+            }
         }
         
         if (count($oShape->getParagraphs()) > 0) {
@@ -470,14 +470,14 @@ class PowerPoint2007 implements ReaderInterface
     }
     
     /**
-     * 
+     *
      * @param string $rId
      * @return string
      */
     protected function loadRels($fileRels)
     {
         $sPart = $this->oZip->getFromName($fileRels);
-        if($sPart !== false) {
+        if ($sPart !== false) {
             $xmlReader = new XMLReader();
             if ($xmlReader->getDomFromString($sPart)) {
                 foreach ($xmlReader->getElements('*') as $oNode) {

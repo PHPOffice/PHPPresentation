@@ -90,7 +90,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Sample 02 Description', $oPhpPresentation->getProperties()->getDescription());
         $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getProperties()->getKeywords());
         $this->assertEquals('Sample Category', $oPhpPresentation->getProperties()->getCategory());
-        // 
+        //
         $this->assertCount(4, $oPhpPresentation->getAllSlides());
         
         // Slide 1
