@@ -15,8 +15,8 @@ use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Group;
 
-$pptReader = PhpOffice\PhpPresentation\IOFactory::createReader('PowerPoint97');
-$oPHPPresentation = $pptReader->load('resources/Sample_12.ppt');
+$pptReader = IOFactory::createReader('PowerPoint2007');
+$oPHPPresentation = $pptReader->load('resources/Sample_12.pptx');
 
 $oTree = new PhpPptTree($oPHPPresentation);
 echo $oTree->display();

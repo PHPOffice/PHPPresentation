@@ -2,6 +2,7 @@
 ## 0.5.0 - Not released
 
 ### Features
+- PowerPoint2007 Reader : Initial Commit - @Progi1984 GH-44
 
 ### Bugfix
 - Fixed the sample in Readme.md - @Progi1984 GH-114
