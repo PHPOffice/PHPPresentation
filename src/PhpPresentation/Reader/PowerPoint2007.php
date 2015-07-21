@@ -18,18 +18,11 @@
 namespace PhpOffice\PhpPresentation\Reader;
 
 use ZipArchive;
-use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\Common\Drawing as CommonDrawing;
-use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Drawing;
-use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
-use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
-use PhpOffice\PhpPresentation\Shape\RichText;
-use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 
@@ -142,28 +135,29 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadDocumentProperties($sPart)
     {
         $xmlReader = new XMLReader();
-        if ($xmlReader->getDomFromString($sPart)) {
-            $arrayProperties = array(
-                '/cp:coreProperties/dc:creator' => 'setCreator',
-                '/cp:coreProperties/cp:lastModifiedBy' => 'setLastModifiedBy',
-                '/cp:coreProperties/dc:title' => 'setTitle',
-                '/cp:coreProperties/dc:description' => 'setDescription',
-                '/cp:coreProperties/dc:subject' => 'setSubject',
-                '/cp:coreProperties/cp:keywords' => 'setKeywords',
-                '/cp:coreProperties/cp:category' => 'setCategory',
-                '/cp:coreProperties/dcterms:created' => 'setCreated',
-                '/cp:coreProperties/dcterms:modified' => 'setModified',
-            );
-            $oProperties = $this->oPhpPresentation->getProperties();
-            foreach ($arrayProperties as $path => $property) {
-                if (is_object($oElement = $xmlReader->getElement($path))) {
-                    if ($oElement->hasAttribute('xsi:type') && $oElement->getAttribute('xsi:type') == 'dcterms:W3CDTF') {
-                        $oDateTime = new \DateTime();
-                        $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
-                        $oProperties->{$property}($oDateTime->getTimestamp());
-                    } else {
-                        $oProperties->{$property}($oElement->nodeValue);
-                    }
+        if (!$xmlReader->getDomFromString($sPart)) {
+            return false;
+        }
+        $arrayProperties = array(
+            '/cp:coreProperties/dc:creator' => 'setCreator',
+            '/cp:coreProperties/cp:lastModifiedBy' => 'setLastModifiedBy',
+            '/cp:coreProperties/dc:title' => 'setTitle',
+            '/cp:coreProperties/dc:description' => 'setDescription',
+            '/cp:coreProperties/dc:subject' => 'setSubject',
+            '/cp:coreProperties/cp:keywords' => 'setKeywords',
+            '/cp:coreProperties/cp:category' => 'setCategory',
+            '/cp:coreProperties/dcterms:created' => 'setCreated',
+            '/cp:coreProperties/dcterms:modified' => 'setModified',
+        );
+        $oProperties = $this->oPhpPresentation->getProperties();
+        foreach ($arrayProperties as $path => $property) {
+            if (is_object($oElement = $xmlReader->getElement($path))) {
+                if ($oElement->hasAttribute('xsi:type') && $oElement->getAttribute('xsi:type') == 'dcterms:W3CDTF') {
+                    $oDateTime = new \DateTime();
+                    $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
+                    $oProperties->{$property}($oDateTime->getTimestamp());
+                } else {
+                    $oProperties->{$property}($oElement->nodeValue);
                 }
             }
         }
@@ -196,6 +190,8 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Extract data from slide
+     * @param string $sPart
+     * @param string $baseFile
      */
     protected function loadSlide($sPart, $baseFile)
     {
@@ -454,7 +450,7 @@ class PowerPoint2007 implements ReaderInterface
                                 $oText->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]);
                             }
                         }
-                    } else {
+                    //} else {
                         // $oText = $oParagraph->createText();
                     }
 
@@ -471,7 +467,7 @@ class PowerPoint2007 implements ReaderInterface
     
     /**
      *
-     * @param string $rId
+     * @param string $fileRels
      * @return string
      */
     protected function loadRels($fileRels)
