@@ -17,6 +17,7 @@
 - PhpOffice\PhpPowerpoint\DocumentLayout::setLayoutXmilli has been removed : setCX(DocumentLayout::UNIT_MILLIMETER) - @Progi1984
 - PhpOffice\PhpPowerpoint\DocumentLayout::setLayoutYmilli has been removed : setCY(DocumentLayout::UNIT_MILLIMETER) - @Progi1984
 - Update the dependence PhpOffice\Common to 0.2.* - @Progi1984
+- Migrated Travis CI to legacy - @Progi1984 GH-115
 
 ## 0.4.0 - 2015-07-07
 
