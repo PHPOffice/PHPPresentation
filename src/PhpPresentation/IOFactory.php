@@ -27,7 +27,7 @@ class IOFactory
      *
      * @var array
      */
-    private static $autoResolveClasses = array('Serialized', 'PowerPoint97', 'PowerPoint2007');
+    private static $autoResolveClasses = array('Serialized', 'ODPresentation', 'PowerPoint97', 'PowerPoint2007');
 
     /**
      * Create writer

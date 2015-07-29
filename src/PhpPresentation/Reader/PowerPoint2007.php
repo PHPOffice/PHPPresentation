@@ -130,38 +130,35 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Read Document Properties
      * @param string $sPart
-     * @return boolean
      */
     protected function loadDocumentProperties($sPart)
     {
         $xmlReader = new XMLReader();
-        if (!$xmlReader->getDomFromString($sPart)) {
-            return false;
-        }
-        $arrayProperties = array(
-            '/cp:coreProperties/dc:creator' => 'setCreator',
-            '/cp:coreProperties/cp:lastModifiedBy' => 'setLastModifiedBy',
-            '/cp:coreProperties/dc:title' => 'setTitle',
-            '/cp:coreProperties/dc:description' => 'setDescription',
-            '/cp:coreProperties/dc:subject' => 'setSubject',
-            '/cp:coreProperties/cp:keywords' => 'setKeywords',
-            '/cp:coreProperties/cp:category' => 'setCategory',
-            '/cp:coreProperties/dcterms:created' => 'setCreated',
-            '/cp:coreProperties/dcterms:modified' => 'setModified',
-        );
-        $oProperties = $this->oPhpPresentation->getProperties();
-        foreach ($arrayProperties as $path => $property) {
-            if (is_object($oElement = $xmlReader->getElement($path))) {
-                if ($oElement->hasAttribute('xsi:type') && $oElement->getAttribute('xsi:type') == 'dcterms:W3CDTF') {
-                    $oDateTime = new \DateTime();
-                    $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
-                    $oProperties->{$property}($oDateTime->getTimestamp());
-                } else {
-                    $oProperties->{$property}($oElement->nodeValue);
+        if ($xmlReader->getDomFromString($sPart)) {
+            $arrayProperties = array(
+                    '/cp:coreProperties/dc:creator' => 'setCreator',
+                    '/cp:coreProperties/cp:lastModifiedBy' => 'setLastModifiedBy',
+                    '/cp:coreProperties/dc:title' => 'setTitle',
+                    '/cp:coreProperties/dc:description' => 'setDescription',
+                    '/cp:coreProperties/dc:subject' => 'setSubject',
+                    '/cp:coreProperties/cp:keywords' => 'setKeywords',
+                    '/cp:coreProperties/cp:category' => 'setCategory',
+                    '/cp:coreProperties/dcterms:created' => 'setCreated',
+                    '/cp:coreProperties/dcterms:modified' => 'setModified',
+            );
+            $oProperties = $this->oPhpPresentation->getProperties();
+            foreach ($arrayProperties as $path => $property) {
+                if (is_object($oElement = $xmlReader->getElement($path))) {
+                    if ($oElement->hasAttribute('xsi:type') && $oElement->getAttribute('xsi:type') == 'dcterms:W3CDTF') {
+                        $oDateTime = new \DateTime();
+                        $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
+                        $oProperties->{$property}($oDateTime->getTimestamp());
+                    } else {
+                        $oProperties->{$property}($oElement->nodeValue);
+                    }
                 }
             }
         }
-        return true;
     }
     
     /**
@@ -185,7 +182,6 @@ class PowerPoint2007 implements ReaderInterface
                 }
             }
         }
-        return true;
     }
 
     /**
@@ -212,9 +208,7 @@ class PowerPoint2007 implements ReaderInterface
                        //var_export($oNode->tagName);
                 }
             }
-            //die();
         }
-        return true;
     }
     
     /**

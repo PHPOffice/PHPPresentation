@@ -3,6 +3,7 @@
 
 ### Features
 - PowerPoint2007 Reader : Initial Commit - @Progi1984 GH-44
+- ODPresentation Reader : Initial Commit - @Progi1984 GH-113
 
 ### Bugfix
 - Fixed the sample in Readme.md - @Progi1984 GH-114
