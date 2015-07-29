@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta charset="utf-8"/>
-    <title>    API Documentation &raquo; \PhpOffice\PhpPresentation\Reader\PowerPoint2007
+    <title>    API Documentation &raquo; \PhpOffice\PhpPresentation\Reader\ODPresentation
 </title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
@@ -137,7 +137,7 @@
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
@@ -149,11 +149,6 @@
                                                                                 <li class="method protected">
                             <a href="#method_loadFile" title="loadFile :: Load PhpPresentation Serialized file">
                                 <span class="description">Load PhpPresentation Serialized file</span><pre>loadFile</pre>
-                            </a>
-                        </li>
-                                                                                <li class="method protected">
-                            <a href="#method_loadRels" title="loadRels :: ">
-                                <span class="description"></span><pre>loadRels</pre>
                             </a>
                         </li>
                                                                                 <li class="method protected">
@@ -176,11 +171,36 @@
                                 <span class="description">Extract all slides</span><pre>loadSlides</pre>
                             </a>
                         </li>
+                                                                                <li class="method protected">
+                            <a href="#method_loadStyle" title="loadStyle :: Extract style">
+                                <span class="description">Extract style</span><pre>loadStyle</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_readList" title="readList :: ">
+                                <span class="description"></span><pre>readList</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_readListItem" title="readListItem :: Read Paragraph">
+                                <span class="description">Read Paragraph</span><pre>readListItem</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_readParagraph" title="readParagraph :: Read Paragraph">
+                                <span class="description">Read Paragraph</span><pre>readParagraph</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_readParagraphItem" title="readParagraphItem :: Read Paragraph Item">
+                                <span class="description">Read Paragraph Item</span><pre>readParagraphItem</pre>
+                            </a>
+                        </li>
                                                 </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -194,7 +214,7 @@
 
         <div class="span8">
             <div class="element class">
-                <h1>PowerPoint2007</h1>
+                <h1>ODPresentation</h1>
                 <small style="display: block; text-align: right">
                                                                 Implements <a href="../classes/PhpOffice.PhpPresentation.Reader.ReaderInterface.html">\PhpOffice\PhpPresentation\Reader\ReaderInterface</a>
                                     </small>
@@ -327,7 +347,7 @@
                                             <a id="method_loadDocumentProperties"></a>
                         <div class="element clickable method protected  method_loadDocumentProperties" data-toggle="collapse" data-target=".method_loadDocumentProperties .collapse">
                             <h2>Read Document Properties</h2>
-                            <pre>loadDocumentProperties(string $sPart) </pre>
+                            <pre>loadDocumentProperties() </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -344,14 +364,16 @@
                                                 <td>
                                                                                                     </td>
                                             </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
                                                                             </table>
 
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$sPart</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                            
+                                    
                                                                     </div>
                             </div>
 
@@ -383,37 +405,10 @@
                             </div>
 
                         </div>
-                                            <a id="method_loadRels"></a>
-                        <div class="element clickable method protected  method_loadRels" data-toggle="collapse" data-target=".method_loadRels .collapse">
-                            <h2>loadRels</h2>
-                            <pre>loadRels(string $fileRels) : string</pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$fileRels</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                            
-                                                                            <h3>Response</h3>
-                                        <code>string</code><p></p>
-                                                                    </div>
-                            </div>
-
-                        </div>
                                             <a id="method_loadShapeDrawing"></a>
                         <div class="element clickable method protected  method_loadShapeDrawing" data-toggle="collapse" data-target=".method_loadShapeDrawing .collapse">
                             <h2>loadShapeDrawing</h2>
-                            <pre>loadShapeDrawing(\PhpOffice\Common\XMLReader $document, \DOMElement $node, string $baseFile) </pre>
+                            <pre>loadShapeDrawing(\DOMElement $oNodeFrame) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -434,16 +429,8 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$document</h4>
-                                                <code>\PhpOffice\Common\XMLReader</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$node</h4>
+                                                <h4>$oNodeFrame</h4>
                                                 <code>\DOMElement</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$baseFile</h4>
-                                                <code>string</code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -453,7 +440,7 @@
                                             <a id="method_loadShapeRichText"></a>
                         <div class="element clickable method protected  method_loadShapeRichText" data-toggle="collapse" data-target=".method_loadShapeRichText .collapse">
                             <h2>loadShapeRichText</h2>
-                            <pre>loadShapeRichText(\PhpOffice\Common\XMLReader $document, \DOMElement $node,  $baseFile) </pre>
+                            <pre>loadShapeRichText(\DOMElement $oNodeFrame) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -470,27 +457,12 @@
                                                 <td>
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$document</h4>
-                                                <code>\PhpOffice\Common\XMLReader</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$node</h4>
+                                                <h4>$oNodeFrame</h4>
                                                 <code>\DOMElement</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$baseFile</h4>
-                                                <code></code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -500,7 +472,7 @@
                                             <a id="method_loadSlide"></a>
                         <div class="element clickable method protected  method_loadSlide" data-toggle="collapse" data-target=".method_loadSlide .collapse">
                             <h2>Extract data from slide</h2>
-                            <pre>loadSlide(string $sPart, string $baseFile) </pre>
+                            <pre>loadSlide(\DOMElement $nodeSlide) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -521,12 +493,8 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$sPart</h4>
-                                                <code>string</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$baseFile</h4>
-                                                <code>string</code><p></p>
+                                                <h4>$nodeSlide</h4>
+                                                <code>\DOMElement</code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -536,7 +504,73 @@
                                             <a id="method_loadSlides"></a>
                         <div class="element clickable method protected  method_loadSlides" data-toggle="collapse" data-target=".method_loadSlides .collapse">
                             <h2>Extract all slides</h2>
-                            <pre>loadSlides( $sPart) </pre>
+                            <pre>loadSlides() </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_loadStyle"></a>
+                        <div class="element clickable method protected  method_loadStyle" data-toggle="collapse" data-target=".method_loadStyle .collapse">
+                            <h2>Extract style</h2>
+                            <pre>loadStyle(\DOMElement $nodeStyle) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$nodeStyle</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_readList"></a>
+                        <div class="element clickable method protected  method_readList" data-toggle="collapse" data-target=".method_readList .collapse">
+                            <h2>readList</h2>
+                            <pre>readList(\PhpOffice\PhpPresentation\Shape\RichText $oShape, \DOMElement $oNodeParent) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -564,8 +598,124 @@
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
-                                                <h4>$sPart</h4>
-                                                <code></code><p></p>
+                                                <h4>$oShape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.RichText.html">\PhpOffice\PhpPresentation\Shape\RichText</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oNodeParent</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_readListItem"></a>
+                        <div class="element clickable method protected  method_readListItem" data-toggle="collapse" data-target=".method_readListItem .collapse">
+                            <h2>Read Paragraph</h2>
+                            <pre>readListItem(\PhpOffice\PhpPresentation\Shape\RichText $oShape, \DOMElement $oNodeParent, \DOMElement $oNodeParagraph) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oShape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.RichText.html">\PhpOffice\PhpPresentation\Shape\RichText</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oNodeParent</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oNodeParagraph</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_readParagraph"></a>
+                        <div class="element clickable method protected  method_readParagraph" data-toggle="collapse" data-target=".method_readParagraph .collapse">
+                            <h2>Read Paragraph</h2>
+                            <pre>readParagraph(\PhpOffice\PhpPresentation\Shape\RichText $oShape, \DOMElement $oNodeParent) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oShape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.RichText.html">\PhpOffice\PhpPresentation\Shape\RichText</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oNodeParent</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_readParagraphItem"></a>
+                        <div class="element clickable method protected  method_readParagraphItem" data-toggle="collapse" data-target=".method_readParagraphItem .collapse">
+                            <h2>Read Paragraph Item</h2>
+                            <pre>readParagraphItem(\PhpOffice\PhpPresentation\Shape\RichText\Paragraph $oParagraph, \DOMElement $oNodeParent) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oParagraph</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.RichText.Paragraph.html">\PhpOffice\PhpPresentation\Shape\RichText\Paragraph</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oNodeParent</h4>
+                                                <code>\DOMElement</code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -627,10 +777,10 @@
                                                                             </div>
                                 </div>
                             </div>
-                                                    <a id="property_arrayRels"> </a>
-                            <div class="element clickable property  protected property_arrayRels" data-toggle="collapse" data-target=".property_arrayRels .collapse">
-                                <h2>arrayRels</h2>
-                                <pre>arrayRels : array&lt;mixed,string&gt;</pre>
+                                                    <a id="property_arrayStyles"> </a>
+                            <div class="element clickable property  protected property_arrayStyles" data-toggle="collapse" data-target=".property_arrayStyles .collapse">
+                                <h2>arrayStyles</h2>
+                                <pre>arrayStyles : array&lt;mixed,array&gt;</pre>
                                 <div class="labels">
                                                                                                         </div>
                                 <div class="row collapse">
@@ -649,20 +799,71 @@
                                                                                     </table>
 
                                                                                     <h3>Type(s)</h3>
-                                            <code>array&lt;mixed,string&gt;</code>
+                                            <code>array&lt;mixed,array&gt;</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_oXMLReader"> </a>
+                            <div class="element clickable property  protected property_oXMLReader" data-toggle="collapse" data-target=".property_oXMLReader .collapse">
+                                <h2>oXMLReader</h2>
+                                <pre>oXMLReader : \PhpOffice\Common\XMLReader</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>\PhpOffice\Common\XMLReader</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_levelParagraph"> </a>
+                            <div class="element clickable property  protected property_levelParagraph" data-toggle="collapse" data-target=".property_levelParagraph .collapse">
+                                <h2>levelParagraph</h2>
+                                <pre>levelParagraph : </pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code></code>
                                                                             </div>
                                 </div>
                             </div>
                                                             </div>
             </div>
-            <a id="\PhpOffice\PhpPresentation\Reader\PowerPoint2007"></a>
+            <a id="\PhpOffice\PhpPresentation\Reader\ODPresentation"></a>
             <ul class="breadcrumb">
                 <li><a href="../index.html"><i class="icon-custom icon-class"></i></a></li>
                     
     
     <li><span class="divider">\</span><a href="../namespaces/PhpOffice.PhpPresentation.Reader.html">Reader</a></li>
 
-                <li class="active"><span class="divider">\</span><a href="../classes/PhpOffice.PhpPresentation.Reader.PowerPoint2007.html">PowerPoint2007</a></li>
+                <li class="active"><span class="divider">\</span><a href="../classes/PhpOffice.PhpPresentation.Reader.ODPresentation.html">ODPresentation</a></li>
             </ul>
         </div>
     </div>
