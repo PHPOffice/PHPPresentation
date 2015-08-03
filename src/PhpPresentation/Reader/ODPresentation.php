@@ -192,21 +192,21 @@ class ODPresentation implements ReaderInterface
     {
         $keyStyle = $nodeStyle->getAttribute('style:name');
         
-        $nodeGraphicProperties = $this->oXMLReader->getElement('style:graphic-properties', $nodeStyle);
-        if ($nodeGraphicProperties) {
+        $nodeGraphicProps = $this->oXMLReader->getElement('style:graphic-properties', $nodeStyle);
+        if ($nodeGraphicProps) {
             // Read Shadow
-            if ($nodeGraphicProperties->hasAttribute('draw:shadow') && $nodeGraphicProperties->getAttribute('draw:shadow') == 'visible') {
+            if ($nodeGraphicProps->hasAttribute('draw:shadow') && $nodeGraphicProps->getAttribute('draw:shadow') == 'visible') {
                 $oShadow = new Shadow();
                 $oShadow->setVisible(true);
-                if ($nodeGraphicProperties->hasAttribute('draw:shadow-color')) {
-                    $oShadow->getColor()->setRGB(substr($nodeGraphicProperties->getAttribute('draw:shadow-color'), -6));
+                if ($nodeGraphicProps->hasAttribute('draw:shadow-color')) {
+                    $oShadow->getColor()->setRGB(substr($nodeGraphicProps->getAttribute('draw:shadow-color'), -6));
                 }
-                if ($nodeGraphicProperties->hasAttribute('draw:shadow-opacity')) {
-                    $oShadow->setAlpha( 100 - (int)substr($nodeGraphicProperties->getAttribute('draw:shadow-opacity'), 0, -1));
+                if ($nodeGraphicProps->hasAttribute('draw:shadow-opacity')) {
+                    $oShadow->setAlpha(100 - (int)substr($nodeGraphicProps->getAttribute('draw:shadow-opacity'), 0, -1));
                 }
-                if ($nodeGraphicProperties->hasAttribute('draw:shadow-offset-x') && $nodeGraphicProperties->hasAttribute('draw:shadow-offset-y')) {
-                    $offsetX = substr($nodeGraphicProperties->getAttribute('draw:shadow-offset-x'), 0, -2);
-                    $offsetY = substr($nodeGraphicProperties->getAttribute('draw:shadow-offset-y'), 0, -2);
+                if ($nodeGraphicProps->hasAttribute('draw:shadow-offset-x') && $nodeGraphicProps->hasAttribute('draw:shadow-offset-y')) {
+                    $offsetX = substr($nodeGraphicProps->getAttribute('draw:shadow-offset-x'), 0, -2);
+                    $offsetY = substr($nodeGraphicProps->getAttribute('draw:shadow-offset-y'), 0, -2);
                     $distance = 0;
                     if ($offsetX != 0) {
                         $distance = ($offsetX < 0 ? $offsetX * -1 : $offsetX);
@@ -235,17 +235,17 @@ class ODPresentation implements ReaderInterface
                 $oFont->setSize(substr($nodeTextProperties->getAttribute('fo:font-size'), 0, -2));
             }
         }
-        $nodeParagraphProperties = $this->oXMLReader->getElement('style:paragraph-properties', $nodeStyle);
-        if ($nodeParagraphProperties) {
+        $nodeParagraphProps = $this->oXMLReader->getElement('style:paragraph-properties', $nodeStyle);
+        if ($nodeParagraphProps) {
             $oAlignment = new Alignment();
-            if ($nodeParagraphProperties->hasAttribute('fo:text-align')) {
-                $oAlignment->setHorizontal($nodeParagraphProperties->getAttribute('fo:text-align'));
+            if ($nodeParagraphProps->hasAttribute('fo:text-align')) {
+                $oAlignment->setHorizontal($nodeParagraphProps->getAttribute('fo:text-align'));
             }
         }
         
         if ($nodeStyle->nodeName == 'text:list-style') {
             $arrayListStyle = array();
-            foreach ($this->oXMLReader->getElements('text:list-level-style-bullet' , $nodeStyle) as $oNodeListLevel) {
+            foreach ($this->oXMLReader->getElements('text:list-level-style-bullet', $nodeStyle) as $oNodeListLevel) {
                 $oAlignment = new Alignment();
                 $oBullet = new Bullet();
                 $oBullet->setBulletType(Bullet::TYPE_NONE);
@@ -390,7 +390,7 @@ class ODPresentation implements ReaderInterface
      * @param RichText $oShape
      * @param \DOMElement $oNodeParent
      */
-    protected function readParagraph(RichText $oShape, \DOMElement $oNodeParent) 
+    protected function readParagraph(RichText $oShape, \DOMElement $oNodeParent)
     {
         $oParagraph = $oShape->createParagraph();
         foreach ($this->oXMLReader->getElements('text:span', $oNodeParent) as $oNodeRichTextElement) {
@@ -446,7 +446,7 @@ class ODPresentation implements ReaderInterface
      * @param \DOMElement $oNodeParent
      * @param \DOMElement $oNodeParagraph
      */
-    protected function readListItem(RichText $oShape, \DOMElement $oNodeParent, \DOMElement $oNodeParagraph) 
+    protected function readListItem(RichText $oShape, \DOMElement $oNodeParent, \DOMElement $oNodeParagraph)
     {
         $oParagraph = $oShape->createParagraph();
         if ($oNodeParagraph->hasAttribute('text:style-name')) {
