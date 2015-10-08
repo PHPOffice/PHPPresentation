@@ -2,23 +2,23 @@
 
 include_once 'Sample_Header.php';
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Area;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Line;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Scatter;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Border;
-use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\Style\Fill;
-use PhpOffice\PhpPowerpoint\Style\Shadow;
-use PhpOffice\PhpPowerpoint\Style\PhpOffice\PhpPowerpoint\Style;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
+use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Shadow;
+use PhpOffice\PhpPresentation\Style\PhpOffice\PhpPresentation\Style;
 
-function fnSlide_Area(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_Area(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
     
@@ -36,7 +36,7 @@ function fnSlide_Area(PhpPowerpoint $objPHPPowerPoint) {
     
     // Create templated slide
     echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
     
     // Create a line chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a area chart (that should be inserted in a chart shape)' . EOL;
@@ -51,11 +51,11 @@ function fnSlide_Area(PhpPowerpoint $objPHPPowerPoint) {
     echo date('H:i:s') . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
     $shape->getTitle()->setVisible(false);
-    $shape->setName('PHPPowerPoint Daily Downloads')->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+    $shape->setName('PHPPresentation Daily Downloads')->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-    $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+    $shape->getTitle()->setText('PHPPresentation Daily Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getPlotArea()->setType($areaChart);
     $shape->getView3D()->setRotationX(30);
@@ -64,13 +64,13 @@ function fnSlide_Area(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_Bar(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
 
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
 
     // Generate sample data for first chart
     echo date('H:i:s') . ' Generate sample data for chart'.EOL;
@@ -95,7 +95,7 @@ function fnSlide_Bar(PhpPowerpoint $objPHPPowerPoint) {
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName('PHPPowerPoint Monthly Downloads')
+    $shape->setName('PHPPresentation Monthly Downloads')
         ->setResizeProportional(false)
         ->setHeight(550)
         ->setWidth(700)
@@ -104,7 +104,7 @@ function fnSlide_Bar(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-    $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+    $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
     $shape->getPlotArea()->getAxisX()->setTitle('Month');
@@ -114,23 +114,23 @@ function fnSlide_Bar(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_BarHorizontal(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
 
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) '.EOL;
-    $barChartHorz = clone $objPHPPowerPoint->getSlide(1)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
+    $barChartHorz = clone $objPHPPresentation->getSlide(1)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
     $barChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
 
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
 
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName('PHPPowerPoint Monthly Downloads')
+    $shape->setName('PHPPresentation Monthly Downloads')
         ->setResizeProportional(false)
         ->setHeight(550)
         ->setWidth(700)
@@ -139,7 +139,7 @@ function fnSlide_BarHorizontal(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-    $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+    $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
     $shape->getPlotArea()->getAxisX()->setTitle('Month');
@@ -149,13 +149,13 @@ function fnSlide_BarHorizontal(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_BarStacked(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_BarStacked(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
 
     // Create templated slide
     echo EOL . date( 'H:i:s' ) . ' Create templated slide' . EOL;
-    $currentSlide = createTemplatedSlide( $objPHPPowerPoint );
+    $currentSlide = createTemplatedSlide( $objPHPPresentation );
 
     // Generate sample data for first chart
     echo date( 'H:i:s' ) . ' Generate sample data for chart' . EOL;
@@ -191,7 +191,7 @@ function fnSlide_BarStacked(PhpPowerpoint $objPHPPowerPoint) {
     // Create a shape (chart)
     echo date( 'H:i:s' ) . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName( 'PHPPowerPoint Monthly Downloads' )
+    $shape->setName( 'PHPPresentation Monthly Downloads' )
         ->setResizeProportional( false )
         ->setHeight( 550 )
         ->setWidth( 700 )
@@ -200,7 +200,7 @@ function fnSlide_BarStacked(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow( $oShadow );
     $shape->setFill( $oFill );
     $shape->getBorder()->setLineStyle( Border::LINE_SINGLE );
-    $shape->getTitle()->setText( 'PHPPowerPoint Monthly Downloads' );
+    $shape->getTitle()->setText( 'PHPPresentation Monthly Downloads' );
     $shape->getTitle()->getFont()->setItalic( true );
     $shape->getTitle()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_RIGHT );
     $shape->getPlotArea()->getAxisX()->setTitle( 'Month' );
@@ -209,13 +209,13 @@ function fnSlide_BarStacked(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getBorder()->setLineStyle( Border::LINE_SINGLE );
     $shape->getLegend()->getFont()->setItalic( true );
 }
-function fnSlide_BarPercentStacked(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
 
     // Create templated slide
     echo EOL . date( 'H:i:s' ) . ' Create templated slide' . EOL;
-    $currentSlide = createTemplatedSlide( $objPHPPowerPoint );
+    $currentSlide = createTemplatedSlide( $objPHPPresentation );
 
     // Generate sample data for first chart
     echo date( 'H:i:s' ) . ' Generate sample data for chart' . EOL;
@@ -268,7 +268,7 @@ function fnSlide_BarPercentStacked(PhpPowerpoint $objPHPPowerPoint) {
     // Create a shape (chart)
     echo date( 'H:i:s' ) . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName( 'PHPPowerPoint Monthly Downloads' )
+    $shape->setName( 'PHPPresentation Monthly Downloads' )
         ->setResizeProportional( false )
         ->setHeight( 550 )
         ->setWidth( 700 )
@@ -277,7 +277,7 @@ function fnSlide_BarPercentStacked(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow( $oShadow );
     $shape->setFill( $oFill );
     $shape->getBorder()->setLineStyle( Border::LINE_SINGLE );
-    $shape->getTitle()->setText( 'PHPPowerPoint Monthly Downloads' );
+    $shape->getTitle()->setText( 'PHPPresentation Monthly Downloads' );
     $shape->getTitle()->getFont()->setItalic( true );
     $shape->getTitle()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_RIGHT );
     $shape->getPlotArea()->getAxisX()->setTitle( 'Month' );
@@ -287,13 +287,13 @@ function fnSlide_BarPercentStacked(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic( true );
 }
 
-function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_Bar3D(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
 
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
 
     // Generate sample data for first chart
     echo date('H:i:s') . ' Generate sample data for chart'.EOL;
@@ -318,7 +318,7 @@ function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName('PHPPowerPoint Monthly Downloads')
+    $shape->setName('PHPPresentation Monthly Downloads')
         ->setResizeProportional(false)
         ->setHeight(550)
         ->setWidth(700)
@@ -327,7 +327,7 @@ function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-    $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+    $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
     $shape->getPlotArea()->getAxisX()->setTitle('Month');
@@ -340,23 +340,23 @@ function fnSlide_Bar3D(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar3DHorizontal(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
     
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) '.EOL;
-    $bar3DChartHorz = clone $objPHPPowerPoint->getSlide(5)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
+    $bar3DChartHorz = clone $objPHPPresentation->getSlide(5)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
     $bar3DChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
     
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
     
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName('PHPPowerPoint Monthly Downloads')
+    $shape->setName('PHPPresentation Monthly Downloads')
             ->setResizeProportional(false)
             ->setHeight(550)
             ->setWidth(700)
@@ -365,7 +365,7 @@ function fnSlide_Bar3DHorizontal(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-    $shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+    $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
     $shape->getPlotArea()->getAxisX()->setTitle('Month');
@@ -378,13 +378,13 @@ function fnSlide_Bar3DHorizontal(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Pie3D(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_Pie3D(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
     
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
     
     // Generate sample data for second chart
     echo date('H:i:s') . ' Generate sample data for chart'.EOL;
@@ -408,7 +408,7 @@ function fnSlide_Pie3D(PhpPowerpoint $objPHPPowerPoint) {
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName('PHPPowerPoint Daily Downloads')
+    $shape->setName('PHPPresentation Daily Downloads')
           ->setResizeProportional(false)
           ->setHeight(550)
           ->setWidth(700)
@@ -417,7 +417,7 @@ function fnSlide_Pie3D(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-    $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+    $shape->getTitle()->setText('PHPPresentation Daily Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getPlotArea()->setType($pie3DChart);
     $shape->getView3D()->setRotationX(30);
@@ -426,13 +426,13 @@ function fnSlide_Pie3D(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Pie(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_Pie(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
 
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint);
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
 
     // Generate sample data for second chart
     echo date('H:i:s') . ' Generate sample data for chart'.EOL;
@@ -459,7 +459,7 @@ function fnSlide_Pie(PhpPowerpoint $objPHPPowerPoint) {
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName('PHPPowerPoint Daily Downloads')
+    $shape->setName('PHPPresentation Daily Downloads')
           ->setResizeProportional(false)
           ->setHeight(550)
           ->setWidth(700)
@@ -468,20 +468,20 @@ function fnSlide_Pie(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-    $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+    $shape->getTitle()->setText('PHPPresentation Daily Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getPlotArea()->setType($pieChart);
     $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Scatter(PhpPowerpoint $objPHPPowerPoint) {
+function fnSlide_Scatter(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
     
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
-    $currentSlide = createTemplatedSlide($objPHPPowerPoint); // local function
+    $currentSlide = createTemplatedSlide($objPHPPresentation); // local function
     
     // Generate sample data for fourth chart
     echo date('H:i:s') . ' Generate sample data for chart'.EOL;
@@ -497,7 +497,7 @@ function fnSlide_Scatter(PhpPowerpoint $objPHPPowerPoint) {
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName('PHPPowerPoint Daily Download Distribution')
+    $shape->setName('PHPPresentation Daily Download Distribution')
     ->setResizeProportional(false)
     ->setHeight(550)
     ->setWidth(700)
@@ -506,7 +506,7 @@ function fnSlide_Scatter(PhpPowerpoint $objPHPPowerPoint) {
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-    $shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+    $shape->getTitle()->setText('PHPPresentation Daily Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getPlotArea()->setType($lineChart);
     $shape->getView3D()->setRotationX(30);
@@ -515,14 +515,14 @@ function fnSlide_Scatter(PhpPowerpoint $objPHPPowerPoint) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-// Create new PHPPowerPoint object
-echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
-$objPHPPowerPoint = new PhpPowerpoint();
+// Create new PHPPresentation object
+echo date('H:i:s') . ' Create new PHPPresentation object'.EOL;
+$objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
-                                  ->setLastModifiedBy('PHPPowerPoint Team')
+$objPHPPresentation->getProperties()->setCreator('PHPOffice')
+                                  ->setLastModifiedBy('PHPPresentation Team')
                                   ->setTitle('Sample 07 Title')
                                   ->setSubject('Sample 07 Subject')
                                   ->setDescription('Sample 07 Description')
@@ -531,7 +531,7 @@ $objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
 
 // Remove first slide
 echo date('H:i:s') . ' Remove first slide'.EOL;
-$objPHPPowerPoint->removeSlideByIndex(0);
+$objPHPPresentation->removeSlideByIndex(0);
 
 // Set Style
 $oFill = new Fill();
@@ -540,28 +540,28 @@ $oFill->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE06B20'));
 $oShadow = new Shadow();
 $oShadow->setVisible(true)->setDirection(45)->setDistance(10);
 
-fnSlide_Area($objPHPPowerPoint);
+fnSlide_Area($objPHPPresentation);
 
-fnSlide_Bar($objPHPPowerPoint);
+fnSlide_Bar($objPHPPresentation);
 
-fnSlide_BarStacked($objPHPPowerPoint);
+fnSlide_BarStacked($objPHPPresentation);
 
-fnSlide_BarPercentStacked($objPHPPowerPoint);
+fnSlide_BarPercentStacked($objPHPPresentation);
 
-fnSlide_BarHorizontal($objPHPPowerPoint);
+fnSlide_BarHorizontal($objPHPPresentation);
 
-fnSlide_Bar3D($objPHPPowerPoint);
+fnSlide_Bar3D($objPHPPresentation);
 
-fnSlide_Bar3DHorizontal($objPHPPowerPoint);
+fnSlide_Bar3DHorizontal($objPHPPresentation);
 
-fnSlide_Pie3D($objPHPPowerPoint);
+fnSlide_Pie3D($objPHPPresentation);
 
-fnSlide_Pie($objPHPPowerPoint);
+fnSlide_Pie($objPHPPresentation);
 
-fnSlide_Scatter($objPHPPowerPoint);
+fnSlide_Scatter($objPHPPresentation);
 
 // Save file
-echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }

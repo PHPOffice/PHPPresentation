@@ -1,3 +1,4 @@
+sudo: false
 language: php
 
 php:
@@ -17,13 +18,15 @@ env:
     global:
         - secure: "LtlUOzC8FtqgbqUTmU7EU281NSCb58UFdvnz8lelNIDltBdP4eayN/TsgNIePB4jXg2d2R56ZA6j/grhE/md6jdUkulV355H3GrH/hIZmmQ+F9+87agnwLzb9+MJbqXoiE7VvjY3zGIO09G897SUfsfu6JWEcscYFlsH6KcXM6M="
 
+addons:
+  apt:
+    packages:
+      - graphviz
+
 before_script:
-  ## Packages
-  - sudo apt-get -qq update > /dev/null
-  - sudo apt-get -qq install graphviz > /dev/null
   ## Composer
   - composer self-update
-  - composer install --prefer-source --dev
+  - composer install --prefer-source
   ## PHPDocumentor
   - mkdir -p build/docs
   - mkdir -p build/coverage

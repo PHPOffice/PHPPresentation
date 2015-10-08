@@ -2,25 +2,25 @@
 
 include_once 'Sample_Header.php';
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Bar3D;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Type\Pie3D;
-use PhpOffice\PhpPowerpoint\Shape\Chart\Series;
-use PhpOffice\PhpPowerpoint\Style\Fill;
-use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\Style\Border;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Border;
 
 if (!class_exists('PHPExcel')) {
 	echo('<strong>PHPExcel has not been loaded. Include PHPExcel.php in your script, e.g. require_once \'PHPExcel.php\'.</strong>');
 } else {
-	// Create new PHPPowerPoint object
-	echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
-	$objPHPPowerPoint = new PhpPowerpoint();
+	// Create new PHPPresentation object
+	echo date('H:i:s') . ' Create new PHPPresentation object'.EOL;
+	$objPHPPresentation = new PhpPresentation();
 	
 	// Set properties
 	echo date('H:i:s') . ' Set properties'.EOL;
-	$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
-										->setLastModifiedBy('PHPPowerPoint Team')
+	$objPHPPresentation->getProperties()->setCreator('PHPOffice')
+										->setLastModifiedBy('PHPPresentation Team')
 										->setTitle('Sample 08 Title')
 										->setSubject('Sample 08 Subject')
 										->setDescription('Sample 08 Description')
@@ -29,11 +29,11 @@ if (!class_exists('PHPExcel')) {
 	
 	// Remove first slide
 	echo date('H:i:s') . ' Remove first slide'.EOL;
-	$objPHPPowerPoint->removeSlideByIndex(0);
+	$objPHPPresentation->removeSlideByIndex(0);
 	
 	// Create templated slide
 	echo date('H:i:s') . ' Create templated slide'.EOL;
-	$currentSlide = createTemplatedSlide($objPHPPowerPoint); // local function
+	$currentSlide = createTemplatedSlide($objPHPPresentation); // local function
 	
 	// Generate sample data for first chart
 	echo date('H:i:s') . ' Generate sample data for first chart'.EOL;
@@ -49,7 +49,7 @@ if (!class_exists('PHPExcel')) {
 	// Create a shape (chart)
 	echo date('H:i:s') . ' Create a shape (chart)'.EOL;
 	$shape = $currentSlide->createChartShape();
-	$shape->setName('PHPPowerPoint Monthly Downloads')
+	$shape->setName('PHPPresentation Monthly Downloads')
 			->setResizeProportional(false)
 			->setHeight(550)
 			->setWidth(700)
@@ -64,7 +64,7 @@ if (!class_exists('PHPExcel')) {
 						->setEndColor(new Color('FFFFFFFF'))
 						->setRotation(270);
 	$shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-	$shape->getTitle()->setText('PHPPowerPoint Monthly Downloads');
+	$shape->getTitle()->setText('PHPPresentation Monthly Downloads');
 	$shape->getTitle()->getFont()->setItalic(true);
 	$shape->getPlotArea()->getAxisX()->setTitle('Month');
 	$shape->getPlotArea()->getAxisY()->setTitle('Downloads');
@@ -77,7 +77,7 @@ if (!class_exists('PHPExcel')) {
 	
 	// Create templated slide
 	echo date('H:i:s') . ' Create templated slide'.EOL;
-	$currentSlide = createTemplatedSlide($objPHPPowerPoint); // local function
+	$currentSlide = createTemplatedSlide($objPHPPresentation); // local function
 	
 	// Generate sample data for second chart
 	echo date('H:i:s') . ' Generate sample data for second chart'.EOL;
@@ -91,7 +91,7 @@ if (!class_exists('PHPExcel')) {
 	// Create a shape (chart)
 	echo date('H:i:s') . ' Create a shape (chart)'.EOL;
 	$shape = $currentSlide->createChartShape();
-	$shape->setName('PHPPowerPoint Daily Downloads')
+	$shape->setName('PHPPresentation Daily Downloads')
 			->setResizeProportional(false)
 			->setHeight(550)
 			->setWidth(700)
@@ -106,7 +106,7 @@ if (!class_exists('PHPExcel')) {
 						->setEndColor(new Color('FFFFFFFF'))
 						->setRotation(270);
 	$shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
-	$shape->getTitle()->setText('PHPPowerPoint Daily Downloads');
+	$shape->getTitle()->setText('PHPPresentation Daily Downloads');
 	$shape->getTitle()->getFont()->setItalic(true);
 	$shape->getPlotArea()->setType($pie3DChart);
 	$shape->getView3D()->setRotationX(30);
@@ -115,7 +115,7 @@ if (!class_exists('PHPExcel')) {
 	$shape->getLegend()->getFont()->setItalic(true);
 	
 	// Save file
-	echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
+	echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 }
 if (!CLI) {
 	include_once 'Sample_Footer.php';

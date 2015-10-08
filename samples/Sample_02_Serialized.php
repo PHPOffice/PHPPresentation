@@ -2,19 +2,19 @@
 
 include_once 'Sample_Header.php';
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\IOFactory;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\IOFactory;
 
-// Create new PHPPowerPoint object
-echo date('H:i:s') . ' Create new PHPPowerPoint object'.EOL;
-$objPHPPowerPoint = new PhpPowerpoint();
+// Create new PHPPresentation object
+echo date('H:i:s') . ' Create new PHPPresentation object'.EOL;
+$objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
-                                  ->setLastModifiedBy('PHPPowerPoint Team')
+$objPHPPresentation->getProperties()->setCreator('PHPOffice')
+                                  ->setLastModifiedBy('PHPPresentation Team')
                                   ->setTitle('Sample 03 Title')
                                   ->setSubject('Sample 03 Subject')
                                   ->setDescription('Sample 03 Description')
@@ -23,13 +23,13 @@ $objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
 
 // Create slide
 echo date('H:i:s') . ' Create slide'.EOL;
-$currentSlide = $objPHPPowerPoint->getActiveSlide();
+$currentSlide = $objPHPPresentation->getActiveSlide();
 
 // Create a shape (drawing)
 echo date('H:i:s') . ' Create a shape (drawing)'.EOL;
 $shape = $currentSlide->createDrawingShape();
-$shape->setName('PHPPowerPoint logo')
-      ->setDescription('PHPPowerPoint logo')
+$shape->setName('PHPPresentation logo')
+      ->setDescription('PHPPresentation logo')
       ->setPath('./resources/phppowerpoint_logo.gif')
       ->setHeight(36)
       ->setOffsetX(10)
@@ -46,7 +46,7 @@ $shape = $currentSlide->createRichTextShape()
       ->setOffsetX(170)
       ->setOffsetY(180);
 $shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
-$textRun = $shape->createTextRun('Thank you for using PHPPowerPoint!');
+$textRun = $shape->createTextRun('Thank you for using PHPPresentation!');
 $textRun->getFont()->setBold(true)
                    ->setSize(60)
                    ->setColor( new Color( 'FFE06B20' ) );
@@ -54,15 +54,15 @@ $textRun->getFont()->setBold(true)
 // Save serialized file
 $basename = basename(__FILE__, '.php');
 echo date('H:i:s') . ' Write to serialized format'.EOL;
-$objWriter = IOFactory::createWriter($objPHPPowerPoint, 'Serialized');
+$objWriter = IOFactory::createWriter($objPHPPresentation, 'Serialized');
 $objWriter->save('results/'.basename(__FILE__, '.php').'.phppt');
 
 // Read from serialized file
 echo date('H:i:s') . ' Read from serialized format'.EOL;
-$objPHPPowerPointLoaded = IOFactory::load('results/'.basename(__FILE__, '.php').'.phppt');
+$objPHPPresentationLoaded = IOFactory::load('results/'.basename(__FILE__, '.php').'.phppt');
 
 // Save file
-echo write($objPHPPowerPointLoaded, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentationLoaded, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
 	include_once 'Sample_Footer.php';
 }

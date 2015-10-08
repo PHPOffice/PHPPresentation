@@ -9,8 +9,8 @@
          stopOnFailure="false"
          syntaxCheck="false">
     <testsuites>
-        <testsuite name="PhpPowerpoint Test Suite">
-            <directory>./tests/PhpPowerpoint</directory>
+        <testsuite name="PHPPresentation Test Suite">
+            <directory>./tests/PhpPresentation</directory>
         </testsuite>
     </testsuites>
     <filter>

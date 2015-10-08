@@ -2,19 +2,19 @@
 
 include_once 'Sample_Header.php';
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\Slide\Transition;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Slide\Transition;
 
-// Create new PHPPowerPoint object
-echo date('H:i:s') . ' Create new PHPPowerPoint object' . EOL;
-$objPHPPowerPoint = new PhpPowerpoint();
+// Create new PHPPresentation object
+echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;
+$objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
-                                  ->setLastModifiedBy('PHPPowerPoint Team')
+$objPHPPresentation->getProperties()->setCreator('PHPOffice')
+                                  ->setLastModifiedBy('PHPPresentation Team')
                                   ->setTitle('Sample 10 Title')
                                   ->setSubject('Sample 10 Subject')
                                   ->setDescription('Sample 10 Description')
@@ -23,13 +23,13 @@ $objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
 
 // Create slide
 echo date('H:i:s') . ' Create slide'.EOL;
-$slide0 = $objPHPPowerPoint->getActiveSlide();
+$slide0 = $objPHPPresentation->getActiveSlide();
 
 // Create a shape (drawing)
 echo date('H:i:s') . ' Create a shape (drawing)'.EOL;
 $shapeDrawing = $slide0->createDrawingShape();
-$shapeDrawing->setName('PHPPowerPoint logo')
-      ->setDescription('PHPPowerPoint logo')
+$shapeDrawing->setName('PHPPresentation logo')
+      ->setDescription('PHPPresentation logo')
       ->setPath('./resources/phppowerpoint_logo.gif')
       ->setHeight(36)
       ->setOffsetX(10)
@@ -37,7 +37,7 @@ $shapeDrawing->setName('PHPPowerPoint logo')
 $shapeDrawing->getShadow()->setVisible(true)
                    ->setDirection(45)
                    ->setDistance(10);
-$shapeDrawing->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPowerPoint/')->setTooltip('PHPPowerPoint');
+$shapeDrawing->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/')->setTooltip('PHPPresentation');
 
 // Create a shape (text)
 echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
@@ -47,7 +47,7 @@ $shapeRichText = $slide0->createRichTextShape()
       ->setOffsetX(170)
       ->setOffsetY(180);
 $shapeRichText->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
-$textRun = $shapeRichText->createTextRun('Thank you for using PHPPowerPoint!');
+$textRun = $shapeRichText->createTextRun('Thank you for using PHPPresentation!');
 $textRun->getFont()->setBold(true)
                    ->setSize(60)
                    ->setColor( new Color( 'FFE06B20' ) );
@@ -60,12 +60,12 @@ $slide0->setTransition($oTransition);
 
 // Create slide
 echo date('H:i:s') . ' Create slide'.EOL;
-$slide1 = $objPHPPowerPoint->createSlide();
+$slide1 = $objPHPPresentation->createSlide();
 $slide1->addShape(clone $shapeDrawing);
 $slide1->addShape(clone $shapeRichText);
 
 // Save file
-echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
 	include_once 'Sample_Footer.php';
 }

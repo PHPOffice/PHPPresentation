@@ -25,3 +25,4 @@ vendor
 /samples/#*
 /samples/Github_*.*
 /samples/results
+/composer.lock

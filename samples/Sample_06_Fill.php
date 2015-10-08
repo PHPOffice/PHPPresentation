@@ -2,19 +2,19 @@
 
 include_once 'Sample_Header.php';
 
-use PhpOffice\PhpPowerpoint\PhpPowerpoint;
-use PhpOffice\PhpPowerpoint\Style\Alignment;
-use PhpOffice\PhpPowerpoint\Style\Color;
-use PhpOffice\PhpPowerpoint\Style\Fill;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
 
-// Create new PHPPowerPoint object
-echo date('H:i:s') . ' Create new PHPPowerPoint object' . EOL;
-$objPHPPowerPoint = new PhpPowerpoint();
+// Create new PHPPresentation object
+echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;
+$objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
-                                  ->setLastModifiedBy('PHPPowerPoint Team')
+$objPHPPresentation->getProperties()->setCreator('PHPOffice')
+                                  ->setLastModifiedBy('PHPPresentation Team')
                                   ->setTitle('Sample 01 Title')
                                   ->setSubject('Sample 01 Subject')
                                   ->setDescription('Sample 01 Description')
@@ -23,7 +23,7 @@ $objPHPPowerPoint->getProperties()->setCreator('PHPOffice')
 
 // Create slide
 echo date('H:i:s') . ' Create slide'.EOL;
-$currentSlide = $objPHPPowerPoint->getActiveSlide();
+$currentSlide = $objPHPPresentation->getActiveSlide();
 
 
 for($inc = 1 ; $inc <= 4 ; $inc++){
@@ -59,14 +59,14 @@ for($inc = 1 ; $inc <= 4 ; $inc++){
             break;
     }
     
-    $textRun = $shape->createTextRun('Use PHPPowerPoint!');
+    $textRun = $shape->createTextRun('Use PHPPresentation!');
     $textRun->getFont()->setBold(true)
                        ->setSize(30)
                        ->setColor( new Color('FFE06B20') );
 }
 
 // Save file
-echo write($objPHPPowerPoint, basename(__FILE__, '.php'), $writers);
+echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
     include_once 'Sample_Footer.php';
 }
