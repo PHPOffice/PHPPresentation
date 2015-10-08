@@ -1,5 +1,5 @@
 # Changelog
-## 0.5.0 - Not released
+## 0.5.0 - 2015-10-08
 
 ### Features
 - PowerPoint2007 Reader : Initial Commit - @Progi1984 GH-44
