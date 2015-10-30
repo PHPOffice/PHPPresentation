@@ -225,6 +225,7 @@ class PowerPoint2007 implements WriterInterface
             // Add document properties to ZIP file
             $objZip->addFromString('docProps/app.xml', $wPartDocProps->writeDocPropsApp($this->presentation));
             $objZip->addFromString('docProps/core.xml', $wPartDocProps->writeDocPropsCore($this->presentation));
+            $objZip->addFromString('docProps/custom.xml', $wPartDocProps->writeDocPropsCustom($this->presentation));
 
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {

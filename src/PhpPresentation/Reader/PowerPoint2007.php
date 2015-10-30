@@ -118,6 +118,11 @@ class PowerPoint2007 implements ReaderInterface
         if ($docPropsCore !== false) {
             $this->loadDocumentProperties($docPropsCore);
         }
+
+        $docPropsCustom = $this->oZip->getFromName('docProps/custom.xml');
+        if ($docPropsCustom !== false) {
+            $this->loadCustomProperties($docPropsCustom);
+        }
         
         $pptPresentation = $this->oZip->getFromName('ppt/presentation.xml');
         if ($pptPresentation !== false) {
@@ -156,6 +161,25 @@ class PowerPoint2007 implements ReaderInterface
                     } else {
                         $oProperties->{$property}($oElement->nodeValue);
                     }
+                }
+            }
+        }
+    }
+
+
+
+    /**
+     * Read Custom Properties
+     * @param string $sPart
+     */
+    protected function loadCustomProperties($sPart)
+    {
+        $xmlReader = new XMLReader();
+        if ($xmlReader->getDomFromString($sPart)) {
+            $pathMarkAsFinal = '/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool';
+            if (is_object($oElement = $xmlReader->getElement($pathMarkAsFinal))) {
+                if ($oElement->nodeValue == 'true') {
+                    $this->oPhpPresentation->markAsFinal(true);
                 }
             }
         }

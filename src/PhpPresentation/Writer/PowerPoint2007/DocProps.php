@@ -176,6 +176,54 @@ class DocProps extends AbstractPart
         // cp:category
         $objWriter->writeElement('cp:category', $pPhpPresentation->getProperties()->getCategory());
 
+        if ($pPhpPresentation->isMarkedAsFinal()) {
+            // cp:contentStatus = Final
+            $objWriter->writeElement('cp:contentStatus', 'Final');
+        }
+
+        $objWriter->endElement();
+
+        // Return
+        return $objWriter->getData();
+    }
+
+
+
+    /**
+     * Write docProps/custom.xml to XML format
+     *
+     * @param  PhpPresentation $pPhpPresentation
+     * @return string        XML Output
+     * @throws \Exception
+     */
+    public function writeDocPropsCustom(PhpPresentation $pPhpPresentation)
+    {
+        // Create XML writer
+        $objWriter = $this->getXMLWriter();
+
+        // XML header
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+
+        // Properties
+        $objWriter->startElement('Properties');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/officeDocument/2006/custom-properties');
+        $objWriter->writeAttribute('xmlns:vt', 'http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes');
+
+        if ($pPhpPresentation->isMarkedAsFinal()) {
+            // property
+            $objWriter->startElement('property');
+            $objWriter->writeAttribute('fmtid', '{D5CDD505-2E9C-101B-9397-08002B2CF9AE}');
+            $objWriter->writeAttribute('pid', 2);
+            $objWriter->writeAttribute('name', '_MarkAsFinal');
+
+            // property > vt:bool
+            $objWriter->writeElement('vt:bool', 'true');
+
+            // > property
+            $objWriter->endElement();
+        }
+
+        // > Properties
         $objWriter->endElement();
 
         // Return

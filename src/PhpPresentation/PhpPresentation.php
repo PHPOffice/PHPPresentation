@@ -54,6 +54,12 @@ class PhpPresentation
     private $activeSlideIndex = 0;
 
     /**
+     * Mark as final
+     * @var bool
+     */
+    private $markAsFinal = false;
+
+    /**
      * Create a new PhpPresentation with one Slide
      */
     public function __construct()
@@ -290,5 +296,27 @@ class PhpPresentation
         }
 
         return $copied;
+    }
+
+    /**
+     * Mark a document as final
+     * @param bool $state
+     * @return PhpPresentation
+     */
+    public function markAsFinal($state = true)
+    {
+        if (is_bool($state)) {
+            $this->markAsFinal = $state;
+        }
+        return $this;
+    }
+
+    /**
+     * Return if this document is marked as final
+     * @return bool
+     */
+    public function isMarkedAsFinal()
+    {
+        return $this->markAsFinal;
     }
 }
