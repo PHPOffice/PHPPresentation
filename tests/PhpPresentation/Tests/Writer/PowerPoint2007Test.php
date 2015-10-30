@@ -150,9 +150,10 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $oPhpPresentation->markAsFinal(true);
 
         $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($pres->elementExists('/Properties', 'docProps/custom.xml'));
+        $this->assertTrue($pres->elementExists('/Properties/property', 'docProps/custom.xml'));
         $this->assertTrue($pres->elementExists('/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]', 'docProps/custom.xml'));
         $this->assertTrue($pres->elementExists('/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool', 'docProps/custom.xml'));
-        $this->assertEquals('true', $pres->getElement('/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool', 'docProps/core.xml')->nodeValue);
         $this->assertTrue($pres->elementExists('/cp:coreProperties/cp:contentStatus', 'docProps/core.xml'));
         $this->assertEquals('Final', $pres->getElement('/cp:coreProperties/cp:contentStatus', 'docProps/core.xml')->nodeValue);
 

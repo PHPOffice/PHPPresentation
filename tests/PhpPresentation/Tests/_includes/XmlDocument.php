@@ -68,6 +68,7 @@ class XmlDocument
      */
     public function getFileDom($file = 'word/document.xml')
     {
+        $baseFile = $file;
         if (null !== $this->dom && $file === $this->file) {
             return $this->dom;
         }
@@ -77,7 +78,12 @@ class XmlDocument
 
         $file = $this->path . '/' . $file;
         $this->dom = new \DOMDocument();
-        $this->dom->load($file);
+        $strContent = file_get_contents($file);
+        // docProps/custom.xml
+        if ($baseFile == 'docProps/custom.xml') {
+            $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $strContent);
+        }
+        $this->dom->loadXML($strContent);
         return $this->dom;
     }
 

@@ -175,6 +175,7 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadCustomProperties($sPart)
     {
         $xmlReader = new XMLReader();
+        $sPart = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $sPart);
         if ($xmlReader->getDomFromString($sPart)) {
             $pathMarkAsFinal = '/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool';
             if (is_object($oElement = $xmlReader->getElement($pathMarkAsFinal))) {
