@@ -464,4 +464,14 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getHyperlink()->getUrl());
         //$this->assertEquals('PHPPresentation', $oRichText->getHyperlink()->getTooltip());
     }
+
+    public function testSlideName()
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/ODP_Slide_Name.odp';
+        $object = new ODPresentation();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+
+        $this->assertEquals('MaDiapo', $oPhpPresentation->getSlide(0)->getName());
+    }
 }

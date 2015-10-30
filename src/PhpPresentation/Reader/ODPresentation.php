@@ -301,6 +301,9 @@ class ODPresentation implements ReaderInterface
         // Core
         $this->oPhpPresentation->createSlide();
         $this->oPhpPresentation->setActiveSlideIndex($this->oPhpPresentation->getSlideCount() - 1);
+        if ($nodeSlide->hasAttribute('draw:name')) {
+            $this->oPhpPresentation->getActiveSlide()->setName($nodeSlide->getAttribute('draw:name'));
+        }
         foreach ($this->oXMLReader->getElements('draw:frame', $nodeSlide) as $oNodeFrame) {
             if ($this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
                 $this->loadShapeDrawing($oNodeFrame);
