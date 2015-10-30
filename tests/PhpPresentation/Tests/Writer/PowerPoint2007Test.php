@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 /**
