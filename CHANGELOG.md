@@ -1,4 +1,8 @@
 # Changelog
+## 0.6.0 - WIP
+### Features
+- ODPresentation Writer : Name of the slide - @Progi1984 GH-121
+
 ## 0.5.0 - 2015-10-08
 
 ### Features

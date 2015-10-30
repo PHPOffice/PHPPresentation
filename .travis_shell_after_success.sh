@@ -5,8 +5,7 @@ echo "TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
 echo "TRAVIS_PHP_VERSION: $TRAVIS_PHP_VERSION"
 echo "TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 
-##if [ "$TRAVIS_REPO_SLUG" == "PHPOffice/PHPPresentation" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
-if [ "$TRAVIS_REPO_SLUG" == "PHPOffice/PHPPowerPoint" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
+if [ "$TRAVIS_REPO_SLUG" == "PHPOffice/PHPPresentation" ] && [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_PHP_VERSION" == "5.5" ]; then
 
   echo -e "Publishing PHPDoc...\n"
 
@@ -16,8 +15,7 @@ if [ "$TRAVIS_REPO_SLUG" == "PHPOffice/PHPPowerPoint" ] && [ "$TRAVIS_PULL_REQUE
   cd $HOME
   git config --global user.email "travis@travis-ci.org"
   git config --global user.name "travis-ci"
-  ## git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/PHPOffice/PHPPresentation gh-pages > /dev/null
-  git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/PHPOffice/PHPPowerPoint gh-pages > /dev/null
+  git clone --quiet --branch=gh-pages https://${GH_TOKEN}@github.com/PHPOffice/PHPPresentation gh-pages > /dev/null
 
   cd gh-pages
   echo "--DEBUG : Suppression"

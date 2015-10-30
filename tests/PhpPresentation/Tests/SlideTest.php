@@ -84,6 +84,16 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->createGroup());
     }
 
+    public function testName()
+    {
+        $object = new Slide();
+        $this->assertNull($object->getName());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setName('AAAA'));
+        $this->assertEquals('AAAA', $object->getName());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setName());
+        $this->assertNull($object->getName());
+    }
+
     public function testTransition()
     {
         $object = new Slide();
