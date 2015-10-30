@@ -115,6 +115,13 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     protected $extentY;
 
     /**
+     * Name of the title
+     *
+     * @var string
+     */
+    protected $name;
+
+    /**
      * Create a new slide
      *
      * @param PhpPresentation $pParent
@@ -460,6 +467,26 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     {
         $this->slideTransition = $transition;
 
+        return $this;
+    }
+
+    /**
+     * Get the name of the slide
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set the name of the slide
+     * @param string $name
+     * @return $this
+     */
+    public function setName($name = null)
+    {
+        $this->name = $name;
         return $this;
     }
 }

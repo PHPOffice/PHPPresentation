@@ -268,7 +268,10 @@ class Content extends AbstractPart
         for ($i = 0; $i < $slideCount; ++$i) {
             $pSlide = $pPhpPresentation->getSlide($i);
             $objWriter->startElement('draw:page');
-            $objWriter->writeAttribute('draw:name', 'page' . $i);
+            $name = $pSlide->getName();
+            if (!is_null($name)) {
+                $objWriter->writeAttribute('draw:name', $name);
+            }
             $objWriter->writeAttribute('draw:master-page-name', 'Standard');
             $objWriter->writeAttribute('draw:style-name', 'stylePage' . $i);
             // Images
