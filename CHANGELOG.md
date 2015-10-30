@@ -1,7 +1,8 @@
 # Changelog
 ## 0.6.0 - WIP
 ### Features
-- ODPresentation Writer : Name of the slide - @Progi1984 GH-121
+- ODPresentation Reader/Writer : Name of the slide - @Progi1984 GH-121
+- PowerPoint2007 Reader/Writer : Mark as final - @Progi1984 GH-118
 
 ## 0.5.0 - 2015-10-08
 

@@ -92,6 +92,20 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
         $object->getSlide(1);
     }
 
+    public function testMarkAsFinal()
+    {
+        $object = new PhpPresentation();
+        $this->assertFalse($object->isMarkedAsFinal());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->markAsFinal('AAAA'));
+        $this->assertFalse($object->isMarkedAsFinal());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->markAsFinal(true));
+        $this->assertTrue($object->isMarkedAsFinal());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->markAsFinal(false));
+        $this->assertFalse($object->isMarkedAsFinal());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->markAsFinal());
+        $this->assertTrue($object->isMarkedAsFinal());
+    }
+
     /**
      * Test set active slide index exception
      *
