@@ -163,4 +163,28 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertFalse($pres->elementExists('/Properties/property[@name="_MarkAsFinal"]', 'docProps/custom.xml'));
         $this->assertFalse($pres->elementExists('/cp:coreProperties/cp:contentStatus', 'docProps/core.xml'));
     }
+
+    public function testZoom()
+    {
+        $oPhpPresentation = new PhpPresentation();
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($pres->elementExists('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'ppt/viewProps.xml'));
+        $this->assertEquals('100', $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'n', 'ppt/viewProps.xml'));
+        $this->assertEquals('100', $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'd', 'ppt/viewProps.xml'));
+        $this->assertTrue($pres->elementExists('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'ppt/viewProps.xml'));
+        $this->assertEquals('100', $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', 'ppt/viewProps.xml'));
+        $this->assertEquals('100', $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 'ppt/viewProps.xml'));
+
+        $value = rand(1, 100);
+        $oPhpPresentation->setZoom($value);
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($pres->elementExists('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'ppt/viewProps.xml'));
+        $this->assertEquals($value * 100, $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'n', 'ppt/viewProps.xml'));
+        $this->assertEquals('100', $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'd', 'ppt/viewProps.xml'));
+        $this->assertTrue($pres->elementExists('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'ppt/viewProps.xml'));
+        $this->assertEquals($value * 100, $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', 'ppt/viewProps.xml'));
+        $this->assertEquals('100', $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 'ppt/viewProps.xml'));
+    }
 }

@@ -123,6 +123,11 @@ class PowerPoint2007 implements ReaderInterface
         if ($docPropsCustom !== false) {
             $this->loadCustomProperties($docPropsCustom);
         }
+
+        $pptViewProps = $this->oZip->getFromName('ppt/viewProps.xml');
+        if ($pptViewProps !== false) {
+            $this->loadViewProperties($pptViewProps);
+        }
         
         $pptPresentation = $this->oZip->getFromName('ppt/presentation.xml');
         if ($pptPresentation !== false) {
@@ -166,8 +171,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-
-
     /**
      * Read Custom Properties
      * @param string $sPart
@@ -181,6 +184,23 @@ class PowerPoint2007 implements ReaderInterface
             if (is_object($oElement = $xmlReader->getElement($pathMarkAsFinal))) {
                 if ($oElement->nodeValue == 'true') {
                     $this->oPhpPresentation->markAsFinal(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Read View Properties
+     * @param string $sPart
+     */
+    protected function loadViewProperties($sPart)
+    {
+        $xmlReader = new XMLReader();
+        if ($xmlReader->getDomFromString($sPart)) {
+            $pathZoom = '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx';
+            if (is_object($oElement = $xmlReader->getElement($pathZoom))) {
+                if ($oElement->hasAttribute('d') && $oElement->hasAttribute('n')) {
+                    $this->oPhpPresentation->setZoom($oElement->getAttribute('n') / $oElement->getAttribute('d'));
                 }
             }
         }

@@ -117,4 +117,16 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
         $object = new PhpPresentation();
         $object->setActiveSlideIndex(1);
     }
+
+    public function testZoom()
+    {
+        $object = new PhpPresentation();
+        $this->assertEquals(1, $object->getZoom());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setZoom('AAAA'));
+        $this->assertEquals(1, $object->getZoom());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setZoom(2.3));
+        $this->assertEquals(2.3, $object->getZoom());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setZoom());
+        $this->assertEquals(1, $object->getZoom());
+    }
 }
