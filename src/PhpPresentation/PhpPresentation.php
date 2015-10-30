@@ -60,6 +60,12 @@ class PhpPresentation
     private $markAsFinal = false;
 
     /**
+     * Zoom
+     * @var float
+     */
+    private $zoom = 1;
+
+    /**
      * Create a new PhpPresentation with one Slide
      */
     public function __construct()
@@ -318,5 +324,27 @@ class PhpPresentation
     public function isMarkedAsFinal()
     {
         return $this->markAsFinal;
+    }
+
+    /**
+     * Set the zoom of the document (in percentage)
+     * @param float $zoom
+     * @return PhpPresentation
+     */
+    public function setZoom($zoom = 1)
+    {
+        if (is_numeric($zoom)) {
+            $this->zoom = $zoom;
+        }
+        return $this;
+    }
+
+    /**
+     * Return the zoom (in percentage)
+     * @return float
+     */
+    public function getZoom()
+    {
+        return $this->zoom;
     }
 }

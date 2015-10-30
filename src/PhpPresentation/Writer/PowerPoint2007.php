@@ -216,7 +216,7 @@ class PowerPoint2007 implements WriterInterface
             // Add PPT properties and styles to ZIP file - Required for Apple Keynote compatibility.
             $objZip->addFromString('ppt/presProps.xml', $wPptProps->writePresProps());
             $objZip->addFromString('ppt/tableStyles.xml', $wPptProps->writeTableStyles());
-            $objZip->addFromString('ppt/viewProps.xml', $wPptProps->writeViewProps());
+            $objZip->addFromString('ppt/viewProps.xml', $wPptProps->writeViewProps($this->presentation));
 
             // Add relationships to ZIP file
             $objZip->addFromString('_rels/.rels', $wPartRels->writeRelationships());

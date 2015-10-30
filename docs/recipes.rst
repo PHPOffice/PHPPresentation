@@ -3,6 +3,27 @@
 Recipes
 =======
 
+How to define the zoom of a presentation ?
+------------------------------------------
+
+You must define the zoom of your presentation with the method ``setZoom()``
+
+.. code-block:: php
+
+    // Default
+    $zoom = $oPHPPresentation->getZoom();
+    // $zoom = 1
+
+    // Without parameter
+    $oPHPPresentation->setZoom();
+    $zoom = $oPHPPresentation->getZoom();
+    // $zoom = true
+
+    // Parameter = false
+    $oPHPPresentation->setZoom(2.8);
+    $zoom = $oPHPPresentation->getZoom();
+    // $zoom = 2.8
+
 How to mark a presentation as final ?
 -------------------------------------
 
