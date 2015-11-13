@@ -401,8 +401,13 @@ class ODPresentation implements ReaderInterface
     protected function readParagraph(RichText $oShape, \DOMElement $oNodeParent)
     {
         $oParagraph = $oShape->createParagraph();
-        foreach ($this->oXMLReader->getElements('text:span', $oNodeParent) as $oNodeRichTextElement) {
-            $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+        $oDomList = $this->oXMLReader->getElements('text:span', $oNodeParent);
+        if ($oDomList->length == 0) {
+            $this->readParagraphItem($oParagraph, $oNodeParent);
+        } else {
+            foreach ($oDomList as $oNodeRichTextElement) {
+                $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+            }
         }
     }
     

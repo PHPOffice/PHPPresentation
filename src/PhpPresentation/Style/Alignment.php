@@ -174,7 +174,7 @@ class Alignment implements ComparableInterface
     public function setLevel($pValue = 0)
     {
         if ($pValue < 0) {
-            throw new \Exception("Invalid value: should be more than 0.");
+            throw new \Exception("Invalid value should be more than 0.");
         }
         $this->level = $pValue;
 

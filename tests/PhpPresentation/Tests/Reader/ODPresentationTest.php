@@ -474,4 +474,31 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('MaDiapo', $oPhpPresentation->getSlide(0)->getName());
     }
+
+    public function testIssue00141()
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_00141.odp';
+        $object = new ODPresentation();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+
+        $this->assertCount(3, $oPhpPresentation->getAllSlides());
+
+        // Slide 1
+        $oSlide = $oPhpPresentation->getSlide(1);
+        $arrayShape = $oSlide->getShapeCollection();
+        $this->assertCount(2, $arrayShape);
+        // Slide 1 : Shape 1
+        $oShape = reset($arrayShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        // Slide 1 : Shape 1 : Paragraph 1
+        $oParagraph = $oShape->getParagraph();
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $oParagraph);
+        // Slide 1 : Shape 1 : Paragraph 1 : RichText Elements
+        $arrayElements = $oParagraph->getRichTextElements();
+        $this->assertCount(1, $arrayElements);
+        $oElement = reset($arrayElements);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $oElement);
+        $this->assertEquals('TEST IMAGE', $oElement->getText());
+    }
 }
