@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 use ZipArchive;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\Common\Drawing as CommonDrawing;
@@ -217,7 +218,7 @@ class PowerPoint2007 implements ReaderInterface
             $this->loadRels($fileRels);
             foreach ($xmlReader->getElements('/p:presentation/p:sldIdLst/p:sldId') as $oElement) {
                 $rId = $oElement->getAttribute('r:id');
-                $pathSlide = isset($this->arrayRels[$fileRels][$rId]) ? $this->arrayRels[$fileRels][$rId] : '';
+                $pathSlide = isset($this->arrayRels[$fileRels][$rId]) ? $this->arrayRels[$fileRels][$rId]['Target'] : '';
                 if (!empty($pathSlide)) {
                     $pptSlide = $this->oZip->getFromName('ppt/'.$pathSlide);
                     if ($pptSlide !== false) {
@@ -253,6 +254,20 @@ class PowerPoint2007 implements ReaderInterface
                        //var_export($oNode->tagName);
                 }
             }
+
+            // Layout
+            $oLayoutPack = new PackDefault();
+            $oSlide = $this->oPhpPresentation->getActiveSlide();
+            foreach ($this->arrayRels['ppt/slides/_rels/'.$baseFile.'.rels'] as $valueRel) {
+                if ($valueRel['Type'] == 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout') {
+                    $layoutId = $valueRel['Target'];
+                    $layoutId = str_replace('../slideLayouts/slideLayout', '', $layoutId);
+                    $layoutId = str_replace('.xml', '', $layoutId);
+                    $layoutName = $oLayoutPack->findLayoutName((int)$layoutId, $oSlide->getSlideMasterId());
+                    $oSlide->setSlideLayout($layoutName);
+                    break;
+                }
+            }
         }
     }
     
@@ -278,8 +293,8 @@ class PowerPoint2007 implements ReaderInterface
         
         $oElement = $document->getElement('p:blipFill/a:blip', $node);
         if ($oElement) {
-            if ($oElement->hasAttribute('r:embed') && isset($this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')])) {
-                $pathImage = 'ppt/slides/'.$this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')];
+            if ($oElement->hasAttribute('r:embed') && isset($this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'])) {
+                $pathImage = 'ppt/slides/'.$this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'];
                 $pathImage = explode('/', $pathImage);
                 foreach ($pathImage as $key => $partPath) {
                     if ($partPath == '..') {
@@ -485,8 +500,8 @@ class PowerPoint2007 implements ReaderInterface
                             if ($oElementHlinkClick->hasAttribute('tooltip')) {
                                 $oText->getHyperlink()->setTooltip($oElementHlinkClick->getAttribute('tooltip'));
                             }
-                            if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')])) {
-                                $oText->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]);
+                            if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target'])) {
+                                $oText->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target']);
                             }
                         }
                     //} else {
@@ -516,7 +531,10 @@ class PowerPoint2007 implements ReaderInterface
             $xmlReader = new XMLReader();
             if ($xmlReader->getDomFromString($sPart)) {
                 foreach ($xmlReader->getElements('*') as $oNode) {
-                    $this->arrayRels[$fileRels][$oNode->getAttribute('Id')] = $oNode->getAttribute('Target');
+                    $this->arrayRels[$fileRels][$oNode->getAttribute('Id')] = array(
+                        'Target' => $oNode->getAttribute('Target'),
+                        'Type' => $oNode->getAttribute('Type'),
+                    );
                 }
             }
         }
