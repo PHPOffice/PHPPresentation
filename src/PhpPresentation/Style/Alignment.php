@@ -173,8 +173,8 @@ class Alignment implements ComparableInterface
      */
     public function setLevel($pValue = 0)
     {
-        if ($pValue < 0 || $pValue > 8) {
-            throw new \Exception("Invalid value: shoul be range 0 - 8.");
+        if ($pValue < 0) {
+            throw new \Exception("Invalid value should be more than 0.");
         }
         $this->level = $pValue;
 

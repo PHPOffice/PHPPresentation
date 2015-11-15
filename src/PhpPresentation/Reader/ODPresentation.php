@@ -330,7 +330,12 @@ class ODPresentation implements ReaderInterface
         $oNodeImage = $this->oXMLReader->getElement('draw:image', $oNodeFrame);
         if ($oNodeImage) {
             if ($oNodeImage->hasAttribute('xlink:href')) {
-                $imageFile = $this->oZip->getFromName($oNodeImage->getAttribute('xlink:href'));
+                $sFilename = $oNodeImage->getAttribute('xlink:href');
+                // svm = StarView Metafile
+                if (pathinfo($sFilename, PATHINFO_EXTENSION) == 'svm') {
+                    return;
+                }
+                $imageFile = $this->oZip->getFromName($sFilename);
                 if (!empty($imageFile)) {
                     $oShape->setImageResource(imagecreatefromstring($imageFile));
                 }
@@ -396,8 +401,13 @@ class ODPresentation implements ReaderInterface
     protected function readParagraph(RichText $oShape, \DOMElement $oNodeParent)
     {
         $oParagraph = $oShape->createParagraph();
-        foreach ($this->oXMLReader->getElements('text:span', $oNodeParent) as $oNodeRichTextElement) {
-            $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+        $oDomList = $this->oXMLReader->getElements('text:span', $oNodeParent);
+        if ($oDomList->length == 0) {
+            $this->readParagraphItem($oParagraph, $oNodeParent);
+        } else {
+            foreach ($oDomList as $oNodeRichTextElement) {
+                $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+            }
         }
     }
     

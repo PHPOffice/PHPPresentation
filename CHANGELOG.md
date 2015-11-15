@@ -1,5 +1,12 @@
 # Changelog
 ## 0.6.0 - WIP
+
+### Bugfix
+- ODPresentation : Exclude SVM files for reader - @Progi1984 GH-141
+
+### Changes
+- PhpOffice\PhpPowerpoint\Style\Alignment::setLevel can now be defined great than 8 - @Progi1984 GH-141
+
 ### Features
 - ODPresentation Reader/Writer : Name of the slide - @Progi1984 GH-121
 - PowerPoint2007 Reader/Writer : Mark as final - @Progi1984 GH-118
