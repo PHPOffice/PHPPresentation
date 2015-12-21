@@ -17,15 +17,14 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 use ZipArchive;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased;
 
 /**
  * Serialized format reader
@@ -46,6 +45,10 @@ class PowerPoint2007 implements ReaderInterface
      * @var string[]
      */
     protected $arrayRels = array();
+    /*
+     * @var string
+     */
+    protected $filename;
 
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
@@ -112,9 +115,10 @@ class PowerPoint2007 implements ReaderInterface
     {
         $this->oPhpPresentation = new PhpPresentation();
         $this->oPhpPresentation->removeSlideByIndex();
+        $this->filename = $pFilename;
         
         $this->oZip = new ZipArchive();
-        $this->oZip->open($pFilename);
+        $this->oZip->open($this->filename);
         $docPropsCore = $this->oZip->getFromName('docProps/core.xml');
         if ($docPropsCore !== false) {
             $this->loadDocumentProperties($docPropsCore);
@@ -129,7 +133,7 @@ class PowerPoint2007 implements ReaderInterface
         if ($pptViewProps !== false) {
             $this->loadViewProperties($pptViewProps);
         }
-        
+
         $pptPresentation = $this->oZip->getFromName('ppt/presentation.xml');
         if ($pptPresentation !== false) {
             $this->loadSlides($pptPresentation);
@@ -256,7 +260,7 @@ class PowerPoint2007 implements ReaderInterface
             }
 
             // Layout
-            $oLayoutPack = new PackDefault();
+            $oLayoutPack = new TemplateBased($this->filename);
             $oSlide = $this->oPhpPresentation->getActiveSlide();
             foreach ($this->arrayRels['ppt/slides/_rels/'.$baseFile.'.rels'] as $valueRel) {
                 if ($valueRel['Type'] == 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout') {
