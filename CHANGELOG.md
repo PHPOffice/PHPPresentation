@@ -1,4 +1,13 @@
 # Changelog
+## 0.6.0
+
+### Features
+- Add Properties for allowing loop continuously until 'Esc' - @Progi1984 GH-154
+
+### Changes
+- PhpOffice\PhpPresentation\getProperties has been deprecated for PhpOffice\PhpPresentation\getDocumentProperties - @Progi1984 GH-154
+- PhpOffice\PhpPresentation\setProperties has been deprecated for PhpOffice\PhpPresentation\setDocumentProperties - @Progi1984 GH-154
+
 ## 0.5.0 - 2015-10-08
 
 ### Features
