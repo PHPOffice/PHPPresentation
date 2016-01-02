@@ -14,7 +14,9 @@ use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Style\Color;
 
 error_reporting(E_ALL);
 define('CLI', (PHP_SAPI == 'cli') ? true : false);
@@ -40,6 +42,32 @@ $pageHeading = str_replace('_', ' ', SCRIPT_FILENAME);
 $pageTitle = IS_INDEX ? 'Welcome to ' : "{$pageHeading} - ";
 $pageTitle .= 'PHPPresentation';
 $pageHeading = IS_INDEX ? '' : "<h1>{$pageHeading}</h1>";
+
+$oShapeDrawing = new Drawing();
+$oShapeDrawing->setName('PHPPresentation logo')
+    ->setDescription('PHPPresentation logo')
+    ->setPath('./resources/phppowerpoint_logo.gif')
+    ->setHeight(36)
+    ->setOffsetX(10)
+    ->setOffsetY(10);
+$oShapeDrawing->getShadow()->setVisible(true)
+    ->setDirection(45)
+    ->setDistance(10);
+$oShapeDrawing->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/')->setTooltip('PHPPresentation');
+
+// Create a shape (text)
+$oShapeRichText = new RichText();
+$oShapeRichText->setHeight(300)
+    ->setWidth(600)
+    ->setOffsetX(170)
+    ->setOffsetY(180);
+$oShapeRichText->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
+$textRun = $oShapeRichText->createTextRun('Thank you for using PHPPresentation!');
+$textRun->getFont()->setBold(true)
+    ->setSize(60)
+    ->setColor( new Color( 'FFE06B20' ) );
+
+
 
 // Populate samples
 $files = '';
