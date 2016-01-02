@@ -21,6 +21,7 @@ use PhpOffice\Common\File;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 /**
@@ -109,6 +110,18 @@ class Manifest extends AbstractPart
                     $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $shape->getIndexedFilename()));
                     $objWriter->endElement();
                 }
+            }
+        }
+
+        foreach ($parentWriter->getPhpPresentation()->getAllSlides() as $numSlide => $oSlide) {
+            $oBkgImage = $oSlide->getBackground();
+            if ($oBkgImage instanceof Image) {
+                $mimeType   = $this->getImageMimeType($oBkgImage->getPath());
+
+                $objWriter->startElement('manifest:file-entry');
+                $objWriter->writeAttribute('manifest:media-type', $mimeType);
+                $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename($numSlide)));
+                $objWriter->endElement();
             }
         }
 

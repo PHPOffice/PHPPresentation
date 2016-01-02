@@ -21,6 +21,7 @@ use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Writer\ODPresentation\Content;
 use PhpOffice\PhpPresentation\Writer\ODPresentation\Drawing;
 use PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest;
@@ -233,6 +234,14 @@ class ODPresentation implements WriterInterface
 
                         $objZip->addFromString('Pictures/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
                     }
+                }
+            }
+
+            foreach ($this->presentation->getAllSlides() as $keySlide => $oSlide) {
+                // Add background image slide
+                $oBkgImage = $oSlide->getBackground();
+                if($oBkgImage instanceof Image) {
+                    $objZip->addFromString('Pictures/'.$oBkgImage->getIndexedFilename($keySlide), file_get_contents($oBkgImage->getPath()));
                 }
             }
 

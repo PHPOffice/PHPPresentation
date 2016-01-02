@@ -1214,10 +1214,15 @@ class Content extends AbstractPart
         }
         $oBackground = $slide->getBackground();
         if ($oBackground instanceof Slide\AbstractBackground) {
+            $objWriter->writeAttribute('presentation:background-visible', 'true');
             if ($oBackground instanceof Slide\Background\Color) {
-                $objWriter->writeAttribute('presentation:background-visible', 'true');
                 $objWriter->writeAttribute('draw:fill', 'solid');
                 $objWriter->writeAttribute('draw:fill-color', '#' . $oBackground->getColor()->getRGB());
+            }
+            if ($oBackground instanceof Slide\Background\Image) {
+                $objWriter->writeAttribute('draw:fill', 'bitmap');
+                $objWriter->writeAttribute('draw:fill-image-name', 'background_'.$incPage);
+                $objWriter->writeAttribute('style:repeat', 'stretch');
             }
         }
         $objWriter->endElement();
