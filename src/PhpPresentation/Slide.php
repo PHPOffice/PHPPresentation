@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 use PhpOffice\PhpPresentation\Slide\Layout;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Slide\Transition;
@@ -120,6 +121,13 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      * @var string
      */
     protected $name;
+
+    /**
+     * Background of the slide
+     *
+     * @var AbstractBackground
+     */
+    protected $background;
 
     /**
      * Create a new slide
@@ -487,6 +495,24 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     public function setName($name = null)
     {
         $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return AbstractBackground
+     */
+    public function getBackground()
+    {
+        return $this->background;
+    }
+
+    /**
+     * @param AbstractBackground $background
+     * @return $this
+     */
+    public function setBackground(AbstractBackground $background)
+    {
+        $this->background = $background;
         return $this;
     }
 }
