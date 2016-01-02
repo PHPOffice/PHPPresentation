@@ -1212,6 +1212,14 @@ class Content extends AbstractPart
                     break;
             }
         }
+        $oBackground = $slide->getBackground();
+        if ($oBackground instanceof Slide\AbstractBackground) {
+            if ($oBackground instanceof Slide\Background\Color) {
+                $objWriter->writeAttribute('presentation:background-visible', 'true');
+                $objWriter->writeAttribute('draw:fill', 'solid');
+                $objWriter->writeAttribute('draw:fill-color', '#' . $oBackground->getColor()->getRGB());
+            }
+        }
         $objWriter->endElement();
         // > style:style
         $objWriter->endElement();
