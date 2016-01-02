@@ -303,7 +303,7 @@ class Content extends AbstractPart
         if ($pPhpPresentation->getPresentationProperties()->isLoopContinuouslyUntilEsc()) {
             $objWriter->startElement('presentation:settings');
             $objWriter->writeAttribute('presentation:endless', 'true');
-            $objWriter->writeAttribute('presentation:pause', 'P0D');
+            $objWriter->writeAttribute('presentation:pause', 'P0s');
             $objWriter->writeAttribute('presentation:mouse-visible', 'false');
             $objWriter->endElement();
         }
