@@ -336,6 +336,14 @@ class Rels extends AbstractPart
             }
         }
 
+        // Write background relationships?
+        $oBackground = $pSlide->getBackground();
+        if ($oBackground instanceof SlideElement\Background\Image) {
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($idxSlide));
+            $oBackground->relationId = 'rId' . $relId;
+            ++$relId;
+        }
+
         // Write hyperlink relationships?
         if ($pSlide->getShapeCollection()->count() > 0) {
             // Loop trough hyperlinks and write relationships

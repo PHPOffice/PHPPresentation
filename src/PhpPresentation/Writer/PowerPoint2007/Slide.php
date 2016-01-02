@@ -94,6 +94,30 @@ class Slide extends AbstractPart
                 $objWriter->endElement();
             }
 
+            if ($oBackground instanceof SlideElement\Background\Image) {
+                // a:blipFill
+                $objWriter->startElement('a:blipFill');
+
+                // a:blip
+                $objWriter->startElement('a:blip');
+                $objWriter->writeAttribute('r:embed', $oBackground->relationId);
+
+                // > a:blipFill
+                $objWriter->endElement();
+
+                // a:stretch
+                $objWriter->startElement('a:stretch');
+
+                // a:fillRect
+                $objWriter->writeElement('a:fillRect');
+
+                // > a:stretch
+                $objWriter->endElement();
+
+                // > a:blipFill
+                $objWriter->endElement();
+            }
+
             // > p:bgPr
             $objWriter->endElement();
 
