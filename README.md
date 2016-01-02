@@ -1,7 +1,7 @@
 # ![PHPPresentation](https://github.com/PHPOffice/PHPPresentation/raw/master/docs/images/PHPPowerPointLogo.png "PHPPresentation")
 
 [![Latest Stable Version](https://poser.pugx.org/phpoffice/phppowerpoint/v/stable.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
-[![Build Status](https://travis-ci.org/PHPOffice/PHPPowerPoint.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPowerPoint)
+[![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation)
 [![Code Quality](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/quality-score.png?s=b5997ce59ac2816b4514f3a38de9900f6d492c1d)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
 [![Code Coverage](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/coverage.png?s=742a98745725c562955440edc8d2c39d7ff5ae25)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
 [![Total Downloads](https://poser.pugx.org/phpoffice/phppowerpoint/downloads.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
