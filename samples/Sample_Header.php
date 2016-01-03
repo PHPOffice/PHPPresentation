@@ -282,6 +282,16 @@ class PhpPptTree {
             $this->append('<dt>Offset Y</dt><dd>'.$oSlide->getOffsetY().'</dd>');
             $this->append('<dt>Extent X</dt><dd>'.$oSlide->getExtentX().'</dd>');
             $this->append('<dt>Extent Y</dt><dd>'.$oSlide->getExtentY().'</dd>');
+            $oBkg = $oSlide->getBackground();
+            if ($oBkg instanceof Slide\AbstractBackground) {
+                if ($oBkg instanceof Slide\Background\Color) {
+                    $this->append('<dt>Background Color</dt><dd>#'.$oBkg->getColor()->getRGB().'</dd>');
+                }
+                if ($oBkg instanceof Slide\Background\Image) {
+                    $sBkgImgContents = file_get_contents($oBkg->getPath());
+                    $this->append('<dt>Background Image</dt><dd><img src="data:image/png;base64,'.base64_encode($sBkgImgContents).'"></dd>');
+                }
+            }
             $this->append('</dl>');
             $this->append('</div>');
 

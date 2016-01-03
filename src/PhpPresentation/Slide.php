@@ -510,7 +510,7 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      * @param AbstractBackground $background
      * @return $this
      */
-    public function setBackground(AbstractBackground $background)
+    public function setBackground(AbstractBackground $background = null)
     {
         $this->background = $background;
         return $this;

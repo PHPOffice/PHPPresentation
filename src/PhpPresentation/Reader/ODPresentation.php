@@ -53,6 +53,10 @@ class ODPresentation implements ReaderInterface
      */
     protected $arrayStyles = array();
     /**
+     * @var array[]
+     */
+    protected $arrayCommonStyles = array();
+    /**
      * @var \PhpOffice\Common\XMLReader
      */
     protected $oXMLReader;
@@ -131,6 +135,10 @@ class ODPresentation implements ReaderInterface
             $this->loadDocumentProperties();
         }
         $this->oXMLReader = new XMLReader();
+        if ($this->oXMLReader->getDomFromZip($pFilename, 'styles.xml') !== false) {
+            $this->loadStylesFile();
+        }
+        $this->oXMLReader = new XMLReader();
         if ($this->oXMLReader->getDomFromZip($pFilename, 'content.xml') !== false) {
             $this->loadSlides();
         }
@@ -191,7 +199,30 @@ class ODPresentation implements ReaderInterface
     protected function loadStyle(\DOMElement $nodeStyle)
     {
         $keyStyle = $nodeStyle->getAttribute('style:name');
-        
+
+        $nodeDrawingPageProps = $this->oXMLReader->getElement('style:drawing-page-properties', $nodeStyle);
+        if ($nodeDrawingPageProps) {
+            // Read Background Color
+            if ($nodeDrawingPageProps->hasAttribute('draw:fill-color') && $nodeDrawingPageProps->getAttribute('draw:fill') == 'solid') {
+                $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Color();
+                $oColor = new Color();
+                $oColor->setRGB(substr($nodeDrawingPageProps->getAttribute('draw:fill-color'), -6));
+                $oBackground->setColor($oColor);
+            }
+            // Read Background Image
+            if ($nodeDrawingPageProps->getAttribute('draw:fill') == 'bitmap' && $nodeDrawingPageProps->hasAttribute('draw:fill-image-name')) {
+                $nameStyle = $nodeDrawingPageProps->getAttribute('draw:fill-image-name');
+                if(!empty($this->arrayCommonStyles[$nameStyle]) && $this->arrayCommonStyles[$nameStyle]['type'] == 'image' && !empty($this->arrayCommonStyles[$nameStyle]['path'])) {
+                    $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderODPBkg');
+                    $contentImg = $this->oZip->getFromName($this->arrayCommonStyles[$nameStyle]['path']);
+                    file_put_contents($tmpBkgImg, $contentImg);
+
+                    $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Image();
+                    $oBackground->setPath($tmpBkgImg);
+                }
+            }
+        }
+
         $nodeGraphicProps = $this->oXMLReader->getElement('style:graphic-properties', $nodeStyle);
         if ($nodeGraphicProps) {
             // Read Shadow
@@ -235,6 +266,7 @@ class ODPresentation implements ReaderInterface
                 $oFont->setSize(substr($nodeTextProperties->getAttribute('fo:font-size'), 0, -2));
             }
         }
+
         $nodeParagraphProps = $this->oXMLReader->getElement('style:paragraph-properties', $nodeStyle);
         if ($nodeParagraphProps) {
             $oAlignment = new Alignment();
@@ -284,6 +316,7 @@ class ODPresentation implements ReaderInterface
         
         $this->arrayStyles[$keyStyle] = array(
             'alignment' => isset($oAlignment) ? $oAlignment : null,
+            'background' => isset($oBackground) ? $oBackground : null,
             'font' => isset($oFont) ? $oFont : null,
             'shadow' => isset($oShadow) ? $oShadow : null,
             'listStyle' => isset($arrayListStyle) ? $arrayListStyle : null,
@@ -293,7 +326,8 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Extract data from slide
+     * Read Slide
+     *
      * @param \DOMElement $nodeSlide
      */
     protected function loadSlide(\DOMElement $nodeSlide)
@@ -303,6 +337,12 @@ class ODPresentation implements ReaderInterface
         $this->oPhpPresentation->setActiveSlideIndex($this->oPhpPresentation->getSlideCount() - 1);
         if ($nodeSlide->hasAttribute('draw:name')) {
             $this->oPhpPresentation->getActiveSlide()->setName($nodeSlide->getAttribute('draw:name'));
+        }
+        if ($nodeSlide->hasAttribute('draw:style-name')) {
+            $keyStyle = $nodeSlide->getAttribute('draw:style-name');
+            if (isset($this->arrayStyles[$keyStyle])) {
+                $this->oPhpPresentation->getActiveSlide()->setBackground($this->arrayStyles[$keyStyle]['background']);
+            }
         }
         foreach ($this->oXMLReader->getElements('draw:frame', $nodeSlide) as $oNodeFrame) {
             if ($this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
@@ -318,6 +358,7 @@ class ODPresentation implements ReaderInterface
     }
     
     /**
+     * Read Shape Drawing
      *
      * @param \DOMElement $oNodeFrame
      */
@@ -362,6 +403,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
+     * Read Shape RichText
      *
      * @param \DOMElement $oNodeFrame
      */
@@ -438,7 +480,13 @@ class ODPresentation implements ReaderInterface
             }
         }
     }
-    
+
+    /**
+     * Read List
+     *
+     * @param RichText $oShape
+     * @param \DOMElement $oNodeParent
+     */
     protected function readList(RichText $oShape, \DOMElement $oNodeParent)
     {
         foreach ($this->oXMLReader->getElements('text:list-item/*', $oNodeParent) as $oNodeListItem) {
@@ -454,7 +502,7 @@ class ODPresentation implements ReaderInterface
     }
     
     /**
-     * Read Paragraph
+     * Read List Item
      * @param RichText $oShape
      * @param \DOMElement $oNodeParent
      * @param \DOMElement $oNodeParagraph
@@ -471,6 +519,21 @@ class ODPresentation implements ReaderInterface
         }
         foreach ($this->oXMLReader->getElements('text:span', $oNodeParent) as $oNodeRichTextElement) {
             $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+        }
+    }
+
+    /**
+     * Load file 'styles.xml'
+     */
+    protected function loadStylesFile()
+    {
+        foreach ($this->oXMLReader->getElements('/office:document-styles/office:styles/*') as $oElement) {
+            if ($oElement->nodeName == 'draw:fill-image') {
+                $this->arrayCommonStyles[$oElement->getAttribute('draw:name')] = array(
+                    'type' => 'image',
+                    'path' => $oElement->hasAttribute('xlink:href') ? $oElement->getAttribute('xlink:href') : null
+                );
+            }
         }
     }
 }
