@@ -2,6 +2,7 @@
 ## 0.6.0 - WIP
 
 ### Bugfix
+- Documentation : Fixes in the rename of PHPPowerPoint - @Progi1984 GH-127
 - ODPresentation : Exclude SVM files for reader - @Progi1984 GH-141
 
 ### Changes
