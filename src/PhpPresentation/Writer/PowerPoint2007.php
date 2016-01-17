@@ -280,7 +280,7 @@ class PowerPoint2007 implements WriterInterface
                 }
                 // Add background image slide
                 $oBkgImage = $oSlide->getBackground();
-                if($oBkgImage instanceof Image) {
+                if ($oBkgImage instanceof Image) {
                     $objZip->addFromString('ppt/media/'.$oBkgImage->getIndexedFilename($i), file_get_contents($oBkgImage->getPath()));
                 }
             }

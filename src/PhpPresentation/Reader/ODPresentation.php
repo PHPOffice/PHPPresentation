@@ -212,7 +212,7 @@ class ODPresentation implements ReaderInterface
             // Read Background Image
             if ($nodeDrawingPageProps->getAttribute('draw:fill') == 'bitmap' && $nodeDrawingPageProps->hasAttribute('draw:fill-image-name')) {
                 $nameStyle = $nodeDrawingPageProps->getAttribute('draw:fill-image-name');
-                if(!empty($this->arrayCommonStyles[$nameStyle]) && $this->arrayCommonStyles[$nameStyle]['type'] == 'image' && !empty($this->arrayCommonStyles[$nameStyle]['path'])) {
+                if (!empty($this->arrayCommonStyles[$nameStyle]) && $this->arrayCommonStyles[$nameStyle]['type'] == 'image' && !empty($this->arrayCommonStyles[$nameStyle]['path'])) {
                     $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderODPBkg');
                     $contentImg = $this->oZip->getFromName($this->arrayCommonStyles[$nameStyle]['path']);
                     file_put_contents($tmpBkgImg, $contentImg);

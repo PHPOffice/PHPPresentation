@@ -240,7 +240,7 @@ class ODPresentation implements WriterInterface
             foreach ($this->presentation->getAllSlides() as $keySlide => $oSlide) {
                 // Add background image slide
                 $oBkgImage = $oSlide->getBackground();
-                if($oBkgImage instanceof Image) {
+                if ($oBkgImage instanceof Image) {
                     $objZip->addFromString('Pictures/'.$oBkgImage->getIndexedFilename($keySlide), file_get_contents($oBkgImage->getPath()));
                 }
             }

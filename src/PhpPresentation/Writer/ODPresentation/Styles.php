@@ -332,7 +332,7 @@ class Styles extends AbstractPart
     {
         $objWriter->startElement('draw:fill-image');
         $objWriter->writeAttribute('draw:name', 'background_'.$numSlide);
-        $objWriter->writeAttribute('xlink:href', 'Pictures/'.str_replace(' ', '_',$oBkgImage->getIndexedFilename($numSlide)));
+        $objWriter->writeAttribute('xlink:href', 'Pictures/'.str_replace(' ', '_', $oBkgImage->getIndexedFilename($numSlide)));
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');
