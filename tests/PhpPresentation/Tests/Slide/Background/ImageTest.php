@@ -14,8 +14,8 @@ class ImageTest extends \PHPUnit_Framework_TestCase
         $numSlide = rand(1, 100);
 
         $this->assertNull($object->getPath());
-        $this->assertNull($object->getFilename());
-        $this->assertNull($object->getExtension());
+        $this->assertEmpty($object->getFilename());
+        $this->assertEmpty($object->getExtension());
         $this->assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Image', $object->setPath($imagePath));
