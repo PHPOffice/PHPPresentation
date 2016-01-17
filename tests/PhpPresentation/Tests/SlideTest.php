@@ -77,7 +77,19 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideMasterId($value));
         $this->assertEquals($value, $object->getSlideMasterId());
     }
-    
+
+    public function testBackground()
+    {
+        $oStub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\AbstractBackground');
+
+        $object = new Slide();
+        $this->assertNull($object->getBackground());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setBackground($oStub));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractBackground', $object->getBackground());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setBackground());
+        $this->assertNull($object->getBackground());
+    }
+
     public function testGroup()
     {
         $object = new Slide();
