@@ -10,6 +10,7 @@
 
 ### Features
 - ODPresentation Reader/Writer : Name of the slide - @Progi1984 GH-121
+- PowerPoint2007 Reader : Support for Layout Name - @Progi1984 GH-144
 - PowerPoint2007 Reader/Writer : Mark as final - @Progi1984 GH-118
 - PowerPoint2007 Reader/Writer : Set default zoom value for presentation - @Progi1984 GH-122
 

@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack;
 
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased;
 
 /**
@@ -70,5 +71,23 @@ class TemplateBasedTest extends \PHPUnit_Framework_TestCase
         $templateBased = new TemplateBased($file);
         $name = 'Invalid';
         $templateBased->findLayoutId($name);
+    }
+
+    public function testFindLayoutName()
+    {
+        $oLayout = new PackDefault();
+        foreach ($oLayout->getLayouts() as $keyLayout => $layout) {
+            $foundLayoutName = $oLayout->findLayoutName($keyLayout);
+            $this->assertEquals($layout['name'], $foundLayoutName);
+        }
+    }
+
+    /**
+     * @expectedException \Exception
+     */
+    public function testFindLayoutNameException()
+    {
+        $oLayout = new PackDefault();
+        $oLayout->findLayoutName(1000);
     }
 }
