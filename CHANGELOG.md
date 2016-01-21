@@ -1,5 +1,5 @@
 # Changelog
-## 0.6.0
+## 0.6.0 - WIP
 
 ### Features
 - Add Properties for allowing loop continuously until 'Esc' - @Progi1984 GH-154
