@@ -88,5 +88,6 @@ class TemplateBasedTest extends \PHPUnit_Framework_TestCase
     public function testFindLayoutNameException()
     {
         $oLayout = new PackDefault();
-        $oLayout->findLayoutName(1000);}
+        $oLayout->findLayoutName(1000);
+    }
 }
