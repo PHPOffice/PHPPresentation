@@ -258,7 +258,6 @@ class PowerPoint2007 implements ReaderInterface
                        //var_export($oNode->tagName);
                 }
             }
-
             // Layout
             $oLayoutPack = new TemplateBased($this->filename);
             $oSlide = $this->oPhpPresentation->getActiveSlide();

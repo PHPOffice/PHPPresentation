@@ -854,10 +854,10 @@ class Slide extends AbstractPart
                         $objWriter->startElement('a:rPr');
 
                         // Bold
-                        $objWriter->writeAttribute('b', ($element->getFont()->isBold() ? 'true' : 'false'));
+                        $objWriter->writeAttribute('b', ($element->getFont()->isBold() ? '1' : '0'));
 
                         // Italic
-                        $objWriter->writeAttribute('i', ($element->getFont()->isItalic() ? 'true' : 'false'));
+                        $objWriter->writeAttribute('i', ($element->getFont()->isItalic() ? '1' : '0'));
 
                         // Strikethrough
                         $objWriter->writeAttribute('strike', ($element->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
