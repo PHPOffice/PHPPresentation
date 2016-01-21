@@ -133,7 +133,7 @@ class PowerPoint2007 implements ReaderInterface
         if ($pptViewProps !== false) {
             $this->loadViewProperties($pptViewProps);
         }
-        
+
         $pptPresentation = $this->oZip->getFromName('ppt/presentation.xml');
         if ($pptPresentation !== false) {
             $this->loadSlides($pptPresentation);
