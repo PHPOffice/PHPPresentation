@@ -27,8 +27,10 @@ class PptProps extends AbstractPart
      * @return     string         XML Output
      * @throws     \Exception
      */
-    public function writePresProps()
+    public function writePresProps(PhpPresentation $pPhpPresentation)
     {
+        $presentationPpts = $pPhpPresentation->getPresentationProperties();
+        
         // Create XML writer
         $objWriter = $this->getXMLWriter();
 
@@ -40,6 +42,13 @@ class PptProps extends AbstractPart
         $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
         $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
+        
+        // p:presentationPr > p:showPr
+        if ($presentationPpts->isLoopContinuouslyUntilEsc()) {
+            $objWriter->startElement('p:showPr');
+            $objWriter->writeAttribute('loop', '1');
+            $objWriter->endElement();
+        }
 
         // p:extLst
         $objWriter->startElement('p:extLst');
