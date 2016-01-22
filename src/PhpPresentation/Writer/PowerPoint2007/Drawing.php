@@ -43,21 +43,23 @@ class Drawing extends AbstractPart
         $slideCount = $pPhpPresentation->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
             // Loop trough images and add to array
-            $iterator = $pPhpPresentation->getSlide($i)->getShapeCollection()->getIterator();
-            while ($iterator->valid()) {
-                if ($iterator->current() instanceof AbstractDrawing && !($iterator->current() instanceof Table)) {
-                    $aDrawings[] = $iterator->current();
-                } elseif ($iterator->current() instanceof Group) {
-                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
-                    while ($iterator2->valid()) {
-                        if ($iterator2->current() instanceof AbstractDrawing && !($iterator2->current() instanceof Table)) {
-                            $aDrawings[] = $iterator2->current();
+            if ($pPhpPresentation->getSlide($i)->getShapeCollection()->count() > 0) {
+                $iterator = $pPhpPresentation->getSlide($i)->getShapeCollection()->getIterator();
+                while ($iterator->valid()) {
+                    if ($iterator->current() instanceof AbstractDrawing && !($iterator->current() instanceof Table)) {
+                        $aDrawings[] = $iterator->current();
+                    } elseif ($iterator->current() instanceof Group) {
+                        $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
+                        while ($iterator2->valid()) {
+                            if ($iterator2->current() instanceof AbstractDrawing && !($iterator2->current() instanceof Table)) {
+                                $aDrawings[] = $iterator2->current();
+                            }
+                            $iterator2->next();
                         }
-                        $iterator2->next();
                     }
-                }
 
-                $iterator->next();
+                    $iterator->next();
+                }
             }
         }
 

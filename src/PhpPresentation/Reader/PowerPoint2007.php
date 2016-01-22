@@ -246,6 +246,51 @@ class PowerPoint2007 implements ReaderInterface
             // Core
             $this->oPhpPresentation->createSlide();
             $this->oPhpPresentation->setActiveSlideIndex($this->oPhpPresentation->getSlideCount() - 1);
+
+            // Background
+            $oElement = $xmlReader->getElement('/p:sld/p:cSld/p:bg/p:bgPr');
+            if ($oElement) {
+                $oElementColor = $xmlReader->getElement('a:solidFill/a:srgbClr', $oElement);
+                if ($oElementColor) {
+                    // Color
+                    $oColor = new Color();
+                    $oColor->setRGB($oElementColor->hasAttribute('val') ? $oElementColor->getAttribute('val') : null);
+                    // Background
+                    $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Color();
+                    $oBackground->setColor($oColor);
+                    // Slide Background
+                    $oSlide = $this->oPhpPresentation->getActiveSlide();
+                    $oSlide->setBackground($oBackground);
+                }
+                $oElementImage = $xmlReader->getElement('a:blipFill/a:blip', $oElement);
+                if ($oElementImage) {
+                    $relImg = $this->arrayRels['ppt/slides/_rels/'.$baseFile.'.rels'][$oElementImage->getAttribute('r:embed')];
+                    if (is_array($relImg)) {
+                        // File
+                        $pathImage = 'ppt/slides/'.$relImg['Target'];
+                        $pathImage = explode('/', $pathImage);
+                        foreach ($pathImage as $key => $partPath) {
+                            if ($partPath == '..') {
+                                unset($pathImage[$key - 1]);
+                                unset($pathImage[$key]);
+                            }
+                        }
+                        $pathImage = implode('/', $pathImage);
+                        $contentImg = $this->oZip->getFromName($pathImage);
+
+                        $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPpt2007Bkg');
+                        file_put_contents($tmpBkgImg, $contentImg);
+                        // Background
+                        $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Image();
+                        $oBackground->setPath($tmpBkgImg);
+                        // Slide Background
+                        $oSlide = $this->oPhpPresentation->getActiveSlide();
+                        $oSlide->setBackground($oBackground);
+                    }
+                }
+            }
+
+            // Shapes
             foreach ($xmlReader->getElements('/p:sld/p:cSld/p:spTree/*') as $oNode) {
                 switch ($oNode->tagName) {
                     case 'p:pic':

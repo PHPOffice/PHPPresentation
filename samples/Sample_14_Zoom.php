@@ -16,33 +16,8 @@ $objPHPPresentation->setZoom(3);
 // Create slide
 echo date('H:i:s') . ' Create slide'.EOL;
 $currentSlide = $objPHPPresentation->getActiveSlide();
-
-// Create a shape (drawing)
-echo date('H:i:s') . ' Create a shape (drawing)'.EOL;
-$shape = $currentSlide->createDrawingShape();
-$shape->setName('PHPPresentation logo')
-      ->setDescription('PHPPresentation logo')
-      ->setPath('./resources/phppowerpoint_logo.gif')
-      ->setHeight(36)
-      ->setOffsetX(10)
-      ->setOffsetY(10);
-$shape->getShadow()->setVisible(true)
-                   ->setDirection(45)
-                   ->setDistance(10);
-$shape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/')->setTooltip('PHPPresentation');
-
-// Create a shape (text)
-echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
-$shape = $currentSlide->createRichTextShape()
-      ->setHeight(300)
-      ->setWidth(600)
-      ->setOffsetX(170)
-      ->setOffsetY(180);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
-$textRun = $shape->createTextRun('Thank you for using PHPPresentation!');
-$textRun->getFont()->setBold(true)
-                   ->setSize(60)
-                   ->setColor( new Color( 'FFE06B20' ) );
+$currentSlide->addShape(clone $oShapeDrawing);
+$currentSlide->addShape(clone $oShapeRichText);
 
 // Save file
 echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);

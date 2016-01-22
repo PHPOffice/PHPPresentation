@@ -208,7 +208,7 @@ abstract class AbstractLayoutPack
     /**
      * Find specific slide layout name.
      *
-     * @param string $name
+     * @param int $idLayout
      * @param int $masterId
      * @return int
      * @throws \Exception

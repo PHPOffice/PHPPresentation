@@ -72,6 +72,59 @@ class Slide extends AbstractPart
         // p:cSld
         $objWriter->startElement('p:cSld');
 
+        // Background
+        if ($pSlide->getBackground() instanceof SlideElement\AbstractBackground) {
+            $oBackground = $pSlide->getBackground();
+            // p:bg
+            $objWriter->startElement('p:bg');
+
+            // p:bgPr
+            $objWriter->startElement('p:bgPr');
+
+            if ($oBackground instanceof SlideElement\Background\Color) {
+                // a:solidFill
+                $objWriter->startElement('a:solidFill');
+
+                // a:srgbClr
+                $objWriter->startElement('a:srgbClr');
+                $objWriter->writeAttribute('val', $oBackground->getColor()->getRGB());
+                $objWriter->endElement();
+
+                // > a:solidFill
+                $objWriter->endElement();
+            }
+
+            if ($oBackground instanceof SlideElement\Background\Image) {
+                // a:blipFill
+                $objWriter->startElement('a:blipFill');
+
+                // a:blip
+                $objWriter->startElement('a:blip');
+                $objWriter->writeAttribute('r:embed', $oBackground->relationId);
+
+                // > a:blipFill
+                $objWriter->endElement();
+
+                // a:stretch
+                $objWriter->startElement('a:stretch');
+
+                // a:fillRect
+                $objWriter->writeElement('a:fillRect');
+
+                // > a:stretch
+                $objWriter->endElement();
+
+                // > a:blipFill
+                $objWriter->endElement();
+            }
+
+            // > p:bgPr
+            $objWriter->endElement();
+
+            // > p:bg
+            $objWriter->endElement();
+        }
+
         // p:spTree
         $objWriter->startElement('p:spTree');
 

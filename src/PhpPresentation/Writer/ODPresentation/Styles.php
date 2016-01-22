@@ -23,6 +23,7 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Border;
@@ -113,8 +114,8 @@ class Styles extends AbstractPart
         // > style:style
         $objWriter->endElement();
 
-        foreach ($pPhpPresentation->getAllSlides() as $slide) {
-            foreach ($slide->getShapeCollection() as $shape) {
+        foreach ($pPhpPresentation->getAllSlides() as $keySlide => $oSlide) {
+            foreach ($oSlide->getShapeCollection() as $shape) {
                 if ($shape instanceof Table) {
                     $this->writeTableStyle($objWriter, $shape);
                 } elseif ($shape instanceof Group) {
@@ -122,6 +123,10 @@ class Styles extends AbstractPart
                 } elseif ($shape instanceof RichText) {
                     $this->writeRichTextStyle($objWriter, $shape);
                 }
+            }
+            $oBkgImage = $oSlide->getBackground();
+            if ($oBkgImage instanceof Image) {
+                $this->writeBackgroundStyle($objWriter, $oBkgImage, $keySlide);
             }
         }
         // > office:styles
@@ -316,5 +321,21 @@ class Styles extends AbstractPart
         $objWriter->writeAttribute('draw:angle', $oFill->getRotation() - 90);
         $objWriter->endElement();
         $this->arrayGradient[] = $oFill->getHashCode();
+    }
+
+    /**
+     * Write the background image style
+     * @param XMLWriter $objWriter
+     * @param Image $oBkgImage
+     */
+    protected function writeBackgroundStyle(XMLWriter $objWriter, Image $oBkgImage, $numSlide)
+    {
+        $objWriter->startElement('draw:fill-image');
+        $objWriter->writeAttribute('draw:name', 'background_'.$numSlide);
+        $objWriter->writeAttribute('xlink:href', 'Pictures/'.str_replace(' ', '_', $oBkgImage->getIndexedFilename($numSlide)));
+        $objWriter->writeAttribute('xlink:type', 'simple');
+        $objWriter->writeAttribute('xlink:show', 'embed');
+        $objWriter->writeAttribute('xlink:actuate', 'onLoad');
+        $objWriter->endElement();
     }
 }
