@@ -24,21 +24,23 @@ class PresentationProperties
     /*
      * @var boolean
      */
-    protected $isLoopContinuouslyUntilEsc = false;
+    protected $isLoopUntilEsc = false;
+    
     /**
      * @return bool
      */
     public function isLoopContinuouslyUntilEsc()
     {
-        return $this->isLoopContinuouslyUntilEsc;
+        return $this->isLoopUntilEsc;
     }
+    
     /**
      * @param bool $value
      * @return \PhpOffice\PhpPresentation\PresentationProperties
      */
     public function setLoopContinuouslyUntilEsc($value = false)
     {
-        $this->isLoopContinuouslyUntilEsc = $value;
+        $this->isLoopUntilEsc = $value;
         return $this;
     }
 }
