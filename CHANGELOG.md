@@ -2,6 +2,7 @@
 ## 0.6.0 - WIP
 
 ### Bugfix
+- Documentation : Fixes in the rename of PHPPowerPoint - @Progi1984 GH-127
 - ODPresentation : Exclude SVM files for reader - @Progi1984 GH-141
 
 ### Changes
@@ -11,6 +12,7 @@
 
 ### Features
 - ODPresentation Reader/Writer : Name of the slide - @Progi1984 GH-121
+- PowerPoint2007 Reader : Support for Layout Name - @Progi1984 GH-144
 - PowerPoint2007 Reader/Writer : Mark as final - @Progi1984 GH-118
 - PowerPoint2007 Reader/Writer : Set default zoom value for presentation - @Progi1984 GH-122
 - PowerPoint2007 Reader/Writer : Add Properties for allowing loop continuously until 'Esc' - @Progi1984 GH-154
