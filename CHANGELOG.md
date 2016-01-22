@@ -5,12 +5,17 @@
 - ODPresentation : Exclude SVM files for reader - @Progi1984 GH-141
 
 ### Changes
+- PhpOffice\PhpPresentation\getProperties has been deprecated for PhpOffice\PhpPresentation\getDocumentProperties - @Progi1984 GH-154
+- PhpOffice\PhpPresentation\setProperties has been deprecated for PhpOffice\PhpPresentation\setDocumentProperties - @Progi1984 GH-154
 - PhpOffice\PhpPowerpoint\Style\Alignment::setLevel can now be defined great than 8 - @Progi1984 GH-141
 
 ### Features
 - ODPresentation Reader/Writer : Name of the slide - @Progi1984 GH-121
 - PowerPoint2007 Reader/Writer : Mark as final - @Progi1984 GH-118
 - PowerPoint2007 Reader/Writer : Set default zoom value for presentation - @Progi1984 GH-122
+- PowerPoint2007 Reader/Writer : Add Properties for allowing loop continuously until 'Esc' - @Progi1984 GH-154
+- PowerPoint2007 Reader : Support for Layout Name - @Progi1984 GH-144
+- PowerPoint2007 Writer : Bugfix for opening PPTX on Mac - @thsteinmetz GH-89
 
 ## 0.5.0 - 2015-10-08
 

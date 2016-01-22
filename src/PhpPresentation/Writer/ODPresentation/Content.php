@@ -302,8 +302,20 @@ class Content extends AbstractPart
             
             $objWriter->endElement();
         }
+
+        if ($pPhpPresentation->getPresentationProperties()->isLoopContinuouslyUntilEsc()) {
+            $objWriter->startElement('presentation:settings');
+            $objWriter->writeAttribute('presentation:endless', 'true');
+            $objWriter->writeAttribute('presentation:pause', 'P0s');
+            $objWriter->writeAttribute('presentation:mouse-visible', 'false');
+            $objWriter->endElement();
+        }
+
+        // > office:presentation
         $objWriter->endElement();
+        // > office:body
         $objWriter->endElement();
+        // > office:document-content
         $objWriter->endElement();
 
         // Return

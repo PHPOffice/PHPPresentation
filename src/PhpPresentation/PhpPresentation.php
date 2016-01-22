@@ -30,7 +30,13 @@ class PhpPresentation
      *
      * @var \PhpOffice\PhpPresentation\DocumentProperties
      */
-    private $properties;
+    private $documentProperties;
+    /**
+     * Presentation properties
+     *
+     * @var \PhpOffice\PhpPresentation\PresentationProperties
+     */
+    private $presentationProperties;
 
     /**
      * Document layout
@@ -75,7 +81,8 @@ class PhpPresentation
         $this->setActiveSlideIndex();
 
         // Set initial document properties & layout
-        $this->setProperties(new DocumentProperties());
+        $this->setDocumentProperties(new DocumentProperties());
+        $this->setPresentationProperties(new PresentationProperties());
         $this->setLayout(new DocumentLayout());
     }
 
@@ -83,10 +90,33 @@ class PhpPresentation
      * Get properties
      *
      * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @deprecated for getDocumentProperties
      */
     public function getProperties()
     {
-        return $this->properties;
+        return $this->getDocumentProperties();
+    }
+
+    /**
+     * Set properties
+     *
+     * @param  \PhpOffice\PhpPresentation\DocumentProperties $value
+     * @deprecated for setDocumentProperties
+     * @return PhpPresentation
+     */
+    public function setProperties(DocumentProperties $value)
+    {
+        return $this->setDocumentProperties($value);
+    }
+
+    /**
+     * Get properties
+     *
+     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     */
+    public function getDocumentProperties()
+    {
+        return $this->documentProperties;
     }
 
     /**
@@ -95,9 +125,32 @@ class PhpPresentation
      * @param  \PhpOffice\PhpPresentation\DocumentProperties $value
      * @return PhpPresentation
      */
-    public function setProperties(DocumentProperties $value)
+    public function setDocumentProperties(DocumentProperties $value)
     {
-        $this->properties = $value;
+        $this->documentProperties = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get presentation properties
+     *
+     * @return \PhpOffice\PhpPresentation\PresentationProperties
+     */
+    public function getPresentationProperties()
+    {
+        return $this->presentationProperties;
+    }
+
+    /**
+     * Set presentation properties
+     *
+     * @param  \PhpOffice\PhpPresentation\PresentationProperties $value
+     * @return PhpPresentation
+     */
+    public function setPresentationProperties(PresentationProperties $value)
+    {
+        $this->presentationProperties = $value;
 
         return $this;
     }
