@@ -1,5 +1,5 @@
 # Changelog
-## 0.6.0 - WIP
+## 0.6.0 - 2016-01-24
 
 ### Bugfix
 - Documentation : Fixes in the rename of PHPPowerPoint - @Progi1984 GH-127
