@@ -268,7 +268,10 @@ class Content extends AbstractPart
         for ($i = 0; $i < $slideCount; ++$i) {
             $pSlide = $pPhpPresentation->getSlide($i);
             $objWriter->startElement('draw:page');
-            $objWriter->writeAttribute('draw:name', 'page' . $i);
+            $name = $pSlide->getName();
+            if (!is_null($name)) {
+                $objWriter->writeAttribute('draw:name', $name);
+            }
             $objWriter->writeAttribute('draw:master-page-name', 'Standard');
             $objWriter->writeAttribute('draw:style-name', 'stylePage' . $i);
             // Images
@@ -299,8 +302,19 @@ class Content extends AbstractPart
             
             $objWriter->endElement();
         }
+        
+        if ($pPhpPresentation->getPresentationProperties()->isLoopContinuouslyUntilEsc()) {
+            $objWriter->startElement('presentation:settings');
+            $objWriter->writeAttribute('presentation:endless', 'true');
+            $objWriter->writeAttribute('presentation:pause', 'P0s');
+            $objWriter->writeAttribute('presentation:mouse-visible', 'false');
+            $objWriter->endElement();
+        }
+        // > office:presentation
         $objWriter->endElement();
+        // > office:body
         $objWriter->endElement();
+        // > office:document-content
         $objWriter->endElement();
 
         // Return
@@ -1207,6 +1221,19 @@ class Content extends AbstractPart
                 case Transition::TRANSITION_ZOOM_OUT:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
+            }
+        }
+        $oBackground = $slide->getBackground();
+        if ($oBackground instanceof Slide\AbstractBackground) {
+            $objWriter->writeAttribute('presentation:background-visible', 'true');
+            if ($oBackground instanceof Slide\Background\Color) {
+                $objWriter->writeAttribute('draw:fill', 'solid');
+                $objWriter->writeAttribute('draw:fill-color', '#' . $oBackground->getColor()->getRGB());
+            }
+            if ($oBackground instanceof Slide\Background\Image) {
+                $objWriter->writeAttribute('draw:fill', 'bitmap');
+                $objWriter->writeAttribute('draw:fill-image-name', 'background_'.$incPage);
+                $objWriter->writeAttribute('style:repeat', 'stretch');
             }
         }
         $objWriter->endElement();

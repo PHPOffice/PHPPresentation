@@ -92,6 +92,20 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
         $object->getSlide(1);
     }
 
+    public function testMarkAsFinal()
+    {
+        $object = new PhpPresentation();
+        $this->assertFalse($object->isMarkedAsFinal());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->markAsFinal('AAAA'));
+        $this->assertFalse($object->isMarkedAsFinal());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->markAsFinal(true));
+        $this->assertTrue($object->isMarkedAsFinal());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->markAsFinal(false));
+        $this->assertFalse($object->isMarkedAsFinal());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->markAsFinal());
+        $this->assertTrue($object->isMarkedAsFinal());
+    }
+
     /**
      * Test set active slide index exception
      *
@@ -102,5 +116,17 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
     {
         $object = new PhpPresentation();
         $object->setActiveSlideIndex(1);
+    }
+
+    public function testZoom()
+    {
+        $object = new PhpPresentation();
+        $this->assertEquals(1, $object->getZoom());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setZoom('AAAA'));
+        $this->assertEquals(1, $object->getZoom());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setZoom(2.3));
+        $this->assertEquals(2.3, $object->getZoom());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setZoom());
+        $this->assertEquals(1, $object->getZoom());
     }
 }

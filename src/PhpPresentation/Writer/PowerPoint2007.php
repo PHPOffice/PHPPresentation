@@ -22,6 +22,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing as DrawingShape;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing as MemoryDrawingShape;
 use PhpOffice\PhpPresentation\Shape\Chart as ChartShape;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractLayoutPack;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\Chart;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\ContentTypes;
@@ -214,9 +215,9 @@ class PowerPoint2007 implements WriterInterface
             $objZip->addFromString('[Content_Types].xml', $wPartContentTypes->writeContentTypes($this->presentation));
 
             // Add PPT properties and styles to ZIP file - Required for Apple Keynote compatibility.
-            $objZip->addFromString('ppt/presProps.xml', $wPptProps->writePresProps());
+            $objZip->addFromString('ppt/presProps.xml', $wPptProps->writePresProps($this->presentation));
             $objZip->addFromString('ppt/tableStyles.xml', $wPptProps->writeTableStyles());
-            $objZip->addFromString('ppt/viewProps.xml', $wPptProps->writeViewProps());
+            $objZip->addFromString('ppt/viewProps.xml', $wPptProps->writeViewProps($this->presentation));
 
             // Add relationships to ZIP file
             $objZip->addFromString('_rels/.rels', $wPartRels->writeRelationships());
@@ -225,6 +226,7 @@ class PowerPoint2007 implements WriterInterface
             // Add document properties to ZIP file
             $objZip->addFromString('docProps/app.xml', $wPartDocProps->writeDocPropsApp($this->presentation));
             $objZip->addFromString('docProps/core.xml', $wPartDocProps->writeDocPropsCore($this->presentation));
+            $objZip->addFromString('docProps/custom.xml', $wPartDocProps->writeDocPropsCustom($this->presentation));
 
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {
@@ -268,11 +270,18 @@ class PowerPoint2007 implements WriterInterface
 
             // Add slides (drawings, ...) and slide relationships (drawings, ...)
             for ($i = 0; $i < $this->presentation->getSlideCount(); ++$i) {
+                $oSlide = $this->presentation->getSlide($i);
                 // Add slide
-                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $wPartRels->writeSlideRelationships($this->presentation->getSlide($i)));
-                $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $wPartSlide->writeSlide($this->presentation->getSlide($i)));
-                if ($this->presentation->getSlide($i)->getNote()->getShapeCollection()->count() > 0) {
-                    $objZip->addFromString('ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', $wPartSlide->writeNote($this->presentation->getSlide($i)->getNote()));
+                $objZip->addFromString('ppt/slides/_rels/slide' . ($i + 1) . '.xml.rels', $wPartRels->writeSlideRelationships($oSlide));
+                $objZip->addFromString('ppt/slides/slide' . ($i + 1) . '.xml', $wPartSlide->writeSlide($oSlide));
+                // Add note slide
+                if ($oSlide->getNote()->getShapeCollection()->count() > 0) {
+                    $objZip->addFromString('ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', $wPartSlide->writeNote($oSlide->getNote()));
+                }
+                // Add background image slide
+                $oBkgImage = $oSlide->getBackground();
+                if ($oBkgImage instanceof Image) {
+                    $objZip->addFromString('ppt/media/'.$oBkgImage->getIndexedFilename($i), file_get_contents($oBkgImage->getPath()));
                 }
             }
 

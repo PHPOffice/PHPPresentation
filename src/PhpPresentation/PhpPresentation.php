@@ -30,7 +30,14 @@ class PhpPresentation
      *
      * @var \PhpOffice\PhpPresentation\DocumentProperties
      */
-    private $properties;
+    private $documentProperties;
+    
+    /**
+     * Presentation properties
+     *
+     * @var \PhpOffice\PhpPresentation\PresentationProperties
+     */
+    private $presentationProperties;
 
     /**
      * Document layout
@@ -54,6 +61,18 @@ class PhpPresentation
     private $activeSlideIndex = 0;
 
     /**
+     * Mark as final
+     * @var bool
+     */
+    private $markAsFinal = false;
+
+    /**
+     * Zoom
+     * @var float
+     */
+    private $zoom = 1;
+
+    /**
      * Create a new PhpPresentation with one Slide
      */
     public function __construct()
@@ -63,7 +82,8 @@ class PhpPresentation
         $this->setActiveSlideIndex();
 
         // Set initial document properties & layout
-        $this->setProperties(new DocumentProperties());
+        $this->setDocumentProperties(new DocumentProperties());
+        $this->setPresentationProperties(new PresentationProperties());
         $this->setLayout(new DocumentLayout());
     }
 
@@ -71,10 +91,33 @@ class PhpPresentation
      * Get properties
      *
      * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @deprecated for getDocumentProperties
      */
     public function getProperties()
     {
-        return $this->properties;
+        return $this->getDocumentProperties();
+    }
+
+    /**
+     * Set properties
+     *
+     * @param  \PhpOffice\PhpPresentation\DocumentProperties $value
+     * @deprecated for setDocumentProperties
+     * @return PhpPresentation
+     */
+    public function setProperties(DocumentProperties $value)
+    {
+        return $this->setDocumentProperties($value);
+    }
+    
+    /**
+     * Get properties
+     *
+     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     */
+    public function getDocumentProperties()
+    {
+        return $this->documentProperties;
     }
 
     /**
@@ -83,10 +126,32 @@ class PhpPresentation
      * @param  \PhpOffice\PhpPresentation\DocumentProperties $value
      * @return PhpPresentation
      */
-    public function setProperties(DocumentProperties $value)
+    public function setDocumentProperties(DocumentProperties $value)
     {
-        $this->properties = $value;
+        $this->documentProperties = $value;
 
+        return $this;
+    }
+
+    /**
+     * Get presentation properties
+     *
+     * @return \PhpOffice\PhpPresentation\PresentationProperties
+     */
+    public function getPresentationProperties()
+    {
+        return $this->presentationProperties;
+    }
+
+    /**
+     * Set presentation properties
+     *
+     * @param  \PhpOffice\PhpPresentation\PresentationProperties $value
+     * @return PhpPresentation
+     */
+    public function setPresentationProperties(PresentationProperties $value)
+    {
+        $this->presentationProperties = $value;
         return $this;
     }
 
@@ -290,5 +355,49 @@ class PhpPresentation
         }
 
         return $copied;
+    }
+
+    /**
+     * Mark a document as final
+     * @param bool $state
+     * @return PhpPresentation
+     */
+    public function markAsFinal($state = true)
+    {
+        if (is_bool($state)) {
+            $this->markAsFinal = $state;
+        }
+        return $this;
+    }
+
+    /**
+     * Return if this document is marked as final
+     * @return bool
+     */
+    public function isMarkedAsFinal()
+    {
+        return $this->markAsFinal;
+    }
+
+    /**
+     * Set the zoom of the document (in percentage)
+     * @param float $zoom
+     * @return PhpPresentation
+     */
+    public function setZoom($zoom = 1)
+    {
+        if (is_numeric($zoom)) {
+            $this->zoom = $zoom;
+        }
+        return $this;
+    }
+
+    /**
+     * Return the zoom (in percentage)
+     * @return float
+     */
+    public function getZoom()
+    {
+        return $this->zoom;
     }
 }

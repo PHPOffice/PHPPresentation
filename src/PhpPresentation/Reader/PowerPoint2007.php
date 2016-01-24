@@ -21,10 +21,10 @@ use ZipArchive;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased;
 
 /**
  * Serialized format reader
@@ -45,6 +45,10 @@ class PowerPoint2007 implements ReaderInterface
      * @var string[]
      */
     protected $arrayRels = array();
+    /*
+     * @var string
+     */
+    protected $filename;
 
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
@@ -111,14 +115,25 @@ class PowerPoint2007 implements ReaderInterface
     {
         $this->oPhpPresentation = new PhpPresentation();
         $this->oPhpPresentation->removeSlideByIndex();
+        $this->filename = $pFilename;
         
         $this->oZip = new ZipArchive();
-        $this->oZip->open($pFilename);
+        $this->oZip->open($this->filename);
         $docPropsCore = $this->oZip->getFromName('docProps/core.xml');
         if ($docPropsCore !== false) {
             $this->loadDocumentProperties($docPropsCore);
         }
-        
+
+        $docPropsCustom = $this->oZip->getFromName('docProps/custom.xml');
+        if ($docPropsCustom !== false) {
+            $this->loadCustomProperties($docPropsCustom);
+        }
+
+        $pptViewProps = $this->oZip->getFromName('ppt/viewProps.xml');
+        if ($pptViewProps !== false) {
+            $this->loadViewProperties($pptViewProps);
+        }
+
         $pptPresentation = $this->oZip->getFromName('ppt/presentation.xml');
         if ($pptPresentation !== false) {
             $this->loadSlides($pptPresentation);
@@ -160,6 +175,41 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
     }
+
+    /**
+     * Read Custom Properties
+     * @param string $sPart
+     */
+    protected function loadCustomProperties($sPart)
+    {
+        $xmlReader = new XMLReader();
+        $sPart = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $sPart);
+        if ($xmlReader->getDomFromString($sPart)) {
+            $pathMarkAsFinal = '/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool';
+            if (is_object($oElement = $xmlReader->getElement($pathMarkAsFinal))) {
+                if ($oElement->nodeValue == 'true') {
+                    $this->oPhpPresentation->markAsFinal(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Read View Properties
+     * @param string $sPart
+     */
+    protected function loadViewProperties($sPart)
+    {
+        $xmlReader = new XMLReader();
+        if ($xmlReader->getDomFromString($sPart)) {
+            $pathZoom = '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx';
+            if (is_object($oElement = $xmlReader->getElement($pathZoom))) {
+                if ($oElement->hasAttribute('d') && $oElement->hasAttribute('n')) {
+                    $this->oPhpPresentation->setZoom($oElement->getAttribute('n') / $oElement->getAttribute('d'));
+                }
+            }
+        }
+    }
     
     /**
      * Extract all slides
@@ -172,7 +222,7 @@ class PowerPoint2007 implements ReaderInterface
             $this->loadRels($fileRels);
             foreach ($xmlReader->getElements('/p:presentation/p:sldIdLst/p:sldId') as $oElement) {
                 $rId = $oElement->getAttribute('r:id');
-                $pathSlide = isset($this->arrayRels[$fileRels][$rId]) ? $this->arrayRels[$fileRels][$rId] : '';
+                $pathSlide = isset($this->arrayRels[$fileRels][$rId]) ? $this->arrayRels[$fileRels][$rId]['Target'] : '';
                 if (!empty($pathSlide)) {
                     $pptSlide = $this->oZip->getFromName('ppt/'.$pathSlide);
                     if ($pptSlide !== false) {
@@ -196,6 +246,51 @@ class PowerPoint2007 implements ReaderInterface
             // Core
             $this->oPhpPresentation->createSlide();
             $this->oPhpPresentation->setActiveSlideIndex($this->oPhpPresentation->getSlideCount() - 1);
+
+            // Background
+            $oElement = $xmlReader->getElement('/p:sld/p:cSld/p:bg/p:bgPr');
+            if ($oElement) {
+                $oElementColor = $xmlReader->getElement('a:solidFill/a:srgbClr', $oElement);
+                if ($oElementColor) {
+                    // Color
+                    $oColor = new Color();
+                    $oColor->setRGB($oElementColor->hasAttribute('val') ? $oElementColor->getAttribute('val') : null);
+                    // Background
+                    $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Color();
+                    $oBackground->setColor($oColor);
+                    // Slide Background
+                    $oSlide = $this->oPhpPresentation->getActiveSlide();
+                    $oSlide->setBackground($oBackground);
+                }
+                $oElementImage = $xmlReader->getElement('a:blipFill/a:blip', $oElement);
+                if ($oElementImage) {
+                    $relImg = $this->arrayRels['ppt/slides/_rels/'.$baseFile.'.rels'][$oElementImage->getAttribute('r:embed')];
+                    if (is_array($relImg)) {
+                        // File
+                        $pathImage = 'ppt/slides/'.$relImg['Target'];
+                        $pathImage = explode('/', $pathImage);
+                        foreach ($pathImage as $key => $partPath) {
+                            if ($partPath == '..') {
+                                unset($pathImage[$key - 1]);
+                                unset($pathImage[$key]);
+                            }
+                        }
+                        $pathImage = implode('/', $pathImage);
+                        $contentImg = $this->oZip->getFromName($pathImage);
+
+                        $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPpt2007Bkg');
+                        file_put_contents($tmpBkgImg, $contentImg);
+                        // Background
+                        $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Image();
+                        $oBackground->setPath($tmpBkgImg);
+                        // Slide Background
+                        $oSlide = $this->oPhpPresentation->getActiveSlide();
+                        $oSlide->setBackground($oBackground);
+                    }
+                }
+            }
+
+            // Shapes
             foreach ($xmlReader->getElements('/p:sld/p:cSld/p:spTree/*') as $oNode) {
                 switch ($oNode->tagName) {
                     case 'p:pic':
@@ -206,6 +301,19 @@ class PowerPoint2007 implements ReaderInterface
                         break;
                     default:
                        //var_export($oNode->tagName);
+                }
+            }
+            // Layout
+            $oLayoutPack = new TemplateBased($this->filename);
+            $oSlide = $this->oPhpPresentation->getActiveSlide();
+            foreach ($this->arrayRels['ppt/slides/_rels/'.$baseFile.'.rels'] as $valueRel) {
+                if ($valueRel['Type'] == 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout') {
+                    $layoutId = $valueRel['Target'];
+                    $layoutId = str_replace('../slideLayouts/slideLayout', '', $layoutId);
+                    $layoutId = str_replace('.xml', '', $layoutId);
+                    $layoutName = $oLayoutPack->findLayoutName((int)$layoutId, $oSlide->getSlideMasterId());
+                    $oSlide->setSlideLayout($layoutName);
+                    break;
                 }
             }
         }
@@ -233,8 +341,8 @@ class PowerPoint2007 implements ReaderInterface
         
         $oElement = $document->getElement('p:blipFill/a:blip', $node);
         if ($oElement) {
-            if ($oElement->hasAttribute('r:embed') && isset($this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')])) {
-                $pathImage = 'ppt/slides/'.$this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')];
+            if ($oElement->hasAttribute('r:embed') && isset($this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'])) {
+                $pathImage = 'ppt/slides/'.$this->arrayRels[$fileRels][$oElement->getAttribute('r:embed')]['Target'];
                 $pathImage = explode('/', $pathImage);
                 foreach ($pathImage as $key => $partPath) {
                     if ($partPath == '..') {
@@ -440,8 +548,8 @@ class PowerPoint2007 implements ReaderInterface
                             if ($oElementHlinkClick->hasAttribute('tooltip')) {
                                 $oText->getHyperlink()->setTooltip($oElementHlinkClick->getAttribute('tooltip'));
                             }
-                            if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')])) {
-                                $oText->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]);
+                            if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target'])) {
+                                $oText->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target']);
                             }
                         }
                     //} else {
@@ -471,7 +579,10 @@ class PowerPoint2007 implements ReaderInterface
             $xmlReader = new XMLReader();
             if ($xmlReader->getDomFromString($sPart)) {
                 foreach ($xmlReader->getElements('*') as $oNode) {
-                    $this->arrayRels[$fileRels][$oNode->getAttribute('Id')] = $oNode->getAttribute('Target');
+                    $this->arrayRels[$fileRels][$oNode->getAttribute('Id')] = array(
+                        'Target' => $oNode->getAttribute('Target'),
+                        'Type' => $oNode->getAttribute('Type'),
+                    );
                 }
             }
         }

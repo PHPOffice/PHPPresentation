@@ -1061,7 +1061,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -1229,7 +1229,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -1473,7 +1473,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -1759,7 +1759,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -2179,7 +2179,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -2295,7 +2295,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -2388,7 +2388,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -2663,7 +2663,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -2914,7 +2914,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -3082,7 +3082,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>
@@ -3260,7 +3260,7 @@ class PackDefault extends AbstractLayoutPack
                     <a:p>
                         <a:fld id="{B5274F97-0F13-42E5-9A1D-07478243785D}" type="slidenum">
                             <a:rPr lang="nl-BE" />
-                            <a:t>?#?</a:t>
+                            <a:t>‹#›</a:t>
                         </a:fld>
                         <a:endParaRPr lang="nl-BE" />
                     </a:p>

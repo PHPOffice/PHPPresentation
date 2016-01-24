@@ -462,4 +462,36 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getHyperlink()->getUrl());
         $this->assertEquals('PHPPresentation', $oRichText->getHyperlink()->getTooltip());
     }
+
+    public function testMarkAsFinal()
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        $this->assertFalse($oPhpPresentation->isMarkedAsFinal());
+
+
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_MarkAsFinal.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        $this->assertTrue($oPhpPresentation->isMarkedAsFinal());
+    }
+
+    public function testZoom()
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        $this->assertEquals(1, $oPhpPresentation->getZoom());
+
+
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_Zoom.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        $this->assertEquals(2.68, $oPhpPresentation->getZoom());
+    }
 }

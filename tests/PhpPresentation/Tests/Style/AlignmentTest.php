@@ -70,18 +70,8 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
     public function testSetGetLevelExceptionMin()
     {
         $object = new Alignment();
-        $this->setExpectedException('\Exception', 'Invalid value: shoul be range 0 - 8.');
+        $this->setExpectedException('\Exception', 'Invalid value should be more than 0.');
         $object->setLevel(-1);
-    }
-
-    /**
-     * Test get/set max level exception
-     */
-    public function testSetGetLevelExceptionMax()
-    {
-        $object = new Alignment();
-        $this->setExpectedException('\Exception', 'Invalid value: shoul be range 0 - 8.');
-        $object->setLevel(9);
     }
 
     /**

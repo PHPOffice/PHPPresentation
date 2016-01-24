@@ -27,8 +27,10 @@ class PptProps extends AbstractPart
      * @return     string         XML Output
      * @throws     \Exception
      */
-    public function writePresProps()
+    public function writePresProps(PhpPresentation $pPhpPresentation)
     {
+        $presentationPpts = $pPhpPresentation->getPresentationProperties();
+        
         // Create XML writer
         $objWriter = $this->getXMLWriter();
 
@@ -40,6 +42,13 @@ class PptProps extends AbstractPart
         $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
         $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
+        
+        // p:presentationPr > p:showPr
+        if ($presentationPpts->isLoopContinuouslyUntilEsc()) {
+            $objWriter->startElement('p:showPr');
+            $objWriter->writeAttribute('loop', '1');
+            $objWriter->endElement();
+        }
 
         // p:extLst
         $objWriter->startElement('p:extLst');
@@ -105,7 +114,7 @@ class PptProps extends AbstractPart
      * @return     string         XML Output
      * @throws     \Exception
      */
-    public function writeViewProps()
+    public function writeViewProps(PhpPresentation $oPhpPresentation)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
@@ -120,7 +129,46 @@ class PptProps extends AbstractPart
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
         $objWriter->writeAttribute('showComments', '0');
 
-        // > p:viewPr
+        // p:viewPr > p:slideViewPr
+        $objWriter->startElement('p:slideViewPr');
+
+        // p:viewPr > p:slideViewPr > p:cSldViewPr
+        $objWriter->startElement('p:cSldViewPr');
+
+        // p:viewPr > p:slideViewPr > p:cSldViewPr > p:cViewPr
+        $objWriter->startElement('p:cViewPr');
+
+        // p:viewPr > p:slideViewPr > p:cSldViewPr > p:cViewPr > p:scale
+        $objWriter->startElement('p:scale');
+
+        $objWriter->startElement('a:sx');
+        $objWriter->writeAttribute('d', '100');
+        $objWriter->writeAttribute('n', (int)($oPhpPresentation->getZoom() * 100));
+        $objWriter->endElement();
+
+        $objWriter->startElement('a:sy');
+        $objWriter->writeAttribute('d', '100');
+        $objWriter->writeAttribute('n', (int)($oPhpPresentation->getZoom() * 100));
+        $objWriter->endElement();
+
+        // > // p:viewPr > p:slideViewPr > p:cSldViewPr > p:cViewPr > p:scale
+        $objWriter->endElement();
+
+        $objWriter->startElement('p:origin');
+        $objWriter->writeAttribute('x', '0');
+        $objWriter->writeAttribute('y', '0');
+        $objWriter->endElement();
+
+        // > // p:viewPr > p:slideViewPr > p:cSldViewPr > p:cViewPr
+        $objWriter->endElement();
+
+        // > // p:viewPr > p:slideViewPr > p:cSldViewPr
+        $objWriter->endElement();
+
+        // > // p:viewPr > p:slideViewPr
+        $objWriter->endElement();
+
+        // > // p:viewPr
         $objWriter->endElement();
 
         return $objWriter->getData();

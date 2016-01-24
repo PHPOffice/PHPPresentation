@@ -204,4 +204,23 @@ abstract class AbstractLayoutPack
 
         throw new \Exception("Could not find slide layout $name in current layout pack.");
     }
+
+    /**
+     * Find specific slide layout name.
+     *
+     * @param int $idLayout
+     * @param int $masterId
+     * @return int
+     * @throws \Exception
+     */
+    public function findLayoutName($idLayout = '', $masterId = 1)
+    {
+        foreach ($this->layouts as $layoutId => $layout) {
+            if ($layoutId == $idLayout && $layout['masterid'] == $masterId) {
+                return $layout['name'];
+            }
+        }
+
+        throw new \Exception("Could not find slide layout $idLayout in current layout pack.");
+    }
 }

@@ -305,7 +305,32 @@ class ContentTest extends \PHPUnit_Framework_TestCase
             }
         }
     }
-    
+
+    public function testSlideName()
+    {
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page';
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'draw:name', 'content.xml'));
+
+        $oSlide->setName('AAAA');
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:name', 'content.xml'));
+        $this->assertEquals('AAAA', $pres->getElementAttribute($element, 'draw:name', 'content.xml'));
+
+        $oSlide->setName();
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'draw:name', 'content.xml'));
+    }
+
     public function testStyleAlignment()
     {
         $phpPresentation = new PhpPresentation();

@@ -1,7 +1,7 @@
 # ![PHPPresentation](https://github.com/PHPOffice/PHPPresentation/raw/master/docs/images/PHPPowerPointLogo.png "PHPPresentation")
 
 [![Latest Stable Version](https://poser.pugx.org/phpoffice/phppowerpoint/v/stable.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
-[![Build Status](https://travis-ci.org/PHPOffice/PHPPowerPoint.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPowerPoint)
+[![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation)
 [![Code Quality](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/quality-score.png?s=b5997ce59ac2816b4514f3a38de9900f6d492c1d)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
 [![Code Coverage](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/coverage.png?s=742a98745725c562955440edc8d2c39d7ff5ae25)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
 [![Total Downloads](https://poser.pugx.org/phpoffice/phppowerpoint/downloads.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
@@ -11,7 +11,7 @@
 
 PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF). 
 
-PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPowerPoint) and [unit testing](http://phpoffice.github.io/PHPPresentation/coverage/develop/). You can learn more about PHPPresentation by reading the [Developers' Documentation](http://phppowerpoint.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/develop/).
+PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPresentation) and [unit testing](http://phpoffice.github.io/PHPPresentation/coverage/develop/). You can learn more about PHPPresentation by reading the [Developers' Documentation](http://phppowerpoint.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/develop/).
 
 Read more about PHPPresentation:
 
@@ -79,7 +79,7 @@ require_once 'src/PhpPresentation/Autoloader.php';
 // with Composer
 require_once 'vendor/autoload.php';
 
-use PhpOffice\PhpPresentation\PhpPowerpoint;
+use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Alignment;
