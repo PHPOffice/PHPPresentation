@@ -1,12 +1,12 @@
 # ![PHPPresentation](https://github.com/PHPOffice/PHPPresentation/raw/master/docs/images/PHPPowerPointLogo.png "PHPPresentation")
 
-[![Latest Stable Version](https://poser.pugx.org/phpoffice/phppowerpoint/v/stable.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
+[![Latest Stable Version](https://poser.pugx.org/phpoffice/phppresentation/v/stable.png)](https://packagist.org/packages/phpoffice/phppresentation)
 [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation)
-[![Code Quality](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/quality-score.png?s=b5997ce59ac2816b4514f3a38de9900f6d492c1d)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
-[![Code Coverage](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/coverage.png?s=742a98745725c562955440edc8d2c39d7ff5ae25)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
-[![Total Downloads](https://poser.pugx.org/phpoffice/phppowerpoint/downloads.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
-[![License](https://poser.pugx.org/phpoffice/phppowerpoint/license.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
-[![Join the chat at https://gitter.im/PHPOffice/PHPPowerPoint](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/PHPOffice/PHPPowerPoint)
+[![Code Quality](https://scrutinizer-ci.com/g/PHPOffice/PHPPresentation/badges/quality-score.png?s=b5997ce59ac2816b4514f3a38de9900f6d492c1d)](https://scrutinizer-ci.com/g/PHPOffice/PHPPresentation/)
+[![Code Coverage](https://scrutinizer-ci.com/g/PHPOffice/PHPPresentation/badges/coverage.png?s=742a98745725c562955440edc8d2c39d7ff5ae25)](https://scrutinizer-ci.com/g/PHPOffice/PHPPresentation/)
+[![Total Downloads](https://poser.pugx.org/phpoffice/phppresentation/downloads.png)](https://packagist.org/packages/phpoffice/phppresentation)
+[![License](https://poser.pugx.org/phpoffice/phppresentation/license.png)](https://packagist.org/packages/phpoffice/phppresentation)
+[![Join the chat at https://gitter.im/PHPOffice/PHPPresentation](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/PHPOffice/PHPPresentation)
 
 
 PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF). 
