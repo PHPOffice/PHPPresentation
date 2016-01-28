@@ -52,6 +52,8 @@ after_script:
   ## Scrutinizer
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+  ## CodeClimate
+  - ./vendor/bin/test-reporter
 
 notifications:
   webhooks:
