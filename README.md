@@ -1,4 +1,4 @@
-# ![PHPPresentation](https://github.com/PHPOffice/PHPPresentation/raw/master/docs/images/PHPPresentationLogo.png "PHPPresentation")
+# ![PHPPresentation](https://raw.githubusercontent.com/mvargasmoran/PHPPresentation/develop/docs/images/PHPPresentationLogo.png "PHPPresentation")
 
 [![Latest Stable Version](https://poser.pugx.org/phpoffice/phppresentation/v/stable.png)](https://packagist.org/packages/phpoffice/phppresentation)
 [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation)
