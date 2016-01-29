@@ -275,7 +275,7 @@ class Slide extends AbstractPart
             $objWriter->startElement("p:childTnLst");
 
             //each animation has multiple shapes
-            foreach( $animations as $animation ){
+            foreach ($animations as $animation) {
 
                 $objWriter->startElement("p:par");
 
