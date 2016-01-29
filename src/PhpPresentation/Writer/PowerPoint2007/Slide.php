@@ -313,7 +313,7 @@ class Slide extends AbstractPart
 
                 $shapesInAnimation = $animation->getShapeCollection();
 
-                $firstShapeInAnimation = true;
+                $firstInAni = true;
 
                 foreach ($shapesInAnimation as $shape) {
                     $hash = $shape->getHashCode();
@@ -330,7 +330,7 @@ class Slide extends AbstractPart
                     $objWriter->writeAttribute("presetSubtype", "0");
                     $objWriter->writeAttribute("grpId", "0");
 
-                    $nodeType = $firstShapeInAnimation ? "clickEffect" : "withEffect";
+                    $nodeType = $firstInAni ? "clickEffect" : "withEffect";
 
                     $objWriter->writeAttribute("nodeType", $nodeType);
 
@@ -399,7 +399,7 @@ class Slide extends AbstractPart
 
                     $objWriter->endElement();
 
-                    $firstShapeInAnimation = false;
+                    $firstInAni = false;
                 }
 
 
