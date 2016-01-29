@@ -80,12 +80,12 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      */
     private $slideTransition;
   
-	/**
+    /**
      *
      * @var \PhpOffice\PhpPresentation\Slide\Animation
      */
-	private $animations = ARRAY();
-	
+    private $animations = array();
+    
     /**
      * Hash index
      *
@@ -163,7 +163,7 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     {
         return $this->shapeCollection;
     }
-	
+    
     /**
      * Add shape to slide
      *
