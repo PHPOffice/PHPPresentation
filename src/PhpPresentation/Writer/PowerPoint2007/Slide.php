@@ -266,7 +266,7 @@ class Slide extends AbstractPart
             $objWriter->writeAttribute('concurrent', '1');
             $objWriter->writeAttribute('nextAc', 'seek');
 
-            $objWriter->startElement('p:cTn'); 
+            $objWriter->startElement('p:cTn');
             $objWriter->writeAttribute('id', $idCount);
             $idCount += 1;
             $objWriter->writeAttribute('dur', 'indefinite');
@@ -275,7 +275,7 @@ class Slide extends AbstractPart
             $objWriter->startElement("p:childTnLst");
 
             //each animation has multiple shapes
-            foreach($animations as $animation){
+            foreach( $animations as $animation ){
 
                 $objWriter->startElement("p:par");
 
@@ -317,7 +317,7 @@ class Slide extends AbstractPart
 
                 foreach ($shapesInAnimation as $shape) {
                     $hash = $shape->getHashCode();
-                    $shapeId = $hashToIdMap[$hash]; 
+                    $shapeId = $hashToIdMap[$hash];
 
                     $objWriter->startElement("p:par");
 
@@ -348,7 +348,7 @@ class Slide extends AbstractPart
 
                     $objWriter->startElement("p:cBhvr");
 
-                    $objWriter->startElement("p:cTn"); 
+                    $objWriter->startElement("p:cTn");
                     $objWriter->writeAttribute("id", $idCount);
                     $idCount +=  1;
                     $objWriter->writeAttribute("dur", "1");
@@ -360,7 +360,7 @@ class Slide extends AbstractPart
                     $objWriter->writeAttribute("delay", "0");
                     $objWriter->endElement();
 
-                    $objWriter->endElement(); 
+                    $objWriter->endElement();
 
 
 
@@ -369,7 +369,7 @@ class Slide extends AbstractPart
                     $objWriter->startElement("p:tgtEl");
 
                     $objWriter->startElement("p:spTgt");
-                    //shape id 
+                    //shape id
                     $objWriter->writeAttribute("spid", $shapeId);
                     $objWriter->endElement();
 
@@ -403,11 +403,11 @@ class Slide extends AbstractPart
                 }
 
 
-                $objWriter->endElement(); //end child lst 
+                $objWriter->endElement(); //end child lst
 
-                $objWriter->endElement(); //end ctn	
+                $objWriter->endElement(); //end ctn
 
-                $objWriter->endElement(); //end par 
+                $objWriter->endElement(); //end par
 
 
                 $objWriter->endElement(); //end childtnlist
@@ -481,7 +481,7 @@ class Slide extends AbstractPart
 
             $objWriter->endElement(); // end bldLst
 
-            $objWriter->endElement(); //end timing	
+            $objWriter->endElement(); //end timing
 
             $objWriter->endElement();
         }
