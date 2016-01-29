@@ -20,5 +20,5 @@ class Animation
     public function getShapeCollection()
     {
         return $this->shapeCollection;
-    }   
+    }
 }
