@@ -38,6 +38,21 @@ interface TextElementInterface
     public function setText($pText = '');
 
     /**
+     * Set language
+     *
+     * @param $lang
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     */
+    public function setLanguage($lang);
+
+    /**
+     * Get language
+     *
+     * @return string Language
+     */
+    public function getLanguage();
+
+    /**
      * Get font
      *
      * @return \PhpOffice\PhpPresentation\Style\Font
