@@ -1596,8 +1596,8 @@ class Slide extends AbstractPart
         // Check slide
         if (is_null($pNote)) {
             throw new \Exception("Invalid \PhpOffice\PhpPresentation\Slide\Note object passed.");
-        }
-
+        }   
+        
         // Create XML writer
         $objWriter = $this->getXMLWriter();
 
@@ -1644,31 +1644,134 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
-        $objWriter->endElement(); // a:off
+        $objWriter->endElement();// a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
-        $objWriter->endElement(); // a:ext
+        $objWriter->endElement();// a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
-        $objWriter->endElement(); // a:chOff
+        $objWriter->endElement();// a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
-        $objWriter->endElement(); // a:chExt
+        $objWriter->endElement();// a:chExt
 
         // ## a:xfrm
         $objWriter->endElement();
 
         // ## p:grpSpPr
         $objWriter->endElement();
+
+        //ADD IN rectangle display section
+
+        //p:sp
+        $objWriter->startElement('p:sp');
+
+        //p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+
+        //p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id','2');
+        $objWriter->writeAttribute('name', 'Slide Image Placeholder 1');
+        $objWriter->endElement();
+
+        //p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+
+        //a:spLocks
+        $objWriter->startElement('a:spLocks');
+        $objWriter->writeAttribute('noGrp', '1');
+        $objWriter->writeAttribute('noRot', '1'); 
+        $objWriter->writeAttribute('noChangeAspect', '1');
+        $objWriter->endElement();
+
+        //end p:cNvSpPr
+        $objWriter->endElement();
+
+        //p:nvPr
+        $objWriter->startElement('p:nvPr');
+
+        //p:ph
+        $objWriter->startElement('p:ph'); 
+        $objWriter->writeAttribute('type', 'sldImg');
+        $objWriter->endElement();
+
+        //end p:nvPr
+        $objWriter->endElement();
+
+        //end p:nvSpPr
+        $objWriter->endElement();
+
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+
+        //a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        //a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->endElement();
+
+        //a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(round($pNote->getExtentX()/2)));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(round($pNote->getExtentY()/2)));
+        
+        
+        $objWriter->endElement();
+
+        //a:xfrm
+        $objWriter->endElement();
+
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst','rect');
+
+        //a:avLst
+        $objWriter->writeElement('a:avLst', null);
+
+        //end prstGeom
+        $objWriter->endElement();
+
+        //a:noFill
+        $objWriter->writeElement('a:noFill', null);
+
+        //a:ln
+        $objWriter->startElement('a:ln');
+        $objWriter->writeAttribute('w','12700');
+
+        //a:solidFill
+        $objWriter->startElement('a:solidFill');
+
+        //a:prstClr
+        $objWriter->startElement('a:prstClr');
+        $objWriter->writeAttribute('val','black');
+        $objWriter->endElement();
+
+        //end a:solidFill
+        $objWriter->endElement();
+
+        //end a:ln
+        $objWriter->endElement(); 
+        
+        //end p:spPr
+        $objWriter->endElement();
+        
+        //end p:sp
+        $objWriter->endElement();
+        
+        //end slide preview display
 
         // p:sp
         $objWriter->startElement('p:sp');
@@ -1677,7 +1780,7 @@ class Slide extends AbstractPart
         $objWriter->startElement('p:nvSpPr');
 
         $objWriter->startElement('p:cNvPr');
-        $objWriter->writeAttribute('id', '1');
+        $objWriter->writeAttribute('id', '3');
         $objWriter->writeAttribute('name', 'Notes Placeholder');
         $objWriter->endElement();
 
@@ -1705,8 +1808,43 @@ class Slide extends AbstractPart
 
         // ## p:nvSpPr
         $objWriter->endElement();
+        
+        //START notes print below rectangle section
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+        
+        //a:xfrm
+        $objWriter->startElement('a:xfrm');
+        
+        //a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x',CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y',CommonDrawing::pixelsToEmu(ROUND($pNote->getExtentY()/2)));
+        $objWriter->endElement(); 
+        
+        //a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx','5486400');
+        $objWriter->writeAttribute('cy','3600450');
+        $objWriter->endElement(); 
+        
+        //end a:xfrm
+        $objWriter->endElement();
+        
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst','rect');
+        
+        //a:avLst
+        $objWriter->writeElement('a:avLst',null);
+        
+        //end a:prstGeom
+        $objWriter->endElement();
+        
+        //end p:spPr
+        $objWriter->endElement();
 
-        $objWriter->writeElement('p:spPr', null);
+        //$objWriter->writeElement('p:spPr', null);
 
         // p:txBody
         $objWriter->startElement('p:txBody');
