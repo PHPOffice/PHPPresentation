@@ -1,4 +1,10 @@
 # Changelog
+
+## 0.7.0 -WIP
+
+### Bugfix
+- Fixed the image project - @mvargasmoran GH-177
+
 ## 0.6.0 - 2016-01-24
 
 ### Bugfix
