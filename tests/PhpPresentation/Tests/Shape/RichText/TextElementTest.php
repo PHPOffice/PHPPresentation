@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
 
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use SebastianBergmann\PHPLOC\Log\Text;
 
 /**
  * Test class for TextElement element
@@ -75,5 +76,12 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
     {
         $object = new TextElement();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());
+    }
+
+    public function testLanguage()
+    {
+        $object = new TextElement();
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setLanguage('en-US'));
+        $this->assertEquals('en-US', $object->getLanguage());
     }
 }

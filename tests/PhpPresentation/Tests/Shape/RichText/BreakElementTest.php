@@ -53,4 +53,11 @@ class BreakElementTest extends \PHPUnit_Framework_TestCase
         $object = new BreakElement();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());
     }
+
+    public function testLanguage()
+    {
+        $object = new BreakElement();
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setLanguage('en-US'));
+        $this->assertNull($object->getLanguage());
+    }
 }
