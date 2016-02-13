@@ -1,4 +1,10 @@
 # Changelog
+
+## 0.7.0 - WIP
+
+### Bugfix
+- PowerPoint2007 Writer : Bugfix for printing slide notes - @JewrassicPark GH-179
+
 ## 0.6.0 - 2016-01-24
 
 ### Bugfix
