@@ -1,9 +1,9 @@
-# ![PHPPresentation](https://github.com/PHPOffice/PHPPresentation/raw/master/docs/images/PHPPowerPointLogo.png "PHPPresentation")
+# ![PHPPresentation](https://raw.githubusercontent.com/mvargasmoran/PHPPresentation/develop/docs/images/PHPPresentationLogo.png "PHPPresentation")
 
 [![Latest Stable Version](https://poser.pugx.org/phpoffice/phppresentation/v/stable.png)](https://packagist.org/packages/phpoffice/phppresentation)
 [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation)
-[![Code Quality](https://scrutinizer-ci.com/g/PHPOffice/PHPPresentation/badges/quality-score.png?s=b5997ce59ac2816b4514f3a38de9900f6d492c1d)](https://scrutinizer-ci.com/g/PHPOffice/PHPPresentation/)
-[![Code Coverage](https://scrutinizer-ci.com/g/PHPOffice/PHPPresentation/badges/coverage.png?s=742a98745725c562955440edc8d2c39d7ff5ae25)](https://scrutinizer-ci.com/g/PHPOffice/PHPPresentation/)
+[![Code Climate](https://codeclimate.com/github/PHPOffice/PHPPresentation/badges/gpa.svg)](https://codeclimate.com/github/PHPOffice/PHPPresentation)
+[![Test Coverage](https://codeclimate.com/github/PHPOffice/PHPPresentation/badges/coverage.svg)](https://codeclimate.com/github/PHPOffice/PHPPresentation/coverage)
 [![Total Downloads](https://poser.pugx.org/phpoffice/phppresentation/downloads.png)](https://packagist.org/packages/phpoffice/phppresentation)
 [![License](https://poser.pugx.org/phpoffice/phppresentation/license.png)](https://packagist.org/packages/phpoffice/phppresentation)
 [![Join the chat at https://gitter.im/PHPOffice/PHPPresentation](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/PHPOffice/PHPPresentation)
@@ -11,7 +11,7 @@
 
 PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF). 
 
-PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPresentation) and [unit testing](http://phpoffice.github.io/PHPPresentation/coverage/develop/). You can learn more about PHPPresentation by reading the [Developers' Documentation](http://phppresentation.readthedocs.org) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/develop/).
+PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPresentation) and [unit testing](http://phpoffice.github.io/PHPPresentation/coverage/develop/). You can learn more about PHPPresentation by reading the [Developers' Documentation](http://phppresentation.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/develop/).
 
 Read more about PHPPresentation:
 
@@ -20,7 +20,7 @@ Read more about PHPPresentation:
 - [Installation](#installation)
 - [Getting started](#getting-started)
 - [Contributing](#contributing)
-- [Developers' Documentation](http://phppresentation.readthedocs.org)
+- [Developers' Documentation](http://phppresentation.readthedocs.org/)
 - [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/)
 
 ### Features
@@ -119,7 +119,7 @@ $oWriterODP = IOFactory::createWriter($objPHPPowerPoint, 'ODPresentation');
 $oWriterODP->save(__DIR__ . "/sample.odp");
 ```
 
-More examples are provided in the [samples folder](samples/). You can also read the [Developers' Documentation](http://phppresentation.readthedocs.org) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/) for more detail.
+More examples are provided in the [samples folder](samples/). You can also read the [Developers' Documentation](http://phppresentation.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/) for more detail.
 
 
 ## Contributing

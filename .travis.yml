@@ -11,7 +11,6 @@ php:
 
 matrix:
   allow_failures:
-    - php: 7.0
     - php: hhvm
 
 env:
@@ -22,6 +21,8 @@ addons:
   apt:
     packages:
       - graphviz
+  code_climate:
+    repo_token: 9d5714bfd25acc27c449c2d71cfb444351a3b91c59ed1a5dc3a50732d2bf45f0
 
 before_script:
   ## Composer
@@ -51,6 +52,8 @@ after_script:
   ## Scrutinizer
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+  ## CodeClimate
+  - ./vendor/bin/test-reporter
 
 notifications:
   webhooks:
