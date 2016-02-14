@@ -69,4 +69,12 @@ class RunTest extends \PHPUnit_Framework_TestCase
         $object = new Run();
         $this->assertEquals(md5($object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
     }
+
+    public function testLanguage()
+    {
+        $object = new Run();
+        $this->assertNull($object->getLanguage());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setLanguage('en-US'));
+        $this->assertEquals('en-US', $object->getLanguage());
+    }
 }

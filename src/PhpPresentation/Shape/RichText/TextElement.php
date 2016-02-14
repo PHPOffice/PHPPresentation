@@ -32,6 +32,11 @@ class TextElement implements TextElementInterface
     private $text;
 
     /**
+     * @var string
+     */
+    private $language;
+
+    /**
      * Hyperlink
      *
      * @var \PhpOffice\PhpPresentation\Shape\Hyperlink
@@ -128,5 +133,28 @@ class TextElement implements TextElementInterface
     public function getHashCode()
     {
         return md5($this->text . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
+    }
+
+    /**
+     * Set language
+     *
+     * @param $lang
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     */
+    public function setLanguage($lang)
+    {
+        $this->language = $lang;
+
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string Language
+     */
+    public function getLanguage()
+    {
+        return $this->language;
     }
 }

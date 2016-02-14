@@ -76,4 +76,12 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
         $object = new TextElement();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());
     }
+
+    public function testLanguage()
+    {
+        $object = new TextElement();
+        $this->assertNull($object->getLanguage());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->setLanguage('en-US'));
+        $this->assertEquals('en-US', $object->getLanguage());
+    }
 }
