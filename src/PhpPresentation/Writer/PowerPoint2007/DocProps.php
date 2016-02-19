@@ -100,7 +100,7 @@ class DocProps extends AbstractPart
         $objWriter->endElement();
 
         // Company
-        $objWriter->writeElement('Company', $pPhpPresentation->getProperties()->getCompany());
+        $objWriter->writeElement('Company', $pPhpPresentation->getDocumentProperties()->getCompany());
 
         // LinksUpToDate
         $objWriter->writeElement('LinksUpToDate', 'false');
@@ -144,39 +144,39 @@ class DocProps extends AbstractPart
         $objWriter->writeAttribute('xmlns:xsi', 'http://www.w3.org/2001/XMLSchema-instance');
 
         // dc:creator
-        $objWriter->writeElement('dc:creator', $pPhpPresentation->getProperties()->getCreator());
+        $objWriter->writeElement('dc:creator', $pPhpPresentation->getDocumentProperties()->getCreator());
 
         // cp:lastModifiedBy
-        $objWriter->writeElement('cp:lastModifiedBy', $pPhpPresentation->getProperties()->getLastModifiedBy());
+        $objWriter->writeElement('cp:lastModifiedBy', $pPhpPresentation->getDocumentProperties()->getLastModifiedBy());
 
         // dcterms:created
         $objWriter->startElement('dcterms:created');
         $objWriter->writeAttribute('xsi:type', 'dcterms:W3CDTF');
-        $objWriter->writeRaw(gmdate("Y-m-d\TH:i:s\Z", $pPhpPresentation->getProperties()->getCreated()));
+        $objWriter->writeRaw(gmdate("Y-m-d\TH:i:s\Z", $pPhpPresentation->getDocumentProperties()->getCreated()));
         $objWriter->endElement();
 
         // dcterms:modified
         $objWriter->startElement('dcterms:modified');
         $objWriter->writeAttribute('xsi:type', 'dcterms:W3CDTF');
-        $objWriter->writeRaw(gmdate("Y-m-d\TH:i:s\Z", $pPhpPresentation->getProperties()->getModified()));
+        $objWriter->writeRaw(gmdate("Y-m-d\TH:i:s\Z", $pPhpPresentation->getDocumentProperties()->getModified()));
         $objWriter->endElement();
 
         // dc:title
-        $objWriter->writeElement('dc:title', $pPhpPresentation->getProperties()->getTitle());
+        $objWriter->writeElement('dc:title', $pPhpPresentation->getDocumentProperties()->getTitle());
 
         // dc:description
-        $objWriter->writeElement('dc:description', $pPhpPresentation->getProperties()->getDescription());
+        $objWriter->writeElement('dc:description', $pPhpPresentation->getDocumentProperties()->getDescription());
 
         // dc:subject
-        $objWriter->writeElement('dc:subject', $pPhpPresentation->getProperties()->getSubject());
+        $objWriter->writeElement('dc:subject', $pPhpPresentation->getDocumentProperties()->getSubject());
 
         // cp:keywords
-        $objWriter->writeElement('cp:keywords', $pPhpPresentation->getProperties()->getKeywords());
+        $objWriter->writeElement('cp:keywords', $pPhpPresentation->getDocumentProperties()->getKeywords());
 
         // cp:category
-        $objWriter->writeElement('cp:category', $pPhpPresentation->getProperties()->getCategory());
+        $objWriter->writeElement('cp:category', $pPhpPresentation->getDocumentProperties()->getCategory());
 
-        if ($pPhpPresentation->isMarkedAsFinal()) {
+        if ($pPhpPresentation->getPresentationProperties()->isMarkedAsFinal()) {
             // cp:contentStatus = Final
             $objWriter->writeElement('cp:contentStatus', 'Final');
         }
@@ -209,7 +209,7 @@ class DocProps extends AbstractPart
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/officeDocument/2006/custom-properties');
         $objWriter->writeAttribute('xmlns:vt', 'http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes');
 
-        if ($pPhpPresentation->isMarkedAsFinal()) {
+        if ($pPhpPresentation->getPresentationProperties()->isMarkedAsFinal()) {
             // property
             $objWriter->startElement('property');
             $objWriter->writeAttribute('fmtid', '{D5CDD505-2E9C-101B-9397-08002B2CF9AE}');

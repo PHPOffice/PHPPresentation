@@ -38,10 +38,11 @@ class Rels extends AbstractPart
     /**
      * Write relationships to XML format
      *
+     * @param  PhpPresentation $pPhpPresentation
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writeRelationships()
+    public function writeRelationships(PhpPresentation $pPhpPresentation)
     {
         // Create XML writer
         $objWriter = $this->getXMLWriter();
@@ -64,6 +65,16 @@ class Rels extends AbstractPart
 
         // Relationship ppt/presentation.xml
         $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument', 'ppt/presentation.xml');
+		
+		if ($pPhpPresentation->getPresentationProperties()->getThumbnailPath()) {
+			$pathThumbnail = file_get_contents($pPhpPresentation->getPresentationProperties()->getThumbnailPath());
+			$gdImage = imagecreatefromstring($pathThumbnail);
+			if ($gdImage) {
+				imagedestroy($gdImage);
+				// Relationship docProps/thumbnail.jpeg
+				$this->writeRelationship($objWriter, 5, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpg');
+			}
+		}
 
         $objWriter->endElement();
 
