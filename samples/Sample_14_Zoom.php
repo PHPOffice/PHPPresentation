@@ -11,7 +11,7 @@ echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;
 $objPHPPresentation = new PhpPresentation();
 
 // Set the zoom to 200%
-$objPHPPresentation->setZoom(3);
+$objPHPPresentation->getPresentationProperties()->setZoom(3);
 
 // Create slide
 echo date('H:i:s') . ' Create slide'.EOL;

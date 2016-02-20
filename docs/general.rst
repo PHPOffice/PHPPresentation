@@ -53,7 +53,7 @@ Document information
 --------------------
 
 You can set the document information such as title, creator, and company
-name. Use the following functions:
+name. Use the following functions :
 
 .. code-block:: php
 
@@ -69,3 +69,37 @@ name. Use the following functions:
     $properties->setSubject('My subject');
     $properties->setKeywords('my, key, word');
 
+
+Presentation Properties
+-----------------------
+
+You can define some properties which are relative to the presentation, like the zoom or the thumbnail.
+
+
+Thumbnail
+`````````
+
+You can define the thumbnail of the presentation with the method ``setThumbnailPath``.
+
+.. code-block:: php
+
+    $oPresentation = new PhpPresentation();
+    $oProperties = $oPresentation->getPresentationProperties();
+    // Set path of the thumbnail
+    $oProperties->setThumbnailPath(__DIR__.'\resources\phppowerpoint_logo.gif');
+    // Get path of the thumbnail
+    echo $oProperties->getThumbnailPath();
+
+Zoom
+````
+
+You can define the zoom of the presentation with the method ``setZoom``.
+
+.. code-block:: php
+
+    $oPresentation = new PhpPresentation();
+    $oProperties = $oPresentation->getPresentationProperties();
+    // Set zoom of the presentation (3 = 300%)
+    $oProperties->setZoom(3);
+    // Get zoom of the presentation
+    echo $oProperties->getZoom();
