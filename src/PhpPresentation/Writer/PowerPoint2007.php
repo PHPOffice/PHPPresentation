@@ -238,7 +238,7 @@ class PowerPoint2007 implements WriterInterface
                     ob_end_clean();
 					imagedestroy($gdImage);
 
-                    $objZip->addFromString('docProps/thumbnail.jpg', $imageContents);
+                    $objZip->addFromString('docProps/thumbnail.jpeg', $imageContents);
 				}
 			}
 
