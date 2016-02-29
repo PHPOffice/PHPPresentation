@@ -57,7 +57,9 @@ class PresentationProperties
      */
     public function setLoopContinuouslyUntilEsc($value = false)
     {
-        $this->isLoopUntilEsc = $value;
+        if (is_bool($value)) {
+            $this->isLoopUntilEsc = $value;
+        }
         return $this;
     }
     
