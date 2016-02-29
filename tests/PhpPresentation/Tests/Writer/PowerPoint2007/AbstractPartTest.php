@@ -60,9 +60,10 @@ class AbstractPartTest extends \PHPUnit_Framework_TestCase
      */
     public function testWriterException()
     {
+        $oPhpPresentation = new PhpPresentation();
         $oManifest = new Rels();
         $oManifest->setParentWriter(new ODPresentation());
-        $oManifest->writeRelationships();
+        $oManifest->writeRelationships($oPhpPresentation);
     }
     
     public function testXMLWriterWithDiskCaching()

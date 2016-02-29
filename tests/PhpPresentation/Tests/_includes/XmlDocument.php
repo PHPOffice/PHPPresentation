@@ -83,8 +83,17 @@ class XmlDocument
         if ($baseFile == 'docProps/custom.xml') {
             $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $strContent);
         }
+        // docProps/custom.xml
+        if ($baseFile == '_rels/.rels') {
+            $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/package/2006/relationships"', '', $strContent);
+        }
         $this->dom->loadXML($strContent);
         return $this->dom;
+    }
+
+    public function fileExists($file)
+    {
+        return file_exists($this->path . '/' . $file);
     }
 
     /**

@@ -220,13 +220,27 @@ class PowerPoint2007 implements WriterInterface
             $objZip->addFromString('ppt/viewProps.xml', $wPptProps->writeViewProps($this->presentation));
 
             // Add relationships to ZIP file
-            $objZip->addFromString('_rels/.rels', $wPartRels->writeRelationships());
+            $objZip->addFromString('_rels/.rels', $wPartRels->writeRelationships($this->presentation));
             $objZip->addFromString('ppt/_rels/presentation.xml.rels', $wPartRels->writePresentationRelationships($this->presentation));
 
             // Add document properties to ZIP file
             $objZip->addFromString('docProps/app.xml', $wPartDocProps->writeDocPropsApp($this->presentation));
             $objZip->addFromString('docProps/core.xml', $wPartDocProps->writeDocPropsCore($this->presentation));
             $objZip->addFromString('docProps/custom.xml', $wPartDocProps->writeDocPropsCustom($this->presentation));
+            // Add Thumbnail to ZIP file
+            if ($this->presentation->getPresentationProperties()->getThumbnailPath()) {
+                $pathThumbnail = file_get_contents($this->presentation->getPresentationProperties()->getThumbnailPath());
+                $gdImage = imagecreatefromstring($pathThumbnail);
+                if ($gdImage) {
+                    ob_start();
+                    imagejpeg($gdImage);
+                    $imageContents = ob_get_contents();
+                    ob_end_clean();
+                    imagedestroy($gdImage);
+
+                    $objZip->addFromString('docProps/thumbnail.jpeg', $imageContents);
+                }
+            }
 
             $masterSlides = $this->getLayoutPack()->getMasterSlides();
             foreach ($masterSlides as $masterSlide) {

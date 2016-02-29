@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
+use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation
@@ -134,5 +135,25 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
     {
         $object = new ODPresentation(new PhpPresentation());
         $object->setUseDiskCaching(true, 'foo');
+    }
+
+    public function testFeatureThumbnail()
+    {
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+
+        $xPathManifest = '/manifest:manifest/manifest:file-entry[@manifest:media-type=\'image/png\'][@manifest:full-path=\'Thumbnails/thumbnail.png\']';
+
+        $oPhpPresentation = new PhpPresentation();
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertFalse($oXMLDoc->fileExists('Thumbnails/thumbnail.png'));
+        $this->assertTrue($oXMLDoc->fileExists('META-INF/manifest.xml'));
+        $this->assertFalse($oXMLDoc->elementExists($xPathManifest, 'META-INF/manifest.xml'));
+
+        $oPhpPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Thumbnails/thumbnail.png'));
+        $this->assertTrue($oXMLDoc->fileExists('META-INF/manifest.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($xPathManifest, 'META-INF/manifest.xml'));
     }
 }

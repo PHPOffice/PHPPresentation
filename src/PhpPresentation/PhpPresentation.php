@@ -61,18 +61,6 @@ class PhpPresentation
     private $activeSlideIndex = 0;
 
     /**
-     * Mark as final
-     * @var bool
-     */
-    private $markAsFinal = false;
-
-    /**
-     * Zoom
-     * @var float
-     */
-    private $zoom = 1;
-
-    /**
      * Create a new PhpPresentation with one Slide
      */
     public function __construct()
@@ -361,43 +349,41 @@ class PhpPresentation
      * Mark a document as final
      * @param bool $state
      * @return PhpPresentation
+     * @deprecated for getPresentationProperties()->markAsFinal()
      */
     public function markAsFinal($state = true)
     {
-        if (is_bool($state)) {
-            $this->markAsFinal = $state;
-        }
-        return $this;
+        return $this->getPresentationProperties()->markAsFinal($state);
     }
 
     /**
      * Return if this document is marked as final
      * @return bool
+     * @deprecated for getPresentationProperties()->isMarkedAsFinal()
      */
     public function isMarkedAsFinal()
     {
-        return $this->markAsFinal;
+        return $this->getPresentationProperties()->isMarkedAsFinal();
     }
 
     /**
      * Set the zoom of the document (in percentage)
      * @param float $zoom
      * @return PhpPresentation
+     * @deprecated for getPresentationProperties()->setZoom()
      */
     public function setZoom($zoom = 1)
     {
-        if (is_numeric($zoom)) {
-            $this->zoom = $zoom;
-        }
-        return $this;
+        return $this->getPresentationProperties()->setZoom($zoom);
     }
 
     /**
      * Return the zoom (in percentage)
      * @return float
+     * @deprecated for getPresentationProperties()->getZoom()
      */
     public function getZoom()
     {
-        return $this->zoom;
+        return $this->getPresentationProperties()->getZoom();
     }
 }
