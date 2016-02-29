@@ -5,6 +5,10 @@
 ### Bugfix
 - Fixed the image project - @mvargasmoran GH-177
 
+### Features
+- ODPresentation Writer : Thumbnail of the presentation - @Progi1984 GH-125
+- PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125
+
 ## 0.6.0 - 2016-01-24
 
 ### Bugfix
