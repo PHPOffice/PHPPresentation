@@ -124,19 +124,20 @@ class Manifest extends AbstractPart
                 $objWriter->endElement();
             }
         }
-		if ($parentWriter->getPhpPresentation()->getPresentationProperties()->getThumbnailPath()) {
-			$pathThumbnail = $parentWriter->getPhpPresentation()->getPresentationProperties()->getThumbnailPath();
-			// Size : 128x128 pixel
-			// PNG : 8bit, non-interlaced with full alpha transparency
-			$gdImage = imagecreatefromstring(file_get_contents($pathThumbnail));
-			if ($gdImage) {
-				imagedestroy($gdImage);
-				$objWriter->startElement('manifest:file-entry');
-				$objWriter->writeAttribute('manifest:media-type', 'image/png');
-				$objWriter->writeAttribute('manifest:full-path', 'Thumbnails/thumbnail.png');
-				$objWriter->endElement();
-			}
-		}
+
+        if ($parentWriter->getPhpPresentation()->getPresentationProperties()->getThumbnailPath()) {
+            $pathThumbnail = $parentWriter->getPhpPresentation()->getPresentationProperties()->getThumbnailPath();
+            // Size : 128x128 pixel
+            // PNG : 8bit, non-interlaced with full alpha transparency
+            $gdImage = imagecreatefromstring(file_get_contents($pathThumbnail));
+            if ($gdImage) {
+                imagedestroy($gdImage);
+                $objWriter->startElement('manifest:file-entry');
+                $objWriter->writeAttribute('manifest:media-type', 'image/png');
+                $objWriter->writeAttribute('manifest:full-path', 'Thumbnails/thumbnail.png');
+                $objWriter->endElement();
+            }
+        }
 
         $objWriter->endElement();
 

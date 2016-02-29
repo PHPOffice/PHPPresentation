@@ -31,11 +31,11 @@ class PresentationProperties
      * @var bool
      */
     protected $markAsFinal = false;
-	
-	/*
-	 * @var string
-	 */
-	protected $thumbnail;
+
+    /*
+     * @var string
+     */
+    protected $thumbnail;
 
     /**
      * Zoom
@@ -64,7 +64,7 @@ class PresentationProperties
     }
     
     /**
-	 * Return the thumbnail file path
+     * Return the thumbnail file path
      * @return string
      */
     public function getThumbnailPath()
@@ -73,15 +73,15 @@ class PresentationProperties
     }
     
     /**
-	 * Define the path for the thumbnail file / preview picture
+     * Define the path for the thumbnail file / preview picture
      * @param string $value
      * @return \PhpOffice\PhpPresentation\PresentationProperties
      */
     public function setThumbnailPath($path = '')
     {
-		if (file_exists($path)) {
-			$this->thumbnail = $path;
-		}
+        if (file_exists($path)) {
+            $this->thumbnail = $path;
+        }
         return $this;
     }
 

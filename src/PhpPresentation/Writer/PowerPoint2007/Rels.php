@@ -65,16 +65,16 @@ class Rels extends AbstractPart
 
         // Relationship ppt/presentation.xml
         $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument', 'ppt/presentation.xml');
-		
-		if ($pPhpPresentation->getPresentationProperties()->getThumbnailPath()) {
-			$pathThumbnail = file_get_contents($pPhpPresentation->getPresentationProperties()->getThumbnailPath());
-			$gdImage = imagecreatefromstring($pathThumbnail);
-			if ($gdImage) {
+        
+        if ($pPhpPresentation->getPresentationProperties()->getThumbnailPath()) {
+            $pathThumbnail = file_get_contents($pPhpPresentation->getPresentationProperties()->getThumbnailPath());
+            $gdImage = imagecreatefromstring($pathThumbnail);
+            if ($gdImage) {
                 imagedestroy($gdImage);
                 // Relationship docProps/thumbnail.jpeg
                 $this->writeRelationship($objWriter, 5, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
             }
-		}
+        }
 
         $objWriter->endElement();
 
