@@ -161,7 +161,12 @@ class Manifest extends AbstractPart
                 $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
                 $oArchive = new \ZipArchive();
                 $oArchive->open($pZIPFile);
-                $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
+                if (!function_exists('getimagesizefromstring')) {
+                    $uri = 'data://application/octet-stream;base64,' . base64_encode($oArchive->getFromName($pImgFile));
+                    $image = getimagesize($uri);
+                } else {
+                    $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
+                }
             } else {
                 $image = getimagesize($pFile);
             }
