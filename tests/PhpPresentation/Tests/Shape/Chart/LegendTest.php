@@ -17,46 +17,120 @@
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Axis;
+use PhpOffice\PhpPresentation\Shape\Chart\Legend;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 
 /**
- * Test class for Axis element
+ * Test class for Legend element
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Axis
+ * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Legend
  */
 class LegendTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
-        $object = new Axis();
+        $object = new Legend();
 
-        $this->assertEquals('Axis Title', $object->getTitle());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getBorder());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
     }
 
-    public function testFormatCode()
+    public function testAlignment()
     {
-        $object = new Axis();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setFormatCode());
-        $this->assertEquals('', $object->getFormatCode());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setFormatCode('AAAA'));
-        $this->assertEquals('AAAA', $object->getFormatCode());
+        $object = new Legend();
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setAlignment(new Alignment()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
+    }
+
+    public function testFont()
+    {
+        $object = new Legend();
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setFont());
+        $this->assertNull($object->getFont());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setFont(new Font()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
     public function testHashIndex()
     {
-        $object = new Axis();
+        $object = new Legend();
         $value = rand(1, 100);
 
         $this->assertEmpty($object->getHashIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setHashIndex($value));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setHashIndex($value));
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testTitle()
+    public function testHeight()
     {
-        $object = new Axis();
-        $this->assertEquals('Axis Title', $object->getTitle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setTitle('AAAA'));
-        $this->assertEquals('AAAA', $object->getTitle());
+        $object = new Legend();
+        $value = rand(0, 100);
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setHeight());
+        $this->assertEquals(0, $object->getHeight());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setHeight($value));
+        $this->assertEquals($value, $object->getHeight());
+    }
+
+    public function testOffsetX()
+    {
+        $object = new Legend();
+        $value = rand(0, 100);
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setOffsetX());
+        $this->assertEquals(0, $object->getOffsetX());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setOffsetX($value));
+        $this->assertEquals($value, $object->getOffsetX());
+    }
+
+    public function testOffsetY()
+    {
+        $object = new Legend();
+        $value = rand(0, 100);
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setOffsetY());
+        $this->assertEquals(0, $object->getOffsetY());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setOffsetY($value));
+        $this->assertEquals($value, $object->getOffsetY());
+    }
+
+    public function testPosition()
+    {
+        $object = new Legend();
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setPosition());
+        $this->assertEquals(Legend::POSITION_RIGHT, $object->getPosition());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setPosition(Legend::POSITION_BOTTOM));
+        $this->assertEquals(Legend::POSITION_BOTTOM, $object->getPosition());
+    }
+
+    public function testVisible()
+    {
+        $object = new Legend();
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setVisible());
+        $this->assertTrue($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setVisible(true));
+        $this->assertTrue($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setVisible(false));
+        $this->assertFalse($object->isVisible());
+    }
+
+    public function testWidth()
+    {
+        $object = new Legend();
+        $value = rand(0, 100);
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setWidth());
+        $this->assertEquals(0, $object->getWidth());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->setWidth($value));
+        $this->assertEquals($value, $object->getWidth());
     }
 }

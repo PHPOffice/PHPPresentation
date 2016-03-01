@@ -108,6 +108,7 @@ function fnSlide_Bar(PhpPresentation $objPHPPresentation) {
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
     $shape->getPlotArea()->getAxisX()->setTitle('Month');
+    $shape->getPlotArea()->getAxisY()->getFont()->getColor()->setRGB('00FF00');
     $shape->getPlotArea()->getAxisY()->setTitle('Downloads');
     $shape->getPlotArea()->setType($barChart);
     $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
