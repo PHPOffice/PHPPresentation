@@ -33,13 +33,6 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 class PowerPoint2007 implements WriterInterface
 {
     /**
-     * Office2003 compatibility
-     *
-     * @var boolean
-     */
-    protected $office2003comp = false;
-
-    /**
      * Private PhpPresentation
      *
      * @var \PhpOffice\PhpPresentation\PhpPresentation
@@ -105,63 +98,62 @@ class PowerPoint2007 implements WriterInterface
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty");
         }
-        if (!is_null($this->presentation)) {
-            // If $pFilename is php://output or php://stdout, make it a temporary file...
-            $originalFilename = $pFilename;
-            if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
-                $pFilename = @tempnam('./', 'phppttmp');
-                if ($pFilename == '') {
-                    $pFilename = $originalFilename;
-                }
+        if (empty($this->presentation)) {
+            throw new \Exception("PhpPresentation object unassigned");
+        }
+        // If $pFilename is php://output or php://stdout, make it a temporary file...
+        $originalFilename = $pFilename;
+        if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
+            $pFilename = @tempnam('./', 'phppttmp');
+            if ($pFilename == '') {
+                $pFilename = $originalFilename;
             }
-            
-            // Create drawing dictionary
-            $this->drawingHashTable->addFromSource($this->allDrawings());
+        }
 
-            $oZip = new \ZipArchive();
+        // Create drawing dictionary
+        $this->drawingHashTable->addFromSource($this->allDrawings());
 
-            // Try opening the ZIP file
-            if ($oZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
-                if ($oZip->open($pFilename, \ZipArchive::CREATE) !== true) {
-                    throw new \Exception("Could not open " . $pFilename . " for writing.");
-                }
+        $oZip = new \ZipArchive();
+
+        // Try opening the ZIP file
+        if ($oZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
+            if ($oZip->open($pFilename, \ZipArchive::CREATE) !== true) {
+                throw new \Exception("Could not open " . $pFilename . " for writing.");
             }
+        }
 
-            $oDir = new DirectoryIterator(dirname(__FILE__).'\PowerPoint2007');
-            foreach ($oDir as $oFile) {
-                if (!$oFile->isFile()) {
-                    continue;
-                }
-                $class = __NAMESPACE__.'\\PowerPoint2007\\'.$oFile->getBasename('.php');
-                $o = new \ReflectionClass($class);
-
-                if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')){
-                    continue;
-                }
-                $oService = $o->newInstance();
-                $oService->setZip($oZip);
-                $oService->setPresentation($this->presentation);
-                $oService->setDrawingHashTable($this->drawingHashTable);
-                $oZip = $oService->render();
-                unset($oService);
+        $oDir = new DirectoryIterator(dirname(__FILE__).'\PowerPoint2007');
+        foreach ($oDir as $oFile) {
+            if (!$oFile->isFile()) {
+                continue;
             }
+            $class = __NAMESPACE__.'\\PowerPoint2007\\'.$oFile->getBasename('.php');
+            $o = new \ReflectionClass($class);
 
-            // Close file
-            if ($oZip->close() === false) {
-                throw new \Exception("Could not close zip file $pFilename.");
+            if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')){
+                continue;
             }
+            $oService = $o->newInstance();
+            $oService->setZip($oZip);
+            $oService->setPresentation($this->presentation);
+            $oService->setDrawingHashTable($this->drawingHashTable);
+            $oZip = $oService->render();
+            unset($oService);
+        }
 
-            // If a temporary file was used, copy it to the correct file stream
-            if ($originalFilename != $pFilename) {
-                if (copy($pFilename, $originalFilename) === false) {
-                    throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
-                }
-                if (@unlink($pFilename) === false) {
-                    throw new \Exception('The file '.$pFilename.' could not be removed.');
-                }
+        // Close file
+        if ($oZip->close() === false) {
+            throw new \Exception("Could not close zip file $pFilename.");
+        }
+
+        // If a temporary file was used, copy it to the correct file stream
+        if ($originalFilename != $pFilename) {
+            if (copy($pFilename, $originalFilename) === false) {
+                throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
             }
-        } else {
-            throw new \Exception("PhpPresentation object unassigned.");
+            if (@unlink($pFilename) === false) {
+                throw new \Exception('The file '.$pFilename.' could not be removed.');
+            }
         }
     }
 
@@ -173,15 +165,14 @@ class PowerPoint2007 implements WriterInterface
      */
     public function getPhpPresentation()
     {
-        if (!is_null($this->presentation)) {
-            return $this->presentation;
-        } else {
+        if (empty($this->presentation)) {
             throw new \Exception("No PhpPresentation assigned.");
         }
+        return $this->presentation;
     }
 
     /**
-     * Get PhpPresentation object
+     * Set PhpPresentation object
      *
      * @param  PhpPresentation $pPhpPresentation PhpPresentation object
      * @throws \Exception
@@ -190,40 +181,6 @@ class PowerPoint2007 implements WriterInterface
     public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
     {
         $this->presentation = $pPhpPresentation;
-
-        return $this;
-    }
-
-    /**
-     * Get hash table
-     *
-     * @return \PhpOffice\PhpPresentation\HashTable
-     */
-    public function getDrawingHashTable()
-    {
-        return $this->drawingHashTable;
-    }
-
-    /**
-     * Get Office2003 compatibility
-     *
-     * @return boolean
-     */
-    public function hasOffice2003Compatibility()
-    {
-        return $this->office2003comp;
-    }
-
-    /**
-     * Set Pre-Calculate Formulas
-     *
-     * @param  boolean                             $pValue Office2003 compatibility?
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
-     */
-    public function setOffice2003Compatibility($pValue = false)
-    {
-        $this->office2003comp = $pValue;
-
         return $this;
     }
 

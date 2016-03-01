@@ -79,11 +79,15 @@ class XmlDocument
         $file = $this->path . '/' . $file;
         $this->dom = new \DOMDocument();
         $strContent = file_get_contents($file);
+        // docProps/app.xml
+        if ($baseFile == 'docProps/app.xml') {
+            $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"', '', $strContent);
+        }
         // docProps/custom.xml
         if ($baseFile == 'docProps/custom.xml') {
             $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $strContent);
         }
-        // docProps/custom.xml
+        // _rels/.rels
         if ($baseFile == '_rels/.rels') {
             $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/package/2006/relationships"', '', $strContent);
         }

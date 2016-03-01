@@ -18,7 +18,6 @@
 namespace PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Drawing;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -27,6 +26,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\Slide;
 
@@ -43,16 +43,6 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         TestHelperDOCX::clear();
-    }
-    
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid \PhpOffice\PhpPresentation\Slide object passed.
-     */
-    public function testConstructException()
-    {
-        $oSlide = new Slide();
-        $oSlide->writeSlide();
     }
 
     /**

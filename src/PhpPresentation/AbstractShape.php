@@ -121,7 +121,10 @@ abstract class AbstractShape implements ComparableInterface
 
         $this->border->setLineStyle(Style\Border::LINE_NONE);
     }
-    
+
+    /**
+     * Magic Method : clone
+     */
     public function __clone()
     {
         $this->container = null;

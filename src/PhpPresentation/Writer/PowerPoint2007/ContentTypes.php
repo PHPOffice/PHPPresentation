@@ -171,22 +171,24 @@ class ContentTypes extends AbstractDecoratorWriter
      */
     private function getImageMimeType($pFile = '')
     {
-        if (File::fileExists($pFile)) {
-            if (strpos($pFile, 'zip://') === 0) {
-                $pZIPFile = str_replace('zip://', '', $pFile);
-                $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
-                $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
-                $oArchive = new \ZipArchive();
-                $oArchive->open($pZIPFile);
-                $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
-            } else {
-                $image = getimagesize($pFile);
+        if (strpos($pFile, 'zip://') === 0) {
+            $pZIPFile = str_replace('zip://', '', $pFile);
+            $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
+            if (!File::fileExists($pZIPFile)) {
+                throw new \Exception("File $pFile does not exist");
             }
-
-            return image_type_to_mime_type($image[2]);
+            $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
+            $oArchive = new \ZipArchive();
+            $oArchive->open($pZIPFile);
+            $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
         } else {
-            throw new \Exception("File $pFile does not exist");
+            if (!File::fileExists($pFile)) {
+                throw new \Exception("File $pFile does not exist");
+            }
+            $image = getimagesize($pFile);
         }
+
+        return image_type_to_mime_type($image[2]);
     }
 
     /**
