@@ -11,6 +11,8 @@
 ### Features
 - ODPresentation Writer : Thumbnail of the presentation - @Progi1984 GH-125
 - PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125
+- ODPresentation Writer : Add Font Support For Chart Axis - @jrking4 GH-186
+- PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
 
 ## 0.6.0 - 2016-01-24
 
