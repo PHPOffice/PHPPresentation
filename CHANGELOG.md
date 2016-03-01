@@ -5,6 +5,9 @@
 ### Bugfix
 - Fixed the image project - @mvargasmoran GH-177
 
+### Changes
+- PhpOffice\PhpPresentation\Writer\PowerPoint2007 : Move to Design Pattern Decorator - @Progi1984
+
 ### Features
 - ODPresentation Writer : Thumbnail of the presentation - @Progi1984 GH-125
 - PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125

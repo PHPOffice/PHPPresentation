@@ -15,7 +15,7 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
+namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack
