@@ -79,5 +79,4 @@ class PptSlideMasters extends AbstractDecoratorWriter
         // Return
         return $objWriter->getData();
     }
-
 }

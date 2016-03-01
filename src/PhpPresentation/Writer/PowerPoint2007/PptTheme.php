@@ -83,5 +83,4 @@ class PptTheme extends AbstractDecoratorWriter
         // Return
         return $objWriter->getData();
     }
-
 }

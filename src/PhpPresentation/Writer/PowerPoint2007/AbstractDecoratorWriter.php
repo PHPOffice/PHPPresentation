@@ -10,7 +10,8 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 use \ZipArchive;
 
-abstract class AbstractDecoratorWriter {
+abstract class AbstractDecoratorWriter
+{
     /**
      * @return \ZipArchive
      */

@@ -28,17 +28,17 @@ class PptMedia extends AbstractDecoratorWriter
                 } else {
                     $imageContents = file_get_contents($imagePath);
                 }
-                $this->oZip->addFromString('ppt/media/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
+                $this->getZip()->addFromString('ppt/media/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
             } elseif ($shape instanceof MemoryDrawing) {
                 ob_start();
                 call_user_func($shape->getRenderingFunction(), $shape->getImageResource());
                 $imageContents = ob_get_contents();
                 ob_end_clean();
 
-                $this->oZip->addFromString('ppt/media/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
+                $this->getZip()->addFromString('ppt/media/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
             }
         }
 
-        return $this->oZip;
+        return $this->getZip();
     }
 }

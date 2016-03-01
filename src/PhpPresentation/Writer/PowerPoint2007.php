@@ -122,7 +122,7 @@ class PowerPoint2007 implements WriterInterface
             }
         }
 
-        $oDir = new DirectoryIterator(dirname(__FILE__).'\PowerPoint2007');
+        $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'PowerPoint2007');
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;
@@ -130,7 +130,7 @@ class PowerPoint2007 implements WriterInterface
             $class = __NAMESPACE__.'\\PowerPoint2007\\'.$oFile->getBasename('.php');
             $o = new \ReflectionClass($class);
 
-            if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')){
+            if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')) {
                 continue;
             }
             $oService = $o->newInstance();

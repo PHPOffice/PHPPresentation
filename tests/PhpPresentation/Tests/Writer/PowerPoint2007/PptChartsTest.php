@@ -450,5 +450,4 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertEquals('30000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
-
 }

@@ -60,9 +60,9 @@ class PptMediaTest extends \PHPUnit_Framework_TestCase
 
     public function testMemoryDrawing()
     {
-        $gdImage = @imagecreatetruecolor(140, 20) or die('Cannot Initialize new GD image stream');
+        $gdImage = imagecreatetruecolor(140, 20);
         $textColor = imagecolorallocate($gdImage, 255, 255, 255);
-        imagestring($gdImage, 1, 5, 5,  'Created with PHPPresentation', $textColor);
+        imagestring($gdImage, 1, 5, 5, 'Created with PHPPresentation', $textColor);
 
         $oShape = new MemoryDrawing();
         $oShape->setImageResource($gdImage);
