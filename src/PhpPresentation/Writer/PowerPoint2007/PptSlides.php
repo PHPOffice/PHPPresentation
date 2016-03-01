@@ -1,19 +1,4 @@
 <?php
-/**
- * This file is part of PHPPresentation - A pure PHP library for reading and writing
- * presentations documents.
- *
- * PHPPresentation is free software distributed under the terms of the GNU Lesser
- * General Public License version 3 as published by the Free Software Foundation.
- *
- * For the full copyright and license information, please read the LICENSE
- * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
- *
- * @link        https://github.com/PHPOffice/PHPPresentation
- * @copyright   2009-2015 PHPPresentation contributors
- * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- */
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
@@ -22,27 +7,307 @@ use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
+use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\MemoryDrawing as MemoryDrawing;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
-use PhpOffice\PhpPresentation\Shape\Table;
-use PhpOffice\PhpPresentation\Slide as SlideElement;
+use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
+use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
-use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
-use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Shadow;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 
-/**
- * Slide writer
- */
-class Slide extends AbstractPart
+class PptSlides extends AbstractDecoratorWriter
 {
+    /**
+     * Add slides (drawings, ...) and slide relationships (drawings, ...)
+     */
+    public function render()
+    {
+        foreach ($this->oPresentation->getAllSlides() as $idx => $oSlide) {
+
+            $this->oZip->addFromString('ppt/slides/_rels/slide' . ($idx + 1) . '.xml.rels', $this->writeSlideRelationships($oSlide));
+            $this->oZip->addFromString('ppt/slides/slide' . ($idx + 1) . '.xml', $this->writeSlide($oSlide));
+
+            // Add note slide
+            if ($oSlide->getNote()->getShapeCollection()->count() > 0) {
+                $this->oZip->addFromString('ppt/notesSlides/notesSlide' . ($idx + 1) . '.xml', $this->writeNote($oSlide->getNote()));
+            }
+
+            // Add background image slide
+            $oBkgImage = $oSlide->getBackground();
+            if ($oBkgImage instanceof Image) {
+                $this->oZip->addFromString('ppt/media/'.$oBkgImage->getIndexedFilename($idx), file_get_contents($oBkgImage->getPath()));
+            }
+        }
+
+        return $this->oZip;
+    }
+
+    /**
+     * Write slide relationships to XML format
+     *
+     * @param  \PhpOffice\PhpPresentation\Slide $pSlide
+     * @return string              XML Output
+     * @throws \Exception
+     */
+    protected function writeSlideRelationships(Slide $pSlide)
+    {
+        // Create XML writer
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
+
+        // XML header
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+
+        // Starting relation id
+        $relId = 1;
+        $idxSlide = $pSlide->getParent()->getIndex($pSlide);
+
+        // Write slideLayout relationship
+        $oLayoutPack  = new PackDefault();
+        $layoutId = $oLayoutPack->findlayoutId($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
+
+        $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
+
+        // Write drawing relationships?
+        if ($pSlide->getShapeCollection()->count() > 0) {
+            // Loop trough images and write relationships
+            $iterator = $pSlide->getShapeCollection()->getIterator();
+            while ($iterator->valid()) {
+                if ($iterator->current() instanceof ShapeDrawing || $iterator->current() instanceof MemoryDrawing) {
+                    // Write relationship for image drawing
+                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename()));
+
+                    $iterator->current()->relationId = 'rId' . $relId;
+
+                    ++$relId;
+                } elseif ($iterator->current() instanceof ShapeChart) {
+                    // Write relationship for chart drawing
+                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator->current()->getIndexedFilename());
+
+                    $iterator->current()->relationId = 'rId' . $relId;
+
+                    ++$relId;
+                } elseif ($iterator->current() instanceof Group) {
+                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        if ($iterator2->current() instanceof ShapeDrawing || $iterator2->current() instanceof MemoryDrawing) {
+                            // Write relationship for image drawing
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator2->current()->getIndexedFilename()));
+
+                            $iterator2->current()->relationId = 'rId' . $relId;
+
+                            ++$relId;
+                        } elseif ($iterator2->current() instanceof ShapeChart) {
+                            // Write relationship for chart drawing
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator2->current()->getIndexedFilename());
+
+                            $iterator2->current()->relationId = 'rId' . $relId;
+
+                            ++$relId;
+                        }
+                        $iterator2->next();
+                    }
+                }
+
+                $iterator->next();
+            }
+        }
+
+        // Write background relationships?
+        $oBackground = $pSlide->getBackground();
+        if ($oBackground instanceof Image) {
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($idxSlide));
+            $oBackground->relationId = 'rId' . $relId;
+            ++$relId;
+        }
+
+        // Write hyperlink relationships?
+        if ($pSlide->getShapeCollection()->count() > 0) {
+            // Loop trough hyperlinks and write relationships
+            $iterator = $pSlide->getShapeCollection()->getIterator();
+            while ($iterator->valid()) {
+                // Hyperlink on shape
+                if ($iterator->current()->hasHyperlink()) {
+                    // Write relationship for hyperlink
+                    $hyperlink               = $iterator->current()->getHyperlink();
+                    $hyperlink->relationId = 'rId' . $relId;
+
+                    if (!$hyperlink->isInternal()) {
+                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                    } else {
+                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                    }
+
+                    ++$relId;
+                }
+
+                // Hyperlink on rich text run
+                if ($iterator->current() instanceof RichText) {
+                    foreach ($iterator->current()->getParagraphs() as $paragraph) {
+                        foreach ($paragraph->getRichTextElements() as $element) {
+                            if ($element instanceof Run || $element instanceof RunTextElement) {
+                                if ($element->hasHyperlink()) {
+                                    // Write relationship for hyperlink
+                                    $hyperlink               = $element->getHyperlink();
+                                    $hyperlink->relationId = 'rId' . $relId;
+
+                                    if (!$hyperlink->isInternal()) {
+                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                    } else {
+                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                    }
+
+                                    ++$relId;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Hyperlink in table
+                if ($iterator->current() instanceof ShapeTable) {
+                    // Rows
+                    $countRows = count($iterator->current()->getRows());
+                    for ($row = 0; $row < $countRows; $row++) {
+                        // Cells in rows
+                        $countCells = count($iterator->current()->getRow($row)->getCells());
+                        for ($cell = 0; $cell < $countCells; $cell++) {
+                            $currentCell = $iterator->current()->getRow($row)->getCell($cell);
+                            // Paragraphs in cell
+                            foreach ($currentCell->getParagraphs() as $paragraph) {
+                                // RichText in paragraph
+                                foreach ($paragraph->getRichTextElements() as $element) {
+                                    // Run or Text in RichText
+                                    if ($element instanceof Run || $element instanceof TextElement) {
+                                        if ($element->hasHyperlink()) {
+                                            // Write relationship for hyperlink
+                                            $hyperlink               = $element->getHyperlink();
+                                            $hyperlink->relationId = 'rId' . $relId;
+
+                                            if (!$hyperlink->isInternal()) {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                            } else {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                            }
+
+                                            ++$relId;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if ($iterator->current() instanceof Group) {
+                    $iterator2 = $pSlide->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        // Hyperlink on shape
+                        if ($iterator2->current()->hasHyperlink()) {
+                            // Write relationship for hyperlink
+                            $hyperlink             = $iterator2->current()->getHyperlink();
+                            $hyperlink->relationId = 'rId' . $relId;
+
+                            if (!$hyperlink->isInternal()) {
+                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                            } else {
+                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                            }
+
+                            ++$relId;
+                        }
+
+                        // Hyperlink on rich text run
+                        if ($iterator2->current() instanceof RichText) {
+                            foreach ($iterator2->current()->getParagraphs() as $paragraph) {
+                                foreach ($paragraph->getRichTextElements() as $element) {
+                                    if ($element instanceof Run || $element instanceof TextElement) {
+                                        if ($element->hasHyperlink()) {
+                                            // Write relationship for hyperlink
+                                            $hyperlink              = $element->getHyperlink();
+                                            $hyperlink->relationId = 'rId' . $relId;
+
+                                            if (!$hyperlink->isInternal()) {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                            } else {
+                                                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                            }
+
+                                            ++$relId;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Hyperlink in table
+                        if ($iterator2->current() instanceof ShapeTable) {
+                            // Rows
+                            $countRows = count($iterator2->current()->getRows());
+                            for ($row = 0; $row < $countRows; $row++) {
+                                // Cells in rows
+                                $countCells = count($iterator2->current()->getRow($row)->getCells());
+                                for ($cell = 0; $cell < $countCells; $cell++) {
+                                    $currentCell = $iterator2->current()->getRow($row)->getCell($cell);
+                                    // Paragraphs in cell
+                                    foreach ($currentCell->getParagraphs() as $paragraph) {
+                                        // RichText in paragraph
+                                        foreach ($paragraph->getRichTextElements() as $element) {
+                                            // Run or Text in RichText
+                                            if ($element instanceof Run || $element instanceof TextElement) {
+                                                if ($element->hasHyperlink()) {
+                                                    // Write relationship for hyperlink
+                                                    $hyperlink               = $element->getHyperlink();
+                                                    $hyperlink->relationId = 'rId' . $relId;
+
+                                                    if (!$hyperlink->isInternal()) {
+                                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink', $hyperlink->getUrl(), 'External');
+                                                    } else {
+                                                        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slide', 'slide' . $hyperlink->getSlideNumber() . '.xml');
+                                                    }
+
+                                                    ++$relId;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        $iterator2->next();
+                    }
+
+                }
+
+                $iterator->next();
+            }
+        }
+
+        if ($pSlide->getNote()->getShapeCollection()->count() > 0) {
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide', '../notesSlides/notesSlide'.($idxSlide + 1).'.xml');
+        }
+
+        $objWriter->endElement();
+
+        // Return
+        return $objWriter->getData();
+    }
+
     /**
      * Write slide to XML format
      *
@@ -50,15 +315,10 @@ class Slide extends AbstractPart
      * @return string              XML Output
      * @throws \Exception
      */
-    public function writeSlide(SlideElement $pSlide = null)
+    public function writeSlide(Slide $pSlide)
     {
-        // Check slide
-        if (is_null($pSlide)) {
-            throw new \Exception("Invalid \PhpOffice\PhpPresentation\Slide object passed.");
-        }
-
         // Create XML writer
-        $objWriter = $this->getXMLWriter();
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');
@@ -73,7 +333,7 @@ class Slide extends AbstractPart
         $objWriter->startElement('p:cSld');
 
         // Background
-        if ($pSlide->getBackground() instanceof SlideElement\AbstractBackground) {
+        if ($pSlide->getBackground() instanceof Slide\AbstractBackground) {
             $oBackground = $pSlide->getBackground();
             // p:bg
             $objWriter->startElement('p:bg');
@@ -81,7 +341,7 @@ class Slide extends AbstractPart
             // p:bgPr
             $objWriter->startElement('p:bgPr');
 
-            if ($oBackground instanceof SlideElement\Background\Color) {
+            if ($oBackground instanceof Slide\Background\Color) {
                 // a:solidFill
                 $objWriter->startElement('a:solidFill');
 
@@ -94,7 +354,7 @@ class Slide extends AbstractPart
                 $objWriter->endElement();
             }
 
-            if ($oBackground instanceof SlideElement\Background\Image) {
+            if ($oBackground instanceof Slide\Background\Image) {
                 // a:blipFill
                 $objWriter->startElement('a:blipFill');
 
@@ -189,7 +449,7 @@ class Slide extends AbstractPart
             // Check type
             if ($shape instanceof RichText) {
                 $this->writeShapeText($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Table) {
+            } elseif ($shape instanceof ShapeTable) {
                 $this->writeShapeTable($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Line) {
                 $this->writeShapeLine($objWriter, $shape, $shapeId);
@@ -297,7 +557,7 @@ class Slide extends AbstractPart
             // Check type
             if ($shape instanceof RichText) {
                 $this->writeShapeText($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Table) {
+            } elseif ($shape instanceof ShapeTable) {
                 $this->writeShapeTable($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Line) {
                 $this->writeShapeLine($objWriter, $shape, $shapeId);
@@ -408,7 +668,7 @@ class Slide extends AbstractPart
         if ($shape->hasHyperlink()) {
             $this->writeHyperlink($objWriter, $shape);
         }
-        
+
         $objWriter->endElement();
 
         // p:cNvPicPr
@@ -526,19 +786,19 @@ class Slide extends AbstractPart
         // p:sp\p:spPr\a:xfrm
         $objWriter->startElement('a:xfrm');
         $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
-        
+
         // p:sp\p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
-        
+
         // p:sp\p:spPr\a:xfrm\a:ext
         $objWriter->startElement('a:ext');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
-        
+
         // > p:sp\p:spPr\a:xfrm
         $objWriter->endElement();
 
@@ -546,7 +806,7 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
-        
+
         if ($shape->getFill()) {
             $this->writeFill($objWriter, $shape->getFill());
         }
@@ -607,14 +867,14 @@ class Slide extends AbstractPart
                 $objWriter->writeAttribute('lnSpcReduction', (int)($shape->getLineSpaceReduction() * 1000));
             }
         }
-        
+
         $objWriter->endElement();
 
         $objWriter->endElement();
 
         // a:lstStyle
         $objWriter->writeElement('a:lstStyle', null);
-        
+
         // Write paragraphs
         $this->writeParagraphs($objWriter, $shape->getParagraphs());
 
@@ -631,7 +891,7 @@ class Slide extends AbstractPart
      * @param  int                            $shapeId
      * @throws \Exception
      */
-    private function writeShapeTable(XMLWriter $objWriter, Table $shape, $shapeId)
+    private function writeShapeTable(XMLWriter $objWriter, ShapeTable $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -1073,209 +1333,15 @@ class Slide extends AbstractPart
     }
 
     /**
-     * Write Border
-     *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Border     $pBorder      Border
-     * @param  string                         $pElementName Element name
-     * @throws \Exception
+     * Write Shadow
+     * @param XMLWriter $objWriter
+     * @param Shadow $oShadow
      */
-    protected function writeBorder(XMLWriter $objWriter, Border $pBorder, $pElementName = 'L')
-    {
-        // Line style
-        $lineStyle = $pBorder->getLineStyle();
-        if ($lineStyle == Border::LINE_NONE) {
-            $lineStyle = Border::LINE_SINGLE;
-        }
-
-        // Line width
-        $lineWidth = 12700 * $pBorder->getLineWidth();
-
-        // a:ln $pElementName
-        $objWriter->startElement('a:ln' . $pElementName);
-        $objWriter->writeAttribute('w', $lineWidth);
-        $objWriter->writeAttribute('cap', 'flat');
-        $objWriter->writeAttribute('cmpd', $lineStyle);
-        $objWriter->writeAttribute('algn', 'ctr');
-
-        // Fill?
-        if ($pBorder->getLineStyle() == Border::LINE_NONE) {
-            // a:noFill
-            $objWriter->writeElement('a:noFill', null);
-        } else {
-            // a:solidFill
-            $objWriter->startElement('a:solidFill');
-
-            // a:srgbClr
-            $objWriter->startElement('a:srgbClr');
-            $objWriter->writeAttribute('val', $pBorder->getColor()->getRGB());
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-        }
-
-        // Dash
-        $objWriter->startElement('a:prstDash');
-        $objWriter->writeAttribute('val', $pBorder->getDashStyle());
-        $objWriter->endElement();
-
-        // a:round
-        $objWriter->writeElement('a:round', null);
-
-        // a:headEnd
-        $objWriter->startElement('a:headEnd');
-        $objWriter->writeAttribute('type', 'none');
-        $objWriter->writeAttribute('w', 'med');
-        $objWriter->writeAttribute('len', 'med');
-        $objWriter->endElement();
-
-        // a:tailEnd
-        $objWriter->startElement('a:tailEnd');
-        $objWriter->writeAttribute('type', 'none');
-        $objWriter->writeAttribute('w', 'med');
-        $objWriter->writeAttribute('len', 'med');
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-    }
-
-    /**
-     * Write Fill
-     *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
-     * @throws \Exception
-     */
-    protected function writeFill(XMLWriter $objWriter, Fill $pFill)
-    {
-        // Is it a fill?
-        if ($pFill->getFillType() == Fill::FILL_NONE) {
-            return;
-        }
-
-        // Is it a solid fill?
-        if ($pFill->getFillType() == Fill::FILL_SOLID) {
-            $this->writeSolidFill($objWriter, $pFill);
-            return;
-        }
-
-        // Check if this is a pattern type or gradient type
-        if ($pFill->getFillType() == Fill::FILL_GRADIENT_LINEAR || $pFill->getFillType() == Fill::FILL_GRADIENT_PATH) {
-            // Gradient fill
-            $this->writeGradientFill($objWriter, $pFill);
-        } else {
-            // Pattern fill
-            $this->writePatternFill($objWriter, $pFill);
-        }
-    }
-
-    /**
-     * Write Solid Fill
-     *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
-     * @throws \Exception
-     */
-    protected function writeSolidFill(XMLWriter $objWriter, Fill $pFill)
-    {
-        // a:gradFill
-        $objWriter->startElement('a:solidFill');
-
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-    }
-
-    /**
-     * Write Gradient Fill
-     *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
-     * @throws \Exception
-     */
-    protected function writeGradientFill(XMLWriter $objWriter, Fill $pFill)
-    {
-        // a:gradFill
-        $objWriter->startElement('a:gradFill');
-
-        // a:gsLst
-        $objWriter->startElement('a:gsLst');
-        // a:gs
-        $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '0');
-
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-
-        // a:gs
-        $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '100000');
-
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getEndColor()->getRGB());
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-
-        // a:lin
-        $objWriter->startElement('a:lin');
-        $objWriter->writeAttribute('ang', CommonDrawing::degreesToAngle($pFill->getRotation()));
-        $objWriter->writeAttribute('scaled', '0');
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-    }
-
-    /**
-     * Write Pattern Fill
-     *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
-     * @throws \Exception
-     */
-    protected function writePatternFill(XMLWriter $objWriter, Fill $pFill)
-    {
-        // a:pattFill
-        $objWriter->startElement('a:pattFill');
-
-        // fgClr
-        $objWriter->startElement('a:fgClr');
-
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-
-        // bgClr
-        $objWriter->startElement('a:bgClr');
-
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getEndColor()->getRGB());
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-
-        $objWriter->endElement();
-    }
-
     protected function writeShadow(XMLWriter $objWriter, Shadow $oShadow)
     {
         // a:effectLst
         $objWriter->startElement('a:effectLst');
-        
+
         // a:outerShdw
         $objWriter->startElement('a:outerShdw');
         $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
@@ -1283,30 +1349,30 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($oShadow->getDirection()));
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
-        
+
         // a:srgbClr
         $objWriter->startElement('a:srgbClr');
         $objWriter->writeAttribute('val', $oShadow->getColor()->getRGB());
-        
+
         // a:alpha
         $objWriter->startElement('a:alpha');
         $objWriter->writeAttribute('val', $oShadow->getAlpha() * 1000);
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
     }
-    
+
     /**
      * Write hyperlink
      *
      * @param \PhpOffice\Common\XMLWriter                               $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\AbstractShape|\PhpOffice\PhpPresentation\Shape\RichText\TextElement $shape
      */
-    private function writeHyperlink(XMLWriter $objWriter, $shape)
+    protected function writeHyperlink(XMLWriter $objWriter, $shape)
     {
         // a:hlinkClick
         $objWriter->startElement('a:hlinkClick');
@@ -1322,16 +1388,12 @@ class Slide extends AbstractPart
      * Write Note Slide
      * @param Note $pNote
      * @throws \Exception
+     * @return  string
      */
-    public function writeNote(Note $pNote = null)
+    protected function writeNote(Note $pNote)
     {
-        // Check slide
-        if (is_null($pNote)) {
-            throw new \Exception("Invalid \PhpOffice\PhpPresentation\Slide\Note object passed.");
-        }
-
         // Create XML writer
-        $objWriter = $this->getXMLWriter();
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');

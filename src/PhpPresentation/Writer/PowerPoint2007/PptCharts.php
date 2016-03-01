@@ -1,27 +1,14 @@
 <?php
-/**
- * This file is part of PHPPresentation - A pure PHP library for reading and writing
- * presentations documents.
- *
- * PHPPresentation is free software distributed under the terms of the GNU Lesser
- * General Public License version 3 as published by the Free Software Foundation.
- *
- * For the full copyright and license information, please read the LICENSE
- * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
- *
- * @link        https://github.com/PHPOffice/PHPPresentation
- * @copyright   2009-2015 PHPPresentation contributors
- * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- */
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\PlotArea;
 use PhpOffice\PhpPresentation\Shape\Chart\Title;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
@@ -29,17 +16,33 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
-use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
-use PhpOffice\Common\Drawing as CommonDrawing;
-use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 
-/**
- * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\Chart
- */
-class Chart extends Slide
+class PptCharts extends AbstractDecoratorWriter
 {
+    /**
+     * @return \ZipArchive
+     */
+    public function render()
+    {
+        for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
+            $shape = $this->getDrawingHashTable()->getByIndex($i);
+            if ($shape instanceof Chart) {
+                $this->getZip()->addFromString('ppt/charts/' . $shape->getIndexedFilename(), $this->writeChart($shape));
+
+                // Chart relations?
+                if ($shape->hasIncludedSpreadsheet()) {
+                    $this->getZip()->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $this->writeChartRelationships($shape));
+                    $pFilename = 'PHPExcel';
+                    $this->getZip()->addFromString('ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', $this->writeSpreadsheet($this->getPresentation(), $shape, $pFilename . '.xlsx'));
+                }
+            }
+        }
+        return $this->getZip();
+    }
+
+
     /**
      * Write chart to XML format
      *
@@ -47,15 +50,10 @@ class Chart extends Slide
      * @return string                    XML Output
      * @throws \Exception
      */
-    public function writeChart(ShapeChart $chart = null)
+    public function writeChart(Chart $chart)
     {
-        // Check slide
-        if (is_null($chart)) {
-            throw new \Exception("Invalid \PhpOffice\PhpPresentation\Shape\Chart object passed.");
-        }
-
         // Create XML writer
-        $objWriter = $this->getXMLWriter();
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');
@@ -497,7 +495,7 @@ class Chart extends Slide
      * @param  \PhpOffice\PhpPresentation\Shape\Chart          $chart
      * @throws \Exception
      */
-    protected function writePlotArea(XMLWriter $objWriter, PlotArea $subject, ShapeChart $chart)
+    protected function writePlotArea(XMLWriter $objWriter, PlotArea $subject, Chart $chart)
     {
         // c:plotArea
         $objWriter->startElement('c:plotArea');
@@ -1520,7 +1518,7 @@ class Chart extends Slide
 
             $objWriter->endElement();
 
-             // c:spPr
+            // c:spPr
             if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
                 // c:spPr
                 $objWriter->startElement('c:spPr');
@@ -1546,7 +1544,7 @@ class Chart extends Slide
             $coords = ($includeSheet ? 'Sheet1!$' . \PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . \PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
             $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
             $objWriter->endElement();
-            
+
             $objWriter->endElement();
 
             ++$seriesIndex;
@@ -1583,7 +1581,7 @@ class Chart extends Slide
     /**
      * Write Type Pie
      *
-     * @param  \PhpOffice\PhpPresentation\Shared\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Pie $subject
      * @param  boolean                              $includeSheet
      * @throws \Exception
@@ -2153,7 +2151,7 @@ class Chart extends Slide
             $objWriter->endElement();
 
             $objWriter->endElement();
-            
+
             // c:dLbls
             $objWriter->startElement('c:dLbls');
 
@@ -2285,5 +2283,34 @@ class Chart extends Slide
         $objWriter->endElement();
 
         $objWriter->endElement();
+    }
+    /**
+     * Write chart relationships to XML format
+     *
+     * @param  \PhpOffice\PhpPresentation\Shape\Chart $pChart
+     * @return string                    XML Output
+     * @throws \Exception
+     */
+    public function writeChartRelationships(Chart $pChart)
+    {
+        // Create XML writer
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
+
+        // XML header
+        $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+
+        // Relationships
+        $objWriter->startElement('Relationships');
+        $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
+
+        // Write spreadsheet relationship?
+        if ($pChart->hasIncludedSpreadsheet()) {
+            $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/package', '../embeddings/' . $pChart->getIndexedFilename() . '.xlsx');
+        }
+
+        $objWriter->endElement();
+
+        // Return
+        return $objWriter->getData();
     }
 }
