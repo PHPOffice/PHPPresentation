@@ -180,7 +180,7 @@ class Slide extends AbstractPart
         $objWriter->endElement();
 
         // Loop shapes
-        $shapeId = 0;
+        $shapeId = 1;
         $shapes  = $pSlide->getShapeCollection();
         foreach ($shapes as $shape) {
             // Increment $shapeId
@@ -218,6 +218,274 @@ class Slide extends AbstractPart
         if (!is_null($pSlide->getTransition())) {
             $this->writeTransition($objWriter, $pSlide->getTransition());
         }
+        
+        //do animation writing
+        $shapeId = 1;
+        $shapes  = $pSlide->getShapeCollection();
+        
+        $animations = $pSlide->getAnimations();
+
+        if (count($animations) > 0) {
+            
+            $hashToIdMap = array();
+
+            foreach ($shapes as $shape) {
+                $shapeId += 1;
+                $hash = $shape->getHashCode();
+                $hashToIdMap[$hash] = $shapeId;
+            }
+
+            $animationIds = array();
+
+            foreach ($animations as $animation) {
+                $shapesInAnimation = $animation->getShapeCollection();
+                foreach ($shapesInAnimation as $shape) {
+                    $hash = $shape->getHashCode();
+                    $animationIds[] = $hashToIdMap[$hash];
+                }
+            }
+
+            $idCount = 1;
+
+            $objWriter->startElement('p:timing');
+
+            $objWriter->startElement('p:tnLst');
+
+            $objWriter->startElement('p:par');
+
+            $objWriter->startElement('p:cTn');
+            $objWriter->writeAttribute('id', $idCount);
+            $idCount += 1;
+            $objWriter->writeAttribute('dur', 'indefinite');
+            $objWriter->writeAttribute('restart', 'never');
+            $objWriter->writeAttribute('nodeType', 'tmRoot');
+
+            $objWriter->startElement('p:childTnLst');
+
+            $objWriter->startElement('p:seq');
+            $objWriter->writeAttribute('concurrent', '1');
+            $objWriter->writeAttribute('nextAc', 'seek');
+
+            $objWriter->startElement('p:cTn');
+            $objWriter->writeAttribute('id', $idCount);
+            $idCount += 1;
+            $objWriter->writeAttribute('dur', 'indefinite');
+            $objWriter->writeAttribute('nodeType', 'mainSeq');
+
+            $objWriter->startElement("p:childTnLst");
+
+            //each animation has multiple shapes
+            foreach ($animations as $animation) {
+
+                $objWriter->startElement("p:par");
+
+                $objWriter->startElement("p:cTn");
+                $objWriter->writeAttribute("id", $idCount);
+                $idCount += 1;
+                $objWriter->writeAttribute("fill", "hold");
+
+                $objWriter->startElement('p:stCondLst');
+
+                $objWriter->startElement('p:cond');
+                $objWriter->writeAttribute("delay", "indefinite");
+                $objWriter->endElement();
+
+                $objWriter->endElement();
+
+                $objWriter->startElement("p:childTnLst");
+
+                $objWriter->startElement("p:par");
+
+                $objWriter->startElement("p:cTn");
+                $objWriter->writeAttribute("id", $idCount);
+                $idCount += 1;
+                $objWriter->writeAttribute("fill", "hold");
+
+                $objWriter->startElement('p:stCondLst');
+
+                $objWriter->startElement('p:cond');
+                $objWriter->writeAttribute("delay", "0");
+                $objWriter->endElement();
+
+                $objWriter->endElement();
+
+                $objWriter->startElement("p:childTnLst");
+
+                $shapesInAnimation = $animation->getShapeCollection();
+
+                $firstInAni = true;
+
+                foreach ($shapesInAnimation as $shape) {
+                    $hash = $shape->getHashCode();
+                    $shapeId = $hashToIdMap[$hash];
+
+                    $objWriter->startElement("p:par");
+
+                    $objWriter->startElement("p:cTn");
+                    $objWriter->writeAttribute("id", $idCount);
+                    $idCount += 1;
+                    $objWriter->writeAttribute("presetID", "1");
+                    $objWriter->writeAttribute("presetClass", "entr");
+                    $objWriter->writeAttribute("fill", "hold");
+                    $objWriter->writeAttribute("presetSubtype", "0");
+                    $objWriter->writeAttribute("grpId", "0");
+
+                    $nodeType = $firstInAni ? "clickEffect" : "withEffect";
+
+                    $objWriter->writeAttribute("nodeType", $nodeType);
+
+                    $objWriter->startElement("p:stCondLst");
+
+                    $objWriter->startElement("p:cond");
+                    $objWriter->writeAttribute("delay", "0");
+                    $objWriter->endElement();
+
+                    $objWriter->endElement();
+
+                    $objWriter->startElement("p:childTnLst");
+
+                    $objWriter->startElement("p:set");
+
+                    $objWriter->startElement("p:cBhvr");
+
+                    $objWriter->startElement("p:cTn");
+                    $objWriter->writeAttribute("id", $idCount);
+                    $idCount +=  1;
+                    $objWriter->writeAttribute("dur", "1");
+                    $objWriter->writeAttribute("fill", "hold");
+
+                    $objWriter->startElement("p:stCondLst");
+
+                    $objWriter->startElement("p:cond");
+                    $objWriter->writeAttribute("delay", "0");
+                    $objWriter->endElement();
+
+                    $objWriter->endElement();
+
+
+
+                    $objWriter->endElement();
+
+                    $objWriter->startElement("p:tgtEl");
+
+                    $objWriter->startElement("p:spTgt");
+                    //shape id
+                    $objWriter->writeAttribute("spid", $shapeId);
+                    $objWriter->endElement();
+
+                    $objWriter->endElement();
+
+                    $objWriter->startElement("p:attrNameLst");
+
+                    $objWriter->writeElement("p:attrName", "style.visibility");
+
+                    $objWriter->endElement();
+
+                    $objWriter->endElement();
+
+                    $objWriter->startElement("p:to");
+
+                    $objWriter->startElement("p:strVal");
+                    $objWriter->writeAttribute("val", "visible");
+                    $objWriter->endElement();
+
+                    $objWriter->endElement();
+
+                    $objWriter->endElement();
+
+                    $objWriter->endElement(); //end child tn lst
+
+                    $objWriter->endElement(); //end ctn
+
+                    $objWriter->endElement();
+
+                    $firstInAni = false;
+                }
+
+
+                $objWriter->endElement(); //end child lst
+
+                $objWriter->endElement(); //end ctn
+
+                $objWriter->endElement(); //end par
+
+
+                $objWriter->endElement(); //end childtnlist
+
+                $objWriter->endElement(); //end ctn
+
+                $objWriter->endElement(); //end par
+
+            }
+
+
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+           ///prevCondLst
+            $objWriter->startElement("p:prevCondLst");
+
+            $objWriter->startElement('p:cond');
+            $objWriter->writeAttribute('evt', 'onPrev');
+            $objWriter->writeAttribute('delay', '0');
+
+            $objWriter->startElement('p:tgtEl');
+
+            $objWriter->writeElement('p:sldTgt', null);
+
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+            //nextCondLst
+            $objWriter->startElement("p:nextCondLst");
+
+            $objWriter->startElement('p:cond');
+            $objWriter->writeAttribute('evt', 'onNext');
+            $objWriter->writeAttribute('delay', '0');
+
+            $objWriter->startElement('p:tgtEl');
+
+            $objWriter->writeElement('p:sldTgt', null);
+
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+            $objWriter->endElement(); //end p:seq
+
+            $objWriter->endElement(); //end p:childTnLst
+
+            $objWriter->endElement();  //end ctn
+
+            $objWriter->endElement(); //end par
+
+            $objWriter->endElement(); //end tnLst
+
+            $objWriter->startElement('p:bldLst');
+
+            //add in ids of all shapes in this slides animations
+
+            foreach ($animationIds as $id) {
+                $objWriter->startElement('p:bldP');
+                $objWriter->writeAttribute("spid", $id);
+                $objWriter->writeAttribute('grpId', 0);
+                $objWriter->endELement();
+            }
+
+
+            $objWriter->endElement(); // end bldLst
+
+            $objWriter->endElement(); //end timing
+
+            $objWriter->endElement();
+        }
+        
 
         $objWriter->endElement();
 
@@ -1329,7 +1597,7 @@ class Slide extends AbstractPart
         if (is_null($pNote)) {
             throw new \Exception("Invalid \PhpOffice\PhpPresentation\Slide\Note object passed.");
         }
-
+        
         // Create XML writer
         $objWriter = $this->getXMLWriter();
 
@@ -1376,31 +1644,134 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
-        $objWriter->endElement(); // a:off
+        $objWriter->endElement();// a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
-        $objWriter->endElement(); // a:ext
+        $objWriter->endElement();// a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
-        $objWriter->endElement(); // a:chOff
+        $objWriter->endElement();// a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
-        $objWriter->endElement(); // a:chExt
+        $objWriter->endElement();// a:chExt
 
         // ## a:xfrm
         $objWriter->endElement();
 
         // ## p:grpSpPr
         $objWriter->endElement();
+
+        //ADD IN rectangle display section
+
+        //p:sp
+        $objWriter->startElement('p:sp');
+
+        //p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+
+        //p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', '2');
+        $objWriter->writeAttribute('name', 'Slide Image Placeholder 1');
+        $objWriter->endElement();
+
+        //p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+
+        //a:spLocks
+        $objWriter->startElement('a:spLocks');
+        $objWriter->writeAttribute('noGrp', '1');
+        $objWriter->writeAttribute('noRot', '1');
+        $objWriter->writeAttribute('noChangeAspect', '1');
+        $objWriter->endElement();
+
+        //end p:cNvSpPr
+        $objWriter->endElement();
+
+        //p:nvPr
+        $objWriter->startElement('p:nvPr');
+
+        //p:ph
+        $objWriter->startElement('p:ph');
+        $objWriter->writeAttribute('type', 'sldImg');
+        $objWriter->endElement();
+
+        //end p:nvPr
+        $objWriter->endElement();
+
+        //end p:nvSpPr
+        $objWriter->endElement();
+
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+
+        //a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        //a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->endElement();
+
+        //a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(round($pNote->getExtentX()/2)));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(round($pNote->getExtentY()/2)));
+        
+        
+        $objWriter->endElement();
+
+        //a:xfrm
+        $objWriter->endElement();
+
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'rect');
+
+        //a:avLst
+        $objWriter->writeElement('a:avLst', null);
+
+        //end prstGeom
+        $objWriter->endElement();
+
+        //a:noFill
+        $objWriter->writeElement('a:noFill', null);
+
+        //a:ln
+        $objWriter->startElement('a:ln');
+        $objWriter->writeAttribute('w', '12700');
+
+        //a:solidFill
+        $objWriter->startElement('a:solidFill');
+
+        //a:prstClr
+        $objWriter->startElement('a:prstClr');
+        $objWriter->writeAttribute('val', 'black');
+        $objWriter->endElement();
+
+        //end a:solidFill
+        $objWriter->endElement();
+
+        //end a:ln
+        $objWriter->endElement();
+        
+        //end p:spPr
+        $objWriter->endElement();
+        
+        //end p:sp
+        $objWriter->endElement();
+        
+        //end slide preview display
 
         // p:sp
         $objWriter->startElement('p:sp');
@@ -1409,7 +1780,7 @@ class Slide extends AbstractPart
         $objWriter->startElement('p:nvSpPr');
 
         $objWriter->startElement('p:cNvPr');
-        $objWriter->writeAttribute('id', '1');
+        $objWriter->writeAttribute('id', '3');
         $objWriter->writeAttribute('name', 'Notes Placeholder');
         $objWriter->endElement();
 
@@ -1437,8 +1808,43 @@ class Slide extends AbstractPart
 
         // ## p:nvSpPr
         $objWriter->endElement();
+        
+        //START notes print below rectangle section
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+        
+        //a:xfrm
+        $objWriter->startElement('a:xfrm');
+        
+        //a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu(ROUND($pNote->getExtentY()/2)));
+        $objWriter->endElement();
+        
+        //a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', '5486400');
+        $objWriter->writeAttribute('cy', '3600450');
+        $objWriter->endElement();
+        
+        //end a:xfrm
+        $objWriter->endElement();
+        
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'rect');
+        
+        //a:avLst
+        $objWriter->writeElement('a:avLst', null);
+        
+        //end a:prstGeom
+        $objWriter->endElement();
+        
+        //end p:spPr
+        $objWriter->endElement();
 
-        $objWriter->writeElement('p:spPr', null);
+        //$objWriter->writeElement('p:spPr', null);
 
         // p:txBody
         $objWriter->startElement('p:txBody');
