@@ -336,7 +336,7 @@
                                             <a id="method_convertUnit"></a>
                         <div class="element clickable method protected  method_convertUnit" data-toggle="collapse" data-target=".method_convertUnit .collapse">
                             <h2>Convert EMUs to differents units</h2>
-                            <pre>convertUnit( $value, string $fromUnit, string $toUnit) </pre>
+                            <pre>convertUnit(float $value, string $fromUnit, string $toUnit) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -358,7 +358,7 @@
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$value</h4>
-                                                <code></code><p></p>
+                                                <code>float</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$fromUnit</h4>
@@ -376,7 +376,7 @@
                                             <a id="method_getCX"></a>
                         <div class="element clickable method public  method_getCX" data-toggle="collapse" data-target=".method_getCX .collapse">
                             <h2>Get Document Layout cx</h2>
-                            <pre>getCX( $unit = self::UNIT_EMU) : integer</pre>
+                            <pre>getCX(float $unit = self::UNIT_EMU) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -386,19 +386,12 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$unit</h4>
-                                                <code></code><p></p>
+                                                <code>float</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -410,7 +403,7 @@
                                             <a id="method_getCY"></a>
                         <div class="element clickable method public  method_getCY" data-toggle="collapse" data-target=".method_getCY .collapse">
                             <h2>Get Document Layout cy</h2>
-                            <pre>getCY( $unit = self::UNIT_EMU) : integer</pre>
+                            <pre>getCY(float $unit = self::UNIT_EMU) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -420,19 +413,12 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$unit</h4>
-                                                <code></code><p></p>
+                                                <code>float</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -473,7 +459,7 @@
                                             <a id="method_setCX"></a>
                         <div class="element clickable method public  method_setCX" data-toggle="collapse" data-target=".method_setCX .collapse">
                             <h2>Get Document Layout cx</h2>
-                            <pre>setCX( $value,  $unit = self::UNIT_EMU) : integer</pre>
+                            <pre>setCX(float $value, float $unit = self::UNIT_EMU) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -483,23 +469,16 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$value</h4>
-                                                <code></code><p></p>
+                                                <code>float</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$unit</h4>
-                                                <code></code><p></p>
+                                                <code>float</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -511,7 +490,7 @@
                                             <a id="method_setCY"></a>
                         <div class="element clickable method public  method_setCY" data-toggle="collapse" data-target=".method_setCY .collapse">
                             <h2>Get Document Layout cy</h2>
-                            <pre>setCY( $value,  $unit = self::UNIT_EMU) : integer</pre>
+                            <pre>setCY(float $value, float $unit = self::UNIT_EMU) : integer</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -521,23 +500,16 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                             </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$value</h4>
-                                                <code></code><p></p>
+                                                <code>float</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$unit</h4>
-                                                <code></code><p></p>
+                                                <code>float</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -1085,7 +1057,7 @@ centimeter, 914400 EMUs per inch, 12700 EMUs per point.</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 29 Feb 2016 13:24:59 +0000.<br/>
+            generated on Tue, 01 Mar 2016 14:57:03 +0000.<br/>
     </footer>
     </body>
 </html>
