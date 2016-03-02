@@ -9,6 +9,7 @@
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
@@ -244,6 +245,51 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
     }
 
+    public function testTypeLineMarker()
+    {
+        do {
+            $expectedSymbol = array_rand(Marker::$SYMBOL);
+        } while($expectedSymbol == Marker::SYMBOL_NONE);
+        $expectedSize = rand(2, 72);
+        $expectedElementSymbol = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:symbol';
+        $expectedElementSize = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:size';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getMarker()->setSymbol($expectedSymbol)->setSize($expectedSize);
+        $oLine->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oLine);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedSymbol, $oXMLDoc->getElementAttribute($expectedElementSymbol, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedSize, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+        $oSeries->getMarker()->setSize(1);
+        $oLine->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals(2, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+        $oSeries->getMarker()->setSize(73);
+        $oLine->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals(72, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+        $oSeries->getMarker()->setSymbol(Marker::SYMBOL_NONE);
+        $oLine->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertFalse($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+    }
+
     public function testTypeLineSubScript()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -308,6 +354,7 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:tx/c:v';
         $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
     }
+
     public function testTypePie3D()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -413,6 +460,51 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:tx/c:v';
         $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+    }
+
+    public function testTypeScatterMarker()
+    {
+        do {
+            $expectedSymbol = array_rand(Marker::$SYMBOL);
+        } while($expectedSymbol == Marker::SYMBOL_NONE);
+        $expectedSize = rand(2, 72);
+        $expectedElementSymbol = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:symbol';
+        $expectedElementSize = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:size';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oScatter = new Scatter();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getMarker()->setSymbol($expectedSymbol)->setSize($expectedSize);
+        $oScatter->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oScatter);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedSymbol, $oXMLDoc->getElementAttribute($expectedElementSymbol, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedSize, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+        $oSeries->getMarker()->setSize(1);
+        $oScatter->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals(2, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+        $oSeries->getMarker()->setSize(73);
+        $oScatter->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals(72, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+        $oSeries->getMarker()->setSymbol(Marker::SYMBOL_NONE);
+        $oScatter->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertFalse($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 
     public function testTypeScatterSubScript()

@@ -27,7 +27,20 @@ For hiding it, you define its visibility to false.
 	$oShape->getPlotArea()->setType($oLine);
 	// Hide the title
 	$oShape->getTitle()->setVisible(false);
-	
+
+Series
+^^^^^^
+
+You can custom the marker of a serie, for Line & Scatter charts.
+
+.. code-block:: php
+    use \PhpOffice\PhpPresentation\Shape\Chart\Marker;
+
+    $oSeries = new Series('Downloads', $seriesData);
+    $oMarker = $oSeries->getMarker();
+    $oMarker->setSymbol(Marker::SYMBOL_DASH)->setSize(10);
+
+
 Types
 -------
 

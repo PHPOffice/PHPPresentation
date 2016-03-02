@@ -1878,7 +1878,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write series
         $seriesIndex = 0;
-        foreach ($subject->getData() as $series) {
+        foreach ($subject->getSeries() as $series) {
             // c:ser
             $objWriter->startElement('c:ser');
 
@@ -1897,6 +1897,9 @@ class PptCharts extends AbstractDecoratorWriter
             $coords = ($includeSheet ? 'Sheet1!$' . \PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
+
+            // Marker
+            $this->writeSeriesMarker($objWriter, $series->getMarker());
 
             // c:dLbls
             $objWriter->startElement('c:dLbls');
@@ -2058,7 +2061,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write series
         $seriesIndex = 0;
-        foreach ($subject->getData() as $series) {
+        foreach ($subject->getSeries() as $series) {
             // c:ser
             $objWriter->startElement('c:ser');
 
@@ -2078,16 +2081,8 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
-            // c:marker
-            $objWriter->startElement('c:marker');
-
-            // c:marker
-            $objWriter->startElement('c:symbol');
-            $objWriter->writeAttribute('val', 'none'); // Marker style
-            //$objWriter->writeAttribute('size', '7'); // Marker size
-            $objWriter->endElement();
-
-            $objWriter->endElement();
+            // Marker
+            $this->writeSeriesMarker($objWriter, $series->getMarker());
 
             // c:dLbls
             $objWriter->startElement('c:dLbls');
@@ -2249,5 +2244,40 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Return
         return $objWriter->getData();
+    }
+
+    /**
+     * @param XMLWriter $objWriter
+     * @param Chart\Marker $oMarker
+     */
+    protected function writeSeriesMarker(XMLWriter $objWriter, Chart\Marker $oMarker)
+    {
+        if ($oMarker->getSymbol() != Chart\Marker::SYMBOL_NONE) {
+            $markerSize = (int)$oMarker->getSize();
+            if ($markerSize < 2) {
+                $markerSize = 2;
+            }
+            if ($markerSize > 72) {
+                $markerSize = 72;
+            }
+
+            // c:marker
+            $objWriter->startElement('c:marker');
+
+            // c:marker > c:symbol
+            $objWriter->startElement('c:symbol');
+            $objWriter->writeAttribute('val', $oMarker->getSymbol());
+            $objWriter->endElement();
+            /**
+             * c:marker > c:size
+             * Size in points
+             * @link : https://msdn.microsoft.com/en-us/library/hh658135(v=office.12).aspx
+             */
+            $objWriter->startElement('c:size');
+            $objWriter->writeAttribute('val', $markerSize);
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+        }
     }
 }

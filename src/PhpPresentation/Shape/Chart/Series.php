@@ -129,6 +129,11 @@ class Series implements ComparableInterface
     private $hashIndex;
 
     /**
+     * @var Marker
+     */
+    protected $marker;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Series instance
      *
      * @param string $title  Title
@@ -142,6 +147,7 @@ class Series implements ComparableInterface
         $this->font->setSize(9);
         $this->title  = $title;
         $this->values = $values;
+        $this->marker = new Marker();
     }
 
     /**
@@ -446,6 +452,24 @@ class Series implements ComparableInterface
     }
 
     /**
+     * @return Marker
+     */
+    public function getMarker()
+    {
+        return $this->marker;
+    }
+
+    /**
+     * @param Marker $marker
+     * @return Line
+     */
+    public function setMarker(Marker $marker)
+    {
+        $this->marker = $marker;
+        return $this;
+    }
+
+    /**
      * Get hash code
      *
      * @return string Hash code
@@ -480,5 +504,14 @@ class Series implements ComparableInterface
     {
         $this->hashIndex = $value;
         return $this;
+    }
+
+    /**
+     * @return mixed
+     * @link http://php.net/manual/en/language.oop5.cloning.php
+     */
+    function __clone()
+    {
+        $this->marker = clone $this->marker;
     }
 }

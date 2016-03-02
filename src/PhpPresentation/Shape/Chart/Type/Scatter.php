@@ -32,7 +32,7 @@ class Scatter extends AbstractType implements ComparableInterface
     public function getHashCode()
     {
         $hash = '';
-        foreach ($this->getData() as $series) {
+        foreach ($this->getSeries() as $series) {
             $hash .= $series->getHashCode();
         }
         return md5($hash . __CLASS__);

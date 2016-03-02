@@ -617,9 +617,37 @@ class ObjectsChart extends AbstractPart
         if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:pie-offset', $chartType->getExplosion());
         }
-        if ($chartType instanceof Line) {
-            //@todo : Permit edit the symbol of a line
-            $this->xmlContent->writeAttribute('chart:symbol-type', 'automatic');
+        if ($chartType instanceof Line || $chartType instanceof Scatter) {
+            $oMarker = $series->getMarker();
+            if ($oMarker->getSymbol() == Chart\Marker::SYMBOL_NONE) {
+                /**
+                 * @link : http://www.datypic.com/sc/odf/a-chart_symbol-type.html
+                 */
+                $this->xmlContent->writeAttribute('chart:symbol-type', 'none');
+            } else {
+                /**
+                 * @link : http://www.datypic.com/sc/odf/a-chart_symbol-name.html
+                 */
+                $this->xmlContent->writeAttribute('chart:symbol-type', 'named-symbol');
+                switch ($oMarker->getSymbol()) {
+                    case Chart\Marker::SYMBOL_DASH:
+                        $symbolName = 'horizontal-bar';
+                        break;
+                    case Chart\Marker::SYMBOL_DOT:
+                        $symbolName = 'circle';
+                        break;
+                    case Chart\Marker::SYMBOL_TRIANGLE:
+                        $symbolName = 'arrow-up';
+                        break;
+                    default:
+                        $symbolName = $oMarker->getSymbol();
+                        break;
+                }
+                $this->xmlContent->writeAttribute('chart:symbol-name', $symbolName);
+                $symbolSize = number_format(CommonDrawing::pointsToCentimeters($oMarker->getSize()), 2, '.', '');
+                $this->xmlContent->writeAttribute('chart:symbol-width', $symbolSize.'cm');
+                $this->xmlContent->writeAttribute('chart:symbol-height', $symbolSize.'cm');
+            }
         }
         // > style:chart-properties
         $this->xmlContent->endElement();

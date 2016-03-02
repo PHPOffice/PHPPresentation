@@ -111,26 +111,60 @@ abstract class AbstractType implements ComparableInterface
         $this->data[] = $value;
         return $this;
     }
-    
+
     /**
-     * Get Data
+     * Get Series
      *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Series[]
      */
-    public function getData()
+    public function getSeries()
     {
         return $this->data;
     }
-    
+
     /**
-     * Set Data
+     * Set Series
      *
      * @param  array $value Array of \PhpOffice\PhpPresentation\Shape\Chart\Series
      * @return self
      */
-    public function setData($value = array())
+    public function setSeries($value = array())
     {
         $this->data = $value;
         return $this;
     }
+
+    /**
+     * Get Data
+     *
+     * @deprecated getSeries
+     */
+    public function getData()
+    {
+        return $this->getSeries();
+    }
+
+    /**
+     * Set Data
+     *
+     * @deprecated setSeries
+     */
+    public function setData($value = array())
+    {
+        return $this->setSeries($value);
+    }
+
+    /**
+     * @return mixed
+     * @link http://php.net/manual/en/language.oop5.cloning.php
+     */
+    function __clone()
+    {
+        $arrayClone = array();
+        foreach ($this->data as $itemSeries) {
+            $arrayClone[] = clone $itemSeries;
+        }
+        $this->data = $arrayClone;
+    }
+
 }

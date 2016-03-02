@@ -17,7 +17,9 @@
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
@@ -62,7 +64,6 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
     
     public function testTitleVisibility()
     {
-        
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
@@ -296,7 +297,7 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $this->assertEquals('chart:scatter', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
     }
-    
+
     public function testLegend()
     {
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
@@ -322,5 +323,119 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+    }
+
+    public function testTypeLineMarker()
+    {
+        $expectedSymbol1 = Marker::SYMBOL_PLUS;
+        $expectedSymbol2 = Marker::SYMBOL_DASH;
+        $expectedSymbol3 = Marker::SYMBOL_DOT;
+        $expectedSymbol4 = Marker::SYMBOL_TRIANGLE;
+        $expectedSymbol5 = Marker::SYMBOL_NONE;
+
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
+        $expectedSize = rand(1, 100);
+        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '').'cm';
+
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oSeries = new Series('Downloads', array(
+            'A' => 1,
+            'B' => 2,
+            'C' => 4,
+            'D' => 3,
+            'E' => 2,
+        ));
+        $oSeries->getMarker()->setSymbol($expectedSymbol1)->setSize($expectedSize);
+        $oLine->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oLine);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
+        $this->assertEquals($expectedSymbol1, $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+        $this->assertEquals($expectedSizeCm, $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-width', 'Object 1/content.xml'));
+        $this->assertEquals($expectedSizeCm, $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-height', 'Object 1/content.xml'));
+
+        $oSeries->getMarker()->setSymbol($expectedSymbol2);
+        $oLine->setSeries(array($oSeries));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertEquals('horizontal-bar', $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+
+        $oSeries->getMarker()->setSymbol($expectedSymbol3);
+        $oLine->setSeries(array($oSeries));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertEquals('circle', $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+
+        $oSeries->getMarker()->setSymbol($expectedSymbol4);
+        $oLine->setSeries(array($oSeries));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertEquals('arrow-up', $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+
+        $oSeries->getMarker()->setSymbol($expectedSymbol5);
+        $oLine->setSeries(array($oSeries));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+        $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-width', 'Object 1/content.xml'));
+        $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-height', 'Object 1/content.xml'));
+    }
+
+    public function testTypeScatterMarker()
+    {
+        $expectedSymbol1 = Marker::SYMBOL_PLUS;
+        $expectedSymbol2 = Marker::SYMBOL_DASH;
+        $expectedSymbol3 = Marker::SYMBOL_DOT;
+        $expectedSymbol4 = Marker::SYMBOL_TRIANGLE;
+        $expectedSymbol5 = Marker::SYMBOL_NONE;
+
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
+        $expectedSize = rand(1, 100);
+        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '').'cm';
+
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oScatter = new Scatter();
+        $oSeries = new Series('Downloads', array(
+            'A' => 1,
+            'B' => 2,
+            'C' => 4,
+            'D' => 3,
+            'E' => 2,
+        ));
+        $oSeries->getMarker()->setSymbol($expectedSymbol1)->setSize($expectedSize);
+        $oScatter->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oScatter);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
+        $this->assertEquals($expectedSymbol1, $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+        $this->assertEquals($expectedSizeCm, $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-width', 'Object 1/content.xml'));
+        $this->assertEquals($expectedSizeCm, $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-height', 'Object 1/content.xml'));
+
+        $oSeries->getMarker()->setSymbol($expectedSymbol2);
+        $oScatter->setSeries(array($oSeries));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertEquals('horizontal-bar', $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+
+        $oSeries->getMarker()->setSymbol($expectedSymbol3);
+        $oScatter->setSeries(array($oSeries));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertEquals('circle', $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+
+        $oSeries->getMarker()->setSymbol($expectedSymbol4);
+        $oScatter->setSeries(array($oSeries));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertEquals('arrow-up', $oXMLDoc->getElementAttribute($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+
+        $oSeries->getMarker()->setSymbol($expectedSymbol5);
+        $oScatter->setSeries(array($oSeries));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
+        $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-width', 'Object 1/content.xml'));
+        $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-height', 'Object 1/content.xml'));
     }
 }
