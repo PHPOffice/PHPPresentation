@@ -18,6 +18,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpPresentation\Shape\Chart\Gridlines;
 
 class PptCharts extends AbstractDecoratorWriter
 {
@@ -525,219 +526,14 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write X axis?
         if ($chartType->hasAxisX()) {
-            // c:catAx (Axis X)
-            $objWriter->startElement('c:catAx');
-
-            // c:axId
-            $objWriter->startElement('c:axId');
-            $objWriter->writeAttribute('val', '52743552');
-            $objWriter->endElement();
-
-            // c:scaling
-            $objWriter->startElement('c:scaling');
-
-            // c:orientation
-            $objWriter->startElement('c:orientation');
-            $objWriter->writeAttribute('val', 'minMax');
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            // c:axPos
-            $objWriter->startElement('c:axPos');
-            $objWriter->writeAttribute('val', 'b');
-            $objWriter->endElement();
-
-            // c:numFmt
-            $objWriter->startElement('c:numFmt');
-            $objWriter->writeAttribute('formatCode', $subject->getAxisX()->getFormatCode());
-            $objWriter->writeAttribute('sourceLinked', '0');
-            $objWriter->endElement();
-
-            // c:majorTickMark
-            $objWriter->startElement('c:majorTickMark');
-            $objWriter->writeAttribute('val', 'none');
-            $objWriter->endElement();
-
-            // c:tickLblPos
-            $objWriter->startElement('c:tickLblPos');
-            $objWriter->writeAttribute('val', 'nextTo');
-            $objWriter->endElement();
-
-            // c:txPr
-            $objWriter->startElement('c:txPr');
-
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
-
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
-
-            // a:p
-            $objWriter->startElement('a:p');
-
-            // a:pPr
-            $objWriter->startElement('a:pPr');
-
-            // a:defRPr
-            $objWriter->writeElement('a:defRPr', null);
-
-            $objWriter->endElement();
-
-            // a:r
-            $objWriter->startElement('a:r');
-
-            // a:rPr
-            $objWriter->startElement('a:rPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            // a:t
-            $objWriter->writeElement('a:t', $subject->getAxisX()->getTitle());
-
-            $objWriter->endElement();
-
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            // c:crossAx
-            $objWriter->startElement('c:crossAx');
-            $objWriter->writeAttribute('val', '52749440');
-            $objWriter->endElement();
-
-            // c:crosses
-            $objWriter->startElement('c:crosses');
-            $objWriter->writeAttribute('val', 'autoZero');
-            $objWriter->endElement();
-
-            // c:lblAlgn
-            $objWriter->startElement('c:lblAlgn');
-            $objWriter->writeAttribute('val', 'ctr');
-            $objWriter->endElement();
-
-            // c:lblOffset
-            $objWriter->startElement('c:lblOffset');
-            $objWriter->writeAttribute('val', '100');
-            $objWriter->endElement();
-
-            $objWriter->endElement();
+            $this->writeAxis($objWriter, $subject->getAxisX(), Chart\Axis::AXIS_X);
         }
 
         // Write Y axis?
         if ($chartType->hasAxisY()) {
-            // c:valAx (Axis Y)
-            $objWriter->startElement('c:valAx');
-
-            // c:axId
-            $objWriter->startElement('c:axId');
-            $objWriter->writeAttribute('val', '52749440');
-            $objWriter->endElement();
-
-            // c:scaling
-            $objWriter->startElement('c:scaling');
-
-            // c:orientation
-            $objWriter->startElement('c:orientation');
-            $objWriter->writeAttribute('val', 'minMax');
-            $objWriter->endElement();
-
-            // ## c:scaling
-            $objWriter->endElement();
-
-            // c:axPos
-            $objWriter->startElement('c:axPos');
-            $objWriter->writeAttribute('val', 'l');
-            $objWriter->endElement();
-
-            // c:numFmt
-            $objWriter->startElement('c:numFmt');
-            $objWriter->writeAttribute('formatCode', $subject->getAxisY()->getFormatCode());
-            $objWriter->writeAttribute('sourceLinked', '0');
-            $objWriter->endElement();
-
-            // c:majorTickMark
-            $objWriter->startElement('c:majorTickMark');
-            $objWriter->writeAttribute('val', 'none');
-            $objWriter->endElement();
-
-            // c:tickLblPos
-            $objWriter->startElement('c:tickLblPos');
-            $objWriter->writeAttribute('val', 'nextTo');
-            $objWriter->endElement();
-
-            // c:txPr
-            $objWriter->startElement('c:txPr');
-
-            // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
-
-            // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
-
-            // a:p
-            $objWriter->startElement('a:p');
-
-            // a:pPr
-            $objWriter->startElement('a:pPr');
-
-            // a:defRPr
-            $objWriter->writeElement('a:defRPr', null);
-
-            // ## a:pPr
-            $objWriter->endElement();
-
-            // a:r
-            $objWriter->startElement('a:r');
-
-            // a:rPr
-            $objWriter->startElement('a:rPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            // a:t
-            $objWriter->writeElement('a:t', $subject->getAxisY()->getTitle());
-
-            // ## a:r
-            $objWriter->endElement();
-
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            // ## a:p
-            $objWriter->endElement();
-
-            // ## c:txPr
-            $objWriter->endElement();
-
-            // c:crossAx
-            $objWriter->startElement('c:crossAx');
-            $objWriter->writeAttribute('val', '52743552');
-            $objWriter->endElement();
-
-            // c:crosses
-            $objWriter->startElement('c:crosses');
-            $objWriter->writeAttribute('val', 'autoZero');
-            $objWriter->endElement();
-
-            // c:crossBetween
-            $objWriter->startElement('c:crossBetween');
-            $objWriter->writeAttribute('val', 'between');
-            $objWriter->endElement();
-
-            $objWriter->endElement();
+            $this->writeAxis($objWriter, $subject->getAxisY(), Chart\Axis::AXIS_Y);
         }
+
 
         $objWriter->endElement();
     }
@@ -2249,5 +2045,185 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Return
         return $objWriter->getData();
+    }
+
+    /**
+     * @param XMLWriter $objWriter
+     * @param Chart\Axis $oAxis
+     * @param $typeAxis
+     */
+    protected function writeAxis(XMLWriter $objWriter, Chart\Axis $oAxis, $typeAxis)
+    {
+        if ($typeAxis != Chart\Axis::AXIS_X && $typeAxis != Chart\Axis::AXIS_Y) {
+            return;
+        }
+
+        switch ($typeAxis) {
+            case Chart\Axis::AXIS_X:
+                $mainElement = 'c:catAx';
+                $axIdVal = '52743552';
+                $axPosVal = 'b';
+                $crossAxVal = '52749440';
+                break;
+            case Chart\Axis::AXIS_Y:
+                $mainElement = 'c:valAx';
+                $axIdVal = '52749440';
+                $axPosVal = 'l';
+                $crossAxVal = '52743552';
+                break;
+        }
+
+        // $mainElement
+        $objWriter->startElement($mainElement);
+
+        // $mainElement > c:axId
+        $objWriter->startElement('c:axId');
+        $objWriter->writeAttribute('val', $axIdVal);
+        $objWriter->endElement();
+
+        // $mainElement > c:scaling
+        $objWriter->startElement('c:scaling');
+
+        // $mainElement > c:scaling > c:orientation
+        $objWriter->startElement('c:orientation');
+        $objWriter->writeAttribute('val', 'minMax');
+        $objWriter->endElement();
+
+        // $mainElement > ##c:scaling
+        $objWriter->endElement();
+
+        // $mainElement > c:axPos
+        $objWriter->startElement('c:axPos');
+        $objWriter->writeAttribute('val', $axPosVal);
+        $objWriter->endElement();
+
+        $oMajorGridlines = $oAxis->getMajorGridlines();
+        if ($oMajorGridlines instanceof Gridlines) {
+            $objWriter->startElement('c:majorGridlines');
+
+            $this->writeAxisGridlines($objWriter, $oMajorGridlines);
+
+            $objWriter->endElement();
+        }
+
+        $oMinorGridlines = $oAxis->getMinorGridlines();
+        if ($oMinorGridlines instanceof Gridlines) {
+            $objWriter->startElement('c:minorGridlines');
+
+            $this->writeAxisGridlines($objWriter, $oMajorGridlines);
+
+            $objWriter->endElement();
+        }
+
+        // c:numFmt
+        $objWriter->startElement('c:numFmt');
+        $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
+        $objWriter->writeAttribute('sourceLinked', '0');
+        $objWriter->endElement();
+
+        // c:majorTickMark
+        $objWriter->startElement('c:majorTickMark');
+        $objWriter->writeAttribute('val', 'none');
+        $objWriter->endElement();
+
+        // c:tickLblPos
+        $objWriter->startElement('c:tickLblPos');
+        $objWriter->writeAttribute('val', 'nextTo');
+        $objWriter->endElement();
+
+        // c:txPr
+        $objWriter->startElement('c:txPr');
+
+        // a:bodyPr
+        $objWriter->writeElement('a:bodyPr', null);
+
+        // a:lstStyle
+        $objWriter->writeElement('a:lstStyle', null);
+
+        // a:p
+        $objWriter->startElement('a:p');
+
+        // a:pPr
+        $objWriter->startElement('a:pPr');
+
+        // a:defRPr
+        $objWriter->writeElement('a:defRPr', null);
+
+        // ## a:pPr
+        $objWriter->endElement();
+
+        // a:r
+        $objWriter->startElement('a:r');
+
+        // a:rPr
+        $objWriter->startElement('a:rPr');
+        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('dirty', '0');
+        $objWriter->endElement();
+
+        // a:t
+        $objWriter->writeElement('a:t', $oAxis->getTitle());
+
+        // ## a:r
+        $objWriter->endElement();
+
+        // a:endParaRPr
+        $objWriter->startElement('a:endParaRPr');
+        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('dirty', '0');
+        $objWriter->endElement();
+
+        // ## a:p
+        $objWriter->endElement();
+
+        // ## c:txPr
+        $objWriter->endElement();
+
+        // c:crossAx
+        $objWriter->startElement('c:crossAx');
+        $objWriter->writeAttribute('val', $crossAxVal);
+        $objWriter->endElement();
+
+        // c:crosses
+        $objWriter->startElement('c:crosses');
+        $objWriter->writeAttribute('val', 'autoZero');
+        $objWriter->endElement();
+
+        if ($typeAxis == Chart\Axis::AXIS_X) {
+            // c:lblAlgn
+            $objWriter->startElement('c:lblAlgn');
+            $objWriter->writeAttribute('val', 'ctr');
+            $objWriter->endElement();
+
+            // c:lblOffset
+            $objWriter->startElement('c:lblOffset');
+            $objWriter->writeAttribute('val', '100');
+            $objWriter->endElement();
+        }
+
+        if ($typeAxis == Chart\Axis::AXIS_Y) {
+            // c:crossBetween
+            $objWriter->startElement('c:crossBetween');
+            $objWriter->writeAttribute('val', 'between');
+            $objWriter->endElement();
+        }
+
+        $objWriter->endElement();
+    }
+
+    /**
+     * @param XMLWriter $objWriter
+     * @param Gridlines $oGridlines
+     */
+    protected function writeAxisGridlines(XMLWriter $objWriter, Gridlines $oGridlines)
+    {
+        // c:spPr
+        $objWriter->startElement('c:spPr');
+
+        // Outline
+        $this->writeOutline($objWriter, $oGridlines->getOutline());
+
+        // ##c:spPr
+        $objWriter->endElement();
     }
 }
