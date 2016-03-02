@@ -580,7 +580,39 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('a:pPr');
 
             // a:defRPr
-            $objWriter->writeElement('a:defRPr', null);
+            $objWriter->startElement('a:defRPr');
+
+            $objWriter->writeAttribute('b', ($subject->getAxisX()->getFont()->isBold() ? 'true' : 'false'));
+            $objWriter->writeAttribute('i', ($subject->getAxisX()->getFont()->isItalic() ? 'true' : 'false'));
+            $objWriter->writeAttribute('strike', ($subject->getAxisX()->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('sz', ($subject->getAxisX()->getFont()->getSize() * 100));
+            $objWriter->writeAttribute('u', $subject->getAxisX()->getFont()->getUnderline());
+
+            if ($subject->getAxisX()->getFont()->isSuperScript() || $subject->getAxisX()->getFont()->isSubScript()) {
+                if ($subject->getAxisX()->getFont()->isSuperScript()) {
+                    $objWriter->writeAttribute('baseline', '30000');
+                } elseif ($subject->getAxisX()->getFont()->isSubScript()) {
+                    $objWriter->writeAttribute('baseline', '-25000');
+                }
+            }
+
+            // Font - a:solidFill
+            $objWriter->startElement('a:solidFill');
+
+            // a:srgbClr
+            $objWriter->startElement('a:srgbClr');
+            $objWriter->writeAttribute('val', $subject->getAxisX()->getFont()->getColor()->getRGB());
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+            // Font - a:latin
+            $objWriter->startElement('a:latin');
+            $objWriter->writeAttribute('typeface', $subject->getAxisX()->getFont()->getName());
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
 
             $objWriter->endElement();
 
@@ -689,7 +721,38 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('a:pPr');
 
             // a:defRPr
-            $objWriter->writeElement('a:defRPr', null);
+            $objWriter->startElement('a:defRPr');
+
+            $objWriter->writeAttribute('b', ($subject->getAxisY()->getFont()->isBold() ? 'true' : 'false'));
+            $objWriter->writeAttribute('i', ($subject->getAxisY()->getFont()->isItalic() ? 'true' : 'false'));
+            $objWriter->writeAttribute('strike', ($subject->getAxisY()->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('sz', ($subject->getAxisY()->getFont()->getSize() * 100));
+            $objWriter->writeAttribute('u', $subject->getAxisY()->getFont()->getUnderline());
+
+            if ($subject->getAxisY()->getFont()->isSuperScript() || $subject->getAxisY()->getFont()->isSubScript()) {
+                if ($subject->getAxisY()->getFont()->isSuperScript()) {
+                    $objWriter->writeAttribute('baseline', '30000');
+                } elseif ($subject->getAxisY()->getFont()->isSubScript()) {
+                    $objWriter->writeAttribute('baseline', '-25000');
+                }
+            }
+
+            // Font - a:solidFill
+            $objWriter->startElement('a:solidFill');
+
+            // a:srgbClr
+            $objWriter->startElement('a:srgbClr');
+            $objWriter->writeAttribute('val', $subject->getAxisY()->getFont()->getColor()->getRGB());
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+            // Font - a:latin
+            $objWriter->startElement('a:latin');
+            $objWriter->writeAttribute('typeface', $subject->getAxisY()->getFont()->getName());
+            $objWriter->endElement();
+
+            $objWriter->endElement();
 
             // ## a:pPr
             $objWriter->endElement();

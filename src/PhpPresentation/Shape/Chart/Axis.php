@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Style\Font;
 
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Axis
@@ -39,6 +40,13 @@ class Axis implements ComparableInterface
     private $formatCode = '';
 
     /**
+     * Font
+     *
+     * @var \PhpOffice\PhpPresentation\Style\Font
+     */
+    private $font;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
      *
      * @param string $title Title
@@ -46,6 +54,7 @@ class Axis implements ComparableInterface
     public function __construct($title = 'Axis Title')
     {
         $this->title = $title;
+        $this->font  = new Font();
     }
 
     /**
@@ -68,6 +77,29 @@ class Axis implements ComparableInterface
     {
         $this->title = $value;
 
+        return $this;
+    }
+
+    /**
+     * Get font
+     *
+     * @return \PhpOffice\PhpPresentation\Style\Font
+     */
+    public function getFont()
+    {
+        return $this->font;
+    }
+
+    /**
+     * Set font
+     *
+     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
+     * @throws \Exception
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     */
+    public function setFont(Font $pFont = null)
+    {
+        $this->font = $pFont;
         return $this;
     }
 
