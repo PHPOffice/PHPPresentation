@@ -536,6 +536,7 @@ class Series implements ComparableInterface
      */
     function __clone()
     {
+        $this->font = clone $this->font;
         $this->marker = clone $this->marker;
         if (is_object($this->outline)) {
             $this->outline = clone $this->outline;

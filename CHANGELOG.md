@@ -9,6 +9,7 @@
 - PhpOffice\PhpPresentation\Writer\PowerPoint2007 : Move to Design Pattern Decorator - @Progi1984
 - PhpOffice\PhpPresentation\Shape\Type\AbstracType\getData has been deprecated for PhpOffice\PhpPresentation\Shape\Type\AbstracType\getSeries - @Progi1984 GH-169
 - PhpOffice\PhpPresentation\Shape\Type\AbstracType\setData has been deprecated for PhpOffice\PhpPresentation\Shape\Type\AbstracType\setSeries - @Progi1984 GH-169
+- Added documentation for chart series (font, outline, marker) - @Progi1984 GH-169
 
 ### Features
 - ODPresentation Writer : Thumbnail of the presentation - @Progi1984 GH-125

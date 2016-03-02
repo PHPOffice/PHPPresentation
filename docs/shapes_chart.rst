@@ -31,6 +31,13 @@ For hiding it, you define its visibility to false.
 Series
 ^^^^^^
 
+You can custom the font of a serie.
+
+.. code-block:: php
+    $oSeries = new Series('Downloads', $seriesData);
+    // Define the size
+    $oSeries->getFont()->setSize(25);
+
 You can custom the marker of a serie, for Line & Scatter charts.
 
 .. code-block:: php

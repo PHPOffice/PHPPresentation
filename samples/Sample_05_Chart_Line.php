@@ -109,7 +109,7 @@ $currentSlide = createTemplatedSlide($objPHPPresentation);
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
 $lineChart2 = clone $lineChart;
 $series2 = $lineChart2->getSeries();
-$series2[0]->getFill()->setFillType(Fill::FILL_SOLID);
+$series2[0]->getFont()->setSize(25);
 $series2[0]->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_TRIANGLE);
 $series2[0]->getMarker()->setSize(10);
 $lineChart2->setSeries($series2);
