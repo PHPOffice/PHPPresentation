@@ -40,6 +40,20 @@ You can custom the marker of a serie, for Line & Scatter charts.
     $oMarker = $oSeries->getMarker();
     $oMarker->setSymbol(Marker::SYMBOL_DASH)->setSize(10);
 
+You can custom the line of a serie, for Line & Scatter charts.
+
+.. code-block:: php
+    use \PhpOffice\PhpPresentation\Style\Outline;
+
+    $oOutline = new Outline();
+    // Define the color
+    $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
+    $oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
+    // Define the width (in points)
+    $oOutline->setWidth(2);
+
+    $oSeries = new Series('Downloads', $seriesData);
+    $oSeries->setOutline($oOutline);
 
 Types
 -------

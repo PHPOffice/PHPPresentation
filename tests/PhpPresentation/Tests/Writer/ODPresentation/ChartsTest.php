@@ -28,6 +28,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 
@@ -382,6 +383,56 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-height', 'Object 1/content.xml'));
     }
 
+    public function testTypeLineSeriesOutline()
+    {
+        $expectedWidth = rand(1, 100);
+        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
+
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
+
+        $oColor = new Color(Color::COLOR_YELLOW);
+        $oOutline = new Outline();
+        // Define the color
+        $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
+        $oOutline->getFill()->setStartColor($oColor);
+        // Define the width (in points)
+        $oOutline->setWidth($expectedWidth);
+
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oLine = new Line();
+        $oSeries = new Series('Downloads', array(
+            'A' => 1,
+            'B' => 2,
+            'C' => 4,
+            'D' => 3,
+            'E' => 2,
+        ));
+        $oLine->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oLine);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
+        $this->assertEquals('0.079cm', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width','Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
+        $this->assertEquals('#4a7ebb', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color','Object 1/content.xml'));
+
+        $oSeries->setOutline($oOutline);
+        $oLine->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
+        $this->assertEquals($expectedWidthCm, $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width','Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
+        $this->assertEquals('#'.$oColor->getRGB(), $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color','Object 1/content.xml'));
+    }
+
     public function testTypeScatterMarker()
     {
         $expectedSymbol1 = Marker::SYMBOL_PLUS;
@@ -437,5 +488,55 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-name', 'Object 1/content.xml'));
         $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-width', 'Object 1/content.xml'));
         $this->assertFalse($oXMLDoc->attributeElementExists($expectedElement, 'chart:symbol-height', 'Object 1/content.xml'));
+    }
+
+    public function testTypeScatterSeriesOutline()
+    {
+        $expectedWidth = rand(1, 100);
+        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
+
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
+
+        $oColor = new Color(Color::COLOR_YELLOW);
+        $oOutline = new Outline();
+        // Define the color
+        $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
+        $oOutline->getFill()->setStartColor($oColor);
+        // Define the width (in points)
+        $oOutline->setWidth($expectedWidth);
+
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oScatter = new Scatter();
+        $oSeries = new Series('Downloads', array(
+            'A' => 1,
+            'B' => 2,
+            'C' => 4,
+            'D' => 3,
+            'E' => 2,
+        ));
+        $oScatter->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oScatter);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
+        $this->assertEquals('0.079cm', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width','Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
+        $this->assertEquals('#4a7ebb', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color','Object 1/content.xml'));
+
+        $oSeries->setOutline($oOutline);
+        $oScatter->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
+        $this->assertEquals($expectedWidthCm, $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width','Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
+        $this->assertEquals('#'.$oColor->getRGB(), $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color','Object 1/content.xml'));
     }
 }

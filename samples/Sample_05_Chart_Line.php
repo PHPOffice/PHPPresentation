@@ -77,9 +77,15 @@ echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
 $currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
+$oOutline = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutline->getFill()->setFillType(Fill::FILL_SOLID);
+$oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
+$oOutline->setWidth(2);
+
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
 $lineChart1 = clone $lineChart;
 $series1 = $lineChart1->getSeries();
+$series1[0]->setOutline($oOutline);
 $series1[0]->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_DIAMOND);
 $series1[0]->getMarker()->setSize(7);
 $lineChart1->setSeries($series1);

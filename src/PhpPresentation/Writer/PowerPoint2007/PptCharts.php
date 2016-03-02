@@ -238,7 +238,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write series
         $seriesIndex = 0;
-        foreach ($chart->getPlotArea()->getType()->getData() as $series) {
+        foreach ($chart->getPlotArea()->getType()->getSeries() as $series) {
             // Title
             $sheet->setCellValueByColumnAndRow(1 + $seriesIndex, 1, $series->getTitle());
 
@@ -907,7 +907,7 @@ class PptCharts extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Type Line
+     * Write Type Area
      *
      * @param  \PhpOffice\Common\XMLWriter      $objWriter    XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Area $subject
@@ -926,7 +926,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write series
         $seriesIndex = 0;
-        foreach ($subject->getData() as $series) {
+        foreach ($subject->getSeries() as $series) {
             // c:ser
             $objWriter->startElement('c:ser');
 
@@ -1081,9 +1081,8 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-
     /**
-     * Write Type Bar3D
+     * Write Type Bar
      *
      * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar $subject
@@ -1107,7 +1106,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write series
         $seriesIndex = 0;
-        foreach ($subject->getData() as $series) {
+        foreach ($subject->getSeries() as $series) {
             // c:ser
             $objWriter->startElement('c:ser');
 
@@ -1332,7 +1331,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write series
         $seriesIndex = 0;
-        foreach ($subject->getData() as $series) {
+        foreach ($subject->getSeries() as $series) {
             // c:ser
             $objWriter->startElement('c:ser');
 
@@ -1535,7 +1534,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write series
         $seriesIndex = 0;
-        foreach ($subject->getData() as $series) {
+        foreach ($subject->getSeries() as $series) {
             // c:ser
             $objWriter->startElement('c:ser');
 
@@ -1704,7 +1703,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write series
         $seriesIndex = 0;
-        foreach ($subject->getData() as $series) {
+        foreach ($subject->getSeries() as $series) {
             // c:ser
             $objWriter->startElement('c:ser');
 
@@ -1980,16 +1979,17 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
+            // > c:dLbls
             $objWriter->endElement();
 
-            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-                // Write fill
-                $this->writeFill($objWriter, $series->getFill());
-                // ## c:spPr
-                $objWriter->endElement();
-            }
+            // c:spPr
+            $objWriter->startElement('c:spPr');
+            // Write fill
+            $this->writeFill($objWriter, $series->getFill());
+            // Write outline
+            $this->writeOutline($objWriter, $series->getOutline());
+            // ## c:spPr
+            $objWriter->endElement();
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());
@@ -2168,14 +2168,14 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->endElement();
 
-            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-                // Write fill
-                $this->writeFill($objWriter, $series->getFill());
-                // ## c:spPr
-                $objWriter->endElement();
-            }
+            // c:spPr
+            $objWriter->startElement('c:spPr');
+            // Write fill
+            $this->writeFill($objWriter, $series->getFill());
+            // Write outline
+            $this->writeOutline($objWriter, $series->getOutline());
+            // ## c:spPr
+            $objWriter->endElement();
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());

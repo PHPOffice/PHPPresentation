@@ -15,6 +15,8 @@
 - PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125
 - ODPresentation Writer : Marker of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
 - PowerPoint2007 Writer : Marker of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
+- ODPresentation Writer : Outline of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
+- PowerPoint2007 Writer : Outline of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
 
 ## 0.6.0 - 2016-01-24
 

@@ -8,6 +8,7 @@
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
@@ -20,6 +21,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 
 class PptChartsTest extends \PHPUnit_Framework_TestCase
@@ -290,6 +292,41 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 
+    public function testTypeLineSeriesOutline()
+    {
+        $expectedWidth = rand(1, 100);
+        $expectedWidthEmu = Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidth));
+        $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:spPr/a:ln';
+
+        $oOutline = new Outline();
+        // Define the color
+        $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
+        $oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
+        // Define the width (in points)
+        $oOutline->setWidth($expectedWidth);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oLine = new Line();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oLine->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oLine);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertFalse($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+        $oSeries->setOutline($oOutline);
+        $oLine->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedWidthEmu, $oXMLDoc->getElementAttribute($expectedElement, 'w','ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement.'/a:solidFill', 'ppt/charts/'.$oShape->getIndexedFilename()));
+    }
+
     public function testTypeLineSubScript()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -505,6 +542,41 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
         $this->assertFalse($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+    }
+
+    public function testTypeScatterSeriesOutline()
+    {
+        $expectedWidth = rand(1, 100);
+        $expectedWidthEmu = Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidth));
+        $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:spPr/a:ln';
+
+        $oOutline = new Outline();
+        // Define the color
+        $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
+        $oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
+        // Define the width (in points)
+        $oOutline->setWidth($expectedWidth);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oScatter = new Scatter();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oScatter->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oScatter);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertFalse($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+        $oSeries->setOutline($oOutline);
+        $oScatter->setSeries(array($oSeries));
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedWidthEmu, $oXMLDoc->getElementAttribute($expectedElement, 'w','ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedElement.'/a:solidFill', 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 
     public function testTypeScatterSubScript()

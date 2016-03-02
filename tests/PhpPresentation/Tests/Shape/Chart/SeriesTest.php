@@ -21,6 +21,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 
 /**
  * Test class for Series element
@@ -41,6 +42,7 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', $object->getValues());
         $this->assertEmpty($object->getValues());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->getMarker());
+        $this->assertNull($object->getOutline());
     }
     
     public function testDataLabelNumFormat()
@@ -123,6 +125,14 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setMarker(new Marker()));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->getMarker());
+    }
+
+    public function testOutline()
+    {
+        $object = new Series();
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setOutline(new Outline()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->getOutline());
     }
 
     public function testShowCategoryName()

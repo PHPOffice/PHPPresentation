@@ -20,6 +20,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Series
@@ -38,11 +39,11 @@ class Series implements ComparableInterface
     const LABEL_TOP = 't';
 
     /**
-     * Title
+     * DataPointFills (key/value)
      *
-     * @var string
+     * @var array
      */
-    private $title = 'Series Title';
+    private $dataPointFills = array();
 
     /**
      * Data Label Number Format
@@ -59,55 +60,6 @@ class Series implements ComparableInterface
     private $fill;
 
     /**
-     * Values (key/value)
-     *
-     * @var array
-     */
-    private $values = array();
-
-    /**
-     * DataPointFills (key/value)
-     *
-     * @var array
-     */
-    private $dataPointFills = array();
-
-    /**
-     * ShowSeriesName
-     *
-     * @var boolean
-     */
-    private $showSeriesName = false;
-
-    /**
-     * ShowCategoryName
-     *
-     * @var boolean
-     */
-    private $showCategoryName = false;
-
-    /**
-     * ShowValue
-     *
-     * @var boolean
-     */
-    private $showValue = true;
-
-    /**
-     * ShowPercentage
-     *
-     * @var boolean
-     */
-    private $showPercentage = false;
-
-    /**
-     * ShowLeaderLines
-     *
-     * @var boolean
-     */
-    private $showLeaderLines = true;
-
-    /**
      * Font
      *
      * @var \PhpOffice\PhpPresentation\Style\Font
@@ -122,16 +74,70 @@ class Series implements ComparableInterface
     private $labelPosition = 'ctr';
 
     /**
+     * @var Marker
+     */
+    protected $marker;
+
+    /**
+     * @var Outline
+     */
+    protected $outline;
+
+    /**
+     * ShowCategoryName
+     *
+     * @var boolean
+     */
+    private $showCategoryName = false;
+
+    /**
+     * ShowLeaderLines
+     *
+     * @var boolean
+     */
+    private $showLeaderLines = true;
+
+    /**
+     * ShowPercentage
+     *
+     * @var boolean
+     */
+    private $showPercentage = false;
+
+    /**
+     * ShowSeriesName
+     *
+     * @var boolean
+     */
+    private $showSeriesName = false;
+
+    /**
+     * ShowValue
+     *
+     * @var boolean
+     */
+    private $showValue = true;
+
+    /**
+     * Title
+     *
+     * @var string
+     */
+    private $title = 'Series Title';
+
+    /**
+     * Values (key/value)
+     *
+     * @var array
+     */
+    private $values = array();
+
+    /**
      * Hash index
      *
      * @var string
      */
     private $hashIndex;
-
-    /**
-     * @var Marker
-     */
-    protected $marker;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Series instance
@@ -470,6 +476,24 @@ class Series implements ComparableInterface
     }
 
     /**
+     * @return Outline
+     */
+    public function getOutline()
+    {
+        return $this->outline;
+    }
+
+    /**
+     * @param Outline $outline
+     * @return Series
+     */
+    public function setOutline(Outline $outline)
+    {
+        $this->outline = $outline;
+        return $this;
+    }
+
+    /**
      * Get hash code
      *
      * @return string Hash code
@@ -513,5 +537,8 @@ class Series implements ComparableInterface
     function __clone()
     {
         $this->marker = clone $this->marker;
+        if (is_object($this->outline)) {
+            $this->outline = clone $this->outline;
+        }
     }
 }
