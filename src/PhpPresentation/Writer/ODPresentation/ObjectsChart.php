@@ -299,6 +299,14 @@ class ObjectsChart extends AbstractPart
         }
         // > style:chart-properties
         $this->xmlContent->endElement();
+        // style:text-properties
+        $this->xmlContent->startElement('style:text-properties');
+        $this->xmlContent->writeAttribute('fo:color', '#'.$chart->getPlotArea()->getAxisX()->getFont()->getColor()->getRGB());
+        $this->xmlContent->writeAttribute('fo:font-family', $chart->getPlotArea()->getAxisX()->getFont()->getName());
+        $this->xmlContent->writeAttribute('fo:font-size', $chart->getPlotArea()->getAxisX()->getFont()->getSize().'pt');
+        $this->xmlContent->writeAttribute('fo:font-style', $chart->getPlotArea()->getAxisX()->getFont()->isItalic() ? 'italic' : 'normal');
+        // > style:text-properties
+        $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
         $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
@@ -322,6 +330,14 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
         // > style:chart-properties
+        $this->xmlContent->endElement();
+        // style:text-properties
+        $this->xmlContent->startElement('style:text-properties');
+        $this->xmlContent->writeAttribute('fo:color', '#'.$chart->getPlotArea()->getAxisY()->getFont()->getColor()->getRGB());
+        $this->xmlContent->writeAttribute('fo:font-family', $chart->getPlotArea()->getAxisY()->getFont()->getName());
+        $this->xmlContent->writeAttribute('fo:font-size', $chart->getPlotArea()->getAxisY()->getFont()->getSize().'pt');
+        $this->xmlContent->writeAttribute('fo:font-style', $chart->getPlotArea()->getAxisY()->getFont()->isItalic() ? 'italic' : 'normal');
+        // > style:text-properties
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
