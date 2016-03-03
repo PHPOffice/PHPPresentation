@@ -18,6 +18,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 
@@ -87,6 +88,42 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
         $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertEquals('1', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+    }
+
+    public function testAxisFont()
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oBar = new Bar();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->getFont()->getColor()->setRGB('AABBCC');
+        $oShape->getPlotArea()->getAxisX()->getFont()->setItalic(true);
+        $oShape->getPlotArea()->getAxisX()->getFont()->setStrikethrough(true);
+        $oShape->getPlotArea()->getAxisY()->getFont()->getColor()->setRGB('00FF00');
+        $oShape->getPlotArea()->getAxisY()->getFont()->setSize(16);
+        $oShape->getPlotArea()->getAxisY()->getFont()->setUnderline(Font::UNDERLINE_DASH);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:txPr/a:p/a:pPr/a:defRPr/a:solidFill/a:srgbClr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals('AABBCC', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));  //Color XAxis
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:txPr/a:p/a:pPr/a:defRPr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals('true', $oXMLDoc->getElementAttribute($element, 'i', 'ppt/charts/'.$oShape->getIndexedFilename())); //Italic XAxis
+        $this->assertEquals(10*100, $oXMLDoc->getElementAttribute($element, 'sz', 'ppt/charts/'.$oShape->getIndexedFilename())); //Size XAxis
+        $this->assertEquals('sngStrike', $oXMLDoc->getElementAttribute($element, 'strike', 'ppt/charts/'.$oShape->getIndexedFilename())); //StrikeThrough XAxis
+        $this->assertEquals(Font::UNDERLINE_NONE, $oXMLDoc->getElementAttribute($element, 'u', 'ppt/charts/'.$oShape->getIndexedFilename())); //Underline XAxis
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:txPr/a:p/a:pPr/a:defRPr/a:solidFill/a:srgbClr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals('00FF00', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename())); //Color YAxis
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:txPr/a:p/a:pPr/a:defRPr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals('false', $oXMLDoc->getElementAttribute($element, 'i', 'ppt/charts/'.$oShape->getIndexedFilename())); //Italic YAxis
+        $this->assertEquals(16*100, $oXMLDoc->getElementAttribute($element, 'sz', 'ppt/charts/'.$oShape->getIndexedFilename())); //Size YAxis
+        $this->assertEquals('noStrike', $oXMLDoc->getElementAttribute($element, 'strike', 'ppt/charts/'.$oShape->getIndexedFilename())); //StrikeThrough YAxis
+        $this->assertEquals(Font::UNDERLINE_DASH, $oXMLDoc->getElementAttribute($element, 'u', 'ppt/charts/'.$oShape->getIndexedFilename())); //Underline YAxis
     }
 
     public function testTypeArea()

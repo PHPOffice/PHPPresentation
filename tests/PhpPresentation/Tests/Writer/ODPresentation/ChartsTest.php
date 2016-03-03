@@ -20,12 +20,14 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 
@@ -82,6 +84,45 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
         $this->assertFalse($oXMLDoc->elementExists($elementTitle, 'Object 1/content.xml'));
         $this->assertFalse($oXMLDoc->elementExists($elementStyle, 'Object 1/content.xml'));
+    }
+
+    public function testAxisFont()
+    {
+
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->getFont()->getColor()->setRGB('AABBCC');
+        $oShape->getPlotArea()->getAxisX()->getFont()->setItalic(true);
+
+        $oShape->getPlotArea()->getAxisY()->getFont()->getColor()->setRGB('00FF00');
+        $oShape->getPlotArea()->getAxisY()->getFont()->setSize(16);
+        $oShape->getPlotArea()->getAxisY()->getFont()->setName('Arial');
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:bar', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:text-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('#AABBCC', $pres->getElementAttribute($element, 'fo:color', 'Object 1/content.xml'));//Color XAxis
+        $this->assertEquals('italic', $pres->getElementAttribute($element, 'fo:font-style', 'Object 1/content.xml'));//Italic XAxis
+        $this->assertEquals('10pt', $pres->getElementAttribute($element, 'fo:font-size', 'Object 1/content.xml'));//Size XAxis
+        $this->assertEquals('Calibri', $pres->getElementAttribute($element, 'fo:font-family', 'Object 1/content.xml'));//Size XAxis
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:text-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('#00FF00', $pres->getElementAttribute($element, 'fo:color', 'Object 1/content.xml'));//Color YAxis
+        $this->assertEquals('normal', $pres->getElementAttribute($element, 'fo:font-style', 'Object 1/content.xml'));//Italic YAxis
+        $this->assertEquals('16pt', $pres->getElementAttribute($element, 'fo:font-size', 'Object 1/content.xml'));//Size YAxis
+        $this->assertEquals('Arial', $pres->getElementAttribute($element, 'fo:font-family', 'Object 1/content.xml'));//Size YAxis
+
     }
 
     public function testChartBar3D()

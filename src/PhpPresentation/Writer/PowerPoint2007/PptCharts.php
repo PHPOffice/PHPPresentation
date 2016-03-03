@@ -6,6 +6,7 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\PlotArea;
 use PhpOffice\PhpPresentation\Shape\Chart\Title;
@@ -18,7 +19,6 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
-use PhpPresentation\Shape\Chart\Gridlines;
 
 class PptCharts extends AbstractDecoratorWriter
 {
@@ -2147,7 +2147,38 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('a:pPr');
 
         // a:defRPr
-        $objWriter->writeElement('a:defRPr', null);
+        $objWriter->startElement('a:defRPr');
+
+        $objWriter->writeAttribute('b', ($oAxis->getFont()->isBold() ? 'true' : 'false'));
+        $objWriter->writeAttribute('i', ($oAxis->getFont()->isItalic() ? 'true' : 'false'));
+        $objWriter->writeAttribute('strike', ($oAxis->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('sz', ($oAxis->getFont()->getSize() * 100));
+        $objWriter->writeAttribute('u', $oAxis->getFont()->getUnderline());
+
+        if ($oAxis->getFont()->isSuperScript() || $oAxis->getFont()->isSubScript()) {
+            if ($oAxis->getFont()->isSuperScript()) {
+                $objWriter->writeAttribute('baseline', '30000');
+            } elseif ($oAxis->getFont()->isSubScript()) {
+                $objWriter->writeAttribute('baseline', '-25000');
+            }
+        }
+
+        // Font - a:solidFill
+        $objWriter->startElement('a:solidFill');
+
+        // a:srgbClr
+        $objWriter->startElement('a:srgbClr');
+        $objWriter->writeAttribute('val', $oAxis->getFont()->getColor()->getRGB());
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+
+        // Font - a:latin
+        $objWriter->startElement('a:latin');
+        $objWriter->writeAttribute('typeface', $oAxis->getFont()->getName());
+        $objWriter->endElement();
+
+        $objWriter->endElement();
 
         // ## a:pPr
         $objWriter->endElement();
