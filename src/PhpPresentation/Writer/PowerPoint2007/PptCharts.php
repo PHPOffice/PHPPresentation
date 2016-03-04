@@ -22,7 +22,8 @@ use PhpOffice\PhpPresentation\Style\Fill;
 class PptCharts extends AbstractDecoratorWriter
 {
     /**
-     * @return \ZipArchive
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @throws \Exception
      */
     public function render()
     {

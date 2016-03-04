@@ -7,6 +7,10 @@ use PhpOffice\Common\XMLWriter;
 
 class PptTheme extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @throws \Exception
+     */
     public function render()
     {
         $oLayoutPack = new PackDefault();
