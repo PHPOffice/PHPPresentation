@@ -5,6 +5,9 @@ use PhpOffice\Common\XMLWriter;
 
 class PptPresProps extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     */
     public function render()
     {
         $presentationPpts = $this->oPresentation->getPresentationProperties();

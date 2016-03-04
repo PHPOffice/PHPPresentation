@@ -7,6 +7,9 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 
 class PptSlideMasters extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     */
     public function render()
     {
         $oLayoutPack = new PackDefault();

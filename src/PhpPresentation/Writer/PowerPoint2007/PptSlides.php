@@ -30,6 +30,7 @@ class PptSlides extends AbstractDecoratorWriter
 {
     /**
      * Add slides (drawings, ...) and slide relationships (drawings, ...)
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
      */
     public function render()
     {

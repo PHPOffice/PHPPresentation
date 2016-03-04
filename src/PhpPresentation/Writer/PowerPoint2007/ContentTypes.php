@@ -29,6 +29,10 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
  */
 class ContentTypes extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @throws \Exception
+     */
     public function render()
     {
         $oLayoutPack = new PowerPoint2007\LayoutPack\PackDefault();

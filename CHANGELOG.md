@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.7.0 -WIP
+## 0.7.0 - WIP
 
 ### Bugfix
 - Fixed the image project - @mvargasmoran GH-177
@@ -13,6 +13,7 @@
 - PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125
 - ODPresentation Writer : Add Font Support For Chart Axis - @jrking4 GH-186
 - PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
+- PowerPoint2007 / Serialized Writer : Support for Zip Adapter - @Progi1984 GH-176
 
 ## 0.6.0 - 2016-01-24
 

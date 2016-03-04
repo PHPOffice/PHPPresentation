@@ -5,6 +5,9 @@ use PhpOffice\Common\XMLWriter;
 
 class PptViewProps extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     */
     public function render()
     {
         // Create XML writer
