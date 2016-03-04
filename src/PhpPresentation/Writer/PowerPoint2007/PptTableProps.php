@@ -5,6 +5,9 @@ use PhpOffice\Common\XMLWriter;
 
 class PptTableProps extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     */
     public function render()
     {
         // Create XML writer

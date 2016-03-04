@@ -8,7 +8,7 @@ use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 class PptMedia extends AbstractDecoratorWriter
 {
     /**
-     * @return \ZipArchive
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
      */
     public function render()
     {

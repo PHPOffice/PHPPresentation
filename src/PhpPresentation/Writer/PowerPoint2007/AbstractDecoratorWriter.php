@@ -2,18 +2,18 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
-use \ZipArchive;
 
 abstract class AbstractDecoratorWriter
 {
     /**
-     * @return \ZipArchive
+     * @return ZipInterface
      */
     abstract public function render();
 
@@ -71,18 +71,18 @@ abstract class AbstractDecoratorWriter
     }
 
     /**
-     * @var ZipArchive
+     * @var ZipInterface
      */
     protected $oZip;
 
-    public function setZip(ZipArchive $oZip)
+    public function setZip(ZipInterface $oZip)
     {
         $this->oZip = $oZip;
         return $this;
     }
 
     /**
-     * @return ZipArchive
+     * @return ZipInterface
      */
     public function getZip()
     {

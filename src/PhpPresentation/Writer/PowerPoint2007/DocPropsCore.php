@@ -6,8 +6,8 @@ use PhpOffice\Common\XMLWriter;
 
 class DocPropsCore extends AbstractDecoratorWriter
 {
-    /*
-     *
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
      */
     public function render()
     {
