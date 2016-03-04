@@ -8,6 +8,9 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 
 class PptPresentation extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     */
     public function render()
     {
         // Create XML writer

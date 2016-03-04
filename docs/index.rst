@@ -19,7 +19,8 @@ PHPPresentation is a library written in pure PHP that provides a set of classes 
    slides
    shapes
    styles
-   writersreaders
+   writers
+   readers
    recipes
    faq
    credits

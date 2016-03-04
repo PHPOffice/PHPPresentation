@@ -9,8 +9,7 @@ class Relationships extends AbstractDecoratorWriter
 {
     /**
      * Add relationships to ZIP file
-     *
-     * @return \ZipArchive
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
      */
     public function render()
     {

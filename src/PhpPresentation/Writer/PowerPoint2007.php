@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Writer;
 
 use DirectoryIterator;
+use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
@@ -30,7 +31,7 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007
  */
-class PowerPoint2007 implements WriterInterface
+class PowerPoint2007 extends AbstractWriter implements WriterInterface
 {
     /**
      * Private PhpPresentation
@@ -68,7 +69,7 @@ class PowerPoint2007 implements WriterInterface
     protected $layoutPack;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Writer\PowerPoint2007
+     * Create a new PowerPoint2007 file
      *
      * @param PhpPresentation $pPhpPresentation
      */
@@ -85,6 +86,8 @@ class PowerPoint2007 implements WriterInterface
 
         // Set HashTable variables
         $this->drawingHashTable = new HashTable();
+
+        $this->setZipAdapter(new ZipArchiveAdapter());
     }
 
     /**
@@ -113,14 +116,8 @@ class PowerPoint2007 implements WriterInterface
         // Create drawing dictionary
         $this->drawingHashTable->addFromSource($this->allDrawings());
 
-        $oZip = new \ZipArchive();
-
-        // Try opening the ZIP file
-        if ($oZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
-            if ($oZip->open($pFilename, \ZipArchive::CREATE) !== true) {
-                throw new \Exception("Could not open " . $pFilename . " for writing.");
-            }
-        }
+        $oZip = $this->getZipAdapter();
+        $oZip->open($pFilename);
 
         $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'PowerPoint2007');
         foreach ($oDir as $oFile) {
@@ -142,9 +139,7 @@ class PowerPoint2007 implements WriterInterface
         }
 
         // Close file
-        if ($oZip->close() === false) {
-            throw new \Exception("Could not close zip file $pFilename.");
-        }
+        $oZip->close();
 
         // If a temporary file was used, copy it to the correct file stream
         if ($originalFilename != $pFilename) {
