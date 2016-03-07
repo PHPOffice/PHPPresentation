@@ -33,6 +33,7 @@ PHPPresentation is a library written in pure PHP that provides a set of classes 
    :caption: Shapes
    
    shapes_chart
+   shapes_comment
    shapes_table
 
 Indices and tables

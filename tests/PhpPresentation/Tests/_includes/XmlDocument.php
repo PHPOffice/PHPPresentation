@@ -88,7 +88,7 @@ class XmlDocument
             $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $strContent);
         }
         // _rels/.rels
-        if ($baseFile == '_rels/.rels') {
+        if (strpos($baseFile, '_rels/') !== false && strpos($baseFile, '.rels') !== false) {
             $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/package/2006/relationships"', '', $strContent);
         }
         $this->dom->loadXML($strContent);
@@ -190,5 +190,18 @@ class XmlDocument
     {
         $nodeList = $this->getNodeList($path, $file);
         return !($nodeList->length == 0);
+    }
+
+    /**
+     * Check if element exists
+     *
+     * @param   string  $path
+     * @param   string  $file
+     * @return  string
+     */
+    public function elementCount($path, $file)
+    {
+        $nodeList = $this->getNodeList($path, $file);
+        return $nodeList->length;
     }
 }

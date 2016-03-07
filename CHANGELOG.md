@@ -9,6 +9,7 @@
 - PhpOffice\PhpPresentation\Writer\PowerPoint2007 : Move to Design Pattern Decorator - @Progi1984
 
 ### Features
+- ODPresentation / PowerPoint2007 Writer : Add support for Comment - @Progi1984 GH-116
 - ODPresentation Writer : Thumbnail of the presentation - @Progi1984 GH-125
 - PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125
 - ODPresentation Writer : Add Font Support For Chart Axis - @jrking4 GH-186

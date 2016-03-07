@@ -7,6 +7,7 @@ use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
+use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
@@ -63,6 +64,8 @@ class PptSlides extends AbstractDecoratorWriter
      */
     protected function writeSlideRelationships(Slide $pSlide)
     {
+        //@todo Group all getShapeCollection()->getIterator
+
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
@@ -296,6 +299,36 @@ class PptSlides extends AbstractDecoratorWriter
                 }
 
                 $iterator->next();
+            }
+        }
+
+        // Write comment relationships
+        if ($pSlide->getShapeCollection()->count() > 0) {
+            $hasSlideComment = false;
+
+            // Loop trough images and write relationships
+            $iterator = $pSlide->getShapeCollection()->getIterator();
+            while ($iterator->valid()) {
+                if ($iterator->current() instanceof Comment) {
+                    $hasSlideComment = true;
+                    break;
+                } elseif ($iterator->current() instanceof Group) {
+                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        if ($iterator2->current() instanceof Comment) {
+                            $hasSlideComment = true;
+                            break 2;
+                        }
+                        $iterator2->next();
+                    }
+                }
+
+                $iterator->next();
+            }
+
+            if ($hasSlideComment) {
+                $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments', '../comments/comment'.($idxSlide + 1).'.xml');
+                ++$relId;
             }
         }
 

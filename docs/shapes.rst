@@ -64,7 +64,12 @@ To create a line, use `createLineShape` method of slide.
 Chart
 -------
 
-The Chart has now :ref:`its own page <shapes_chart>`. 
+The Chart has now :ref:`its own page <shapes_chart>`.
+
+Comment
+-------
+
+The Comment has now :ref:`its own page <shapes_comment>`.
 
 Drawing
 -------
