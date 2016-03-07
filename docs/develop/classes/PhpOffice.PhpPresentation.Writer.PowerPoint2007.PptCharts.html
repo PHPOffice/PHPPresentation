@@ -173,7 +173,7 @@
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <li class="method public">
         <a href="#method_writeSpreadsheet" title="writeSpreadsheet :: Write chart to XML format">
             <span class="description">Write chart to XML format</span><pre>writeSpreadsheet</pre>
         </a>
@@ -224,6 +224,11 @@
                             </a>
                         </li>
                                                                                 <li class="method protected inherited">
+                            <a href="#method_writeOutline" title="writeOutline :: Write Outline">
+                                <span class="description">Write Outline</span><pre>writeOutline</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected inherited">
                             <a href="#method_writePatternFill" title="writePatternFill :: Write Pattern Fill">
                                 <span class="description">Write Pattern Fill</span><pre>writePatternFill</pre>
                             </a>
@@ -236,6 +241,11 @@
                                                                                 <li class="method protected inherited">
                             <a href="#method_writeRelationship" title="writeRelationship :: Write relationship">
                                 <span class="description">Write relationship</span><pre>writeRelationship</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_writeSeriesMarker" title="writeSeriesMarker :: ">
+                                <span class="description"></span><pre>writeSeriesMarker</pre>
                             </a>
                         </li>
                                                                                 <li class="method protected">
@@ -254,13 +264,13 @@
                             </a>
                         </li>
                                                                                 <li class="method protected">
-                            <a href="#method_writeTypeArea" title="writeTypeArea :: Write Type Line">
-                                <span class="description">Write Type Line</span><pre>writeTypeArea</pre>
+                            <a href="#method_writeTypeArea" title="writeTypeArea :: Write Type Area">
+                                <span class="description">Write Type Area</span><pre>writeTypeArea</pre>
                             </a>
                         </li>
                                                                                 <li class="method protected">
-                            <a href="#method_writeTypeBar" title="writeTypeBar :: Write Type Bar3D">
-                                <span class="description">Write Type Bar3D</span><pre>writeTypeBar</pre>
+                            <a href="#method_writeTypeBar" title="writeTypeBar :: Write Type Bar">
+                                <span class="description">Write Type Bar</span><pre>writeTypeBar</pre>
                             </a>
                         </li>
                                                                                 <li class="method protected">
@@ -292,7 +302,7 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -973,6 +983,42 @@
                             </div>
 
                         </div>
+                                            <a id="method_writeOutline"></a>
+                        <div class="element clickable method protected  method_writeOutline inherited" data-toggle="collapse" data-target=".method_writeOutline .collapse">
+                            <h2>Write Outline</h2>
+                            <pre>writeOutline(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Style\Outline $oOutline) </pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oOutline</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Style.Outline.html">\PhpOffice\PhpPresentation\Style\Outline</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_writePatternFill"></a>
                         <div class="element clickable method protected  method_writePatternFill inherited" data-toggle="collapse" data-target=".method_writePatternFill .collapse">
                             <h2>Write Pattern Fill</h2>
@@ -1118,6 +1164,42 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$pTargetMode</h4>
                                                 <code>string</code><p><p>Relationship target mode</p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeSeriesMarker"></a>
+                        <div class="element clickable method protected  method_writeSeriesMarker" data-toggle="collapse" data-target=".method_writeSeriesMarker .collapse">
+                            <h2>writeSeriesMarker</h2>
+                            <pre>writeSeriesMarker(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Shape\Chart\Marker $oMarker) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oMarker</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.Chart.Marker.html">\PhpOffice\PhpPresentation\Shape\Chart\Marker</a></code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -1304,7 +1386,7 @@
                         </div>
                                             <a id="method_writeTypeArea"></a>
                         <div class="element clickable method protected  method_writeTypeArea" data-toggle="collapse" data-target=".method_writeTypeArea .collapse">
-                            <h2>Write Type Line</h2>
+                            <h2>Write Type Area</h2>
                             <pre>writeTypeArea(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Shape\Chart\Type\Area $subject, boolean $includeSheet = false) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -1353,7 +1435,7 @@
                         </div>
                                             <a id="method_writeTypeBar"></a>
                         <div class="element clickable method protected  method_writeTypeBar" data-toggle="collapse" data-target=".method_writeTypeBar .collapse">
-                            <h2>Write Type Bar3D</h2>
+                            <h2>Write Type Bar</h2>
                             <pre>writeTypeBar(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar $subject, boolean $includeSheet = false) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
@@ -1746,7 +1828,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 07 Mar 2016 10:04:48 +0000.<br/>
+            generated on Mon, 07 Mar 2016 16:00:01 +0000.<br/>
     </footer>
     </body>
 </html>
