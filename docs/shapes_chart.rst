@@ -12,7 +12,7 @@ Example:
 	$chartShape = $slide->createChartShape();
 	
 Parts
--------
+-----
 
 Title
 ^^^^^
@@ -29,7 +29,7 @@ For hiding it, you define its visibility to false.
 	$oShape->getTitle()->setVisible(false);
 	
 Types
--------
+-----
 
 Area
 ^^^^
