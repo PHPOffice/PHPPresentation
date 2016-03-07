@@ -45,6 +45,7 @@ function fnSlide_Area(PhpPresentation $objPHPPresentation) {
     $series->setShowSeriesName(true);
     $series->setShowValue(true);
     $series->getFill()->setStartColor(new Color('FF93A9CE'));
+    $series->setLabelPosition(Series::LABEL_INSIDEEND);
     $areaChart->addSeries($series);
     
     // Create a shape (chart)

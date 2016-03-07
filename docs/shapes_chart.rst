@@ -9,8 +9,8 @@ Example:
 
 .. code-block:: php
 
-	$chartShape = $slide->createChartShape();
-	
+    $chartShape = $slide->createChartShape();
+
 Parts
 -----
 
@@ -22,11 +22,11 @@ For hiding it, you define its visibility to false.
 
 .. code-block:: php
 
-	$chartShape = $slide->createChartShape();
-	$oLine = new Line();
-	$oShape->getPlotArea()->setType($oLine);
-	// Hide the title
-	$oShape->getTitle()->setVisible(false);
+    $chartShape = $slide->createChartShape();
+    $oLine = new Line();
+    $oShape->getPlotArea()->setType($oLine);
+    // Hide the title
+    $oShape->getTitle()->setVisible(false);
 
 Series
 ^^^^^^
@@ -62,6 +62,14 @@ You can custom the line of a serie, for Line & Scatter charts.
     $oSeries = new Series('Downloads', $seriesData);
     $oSeries->setOutline($oOutline);
 
+You can define the position of the data label.
+Each position is described in `MSDN <https://msdn.microsoft.com/en-us/library/mt459417(v=office.12).aspx>`_
+
+.. code-block:: php
+
+    $oSeries = new Series('Downloads', $seriesData);
+    $oSeries->setLabelPosition(Series::LABEL_INSIDEEND);
+
 Types
 -----
 
@@ -80,15 +88,15 @@ You can stack multiples series in a same chart. After adding multiples series, y
 
 .. code-block:: php
 
-	$oBarChart = new Bar();
-	$oBarChart->addSeries($oSeries1);
-	$oBarChart->addSeries($oSeries2);
-	$oBarChart->addSeries($oSeries3);
-	$oBarChart->setBarGrouping(Bar::GROUPING_CLUSTERED);
-	// OR
-	$oBarChart->setBarGrouping(Bar::GROUPING_STACKED);
-	// OR 
-	$oBarChart->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
+    $oBarChart = new Bar();
+    $oBarChart->addSeries($oSeries1);
+    $oBarChart->addSeries($oSeries2);
+    $oBarChart->addSeries($oSeries3);
+    $oBarChart->setBarGrouping(Bar::GROUPING_CLUSTERED);
+    // OR
+    $oBarChart->setBarGrouping(Bar::GROUPING_STACKED);
+    // OR
+    $oBarChart->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
 
 - Bar::GROUPING_CLUSTERED
 .. image:: images/chart_columns_52x60.png

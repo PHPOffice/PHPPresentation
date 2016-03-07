@@ -28,7 +28,7 @@ use PhpOffice\PhpPresentation\Style\Outline;
 class Series implements ComparableInterface
 {
     /* Label positions */
-    const LABEL_BESTFIT = 'bestFir';
+    const LABEL_BESTFIT = 'bestFit';
     const LABEL_BOTTOM = 'b';
     const LABEL_CENTER = 'ctr';
     const LABEL_INSIDEBASE = 'inBase';
@@ -467,7 +467,7 @@ class Series implements ComparableInterface
 
     /**
      * @param Marker $marker
-     * @return Line
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
      */
     public function setMarker(Marker $marker)
     {
@@ -485,7 +485,7 @@ class Series implements ComparableInterface
 
     /**
      * @param Outline $outline
-     * @return Series
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
      */
     public function setOutline(Outline $outline)
     {
@@ -523,6 +523,7 @@ class Series implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
      */
     public function setHashIndex($value)
     {
