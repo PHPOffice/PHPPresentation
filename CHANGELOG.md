@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.7.0 -WIP
+## 0.7.0 - WIP
 
 ### Bugfix
 - Fixed the image project - @mvargasmoran GH-177
@@ -12,10 +12,11 @@
 - Added documentation for chart series (font, outline, marker) - @Progi1984 GH-169
 
 ### Features
+- ODPresentation & PowerPoint2007 Writer : Add support for Comment - @Progi1984 GH-116
 - ODPresentation & PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125
 - ODPresentation & PowerPoint2007 Writer : Marker of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
 - ODPresentation & PowerPoint2007 Writer : Outline of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
-- PowerPoint2007 / Serialized Writer : Support for Zip Adapter - @Progi1984 GH-176
+- PowerPoint2007 & Serialized Writer : Support for Zip Adapter - @Progi1984 GH-176
 - ODPresentation & PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
 
 ## 0.6.0 - 2016-01-24

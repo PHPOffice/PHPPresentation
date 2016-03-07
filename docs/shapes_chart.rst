@@ -12,7 +12,7 @@ Example:
 	$chartShape = $slide->createChartShape();
 	
 Parts
--------
+-----
 
 Title
 ^^^^^
@@ -63,7 +63,7 @@ You can custom the line of a serie, for Line & Scatter charts.
     $oSeries->setOutline($oOutline);
 
 Types
--------
+-----
 
 Area
 ^^^^

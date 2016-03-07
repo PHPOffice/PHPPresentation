@@ -20,6 +20,7 @@ namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
@@ -122,6 +123,7 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('xmlns:of', 'urn:oasis:names:tc:opendocument:xmlns:of:1.2');
         $objWriter->writeAttribute('xmlns:rdfa', 'http://docs.oasis-open.org/opendocument/meta/rdfa#');
         $objWriter->writeAttribute('xmlns:field', 'urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0');
+        $objWriter->writeAttribute('xmlns:officeooo', 'http://openoffice.org/2009/office');
         $objWriter->writeAttribute('office:version', '1.2');
 
         // office:automatic-styles
@@ -293,6 +295,8 @@ class Content extends AbstractPart
                     $this->writeShapePic($objWriter, $shape);
                 } elseif ($shape instanceof Group) {
                     $this->writeShapeGroup($objWriter, $shape);
+                } elseif ($shape instanceof Comment) {
+                    $this->writeShapeComment($objWriter, $shape);
                 }
             }
             // Slide Note
@@ -529,6 +533,28 @@ class Content extends AbstractPart
         // > draw:text-box
         $objWriter->endElement();
         // > draw:frame
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write Comment
+     * @param XMLWriter $objWriter
+     * @param Comment $shape
+     */
+    public function writeShapeComment(XMLWriter $objWriter, Comment $oShape)
+    {
+        // officeooo:annotation
+        $objWriter->startElement('officeooo:annotation');
+        $objWriter->writeAttribute('svg:x', number_format(CommonDrawing::pixelsToCentimeters($oShape->getOffsetX()), 2, '.', '').'cm');
+        $objWriter->writeAttribute('svg:y', number_format(CommonDrawing::pixelsToCentimeters($oShape->getOffsetY()), 2, '.', '').'cm');
+
+        if ($oShape->getAuthor() instanceof Comment\Author) {
+            $objWriter->writeElement('dc:creator', $oShape->getAuthor()->getName());
+        }
+        $objWriter->writeElement('dc:date', date('Y-m-d\TH:i:s', $oShape->getDate()));
+        $objWriter->writeElement('text:p', $oShape->getText());
+
+        // ## officeooo:annotation
         $objWriter->endElement();
     }
 
