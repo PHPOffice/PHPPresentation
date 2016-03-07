@@ -9,6 +9,8 @@ use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Outline;
+use \ZipArchive;
 
 abstract class AbstractDecoratorWriter
 {
@@ -205,7 +207,6 @@ abstract class AbstractDecoratorWriter
         }
     }
 
-
     /**
      * Write Solid Fill
      *
@@ -305,6 +306,34 @@ abstract class AbstractDecoratorWriter
 
         $objWriter->endElement();
 
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write Outline
+     * @param XMLWriter $objWriter
+     * @param Outline $oOutline
+     */
+    protected function writeOutline(XMLWriter $objWriter, $oOutline)
+    {
+        if (!$oOutline instanceof Outline) {
+            return;
+        }
+        // Width : pts
+        $width = $oOutline->getWidth();
+        // Width : pts => px
+        $width = CommonDrawing::pointsToPixels($width);
+        // Width : px => emu
+        $width = CommonDrawing::pixelsToEmu($width);
+
+        // a:ln
+        $objWriter->startElement('a:ln');
+        $objWriter->writeAttribute('w', $width);
+
+        // Fill
+        $this->writeFill($objWriter, $oOutline->getFill());
+
+        // > a:ln
         $objWriter->endElement();
     }
 
