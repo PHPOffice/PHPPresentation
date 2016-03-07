@@ -14,7 +14,7 @@ class PptMedia extends AbstractDecoratorWriter
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
-            if ($shape instanceof Drawing) {
+            if ($shape instanceof Drawing || $shape instanceof Media) {
                 $imagePath     = $shape->getPath();
                 if (strpos($imagePath, 'zip://') !== false) {
                     $imagePath         = substr($imagePath, 6);
