@@ -18,7 +18,7 @@ class CommentAuthors extends AbstractDecoratorWriter
          * @var Author[]
          */
         $arrayAuthors = array();
-        foreach ($this->getPresentation()->getAllSlides() as $numSlide => $oSlide) {
+        foreach ($this->getPresentation()->getAllSlides() as $oSlide) {
             foreach ($oSlide->getShapeCollection() as $oShape) {
                 if (!($oShape instanceof Comment)) {
                     continue;
@@ -54,7 +54,7 @@ class CommentAuthors extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
 
         $idxAuthor = 0;
-        foreach ($arrayAuthors as $hashAuthor => $oAuthor) {
+        foreach ($arrayAuthors as $oAuthor) {
             $oAuthor->setIndex($idxAuthor++);
 
             // p:cmAuthor
