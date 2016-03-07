@@ -718,6 +718,9 @@ class PptSlides extends AbstractDecoratorWriter
 
         // p:nvPr
         $objWriter->startElement('p:nvPr');
+        /**
+         * @link : https://github.com/stefslon/exportToPPTX/blob/master/exportToPPTX.m#L2128
+         */
         if ($shape instanceof Media) {
             // p:nvPr > a:videoFile
             $objWriter->startElement('a:videoFile');
