@@ -287,10 +287,10 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
     public function testTypeLineMarker()
     {
         do {
-            $expectedSymbol = array_rand(Marker::$SYMBOL);
-        } while($expectedSymbol == Marker::SYMBOL_NONE);
+            $expectedSymbol = array_rand(Marker::$arraySymbol);
+        } while ($expectedSymbol == Marker::SYMBOL_NONE);
         $expectedSize = rand(2, 72);
-        $expectedElementSymbol = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:symbol';
+        $expectedEltSymbol = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:symbol';
         $expectedElementSize = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:size';
 
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -302,9 +302,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oShape->getPlotArea()->setType($oLine);
 
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedSymbol, $oXMLDoc->getElementAttribute($expectedElementSymbol, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedSymbol, $oXMLDoc->getElementAttribute($expectedEltSymbol, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertEquals($expectedSize, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
 
         $oSeries->getMarker()->setSize(1);
@@ -325,7 +325,7 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oLine->setSeries(array($oSeries));
 
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertFalse($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertFalse($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 
@@ -360,7 +360,7 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
         $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedWidthEmu, $oXMLDoc->getElementAttribute($expectedElement, 'w','ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedWidthEmu, $oXMLDoc->getElementAttribute($expectedElement, 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertTrue($oXMLDoc->elementExists($expectedElement.'/a:solidFill', 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 
@@ -539,10 +539,10 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
     public function testTypeScatterMarker()
     {
         do {
-            $expectedSymbol = array_rand(Marker::$SYMBOL);
-        } while($expectedSymbol == Marker::SYMBOL_NONE);
+            $expectedSymbol = array_rand(Marker::$arraySymbol);
+        } while ($expectedSymbol == Marker::SYMBOL_NONE);
         $expectedSize = rand(2, 72);
-        $expectedElementSymbol = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:symbol';
+        $expectedEltSymbol = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:symbol';
         $expectedElementSize = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:size';
 
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -554,9 +554,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oShape->getPlotArea()->setType($oScatter);
 
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedSymbol, $oXMLDoc->getElementAttribute($expectedElementSymbol, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedSymbol, $oXMLDoc->getElementAttribute($expectedEltSymbol, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertEquals($expectedSize, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
 
         $oSeries->getMarker()->setSize(1);
@@ -577,7 +577,7 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oScatter->setSeries(array($oSeries));
 
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertFalse($oXMLDoc->elementExists($expectedElementSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertFalse($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 
@@ -612,7 +612,7 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
         $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedWidthEmu, $oXMLDoc->getElementAttribute($expectedElement, 'w','ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedWidthEmu, $oXMLDoc->getElementAttribute($expectedElement, 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
         $this->assertTrue($oXMLDoc->elementExists($expectedElement.'/a:solidFill', 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 

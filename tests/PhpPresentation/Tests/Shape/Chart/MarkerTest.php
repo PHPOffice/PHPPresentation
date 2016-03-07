@@ -38,7 +38,7 @@ class MarkerTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Marker();
 
-        $expected = array_rand(Marker::$SYMBOL);
+        $expected = array_rand(Marker::$arraySymbol);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->setSymbol($expected));
         $this->assertEquals($expected, $object->getSymbol());

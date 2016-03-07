@@ -535,7 +535,7 @@ class Series implements ComparableInterface
      * @return mixed
      * @link http://php.net/manual/en/language.oop5.cloning.php
      */
-    function __clone()
+    public function __clone()
     {
         $this->font = clone $this->font;
         $this->marker = clone $this->marker;

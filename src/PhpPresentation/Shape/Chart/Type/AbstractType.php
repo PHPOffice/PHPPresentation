@@ -158,7 +158,7 @@ abstract class AbstractType implements ComparableInterface
      * @return mixed
      * @link http://php.net/manual/en/language.oop5.cloning.php
      */
-    function __clone()
+    public function __clone()
     {
         $arrayClone = array();
         foreach ($this->data as $itemSeries) {
@@ -166,5 +166,4 @@ abstract class AbstractType implements ComparableInterface
         }
         $this->data = $arrayClone;
     }
-
 }

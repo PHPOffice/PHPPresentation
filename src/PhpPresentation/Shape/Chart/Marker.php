@@ -35,7 +35,7 @@ class Marker
     const SYMBOL_TRIANGLE = 'triangle';
     const SYMBOL_X = 'x';
 
-    static $SYMBOL = array(
+    public static $arraySymbol = array(
         self::SYMBOL_CIRCLE,
         self::SYMBOL_DASH,
         self::SYMBOL_DIAMOND,

@@ -458,9 +458,9 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
-        $this->assertEquals('0.079cm', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width','Object 1/content.xml'));
+        $this->assertEquals('0.079cm', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
-        $this->assertEquals('#4a7ebb', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color','Object 1/content.xml'));
+        $this->assertEquals('#4a7ebb', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
 
         $oSeries->setOutline($oOutline);
         $oLine->setSeries(array($oSeries));
@@ -469,9 +469,9 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
-        $this->assertEquals($expectedWidthCm, $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width','Object 1/content.xml'));
+        $this->assertEquals($expectedWidthCm, $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
-        $this->assertEquals('#'.$oColor->getRGB(), $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color','Object 1/content.xml'));
+        $this->assertEquals('#'.$oColor->getRGB(), $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
     }
 
     public function testTypeScatterMarker()
@@ -565,9 +565,9 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
-        $this->assertEquals('0.079cm', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width','Object 1/content.xml'));
+        $this->assertEquals('0.079cm', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
-        $this->assertEquals('#4a7ebb', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color','Object 1/content.xml'));
+        $this->assertEquals('#4a7ebb', $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
 
         $oSeries->setOutline($oOutline);
         $oScatter->setSeries(array($oSeries));
@@ -576,8 +576,8 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
-        $this->assertEquals($expectedWidthCm, $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width','Object 1/content.xml'));
+        $this->assertEquals($expectedWidthCm, $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
-        $this->assertEquals('#'.$oColor->getRGB(), $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color','Object 1/content.xml'));
+        $this->assertEquals('#'.$oColor->getRGB(), $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
     }
 }
