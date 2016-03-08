@@ -92,7 +92,7 @@ class ManifestTest extends \PHPUnit_Framework_TestCase
         $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertTrue($pres->elementExists($element, 'META-INF/manifest.xml'));
-        $this->assertEquals('Pictures/44ea6e2fb64a317703f98a57a9e0d9a9.gif', $pres->getElementAttribute($element, 'manifest:full-path', 'META-INF/manifest.xml'));
+        $this->assertEquals('Pictures/'.md5($oShape->getPath()) . '.' . $oShape->getExtension(), $pres->getElementAttribute($element, 'manifest:full-path', 'META-INF/manifest.xml'));
     }
 
     /**

@@ -190,7 +190,7 @@ class ContentTypes extends AbstractDecoratorWriter
             } else {
                 $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
             }
-        } elseif(strpos($pFile, 'data:image/') === 0) {
+        } elseif (strpos($pFile, 'data:image/') === 0) {
             $sImage = $pFile;
             list(, $sImage) = explode(';', $sImage);
             list(, $sImage) = explode(',', $sImage);
