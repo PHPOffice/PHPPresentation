@@ -125,6 +125,33 @@ $shape2->getPlotArea()->setType($lineChart2);
 $shape2->getPlotArea()->getAxisY()->setFormatCode('#,##0');
 $currentSlide->addShape($shape2);
 
+
+// Create templated slide
+echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+$currentSlide = createTemplatedSlide($objPHPPresentation);
+
+// Create a line chart (that should be inserted in a shape)
+echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
+$lineChart3 = clone $lineChart;
+
+$oGridLines1 = new \PhpOffice\PhpPresentation\Shape\Chart\Gridlines();
+$oGridLines1->getOutline()->setWidth(10);
+$oGridLines1->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
+$oGridLines2 = new \PhpOffice\PhpPresentation\Shape\Chart\Gridlines();
+$oGridLines2->getOutline()->setWidth(1);
+$oGridLines2->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKGREEN));
+
+// Create a shape (chart)
+echo date('H:i:s') . ' Create a shape (chart3)' . EOL;
+echo date('H:i:s') . ' Feature : Gridlines' . EOL;
+$shape3 = clone $shape;
+$shape3->setName('Shape 3');
+$shape3->getTitle()->setText('Chart with Gridlines');
+$shape3->getPlotArea()->setType($lineChart3);
+$shape3->getPlotArea()->getAxisX()->setMajorGridlines($oGridLines1);
+$shape3->getPlotArea()->getAxisY()->setMinorGridlines($oGridLines2);
+$currentSlide->addShape($shape3);
 // Save file
 echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 

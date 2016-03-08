@@ -10,6 +10,7 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
@@ -282,6 +283,70 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:v';
         $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+    }
+
+    public function testTypeLineGridlines()
+    {
+        $arrayTests = array(
+            array(
+                'methodAxis' => 'getAxisX',
+                'methodGrid' => 'setMajorGridlines',
+                'expectedElement' => '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:majorGridlines/c:spPr/a:ln',
+                'expectedElementColor' => '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:majorGridlines/c:spPr/a:ln/a:solidFill/a:srgbClr',
+            ),
+            array(
+                'methodAxis' => 'getAxisX',
+                'methodGrid' => 'setMinorGridlines',
+                'expectedElement' => '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:minorGridlines/c:spPr/a:ln',
+                'expectedElementColor' => '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:minorGridlines/c:spPr/a:ln/a:solidFill/a:srgbClr',
+            ),
+            array(
+                'methodAxis' => 'getAxisY',
+                'methodGrid' => 'setMajorGridlines',
+                'expectedElement' => '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorGridlines/c:spPr/a:ln',
+                'expectedElementColor' => '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorGridlines/c:spPr/a:ln/a:solidFill/a:srgbClr',
+            ),
+            array(
+                'methodAxis' => 'getAxisY',
+                'methodGrid' => 'setMinorGridlines',
+                'expectedElement' => '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorGridlines/c:spPr/a:ln',
+                'expectedElementColor' => '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorGridlines/c:spPr/a:ln/a:solidFill/a:srgbClr',
+            ),
+        );
+        $expectedColor = new Color(Color::COLOR_BLUE);
+        foreach ($arrayTests as $arrayTest) {
+            $expectedSizePts = rand(1, 100);
+            $expectedSizeEmu = round(Drawing::pointsToPixels(Drawing::pixelsToEmu($expectedSizePts)));
+
+            $oPresentation = new PhpPresentation();
+            $oSlide = $oPresentation->getActiveSlide();
+            $oShape = $oSlide->createChartShape();
+            $oLine = new Line();
+            $oLine->addSeries(new Series('Downloads', array(
+                'A' => 1,
+                'B' => 2,
+                'C' => 4,
+                'D' => 3,
+                'E' => 2,
+            )));
+            $oShape->getPlotArea()->setType($oLine);
+            $oGridlines = new Gridlines();
+            $oGridlines->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($expectedColor);
+            $oGridlines->getOutline()->setWidth($expectedSizePts);
+            $oShape->getPlotArea()->{$arrayTest['methodAxis']}()->{$arrayTest['methodGrid']}($oGridlines);
+
+            $oXMLDoc = TestHelperDOCX::getDocument($oPresentation, 'PowerPoint2007');
+            $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
+            $this->assertTrue($oXMLDoc->elementExists($arrayTest['expectedElement'], 'ppt/charts/'.$oShape->getIndexedFilename()));
+            $this->assertTrue($oXMLDoc->attributeElementExists($arrayTest['expectedElement'], 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
+            $this->assertEquals($expectedSizeEmu, $oXMLDoc->getElementAttribute($arrayTest['expectedElement'], 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
+            $this->assertTrue($oXMLDoc->elementExists($arrayTest['expectedElementColor'], 'ppt/charts/'.$oShape->getIndexedFilename()));
+            $this->assertTrue($oXMLDoc->attributeElementExists($arrayTest['expectedElementColor'], 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+            $this->assertEquals($expectedColor->getRGB(), $oXMLDoc->getElementAttribute($arrayTest['expectedElementColor'], 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+
+            unset($oPresentation);
+            TestHelperDOCX::clear();
+        }
     }
 
     public function testTypeLineMarker()

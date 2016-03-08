@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
@@ -365,6 +366,80 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+    }
+
+    public function testTypeLineGridlines()
+    {
+        $arrayTests = array(
+            array(
+                'dimension' => 'x',
+                'styleName' => 'styleAxisXGridlinesMajor',
+                'styleClass' => 'major',
+                'methodAxis' => 'getAxisX',
+                'methodGrid' => 'setMajorGridlines'
+            ),
+            array(
+                'dimension' => 'x',
+                'styleName' => 'styleAxisXGridlinesMinor',
+                'styleClass' => 'minor',
+                'methodAxis' => 'getAxisX',
+                'methodGrid' => 'setMinorGridlines'
+            ),
+            array(
+                'dimension' => 'y',
+                'styleName' => 'styleAxisYGridlinesMajor',
+                'styleClass' => 'major',
+                'methodAxis' => 'getAxisY',
+                'methodGrid' => 'setMajorGridlines'
+            ),
+            array(
+                'dimension' => 'y',
+                'styleName' => 'styleAxisYGridlinesMinor',
+                'styleClass' => 'minor',
+                'methodAxis' => 'getAxisY',
+                'methodGrid' => 'setMinorGridlines'
+            ),
+        );
+        $expectedColor = new Color(Color::COLOR_BLUE);
+        foreach ($arrayTests as $arrayTest) {
+            $expectedSizePts = rand(1, 100);
+            $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSizePts), 2, '.', '').'cm';
+            $expectedElementGrid = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\''.$arrayTest['dimension'].'\']/chart:grid';
+            $expectedElementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\''.$arrayTest['styleName'].'\']/style:graphic-properties';
+
+            $oPresentation = new PhpPresentation();
+            $oSlide = $oPresentation->getActiveSlide();
+            $oShape = $oSlide->createChartShape();
+            $oLine = new Line();
+            $oLine->addSeries(new Series('Downloads', array(
+                'A' => 1,
+                'B' => 2,
+                'C' => 4,
+                'D' => 3,
+                'E' => 2,
+            )));
+            $oShape->getPlotArea()->setType($oLine);
+            $oGridlines = new Gridlines();
+            $oGridlines->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($expectedColor);
+            $oGridlines->getOutline()->setWidth($expectedSizePts);
+            $oShape->getPlotArea()->{$arrayTest['methodAxis']}()->{$arrayTest['methodGrid']}($oGridlines);
+
+            $oXMLDoc = TestHelperDOCX::getDocument($oPresentation, 'ODPresentation');
+            $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
+            $this->assertTrue($oXMLDoc->elementExists($expectedElementGrid, 'Object 1/content.xml'));
+            $this->assertTrue($oXMLDoc->attributeElementExists($expectedElementGrid, 'chart:style-name', 'Object 1/content.xml'));
+            $this->assertEquals($arrayTest['styleName'], $oXMLDoc->getElementAttribute($expectedElementGrid, 'chart:style-name', 'Object 1/content.xml'));
+            $this->assertTrue($oXMLDoc->attributeElementExists($expectedElementGrid, 'chart:class', 'Object 1/content.xml'));
+            $this->assertEquals($arrayTest['styleClass'], $oXMLDoc->getElementAttribute($expectedElementGrid, 'chart:class', 'Object 1/content.xml'));
+            $this->assertTrue($oXMLDoc->elementExists($expectedElementStyle, 'Object 1/content.xml'));
+            $this->assertStringStartsWith($expectedSizeCm, $oXMLDoc->getElementAttribute($expectedElementStyle, 'svg:stroke-width', 'Object 1/content.xml'));
+            $this->assertStringEndsWith('cm', $oXMLDoc->getElementAttribute($expectedElementStyle, 'svg:stroke-width', 'Object 1/content.xml'));
+            $this->assertStringStartsWith('#', $oXMLDoc->getElementAttribute($expectedElementStyle, 'svg:stroke-color', 'Object 1/content.xml'));
+            $this->assertStringEndsWith($expectedColor->getRGB(), $oXMLDoc->getElementAttribute($expectedElementStyle, 'svg:stroke-color', 'Object 1/content.xml'));
+
+            unset($oPresentation);
+            TestHelperDOCX::clear();
+        }
     }
 
     public function testTypeLineMarker()

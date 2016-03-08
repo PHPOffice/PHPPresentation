@@ -33,6 +33,18 @@ class AxisTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('Axis Title', $object->getTitle());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        $this->assertNull($object->getMinorGridlines());
+        $this->assertNull($object->getMajorGridlines());
+    }
+
+    public function testFont()
+    {
+        $object = new Axis();
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setFont());
+        $this->assertNull($object->getFont());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setFont(new Font()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
     public function testFormatCode()
@@ -42,6 +54,18 @@ class AxisTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $object->getFormatCode());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setFormatCode('AAAA'));
         $this->assertEquals('AAAA', $object->getFormatCode());
+    }
+
+    public function testGridLines()
+    {
+        $object = new Axis();
+
+        $oMock = $this->getMock('PhpOffice\PhpPresentation\Shape\Chart\Gridlines');
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMajorGridlines($oMock));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Gridlines', $object->getMajorGridlines());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMinorGridlines($oMock));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Gridlines', $object->getMinorGridlines());
     }
 
     public function testHashIndex()
@@ -60,15 +84,5 @@ class AxisTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Axis Title', $object->getTitle());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setTitle('AAAA'));
         $this->assertEquals('AAAA', $object->getTitle());
-    }
-
-    public function testFont()
-    {
-        $object = new Axis();
-
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setFont());
-        $this->assertNull($object->getFont());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setFont(new Font()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 }

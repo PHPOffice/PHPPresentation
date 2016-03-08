@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Style\Font;
 
 /**
@@ -25,6 +26,9 @@ use PhpOffice\PhpPresentation\Style\Font;
  */
 class Axis implements ComparableInterface
 {
+    const AXIS_X = 'x';
+    const AXIS_Y = 'y';
+
     /**
      * Title
      *
@@ -45,6 +49,16 @@ class Axis implements ComparableInterface
      * @var \PhpOffice\PhpPresentation\Style\Font
      */
     private $font;
+
+    /**
+     * @var Gridlines
+     */
+    protected $majorGridlines;
+
+    /**
+     * @var Gridlines
+     */
+    protected $minorGridlines;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
@@ -123,6 +137,42 @@ class Axis implements ComparableInterface
     {
         $this->formatCode = $value;
 
+        return $this;
+    }
+
+    /**
+     * @return Gridlines
+     */
+    public function getMajorGridlines()
+    {
+        return $this->majorGridlines;
+    }
+
+    /**
+     * @param Gridlines $majorGridlines
+     * @return Axis
+     */
+    public function setMajorGridlines(Gridlines $majorGridlines)
+    {
+        $this->majorGridlines = $majorGridlines;
+        return $this;
+    }
+
+    /**
+     * @return Gridlines
+     */
+    public function getMinorGridlines()
+    {
+        return $this->minorGridlines;
+    }
+
+    /**
+     * @param Gridlines $minorGridlines
+     * @return Axis
+     */
+    public function setMinorGridlines(Gridlines $minorGridlines)
+    {
+        $this->minorGridlines = $minorGridlines;
         return $this;
     }
 
