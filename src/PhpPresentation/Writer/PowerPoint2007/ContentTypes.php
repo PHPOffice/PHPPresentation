@@ -190,6 +190,16 @@ class ContentTypes extends AbstractDecoratorWriter
             } else {
                 $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
             }
+        } elseif(strpos($pFile, 'data:image/') === 0) {
+            $sImage = $pFile;
+            list(, $sImage) = explode(';', $sImage);
+            list(, $sImage) = explode(',', $sImage);
+            if (!function_exists('getimagesizefromstring')) {
+                $uri = 'data://application/octet-stream;base64,' . base64_encode($sImage);
+                $image = getimagesize($uri);
+            } else {
+                $image = getimagesizefromstring($sImage);
+            }
         } else {
             if (!File::fileExists($pFile)) {
                 throw new \Exception("File $pFile does not exist");

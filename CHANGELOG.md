@@ -15,6 +15,7 @@
 - ODPresentation & PowerPoint2007 Writer : Add support for Comment - @Progi1984 GH-116
 - ODPresentation & PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125
 - ODPresentation & PowerPoint2007 Writer : Add support for Gridlines in Chart - @Progi1984 GH-129
+- ODPresentation & PowerPoint2007 Writer : Support for images in base 64 - @Progi1984 GH-168
 - ODPresentation & PowerPoint2007 Writer : Marker of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
 - ODPresentation & PowerPoint2007 Writer : Outline of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
 - PowerPoint2007 & Serialized Writer : Support for Zip Adapter - @Progi1984 GH-176
