@@ -131,7 +131,7 @@
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <li class="method public">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <li class="method public">
         <a href="#method_writePart" title="writePart :: ">
             <span class="description"></span><pre>writePart</pre>
         </a>
@@ -146,7 +146,22 @@
                                 <span class="description">Get XML Writer</span><pre>getXMLWriter</pre>
                             </a>
                         </li>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                        <li class="method protected">
+                            <a href="#method_writeAxisStyle" title="writeAxisStyle :: ">
+                                <span class="description"></span><pre>writeAxisStyle</pre>
+                            </a>
+                        </li>
+                                                                                                                                                                                                                                <li class="method protected">
+                            <a href="#method_writeGridline" title="writeGridline :: ">
+                                <span class="description"></span><pre>writeGridline</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_writeGridlineStyle" title="writeGridlineStyle :: ">
+                                <span class="description"></span><pre>writeGridlineStyle</pre>
+                            </a>
+                        </li>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
@@ -155,12 +170,7 @@
                                 <span class="description"></span><pre>writeAxis</pre>
                             </a>
                         </li>
-                                                                                <li class="method private">
-                            <a href="#method_writeAxisStyle" title="writeAxisStyle :: ">
-                                <span class="description"></span><pre>writeAxisStyle</pre>
-                            </a>
-                        </li>
-                                                                                <li class="method private">
+                                                                                                                    <li class="method private">
                             <a href="#method_writeChartStyle" title="writeChartStyle :: ">
                                 <span class="description"></span><pre>writeChartStyle</pre>
                             </a>
@@ -180,7 +190,7 @@
                                 <span class="description"></span><pre>writeFloorStyle</pre>
                             </a>
                         </li>
-                                                                                <li class="method private">
+                                                                                                                                                        <li class="method private">
                             <a href="#method_writeLegend" title="writeLegend :: ">
                                 <span class="description"></span><pre>writeLegend</pre>
                             </a>
@@ -417,7 +427,7 @@
 
                         </div>
                                             <a id="method_writeAxisStyle"></a>
-                        <div class="element clickable method private  method_writeAxisStyle" data-toggle="collapse" data-target=".method_writeAxisStyle .collapse">
+                        <div class="element clickable method protected  method_writeAxisStyle" data-toggle="collapse" data-target=".method_writeAxisStyle .collapse">
                             <h2>writeAxisStyle</h2>
                             <pre>writeAxisStyle(\PhpOffice\PhpPresentation\Shape\Chart $chart) </pre>
                             <div class="labels">
@@ -585,6 +595,89 @@
                                                                             </table>
 
                                     
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeGridline"></a>
+                        <div class="element clickable method protected  method_writeGridline" data-toggle="collapse" data-target=".method_writeGridline .collapse">
+                            <h2>writeGridline</h2>
+                            <pre>writeGridline( $oGridlines,  $styleName,  $chartClass) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oGridlines</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$styleName</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$chartClass</h4>
+                                                <code></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeGridlineStyle"></a>
+                        <div class="element clickable method protected  method_writeGridlineStyle" data-toggle="collapse" data-target=".method_writeGridlineStyle .collapse">
+                            <h2>writeGridlineStyle</h2>
+                            <pre>writeGridlineStyle(\PhpOffice\PhpPresentation\Shape\Chart\Gridlines $oGridlines, string $styleName) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oGridlines</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.Chart.Gridlines.html">\PhpOffice\PhpPresentation\Shape\Chart\Gridlines</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$styleName</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
 
@@ -1267,7 +1360,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 07 Mar 2016 16:00:00 +0000.<br/>
+            generated on Tue, 08 Mar 2016 13:57:49 +0000.<br/>
     </footer>
     </body>
 </html>
