@@ -2,7 +2,6 @@
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
-
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 
 class GridlinesTest extends \PHPUnit_Framework_TestCase
