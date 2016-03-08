@@ -14,6 +14,26 @@ Example:
 Parts
 -----
 
+Axis
+^^^^
+
+You can define gridlines (minor and major) for each axis (X & Y).
+For each gridline, you can custom the width (in points), the fill type and the fill color.
+
+.. code-block:: php
+
+    use \PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+
+    $oLine = new Line();
+
+    $oGridLines = new Gridlines();
+    $oGridLines->getOutline()->setWidth(10);
+    $oGridLines->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->setMajorGridlines($oGridLines);
+
 Title
 ^^^^^
 
@@ -22,8 +42,8 @@ For hiding it, you define its visibility to false.
 
 .. code-block:: php
 
-    $chartShape = $slide->createChartShape();
     $oLine = new Line();
+    $oShape = $slide->createChartShape();
     $oShape->getPlotArea()->setType($oLine);
     // Hide the title
     $oShape->getTitle()->setVisible(false);
