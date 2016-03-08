@@ -252,20 +252,29 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:name', 'primary-x');
         $this->xmlContent->writeAttribute('chartooo:axis-type', 'text');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleAxisX');
-        // chart:categories
+        // chart:axis > chart:categories
         $this->xmlContent->startElement('chart:categories');
         $this->xmlContent->writeAttribute('table:cell-range-address', 'table-local.$A$2:.$A$'.($this->numData+1));
-        // > chart:categories
         $this->xmlContent->endElement();
-        // > chart:axis
+        // chart:axis > chart:grid
+        $this->writeGridline($chart->getPlotArea()->getAxisX()->getMajorGridlines(), 'styleAxisXGridlinesMajor', 'major');
+        // chart:axis > chart:grid
+        $this->writeGridline($chart->getPlotArea()->getAxisX()->getMinorGridlines(), 'styleAxisXGridlinesMinor', 'minor');
+        // ##chart:axis
         $this->xmlContent->endElement();
+
         // chart:axis
         $this->xmlContent->startElement('chart:axis');
         $this->xmlContent->writeAttribute('chart:dimension', 'y');
         $this->xmlContent->writeAttribute('chart:name', 'primary-y');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleAxisY');
-        // > chart:axis
+        // chart:axis > chart:grid
+        $this->writeGridline($chart->getPlotArea()->getAxisY()->getMajorGridlines(), 'styleAxisYGridlinesMajor', 'major');
+        // chart:axis > chart:grid
+        $this->writeGridline($chart->getPlotArea()->getAxisY()->getMinorGridlines(), 'styleAxisYGridlinesMinor', 'minor');
+        // ##chart:axis
         $this->xmlContent->endElement();
+
         if ($chartType instanceof Bar3D || $chartType instanceof Pie3D) {
             // chart:axis
             $this->xmlContent->startElement('chart:axis');
@@ -275,21 +284,33 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->endElement();
         }
     }
+
+    protected function writeGridline($oGridlines, $styleName, $chartClass)
+    {
+        if (!($oGridlines instanceof Chart\Gridlines)) {
+            return ;
+        }
+
+        $this->xmlContent->startElement('chart:grid');
+        $this->xmlContent->writeAttribute('chart:style-name', $styleName);
+        $this->xmlContent->writeAttribute('chart:class', $chartClass);
+        $this->xmlContent->endElement();
+    }
     
     /**
      * @param Chart $chart
      * @todo Set function in \PhpPresentation\Shape\Chart\Axis for defining width and color of the axis
      */
-    private function writeAxisStyle(Chart $chart)
+    protected function writeAxisStyle(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        
+
         // AxisX
         // style:style
         $this->xmlContent->startElement('style:style');
         $this->xmlContent->writeAttribute('style:name', 'styleAxisX');
         $this->xmlContent->writeAttribute('style:family', 'chart');
-        // style:chart-properties
+        // style:style > style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
@@ -297,31 +318,34 @@ class ObjectsChart extends AbstractPart
         if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
-        // > style:chart-properties
         $this->xmlContent->endElement();
-        // style:text-properties
+        // style:style > style:text-properties
         $this->xmlContent->startElement('style:text-properties');
         $this->xmlContent->writeAttribute('fo:color', '#'.$chart->getPlotArea()->getAxisX()->getFont()->getColor()->getRGB());
         $this->xmlContent->writeAttribute('fo:font-family', $chart->getPlotArea()->getAxisX()->getFont()->getName());
         $this->xmlContent->writeAttribute('fo:font-size', $chart->getPlotArea()->getAxisX()->getFont()->getSize().'pt');
         $this->xmlContent->writeAttribute('fo:font-style', $chart->getPlotArea()->getAxisX()->getFont()->isItalic() ? 'italic' : 'normal');
-        // > style:text-properties
         $this->xmlContent->endElement();
-        // style:graphic-properties
+        // style:style > style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
         $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
         $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
-        // > style:graphic-properties
         $this->xmlContent->endElement();
-        // > style:style
+        // ##style:style
         $this->xmlContent->endElement();
+
+        // AxisX GridLines Major
+        $this->writeGridlineStyle($chart->getPlotArea()->getAxisX()->getMajorGridlines(), 'styleAxisXGridlinesMajor');
+
+        // AxisX GridLines Minor
+        $this->writeGridlineStyle($chart->getPlotArea()->getAxisX()->getMinorGridlines(), 'styleAxisXGridlinesMinor');
         
         // AxisY
         // style:style
         $this->xmlContent->startElement('style:style');
         $this->xmlContent->writeAttribute('style:name', 'styleAxisY');
         $this->xmlContent->writeAttribute('style:family', 'chart');
-        // style:chart-properties
+        // style:style > style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
@@ -329,23 +353,48 @@ class ObjectsChart extends AbstractPart
         if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
-        // > style:chart-properties
         $this->xmlContent->endElement();
-        // style:text-properties
+        // style:style > style:text-properties
         $this->xmlContent->startElement('style:text-properties');
         $this->xmlContent->writeAttribute('fo:color', '#'.$chart->getPlotArea()->getAxisY()->getFont()->getColor()->getRGB());
         $this->xmlContent->writeAttribute('fo:font-family', $chart->getPlotArea()->getAxisY()->getFont()->getName());
         $this->xmlContent->writeAttribute('fo:font-size', $chart->getPlotArea()->getAxisY()->getFont()->getSize().'pt');
         $this->xmlContent->writeAttribute('fo:font-style', $chart->getPlotArea()->getAxisY()->getFont()->isItalic() ? 'italic' : 'normal');
-        // > style:text-properties
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
         $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
         $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
-        // > style:graphic-properties
         $this->xmlContent->endElement();
-        // > style:style
+        // ## style:style
+        $this->xmlContent->endElement();
+
+        // AxisY GridLines Major
+        $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMajorGridlines(), 'styleAxisYGridlinesMajor');
+
+        // AxisY GridLines Minor
+        $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMinorGridlines(), 'styleAxisYGridlinesMinor');
+    }
+
+    /**
+     * @param Chart\Gridlines $oGridlines
+     * @param string $styleName
+     */
+    protected function writeGridlineStyle($oGridlines, $styleName)
+    {
+        if (!($oGridlines instanceof Chart\Gridlines)) {
+            return;
+        }
+        // style:style
+        $this->xmlContent->startElement('style:style');
+        $this->xmlContent->writeAttribute('style:name', $styleName);
+        $this->xmlContent->writeAttribute('style:family', 'chart');
+        // style:style > style:graphic-properties
+        $this->xmlContent->startElement('style:graphic-properties');
+        $this->xmlContent->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($oGridlines->getOutline()->getWidth()), 2, '.', '').'cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#'.$oGridlines->getOutline()->getFill()->getStartColor()->getRGB());
+        $this->xmlContent->endElement();
+        // ##style:style
         $this->xmlContent->endElement();
     }
     

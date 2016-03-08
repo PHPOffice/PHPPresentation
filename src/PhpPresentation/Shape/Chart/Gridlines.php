@@ -1,12 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lefevre_f
- * Date: 02/03/2016
- * Time: 14:25
- */
 
-namespace PhpPresentation\Shape\Chart;
+namespace PhpOffice\PhpPresentation\Shape\Chart;
+
+use PhpOffice\PhpPresentation\Style\Outline;
 
 class Gridlines
 {
