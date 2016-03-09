@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
+use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation
@@ -27,30 +28,24 @@ use PhpOffice\PhpPresentation\Writer\ODPresentation;
  */
 class ODPresentationTest extends \PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        TestHelperDOCX::clear();
+    }
+
     /**
      * Test create new instance
      */
     public function testConstruct()
     {
-        $objectPrefix = 'PhpOffice\\PhpPresentation\\Writer\\ODPresentation\\';
-        $parts = array(
-            'content'  => 'Content',
-            'manifest' => 'Manifest',
-            'meta'     => 'Meta',
-            'mimetype' => 'Mimetype',
-            'styles'   => 'Styles',
-            'drawing'  => 'Drawing',
-        );
-
         $oPhpPresentation = new PhpPresentation();
         $oPhpPresentation->getActiveSlide()->createDrawingShape();
         $object = new ODPresentation($oPhpPresentation);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
         $this->assertEquals('./', $object->getDiskCachingDirectory());
-        foreach ($parts as $partName => $objectName) {
-            $this->assertInstanceOf($objectPrefix . $objectName, $object->getWriterPart($partName));
-        }
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\HashTable', $object->getDrawingHashTable());
     }
 
@@ -91,16 +86,6 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get writer part null
-     */
-    public function testGetWriterPartNull()
-    {
-        $object = new ODPresentation(new PhpPresentation());
-
-        $this->assertNull($object->getWriterPart('foo'));
-    }
-
-    /**
      * Test get PhpPresentation exception
      *
      * @expectedException Exception
@@ -134,5 +119,25 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
     {
         $object = new ODPresentation(new PhpPresentation());
         $object->setUseDiskCaching(true, 'foo');
+    }
+
+    public function testFeatureThumbnail()
+    {
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+
+        $xPathManifest = '/manifest:manifest/manifest:file-entry[@manifest:media-type=\'image/png\'][@manifest:full-path=\'Thumbnails/thumbnail.png\']';
+
+        $oPhpPresentation = new PhpPresentation();
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertFalse($oXMLDoc->fileExists('Thumbnails/thumbnail.png'));
+        $this->assertTrue($oXMLDoc->fileExists('META-INF/manifest.xml'));
+        $this->assertFalse($oXMLDoc->elementExists($xPathManifest, 'META-INF/manifest.xml'));
+
+        $oPhpPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Thumbnails/thumbnail.png'));
+        $this->assertTrue($oXMLDoc->fileExists('META-INF/manifest.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($xPathManifest, 'META-INF/manifest.xml'));
     }
 }

@@ -63,7 +63,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
     * Get collection of shapes
     *
-    * @return \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[]
+    * @return \ArrayObject
     */
     public function getShapeCollection()
     {

@@ -6,6 +6,24 @@
 - Fixed the image project - @mvargasmoran GH-177
 - PowerPoint2007 Writer : Bugfix for printing slide notes - @JewrassicPark GH-179
 
+### Changes
+- PhpOffice\PhpPresentation\Writer\ODPresentation : Move to Design Pattern Decorator - @Progi1984
+- PhpOffice\PhpPresentation\Writer\PowerPoint2007 : Move to Design Pattern Decorator - @Progi1984
+- PhpOffice\PhpPresentation\Shape\Type\AbstracType\getData has been deprecated for PhpOffice\PhpPresentation\Shape\Type\AbstracType\getSeries - @Progi1984 GH-169
+- PhpOffice\PhpPresentation\Shape\Type\AbstracType\setData has been deprecated for PhpOffice\PhpPresentation\Shape\Type\AbstracType\setSeries - @Progi1984 GH-169
+- Added documentation for chart series (font, outline, marker) - @Progi1984 GH-169
+
+### Features
+- ODPresentation & PowerPoint2007 Writer : Add support for Comment - @Progi1984 GH-116
+- ODPresentation & PowerPoint2007 Writer : Thumbnail of the presentation - @Progi1984 GH-125
+- ODPresentation & PowerPoint2007 Writer : Add support for Gridlines in Chart - @Progi1984 GH-129
+- ODPresentation & PowerPoint2007 Writer : Support for images in base 64 - @Progi1984 GH-168
+- ODPresentation & PowerPoint2007 Writer : Marker of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
+- ODPresentation & PowerPoint2007 Writer : Outline of Series in Line & Scatter chart is customizable - @Progi1984 GH-169
+- ODPresentation & PowerPoint2007 & Serialized Writer : Support for Zip Adapter - @Progi1984 GH-176
+- ODPresentation & PowerPoint2007 Writer : language property to TextElement - @skrajewski & @Progi1984 GH-180
+- ODPresentation & PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
+
 ## 0.6.0 - 2016-01-24
 
 ### Bugfix

@@ -32,6 +32,11 @@ class TextElement implements TextElementInterface
     private $text;
 
     /**
+     * @var string
+     */
+    protected $language;
+
+    /**
      * Hyperlink
      *
      * @var \PhpOffice\PhpPresentation\Shape\Hyperlink
@@ -117,6 +122,26 @@ class TextElement implements TextElementInterface
     {
         $this->hyperlink = $pHyperlink;
 
+        return $this;
+    }
+
+    /**
+     * Get language
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * Set language
+     * @param string $language
+     * @return TextElement
+     */
+    public function setLanguage($language)
+    {
+        $this->language = $language;
         return $this;
     }
 

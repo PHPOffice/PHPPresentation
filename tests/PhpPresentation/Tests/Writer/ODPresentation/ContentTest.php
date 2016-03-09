@@ -19,17 +19,17 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 use PhpOffice\Common\Drawing;
-use PhpOffice\PhpPresentation\Style\Fill;
-use PhpOffice\PhpPresentation\Style\PhpOffice\PhpPresentation\Style;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
@@ -39,26 +39,107 @@ use PhpOffice\PhpPresentation\Style\PhpOffice\PhpPresentation\Style;
 class ContentTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * @var PhpPresentation
+     */
+    protected $oPresentation;
+
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->oPresentation = new PhpPresentation();
+    }
+
+    /**
      * Executed before each method of the class
      */
     public function tearDown()
     {
+        $this->oPresentation = null;
         TestHelperDOCX::clear();
     }
 
     public function testDrawingWithHyperlink()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
+        $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
         $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
     
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
     
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+    }
+
+    public function testComment()
+    {
+        $expectedName = 'Name';
+        $expectedText = 'Text';
+
+        $oAuthor = new Comment\Author();
+        $oAuthor->setName($expectedName);
+        $oComment = new Comment();
+        $oComment->setAuthor($oAuthor);
+        $oComment->setText($expectedText);
+        $this->oPresentation->getActiveSlide()->addShape($oComment);
+
+        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
+        $element = '/office:document-content';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'xmlns:officeooo', 'content.xml'));
+        $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation/dc:creator';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals($expectedName, $pres->getElement($element, 'content.xml')->nodeValue);
+        $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation/text:p';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals($expectedText, $pres->getElement($element, 'content.xml')->nodeValue);
+    }
+
+    public function testCommentWithoutAuthor()
+    {
+        $oComment = new Comment();
+        $this->oPresentation->getActiveSlide()->addShape($oComment);
+
+        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
+        $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'dc:creator', 'content.xml'));
+    }
+
+    public function testFillGradientLinearRichText()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $element = '/office:document-styles/office:styles/draw:gradient';
+        $this->assertEquals('gradient_'.$oShape->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:name', 'styles.xml'));
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('gradient', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
+        $this->assertEquals('gradient_'.$oShape->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:fill-gradient-name', 'content.xml'));
+    }
+
+    public function testFillSolidRichText()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createRichTextShape();
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF4672A8'));
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
+        $this->assertEquals('#'.$oShape->getFill()->getStartColor()->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+        $this->assertEquals('#'.$oShape->getFill()->getEndColor()->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
     }
 
     public function testGroup()
@@ -220,6 +301,28 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
         $this->assertEquals('false', $pres->getElementAttribute($element, 'draw:auto-grow-height', 'content.xml'));
         $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
+    }
+
+    public function testRichTextRunLanguage()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$oRun->getHashCode().'\']/style:text-properties';
+        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($expectedElement, 'fo:language', 'content.xml'));
+        $this->assertEquals('en-US', $pres->getElementAttribute($expectedElement, 'fo:language', 'content.xml'));
+
+        $oRun->setLanguage('de_DE');
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$oRun->getHashCode().'\']/style:text-properties';
+        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($expectedElement, 'fo:language', 'content.xml'));
+        $this->assertEquals('de_DE', $pres->getElementAttribute($expectedElement, 'fo:language', 'content.xml'));
     }
 
     public function testRichTextBorder()
@@ -400,7 +503,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oRun = $oRichText->createTextRun('Run1');
         $oRun->getFont()->setBold(true);
         
-        $expectedHashCode = $oRun->getFont()->getHashCode();
+        $expectedHashCode = $oRun->getHashCode();
         
         $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
         

@@ -17,46 +17,19 @@
 
 namespace PhpOffice\PhpPresentation\Writer;
 
+use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
-use PhpOffice\PhpPresentation\Slide\Background\Image;
-use PhpOffice\PhpPresentation\Writer\ODPresentation\Content;
-use PhpOffice\PhpPresentation\Writer\ODPresentation\Drawing;
-use PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest;
-use PhpOffice\PhpPresentation\Writer\ODPresentation\Meta;
-use PhpOffice\PhpPresentation\Writer\ODPresentation\Mimetype;
-use PhpOffice\PhpPresentation\Writer\ODPresentation\ObjectsChart;
-use PhpOffice\PhpPresentation\Writer\ODPresentation\Styles;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
+use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Shape\Table;
+use DirectoryIterator;
 
 /**
  * ODPresentation writer
  */
-class ODPresentation implements WriterInterface
+class ODPresentation extends AbstractWriter implements WriterInterface
 {
-    /**
-    * Private PhpPresentation
-    *
-    * @var \PhpOffice\PhpPresentation\PhpPresentation
-    */
-    private $presentation;
-
-    /**
-    * Private writer parts
-    *
-    * @var \PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractPart[]
-    */
-    private $writerParts;
-
-    /**
-     * Private unique hashtable
-     *
-     * @var \PhpOffice\PhpPresentation\HashTable
-     */
-    private $drawingHashTable;
-
     /**
      * @var \PhpOffice\PhpPresentation\Shape\Chart[]
      */
@@ -89,22 +62,10 @@ class ODPresentation implements WriterInterface
         // Set up disk caching location
         $this->diskCachingDirectory = './';
 
-        // Initialise writer parts
-        $this->writerParts['content']  = new Content();
-        $this->writerParts['manifest'] = new Manifest();
-        $this->writerParts['meta']     = new Meta();
-        $this->writerParts['mimetype'] = new Mimetype();
-        $this->writerParts['styles']   = new Styles();
-        $this->writerParts['charts']   = new ObjectsChart();
-        $this->writerParts['drawing']  = new Drawing();
-
-        // Assign parent WriterInterface
-        foreach ($this->writerParts as $writer) {
-            $writer->setParentWriter($this);
-        }
-
         // Set HashTable variables
-        $this->drawingHashTable            = new HashTable();
+        $this->oDrawingHashTable = new HashTable();
+
+        $this->setZipAdapter(new ZipArchiveAdapter());
     }
 
     /**
@@ -118,203 +79,58 @@ class ODPresentation implements WriterInterface
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty");
         }
-        if (!is_null($this->presentation)) {
-            // If $pFilename is php://output or php://stdout, make it a temporary file...
-            $originalFilename = $pFilename;
-            if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
-                $pFilename = @tempnam('./', 'phppttmp');
-                if ($pFilename == '') {
-                    $pFilename = $originalFilename;
-                }
+        // If $pFilename is php://output or php://stdout, make it a temporary file...
+        $originalFilename = $pFilename;
+        if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
+            $pFilename = @tempnam('./', 'phppttmp');
+            if ($pFilename == '') {
+                $pFilename = $originalFilename;
             }
-
-            $writerPartChart = $this->getWriterPart('charts');
-            if (!$writerPartChart instanceof ObjectsChart) {
-                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation\ObjectsChart');
-            }
-            $writerPartContent = $this->getWriterPart('content');
-            if (!$writerPartContent instanceof Content) {
-                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation\Content');
-            }
-            $writerPartDrawing = $this->getWriterPart('Drawing');
-            if (!$writerPartDrawing instanceof Drawing) {
-                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation\Drawing');
-            }
-            $writerPartManifest = $this->getWriterPart('manifest');
-            if (!$writerPartManifest instanceof Manifest) {
-                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest');
-            }
-            $writerPartMeta = $this->getWriterPart('meta');
-            if (!$writerPartMeta instanceof Meta) {
-                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation\Meta');
-            }
-            $writerPartMimetype = $this->getWriterPart('mimetype');
-            if (!$writerPartMimetype instanceof Mimetype) {
-                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation\Mimetype');
-            }
-            $writerPartStyles = $this->getWriterPart('styles');
-            if (!$writerPartStyles instanceof Styles) {
-                throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation\Styles');
-            }
-
-            // Create drawing dictionary
-            $this->drawingHashTable->addFromSource($writerPartDrawing->allDrawings($this->presentation));
-
-            // Create new ZIP file and open it for writing
-            $objZip = new \ZipArchive();
-
-            // Try opening the ZIP file
-            if ($objZip->open($pFilename, \ZIPARCHIVE::OVERWRITE) !== true) {
-                if ($objZip->open($pFilename, \ZIPARCHIVE::CREATE) !== true) {
-                    throw new \Exception("Could not open " . $pFilename . " for writing.");
-                }
-            }
-
-            // Add mimetype to ZIP file
-            //@todo Not in ZIPARCHIVE::CM_STORE mode
-            $objZip->addFromString('mimetype', $writerPartMimetype->writePart());
-
-            // Add content.xml to ZIP file
-            $objZip->addFromString('content.xml', $writerPartContent->writePart($this->presentation));
-
-            // Add meta.xml to ZIP file
-            $objZip->addFromString('meta.xml', $writerPartMeta->writePart($this->presentation));
-
-            // Add styles.xml to ZIP file
-            $objZip->addFromString('styles.xml', $writerPartStyles->writePart($this->presentation));
-
-            // Add META-INF/manifest.xml
-            $objZip->addFromString('META-INF/manifest.xml', $writerPartManifest->writePart());
-
-            // Add charts
-            foreach ($this->chartArray as $keyChart => $shapeChart) {
-                $arrayFile = $writerPartChart->writePart($shapeChart);
-                foreach ($arrayFile as $file => $content) {
-                    if (!empty($content)) {
-                        $objZip->addFromString('Object '.$keyChart.'/' . $file, $content);
-                    }
-                }
-            }
-            
-            // Add media
-            $arrMedia = array();
-            for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
-                $shape = $this->getDrawingHashTable()->getByIndex($i);
-                if (!($shape instanceof AbstractDrawing)) {
-                    throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Shape\AbstractDrawing');
-                }
-                if ($shape instanceof ShapeDrawing) {
-                    if (!in_array(md5($shape->getPath()), $arrMedia)) {
-                        $arrMedia[] = md5($shape->getPath());
-
-                        $imagePath = $shape->getPath();
-
-                        if (strpos($imagePath, 'zip://') !== false) {
-                            $imagePath = substr($imagePath, 6);
-                            $imagePathSplitted = explode('#', $imagePath);
-
-                            $imageZip = new \ZipArchive();
-                            $imageZip->open($imagePathSplitted[0]);
-                            $imageContents = $imageZip->getFromName($imagePathSplitted[1]);
-                            $imageZip->close();
-                            unset($imageZip);
-                        } else {
-                            $imageContents = file_get_contents($imagePath);
-                        }
-
-                        $objZip->addFromString('Pictures/' . md5($shape->getPath()).'.'.$shape->getExtension(), $imageContents);
-                    }
-                } elseif ($shape instanceof MemoryDrawing) {
-                    if (!in_array(str_replace(' ', '_', $shape->getIndexedFilename()), $arrMedia)) {
-                        $arrMedia[] = str_replace(' ', '_', $shape->getIndexedFilename());
-                        ob_start();
-                            call_user_func($shape->getRenderingFunction(), $shape->getImageResource());
-                            $imageContents = ob_get_contents();
-                        ob_end_clean();
-
-                        $objZip->addFromString('Pictures/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
-                    }
-                }
-            }
-
-            foreach ($this->presentation->getAllSlides() as $keySlide => $oSlide) {
-                // Add background image slide
-                $oBkgImage = $oSlide->getBackground();
-                if ($oBkgImage instanceof Image) {
-                    $objZip->addFromString('Pictures/'.$oBkgImage->getIndexedFilename($keySlide), file_get_contents($oBkgImage->getPath()));
-                }
-            }
-
-            // Close file
-            if ($objZip->close() === false) {
-                throw new \Exception("Could not close zip file $pFilename.");
-            }
-
-            // If a temporary file was used, copy it to the correct file stream
-            if ($originalFilename != $pFilename) {
-                if (copy($pFilename, $originalFilename) === false) {
-                    throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
-                }
-                if (@unlink($pFilename) === false) {
-                    throw new \Exception('The file '.$pFilename.' could not be deleted.');
-                }
-            }
-        } else {
-            throw new \Exception("PhpPresentation object unassigned.");
         }
-    }
 
-    /**
-     * Get PhpPresentation object
-     *
-     * @return PhpPresentation
-     * @throws \Exception
-     */
-    public function getPhpPresentation()
-    {
-        if (!is_null($this->presentation)) {
-            return $this->presentation;
-        } else {
-            throw new \Exception("No PhpPresentation assigned.");
+        // Initialize HashTable
+        $this->getDrawingHashTable()->addFromSource($this->allDrawings());
+
+        // Initialize Zip
+        $oZip = $this->getZipAdapter();
+        $oZip->open($pFilename);
+
+        // Variables
+        $oPresentation = $this->getPhpPresentation();
+        $arrayChart = array();
+
+        $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation');
+        foreach ($oDir as $oFile) {
+            if (!$oFile->isFile()) {
+                continue;
+            }
+            $class = __NAMESPACE__.'\\ODPresentation\\'.$oFile->getBasename('.php');
+            $o = new \ReflectionClass($class);
+
+            if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
+                continue;
+            }
+            $oService = $o->newInstance();
+            $oService->setZip($oZip);
+            $oService->setPresentation($oPresentation);
+            $oService->setDrawingHashTable($this->getDrawingHashTable());
+            $oService->setArrayChart($arrayChart);
+            $oZip = $oService->render();
+            $arrayChart = $oService->getArrayChart();
+            unset($oService);
         }
-    }
 
-    /**
-     * Get PhpPresentation object
-     *
-     * @param  PhpPresentation                       $pPhpPresentation PhpPresentation object
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
-     */
-    public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
-    {
-        $this->presentation = $pPhpPresentation;
+        // Close file
+        $oZip->close();
 
-        return $this;
-    }
-
-    /**
-     * Get drawing hash table
-     *
-     * @return \PhpOffice\PhpPresentation\HashTable
-     */
-    public function getDrawingHashTable()
-    {
-        return $this->drawingHashTable;
-    }
-
-    /**
-     * Get writer part
-     *
-     * @param  string                                         $pPartName Writer part name
-     * @return \PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractPart
-     */
-    public function getWriterPart($pPartName = '')
-    {
-        if ($pPartName != '' && isset($this->writerParts[strtolower($pPartName)])) {
-            return $this->writerParts[strtolower($pPartName)];
-        } else {
-            return null;
+        // If a temporary file was used, copy it to the correct file stream
+        if ($originalFilename != $pFilename) {
+            if (copy($pFilename, $originalFilename) === false) {
+                throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
+            }
+            if (@unlink($pFilename) === false) {
+                throw new \Exception('The file ' . $pFilename . ' could not be removed.');
+            }
         }
     }
 
@@ -359,5 +175,41 @@ class ODPresentation implements WriterInterface
     public function getDiskCachingDirectory()
     {
         return $this->diskCachingDirectory;
+    }
+
+    /**
+     * Get an array of all drawings
+     *
+     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
+     * @throws \Exception
+     */
+    protected function allDrawings()
+    {
+        // Get an array of all drawings
+        $aDrawings  = array();
+
+        // Loop trough PhpPresentation
+        $slideCount = $this->getPhpPresentation()->getSlideCount();
+        for ($i = 0; $i < $slideCount; ++$i) {
+            // Loop trough images and add to array
+            $iterator = $this->getPhpPresentation()->getSlide($i)->getShapeCollection()->getIterator();
+            while ($iterator->valid()) {
+                if ($iterator->current() instanceof AbstractDrawing && !($iterator->current() instanceof Table)) {
+                    $aDrawings[] = $iterator->current();
+                } elseif ($iterator->current() instanceof Group) {
+                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
+                    while ($iterator2->valid()) {
+                        if ($iterator2->current() instanceof AbstractDrawing && !($iterator2->current() instanceof Table)) {
+                            $aDrawings[] = $iterator2->current();
+                        }
+                        $iterator2->next();
+                    }
+                }
+
+                $iterator->next();
+            }
+        }
+
+        return $aDrawings;
     }
 }

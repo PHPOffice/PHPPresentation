@@ -34,16 +34,6 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
     public function testConstruct()
     {
         $objectPrefix = 'PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\';
-        $parts = array(
-            'contenttypes' => 'ContentTypes',
-            'docprops'     => 'DocProps',
-            'rels'         => 'Rels',
-            'theme'        => 'Theme',
-            'presentation' => 'Presentation',
-            'slide'        => 'Slide',
-            'drawing'      => 'Drawing',
-            'chart'        => 'Chart',
-        );
 
         $oPhpPresentation = new PhpPresentation();
         $object = new PowerPoint2007($oPhpPresentation);
@@ -51,10 +41,6 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
         $this->assertEquals('./', $object->getDiskCachingDirectory());
         $this->assertInstanceOf("{$objectPrefix}LayoutPack\\PackDefault", $object->getLayoutPack());
-        foreach ($parts as $partName => $objectName) {
-            $this->assertInstanceOf($objectPrefix . $objectName, $object->getWriterPart($partName));
-        }
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\HashTable', $object->getDrawingHashTable());
     }
 
     /**
@@ -63,15 +49,8 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
     public function testSave()
     {
         $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');
-        $imageFile = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png';
 
         $oPhpPresentation = new PhpPresentation();
-        $slide = $oPhpPresentation->getActiveSlide();
-        $slide->createRichTextShape();
-        $slide->createLineShape(10, 10, 10, 10);
-        $slide->createChartShape()->getPlotArea()->setType(new \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D());
-        $slide->createDrawingShape()->setName('Drawing')->setPath($imageFile);
-        $slide->createTableShape()->createRow();
 
         $object = new PowerPoint2007($oPhpPresentation);
         $object->save($filename);
@@ -82,13 +61,29 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get writer part null
+     * Test save with empty filename
+     *
+     * @expectedException Exception
+     * @expectedExceptionMessage Filename is empty
      */
-    public function testGetWriterPartNull()
+    public function testSaveEmptyException()
     {
-        $object = new PowerPoint2007(new PhpPresentation());
+        $oPhpPresentation = new PhpPresentation();
 
-        $this->assertNull($object->getWriterPart('foo'));
+        $object = new PowerPoint2007($oPhpPresentation);
+        $object->save('');
+    }
+
+    /**
+     * Test save with empty assignation
+     *
+     * @expectedException Exception
+     * @expectedExceptionMessage No PhpPresentation assigned.
+     */
+    public function testSaveUnassignedException()
+    {
+        $object = new PowerPoint2007();
+        $object->save('filename.pptx');
     }
 
     /**
@@ -104,24 +99,16 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test set/get Office 2003 compatibility
+     * Test disk caching
      */
-    public function testSetHasOffice2003Compatibility()
-    {
-        $object = new PowerPoint2007(new PhpPresentation());
-        $this->assertFalse($object->hasOffice2003Compatibility());
-
-        $object->setOffice2003Compatibility(true);
-        $this->assertTrue($object->hasOffice2003Compatibility());
-    }
-
-    /**
-     * Test set/get disk caching
-     */
-    public function testSetGetUseDiskCaching()
+    public function testDiskCaching()
     {
         $object = new PowerPoint2007(new PhpPresentation());
         $this->assertFalse($object->hasDiskCaching());
+
+        $object->setUseDiskCaching(true);
+        $this->assertTrue($object->hasDiskCaching());
+        $this->assertEquals('./', $object->getDiskCachingDirectory());
 
         $object->setUseDiskCaching(true, sys_get_temp_dir());
         $this->assertTrue($object->hasDiskCaching());
@@ -132,36 +119,28 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
      * Test set/get disk caching exception
      *
      * @expectedException Exception
+     * @expectedExceptionMessage Directory does not exist: foo
      */
-    public function testSetUseDiskCachingException()
+    public function testCachingException()
     {
         $object = new PowerPoint2007(new PhpPresentation());
         $object->setUseDiskCaching(true, 'foo');
     }
 
-    public function testMarkAsFinal()
+    /**
+     * Test LayoutPack
+     */
+    public function testLayoutPack()
     {
-        $oPhpPresentation = new PhpPresentation();
+        $oLayoutPack = $this->getMock('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack');
 
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertFalse($pres->elementExists('/Properties/property[@name="_MarkAsFinal"]', 'docProps/custom.xml'));
-        $this->assertFalse($pres->elementExists('/cp:coreProperties/cp:contentStatus', 'docProps/core.xml'));
+        $object = new PowerPoint2007();
 
-        $oPhpPresentation->markAsFinal(true);
-
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($pres->elementExists('/Properties', 'docProps/custom.xml'));
-        $this->assertTrue($pres->elementExists('/Properties/property', 'docProps/custom.xml'));
-        $this->assertTrue($pres->elementExists('/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]', 'docProps/custom.xml'));
-        $this->assertTrue($pres->elementExists('/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool', 'docProps/custom.xml'));
-        $this->assertTrue($pres->elementExists('/cp:coreProperties/cp:contentStatus', 'docProps/core.xml'));
-        $this->assertEquals('Final', $pres->getElement('/cp:coreProperties/cp:contentStatus', 'docProps/core.xml')->nodeValue);
-
-        $oPhpPresentation->markAsFinal(false);
-
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertFalse($pres->elementExists('/Properties/property[@name="_MarkAsFinal"]', 'docProps/custom.xml'));
-        $this->assertFalse($pres->elementExists('/cp:coreProperties/cp:contentStatus', 'docProps/core.xml'));
+        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack", $object->getLayoutPack());
+        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007", $object->setLayoutPack());
+        $this->assertNull($object->getLayoutPack());
+        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007", $object->setLayoutPack($oLayoutPack));
+        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack", $object->getLayoutPack());
     }
 
     public function testZoom()
@@ -177,7 +156,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals('100', $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 'ppt/viewProps.xml'));
 
         $value = rand(1, 100);
-        $oPhpPresentation->setZoom($value);
+        $oPhpPresentation->getPresentationProperties()->setZoom($value);
 
         $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $this->assertTrue($pres->elementExists('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'ppt/viewProps.xml'));
@@ -186,5 +165,22 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'ppt/viewProps.xml'));
         $this->assertEquals($value * 100, $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', 'ppt/viewProps.xml'));
         $this->assertEquals('100', $pres->getElementAttribute('/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 'ppt/viewProps.xml'));
+    }
+
+    public function testFeatureThumbnail()
+    {
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+
+        $xPathManifest = '/Relationships/Relationship[@Target=\'docProps/thumbnail.jpeg\'][@Type=\'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail\']';
+        $oPhpPresentation = new PhpPresentation();
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->fileExists('_rels/.rels'));
+        $this->assertFalse($oXMLDoc->elementExists($xPathManifest, '_rels/.rels'));
+
+        $oPhpPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($oXMLDoc->fileExists('_rels/.rels'));
+        $this->assertTrue($oXMLDoc->elementExists($xPathManifest, '_rels/.rels'));
     }
 }

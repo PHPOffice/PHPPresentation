@@ -25,6 +25,23 @@ class PresentationProperties
      * @var boolean
      */
     protected $isLoopUntilEsc = false;
+
+    /**
+     * Mark as final
+     * @var bool
+     */
+    protected $markAsFinal = false;
+
+    /*
+     * @var string
+     */
+    protected $thumbnail;
+
+    /**
+     * Zoom
+     * @var float
+     */
+    protected $zoom = 1;
     
     /**
      * @return bool
@@ -40,7 +57,75 @@ class PresentationProperties
      */
     public function setLoopContinuouslyUntilEsc($value = false)
     {
-        $this->isLoopUntilEsc = $value;
+        if (is_bool($value)) {
+            $this->isLoopUntilEsc = $value;
+        }
         return $this;
+    }
+    
+    /**
+     * Return the thumbnail file path
+     * @return string
+     */
+    public function getThumbnailPath()
+    {
+        return $this->thumbnail;
+    }
+    
+    /**
+     * Define the path for the thumbnail file / preview picture
+     * @param string $value
+     * @return \PhpOffice\PhpPresentation\PresentationProperties
+     */
+    public function setThumbnailPath($path = '')
+    {
+        if (file_exists($path)) {
+            $this->thumbnail = $path;
+        }
+        return $this;
+    }
+
+    /**
+     * Mark a document as final
+     * @param bool $state
+     * @return PhpPresentation
+     */
+    public function markAsFinal($state = true)
+    {
+        if (is_bool($state)) {
+            $this->markAsFinal = $state;
+        }
+        return $this;
+    }
+
+    /**
+     * Return if this document is marked as final
+     * @return bool
+     */
+    public function isMarkedAsFinal()
+    {
+        return $this->markAsFinal;
+    }
+
+    /**
+     * Set the zoom of the document (in percentage)
+     * @param float $zoom
+     * @return PhpPresentation
+     */
+    public function setZoom($zoom = 1)
+    {
+        if (is_numeric($zoom)) {
+            $this->zoom = $zoom;
+        }
+        return $this;
+    }
+
+    /**
+     * Return the zoom (in percentage)
+     * @return float
+     */
+    public function getZoom()
+    {
+        return $this->zoom;
     }
 }
