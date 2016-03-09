@@ -66,7 +66,7 @@ class Content extends AbstractPart
     /**
      * Stores font styles for text shapes that include lists.
      *
-     * @var array
+     * @var Run[]
      */
     private $arrStyleTextFont  = array();
 
@@ -243,13 +243,15 @@ class Content extends AbstractPart
                 $objWriter->writeAttribute('style:family', 'text');
                 // style:text-properties
                 $objWriter->startElement('style:text-properties');
-                $objWriter->writeAttribute('fo:color', '#' . $item->getColor()->getRGB());
-                $objWriter->writeAttribute('fo:font-family', $item->getName());
-                $objWriter->writeAttribute('fo:font-size', $item->getSize() . 'pt');
+                $objWriter->writeAttribute('fo:color', '#' . $item->getFont()->getColor()->getRGB());
+                $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
+                $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
                 // @todo : fo:font-style
-                if ($item->isBold()) {
+                if ($item->getFont()->isBold()) {
                     $objWriter->writeAttribute('fo:font-weight', 'bold');
                 }
+                $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en-US'));
+
                 // @todo : style:text-underline-style
                 $objWriter->endElement();
                 $objWriter->endElement();
@@ -477,7 +479,7 @@ class Content extends AbstractPart
                         // text:span
                         $objWriter->startElement('text:span');
                         if ($richtext instanceof Run) {
-                            $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getFont()->getHashCode());
+                            $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getHashCode());
                         }
                         if ($richtext->hasHyperlink() === true && $richtext->getHyperlink()->getUrl() != '') {
                             // text:a
@@ -542,7 +544,7 @@ class Content extends AbstractPart
                         // text:span
                         $objWriter->startElement('text:span');
                         if ($richtext instanceof Run) {
-                            $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getFont()->getHashCode());
+                            $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getHashCode());
                         }
                         if ($richtext->hasHyperlink() === true && $richtext->getHyperlink()->getUrl() != '') {
                             // text:a
@@ -673,7 +675,7 @@ class Content extends AbstractPart
                                 // text:span
                                 $objWriter->startElement('text:span');
                                 if ($shapeRichText instanceof Run) {
-                                    $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getFont()->getHashCode());
+                                    $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getHashCode());
                                 }
                                 if ($shapeRichText->hasHyperlink() === true && $shapeRichText->getHyperlink()->getUrl() != '') {
                                     // text:a
@@ -916,8 +918,8 @@ class Content extends AbstractPart
                 // Not a line break
                 if ($richtext instanceof Run) {
                     // Style des font text
-                    if (!isset($this->arrStyleTextFont[$richtext->getFont()->getHashCode()])) {
-                        $this->arrStyleTextFont[$richtext->getFont()->getHashCode()] = $richtext->getFont();
+                    if (!isset($this->arrStyleTextFont[$richtext->getHashCode()])) {
+                        $this->arrStyleTextFont[$richtext->getHashCode()] = $richtext;
                     }
                 }
             }
@@ -1083,8 +1085,8 @@ class Content extends AbstractPart
                     foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
                         if ($shapeRichText instanceof Run) {
                             // Style des font text
-                            if (!isset($this->arrStyleTextFont[$shapeRichText->getFont()->getHashCode()])) {
-                                $this->arrStyleTextFont[$shapeRichText->getFont()->getHashCode()] = $shapeRichText->getFont();
+                            if (!isset($this->arrStyleTextFont[$shapeRichText->getHashCode()])) {
+                                $this->arrStyleTextFont[$shapeRichText->getHashCode()] = $shapeRichText;
                             }
                         }
                     }

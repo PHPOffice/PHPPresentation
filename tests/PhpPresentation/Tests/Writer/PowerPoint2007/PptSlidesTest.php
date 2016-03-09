@@ -532,6 +532,28 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp//a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
     }
+
+    public function testRichTextRunLanguage()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $expectedElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
+        $this->assertTrue($pres->elementExists($expectedElement, 'ppt/slides/slide1.xml'));
+        $this->assertTrue($pres->attributeElementExists($expectedElement, 'lang', 'ppt/slides/slide1.xml'));
+        $this->assertEquals('en-US', $pres->getElementAttribute($expectedElement, 'lang', 'ppt/slides/slide1.xml'));
+
+        $oRun->setLanguage('de_DE');
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $expectedElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
+        $this->assertTrue($pres->elementExists($expectedElement, 'ppt/slides/slide1.xml'));
+        $this->assertTrue($pres->attributeElementExists($expectedElement, 'lang', 'ppt/slides/slide1.xml'));
+        $this->assertEquals('de_DE', $pres->getElementAttribute($expectedElement, 'lang', 'ppt/slides/slide1.xml'));
+    }
     
     public function testRichTextShadow()
     {
