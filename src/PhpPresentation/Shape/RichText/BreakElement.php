@@ -61,6 +61,27 @@ class BreakElement implements TextElementInterface
     }
 
     /**
+     * Set language
+     *
+     * @param $lang
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     */
+    public function setLanguage($lang)
+    {
+        return $this;
+    }
+
+    /**
+     * Get language
+     *
+     * @return string Language
+     */
+    public function getLanguage()
+    {
+        return null;
+    }
+
+    /**
      * Get hash code
      *
      * @return string Hash code

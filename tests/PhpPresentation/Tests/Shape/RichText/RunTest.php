@@ -48,6 +48,14 @@ class RunTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
+    public function testLanguage()
+    {
+        $object = new Run();
+        $this->assertNull($object->getLanguage());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setLanguage('en-US'));
+        $this->assertEquals('en-US', $object->getLanguage());
+    }
+
     public function testText()
     {
         $object = new Run();

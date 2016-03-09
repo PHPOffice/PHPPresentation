@@ -271,6 +271,28 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
     }
 
+    public function testRichTextRunLanguage()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$oRun->getHashCode().'\']/style:text-properties';
+        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($expectedElement, 'fo:language', 'content.xml'));
+        $this->assertEquals('en-US', $pres->getElementAttribute($expectedElement, 'fo:language', 'content.xml'));
+
+        $oRun->setLanguage('de_DE');
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$oRun->getHashCode().'\']/style:text-properties';
+        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($expectedElement, 'fo:language', 'content.xml'));
+        $this->assertEquals('de_DE', $pres->getElementAttribute($expectedElement, 'fo:language', 'content.xml'));
+    }
+
     public function testRichTextBorder()
     {
         $phpPresentation = new PhpPresentation();
@@ -449,7 +471,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oRun = $oRichText->createTextRun('Run1');
         $oRun->getFont()->setBold(true);
         
-        $expectedHashCode = $oRun->getFont()->getHashCode();
+        $expectedHashCode = $oRun->getHashCode();
         
         $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
         

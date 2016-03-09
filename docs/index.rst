@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to PHPPresentation's documentation
-========================================
+==========================================
 
 |PHPPresentation|
 
@@ -34,6 +34,7 @@ PHPPresentation is a library written in pure PHP that provides a set of classes 
    
    shapes_chart
    shapes_comment
+   shapes_richtext
    shapes_table
 
 Indices and tables

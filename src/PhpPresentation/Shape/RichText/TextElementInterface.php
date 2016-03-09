@@ -45,6 +45,17 @@ interface TextElementInterface
     public function getFont();
 
     /**
+     * @return string Language
+     */
+    public function getLanguage();
+
+    /**
+     * @param string $lang
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     */
+    public function setLanguage($lang);
+
+    /**
      * Get hash code
      *
      * @return string Hash code
