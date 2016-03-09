@@ -40,16 +40,6 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $objectPrefix = 'PhpOffice\\PhpPresentation\\Writer\\ODPresentation\\';
-        $parts = array(
-            'content'  => 'Content',
-            'manifest' => 'Manifest',
-            'meta'     => 'Meta',
-            'mimetype' => 'Mimetype',
-            'styles'   => 'Styles',
-            'drawing'  => 'Drawing',
-        );
-
         $oPhpPresentation = new PhpPresentation();
         $oPhpPresentation->getActiveSlide()->createDrawingShape();
         $object = new ODPresentation($oPhpPresentation);

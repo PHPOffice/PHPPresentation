@@ -924,5 +924,4 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > style:style
         $this->xmlContent->endElement();
     }
-
 }
