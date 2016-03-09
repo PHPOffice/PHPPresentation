@@ -25,6 +25,10 @@ class PptMedia extends AbstractDecoratorWriter
                     $imageContents = $imageZip->getFromName($imagePathSplitted[1]);
                     $imageZip->close();
                     unset($imageZip);
+                } elseif (strpos($imagePath, 'data:image/') === 0) {
+                    list(, $imageContents) = explode(';', $imagePath);
+                    list(, $imageContents) = explode(',', $imageContents);
+                    $imageContents = base64_decode($imageContents);
                 } else {
                     $imageContents = file_get_contents($imagePath);
                 }

@@ -151,29 +151,42 @@ class Manifest extends AbstractPart
      * @param  string    $pFile Filename
      * @return string    Mime Type
      * @throws \Exception
+     * @todo PowerPoint2007\ContentTypes duplicate Code : getImageMimeType
      */
     private function getImageMimeType($pFile = '')
     {
-        if (File::fileExists($pFile)) {
-            if (strpos($pFile, 'zip://') === 0) {
-                $pZIPFile = str_replace('zip://', '', $pFile);
-                $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
-                $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
-                $oArchive = new \ZipArchive();
-                $oArchive->open($pZIPFile);
-                if (!function_exists('getimagesizefromstring')) {
-                    $uri = 'data://application/octet-stream;base64,' . base64_encode($oArchive->getFromName($pImgFile));
-                    $image = getimagesize($uri);
-                } else {
-                    $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
-                }
-            } else {
-                $image = getimagesize($pFile);
+        if (strpos($pFile, 'zip://') === 0) {
+            $pZIPFile = str_replace('zip://', '', $pFile);
+            $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
+            if (!File::fileExists($pZIPFile)) {
+                throw new \Exception("File $pFile does not exist");
             }
-
-            return image_type_to_mime_type($image[2]);
+            $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
+            $oArchive = new \ZipArchive();
+            $oArchive->open($pZIPFile);
+            if (!function_exists('getimagesizefromstring')) {
+                $uri = 'data://application/octet-stream;base64,' . base64_encode($oArchive->getFromName($pImgFile));
+                $image = getimagesize($uri);
+            } else {
+                $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
+            }
+        } elseif (strpos($pFile, 'data:image/') === 0) {
+            $sImage = $pFile;
+            list(, $sImage) = explode(';', $sImage);
+            list(, $sImage) = explode(',', $sImage);
+            if (!function_exists('getimagesizefromstring')) {
+                $uri = 'data://application/octet-stream;base64,' . base64_encode($sImage);
+                $image = getimagesize($uri);
+            } else {
+                $image = getimagesizefromstring($sImage);
+            }
         } else {
-            throw new \Exception("File $pFile does not exist");
+            if (!File::fileExists($pFile)) {
+                throw new \Exception("File $pFile does not exist");
+            }
+            $image = getimagesize($pFile);
         }
+
+        return image_type_to_mime_type($image[2]);
     }
 }
