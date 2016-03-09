@@ -1,49 +1,24 @@
 <?php
-/**
- * This file is part of PHPPresentation - A pure PHP library for reading and writing
- * presentations documents.
- *
- * PHPPresentation is free software distributed under the terms of the GNU Lesser
- * General Public License version 3 as published by the Free Software Foundation.
- *
- * For the full copyright and license information, please read the LICENSE
- * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
- *
- * @link        https://github.com/PHPOffice/PHPPresentation
- * @copyright   2009-2015 PHPPresentation contributors
- * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- */
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\File;
-use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
-/**
- * \PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
- */
-class Manifest extends AbstractPart
+class MetaInfManifest extends AbstractDecoratorWriter
 {
     /**
-     * Write Manifest file to XML format
-     *
-     * @return string        XML Output
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function writePart()
+    public function render()
     {
-        $parentWriter = $this->getParentWriter();
-        if (!$parentWriter instanceof ODPresentation) {
-            throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation');
-        }
-        
         // Create XML writer
-        $objWriter = $this->getXMLWriter();
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8');
@@ -56,8 +31,8 @@ class Manifest extends AbstractPart
         // manifest:file-entry
         $objWriter->startElement('manifest:file-entry');
         $objWriter->writeAttribute('manifest:media-type', 'application/vnd.oasis.opendocument.presentation');
-        $objWriter->writeAttribute('manifest:version', '1.2');
         $objWriter->writeAttribute('manifest:full-path', '/');
+        $objWriter->writeAttribute('manifest:version', '1.2');
         $objWriter->endElement();
         // manifest:file-entry
         $objWriter->startElement('manifest:file-entry');
@@ -74,22 +49,22 @@ class Manifest extends AbstractPart
         $objWriter->writeAttribute('manifest:media-type', 'text/xml');
         $objWriter->writeAttribute('manifest:full-path', 'styles.xml');
         $objWriter->endElement();
-        
+
         // Charts
-        foreach ($parentWriter->chartArray as $key => $shape) {
+        foreach ($this->getArrayChart() as $key => $shape) {
             $objWriter->startElement('manifest:file-entry');
-            $objWriter->writeAttribute('manifest:full-path', 'Object '.$key.'/');
             $objWriter->writeAttribute('manifest:media-type', 'application/vnd.oasis.opendocument.chart');
+            $objWriter->writeAttribute('manifest:full-path', 'Object '.$key.'/');
             $objWriter->endElement();
             $objWriter->startElement('manifest:file-entry');
-            $objWriter->writeAttribute('manifest:full-path', 'Object '.$key.'/content.xml');
             $objWriter->writeAttribute('manifest:media-type', 'text/xml');
+            $objWriter->writeAttribute('manifest:full-path', 'Object '.$key.'/content.xml');
             $objWriter->endElement();
         }
 
         $arrMedia = array();
-        for ($i = 0; $i < $parentWriter->getDrawingHashTable()->count(); ++$i) {
-            $shape = $parentWriter->getDrawingHashTable()->getByIndex($i);
+        for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
+            $shape = $this->getDrawingHashTable()->getByIndex($i);
             if ($shape instanceof ShapeDrawing) {
                 if (!in_array(md5($shape->getPath()), $arrMedia)) {
                     $arrMedia[] = md5($shape->getPath());
@@ -113,7 +88,7 @@ class Manifest extends AbstractPart
             }
         }
 
-        foreach ($parentWriter->getPhpPresentation()->getAllSlides() as $numSlide => $oSlide) {
+        foreach ($this->getPresentation()->getAllSlides() as $numSlide => $oSlide) {
             $oBkgImage = $oSlide->getBackground();
             if ($oBkgImage instanceof Image) {
                 $mimeType   = $this->getImageMimeType($oBkgImage->getPath());
@@ -125,8 +100,8 @@ class Manifest extends AbstractPart
             }
         }
 
-        if ($parentWriter->getPhpPresentation()->getPresentationProperties()->getThumbnailPath()) {
-            $pathThumbnail = $parentWriter->getPhpPresentation()->getPresentationProperties()->getThumbnailPath();
+        if ($this->getPresentation()->getPresentationProperties()->getThumbnailPath()) {
+            $pathThumbnail = $this->getPresentation()->getPresentationProperties()->getThumbnailPath();
             // Size : 128x128 pixel
             // PNG : 8bit, non-interlaced with full alpha transparency
             $gdImage = imagecreatefromstring(file_get_contents($pathThumbnail));
@@ -141,8 +116,8 @@ class Manifest extends AbstractPart
 
         $objWriter->endElement();
 
-        // Return
-        return $objWriter->getData();
+        $this->getZip()->addFromString('META-INF/manifest.xml', $objWriter->getData());
+        return $this->getZip();
     }
 
     /**

@@ -251,7 +251,7 @@ class Series implements ComparableInterface
     /**
      * Get DataPointFills
      *
-     * @return array
+     * @return Fill[]
      */
     public function getDataPointFills()
     {

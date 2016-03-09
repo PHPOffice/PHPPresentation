@@ -28,6 +28,13 @@ use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
  */
 class ODPresentationTest extends \PHPUnit_Framework_TestCase
 {
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        TestHelperDOCX::clear();
+    }
+
     /**
      * Test create new instance
      */
@@ -49,9 +56,6 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
         $this->assertEquals('./', $object->getDiskCachingDirectory());
-        foreach ($parts as $partName => $objectName) {
-            $this->assertInstanceOf($objectPrefix . $objectName, $object->getWriterPart($partName));
-        }
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\HashTable', $object->getDrawingHashTable());
     }
 
@@ -89,16 +93,6 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
     {
         $object = new ODPresentation();
         $object->save('');
-    }
-
-    /**
-     * Test get writer part null
-     */
-    public function testGetWriterPartNull()
-    {
-        $object = new ODPresentation(new PhpPresentation());
-
-        $this->assertNull($object->getWriterPart('foo'));
     }
 
     /**
