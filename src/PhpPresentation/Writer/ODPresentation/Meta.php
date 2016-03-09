@@ -1,42 +1,18 @@
 <?php
-/**
- * This file is part of PHPPresentation - A pure PHP library for reading and writing
- * presentations documents.
- *
- * PHPPresentation is free software distributed under the terms of the GNU Lesser
- * General Public License version 3 as published by the Free Software Foundation.
- *
- * For the full copyright and license information, please read the LICENSE
- * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
- *
- * @link        https://github.com/PHPOffice/PHPPresentation
- * @copyright   2009-2015 PHPPresentation contributors
- * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- */
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\Common\XMLWriter;
 
-/**
- * \PhpOffice\PhpPresentation\Writer\ODPresentation\Meta
- */
-class Meta extends AbstractPart
+class Meta extends AbstractDecoratorWriter
 {
     /**
-     * Write Meta file to XML format
-     *
-     * @param  PhpPresentation $pPhpPresentation
-     * @return string        XML Output
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function writePart(PhpPresentation $pPhpPresentation)
+    public function render()
     {
         // Create XML writer
-        $objWriter = $this->getXMLWriter();
-
-        // XML header
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
         $objWriter->startDocument('1.0', 'UTF-8');
 
         // office:document-meta
@@ -58,31 +34,31 @@ class Meta extends AbstractPart
         $objWriter->startElement('office:meta');
 
         // dc:creator
-        $objWriter->writeElement('dc:creator', $pPhpPresentation->getProperties()->getLastModifiedBy());
+        $objWriter->writeElement('dc:creator', $this->getPresentation()->getDocumentProperties()->getLastModifiedBy());
         // dc:date
-        $objWriter->writeElement('dc:date', gmdate('Y-m-d\TH:i:s.000', $pPhpPresentation->getProperties()->getModified()));
+        $objWriter->writeElement('dc:date', gmdate('Y-m-d\TH:i:s.000', $this->getPresentation()->getDocumentProperties()->getModified()));
         // dc:description
-        $objWriter->writeElement('dc:description', $pPhpPresentation->getProperties()->getDescription());
+        $objWriter->writeElement('dc:description', $this->getPresentation()->getDocumentProperties()->getDescription());
         // dc:subject
-        $objWriter->writeElement('dc:subject', $pPhpPresentation->getProperties()->getSubject());
+        $objWriter->writeElement('dc:subject', $this->getPresentation()->getDocumentProperties()->getSubject());
         // dc:title
-        $objWriter->writeElement('dc:title', $pPhpPresentation->getProperties()->getTitle());
+        $objWriter->writeElement('dc:title', $this->getPresentation()->getDocumentProperties()->getTitle());
         // meta:creation-date
-        $objWriter->writeElement('meta:creation-date', gmdate('Y-m-d\TH:i:s.000', $pPhpPresentation->getProperties()->getCreated()));
+        $objWriter->writeElement('meta:creation-date', gmdate('Y-m-d\TH:i:s.000', $this->getPresentation()->getDocumentProperties()->getCreated()));
         // meta:initial-creator
-        $objWriter->writeElement('meta:initial-creator', $pPhpPresentation->getProperties()->getCreator());
+        $objWriter->writeElement('meta:initial-creator', $this->getPresentation()->getDocumentProperties()->getCreator());
         // meta:keyword
-        $objWriter->writeElement('meta:keyword', $pPhpPresentation->getProperties()->getKeywords());
+        $objWriter->writeElement('meta:keyword', $this->getPresentation()->getDocumentProperties()->getKeywords());
 
         // @todo : Where these properties are written ?
-        // $pPhpPresentation->getProperties()->getCategory()
-        // $pPhpPresentation->getProperties()->getCompany()
+        // $this->getPresentation()->getDocumentProperties()->getCategory()
+        // $this->getPresentation()->getDocumentProperties()->getCompany()
 
         $objWriter->endElement();
 
         $objWriter->endElement();
-
-        // Return
-        return $objWriter->getData();
+        
+        $this->getZip()->addFromString('meta.xml', $objWriter->getData());
+        return $this->getZip();
     }
 }
