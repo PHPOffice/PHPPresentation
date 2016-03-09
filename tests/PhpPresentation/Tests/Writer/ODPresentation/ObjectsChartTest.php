@@ -22,6 +22,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
@@ -30,7 +31,6 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
-use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
@@ -38,55 +38,17 @@ use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\ObjectsChart
  */
-class ChartsTest extends \PHPUnit_Framework_TestCase
+class ObjectsChartTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Executed before each method of the class
      */
     public function tearDown()
     {
+        parent::tearDown();
         TestHelperDOCX::clear();
-    }
-    
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage The chart type provided could not be rendered.
-     */
-    public function testNoChart()
-    {
-        $oStub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType');
-        
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oChart = $oSlide->createChartShape();
-        $oChart->getPlotArea()->setType($oStub);
-        
-        TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-    }
-    
-    public function testTitleVisibility()
-    {
-        $oPhpPresentation = new PhpPresentation();
-        $oSlide = $oPhpPresentation->getActiveSlide();
-        $oShape = $oSlide->createChartShape();
-        $oLine = new Line();
-        $oShape->getPlotArea()->setType($oLine);
-        
-        $elementTitle = '/office:document-content/office:body/office:chart/chart:chart/chart:title';
-        $elementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleTitle\']';
-        
-        $this->assertTrue($oShape->getTitle()->isVisible());
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
-        $this->assertTrue($oXMLDoc->elementExists($elementTitle, 'Object 1/content.xml'));
-        $this->assertTrue($oXMLDoc->elementExists($elementStyle, 'Object 1/content.xml'));
-        
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
-        $this->assertFalse($oXMLDoc->elementExists($elementTitle, 'Object 1/content.xml'));
-        $this->assertFalse($oXMLDoc->elementExists($elementStyle, 'Object 1/content.xml'));
     }
 
     public function testAxisFont()
@@ -128,7 +90,195 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function testChartBar3D()
+    public function testLegend()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oLine);
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+    }
+
+    public function testTitleVisibility()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementTitle = '/office:document-content/office:body/office:chart/chart:chart/chart:title';
+        $elementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleTitle\']';
+
+        $this->assertTrue($oShape->getTitle()->isVisible());
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->elementExists($elementTitle, 'Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($elementStyle, 'Object 1/content.xml'));
+
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertFalse($oXMLDoc->elementExists($elementTitle, 'Object 1/content.xml'));
+        $this->assertFalse($oXMLDoc->elementExists($elementStyle, 'Object 1/content.xml'));
+    }
+
+    public function testTypeArea()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->getFill()->setStartColor(new Color('FF93A9CE'));
+
+        $oArea = new Area();
+        $oArea->addSeries($oSeries);
+
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oArea);
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:area', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:area', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\']/style:graphic-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'draw:fill', 'Object 1/content.xml'));
+        $this->assertTrue($pres->attributeElementExists($element, 'draw:fill-color', 'Object 1/content.xml'));
+        $this->assertEquals('#93A9CE', $pres->getElementAttribute($element, 'draw:fill-color', 'Object 1/content.xml'));
+    }
+
+    public function testTypeBar()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
+
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oBar);
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:bar', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('false', $pres->getElementAttribute($element, 'chart:vertical', 'Object 1/content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'chart:three-dimensional', 'Object 1/content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'chart:right-angled-axes', 'Object 1/content.xml'));
+        $this->assertEquals('false', $pres->getElementAttribute($element, 'chart:stacked', 'Object 1/content.xml'));
+        $this->assertEquals('0', $pres->getElementAttribute($element, 'chart:overlap', 'Object 1/content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'chart:percentage', 'Object 1/content.xml'));
+        $this->assertEquals('value', $pres->getElementAttribute($element, 'chart:data-label-number', 'Object 1/content.xml'));
+    }
+
+    public function testTypeBarGroupingStacked()
+    {
+        $oBar = new Bar();
+        $oBar->addSeries(new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2)));
+        $oBar->setBarGrouping(Bar::GROUPING_STACKED);
+
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oBar);
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:stacked', 'Object 1/content.xml'));
+        $this->assertEquals('100', $pres->getElementAttribute($element, 'chart:overlap', 'Object 1/content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'chart:percentage', 'Object 1/content.xml'));
+        $this->assertEquals('value', $pres->getElementAttribute($element, 'chart:data-label-number', 'Object 1/content.xml'));
+    }
+
+    public function testTypeBarGroupingPercentStacked()
+    {
+        $oBar = new Bar();
+        $oBar->addSeries(new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2)));
+        $oBar->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
+
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oBar);
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:stacked', 'Object 1/content.xml'));
+        $this->assertEquals('100', $pres->getElementAttribute($element, 'chart:overlap', 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:percentage', 'Object 1/content.xml'));
+        $this->assertEquals('percentage', $pres->getElementAttribute($element, 'chart:data-label-number', 'Object 1/content.xml'));
+    }
+
+    public function testTypeBarHorizontal()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
+
+        $oBar = new Bar();
+        $oBar->setBarDirection(Bar::DIRECTION_HORIZONTAL);
+        $oBar->addSeries($oSeries);
+
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oBar);
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:bar', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:vertical', 'Object 1/content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'chart:three-dimensional', 'Object 1/content.xml'));
+        $this->assertFalse($pres->attributeElementExists($element, 'chart:right-angled-axes', 'Object 1/content.xml'));
+    }
+
+    public function testTypeBar3D()
     {
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
         $oSeries->setShowSeriesName(true);
@@ -162,7 +312,7 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:right-angled-axes', 'Object 1/content.xml'));
     }
 
-    public function testChartBar3DHorizontal()
+    public function testTypeBar3DHorizontal()
     {
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
         $oSeries->setShowSeriesName(true);
@@ -194,7 +344,7 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:right-angled-axes', 'Object 1/content.xml'));
     }
     
-    public function testChartLine()
+    public function testTypeLine()
     {
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
         $oSeries->setShowSeriesName(true);
@@ -228,144 +378,6 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
         $this->assertEquals('0.026cm', $pres->getElementAttribute($element, 'svg:stroke-width', 'Object 1/content.xml'));
         $this->assertEquals('#878787', $pres->getElementAttribute($element, 'svg:stroke-color', 'Object 1/content.xml'));
-    }
-    
-    public function testChartPie()
-    {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
-        $oSeries->setShowSeriesName(true);
-        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
-        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
-        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
-    
-        $oPie = new Pie();
-        $oPie->addSeries($oSeries);
-    
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oChart = $oSlide->createChartShape();
-        $oChart->getPlotArea()->setType($oPie);
-    
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-    
-        $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('chart:circle', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
-        
-        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
-    }
-
-    public function testChartPie3D()
-    {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
-        $oSeries->setShowSeriesName(true);
-        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
-        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
-        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
-
-        $oPie3D = new Pie3D();
-        $oPie3D->addSeries($oSeries);
-
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oChart = $oSlide->createChartShape();
-        $oChart->getPlotArea()->setType($oPie3D);
-
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-
-        $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('chart:circle', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
-
-        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
-
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
-    }
-    
-    public function testChartPie3DExplosion()
-    {
-        $value = rand(0, 100);
-        
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
-        $oSeries->setShowSeriesName(true);
-    
-        $oPie3D = new Pie3D();
-        $oPie3D->setExplosion($value);
-        $oPie3D->addSeries($oSeries);
-    
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oChart = $oSlide->createChartShape();
-        $oChart->getPlotArea()->setType($oPie3D);
-    
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-    
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals($value, $pres->getElementAttribute($element, 'chart:pie-offset', 'Object 1/content.xml'));
-    }
-    
-    public function testChartScatter()
-    {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
-        $oSeries->setShowSeriesName(true);
-    
-        $oScatter = new Scatter();
-        $oScatter->addSeries($oSeries);
-    
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oChart = $oSlide->createChartShape();
-        $oChart->getPlotArea()->setType($oScatter);
-    
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-    
-        $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('chart:scatter', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
-    }
-
-    public function testLegend()
-    {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
-        $oSeries->setShowSeriesName(true);
-        
-        $oLine = new Line();
-        $oLine->addSeries($oSeries);
-        
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oChart = $oSlide->createChartShape();
-        $oChart->getPlotArea()->setType($oLine);
-        
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-    
-        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
     }
 
     public function testTypeLineGridlines()
@@ -547,6 +559,117 @@ class ChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedWidthCm, $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-width', 'Object 1/content.xml'));
         $this->assertTrue($oXMLDoc->attributeElementExists($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
         $this->assertEquals('#'.$oColor->getRGB(), $oXMLDoc->getElementAttribute($expectedElement, 'svg:stroke-color', 'Object 1/content.xml'));
+    }
+    
+    public function testTypePie()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
+    
+        $oPie = new Pie();
+        $oPie->addSeries($oSeries);
+    
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oPie);
+    
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+    
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:circle', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+        
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
+        
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
+    }
+
+    public function testTypePie3D()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
+        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8AA64F'));
+
+        $oPie3D = new Pie3D();
+        $oPie3D->addSeries($oSeries);
+
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oPie3D);
+
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:circle', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('true', $pres->getElementAttribute($element, 'chart:reverse-direction', 'Object 1/content.xml'));
+    }
+    
+    public function testTypePie3DExplosion()
+    {
+        $value = rand(0, 100);
+        
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+    
+        $oPie3D = new Pie3D();
+        $oPie3D->setExplosion($value);
+        $oPie3D->addSeries($oSeries);
+    
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oPie3D);
+    
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+    
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals($value, $pres->getElementAttribute($element, 'chart:pie-offset', 'Object 1/content.xml'));
+    }
+    
+    public function testTypeScatter()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries->setShowSeriesName(true);
+    
+        $oScatter = new Scatter();
+        $oScatter->addSeries($oSeries);
+    
+        $phpPresentation = new PhpPresentation();
+        $oSlide = $phpPresentation->getActiveSlide();
+        $oChart = $oSlide->createChartShape();
+        $oChart->getPlotArea()->setType($oScatter);
+    
+        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+    
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:scatter', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
     }
 
     public function testTypeScatterMarker()

@@ -2,24 +2,14 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\HashTable;
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Outline;
-use \ZipArchive;
 
-abstract class AbstractDecoratorWriter
+abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer\AbstractDecoratorWriter
 {
-    /**
-     * @return ZipInterface
-     */
-    abstract public function render();
-
-
     /**
      * Write relationship
      *
@@ -51,63 +41,6 @@ abstract class AbstractDecoratorWriter
         } else {
             throw new \Exception("Invalid parameters passed.");
         }
-    }
-
-    /**
-     * @var \PhpOffice\PhpPresentation\HashTable
-     */
-    protected $hashTable;
-
-    public function setDrawingHashTable(HashTable $hashTable)
-    {
-        $this->hashTable = $hashTable;
-        return $this;
-    }
-
-    /**
-     * @return HashTable
-     */
-    public function getDrawingHashTable()
-    {
-        return $this->hashTable;
-    }
-
-    /**
-     * @var ZipInterface
-     */
-    protected $oZip;
-
-    public function setZip(ZipInterface $oZip)
-    {
-        $this->oZip = $oZip;
-        return $this;
-    }
-
-    /**
-     * @return ZipInterface
-     */
-    public function getZip()
-    {
-        return $this->oZip;
-    }
-
-    /**
-     * @var PhpPresentation
-     */
-    protected $oPresentation;
-
-    public function setPresentation(PhpPresentation $oPresentation)
-    {
-        $this->oPresentation = $oPresentation;
-        return $this;
-    }
-
-    /**
-     * @return PhpPresentation
-     */
-    public function getPresentation()
-    {
-        return $this->oPresentation;
     }
 
     /**

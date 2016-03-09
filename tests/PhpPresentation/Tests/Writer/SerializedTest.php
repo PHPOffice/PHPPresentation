@@ -55,7 +55,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage PhpPresentation object unassigned.
+     * @expectedExceptionMessage No PhpPresentation assigned.
      */
     public function testSaveNoObject()
     {

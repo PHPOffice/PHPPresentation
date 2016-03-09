@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 
@@ -27,7 +28,7 @@ use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
  */
-class ManifestTest extends \PHPUnit_Framework_TestCase
+class MetaInfManifestTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Executed before each method of the class
@@ -120,5 +121,19 @@ class ManifestTest extends \PHPUnit_Framework_TestCase
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertTrue($pres->elementExists($element, 'META-INF/manifest.xml'));
         $this->assertEquals('Pictures/79568477aa9bdcdd2d26e0d05ba7b911.9k=', $pres->getElementAttribute($element, 'manifest:full-path', 'META-INF/manifest.xml'));
+    }
+
+    public function testSlideBackground()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oBkgImage = new Image();
+        $oBkgImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
+        $oSlide->setBackground($oBkgImage);
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $element = '/manifest:manifest/manifest:file-entry[5]';
+        $this->assertTrue($pres->elementExists($element, 'META-INF/manifest.xml'));
+        $this->assertEquals('Pictures/'.str_replace(' ', '_', $oBkgImage->getIndexedFilename(0)), $pres->getElementAttribute($element, 'manifest:full-path', 'META-INF/manifest.xml'));
     }
 }

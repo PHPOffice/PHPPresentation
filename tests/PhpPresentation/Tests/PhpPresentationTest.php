@@ -36,7 +36,7 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
         $object = new PhpPresentation();
         $slide = $object->getSlide();
 
-        $this->assertEquals(new DocumentProperties(), $object->getProperties());
+        $this->assertEquals(new DocumentProperties(), $object->getDocumentProperties());
         $this->assertEquals(new DocumentLayout(), $object->getLayout());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getSlide());
         $this->assertEquals(1, count($object->getAllSlides()));
@@ -44,6 +44,19 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $object->getSlideCount());
         $this->assertEquals(0, $object->getActiveSlideIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Iterator', $object->getSlideIterator());
+    }
+
+    public function testProperties()
+    {
+        $object = new PhpPresentation();
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setProperties(new DocumentProperties()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setDocumentProperties(new DocumentProperties()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
     }
 
     /**

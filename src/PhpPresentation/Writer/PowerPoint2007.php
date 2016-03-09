@@ -34,20 +34,6 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 class PowerPoint2007 extends AbstractWriter implements WriterInterface
 {
     /**
-     * Private PhpPresentation
-     *
-     * @var \PhpOffice\PhpPresentation\PhpPresentation
-     */
-    protected $presentation;
-
-    /**
-     * Private unique hash table
-     *
-     * @var \PhpOffice\PhpPresentation\HashTable
-     */
-    protected $drawingHashTable;
-
-    /**
      * Use disk caching where possible?
      *
      * @var boolean
@@ -85,7 +71,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         $this->layoutPack = new PackDefault();
 
         // Set HashTable variables
-        $this->drawingHashTable = new HashTable();
+        $this->oDrawingHashTable = new HashTable();
 
         $this->setZipAdapter(new ZipArchiveAdapter());
     }
@@ -101,9 +87,8 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty");
         }
-        if (empty($this->presentation)) {
-            throw new \Exception("PhpPresentation object unassigned");
-        }
+        $oPresentation = $this->getPhpPresentation();
+
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
         if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
@@ -114,7 +99,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         }
 
         // Create drawing dictionary
-        $this->drawingHashTable->addFromSource($this->allDrawings());
+        $this->getDrawingHashTable()->addFromSource($this->allDrawings());
 
         $oZip = $this->getZipAdapter();
         $oZip->open($pFilename);
@@ -132,8 +117,8 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
             }
             $oService = $o->newInstance();
             $oService->setZip($oZip);
-            $oService->setPresentation($this->presentation);
-            $oService->setDrawingHashTable($this->drawingHashTable);
+            $oService->setPresentation($oPresentation);
+            $oService->setDrawingHashTable($this->getDrawingHashTable());
             $oZip = $oService->render();
             unset($oService);
         }
@@ -150,33 +135,6 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
                 throw new \Exception('The file '.$pFilename.' could not be removed.');
             }
         }
-    }
-
-    /**
-     * Get PhpPresentation object
-     *
-     * @return PhpPresentation
-     * @throws \Exception
-     */
-    public function getPhpPresentation()
-    {
-        if (empty($this->presentation)) {
-            throw new \Exception("No PhpPresentation assigned.");
-        }
-        return $this->presentation;
-    }
-
-    /**
-     * Set PhpPresentation object
-     *
-     * @param  PhpPresentation $pPhpPresentation PhpPresentation object
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
-     */
-    public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
-    {
-        $this->presentation = $pPhpPresentation;
-        return $this;
     }
 
     /**

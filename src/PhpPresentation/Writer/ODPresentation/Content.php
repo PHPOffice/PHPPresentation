@@ -1,29 +1,14 @@
 <?php
-/**
- * This file is part of PHPPresentation - A pure PHP library for reading and writing
- * presentations documents.
- *
- * PHPPresentation is free software distributed under the terms of the GNU Lesser
- * General Public License version 3 as published by the Free Software Foundation.
- *
- * For the full copyright and license information, please read the LICENSE
- * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
- *
- * @link        https://github.com/PHPOffice/PHPPresentation
- * @copyright   2009-2015 PHPPresentation contributors
- * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- */
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Slide;
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
@@ -43,53 +28,57 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
-/**
- * \PhpOffice\PhpPresentation\Writer\ODPresentation\Content
- */
-class Content extends AbstractPart
+class Content extends AbstractDecoratorWriter
 {
-
     /**
      * Stores bullet styles for text shapes that include lists.
      *
-     * @var array
+     * @var []
      */
-    private $arrStyleBullet    = array();
+    protected $arrStyleBullet    = array();
 
     /**
      * Stores paragraph information for text shapes.
      *
      * @var array
      */
-    private $arrStyleParagraph = array();
+    protected $arrStyleParagraph = array();
 
     /**
      * Stores font styles for text shapes that include lists.
      *
      * @var Run[]
      */
-    private $arrStyleTextFont  = array();
+    protected $arrStyleTextFont  = array();
 
     /**
      * Used to track the current shape ID.
      *
      * @var integer
      */
-    private $shapeId;
+    protected $shapeId;
+
+    /**
+     * @return ZipInterface
+     */
+    public function render()
+    {
+        $this->getZip()->addFromString('content.xml', $this->writeContent());
+        return $this->getZip();
+    }
+
+
 
     /**
      * Write content file to XML format
      *
-     * @param  PhpPresentation $pPhpPresentation
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writePart(PhpPresentation $pPhpPresentation)
+    public function writeContent()
     {
         // Create XML writer
-        $objWriter = $this->getXMLWriter();
-
-        // XML header
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
         $objWriter->startDocument('1.0', 'UTF-8');
 
         // office:document-content
@@ -132,7 +121,7 @@ class Content extends AbstractPart
 
         $this->shapeId    = 0;
         $incSlide = 0;
-        foreach ($pPhpPresentation->getAllSlides() as $pSlide) {
+        foreach ($this->getPresentation()->getAllSlides() as $pSlide) {
             // Slides
             $this->writeStyleSlide($objWriter, $pSlide, $incSlide);
 
@@ -268,10 +257,10 @@ class Content extends AbstractPart
         $objWriter->startElement('office:presentation');
 
         // Write slides
-        $slideCount = $pPhpPresentation->getSlideCount();
+        $slideCount = $this->getPresentation()->getSlideCount();
         $this->shapeId    = 0;
         for ($i = 0; $i < $slideCount; ++$i) {
-            $pSlide = $pPhpPresentation->getSlide($i);
+            $pSlide = $this->getPresentation()->getSlide($i);
             $objWriter->startElement('draw:page');
             $name = $pSlide->getName();
             if (!is_null($name)) {
@@ -308,11 +297,11 @@ class Content extends AbstractPart
             if ($pSlide->getNote() instanceof Note) {
                 $this->writeSlideNote($objWriter, $pSlide->getNote());
             }
-            
+
             $objWriter->endElement();
         }
-        
-        if ($pPhpPresentation->getPresentationProperties()->isLoopContinuouslyUntilEsc()) {
+
+        if ($this->getPresentation()->getPresentationProperties()->isLoopContinuouslyUntilEsc()) {
             $objWriter->startElement('presentation:settings');
             $objWriter->writeAttribute('presentation:endless', 'true');
             $objWriter->writeAttribute('presentation:pause', 'P0s');
@@ -444,7 +433,7 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         // draw:text-box
         $objWriter->startElement('draw:text-box');
-        
+
         $paragraphs             = $shape->getParagraphs();
         $paragraphId            = 0;
         $sCstShpLastBullet      = '';
@@ -503,9 +492,9 @@ class Content extends AbstractPart
                     }
                 }
                 $objWriter->endElement();
-            //===============================================
-            // Bullet list
-            //===============================================
+                //===============================================
+                // Bullet list
+                //===============================================
             } elseif ($paragraph->getBulletStyle()->getBulletType() == 'bullet') {
                 $bCstShpHasBullet = true;
                 // Open the bullet list
@@ -582,13 +571,12 @@ class Content extends AbstractPart
                 $objWriter->endElement();
             }
         }
-        
+
         // > draw:text-box
         $objWriter->endElement();
         // > draw:frame
         $objWriter->endElement();
     }
-
     /**
      * Write Comment
      * @param XMLWriter $objWriter
@@ -625,8 +613,8 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('svg:x2', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()+$shape->getWidth()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y2', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()+$shape->getHeight()), 3) . 'cm');
 
-            // text:p
-            $objWriter->writeElement('text:p');
+        // text:p
+        $objWriter->writeElement('text:p');
 
         $objWriter->endElement();
     }
@@ -644,16 +632,16 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        
+
         // table:table
         $objWriter->startElement('table:table');
-        
+
         foreach ($shape->getRows() as $keyRow => $shapeRow) {
             // table:table-row
             $objWriter->startElement('table:table-row');
             $objWriter->writeAttribute('table:style-name', 'gr'.$this->shapeId.'r'.$keyRow);
             //@todo getFill
-            
+
             $numColspan = 0;
             foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
                 if ($numColspan == 0) {
@@ -664,10 +652,10 @@ class Content extends AbstractPart
                         $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
                         $numColspan = $shapeCell->getColspan() - 1;
                     }
-                    
+
                     // text:p
                     $objWriter->startElement('text:p');
-                    
+
                     // text:span
                     foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
                         foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
@@ -697,10 +685,10 @@ class Content extends AbstractPart
                             }
                         }
                     }
-                    
+
                     // > text:p
                     $objWriter->endElement();
-                    
+
                     // > table:table-cell
                     $objWriter->endElement();
                 } else {
@@ -717,20 +705,19 @@ class Content extends AbstractPart
         // > draw:frame
         $objWriter->endElement();
     }
-    
+
     /**
      * Write table Chart
      * @param XMLWriter $objWriter
      * @param Chart $shape
+     * @throws \Exception
      */
     public function writeShapeChart(XMLWriter $objWriter, Chart $shape)
     {
-        $parentWriter = $this->getParentWriter();
-        if (!$parentWriter instanceof ODPresentation) {
-            throw new \Exception('The $parentWriter is not an instance of \PhpOffice\PhpPresentation\Writer\ODPresentation');
-        }
-        $parentWriter->chartArray[$this->shapeId] = $shape;
-        
+        $arrayChart = $this->getArrayChart();
+        $arrayChart[$this->shapeId] = $shape;
+        $this->setArrayChart($arrayChart);
+
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:name', $shape->getTitle()->getText());
@@ -738,13 +725,13 @@ class Content extends AbstractPart
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-    
+
         // draw:object
         $objWriter->startElement('draw:object');
         $objWriter->writeAttribute('xlink:href', './Object '.$this->shapeId);
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
-        
+
         // > draw:object
         $objWriter->endElement();
         // > draw:frame
@@ -1105,16 +1092,16 @@ class Content extends AbstractPart
         $shapesNote = $note->getShapeCollection();
         if (count($shapesNote) > 0) {
             $objWriter->startElement('presentation:notes');
-            
+
             foreach ($shapesNote as $shape) {
                 // Increment $this->shapeId
                 ++$this->shapeId;
-                
+
                 if ($shape instanceof RichText) {
                     $this->writeShapeTxt($objWriter, $shape);
                 }
             }
-            
+
             $objWriter->endElement();
         }
     }
@@ -1319,7 +1306,7 @@ class Content extends AbstractPart
         // > style:style
         $objWriter->endElement();
     }
-    
+
 
     /**
      * @param XMLWriter $objWriter
@@ -1357,6 +1344,6 @@ class Content extends AbstractPart
         }
         $objWriter->writeAttribute('draw:shadow-opacity', (100 - $oShadow->getAlpha()) . '%');
         $objWriter->writeAttribute('style:mirror', 'none');
-    
+
     }
 }

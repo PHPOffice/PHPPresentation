@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
@@ -92,7 +93,7 @@ class PlotArea implements ComparableInterface
     /**
      * Get type
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\AbstractType
+     * @return AbstractType
      * @throws \Exception
      */
     public function getType()

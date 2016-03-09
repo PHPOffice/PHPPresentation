@@ -1,26 +1,11 @@
 <?php
-/**
- * This file is part of PHPPresentation - A pure PHP library for reading and writing
- * presentations documents.
- *
- * PHPPresentation is free software distributed under the terms of the GNU Lesser
- * General Public License version 3 as published by the Free Software Foundation.
- *
- * For the full copyright and license information, please read the LICENSE
- * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
- *
- * @link        https://github.com/PHPOffice/PHPPresentation
- * @copyright   2009-2015 PHPPresentation contributors
- * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- */
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Title;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar;
@@ -29,80 +14,70 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Outline;
 
-/**
- * \PhpOffice\PhpPresentation\Writer\ODPresentation\Objects
- */
-class ObjectsChart extends AbstractPart
+class ObjectsChart extends AbstractDecoratorWriter
 {
     /**
      * @var XMLWriter
      */
-    private $xmlContent;
-    /**
-     * @var XMLWriter
-     */
-    private $xmlMeta;
-    /**
-     * @var XMLWriter
-     */
-    private $xmlStyles;
+    protected $xmlContent;
     /**
      * @var mixed
      */
-    private $arrayData;
+    protected $arrayData;
     /**
      * @var mixed
      */
-    private $arrayTitle;
+    protected $arrayTitle;
     /**
      * @var integer
      */
-    private $numData;
+    protected $numData;
     /**
      * @var integer
      */
-    private $numSeries;
+    protected $numSeries;
     /**
      * @var string
      */
-    private $rangeCol;
-    
-    public function writePart(Chart $chart)
+    protected $rangeCol;
+
+    /**
+     * @return ZipInterface
+     */
+    public function render()
     {
-        $this->xmlContent = $this->getXMLWriter();
-        $this->xmlMeta = $this->getXMLWriter();
-        $this->xmlStyles = $this->getXMLWriter();
-        
-        $this->writeContentPart($chart);
-        
-        return array(
-            'content.xml' => $this->xmlContent->getData(),
-            'meta.xml' => $this->xmlMeta->getData(),
-            'styles.xml' => $this->xmlStyles->getData(),
-        );
+        foreach ($this->getArrayChart() as $keyChart => $shapeChart) {
+            $content = $this->writeContentPart($shapeChart);
+
+            if (!empty($content)) {
+                $this->getZip()->addFromString('Object '.$keyChart.'/content.xml', $content);
+            }
+        }
+
+        return $this->getZip();
     }
-    
+
     /**
      * @param Chart $chart
+     * @return string
+     * @throws \Exception
      */
-    private function writeContentPart(Chart $chart)
+    protected function writeContentPart(Chart $chart)
     {
+        $this->xmlContent = new XMLWriter(XMLWriter::STORAGE_MEMORY);
+
         $chartType = $chart->getPlotArea()->getType();
-        if (!($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof AbstractTypePie || $chartType instanceof Scatter)) {
-            throw new \Exception('The chart type provided could not be rendered.');
-        }
-        
+
         // Data
         $this->arrayData = array();
         $this->arrayTitle = array();
         $this->numData = 0;
-        foreach ($chart->getPlotArea()->getType()->getData() as $series) {
+        foreach ($chartType->getSeries() as $series) {
             $inc = 0;
             $this->arrayTitle[] = $series->getTitle();
             foreach ($series->getValues() as $key => $value) {
@@ -119,7 +94,7 @@ class ObjectsChart extends AbstractPart
                 $this->numData = $inc;
             }
         }
-        
+
         // office:document-content
         $this->xmlContent->startElement('office:document-content');
         $this->xmlContent->writeAttribute('xmlns:office', 'urn:oasis:names:tc:opendocument:xmlns:office:1.0');
@@ -158,42 +133,42 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('xmlns:formx', 'urn:openoffice:names:experimental:ooxml-odf-interop:xmlns:form:1.0');
         $this->xmlContent->writeAttribute('xmlns:css3t', 'http://www.w3.org/TR/css3-text/');
         $this->xmlContent->writeAttribute('office:version', '1.2');
-        
+
         // office:automatic-styles
         $this->xmlContent->startElement('office:automatic-styles');
-        
+
         // Chart
         $this->writeChartStyle($chart);
-        
+
         // Axis
         $this->writeAxisStyle($chart);
-        
+
         // Series
         $this->numSeries = 0;
-        foreach ($chart->getPlotArea()->getType()->getData() as $series) {
+        foreach ($chartType->getSeries() as $series) {
             $this->writeSeriesStyle($chart, $series);
-            
+
             $this->numSeries++;
         }
-        
+
         // Floor
         $this->writeFloorStyle();
-        
+
         // Legend
         $this->writeLegendStyle($chart);
-        
+
         // PlotArea
         $this->writePlotAreaStyle($chart);
-        
+
         // Title
         $this->writeTitleStyle($chart->getTitle());
-        
+
         // Wall
         $this->writeWallStyle($chart);
-        
+
         // > office:automatic-styles
         $this->xmlContent->endElement();
-        
+
         // office:body
         $this->xmlContent->startElement('office:body');
         // office:chart
@@ -216,19 +191,19 @@ class ObjectsChart extends AbstractPart
         } elseif ($chartType instanceof Scatter) {
             $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
         }
-        
+
         //**** Title ****
         $this->writeTitle($chart->getTitle());
 
         //**** Legend ****
         $this->writeLegend($chart);
-        
+
         //**** Plotarea ****
         $this->writePlotArea($chart);
 
         //**** Table ****
         $this->writeTable();
-        
+
         // > chart:chart
         $this->xmlContent->endElement();
         // > office:chart
@@ -237,15 +212,17 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->endElement();
         // > office:document-content
         $this->xmlContent->endElement();
+
+        return $this->xmlContent->getData();
     }
-    
+
     /**
      * @param Chart $chart
      */
     private function writeAxis(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        
+
         // chart:axis
         $this->xmlContent->startElement('chart:axis');
         $this->xmlContent->writeAttribute('chart:dimension', 'x');
@@ -296,7 +273,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('chart:class', $chartClass);
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Chart $chart
      * @todo Set function in \PhpPresentation\Shape\Chart\Axis for defining width and color of the axis
@@ -339,7 +316,7 @@ class ObjectsChart extends AbstractPart
 
         // AxisX GridLines Minor
         $this->writeGridlineStyle($chart->getPlotArea()->getAxisX()->getMinorGridlines(), 'styleAxisXGridlinesMinor');
-        
+
         // AxisY
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -397,7 +374,7 @@ class ObjectsChart extends AbstractPart
         // ##style:style
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Chart $chart
      */
@@ -416,7 +393,7 @@ class ObjectsChart extends AbstractPart
         // > style:style
         $this->xmlContent->endElement();
     }
-    
+
     private function writeFloor()
     {
         // chart:floor
@@ -425,7 +402,7 @@ class ObjectsChart extends AbstractPart
         // > chart:floor
         $this->xmlContent->endElement();
     }
-    
+
     private function writeFloorStyle()
     {
         // style:style
@@ -444,7 +421,7 @@ class ObjectsChart extends AbstractPart
         // > style:style
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Chart $chart
      */
@@ -460,7 +437,7 @@ class ObjectsChart extends AbstractPart
         // > chart:legend
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Chart $chart
      */
@@ -481,14 +458,14 @@ class ObjectsChart extends AbstractPart
         // > style:style
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Chart $chart
      */
     private function writePlotArea(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        
+
         // chart:plot-area
         $this->xmlContent->startElement('chart:plot-area');
         $this->xmlContent->writeAttribute('chart:style-name', 'stylePlotArea');
@@ -516,19 +493,19 @@ class ObjectsChart extends AbstractPart
                 $this->xmlContent->endElement();
             }
         }
-        
+
         //**** Axis ****
         $this->writeAxis($chart);
-        
+
         //**** Series ****
         $this->rangeCol = 'B';
         $this->numSeries = 0;
-        foreach ($chart->getPlotArea()->getType()->getData() as $series) {
+        foreach ($chartType->getSeries() as $series) {
             $this->writeSeries($chart, $series);
             $this->rangeCol++;
             $this->numSeries++;
         }
-        
+
         //**** Wall ****
         $this->writeWall();
         //**** Floor ****
@@ -536,7 +513,7 @@ class ObjectsChart extends AbstractPart
         // > chart:plot-area
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Chart $chart
      * @link : http://books.evc-cit.info/odbook/ch08.html#chart-plot-area-section
@@ -544,7 +521,7 @@ class ObjectsChart extends AbstractPart
     private function writePlotAreaStyle(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        
+
         // style:style
         $this->xmlContent->startElement('style:style');
         $this->xmlContent->writeAttribute('style:name', 'stylePlotArea');
@@ -589,7 +566,7 @@ class ObjectsChart extends AbstractPart
         // > style:style
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Chart $chart
      * @param Chart\Series $series
@@ -598,7 +575,7 @@ class ObjectsChart extends AbstractPart
     private function writeSeries(Chart $chart, Chart\Series $series)
     {
         $chartType = $chart->getPlotArea()->getType();
-        
+
         $numRange = count($series->getValues());
         // chart:series
         $this->xmlContent->startElement('chart:series');
@@ -632,7 +609,7 @@ class ObjectsChart extends AbstractPart
                         // > chart:data-point
                         $this->xmlContent->endElement();
                         $incRepeat = 0;
-        
+
                         // chart:data-point
                         $this->xmlContent->startElement('chart:data-point');
                         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries.'_'.$inc);
@@ -659,11 +636,11 @@ class ObjectsChart extends AbstractPart
                 $this->xmlContent->endElement();
             }
         }
-        
+
         // > chart:series
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Chart $chart
      * @param Chart\Series $series
@@ -671,7 +648,7 @@ class ObjectsChart extends AbstractPart
     private function writeSeriesStyle(Chart $chart, Chart\Series $series)
     {
         $chartType = $chart->getPlotArea()->getType();
-        
+
         // style:style
         $this->xmlContent->startElement('style:style');
         $this->xmlContent->writeAttribute('style:name', 'styleSeries'.$this->numSeries);
@@ -755,10 +732,10 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->writeAttribute('fo:font-size', $series->getFont()->getSize().'pt');
         // > style:text-properties
         $this->xmlContent->endElement();
-        
+
         // > style:style
         $this->xmlContent->endElement();
-        
+
         foreach ($series->getDataPointFills() as $idx => $oFill) {
             // style:style
             $this->xmlContent->startElement('style:style');
@@ -774,7 +751,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->endElement();
         }
     }
-    
+
     /**
      */
     private function writeTable()
@@ -782,7 +759,7 @@ class ObjectsChart extends AbstractPart
         // table:table
         $this->xmlContent->startElement('table:table');
         $this->xmlContent->writeAttribute('table:name', 'table-local');
-    
+
         // table:table-header-columns
         $this->xmlContent->startElement('table:table-header-columns');
         // table:table-column
@@ -791,7 +768,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->endElement();
         // > table:table-header-columns
         $this->xmlContent->endElement();
-        
+
         // table:table-columns
         $this->xmlContent->startElement('table:table-columns');
         // table:table-column
@@ -804,7 +781,7 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->endElement();
         // > table:table-columns
         $this->xmlContent->endElement();
-    
+
         // table:table-header-rows
         $this->xmlContent->startElement('table:table-header-rows');
         // table:table-row
@@ -832,10 +809,10 @@ class ObjectsChart extends AbstractPart
         $this->xmlContent->endElement();
         // > table:table-header-rows
         $this->xmlContent->endElement();
-    
+
         // table:table-rows
         $this->xmlContent->startElement('table:table-rows');
-    
+
         foreach ($this->arrayData as $row) {
             // table:table-row
             $this->xmlContent->startElement('table:table-row');
@@ -859,13 +836,13 @@ class ObjectsChart extends AbstractPart
             // > table:table-row
             $this->xmlContent->endElement();
         }
-    
+
         // > table:table-rows
         $this->xmlContent->endElement();
         // > table:table
         $this->xmlContent->endElement();
     }
-    
+
     /**
      * @param Title $oTitle
      */
@@ -886,7 +863,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->endElement();
         }
     }
-    
+
     /**
      * @param Title $oTitle
      */
@@ -909,7 +886,7 @@ class ObjectsChart extends AbstractPart
             $this->xmlContent->endElement();
         }
     }
-    
+
     private function writeWall()
     {
         // chart:wall
@@ -925,7 +902,7 @@ class ObjectsChart extends AbstractPart
     private function writeWallStyle(Chart $chart)
     {
         $chartType = $chart->getPlotArea()->getType();
-        
+
         // style:style
         $this->xmlContent->startElement('style:style');
         $this->xmlContent->writeAttribute('style:name', 'styleWall');
