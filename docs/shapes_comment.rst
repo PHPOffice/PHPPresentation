@@ -1,4 +1,4 @@
-.. _shapes_chart:
+.. _shapes_comment:
 
 Comments
 ========
