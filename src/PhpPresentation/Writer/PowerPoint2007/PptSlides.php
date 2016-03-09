@@ -1200,6 +1200,9 @@ class PptSlides extends AbstractDecoratorWriter
                         // a:rPr
                         $objWriter->startElement('a:rPr');
 
+                        // Lang
+                        $objWriter->writeAttribute('lang', ($element->getLanguage() ? $element->getLanguage() : 'en-US'));
+
                         // Bold
                         $objWriter->writeAttribute('b', ($element->getFont()->isBold() ? '1' : '0'));
 
