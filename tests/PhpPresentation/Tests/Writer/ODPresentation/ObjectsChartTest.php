@@ -67,6 +67,7 @@ class ObjectsChartTest extends \PHPUnit_Framework_TestCase
         $oShape->getPlotArea()->getAxisY()->getFont()->setName('Arial');
 
         $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
 
         $element = '/office:document-content/office:body/office:chart/chart:chart';
         $this->assertTrue($oXMLDoc->elementExists($element, 'Object 1/content.xml'));
