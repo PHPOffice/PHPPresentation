@@ -408,7 +408,7 @@ class Slide extends AbstractPart
         if ($shape->hasHyperlink()) {
             $this->writeHyperlink($objWriter, $shape);
         }
-        
+
         $objWriter->endElement();
 
         // p:cNvPicPr
@@ -526,19 +526,19 @@ class Slide extends AbstractPart
         // p:sp\p:spPr\a:xfrm
         $objWriter->startElement('a:xfrm');
         $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
-        
+
         // p:sp\p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
-        
+
         // p:sp\p:spPr\a:xfrm\a:ext
         $objWriter->startElement('a:ext');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
-        
+
         // > p:sp\p:spPr\a:xfrm
         $objWriter->endElement();
 
@@ -546,7 +546,7 @@ class Slide extends AbstractPart
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
-        
+
         if ($shape->getFill()) {
             $this->writeFill($objWriter, $shape->getFill());
         }
@@ -607,14 +607,14 @@ class Slide extends AbstractPart
                 $objWriter->writeAttribute('lnSpcReduction', (int)($shape->getLineSpaceReduction() * 1000));
             }
         }
-        
+
         $objWriter->endElement();
 
         $objWriter->endElement();
 
         // a:lstStyle
         $objWriter->writeElement('a:lstStyle', null);
-        
+
         // Write paragraphs
         $this->writeParagraphs($objWriter, $shape->getParagraphs());
 
@@ -1184,6 +1184,12 @@ class Slide extends AbstractPart
         // srgbClr
         $objWriter->startElement('a:srgbClr');
         $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
+
+        // a:alpha
+        $objWriter->startElement('a:alpha');
+        $objWriter->writeAttribute('val', $pFill->getStartColor()->getAlpha() * 1000);
+        $objWriter->endElement();
+
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1212,6 +1218,11 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
         $objWriter->endElement();
 
+        // a:alpha
+        $objWriter->startElement('a:alpha');
+        $objWriter->writeAttribute('val', $pFill->getStartColor()->getAlpha() * 1000);
+        $objWriter->endElement();
+
         $objWriter->endElement();
 
         // a:gs
@@ -1221,6 +1232,12 @@ class Slide extends AbstractPart
         // srgbClr
         $objWriter->startElement('a:srgbClr');
         $objWriter->writeAttribute('val', $pFill->getEndColor()->getRGB());
+
+        // a:alpha
+        $objWriter->startElement('a:alpha');
+        $objWriter->writeAttribute('val', $pFill->getEndColor()->getAlpha() * 1000);
+        $objWriter->endElement();
+
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1254,6 +1271,12 @@ class Slide extends AbstractPart
         // srgbClr
         $objWriter->startElement('a:srgbClr');
         $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
+
+        // a:alpha
+        $objWriter->startElement('a:alpha');
+        $objWriter->writeAttribute('val', $pFill->getStartColor()->getAlpha() * 1000);
+        $objWriter->endElement();
+
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1264,6 +1287,12 @@ class Slide extends AbstractPart
         // srgbClr
         $objWriter->startElement('a:srgbClr');
         $objWriter->writeAttribute('val', $pFill->getEndColor()->getRGB());
+
+        // a:alpha
+        $objWriter->startElement('a:alpha');
+        $objWriter->writeAttribute('val', $pFill->getEndColor()->getAlpha() * 1000);
+        $objWriter->endElement();
+
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1275,7 +1304,7 @@ class Slide extends AbstractPart
     {
         // a:effectLst
         $objWriter->startElement('a:effectLst');
-        
+
         // a:outerShdw
         $objWriter->startElement('a:outerShdw');
         $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
@@ -1283,23 +1312,23 @@ class Slide extends AbstractPart
         $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($oShadow->getDirection()));
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
-        
+
         // a:srgbClr
         $objWriter->startElement('a:srgbClr');
         $objWriter->writeAttribute('val', $oShadow->getColor()->getRGB());
-        
+
         // a:alpha
         $objWriter->startElement('a:alpha');
         $objWriter->writeAttribute('val', $oShadow->getAlpha() * 1000);
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
     }
-    
+
     /**
      * Write hyperlink
      *
