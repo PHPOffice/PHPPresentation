@@ -1290,9 +1290,9 @@ class Slide extends AbstractPart
 
         // a:alpha
         $objWriter->startElement('a:alpha');
-        $objWriter->writeAttribute('val', $pFill->getStartColor()->getAlpha() * 1000);
+        $objWriter->writeAttribute('val', $pFill->getEndColor()->getAlpha() * 1000);
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
 
         $objWriter->endElement();
