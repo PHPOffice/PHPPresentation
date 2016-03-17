@@ -30,35 +30,35 @@ class PhpPresentation
      *
      * @var \PhpOffice\PhpPresentation\DocumentProperties
      */
-    private $documentProperties;
-    
+    protected $documentProperties;
+
     /**
      * Presentation properties
      *
      * @var \PhpOffice\PhpPresentation\PresentationProperties
      */
-    private $presentationProperties;
+    protected $presentationProperties;
 
     /**
      * Document layout
      *
      * @var \PhpOffice\PhpPresentation\DocumentLayout
      */
-    private $layout;
+    protected $layout;
 
     /**
      * Collection of Slide objects
      *
      * @var \PhpOffice\PhpPresentation\Slide[]
      */
-    private $slideCollection = array();
+    protected $slideCollection = array();
 
     /**
      * Active slide index
      *
      * @var int
      */
-    private $activeSlideIndex = 0;
+    protected $activeSlideIndex = 0;
 
     /**
      * Create a new PhpPresentation with one Slide
