@@ -21,7 +21,8 @@ class PptViewProps extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
         $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
-        $objWriter->writeAttribute('showComments', '0');
+        $objWriter->writeAttribute('showComments', $this->getPresentation()->getPresentationProperties()->isCommentVisible() ? 1 : 0);
+        $objWriter->writeAttribute('lastView', $this->getPresentation()->getPresentationProperties()->getLastView());
 
         // p:viewPr > p:slideViewPr
         $objWriter->startElement('p:slideViewPr');
