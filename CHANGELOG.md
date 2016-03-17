@@ -22,6 +22,7 @@
 - ODPresentation & PowerPoint2007 & Serialized Writer : Support for Zip Adapter - @Progi1984 GH-176
 - ODPresentation & PowerPoint2007 Writer : language property to TextElement - @skrajewski & @Progi1984 GH-180
 - ODPresentation & PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
+- PowerPoint2007 Writer : Presentation with predefined View Type - @Progi1984 GH-120
 
 ## 0.6.0 - 2016-01-24
 
