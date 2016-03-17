@@ -37,7 +37,7 @@ class PhpPresentation
      *
      * @var \PhpOffice\PhpPresentation\PresentationProperties
      */
-    protected $presentationProperties;
+    protected $presentationProps;
 
     /**
      * Document layout
@@ -128,7 +128,7 @@ class PhpPresentation
      */
     public function getPresentationProperties()
     {
-        return $this->presentationProperties;
+        return $this->presentationProps;
     }
 
     /**
@@ -139,7 +139,7 @@ class PhpPresentation
      */
     public function setPresentationProperties(PresentationProperties $value)
     {
-        $this->presentationProperties = $value;
+        $this->presentationProps = $value;
         return $this;
     }
 
