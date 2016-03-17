@@ -22,7 +22,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 /**
  * Drawing element
  */
-class Drawing extends AbstractDrawing implements ComparableInterface
+class Drawing extends AbstractGraphic implements ComparableInterface
 {
     /**
      * Path
@@ -73,44 +73,6 @@ class Drawing extends AbstractDrawing implements ComparableInterface
         $exploded = explode(".", basename($this->path));
 
         return $exploded[count($exploded) - 1];
-    }
-
-    /**
-     * Get Path
-     *
-     * @return string
-     */
-    public function getPath()
-    {
-        return $this->path;
-    }
-
-    /**
-     * Set Path
-     *
-     * @param  string                      $pValue      File path
-     * @param  boolean                     $pVerifyFile Verify file
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing
-     */
-    public function setPath($pValue = '', $pVerifyFile = true)
-    {
-        if ($pVerifyFile) {
-            if (file_exists($pValue)) {
-                $this->path = $pValue;
-
-                if ($this->width == 0 && $this->height == 0) {
-                    // Get width/height
-                    list($this->width, $this->height) = getimagesize($pValue);
-                }
-            } else {
-                throw new \Exception("File $pValue not found!");
-            }
-        } else {
-            $this->path = $pValue;
-        }
-
-        return $this;
     }
 
     /**

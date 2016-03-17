@@ -20,7 +20,6 @@ namespace PhpOffice\PhpPresentation\Reader;
 use PhpOffice\Common\Microsoft\OLERead;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -1422,7 +1421,7 @@ class PowerPoint97 implements ReaderInterface
                     $drawingPib = $shpPrimaryOptions['pib'];
                     if (isset($this->arrayPictures[$drawingPib - 1])) {
                         $gdImage = imagecreatefromstring($this->arrayPictures[$drawingPib - 1]);
-                        $arrayReturn['shape'] = new MemoryDrawing();
+                        $arrayReturn['shape'] = new Drawing\Gd();
                         $arrayReturn['shape']->setImageResource($gdImage);
                     }
                 } elseif (isset($shpPrimaryOptions['line']) && $shpPrimaryOptions['line']) {

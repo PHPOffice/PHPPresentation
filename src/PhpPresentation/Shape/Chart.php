@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation\Shape;
 
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\PlotArea;
@@ -26,7 +27,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\View3D;
 /**
  * Chart element
  */
-class Chart extends AbstractDrawing implements ComparableInterface
+class Chart extends AbstractGraphic implements ComparableInterface
 {
     /**
      * Title
@@ -64,7 +65,7 @@ class Chart extends AbstractDrawing implements ComparableInterface
     private $includeSpreadsheet = false;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Slide\MemoryDrawing
+     * Create a new Chart
      */
     public function __construct()
     {

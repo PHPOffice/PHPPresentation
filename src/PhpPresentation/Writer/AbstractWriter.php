@@ -4,6 +4,8 @@ namespace PhpOffice\PhpPresentation\Writer;
 
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
+use PhpOffice\PhpPresentation\Shape\Group;
 
 abstract class AbstractWriter
 {
@@ -80,5 +82,44 @@ abstract class AbstractWriter
     public function getZipAdapter()
     {
         return $this->oZipAdapter;
+    }
+
+    /**
+     * Get an array of all drawings
+     *
+     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
+     * @throws \Exception
+     */
+    protected function allDrawings()
+    {
+        // Get an array of all drawings
+        $aDrawings  = array();
+
+        // Loop trough PhpPresentation
+        foreach ($this->getPhpPresentation()->getAllSlides() as $oSlide) {
+            $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
+            $aDrawings = array_merge($aDrawings, $arrayReturn);
+        }
+        return $aDrawings;
+    }
+
+    private function iterateCollection(\ArrayIterator $oIterator)
+    {
+        $arrayReturn = array();
+        if ($oIterator->count() <= 0) {
+            return $arrayReturn;
+        }
+
+        while ($oIterator->valid()) {
+            $oShape = $oIterator->current();
+            if ($oShape instanceof AbstractDrawingAdapter) {
+                $arrayReturn[] = $oShape;
+            } elseif ($oShape instanceof Group) {
+                $arrayGroup = $this->iterateCollection($oShape->getShapeCollection()->getIterator());
+                $arrayReturn = array_merge($arrayReturn, $arrayGroup);
+            }
+            $oIterator->next();
+        }
+        return $arrayReturn;
     }
 }

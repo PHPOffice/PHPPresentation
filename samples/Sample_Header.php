@@ -43,7 +43,7 @@ $pageTitle = IS_INDEX ? 'Welcome to ' : "{$pageHeading} - ";
 $pageTitle .= 'PHPPresentation';
 $pageHeading = IS_INDEX ? '' : "<h1>{$pageHeading}</h1>";
 
-$oShapeDrawing = new Drawing();
+$oShapeDrawing = new Drawing\File();
 $oShapeDrawing->setName('PHPPresentation logo')
     ->setDescription('PHPPresentation logo')
     ->setPath('./resources/phppowerpoint_logo.gif')
@@ -241,14 +241,18 @@ class PhpPptTree {
 
     protected function displayShape(AbstractShape $shape)
     {
-        if($shape instanceof MemoryDrawing) {
-            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "MemoryDrawing"</span></li>');
-        } elseif($shape instanceof Drawing) {
-            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing"</span></li>');
+        if($shape instanceof Drawing\Gd) {
+            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Gd"</span></li>');
+        } elseif($shape instanceof Drawing\File) {
+            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\File"</span></li>');
+        } elseif($shape instanceof Drawing\Base64) {
+            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Base64"</span></li>');
+        } elseif($shape instanceof Drawing\Zip) {
+            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Zip"</span></li>');
         } elseif($shape instanceof RichText) {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "RichText"</span></li>');
         } else {
-            var_export($shape);
+            var_dump($shape);
         }
     }
 

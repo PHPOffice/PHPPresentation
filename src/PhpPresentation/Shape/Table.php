@@ -17,13 +17,14 @@
 
 namespace PhpOffice\PhpPresentation\Shape;
 
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Table\Row;
 
 /**
  * Table shape
  */
-class Table extends AbstractDrawing implements ComparableInterface
+class Table extends AbstractGraphic implements ComparableInterface
 {
     /**
      * Rows

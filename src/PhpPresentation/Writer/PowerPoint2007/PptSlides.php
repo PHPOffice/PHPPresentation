@@ -11,7 +11,6 @@ use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing as MemoryDrawing;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
@@ -91,12 +90,10 @@ class PptSlides extends AbstractDecoratorWriter
             // Loop trough images and write relationships
             $iterator = $pSlide->getShapeCollection()->getIterator();
             while ($iterator->valid()) {
-                if ($iterator->current() instanceof ShapeDrawing || $iterator->current() instanceof MemoryDrawing) {
+                if ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
                     // Write relationship for image drawing
-                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename()));
-
+                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $iterator->current()->getIndexedFilename());
                     $iterator->current()->relationId = 'rId' . $relId;
-
                     ++$relId;
                 } elseif ($iterator->current() instanceof ShapeChart) {
                     // Write relationship for chart drawing
@@ -108,17 +105,15 @@ class PptSlides extends AbstractDecoratorWriter
                 } elseif ($iterator->current() instanceof Group) {
                     $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
                     while ($iterator2->valid()) {
-                        if ($iterator2->current() instanceof ShapeDrawing || $iterator2->current() instanceof MemoryDrawing) {
+                        if ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
                             // Write relationship for image drawing
-                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . str_replace(' ', '_', $iterator2->current()->getIndexedFilename()));
-
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $iterator2->current()->getIndexedFilename());
                             $iterator2->current()->relationId = 'rId' . $relId;
 
                             ++$relId;
                         } elseif ($iterator2->current() instanceof ShapeChart) {
                             // Write relationship for chart drawing
                             $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator2->current()->getIndexedFilename());
-
                             $iterator2->current()->relationId = 'rId' . $relId;
 
                             ++$relId;
@@ -489,8 +484,8 @@ class PptSlides extends AbstractDecoratorWriter
                 $this->writeShapeLine($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof ShapeChart) {
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof AbstractDrawing) {
-                $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof ShapeDrawing\AbstractDrawingAdapter) {
+                $this->writeShapeDrawing($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
             }
@@ -597,8 +592,8 @@ class PptSlides extends AbstractDecoratorWriter
                 $this->writeShapeLine($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof ShapeChart) {
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof AbstractDrawing) {
-                $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof ShapeDrawing\AbstractDrawingAdapter) {
+                $this->writeShapeDrawing($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
             }
@@ -680,11 +675,11 @@ class PptSlides extends AbstractDecoratorWriter
      * Write pic
      *
      * @param  \PhpOffice\Common\XMLWriter  $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\AbstractDrawing $shape
+     * @param  \PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter $shape
      * @param  int $shapeId
      * @throws \Exception
      */
-    private function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
+    private function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape, $shapeId)
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -764,13 +759,9 @@ class PptSlides extends AbstractDecoratorWriter
 
         $objWriter->endElement();
 
-        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->writeBorder($objWriter, $shape->getBorder(), '');
-        }
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
 
-        if ($shape->getShadow()->isVisible()) {
-            $this->writeShadow($objWriter, $shape->getShadow());
-        }
+        $this->writeShadow($objWriter, $shape->getShadow());
 
         $objWriter->endElement();
 
@@ -844,12 +835,9 @@ class PptSlides extends AbstractDecoratorWriter
         if ($shape->getFill()) {
             $this->writeFill($objWriter, $shape->getFill());
         }
-        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->writeBorder($objWriter, $shape->getBorder(), '');
-        }
-        if ($shape->getShadow()->isVisible()) {
-            $this->writeShadow($objWriter, $shape->getShadow());
-        }
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $this->writeShadow($objWriter, $shape->getShadow());
+
         // > p:sp\p:spPr
         $objWriter->endElement();
 
@@ -1374,8 +1362,16 @@ class PptSlides extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Shadow $oShadow
      */
-    protected function writeShadow(XMLWriter $objWriter, Shadow $oShadow)
+    protected function writeShadow(XMLWriter $objWriter, $oShadow)
     {
+        if (!($oShadow instanceof Shadow)) {
+            return;
+        }
+
+        if (!$oShadow->isVisible()) {
+            return;
+        }
+
         // a:effectLst
         $objWriter->startElement('a:effectLst');
 

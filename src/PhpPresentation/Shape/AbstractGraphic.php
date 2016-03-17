@@ -23,7 +23,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 /**
  * Abstract drawing
  */
-abstract class AbstractDrawing extends AbstractShape implements ComparableInterface
+abstract class AbstractGraphic extends AbstractShape implements ComparableInterface
 {
     /**
      * Image counter

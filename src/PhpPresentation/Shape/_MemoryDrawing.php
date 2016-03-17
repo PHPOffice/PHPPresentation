@@ -22,7 +22,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 /**
  * Memory drawing shape
  */
-class MemoryDrawing extends AbstractDrawing implements ComparableInterface
+class MemoryDrawing extends AbstractGraphic implements ComparableInterface
 {
     /* Rendering functions */
     const RENDERING_DEFAULT = 'imagepng';
@@ -65,7 +65,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
     private $uniqueName;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Slide\MemoryDrawing
+     * Create a new MemoryDrawing
      */
     public function __construct()
     {
@@ -93,7 +93,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
      * Set image resource
      *
      * @param $value resource
-     * @return \PhpOffice\PhpPresentation\Shape\MemoryDrawing
+     * @return MemoryDrawing
      */
     public function setImageResource($value = null)
     {
@@ -122,7 +122,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
      * Set rendering function
      *
      * @param  string                            $value
-     * @return \PhpOffice\PhpPresentation\Shape\MemoryDrawing
+     * @return MemoryDrawing
      */
     public function setRenderingFunction($value = self::RENDERING_DEFAULT)
     {
@@ -145,7 +145,7 @@ class MemoryDrawing extends AbstractDrawing implements ComparableInterface
      * Set mime type
      *
      * @param  string                            $value
-     * @return \PhpOffice\PhpPresentation\Shape\MemoryDrawing
+     * @return MemoryDrawing
      */
     public function setMimeType($value = self::MIMETYPE_DEFAULT)
     {

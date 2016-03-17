@@ -19,7 +19,6 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\Common\File;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
@@ -140,16 +139,8 @@ class ContentTypes extends AbstractDecoratorWriter
                 // Chart content type
                 $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $shapeIndex->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
             } else {
-                if ($shapeIndex instanceof ShapeDrawing) {
-                    $extension = strtolower($shapeIndex->getExtension());
-                    $mimeType  = $this->getImageMimeType($shapeIndex->getPath());
-                } elseif ($shapeIndex instanceof MemoryDrawing) {
-                    $extension = strtolower($shapeIndex->getMimeType());
-                    $extension = explode('/', $extension);
-                    $extension = $extension[1];
-
-                    $mimeType = $shapeIndex->getMimeType();
-                }
+                $extension = strtolower($shapeIndex->getExtension());
+                $mimeType = $shapeIndex->getMimeType();
 
                 if (!isset($aMediaContentTypes[$extension])) {
                     $aMediaContentTypes[$extension] = $mimeType;
@@ -164,50 +155,6 @@ class ContentTypes extends AbstractDecoratorWriter
         $this->oZip->addFromString('[Content_Types].xml', $objWriter->getData());
 
         return $this->oZip;
-    }
-
-    /**
-     * Get image mime type
-     *
-     * @param  string    $pFile Filename
-     * @return string    Mime Type
-     * @throws \Exception
-     */
-    private function getImageMimeType($pFile = '')
-    {
-        if (strpos($pFile, 'zip://') === 0) {
-            $pZIPFile = str_replace('zip://', '', $pFile);
-            $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
-            if (!File::fileExists($pZIPFile)) {
-                throw new \Exception("File $pFile does not exist");
-            }
-            $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
-            $oArchive = new \ZipArchive();
-            $oArchive->open($pZIPFile);
-            if (!function_exists('getimagesizefromstring')) {
-                $uri = 'data://application/octet-stream;base64,' . base64_encode($oArchive->getFromName($pImgFile));
-                $image = getimagesize($uri);
-            } else {
-                $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
-            }
-        } elseif (strpos($pFile, 'data:image/') === 0) {
-            $sImage = $pFile;
-            list(, $sImage) = explode(';', $sImage);
-            list(, $sImage) = explode(',', $sImage);
-            if (!function_exists('getimagesizefromstring')) {
-                $uri = 'data://application/octet-stream;base64,' . base64_encode($sImage);
-                $image = getimagesize($uri);
-            } else {
-                $image = getimagesizefromstring($sImage);
-            }
-        } else {
-            if (!File::fileExists($pFile)) {
-                throw new \Exception("File $pFile does not exist");
-            }
-            $image = getimagesize($pFile);
-        }
-
-        return image_type_to_mime_type($image[2]);
     }
 
     /**

@@ -6,7 +6,6 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\File;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
@@ -65,27 +64,17 @@ class MetaInfManifest extends AbstractDecoratorWriter
         $arrMedia = array();
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
-            if ($shape instanceof ShapeDrawing) {
-                if (!in_array(md5($shape->getPath()), $arrMedia)) {
-                    $arrMedia[] = md5($shape->getPath());
-                    $mimeType   = $this->getImageMimeType($shape->getPath());
-
-                    $objWriter->startElement('manifest:file-entry');
-                    $objWriter->writeAttribute('manifest:media-type', $mimeType);
-                    $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . md5($shape->getPath()) . '.' . $shape->getExtension());
-                    $objWriter->endElement();
-                }
-            } elseif ($shape instanceof MemoryDrawing) {
-                if (!in_array(str_replace(' ', '_', $shape->getIndexedFilename()), $arrMedia)) {
-                    $arrMedia[] = str_replace(' ', '_', $shape->getIndexedFilename());
-                    $mimeType = $shape->getMimeType();
-
-                    $objWriter->startElement('manifest:file-entry');
-                    $objWriter->writeAttribute('manifest:media-type', $mimeType);
-                    $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $shape->getIndexedFilename()));
-                    $objWriter->endElement();
-                }
+            if (! ($shape instanceof ShapeDrawing\AbstractDrawingAdapter)) {
+                continue;
             }
+            if (in_array($shape->getIndexedFilename(), $arrMedia)) {
+                continue;
+            }
+            $arrMedia[] = $shape->getIndexedFilename();
+            $objWriter->startElement('manifest:file-entry');
+            $objWriter->writeAttribute('manifest:media-type', $shape->getMimeType());
+            $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . $shape->getIndexedFilename());
+            $objWriter->endElement();
         }
 
         foreach ($this->getPresentation()->getAllSlides() as $numSlide => $oSlide) {

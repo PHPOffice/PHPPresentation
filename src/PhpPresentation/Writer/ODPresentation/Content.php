@@ -13,7 +13,6 @@ use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
@@ -282,8 +281,8 @@ class Content extends AbstractDecoratorWriter
                     $this->writeShapeLine($objWriter, $shape);
                 } elseif ($shape instanceof Chart) {
                     $this->writeShapeChart($objWriter, $shape);
-                } elseif ($shape instanceof AbstractDrawing) {
-                    $this->writeShapePic($objWriter, $shape);
+                } elseif ($shape instanceof ShapeDrawing\AbstractDrawingAdapter) {
+                    $this->writeShapeDrawing($objWriter, $shape);
                 } elseif ($shape instanceof Group) {
                     $this->writeShapeGroup($objWriter, $shape);
                 } elseif ($shape instanceof Comment) {
@@ -322,7 +321,7 @@ class Content extends AbstractDecoratorWriter
      * @param \PhpOffice\Common\XMLWriter $objWriter
      * @param \PhpOffice\PhpPresentation\Shape\AbstractDrawing $shape
      */
-    public function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape)
+    public function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape)
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -334,9 +333,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         // draw:image
         $objWriter->startElement('draw:image');
-        if ($shape instanceof ShapeDrawing) {
-            $objWriter->writeAttribute('xlink:href', 'Pictures/' . md5($shape->getPath()) . '.' . $shape->getExtension());
-        } elseif ($shape instanceof MemoryDrawing) {
+        if ($shape instanceof ShapeDrawing\AbstractDrawingAdapter) {
             $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
         }
         $objWriter->writeAttribute('xlink:type', 'simple');
@@ -712,8 +709,8 @@ class Content extends AbstractDecoratorWriter
                 $this->writeShapeLine($objWriter, $shape);
             } elseif ($shape instanceof Chart) {
                 $this->writeShapeChart($objWriter, $shape);
-            } elseif ($shape instanceof AbstractDrawing) {
-                $this->writeShapePic($objWriter, $shape);
+            } elseif ($shape instanceof ShapeDrawing\AbstractDrawingAdapter) {
+                $this->writeShapeDrawing($objWriter, $shape);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape);
             }

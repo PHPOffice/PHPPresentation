@@ -217,11 +217,11 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     /**
      * Create drawing shape
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing
+     * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
      */
     public function createDrawingShape()
     {
-        $shape = new Drawing();
+        $shape = new Drawing\File();
         $this->addShape($shape);
 
         return $shape;
