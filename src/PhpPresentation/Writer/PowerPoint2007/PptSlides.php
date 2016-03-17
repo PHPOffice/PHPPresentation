@@ -1508,7 +1508,7 @@ class PptSlides extends AbstractDecoratorWriter
         $objWriter->startElement('p:nvSpPr');
 
         $objWriter->startElement('p:cNvPr');
-        $objWriter->writeAttribute('id', '1');
+        $objWriter->writeAttribute('id', '2');
         $objWriter->writeAttribute('name', 'Slide Image Placeholder 1');
         $objWriter->endElement();
         //p:cNvSpPr
@@ -1583,7 +1583,7 @@ class PptSlides extends AbstractDecoratorWriter
         $objWriter->startElement('p:nvSpPr');
 
         $objWriter->startElement('p:cNvPr');
-        $objWriter->writeAttribute('id', '2');
+        $objWriter->writeAttribute('id', '3');
         $objWriter->writeAttribute('name', 'Notes Placeholder');
         $objWriter->endElement();
 
