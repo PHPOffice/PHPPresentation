@@ -26,6 +26,20 @@ use PhpOffice\PhpPresentation\PresentationProperties;
  */
 class PresentationPropertiesTest extends \PHPUnit_Framework_TestCase
 {
+    public function testCommentVisible()
+    {
+        $object = new PresentationProperties();
+        $this->assertFalse($object->isCommentVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible('AAAA'));
+        $this->assertFalse($object->isCommentVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible(true));
+        $this->assertTrue($object->isCommentVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible(false));
+        $this->assertFalse($object->isCommentVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible());
+        $this->assertFalse($object->isCommentVisible());
+    }
+
     public function testLoopUntilEsc()
     {
         $object = new PresentationProperties();
@@ -38,6 +52,18 @@ class PresentationPropertiesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($object->isLoopContinuouslyUntilEsc());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLoopContinuouslyUntilEsc());
         $this->assertFalse($object->isLoopContinuouslyUntilEsc());
+    }
+
+    public function testLastView()
+    {
+        $object = new PresentationProperties();
+        $this->assertEquals(PresentationProperties::VIEW_SLIDE, $object->getLastView());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLastView('AAAA'));
+        $this->assertEquals(PresentationProperties::VIEW_SLIDE, $object->getLastView());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLastView(PresentationProperties::VIEW_OUTLINE));
+        $this->assertEquals(PresentationProperties::VIEW_OUTLINE, $object->getLastView());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLastView());
+        $this->assertEquals(PresentationProperties::VIEW_SLIDE, $object->getLastView());
     }
 
     public function testMarkAsFinal()
