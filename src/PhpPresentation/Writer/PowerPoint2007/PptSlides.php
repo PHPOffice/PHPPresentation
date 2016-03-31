@@ -526,7 +526,7 @@ class PptSlides extends AbstractDecoratorWriter
      * @param \PhpOffice\PhpPresentation\Shape\Group $group
      * @param  int $shapeId
      */
-    private function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
+    protected function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
     {
         // p:grpSp
         $objWriter->startElement('p:grpSp');
@@ -614,7 +614,7 @@ class PptSlides extends AbstractDecoratorWriter
      * @param \PhpOffice\PhpPresentation\Shape\Chart $shape
      * @param  int $shapeId
      */
-    private function writeShapeChart(XMLWriter $objWriter, ShapeChart $shape, $shapeId)
+    protected function writeShapeChart(XMLWriter $objWriter, ShapeChart $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -684,7 +684,7 @@ class PptSlides extends AbstractDecoratorWriter
      * @param  int $shapeId
      * @throws \Exception
      */
-    private function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
+    protected function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -785,7 +785,7 @@ class PptSlides extends AbstractDecoratorWriter
      * @param  int                            $shapeId
      * @throws \Exception
      */
-    private function writeShapeText(XMLWriter $objWriter, RichText $shape, $shapeId)
+    protected function writeShapeText(XMLWriter $objWriter, RichText $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:sp');
@@ -925,7 +925,7 @@ class PptSlides extends AbstractDecoratorWriter
      * @param  int                            $shapeId
      * @throws \Exception
      */
-    private function writeShapeTable(XMLWriter $objWriter, ShapeTable $shape, $shapeId)
+    protected function writeShapeTable(XMLWriter $objWriter, ShapeTable $shape, $shapeId)
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -1144,7 +1144,7 @@ class PptSlides extends AbstractDecoratorWriter
      * @param  \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] $paragraphs
      * @throws \Exception
      */
-    private function writeParagraphs(XMLWriter $objWriter, $paragraphs)
+    protected function writeParagraphs(XMLWriter $objWriter, $paragraphs)
     {
         // Loop trough paragraphs
         foreach ($paragraphs as $paragraph) {
@@ -1270,7 +1270,7 @@ class PptSlides extends AbstractDecoratorWriter
      * @param \PhpOffice\PhpPresentation\Shape\Line $shape
      * @param  int $shapeId
      */
-    private function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
+    protected function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
     {
         // p:sp
         $objWriter->startElement('p:cxnSp');
@@ -1548,8 +1548,8 @@ class PptSlides extends AbstractDecoratorWriter
 
         // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm/a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
+        $objWriter->writeAttribute('x', 0);
+        $objWriter->writeAttribute('y', 0);
         $objWriter->endElement();
 
         // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm/a:ext
@@ -1646,7 +1646,7 @@ class PptSlides extends AbstractDecoratorWriter
         // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm/a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu(round($pNote->getExtentY() / 2)));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu(round($pNote->getExtentY() / 2) + $pNote->getOffsetY()));
         $objWriter->endElement();
 
         // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm/a:ext
@@ -1714,7 +1714,7 @@ class PptSlides extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Transition $transition
      */
-    public function writeTransition(XMLWriter $objWriter, Transition $transition)
+    protected function writeTransition(XMLWriter $objWriter, Transition $transition)
     {
         $objWriter->startElement('p:transition');
         if (!is_null($transition->getSpeed())) {
