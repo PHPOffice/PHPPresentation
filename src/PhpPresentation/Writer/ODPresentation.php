@@ -99,18 +99,26 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         $oPresentation = $this->getPhpPresentation();
         $arrayChart = array();
 
+        $arrayFiles = array();
         $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation');
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;
             }
-            $class = __NAMESPACE__.'\\ODPresentation\\'.$oFile->getBasename('.php');
+
+            $class = __NAMESPACE__ . '\\ODPresentation\\' . $oFile->getBasename('.php');
             $o = new \ReflectionClass($class);
 
             if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
                 continue;
             }
-            echo "\n".dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation'."/".$oFile->getBasename('.php')."\n";
+            $arrayFiles[$oFile->getBasename('.php')] = $o;
+        }
+
+        ksort($arrayFiles);
+
+        foreach ($arrayFiles as $basename => $o) {
+            echo "\n".dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation'."/".$basename."\n";
             $oService = $o->newInstance();
             $oService->setZip($oZip);
             $oService->setPresentation($oPresentation);
