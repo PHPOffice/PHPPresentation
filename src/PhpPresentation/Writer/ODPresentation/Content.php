@@ -1120,6 +1120,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('style:name', 'stylePage'.$incPage);
         // style:style/style:drawing-page-properties
         $objWriter->startElement('style:drawing-page-properties');
+        $objWriter->writeAttributeIf(!$slide->isVisible(), 'presentation:visibility', 'hidden');
         if (!is_null($oTransition = $slide->getTransition())) {
             $objWriter->writeAttribute('presentation:duration', 'PT'.number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '').'S');
             if ($oTransition->hasManualTrigger()) {

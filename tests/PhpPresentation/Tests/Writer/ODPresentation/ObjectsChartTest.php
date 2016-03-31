@@ -47,15 +47,13 @@ class ObjectsChartTest extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
-        parent::tearDown();
         TestHelperDOCX::clear();
     }
 
     public function testAxisFont()
     {
-
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
         $oBar = new Bar();
@@ -68,25 +66,26 @@ class ObjectsChartTest extends \PHPUnit_Framework_TestCase
         $oShape->getPlotArea()->getAxisY()->getFont()->setSize(16);
         $oShape->getPlotArea()->getAxisY()->getFont()->setName('Arial');
 
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $this->assertTrue($oXMLDoc->fileExists('Object 1/content.xml'));
 
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('chart:bar', $pres->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
+        $this->assertTrue($oXMLDoc->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('chart:bar', $oXMLDoc->getElementAttribute($element, 'chart:class', 'Object 1/content.xml'));
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:text-properties';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('#AABBCC', $pres->getElementAttribute($element, 'fo:color', 'Object 1/content.xml'));//Color XAxis
-        $this->assertEquals('italic', $pres->getElementAttribute($element, 'fo:font-style', 'Object 1/content.xml'));//Italic XAxis
-        $this->assertEquals('10pt', $pres->getElementAttribute($element, 'fo:font-size', 'Object 1/content.xml'));//Size XAxis
-        $this->assertEquals('Calibri', $pres->getElementAttribute($element, 'fo:font-family', 'Object 1/content.xml'));//Size XAxis
+        $this->assertTrue($oXMLDoc->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('#AABBCC', $oXMLDoc->getElementAttribute($element, 'fo:color', 'Object 1/content.xml'));//Color XAxis
+        $this->assertEquals('italic', $oXMLDoc->getElementAttribute($element, 'fo:font-style', 'Object 1/content.xml'));//Italic XAxis
+        $this->assertEquals('10pt', $oXMLDoc->getElementAttribute($element, 'fo:font-size', 'Object 1/content.xml'));//Size XAxis
+        $this->assertEquals('Calibri', $oXMLDoc->getElementAttribute($element, 'fo:font-family', 'Object 1/content.xml'));//Size XAxis
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:text-properties';
-        $this->assertTrue($pres->elementExists($element, 'Object 1/content.xml'));
-        $this->assertEquals('#00FF00', $pres->getElementAttribute($element, 'fo:color', 'Object 1/content.xml'));//Color YAxis
-        $this->assertEquals('normal', $pres->getElementAttribute($element, 'fo:font-style', 'Object 1/content.xml'));//Italic YAxis
-        $this->assertEquals('16pt', $pres->getElementAttribute($element, 'fo:font-size', 'Object 1/content.xml'));//Size YAxis
-        $this->assertEquals('Arial', $pres->getElementAttribute($element, 'fo:font-family', 'Object 1/content.xml'));//Size YAxis
+        $this->assertTrue($oXMLDoc->elementExists($element, 'Object 1/content.xml'));
+        $this->assertEquals('#00FF00', $oXMLDoc->getElementAttribute($element, 'fo:color', 'Object 1/content.xml'));//Color YAxis
+        $this->assertEquals('normal', $oXMLDoc->getElementAttribute($element, 'fo:font-style', 'Object 1/content.xml'));//Italic YAxis
+        $this->assertEquals('16pt', $oXMLDoc->getElementAttribute($element, 'fo:font-size', 'Object 1/content.xml'));//Size YAxis
+        $this->assertEquals('Arial', $oXMLDoc->getElementAttribute($element, 'fo:font-family', 'Object 1/content.xml'));//Size YAxis
 
     }
 

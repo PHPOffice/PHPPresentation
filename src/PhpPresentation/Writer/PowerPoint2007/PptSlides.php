@@ -363,8 +363,9 @@ class PptSlides extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
         $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
+        $objWriter->writeAttributeIf(!$pSlide->isVisible(), 'show', 0);
 
-        // p:cSld
+        // p:sld\p:cSld
         $objWriter->startElement('p:cSld');
 
         // Background
