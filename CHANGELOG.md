@@ -4,6 +4,7 @@
 
 ### Bugfix
 - Fixed the image project - @mvargasmoran GH-177
+- PowerPoint2007 Writer : Bugfix for printing slide notes - @JewrassicPark @Progi1984 GH-179
 
 ### Changes
 - PhpOffice\PhpPresentation\Writer\ODPresentation : Move to Design Pattern Decorator - @Progi1984
