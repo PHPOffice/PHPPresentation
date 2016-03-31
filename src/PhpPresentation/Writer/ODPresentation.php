@@ -101,7 +101,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
 
         $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation');
         foreach ($oDir as $oFile) {
-            echo "\n".$this->path."/".$oFile->getBasename('.php')."\n";
+            echo "\n".dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation'."/".$oFile->getBasename('.php')."\n";
             if (!$oFile->isFile()) {
                 continue;
             }
