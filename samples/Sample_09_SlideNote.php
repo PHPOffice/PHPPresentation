@@ -55,7 +55,7 @@ $oRichText = $oNote->createRichTextShape()
     ->setHeight($oLayout->getCY($oLayout::UNIT_PIXEL))
     ->setWidth($oLayout->getCX($oLayout::UNIT_PIXEL))
     ->setOffsetX(170)
-    ->setOffsetY(180);;
+    ->setOffsetY(180);
 $oRichText->createTextRun('A class library');
 $oRichText->createParagraph()->createTextRun('Written in PHP');
 $oRichText->createParagraph()->createTextRun('Representing a presentation');
