@@ -73,12 +73,6 @@ class XmlDocument
             return $this->dom;
         }
 
-        if (strpos($file, 'Object') !== false) {
-            foreach (glob($this->path."/*") as $filename) {
-                echo "\n".$this->path."/".$filename."\n";
-            }
-        }
-
         $this->xpath = null;
         $this->file = $file;
 

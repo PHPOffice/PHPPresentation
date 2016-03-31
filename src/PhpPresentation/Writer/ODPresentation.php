@@ -117,8 +117,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
 
         ksort($arrayFiles);
 
-        foreach ($arrayFiles as $basename => $o) {
-            echo "\n".dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation'."/".$basename."\n";
+        foreach ($arrayFiles as $o) {
             $oService = $o->newInstance();
             $oService->setZip($oZip);
             $oService->setPresentation($oPresentation);
