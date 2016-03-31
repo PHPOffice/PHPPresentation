@@ -74,8 +74,8 @@ class XmlDocument
         }
 
         if (strpos($file, 'Object') !== false) {
-            foreach (glob($this->path."/*.*") as $filename) {
-                echo "$filename\n";
+            foreach (glob($this->path."/*") as $filename) {
+                echo "\n".$this->path."/".$filename."\n";
             }
         }
 
