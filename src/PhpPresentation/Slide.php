@@ -35,6 +35,12 @@ use PhpOffice\PhpPresentation\Slide\Transition;
 class Slide implements ComparableInterface, ShapeContainerInterface
 {
     /**
+     * The slide is shown in presentation
+     * @var bool
+     */
+    protected $isVisible = true;
+
+    /**
      * Parent presentation
      *
      * @var PhpPresentation
@@ -74,6 +80,7 @@ class Slide implements ComparableInterface, ShapeContainerInterface
      * @var \PhpOffice\PhpPresentation\Slide\Note
      */
     private $slideNote;
+
     /**
      *
      * @var \PhpOffice\PhpPresentation\Slide\Transition
@@ -513,6 +520,24 @@ class Slide implements ComparableInterface, ShapeContainerInterface
     public function setBackground(AbstractBackground $background = null)
     {
         $this->background = $background;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->isVisible;
+    }
+
+    /**
+     * @param boolean $value
+     * @return Slide
+     */
+    public function setIsVisible($value = true)
+    {
+        $this->isVisible = (bool)$value;
         return $this;
     }
 }

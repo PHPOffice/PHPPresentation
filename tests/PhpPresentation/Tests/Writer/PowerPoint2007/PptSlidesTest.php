@@ -1007,4 +1007,23 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
         $this->assertContains('1', $pres->getElementAttribute($element, 'advClick', 'ppt/slides/slide1.xml'));
     }
+
+    public function testVisibility()
+    {
+        $expectedElement = '/p:sld';
+
+        $oPhpPresentation = new PhpPresentation();
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($pres->elementExists($expectedElement, 'ppt/slides/slide1.xml'));
+        $this->assertFalse($pres->attributeElementExists($expectedElement, 'show', 'ppt/slides/slide1.xml'));
+
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->setIsVisible(false);
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($pres->elementExists($expectedElement, 'ppt/slides/slide1.xml'));
+        $this->assertTrue($pres->attributeElementExists($expectedElement, 'show', 'ppt/slides/slide1.xml'));
+        $this->assertEquals(0, $pres->getElementAttribute($expectedElement, 'show', 'ppt/slides/slide1.xml'));
+    }
 }

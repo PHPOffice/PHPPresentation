@@ -118,4 +118,14 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setTransition(null));
         $this->assertNull($object->getTransition());
     }
+
+    public function testVisible()
+    {
+        $object = new Slide();
+        $this->assertTrue($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setIsVisible(false));
+        $this->assertFalse($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setIsVisible());
+        $this->assertTrue($object->isVisible());
+    }
 }

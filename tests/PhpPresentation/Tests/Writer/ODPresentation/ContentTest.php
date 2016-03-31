@@ -852,4 +852,21 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
         $this->assertContains('manual', $pres->getElementAttribute($element, 'presentation:transition-type', 'content.xml'));
     }
+
+    public function testVisibility()
+    {
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
+
+        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
+        $this->assertFalse($pres->attributeElementExists($expectedElement, 'presentation:visibility', 'content.xml'));
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oSlide->setIsVisible(false);
+
+        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
+        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
+        $this->assertTrue($pres->attributeElementExists($expectedElement, 'presentation:visibility', 'content.xml'));
+        $this->assertEquals('hidden', $pres->getElementAttribute($expectedElement, 'presentation:visibility', 'content.xml'));
+    }
 }

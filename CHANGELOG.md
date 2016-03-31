@@ -24,6 +24,7 @@
 - ODPresentation & PowerPoint2007 Writer : language property to TextElement - @skrajewski & @Progi1984 GH-180
 - ODPresentation & PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
 - ODPresentation & PowerPoint2007 Writer : Support for video - @Progi1984 GH-123
+- ODPresentation & PowerPoint2007 Writer : Support for Visibility for slides - @Progi1984
 - PowerPoint2007 Writer : Presentation with predefined View Type - @Progi1984 GH-120
 
 ## 0.6.0 - 2016-01-24
