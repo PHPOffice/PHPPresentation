@@ -4,6 +4,7 @@ include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
 
 // Create new PHPPresentation object
@@ -24,13 +25,13 @@ imagestring($gdImage, 1, 5, 5,  'Created with PHPPresentation', $textColor);
 echo date('H:i:s') . ' Add a drawing to the slide'.EOL;
 $shape = new MemoryDrawing();
 $shape->setName('Sample image')
-      ->setDescription('Sample image')
-      ->setImageResource($gdImage)
-      ->setRenderingFunction(MemoryDrawing::RENDERING_JPEG)
-      ->setMimeType(MemoryDrawing::MIMETYPE_DEFAULT)
-      ->setHeight(36)
-      ->setOffsetX(10)
-      ->setOffsetY(10);
+    ->setDescription('Sample image')
+    ->setImageResource($gdImage)
+    ->setRenderingFunction(MemoryDrawing::RENDERING_JPEG)
+    ->setMimeType(MemoryDrawing::MIMETYPE_DEFAULT)
+    ->setHeight(36)
+    ->setOffsetX(10)
+    ->setOffsetY(10);
 $currentSlide->addShape($shape);
 
 // Add a file drawing (GIF) to the slide
@@ -53,6 +54,18 @@ $shape->setName('PHPPresentation logo')
     ->setWidth(36)
     ->setOffsetX(10)
     ->setOffsetY(200);
+$currentSlide->addShape($shape);
+
+// Add a video to the slide
+$shape = new Media();
+$shape->setName('Video')
+    ->setDescription('Video')
+    ->setPath(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? './resources/sintel_trailer-480p.mp4' : './resources/sintel_trailer-480p.ogv')
+    ->setResizeProportional(false)
+    ->setHeight(90)
+    ->setWidth(90)
+    ->setOffsetX(10)
+    ->setOffsetY(300);
 $currentSlide->addShape($shape);
 
 // Save file

@@ -4,6 +4,7 @@
 
 ### Bugfix
 - Fixed the image project - @mvargasmoran GH-177
+- PowerPoint2007 Writer : Bugfix for printing slide notes - @JewrassicPark @Progi1984 GH-179
 
 ### Changes
 - PhpOffice\PhpPresentation\Writer\ODPresentation : Move to Design Pattern Decorator - @Progi1984
@@ -22,6 +23,7 @@
 - ODPresentation & PowerPoint2007 & Serialized Writer : Support for Zip Adapter - @Progi1984 GH-176
 - ODPresentation & PowerPoint2007 Writer : language property to TextElement - @skrajewski & @Progi1984 GH-180
 - ODPresentation & PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
+- ODPresentation & PowerPoint2007 Writer : Support for video - @Progi1984 GH-123
 - ODPresentation & PowerPoint2007 Writer : Support for Visibility for slides - @Progi1984
 - PowerPoint2007 Writer : Presentation with predefined View Type - @Progi1984 GH-120
 
