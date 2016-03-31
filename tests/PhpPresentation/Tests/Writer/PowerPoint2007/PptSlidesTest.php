@@ -498,8 +498,8 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $element = '/p:notes/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr[@id="2"][@name="Slide Image Placeholder 1"]';
         $this->assertTrue($pres->elementExists($element, 'ppt/notesSlides/notesSlide1.xml'));
         $element = '/p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm/a:off';
-        $this->assertEquals(Drawing::pixelsToEmu($oNote->getOffsetX()), $pres->getElementAttribute($element, 'x', 'ppt/notesSlides/notesSlide1.xml'));
-        $this->assertEquals(Drawing::pixelsToEmu($oNote->getOffsetY()), $pres->getElementAttribute($element, 'y', 'ppt/notesSlides/notesSlide1.xml'));
+        $this->assertEquals(0, $pres->getElementAttribute($element, 'x', 'ppt/notesSlides/notesSlide1.xml'));
+        $this->assertEquals(0, $pres->getElementAttribute($element, 'y', 'ppt/notesSlides/notesSlide1.xml'));
         $element = '/p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm/a:ext';
         $this->assertEquals(Drawing::pixelsToEmu(round($oNote->getExtentX() / 2)), $pres->getElementAttribute($element, 'cx', 'ppt/notesSlides/notesSlide1.xml'));
         $this->assertEquals(Drawing::pixelsToEmu(round($oNote->getExtentY() / 2)), $pres->getElementAttribute($element, 'cy', 'ppt/notesSlides/notesSlide1.xml'));
@@ -511,7 +511,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         // Notes
         $element = '/p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm/a:off';
         $this->assertEquals(Drawing::pixelsToEmu($oNote->getOffsetX()), $pres->getElementAttribute($element, 'x', 'ppt/notesSlides/notesSlide1.xml'));
-        $this->assertEquals(Drawing::pixelsToEmu(round($oNote->getExtentY() / 2)), $pres->getElementAttribute($element, 'y', 'ppt/notesSlides/notesSlide1.xml'));
+        $this->assertEquals(Drawing::pixelsToEmu(round($oNote->getExtentY() / 2) + $oNote->getOffsetY()), $pres->getElementAttribute($element, 'y', 'ppt/notesSlides/notesSlide1.xml'));
         $element = '/p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm/a:ext';
         $this->assertEquals(5486400, $pres->getElementAttribute($element, 'cx', 'ppt/notesSlides/notesSlide1.xml'));
         $this->assertEquals(3600450, $pres->getElementAttribute($element, 'cy', 'ppt/notesSlides/notesSlide1.xml'));

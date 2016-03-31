@@ -1540,7 +1540,7 @@ class PptSlides extends AbstractDecoratorWriter
         // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr
         $objWriter->endElement();
 
-        // p:notes/p:cSld/p:spTree/p:sp/p:spPr
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr
         $objWriter->startElement('p:spPr');
 
         // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm
