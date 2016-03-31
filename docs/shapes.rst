@@ -27,25 +27,11 @@ Example:
 		->setOffsetX(170)
 		->setOffsetY(180);
 
-Rich text
----------
-
-The Rich text has :ref:`its own page <shapes_richtext>`.
-
 Line
 ----
 
 To create a line, use `createLineShape` method of slide.
 
-Chart
------
-
-The Chart has :ref:`its own page <shapes_chart>`.
-
-Comment
--------
-
-The Comment has :ref:`its own page <shapes_comment>`.
 
 Drawing
 -------
@@ -58,8 +44,3 @@ To create a drawing, use `createDrawingShape` method of slide.
 	$drawing->setName('Unique name')
 		->setDescription('Description of the drawing')
 		->setPath('/path/to/drawing.filename');
-		
-Table
------
-
-The Table has :ref:`its own page <shapes_table>`.
