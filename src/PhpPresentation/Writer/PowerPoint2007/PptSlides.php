@@ -11,6 +11,7 @@ use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\MemoryDrawing as MemoryDrawing;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
@@ -716,7 +717,33 @@ class PptSlides extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         // p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        $objWriter->startElement('p:nvPr');
+        /**
+         * @link : https://github.com/stefslon/exportToPPTX/blob/master/exportToPPTX.m#L2128
+         */
+        if ($shape instanceof Media) {
+            // p:nvPr > a:videoFile
+            $objWriter->startElement('a:videoFile');
+            $objWriter->writeAttribute('r:link', $shape->relationId);
+            $objWriter->endElement();
+            // p:nvPr > p:extLst
+            $objWriter->startElement('p:extLst');
+            // p:nvPr > p:extLst > p:ext
+            $objWriter->startElement('p:ext');
+            $objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
+            // p:nvPr > p:extLst > p:ext > p14:media
+            $objWriter->startElement('p14:media');
+            $objWriter->writeAttribute('r:embed', $shape->relationId);
+            $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
+            // p:nvPr > p:extLst > p:ext > ##p14:media
+            $objWriter->endElement();
+            // p:nvPr > p:extLst > ##p:ext
+            $objWriter->endElement();
+            // p:nvPr > ##p:extLst
+            $objWriter->endElement();
+        }
+        // ##p:nvPr
+        $objWriter->endElement();
         $objWriter->endElement();
 
         // p:blipFill
@@ -736,7 +763,6 @@ class PptSlides extends AbstractDecoratorWriter
 
         // p:spPr
         $objWriter->startElement('p:spPr');
-
         // a:xfrm
         $objWriter->startElement('a:xfrm');
         $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));

@@ -7,6 +7,7 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Comment;
+use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart;
@@ -282,6 +283,8 @@ class Content extends AbstractDecoratorWriter
                     $this->writeShapeLine($objWriter, $shape);
                 } elseif ($shape instanceof Chart) {
                     $this->writeShapeChart($objWriter, $shape);
+                } elseif ($shape instanceof Media) {
+                    $this->writeShapeMedia($objWriter, $shape);
                 } elseif ($shape instanceof AbstractDrawing) {
                     $this->writeShapePic($objWriter, $shape);
                 } elseif ($shape instanceof Group) {
@@ -314,6 +317,54 @@ class Content extends AbstractDecoratorWriter
 
         // Return
         return $objWriter->getData();
+    }
+
+    /**
+     * Write picture
+     *
+     * @param \PhpOffice\Common\XMLWriter $objWriter
+     * @param \PhpOffice\PhpPresentation\Shape\Media $shape
+     */
+    public function writeShapeMedia(XMLWriter $objWriter, Media $shape)
+    {
+        // draw:frame
+        $objWriter->startElement('draw:frame');
+        $objWriter->writeAttribute('draw:name', $shape->getName());
+        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
+        // draw:frame > draw:plugin
+        $objWriter->startElement('draw:plugin');
+        $objWriter->writeAttribute('xlink:href', 'Pictures/' . md5($shape->getPath()) . '.' . $shape->getExtension());
+        $objWriter->writeAttribute('xlink:type', 'simple');
+        $objWriter->writeAttribute('xlink:show', 'embed');
+        $objWriter->writeAttribute('xlink:actuate', 'onLoad');
+        $objWriter->writeAttribute('draw:mime-type', 'application/vnd.sun.star.media');
+
+        $objWriter->startElement('draw:param');
+        $objWriter->writeAttribute('draw:name', 'Loop');
+        $objWriter->writeAttribute('draw:value', 'false');
+        $objWriter->endElement();
+        $objWriter->startElement('draw:param');
+        $objWriter->writeAttribute('draw:name', 'Mute');
+        $objWriter->writeAttribute('draw:value', 'false');
+        $objWriter->endElement();
+        $objWriter->startElement('draw:param');
+        $objWriter->writeAttribute('draw:name', 'VolumeDB');
+        $objWriter->writeAttribute('draw:value', 0);
+        $objWriter->endElement();
+        $objWriter->startElement('draw:param');
+        $objWriter->writeAttribute('draw:name', 'Zoom');
+        $objWriter->writeAttribute('draw:value', 'fit');
+        $objWriter->endElement();
+
+        // draw:frame > ## draw:plugin
+        $objWriter->endElement();
+
+        // ## draw:frame
+        $objWriter->endElement();
     }
 
     /**

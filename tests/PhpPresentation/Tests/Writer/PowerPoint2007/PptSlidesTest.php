@@ -21,6 +21,7 @@ use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
@@ -468,6 +469,39 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:xfrm[@flipV="1"]/a:off[@x="' . $valEmu10 . '"][@y="' . $valEmu10 . '"]';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+    }
+
+    public function testMedia()
+    {
+        $expectedName = 'MyName';
+        $expectedWidth = rand(1, 100);
+        $expectedHeight = rand(1, 100);
+        $expectedX = rand(1, 100);
+        $expectedY = rand(1, 100);
+
+        $oMedia = new Media();
+        $oMedia->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv')
+            ->setName($expectedName)
+            ->setResizeProportional(false)
+            ->setHeight($expectedHeight)
+            ->setWidth($expectedWidth)
+            ->setOffsetX($expectedX)
+            ->setOffsetY($expectedY);
+
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->addShape($oMedia);
+
+        $xmlObject = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr';
+        $this->assertTrue($xmlObject->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expectedName, $xmlObject->getElementAttribute($element, 'name', 'ppt/slides/slide1.xml'));
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:nvPr/a:videoFile';
+        $this->assertTrue($xmlObject->elementExists($element, 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:nvPr/p:extLst/p:ext';
+        $this->assertTrue($xmlObject->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals('{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}', $xmlObject->getElementAttribute($element, 'uri', 'ppt/slides/slide1.xml'));
     }
 
     public function testNote()
