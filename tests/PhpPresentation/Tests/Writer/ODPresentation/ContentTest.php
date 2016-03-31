@@ -18,8 +18,10 @@
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Comment;
+use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -255,6 +257,47 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span/text:line-break';
         $this->assertTrue($pres->elementExists($element, 'content.xml'));
+    }
+
+    public function testMedia()
+    {
+        $expectedName = 'MyName';
+        $expectedWidth = rand(1, 100);
+        $expectedHeight = rand(1, 100);
+        $expectedX = rand(1, 100);
+        $expectedY = rand(1, 100);
+
+        $oMedia = new Media();
+        $oMedia->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv')
+            ->setName($expectedName)
+            ->setResizeProportional(false)
+            ->setHeight($expectedHeight)
+            ->setWidth($expectedWidth)
+            ->setOffsetX($expectedX)
+            ->setOffsetY($expectedY);
+
+        $expectedWidth = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedWidth), 3) . 'cm';
+        $expectedHeight = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedHeight), 3) . 'cm';
+        $expectedX = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedX), 3) . 'cm';
+        $expectedY = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedY), 3) . 'cm';
+
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oSlide->addShape($oMedia);
+
+        $xmlObject = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
+        $this->assertTrue($xmlObject->elementExists($element, 'content.xml'));
+        $this->assertEquals($expectedName, $xmlObject->getElementAttribute($element, 'draw:name', 'content.xml'));
+        $this->assertEquals($expectedWidth, $xmlObject->getElementAttribute($element, 'svg:width', 'content.xml'));
+        $this->assertEquals($expectedHeight, $xmlObject->getElementAttribute($element, 'svg:height', 'content.xml'));
+        $this->assertEquals($expectedX, $xmlObject->getElementAttribute($element, 'svg:x', 'content.xml'));
+        $this->assertEquals($expectedY, $xmlObject->getElementAttribute($element, 'svg:y', 'content.xml'));
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:plugin';
+        $this->assertTrue($xmlObject->elementExists($element, 'content.xml'));
+        $this->assertEquals('application/vnd.sun.star.media', $xmlObject->getElementAttribute($element, 'draw:mime-type', 'content.xml'));
+        $this->assertStringStartsWith('Pictures/', $xmlObject->getElementAttribute($element, 'xlink:href', 'content.xml'));
+        $this->assertStringEndsWith('ogv', $xmlObject->getElementAttribute($element, 'xlink:href', 'content.xml'));
     }
 
     public function testNote()
