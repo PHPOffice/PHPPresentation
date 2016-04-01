@@ -381,10 +381,7 @@ class PptSlides extends AbstractDecoratorWriter
                 // a:solidFill
                 $objWriter->startElement('a:solidFill');
 
-                // a:srgbClr
-                $objWriter->startElement('a:srgbClr');
-                $objWriter->writeAttribute('val', $oBackground->getColor()->getRGB());
-                $objWriter->endElement();
+                $this->writeColor($objWriter, $oBackground->getColor());
 
                 // > a:solidFill
                 $objWriter->endElement();
@@ -1257,10 +1254,7 @@ class PptSlides extends AbstractDecoratorWriter
                         // Color - a:solidFill
                         $objWriter->startElement('a:solidFill');
 
-                        // a:srgbClr
-                        $objWriter->startElement('a:srgbClr');
-                        $objWriter->writeAttribute('val', $element->getFont()->getColor()->getRGB());
-                        $objWriter->endElement();
+                        $this->writeColor($objWriter, $element->getFont()->getColor());
 
                         $objWriter->endElement();
 
@@ -1414,16 +1408,7 @@ class PptSlides extends AbstractDecoratorWriter
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
 
-        // a:srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $oShadow->getColor()->getRGB());
-
-        // a:alpha
-        $objWriter->startElement('a:alpha');
-        $objWriter->writeAttribute('val', $oShadow->getAlpha() * 1000);
-        $objWriter->endElement();
-
-        $objWriter->endElement();
+        $this->writeColor($objWriter, $oShadow->getColor(), $oShadow->getAlpha());
 
         $objWriter->endElement();
 
