@@ -18,10 +18,29 @@
 namespace PhpOffice\PhpPresentation\Shape;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 /**
  * Media element
  */
-class Media extends Drawing implements ComparableInterface
+class Media extends File implements ComparableInterface
 {
+
+    /**
+     * @return string
+     */
+    public function getMimeType()
+    {
+        switch (strtolower($this->getExtension())) {
+            case 'mp4':
+                $mimetype = 'video/mp4';
+                break;
+            case 'ogv':
+                $mimetype = 'video/ogg';
+                break;
+            default:
+                $mimetype = 'application/octet-stream';
+        }
+        return $mimetype;
+    }
 }

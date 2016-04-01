@@ -13,7 +13,7 @@ class PptMedia extends AbstractDecoratorWriter
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
-            if (!$shape instanceof Drawing\AbstractDrawingAdapter && !$shape instanceof Media) {
+            if (!$shape instanceof Drawing\AbstractDrawingAdapter) {
                 continue;
             }
             $this->getZip()->addFromString('ppt/media/' . $shape->getIndexedFilename(), $shape->getContents());

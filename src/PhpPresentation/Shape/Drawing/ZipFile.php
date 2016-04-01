@@ -90,7 +90,7 @@ class ZipFile extends AbstractDrawingAdapter
         $output = substr($this->getPath(), strpos($this->getPath(), '#') + 1);
         $output = str_replace('.' . $this->getExtension(), '', $output);
         $output .= $this->getImageIndex();
-        $output .= $this->getExtension();
+        $output .= '.'.$this->getExtension();
         $output = str_replace(' ', '_', $output);
         return $output;
     }

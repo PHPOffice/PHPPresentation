@@ -7,9 +7,9 @@ use SplFileInfo;
 class File extends AbstractDrawingAdapter
 {
     /**
-     * @var SplFileInfo
+     * @var string
      */
-    protected $oFileInfo;
+    protected $path;
 
     /**
      * Get Path
@@ -18,7 +18,7 @@ class File extends AbstractDrawingAdapter
      */
     public function getPath()
     {
-        return $this->oFileInfo->getPathname();
+        return $this->path;
     }
 
     /**
@@ -36,7 +36,7 @@ class File extends AbstractDrawingAdapter
                 throw new \Exception("File $pValue not found!");
             }
         }
-        $this->oFileInfo = new SplFileInfo($pValue);
+        $this->path = $pValue;
 
         if ($this->width == 0 && $this->height == 0) {
             list($this->width, $this->height) = getimagesize($this->getPath());
@@ -59,7 +59,7 @@ class File extends AbstractDrawingAdapter
      */
     public function getExtension()
     {
-        return $this->oFileInfo->getExtension();
+        return pathinfo($this->getPath(), PATHINFO_EXTENSION);
     }
 
     /**
@@ -76,9 +76,9 @@ class File extends AbstractDrawingAdapter
      */
     public function getIndexedFilename()
     {
-        $output = str_replace('.' . $this->getExtension(), '', $this->oFileInfo->getFilename());
+        $output = str_replace('.' . $this->getExtension(), '', pathinfo($this->getPath(), PATHINFO_FILENAME));
         $output .= $this->getImageIndex();
-        $output .= $this->getExtension();
+        $output .= '.'.$this->getExtension();
         $output = str_replace(' ', '_', $output);
         return $output;
     }
