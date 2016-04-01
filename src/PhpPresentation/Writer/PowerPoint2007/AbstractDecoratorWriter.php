@@ -23,25 +23,24 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      */
     protected function writeRelationship(XMLWriter $objWriter, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
     {
-        if ($pType != '' && $pTarget != '') {
-            if (strpos($pId, 'rId') === false) {
-                $pId = 'rId' . $pId;
-            }
-
-            // Write relationship
-            $objWriter->startElement('Relationship');
-            $objWriter->writeAttribute('Id', $pId);
-            $objWriter->writeAttribute('Type', $pType);
-            $objWriter->writeAttribute('Target', $pTarget);
-
-            if ($pTargetMode != '') {
-                $objWriter->writeAttribute('TargetMode', $pTargetMode);
-            }
-
-            $objWriter->endElement();
-        } else {
+        if ($pType == '' || $pTarget == '') {
             throw new \Exception("Invalid parameters passed.");
         }
+        if (strpos($pId, 'rId') === false) {
+            $pId = 'rId' . $pId;
+        }
+
+        // Write relationship
+        $objWriter->startElement('Relationship');
+        $objWriter->writeAttribute('Id', $pId);
+        $objWriter->writeAttribute('Type', $pType);
+        $objWriter->writeAttribute('Target', $pTarget);
+
+        if ($pTargetMode != '') {
+            $objWriter->writeAttribute('TargetMode', $pTargetMode);
+        }
+
+        $objWriter->endElement();
     }
 
     /**

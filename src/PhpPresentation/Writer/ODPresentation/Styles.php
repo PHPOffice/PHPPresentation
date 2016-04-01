@@ -85,6 +85,9 @@ class Styles extends AbstractDecoratorWriter
 
         // Variables
         $stylePageLayout = $this->getPresentation()->getLayout()->getDocumentLayout();
+        if (empty($stylePageLayout)) {
+            $stylePageLayout = 'sPL0';
+        }
 
         // office:styles
         $objWriter->startElement('office:styles');
@@ -123,11 +126,7 @@ class Styles extends AbstractDecoratorWriter
         $objWriter->startElement('office:automatic-styles');
         // style:page-layout
         $objWriter->startElement('style:page-layout');
-        if (empty($stylePageLayout)) {
-            $objWriter->writeAttribute('style:name', 'sPL0');
-        } else {
-            $objWriter->writeAttribute('style:name', $stylePageLayout);
-        }
+        $objWriter->writeAttribute('style:name', $stylePageLayout);
         // style:page-layout-properties
         $objWriter->startElement('style:page-layout-properties');
         $objWriter->writeAttribute('fo:margin-top', '0cm');
@@ -136,11 +135,11 @@ class Styles extends AbstractDecoratorWriter
         $objWriter->writeAttribute('fo:margin-right', '0cm');
         $objWriter->writeAttribute('fo:page-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels($this->getPresentation()->getLayout()->getCX())), 1) . 'cm');
         $objWriter->writeAttribute('fo:page-height', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels($this->getPresentation()->getLayout()->getCY())), 1) . 'cm');
+        $printOrientation = 'portrait';
         if ($this->getPresentation()->getLayout()->getCX() > $this->getPresentation()->getLayout()->getCY()) {
-            $objWriter->writeAttribute('style:print-orientation', 'landscape');
-        } else {
-            $objWriter->writeAttribute('style:print-orientation', 'portrait');
+            $printOrientation = 'landscape';
         }
+        $objWriter->writeAttribute('style:print-orientation', $printOrientation);
         $objWriter->endElement();
         $objWriter->endElement();
         $objWriter->endElement();
@@ -151,11 +150,7 @@ class Styles extends AbstractDecoratorWriter
         $objWriter->startElement('style:master-page');
         $objWriter->writeAttribute('style:name', 'Standard');
         $objWriter->writeAttribute('style:display-name', 'Standard');
-        if (empty($stylePageLayout)) {
-            $objWriter->writeAttribute('style:page-layout-name', 'sPL0');
-        } else {
-            $objWriter->writeAttribute('style:page-layout-name', $stylePageLayout);
-        }
+        $objWriter->writeAttribute('style:page-layout-name', $stylePageLayout);
         $objWriter->writeAttribute('draw:style-name', 'sPres0');
         $objWriter->endElement();
         $objWriter->endElement();
@@ -174,17 +169,19 @@ class Styles extends AbstractDecoratorWriter
      */
     protected function writeRichTextStyle(XMLWriter $objWriter, RichText $shape)
     {
-        if ($shape->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR || $shape->getFill()->getFillType() == Fill::FILL_GRADIENT_PATH) {
-            if (!in_array($shape->getFill()->getHashCode(), $this->arrayGradient)) {
-                $this->writeGradientFill($objWriter, $shape->getFill());
+        $oFill = $shape->getFill();
+        if ($oFill->getFillType() == Fill::FILL_GRADIENT_LINEAR || $oFill->getFillType() == Fill::FILL_GRADIENT_PATH) {
+            if (!in_array($oFill->getHashCode(), $this->arrayGradient)) {
+                $this->writeGradientFill($objWriter, $oFill);
             }
         }
-        if ($shape->getBorder()->getDashStyle() != Border::DASH_SOLID) {
-            if (!in_array($shape->getBorder()->getDashStyle(), $this->arrayStrokeDash)) {
+        $oBorder = $shape->getBorder();
+        if ($oBorder->getDashStyle() != Border::DASH_SOLID) {
+            if (!in_array($oBorder->getDashStyle(), $this->arrayStrokeDash)) {
                 $objWriter->startElement('draw:stroke-dash');
-                $objWriter->writeAttribute('draw:name', 'strokeDash_'.$shape->getBorder()->getDashStyle());
+                $objWriter->writeAttribute('draw:name', 'strokeDash_'.$oBorder->getDashStyle());
                 $objWriter->writeAttribute('draw:style', 'rect');
-                switch ($shape->getBorder()->getDashStyle()) {
+                switch ($oBorder->getDashStyle()) {
                     case Border::DASH_DASH:
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
@@ -247,7 +244,7 @@ class Styles extends AbstractDecoratorWriter
                         break;
                 }
                 $objWriter->endElement();
-                $this->arrayStrokeDash[] = $shape->getBorder()->getDashStyle();
+                $this->arrayStrokeDash[] = $oBorder->getDashStyle();
             }
         }
     }

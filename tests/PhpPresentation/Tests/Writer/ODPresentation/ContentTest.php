@@ -848,6 +848,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
             }
         }
 
+        $oTransition->setTimeTrigger(false);
         $oTransition->setManualTrigger(true);
         $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
         $this->assertContains('manual', $pres->getElementAttribute($element, 'presentation:transition-type', 'content.xml'));

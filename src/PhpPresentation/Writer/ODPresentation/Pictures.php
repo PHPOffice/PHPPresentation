@@ -16,7 +16,7 @@ class Pictures extends AbstractDecoratorWriter
     {
         $arrMedia = array();
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
-            $shape = $this->getDrawingHashTable()->getByIndex($i);gi
+            $shape = $this->getDrawingHashTable()->getByIndex($i);
             if (!($shape instanceof Drawing\AbstractDrawingAdapter)) {
                 continue;
             }

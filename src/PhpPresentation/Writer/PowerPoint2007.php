@@ -161,11 +161,10 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         $this->useDiskCaching = $pValue;
 
         if (!is_null($pDirectory)) {
-            if (is_dir($pDirectory)) {
-                $this->diskCachingDir = $pDirectory;
-            } else {
+            if (!is_dir($pDirectory)) {
                 throw new \Exception("Directory does not exist: $pDirectory");
             }
+            $this->diskCachingDir = $pDirectory;
         }
 
         return $this;
