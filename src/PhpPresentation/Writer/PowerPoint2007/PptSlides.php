@@ -37,7 +37,6 @@ class PptSlides extends AbstractDecoratorWriter
     public function render()
     {
         foreach ($this->oPresentation->getAllSlides() as $idx => $oSlide) {
-
             $this->oZip->addFromString('ppt/slides/_rels/slide' . ($idx + 1) . '.xml.rels', $this->writeSlideRelationships($oSlide));
             $this->oZip->addFromString('ppt/slides/slide' . ($idx + 1) . '.xml', $this->writeSlide($oSlide));
 

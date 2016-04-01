@@ -24,6 +24,7 @@ class Pictures extends AbstractDecoratorWriter
 
                     $imagePath = $shape->getPath();
 
+                    $imageContents = file_get_contents($imagePath);
                     if (strpos($imagePath, 'zip://') !== false) {
                         $imagePath = substr($imagePath, 6);
                         $imagePathSplitted = explode('#', $imagePath);
@@ -37,8 +38,6 @@ class Pictures extends AbstractDecoratorWriter
                         list(, $imageContents) = explode(';', $imagePath);
                         list(, $imageContents) = explode(',', $imageContents);
                         $imageContents = base64_decode($imageContents);
-                    } else {
-                        $imageContents = file_get_contents($imagePath);
                     }
 
                     $this->getZip()->addFromString('Pictures/' . md5($shape->getPath()).'.'.$shape->getExtension(), $imageContents);

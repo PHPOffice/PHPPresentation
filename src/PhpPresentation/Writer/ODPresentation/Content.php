@@ -889,13 +889,14 @@ class Content extends AbstractDecoratorWriter
             }
 
             // Style des listes
-            if (!isset($this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()])) {
-                $this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['oStyle'] = $paragraph->getBulletStyle();
-                $this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level']  = '';
+            $bulletStyleHashCode = $paragraph->getBulletStyle()->getHashCode();
+            if (!isset($this->arrStyleBullet[$bulletStyleHashCode])) {
+                $this->arrStyleBullet[$bulletStyleHashCode]['oStyle'] = $paragraph->getBulletStyle();
+                $this->arrStyleBullet[$bulletStyleHashCode]['level']  = '';
             }
-            if (strpos($this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'], ';' . $paragraph->getAlignment()->getLevel()) === false) {
-                $this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['level'] .= ';' . $paragraph->getAlignment()->getLevel();
-                $this->arrStyleBullet[$paragraph->getBulletStyle()->getHashCode()]['oAlign_' . $paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
+            if (strpos($this->arrStyleBullet[$bulletStyleHashCode]['level'], ';' . $paragraph->getAlignment()->getLevel()) === false) {
+                $this->arrStyleBullet[$bulletStyleHashCode]['level'] .= ';' . $paragraph->getAlignment()->getLevel();
+                $this->arrStyleBullet[$bulletStyleHashCode]['oAlign_' . $paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
             }
 
             $richtexts  = $paragraph->getRichTextElements();
@@ -1016,49 +1017,50 @@ class Content extends AbstractDecoratorWriter
 
                 // style:paragraph-properties
                 $objWriter->startElement('style:paragraph-properties');
-                if ($shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getTop()->getHashCode()
-                    && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getLeft()->getHashCode()
-                    && $shapeCell->getBorders()->getBottom()->getHashCode() == $shapeCell->getBorders()->getRight()->getHashCode()) {
+                $cellBorders = $shapeCell->getBorders();
+                if ($cellBorders->getBottom()->getHashCode() == $cellBorders->getTop()->getHashCode()
+                    && $cellBorders->getBottom()->getHashCode() == $cellBorders->getLeft()->getHashCode()
+                    && $cellBorders->getBottom()->getHashCode() == $cellBorders->getRight()->getHashCode()) {
                     $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
-                    $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getBottom()->getLineStyle()) {
+                    $lineWidth = Text::numberFormat($cellBorders->getBottom()->getLineWidth() / 1.75, 2);
+                    $lineColor = $cellBorders->getBottom()->getColor()->getRGB();
+                    switch ($cellBorders->getBottom()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
                     $objWriter->writeAttribute('fo:border', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                 } else {
                     $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($shapeCell->getBorders()->getBottom()->getLineWidth() / 1.75, 2);
-                    $lineColor = $shapeCell->getBorders()->getBottom()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getBottom()->getLineStyle()) {
+                    $lineWidth = Text::numberFormat($cellBorders->getBottom()->getLineWidth() / 1.75, 2);
+                    $lineColor = $cellBorders->getBottom()->getColor()->getRGB();
+                    switch ($cellBorders->getBottom()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
                     $objWriter->writeAttribute('fo:border-bottom', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                     // TOP
                     $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($shapeCell->getBorders()->getTop()->getLineWidth() / 1.75, 2);
-                    $lineColor = $shapeCell->getBorders()->getTop()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getTop()->getLineStyle()) {
+                    $lineWidth = Text::numberFormat($cellBorders->getTop()->getLineWidth() / 1.75, 2);
+                    $lineColor = $cellBorders->getTop()->getColor()->getRGB();
+                    switch ($cellBorders->getTop()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
                     $objWriter->writeAttribute('fo:border-top', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                     // RIGHT
                     $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($shapeCell->getBorders()->getRight()->getLineWidth() / 1.75, 2);
-                    $lineColor = $shapeCell->getBorders()->getRight()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getRight()->getLineStyle()) {
+                    $lineWidth = Text::numberFormat($cellBorders->getRight()->getLineWidth() / 1.75, 2);
+                    $lineColor = $cellBorders->getRight()->getColor()->getRGB();
+                    switch ($cellBorders->getRight()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
                     $objWriter->writeAttribute('fo:border-right', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                     // LEFT
                     $lineStyle = 'none';
-                    $lineWidth = Text::numberFormat($shapeCell->getBorders()->getLeft()->getLineWidth() / 1.75, 2);
-                    $lineColor = $shapeCell->getBorders()->getLeft()->getColor()->getRGB();
-                    switch ($shapeCell->getBorders()->getLeft()->getLineStyle()) {
+                    $lineWidth = Text::numberFormat($cellBorders->getLeft()->getLineWidth() / 1.75, 2);
+                    $lineColor = $cellBorders->getLeft()->getColor()->getRGB();
+                    switch ($cellBorders->getLeft()->getLineStyle()) {
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
@@ -1123,11 +1125,8 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttributeIf(!$slide->isVisible(), 'presentation:visibility', 'hidden');
         if (!is_null($oTransition = $slide->getTransition())) {
             $objWriter->writeAttribute('presentation:duration', 'PT'.number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '').'S');
-            if ($oTransition->hasManualTrigger()) {
-                $objWriter->writeAttribute('presentation:transition-type', 'manual');
-            } elseif ($oTransition->hasTimeTrigger()) {
-                $objWriter->writeAttribute('presentation:transition-type', 'automatic');
-            }
+            $objWriter->writeAttributeIf($oTransition->hasManualTrigger(), 'presentation:transition-type', 'manual');
+            $objWriter->writeAttributeIf($oTransition->hasTimeTrigger(), 'presentation:transition-type', 'automatic');
             switch ($oTransition->getSpeed()) {
                 case Transition::SPEED_FAST:
                     $objWriter->writeAttribute('presentation:transition-speed', 'fast');
@@ -1318,30 +1317,32 @@ class Content extends AbstractDecoratorWriter
     {
         $objWriter->writeAttribute('draw:shadow', 'visible');
         $objWriter->writeAttribute('draw:shadow-color', '#' . $oShadow->getColor()->getRGB());
+
+        $distanceCms = CommonDrawing::pixelsToCentimeters($oShadow->getDistance());
         if ($oShadow->getDirection() == 0 || $oShadow->getDirection() == 360) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', $distanceCms . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
         } elseif ($oShadow->getDirection() == 45) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', $distanceCms . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', $distanceCms . 'cm');
         } elseif ($oShadow->getDirection() == 90) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', $distanceCms . 'cm');
         } elseif ($oShadow->getDirection() == 135) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . $distanceCms . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', $distanceCms . 'cm');
         } elseif ($oShadow->getDirection() == 180) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . $distanceCms . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
         } elseif ($oShadow->getDirection() == 225) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', '-' . $distanceCms . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . $distanceCms . 'cm');
         } elseif ($oShadow->getDirection() == 270) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . $distanceCms . 'cm');
         } elseif ($oShadow->getDirection() == 315) {
-            $objWriter->writeAttribute('draw:shadow-offset-x', CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
-            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . CommonDrawing::pixelsToCentimeters($oShadow->getDistance()) . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-x', $distanceCms . 'cm');
+            $objWriter->writeAttribute('draw:shadow-offset-y', '-' . $distanceCms . 'cm');
         }
         $objWriter->writeAttribute('draw:shadow-opacity', (100 - $oShadow->getAlpha()) . '%');
         $objWriter->writeAttribute('style:mirror', 'none');

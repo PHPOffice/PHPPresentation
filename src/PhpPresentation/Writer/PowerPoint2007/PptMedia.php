@@ -16,6 +16,7 @@ class PptMedia extends AbstractDecoratorWriter
             $shape = $this->getDrawingHashTable()->getByIndex($i);
             if ($shape instanceof Drawing || $shape instanceof Media) {
                 $imagePath     = $shape->getPath();
+                $imageContents = file_get_contents($imagePath);
                 if (strpos($imagePath, 'zip://') !== false) {
                     $imagePath         = substr($imagePath, 6);
                     $imagePathSplitted = explode('#', $imagePath);
@@ -29,8 +30,6 @@ class PptMedia extends AbstractDecoratorWriter
                     list(, $imageContents) = explode(';', $imagePath);
                     list(, $imageContents) = explode(',', $imageContents);
                     $imageContents = base64_decode($imageContents);
-                } else {
-                    $imageContents = file_get_contents($imagePath);
                 }
                 $this->getZip()->addFromString('ppt/media/' . str_replace(' ', '_', $shape->getIndexedFilename()), $imageContents);
             } elseif ($shape instanceof MemoryDrawing) {

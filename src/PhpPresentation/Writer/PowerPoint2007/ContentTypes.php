@@ -220,15 +220,14 @@ class ContentTypes extends AbstractDecoratorWriter
      */
     private function writeDefaultContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
     {
-        if ($pPartname != '' && $pContentType != '') {
-            // Write content type
-            $objWriter->startElement('Default');
-            $objWriter->writeAttribute('Extension', $pPartname);
-            $objWriter->writeAttribute('ContentType', $pContentType);
-            $objWriter->endElement();
-        } else {
+        if ($pPartname == '' || $pContentType == '') {
             throw new \Exception("Invalid parameters passed.");
         }
+        // Write content type
+        $objWriter->startElement('Default');
+        $objWriter->writeAttribute('Extension', $pPartname);
+        $objWriter->writeAttribute('ContentType', $pContentType);
+        $objWriter->endElement();
     }
 
     /**
@@ -241,14 +240,13 @@ class ContentTypes extends AbstractDecoratorWriter
      */
     private function writeOverrideContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
     {
-        if ($pPartname != '' && $pContentType != '') {
-            // Write content type
-            $objWriter->startElement('Override');
-            $objWriter->writeAttribute('PartName', $pPartname);
-            $objWriter->writeAttribute('ContentType', $pContentType);
-            $objWriter->endElement();
-        } else {
+        if ($pPartname == '' || $pContentType == '') {
             throw new \Exception("Invalid parameters passed.");
         }
+        // Write content type
+        $objWriter->startElement('Override');
+        $objWriter->writeAttribute('PartName', $pPartname);
+        $objWriter->writeAttribute('ContentType', $pContentType);
+        $objWriter->endElement();
     }
 }
