@@ -180,17 +180,11 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('xlink:href', '.');
         $this->xmlContent->writeAttribute('xlink:type', 'simple');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleChart');
-        if ($chartType instanceof Area) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:area');
-        } elseif ($chartType instanceof AbstractTypeBar) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
-        } elseif ($chartType instanceof Line) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof AbstractTypePie) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
-        } elseif ($chartType instanceof Scatter) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
-        }
+        $this->xmlContent->writeAttributeIf($chartType instanceof Area, 'chart:class', 'chart:area');
+        $this->xmlContent->writeAttributeIf($chartType instanceof AbstractTypeBar, 'chart:class', 'chart:bar');
+        $this->xmlContent->writeAttributeIf($chartType instanceof Line, 'chart:class', 'chart:line');
+        $this->xmlContent->writeAttributeIf($chartType instanceof AbstractTypePie, 'chart:class', 'chart:circle');
+        $this->xmlContent->writeAttributeIf($chartType instanceof Scatter, 'chart:class', 'chart:scatter');
 
         //**** Title ****
         $this->writeTitle($chart->getTitle());
@@ -297,11 +291,12 @@ class ObjectsChart extends AbstractDecoratorWriter
         }
         $this->xmlContent->endElement();
         // style:style > style:text-properties
+        $oFont = $chart->getPlotArea()->getAxisX()->getFont();
         $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#'.$chart->getPlotArea()->getAxisX()->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $chart->getPlotArea()->getAxisX()->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $chart->getPlotArea()->getAxisX()->getFont()->getSize().'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $chart->getPlotArea()->getAxisX()->getFont()->isItalic() ? 'italic' : 'normal');
+        $this->xmlContent->writeAttribute('fo:color', '#'.$oFont->getColor()->getRGB());
+        $this->xmlContent->writeAttribute('fo:font-family', $oFont->getName());
+        $this->xmlContent->writeAttribute('fo:font-size', $oFont->getSize().'pt');
+        $this->xmlContent->writeAttribute('fo:font-style', $oFont->isItalic() ? 'italic' : 'normal');
         $this->xmlContent->endElement();
         // style:style > style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
@@ -332,11 +327,12 @@ class ObjectsChart extends AbstractDecoratorWriter
         }
         $this->xmlContent->endElement();
         // style:style > style:text-properties
+        $oFont = $chart->getPlotArea()->getAxisY()->getFont();
         $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#'.$chart->getPlotArea()->getAxisY()->getFont()->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $chart->getPlotArea()->getAxisY()->getFont()->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $chart->getPlotArea()->getAxisY()->getFont()->getSize().'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $chart->getPlotArea()->getAxisY()->getFont()->isItalic() ? 'italic' : 'normal');
+        $this->xmlContent->writeAttribute('fo:color', '#'.$oFont->getColor()->getRGB());
+        $this->xmlContent->writeAttribute('fo:font-family', $oFont->getName());
+        $this->xmlContent->writeAttribute('fo:font-size', $oFont->getSize().'pt');
+        $this->xmlContent->writeAttribute('fo:font-style', $oFont->isItalic() ? 'italic' : 'normal');
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
@@ -536,11 +532,11 @@ class ObjectsChart extends AbstractDecoratorWriter
             $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
         }
         if ($chartType instanceof AbstractTypeBar) {
+            $chartVertical = 'false';
             if ($chartType->getBarDirection() == AbstractTypeBar::DIRECTION_HORIZONTAL) {
-                $this->xmlContent->writeAttribute('chart:vertical', 'true');
-            } else {
-                $this->xmlContent->writeAttribute('chart:vertical', 'false');
+                $chartVertical = 'true';
             }
+            $this->xmlContent->writeAttribute('chart:vertical', $chartVertical);
             if ($chartType->getBarGrouping() == Bar::GROUPING_CLUSTERED) {
                 $this->xmlContent->writeAttribute('chart:stacked', 'false');
                 $this->xmlContent->writeAttribute('chart:overlap', '0');
@@ -595,9 +591,9 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries);
         if ($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof Scatter) {
             $dataPointFills = $series->getDataPointFills();
-            if (empty($dataPointFills)) {
-                $incRepeat = $numRange;
-            } else {
+
+            $incRepeat = $numRange;
+            if (!empty($dataPointFills)) {
                 $inc = 0;
                 $incRepeat = 0;
                 $newFill = new Fill();
@@ -662,16 +658,15 @@ class ObjectsChart extends AbstractDecoratorWriter
         }
         if ($chartType instanceof Line || $chartType instanceof Scatter) {
             $oMarker = $series->getMarker();
-            if ($oMarker->getSymbol() == Chart\Marker::SYMBOL_NONE) {
-                /**
-                 * @link : http://www.datypic.com/sc/odf/a-chart_symbol-type.html
-                 */
-                $this->xmlContent->writeAttribute('chart:symbol-type', 'none');
-            } else {
-                /**
-                 * @link : http://www.datypic.com/sc/odf/a-chart_symbol-name.html
-                 */
-                $this->xmlContent->writeAttribute('chart:symbol-type', 'named-symbol');
+            /**
+             * @link : http://www.datypic.com/sc/odf/a-chart_symbol-type.html
+             */
+            $this->xmlContent->writeAttributeIf($oMarker->getSymbol() == Chart\Marker::SYMBOL_NONE, 'chart:symbol-type', 'none');
+            /**
+             * @link : http://www.datypic.com/sc/odf/a-chart_symbol-name.html
+             */
+            $this->xmlContent->writeAttributeIf($oMarker->getSymbol() != Chart\Marker::SYMBOL_NONE, 'chart:symbol-type', 'named-symbol');
+            if ($oMarker->getSymbol() != Chart\Marker::SYMBOL_NONE) {
                 switch ($oMarker->getSymbol()) {
                     case Chart\Marker::SYMBOL_DASH:
                         $symbolName = 'horizontal-bar';
@@ -819,12 +814,11 @@ class ObjectsChart extends AbstractDecoratorWriter
             foreach ($row as $cell) {
                 // table:table-cell
                 $this->xmlContent->startElement('table:table-cell');
-                if (is_numeric($cell)) {
-                    $this->xmlContent->writeAttribute('office:value-type', 'float');
-                    $this->xmlContent->writeAttribute('office:value', $cell);
-                } else {
-                    $this->xmlContent->writeAttribute('office:value-type', 'string');
-                }
+
+                $cellNumeric = is_numeric($cell);
+                $this->xmlContent->writeAttributeIf(!$cellNumeric, 'office:value-type', 'string');
+                $this->xmlContent->writeAttributeIf($cellNumeric, 'office:value-type', 'float');
+                $this->xmlContent->writeAttributeIf($cellNumeric, 'office:value', $cell);
                 // text:p
                 $this->xmlContent->startElement('text:p');
                 $this->xmlContent->text($cell);
@@ -848,20 +842,21 @@ class ObjectsChart extends AbstractDecoratorWriter
      */
     private function writeTitle(Title $oTitle)
     {
-        if ($oTitle->isVisible()) {
-            // chart:title
-            $this->xmlContent->startElement('chart:title');
-            $this->xmlContent->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetX()), 3) . 'cm');
-            $this->xmlContent->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetY()), 3) . 'cm');
-            $this->xmlContent->writeAttribute('chart:style-name', 'styleTitle');
-            // > text:p
-            $this->xmlContent->startElement('text:p');
-            $this->xmlContent->text($oTitle->getText());
-            // > text:p
-            $this->xmlContent->endElement();
-            // > chart:title
-            $this->xmlContent->endElement();
+        if (!$oTitle->isVisible()) {
+            return;
         }
+        // chart:title
+        $this->xmlContent->startElement('chart:title');
+        $this->xmlContent->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetX()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetY()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('chart:style-name', 'styleTitle');
+        // > text:p
+        $this->xmlContent->startElement('text:p');
+        $this->xmlContent->text($oTitle->getText());
+        // > text:p
+        $this->xmlContent->endElement();
+        // > chart:title
+        $this->xmlContent->endElement();
     }
 
     /**
@@ -869,22 +864,23 @@ class ObjectsChart extends AbstractDecoratorWriter
      */
     private function writeTitleStyle(Title $oTitle)
     {
-        if ($oTitle->isVisible()) {
-            // style:style
-            $this->xmlContent->startElement('style:style');
-            $this->xmlContent->writeAttribute('style:name', 'styleTitle');
-            $this->xmlContent->writeAttribute('style:family', 'chart');
-            // style:text-properties
-            $this->xmlContent->startElement('style:text-properties');
-            $this->xmlContent->writeAttribute('fo:color', '#'.$oTitle->getFont()->getColor()->getRGB());
-            $this->xmlContent->writeAttribute('fo:font-family', $oTitle->getFont()->getName());
-            $this->xmlContent->writeAttribute('fo:font-size', $oTitle->getFont()->getSize().'pt');
-            $this->xmlContent->writeAttribute('fo:font-style', $oTitle->getFont()->isItalic() ? 'italic' : 'normal');
-            // > style:text-properties
-            $this->xmlContent->endElement();
-            // > style:style
-            $this->xmlContent->endElement();
+        if (!$oTitle->isVisible()) {
+            return;
         }
+        // style:style
+        $this->xmlContent->startElement('style:style');
+        $this->xmlContent->writeAttribute('style:name', 'styleTitle');
+        $this->xmlContent->writeAttribute('style:family', 'chart');
+        // style:text-properties
+        $this->xmlContent->startElement('style:text-properties');
+        $this->xmlContent->writeAttribute('fo:color', '#'.$oTitle->getFont()->getColor()->getRGB());
+        $this->xmlContent->writeAttribute('fo:font-family', $oTitle->getFont()->getName());
+        $this->xmlContent->writeAttribute('fo:font-size', $oTitle->getFont()->getSize().'pt');
+        $this->xmlContent->writeAttribute('fo:font-style', $oTitle->getFont()->isItalic() ? 'italic' : 'normal');
+        // > style:text-properties
+        $this->xmlContent->endElement();
+        // > style:style
+        $this->xmlContent->endElement();
     }
 
     private function writeWall()

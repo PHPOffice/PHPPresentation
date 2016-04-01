@@ -165,11 +165,10 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         $this->useDiskCaching = $pValue;
 
         if (!is_null($pDirectory)) {
-            if (is_dir($pDirectory)) {
-                $this->diskCachingDirectory = $pDirectory;
-            } else {
+            if (!is_dir($pDirectory)) {
                 throw new \Exception("Directory does not exist: $pDirectory");
             }
+            $this->diskCachingDirectory = $pDirectory;
         }
 
         return $this;

@@ -351,13 +351,12 @@ class RichText extends AbstractShape implements ComparableInterface
      */
     public function setParagraphs($paragraphs = null)
     {
-        if (is_array($paragraphs)) {
-            $this->richTextParagraphs = $paragraphs;
-            $this->activeParagraph    = count($this->richTextParagraphs) - 1;
-        } else {
+        if (!is_array($paragraphs)) {
             throw new \Exception("Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.");
         }
 
+        $this->richTextParagraphs = $paragraphs;
+        $this->activeParagraph    = count($this->richTextParagraphs) - 1;
         return $this;
     }
 
