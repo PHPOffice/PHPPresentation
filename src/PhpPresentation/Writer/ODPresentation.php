@@ -183,40 +183,4 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     {
         return $this->diskCachingDirectory;
     }
-
-    /**
-     * Get an array of all drawings
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
-     * @throws \Exception
-     */
-    protected function allDrawings()
-    {
-        // Get an array of all drawings
-        $aDrawings  = array();
-
-        // Loop trough PhpPresentation
-        $slideCount = $this->getPhpPresentation()->getSlideCount();
-        for ($i = 0; $i < $slideCount; ++$i) {
-            // Loop trough images and add to array
-            $iterator = $this->getPhpPresentation()->getSlide($i)->getShapeCollection()->getIterator();
-            while ($iterator->valid()) {
-                if ($iterator->current() instanceof AbstractDrawing && !($iterator->current() instanceof Table)) {
-                    $aDrawings[] = $iterator->current();
-                } elseif ($iterator->current() instanceof Group) {
-                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
-                    while ($iterator2->valid()) {
-                        if ($iterator2->current() instanceof AbstractDrawing && !($iterator2->current() instanceof Table)) {
-                            $aDrawings[] = $iterator2->current();
-                        }
-                        $iterator2->next();
-                    }
-                }
-
-                $iterator->next();
-            }
-        }
-
-        return $aDrawings;
-    }
 }

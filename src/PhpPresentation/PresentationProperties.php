@@ -64,7 +64,7 @@ class PresentationProperties
     protected $zoom = 1;
 
     /*
-     * @var boolean
+     * @var string
      */
     protected $lastView = self::VIEW_SLIDE;
 
@@ -104,7 +104,7 @@ class PresentationProperties
     
     /**
      * Define the path for the thumbnail file / preview picture
-     * @param string $value
+     * @param string $path
      * @return \PhpOffice\PhpPresentation\PresentationProperties
      */
     public function setThumbnailPath($path = '')

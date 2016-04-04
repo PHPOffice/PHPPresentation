@@ -99,7 +99,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $arrayShape);
         // Slide 1 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -145,7 +145,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 2 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -242,7 +242,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 3 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -399,7 +399,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 4 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());

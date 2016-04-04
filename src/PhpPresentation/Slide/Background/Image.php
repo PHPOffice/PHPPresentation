@@ -52,17 +52,13 @@ class Image extends AbstractBackground
             if (!file_exists($pValue)) {
                 throw new \Exception("File $pValue not found!");
             }
-            $this->path = $pValue;
 
             if ($this->width == 0 && $this->height == 0) {
                 // Get width/height
                 list($this->width, $this->height) = getimagesize($pValue);
             }
-
-        } else {
-            $this->path = $pValue;
         }
-
+        $this->path = $pValue;
         return $this;
     }
 

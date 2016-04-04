@@ -23,6 +23,7 @@ use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart as ChartShape;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
@@ -109,12 +110,19 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
             if (!$oFile->isFile()) {
                 continue;
             }
-            $class = __NAMESPACE__.'\\PowerPoint2007\\'.$oFile->getBasename('.php');
+
+            $class = __NAMESPACE__ . '\\PowerPoint2007\\' . $oFile->getBasename('.php');
             $o = new \ReflectionClass($class);
 
             if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')) {
                 continue;
             }
+            $arrayFiles[$oFile->getBasename('.php')] = $o;
+        }
+
+        ksort($arrayFiles);
+
+        foreach ($arrayFiles as $o) {
             $oService = $o->newInstance();
             $oService->setZip($oZip);
             $oService->setPresentation($oPresentation);
@@ -200,43 +208,5 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         $this->layoutPack = $pValue;
 
         return $this;
-    }
-
-    /**
-     * Get an array of all drawings
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
-     * @throws \Exception
-     */
-    protected function allDrawings()
-    {
-        // Get an array of all drawings
-        $aDrawings  = array();
-
-        // Loop trough PhpPresentation
-        foreach ($this->getPhpPresentation()->getAllSlides() as $oSlide) {
-            $oCollection = $oSlide->getShapeCollection();
-            if ($oCollection->count() <= 0) {
-                continue;
-            }
-            $oIterator = $oCollection->getIterator();
-            while ($oIterator->valid()) {
-                if ($oIterator->current() instanceof AbstractDrawing && !($oIterator->current() instanceof Table)) {
-                    $aDrawings[] = $oIterator->current();
-                } elseif ($oIterator->current() instanceof Group) {
-                    $oSubIterator = $oIterator->current()->getShapeCollection()->getIterator();
-                    while ($oSubIterator->valid()) {
-                        if ($oSubIterator->current() instanceof AbstractDrawing && !($oSubIterator->current() instanceof Table)) {
-                            $aDrawings[] = $oSubIterator->current();
-                        }
-                        $oSubIterator->next();
-                    }
-                }
-
-                $oIterator->next();
-            }
-        }
-
-        return $aDrawings;
     }
 }
