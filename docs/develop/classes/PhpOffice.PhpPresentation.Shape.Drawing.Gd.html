@@ -3,7 +3,7 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <meta charset="utf-8"/>
-    <title>    API Documentation &raquo; \PhpOffice\PhpPresentation\Shape\AbstractDrawing
+    <title>    API Documentation &raquo; \PhpOffice\PhpPresentation\Shape\Drawing\Gd
 </title>
     <meta name="author" content=""/>
     <meta name="description" content=""/>
@@ -143,9 +143,21 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getContents" title="getContents :: ">
+            <span class="description"></span><pre>getContents</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
         <a href="#method_getDescription" title="getDescription :: Get Description">
             <span class="description">Get Description</span><pre>getDescription</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getExtension" title="getExtension :: ">
+            <span class="description"></span><pre>getExtension</pre>
         </a>
     </li>
 
@@ -179,13 +191,31 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                        <li class="method public inherited">
         <a href="#method_getImageIndex" title="getImageIndex :: Get image index">
             <span class="description">Get image index</span><pre>getImageIndex</pre>
         </a>
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_getImageResource" title="getImageResource :: Get image resource">
+            <span class="description">Get image resource</span><pre>getImageResource</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getIndexedFilename" title="getIndexedFilename :: ">
+            <span class="description"></span><pre>getIndexedFilename</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getMimeType" title="getMimeType :: ">
+            <span class="description"></span><pre>getMimeType</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
         <a href="#method_getName" title="getName :: Get Name">
             <span class="description">Get Name</span><pre>getName</pre>
         </a>
@@ -200,6 +230,12 @@
                                                                                                         <li class="method public inherited">
         <a href="#method_getOffsetY" title="getOffsetY :: Get OffsetY">
             <span class="description">Get OffsetY</span><pre>getOffsetY</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_getRenderingFunction" title="getRenderingFunction :: Get rendering function">
+            <span class="description">Get rendering function</span><pre>getRenderingFunction</pre>
         </a>
     </li>
 
@@ -227,7 +263,7 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                        <li class="method public inherited">
         <a href="#method_isResizeProportional" title="isResizeProportional :: Get ResizeProportional">
             <span class="description">Get ResizeProportional</span><pre>isResizeProportional</pre>
         </a>
@@ -239,7 +275,7 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                        <li class="method public inherited">
         <a href="#method_setDescription" title="setDescription :: Set Description">
             <span class="description">Set Description</span><pre>setDescription</pre>
         </a>
@@ -270,6 +306,18 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_setImageResource" title="setImageResource :: Set image resource">
+            <span class="description">Set image resource</span><pre>setImageResource</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
+        <a href="#method_setMimeType" title="setMimeType :: Set mime type">
+            <span class="description">Set mime type</span><pre>setMimeType</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
         <a href="#method_setName" title="setName :: Set Name">
             <span class="description">Set Name</span><pre>setName</pre>
         </a>
@@ -288,6 +336,12 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_setRenderingFunction" title="setRenderingFunction :: Set rendering function">
+            <span class="description">Set rendering function</span><pre>setRenderingFunction</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
         <a href="#method_setResizeProportional" title="setResizeProportional :: Set ResizeProportional">
             <span class="description">Set ResizeProportional</span><pre>setResizeProportional</pre>
         </a>
@@ -321,15 +375,55 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
             <ul>
+                                <li class="constant ">
+                    <a href="#constant_MIMETYPE_DEFAULT" title="MIMETYPE_DEFAULT :: ">
+                        <span class="description"></span><pre>MIMETYPE_DEFAULT</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_MIMETYPE_GIF" title="MIMETYPE_GIF :: ">
+                        <span class="description"></span><pre>MIMETYPE_GIF</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_MIMETYPE_JPEG" title="MIMETYPE_JPEG :: ">
+                        <span class="description"></span><pre>MIMETYPE_JPEG</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_MIMETYPE_PNG" title="MIMETYPE_PNG :: ">
+                        <span class="description"></span><pre>MIMETYPE_PNG</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RENDERING_DEFAULT" title="RENDERING_DEFAULT :: ">
+                        <span class="description"></span><pre>RENDERING_DEFAULT</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RENDERING_GIF" title="RENDERING_GIF :: ">
+                        <span class="description"></span><pre>RENDERING_GIF</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RENDERING_JPEG" title="RENDERING_JPEG :: ">
+                        <span class="description"></span><pre>RENDERING_JPEG</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_RENDERING_PNG" title="RENDERING_PNG :: ">
+                        <span class="description"></span><pre>RENDERING_PNG</pre>
+                    </a>
+                </li>
                             </ul>
         </li>
     </ul>
@@ -339,11 +433,10 @@
 
         <div class="span8">
             <div class="element class">
-                <h1>AbstractDrawing</h1>
+                <h1>Gd</h1>
                 <small style="display: block; text-align: right">
-                                            Extends <a href="../classes/PhpOffice.PhpPresentation.AbstractShape.html">\PhpOffice\PhpPresentation\AbstractShape</a>
-                                                                Implements <a href="../classes/PhpOffice.PhpPresentation.ComparableInterface.html">\PhpOffice\PhpPresentation\ComparableInterface</a>
-                                    </small>
+                                            Extends <a href="../classes/PhpOffice.PhpPresentation.Shape.Drawing.AbstractDrawingAdapter.html">\PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter</a>
+                                                        </small>
                 <p class="short_description">Abstract drawing</p>
                 <div class="details">
                     <div class="long_description">
@@ -488,12 +581,70 @@
                             </div>
 
                         </div>
+                                            <a id="method_getContents"></a>
+                        <div class="element clickable method public  method_getContents inherited" data-toggle="collapse" data-target=".method_getContents .collapse">
+                            <h2>getContents</h2>
+                            <pre>getContents() : string</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                <span class="label">abstract</span>                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_getDescription"></a>
-                        <div class="element clickable method public  method_getDescription" data-toggle="collapse" data-target=".method_getDescription .collapse">
+                        <div class="element clickable method public  method_getDescription inherited" data-toggle="collapse" data-target=".method_getDescription .collapse">
                             <h2>Get Description</h2>
                             <pre>getDescription() : string</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getExtension"></a>
+                        <div class="element clickable method public  method_getExtension inherited" data-toggle="collapse" data-target=".method_getExtension .collapse">
+                            <h2>getExtension</h2>
+                            <pre>getExtension() : string</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                <span class="label">abstract</span>                                                            </div>
 
                             
                             <div class="row collapse">
@@ -664,11 +815,11 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
 
                         </div>
                                             <a id="method_getImageIndex"></a>
-                        <div class="element clickable method public  method_getImageIndex" data-toggle="collapse" data-target=".method_getImageIndex .collapse">
+                        <div class="element clickable method public  method_getImageIndex inherited" data-toggle="collapse" data-target=".method_getImageIndex .collapse">
                             <h2>Get image index</h2>
                             <pre>getImageIndex() : integer</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -692,12 +843,99 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                             </div>
 
                         </div>
+                                            <a id="method_getImageResource"></a>
+                        <div class="element clickable method public  method_getImageResource" data-toggle="collapse" data-target=".method_getImageResource .collapse">
+                            <h2>Get image resource</h2>
+                            <pre>getImageResource() : resource</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>resource</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getIndexedFilename"></a>
+                        <div class="element clickable method public  method_getIndexedFilename inherited" data-toggle="collapse" data-target=".method_getIndexedFilename .collapse">
+                            <h2>getIndexedFilename</h2>
+                            <pre>getIndexedFilename() : string</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                <span class="label">abstract</span>                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getMimeType"></a>
+                        <div class="element clickable method public  method_getMimeType inherited" data-toggle="collapse" data-target=".method_getMimeType .collapse">
+                            <h2>getMimeType</h2>
+                            <pre>getMimeType() : string</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                <span class="label">abstract</span>                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_getName"></a>
-                        <div class="element clickable method public  method_getName" data-toggle="collapse" data-target=".method_getName .collapse">
+                        <div class="element clickable method public  method_getName inherited" data-toggle="collapse" data-target=".method_getName .collapse">
                             <h2>Get Name</h2>
                             <pre>getName() : string</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -775,6 +1013,35 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                     
                                                                             <h3>Response</h3>
                                         <code>integer</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getRenderingFunction"></a>
+                        <div class="element clickable method public  method_getRenderingFunction" data-toggle="collapse" data-target=".method_getRenderingFunction .collapse">
+                            <h2>Get rendering function</h2>
+                            <pre>getRenderingFunction() : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p></p>
                                                                     </div>
                             </div>
 
@@ -896,11 +1163,11 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
 
                         </div>
                                             <a id="method_isResizeProportional"></a>
-                        <div class="element clickable method public  method_isResizeProportional" data-toggle="collapse" data-target=".method_isResizeProportional .collapse">
+                        <div class="element clickable method public  method_isResizeProportional inherited" data-toggle="collapse" data-target=".method_isResizeProportional .collapse">
                             <h2>Get ResizeProportional</h2>
                             <pre>isResizeProportional() : boolean</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -965,11 +1232,11 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
 
                         </div>
                                             <a id="method_setDescription"></a>
-                        <div class="element clickable method public  method_setDescription" data-toggle="collapse" data-target=".method_setDescription .collapse">
+                        <div class="element clickable method public  method_setDescription inherited" data-toggle="collapse" data-target=".method_setDescription .collapse">
                             <h2>Set Description</h2>
                             <pre>setDescription(string $pValue = &#039;&#039;) : \PhpOffice\PhpPresentation\Shape\AbstractDrawing</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -986,7 +1253,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPresentation.Shape.AbstractDrawing.html">\PhpOffice\PhpPresentation\Shape\AbstractDrawing</a></code><p></p>
+                                        <code>\PhpOffice\PhpPresentation\Shape\AbstractDrawing</code><p></p>
                                                                     </div>
                             </div>
 
@@ -1114,12 +1381,66 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                             </div>
 
                         </div>
+                                            <a id="method_setImageResource"></a>
+                        <div class="element clickable method public  method_setImageResource" data-toggle="collapse" data-target=".method_setImageResource .collapse">
+                            <h2>Set image resource</h2>
+                            <pre>setImageResource( $value = null) : $this</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$value</h4>
+                                                <code></code><p><p>resource</p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>$this</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setMimeType"></a>
+                        <div class="element clickable method public  method_setMimeType" data-toggle="collapse" data-target=".method_setMimeType .collapse">
+                            <h2>Set mime type</h2>
+                            <pre>setMimeType(string $value = self::MIMETYPE_DEFAULT) : $this</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$value</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>$this</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_setName"></a>
-                        <div class="element clickable method public  method_setName" data-toggle="collapse" data-target=".method_setName .collapse">
+                        <div class="element clickable method public  method_setName inherited" data-toggle="collapse" data-target=".method_setName .collapse">
                             <h2>Set Name</h2>
                             <pre>setName(string $pValue = &#039;&#039;) : \PhpOffice\PhpPresentation\Shape\AbstractDrawing</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -1136,7 +1457,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPresentation.Shape.AbstractDrawing.html">\PhpOffice\PhpPresentation\Shape\AbstractDrawing</a></code><p></p>
+                                        <code>\PhpOffice\PhpPresentation\Shape\AbstractDrawing</code><p></p>
                                                                     </div>
                             </div>
 
@@ -1195,12 +1516,39 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                             </div>
 
                         </div>
+                                            <a id="method_setRenderingFunction"></a>
+                        <div class="element clickable method public  method_setRenderingFunction" data-toggle="collapse" data-target=".method_setRenderingFunction .collapse">
+                            <h2>Set rendering function</h2>
+                            <pre>setRenderingFunction(string $value = self::RENDERING_DEFAULT) : $this</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$value</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>$this</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_setResizeProportional"></a>
-                        <div class="element clickable method public  method_setResizeProportional" data-toggle="collapse" data-target=".method_setResizeProportional .collapse">
+                        <div class="element clickable method public  method_setResizeProportional inherited" data-toggle="collapse" data-target=".method_setResizeProportional .collapse">
                             <h2>Set ResizeProportional</h2>
                             <pre>setResizeProportional(boolean $pValue = true) : \PhpOffice\PhpPresentation\Shape\AbstractDrawing</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -1217,7 +1565,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPresentation.Shape.AbstractDrawing.html">\PhpOffice\PhpPresentation\Shape\AbstractDrawing</a></code><p></p>
+                                        <code>\PhpOffice\PhpPresentation\Shape\AbstractDrawing</code><p></p>
                                                                     </div>
                             </div>
 
@@ -1353,14 +1701,287 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
 
                         </div>
                     
-                    
+                                            <h3><i class="icon-custom icon-constant"></i> Constants</h3>
+                                                    <a id="constant_RENDERING_DEFAULT"> </a>
+                            <div class="element clickable constant  constant_RENDERING_DEFAULT" data-toggle="collapse" data-target=".constant_RENDERING_DEFAULT .collapse">
+                                <h2>RENDERING_DEFAULT</h2>
+                                <pre>RENDERING_DEFAULT</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_RENDERING_PNG"> </a>
+                            <div class="element clickable constant  constant_RENDERING_PNG" data-toggle="collapse" data-target=".constant_RENDERING_PNG .collapse">
+                                <h2>RENDERING_PNG</h2>
+                                <pre>RENDERING_PNG</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_RENDERING_GIF"> </a>
+                            <div class="element clickable constant  constant_RENDERING_GIF" data-toggle="collapse" data-target=".constant_RENDERING_GIF .collapse">
+                                <h2>RENDERING_GIF</h2>
+                                <pre>RENDERING_GIF</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_RENDERING_JPEG"> </a>
+                            <div class="element clickable constant  constant_RENDERING_JPEG" data-toggle="collapse" data-target=".constant_RENDERING_JPEG .collapse">
+                                <h2>RENDERING_JPEG</h2>
+                                <pre>RENDERING_JPEG</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_MIMETYPE_DEFAULT"> </a>
+                            <div class="element clickable constant  constant_MIMETYPE_DEFAULT" data-toggle="collapse" data-target=".constant_MIMETYPE_DEFAULT .collapse">
+                                <h2>MIMETYPE_DEFAULT</h2>
+                                <pre>MIMETYPE_DEFAULT</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_MIMETYPE_PNG"> </a>
+                            <div class="element clickable constant  constant_MIMETYPE_PNG" data-toggle="collapse" data-target=".constant_MIMETYPE_PNG .collapse">
+                                <h2>MIMETYPE_PNG</h2>
+                                <pre>MIMETYPE_PNG</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_MIMETYPE_GIF"> </a>
+                            <div class="element clickable constant  constant_MIMETYPE_GIF" data-toggle="collapse" data-target=".constant_MIMETYPE_GIF .collapse">
+                                <h2>MIMETYPE_GIF</h2>
+                                <pre>MIMETYPE_GIF</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_MIMETYPE_JPEG"> </a>
+                            <div class="element clickable constant  constant_MIMETYPE_JPEG" data-toggle="collapse" data-target=".constant_MIMETYPE_JPEG .collapse">
+                                <h2>MIMETYPE_JPEG</h2>
+                                <pre>MIMETYPE_JPEG</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                            
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
+                                                    <a id="property_imageResource"> </a>
+                            <div class="element clickable property  protected property_imageResource" data-toggle="collapse" data-target=".property_imageResource .collapse">
+                                <h2>Image resource</h2>
+                                <pre>imageResource : resource</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>resource</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_renderingFunction"> </a>
+                            <div class="element clickable property  protected property_renderingFunction" data-toggle="collapse" data-target=".property_renderingFunction .collapse">
+                                <h2>Rendering function</h2>
+                                <pre>renderingFunction : string</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>string</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_mimeType"> </a>
+                            <div class="element clickable property  protected property_mimeType" data-toggle="collapse" data-target=".property_mimeType .collapse">
+                                <h2>Mime type</h2>
+                                <pre>mimeType : string</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>string</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_uniqueName"> </a>
+                            <div class="element clickable property  protected property_uniqueName" data-toggle="collapse" data-target=".property_uniqueName .collapse">
+                                <h2>Unique name</h2>
+                                <pre>uniqueName : string</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>string</code>
+                                                                            </div>
+                                </div>
+                            </div>
                                                     <a id="property_imageCounter"> </a>
-                            <div class="element clickable property  private property_imageCounter" data-toggle="collapse" data-target=".property_imageCounter .collapse">
+                            <div class="element clickable property  private property_imageCounter inherited" data-toggle="collapse" data-target=".property_imageCounter .collapse">
                                 <h2>Image counter</h2>
                                 <pre>imageCounter : integer</pre>
                                 <div class="labels">
-                                                                        <span class="label">static</span>                                </div>
+                                    <span class="label">inherited</span>                                    <span class="label">static</span>                                </div>
                                 <div class="row collapse">
                                     <div class="detail-description">
                                         <div class="long_description"></div>
@@ -1382,11 +2003,11 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                 </div>
                             </div>
                                                     <a id="property_imageIndex"> </a>
-                            <div class="element clickable property  private property_imageIndex" data-toggle="collapse" data-target=".property_imageIndex .collapse">
+                            <div class="element clickable property  private property_imageIndex inherited" data-toggle="collapse" data-target=".property_imageIndex .collapse">
                                 <h2>Image index</h2>
                                 <pre>imageIndex : integer</pre>
                                 <div class="labels">
-                                                                                                        </div>
+                                    <span class="label">inherited</span>                                                                    </div>
                                 <div class="row collapse">
                                     <div class="detail-description">
                                         <div class="long_description"></div>
@@ -1408,11 +2029,11 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                 </div>
                             </div>
                                                     <a id="property_name"> </a>
-                            <div class="element clickable property  protected property_name" data-toggle="collapse" data-target=".property_name .collapse">
+                            <div class="element clickable property  protected property_name inherited" data-toggle="collapse" data-target=".property_name .collapse">
                                 <h2>Name</h2>
                                 <pre>name : string</pre>
                                 <div class="labels">
-                                                                                                        </div>
+                                    <span class="label">inherited</span>                                                                    </div>
                                 <div class="row collapse">
                                     <div class="detail-description">
                                         <div class="long_description"></div>
@@ -1434,11 +2055,11 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                 </div>
                             </div>
                                                     <a id="property_description"> </a>
-                            <div class="element clickable property  protected property_description" data-toggle="collapse" data-target=".property_description .collapse">
+                            <div class="element clickable property  protected property_description inherited" data-toggle="collapse" data-target=".property_description .collapse">
                                 <h2>Description</h2>
                                 <pre>description : string</pre>
                                 <div class="labels">
-                                                                                                        </div>
+                                    <span class="label">inherited</span>                                                                    </div>
                                 <div class="row collapse">
                                     <div class="detail-description">
                                         <div class="long_description"></div>
@@ -1460,11 +2081,11 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                 </div>
                             </div>
                                                     <a id="property_resizeProportional"> </a>
-                            <div class="element clickable property  protected property_resizeProportional" data-toggle="collapse" data-target=".property_resizeProportional .collapse">
+                            <div class="element clickable property  protected property_resizeProportional inherited" data-toggle="collapse" data-target=".property_resizeProportional .collapse">
                                 <h2>Proportional resize</h2>
                                 <pre>resizeProportional : boolean</pre>
                                 <div class="labels">
-                                                                                                        </div>
+                                    <span class="label">inherited</span>                                                                    </div>
                                 <div class="row collapse">
                                     <div class="detail-description">
                                         <div class="long_description"></div>
@@ -1486,11 +2107,11 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                 </div>
                             </div>
                                                     <a id="property_relationId"> </a>
-                            <div class="element clickable property  public property_relationId" data-toggle="collapse" data-target=".property_relationId .collapse">
+                            <div class="element clickable property  public property_relationId inherited" data-toggle="collapse" data-target=".property_relationId .collapse">
                                 <h2>Slide relation ID (should not be used by user code!)</h2>
                                 <pre>relationId : string</pre>
                                 <div class="labels">
-                                                                                                        </div>
+                                    <span class="label">inherited</span>                                                                    </div>
                                 <div class="row collapse">
                                     <div class="detail-description">
                                         <div class="long_description"></div>
@@ -1799,14 +2420,14 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                             </div>
                                                             </div>
             </div>
-            <a id="\PhpOffice\PhpPresentation\Shape\AbstractDrawing"></a>
+            <a id="\PhpOffice\PhpPresentation\Shape\Drawing\Gd"></a>
             <ul class="breadcrumb">
                 <li><a href="../index.html"><i class="icon-custom icon-class"></i></a></li>
                     
     
-    <li><span class="divider">\</span><a href="../namespaces/PhpOffice.PhpPresentation.Shape.html">Shape</a></li>
+    <li><span class="divider">\</span><a href="../namespaces/PhpOffice.PhpPresentation.Shape.Drawing.html">Drawing</a></li>
 
-                <li class="active"><span class="divider">\</span><a href="../classes/PhpOffice.PhpPresentation.Shape.AbstractDrawing.html">AbstractDrawing</a></li>
+                <li class="active"><span class="divider">\</span><a href="../classes/PhpOffice.PhpPresentation.Shape.Drawing.Gd.html">Gd</a></li>
             </ul>
         </div>
     </div>
@@ -1817,7 +2438,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 01 Apr 2016 10:51:48 +0000.<br/>
+            generated on Mon, 04 Apr 2016 15:14:08 +0000.<br/>
     </footer>
     </body>
 </html>

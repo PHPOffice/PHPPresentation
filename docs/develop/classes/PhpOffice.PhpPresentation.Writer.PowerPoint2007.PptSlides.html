@@ -237,6 +237,11 @@
                             </a>
                         </li>
                                                                                 <li class="method protected">
+                            <a href="#method_writeShapeDrawing" title="writeShapeDrawing :: Write pic">
+                                <span class="description">Write pic</span><pre>writeShapeDrawing</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
                             <a href="#method_writeShapeGroup" title="writeShapeGroup :: Write group">
                                 <span class="description">Write group</span><pre>writeShapeGroup</pre>
                             </a>
@@ -244,11 +249,6 @@
                                                                                 <li class="method protected">
                             <a href="#method_writeShapeLine" title="writeShapeLine :: Write Line Shape">
                                 <span class="description">Write Line Shape</span><pre>writeShapeLine</pre>
-                            </a>
-                        </li>
-                                                                                <li class="method protected">
-                            <a href="#method_writeShapePic" title="writeShapePic :: Write pic">
-                                <span class="description">Write pic</span><pre>writeShapePic</pre>
                             </a>
                         </li>
                                                                                 <li class="method protected">
@@ -1050,6 +1050,55 @@
                             </div>
 
                         </div>
+                                            <a id="method_writeShapeDrawing"></a>
+                        <div class="element clickable method protected  method_writeShapeDrawing" data-toggle="collapse" data-target=".method_writeShapeDrawing .collapse">
+                            <h2>Write pic</h2>
+                            <pre>writeShapeDrawing(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter $shape, integer $shapeId) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    throws
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p><p>XML Writer</p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$shape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.Drawing.AbstractDrawingAdapter.html">\PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter</a></code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$shapeId</h4>
+                                                <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_writeShapeGroup"></a>
                         <div class="element clickable method protected  method_writeShapeGroup" data-toggle="collapse" data-target=".method_writeShapeGroup .collapse">
                             <h2>Write group</h2>
@@ -1120,55 +1169,6 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$shape</h4>
                                                 <code><a href="../classes/PhpOffice.PhpPresentation.Shape.Line.html">\PhpOffice\PhpPresentation\Shape\Line</a></code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$shapeId</h4>
-                                                <code>integer</code><p></p>
-                                            </div>
-                                                                            
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_writeShapePic"></a>
-                        <div class="element clickable method protected  method_writeShapePic" data-toggle="collapse" data-target=".method_writeShapePic .collapse">
-                            <h2>Write pic</h2>
-                            <pre>writeShapePic(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Shape\AbstractDrawing $shape, integer $shapeId) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$objWriter</h4>
-                                                <code>\PhpOffice\Common\XMLWriter</code><p><p>XML Writer</p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$shape</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.AbstractDrawing.html">\PhpOffice\PhpPresentation\Shape\AbstractDrawing</a></code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$shapeId</h4>
@@ -1540,7 +1540,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Fri, 01 Apr 2016 10:51:53 +0000.<br/>
+            generated on Mon, 04 Apr 2016 15:14:12 +0000.<br/>
     </footer>
     </body>
 </html>

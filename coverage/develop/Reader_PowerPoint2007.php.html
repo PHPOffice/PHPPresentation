@@ -315,11 +315,11 @@
      <tr><td><div align="right"><a name="17"></a><a href="#17">17</a></div></td><td class="codeLine"></td></tr>
      <tr><td><div align="right"><a name="18"></a><a href="#18">18</a></div></td><td class="codeLine">namespace PhpOffice\PhpPresentation\Reader;</td></tr>
      <tr><td><div align="right"><a name="19"></a><a href="#19">19</a></div></td><td class="codeLine"></td></tr>
-     <tr><td><div align="right"><a name="20"></a><a href="#20">20</a></div></td><td class="codeLine">use ZipArchive;</td></tr>
-     <tr><td><div align="right"><a name="21"></a><a href="#21">21</a></div></td><td class="codeLine">use PhpOffice\Common\XMLReader;</td></tr>
-     <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine">use PhpOffice\Common\Drawing as CommonDrawing;</td></tr>
-     <tr><td><div align="right"><a name="23"></a><a href="#23">23</a></div></td><td class="codeLine">use PhpOffice\PhpPresentation\PhpPresentation;</td></tr>
-     <tr><td><div align="right"><a name="24"></a><a href="#24">24</a></div></td><td class="codeLine">use PhpOffice\PhpPresentation\Shape\MemoryDrawing;</td></tr>
+     <tr><td><div align="right"><a name="20"></a><a href="#20">20</a></div></td><td class="codeLine">use PhpOffice\PhpPresentation\Shape\Drawing\Gd;</td></tr>
+     <tr><td><div align="right"><a name="21"></a><a href="#21">21</a></div></td><td class="codeLine">use ZipArchive;</td></tr>
+     <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine">use PhpOffice\Common\XMLReader;</td></tr>
+     <tr><td><div align="right"><a name="23"></a><a href="#23">23</a></div></td><td class="codeLine">use PhpOffice\Common\Drawing as CommonDrawing;</td></tr>
+     <tr><td><div align="right"><a name="24"></a><a href="#24">24</a></div></td><td class="codeLine">use PhpOffice\PhpPresentation\PhpPresentation;</td></tr>
      <tr><td><div align="right"><a name="25"></a><a href="#25">25</a></div></td><td class="codeLine">use PhpOffice\PhpPresentation\Style\Bullet;</td></tr>
      <tr><td><div align="right"><a name="26"></a><a href="#26">26</a></div></td><td class="codeLine">use PhpOffice\PhpPresentation\Style\Color;</td></tr>
      <tr><td><div align="right"><a name="27"></a><a href="#27">27</a></div></td><td class="codeLine">use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased;</td></tr>
@@ -626,7 +626,7 @@
      <tr><td><div align="right"><a name="328"></a><a href="#328">328</a></div></td><td class="codeLine">    protected function loadShapeDrawing(XMLReader $document, \DOMElement $node, $baseFile)</td></tr>
      <tr><td><div align="right"><a name="329"></a><a href="#329">329</a></div></td><td class="codeLine">    {</td></tr>
      <tr><td><div align="right"><a name="330"></a><a href="#330">330</a></div></td><td class="codeLine">        // Core</td></tr>
-     <tr class="success popin" data-title="3 tests cover line 331" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testLoadFile01&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testMarkAsFinal&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testZoom&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="331"></a><a href="#331">331</a></div></td><td class="codeLine">        $oShape = new MemoryDrawing();</td></tr>
+     <tr class="success popin" data-title="3 tests cover line 331" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testLoadFile01&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testMarkAsFinal&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testZoom&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="331"></a><a href="#331">331</a></div></td><td class="codeLine">        $oShape = new Gd();</td></tr>
      <tr class="success popin" data-title="3 tests cover line 332" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testLoadFile01&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testMarkAsFinal&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testZoom&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="332"></a><a href="#332">332</a></div></td><td class="codeLine">        $oShape-&gt;getShadow()-&gt;setVisible(false);</td></tr>
      <tr><td><div align="right"><a name="333"></a><a href="#333">333</a></div></td><td class="codeLine">        // Variables</td></tr>
      <tr class="success popin" data-title="3 tests cover line 334" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testLoadFile01&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testMarkAsFinal&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Reader\PowerPoint2007Test::testZoom&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="334"></a><a href="#334">334</a></div></td><td class="codeLine">        $fileRels = 'ppt/slides/_rels/'.$baseFile.'.rels';</td></tr>
@@ -897,7 +897,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.18</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.21</a> and <a href="http://phpunit.de/">PHPUnit 3.7.38</a> at Fri Apr 1 10:50:55 UTC 2016.</small>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.18</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.21</a> and <a href="http://phpunit.de/">PHPUnit 3.7.38</a> at Mon Apr 4 15:12:59 UTC 2016.</small>
     </p>
    </footer>
   </div>
