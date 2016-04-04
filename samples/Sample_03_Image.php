@@ -71,7 +71,7 @@ $currentSlide->addShape($shape);
 $shape = new Media();
 $shape->setName('Video')
     ->setDescription('Video')
-    ->setPath(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? './resources/sintel_trailer-480p.mp4' : './resources/sintel_trailer-480p.ogv')
+    ->setPath(strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ? './resources/sintel_trailer-480p.wmv' : './resources/sintel_trailer-480p.ogv')
     ->setResizeProportional(false)
     ->setHeight(90)
     ->setWidth(90)

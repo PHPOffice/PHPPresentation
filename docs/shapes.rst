@@ -31,16 +31,3 @@ Line
 ----
 
 To create a line, use `createLineShape` method of slide.
-
-
-Drawing
--------
-
-To create a drawing, use `createDrawingShape` method of slide.
-
-.. code-block:: php
-
-	$drawing = $slide->createDrawingShape();
-	$drawing->setName('Unique name')
-		->setDescription('Description of the drawing')
-		->setPath('/path/to/drawing.filename');

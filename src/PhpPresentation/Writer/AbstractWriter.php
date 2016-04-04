@@ -4,6 +4,7 @@ namespace PhpOffice\PhpPresentation\Writer;
 
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Group;
 
@@ -113,6 +114,8 @@ abstract class AbstractWriter
         while ($oIterator->valid()) {
             $oShape = $oIterator->current();
             if ($oShape instanceof AbstractDrawingAdapter) {
+                $arrayReturn[] = $oShape;
+            } elseif ($oShape instanceof Chart) {
                 $arrayReturn[] = $oShape;
             } elseif ($oShape instanceof Group) {
                 $arrayGroup = $this->iterateCollection($oShape->getShapeCollection()->getIterator());

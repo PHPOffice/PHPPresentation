@@ -17,71 +17,11 @@
 
 namespace PhpOffice\PhpPresentation\Shape;
 
-use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 /**
  * Drawing element
+ * @deprecated Drawing\File
  */
-class Drawing extends AbstractGraphic implements ComparableInterface
-{
-    /**
-     * Path
-     *
-     * @var string
-     */
-    private $path;
-
-    /**
-     * Create a new \PhpOffice\PhpPresentation\Slide\Drawing
-     */
-    public function __construct()
-    {
-        // Initialise values
-        $this->path = '';
-
-        // Initialize parent
-        parent::__construct();
-    }
-
-    /**
-     * Get Filename
-     *
-     * @return string
-     */
-    public function getFilename()
-    {
-        return basename($this->path);
-    }
-
-    /**
-     * Get indexed filename (using image index)
-     *
-     * @return string
-     */
-    public function getIndexedFilename()
-    {
-        return str_replace('.' . $this->getExtension(), '', $this->getFilename()) . $this->getImageIndex() . '.' . $this->getExtension();
-    }
-
-    /**
-     * Get Extension
-     *
-     * @return string
-     */
-    public function getExtension()
-    {
-        $exploded = explode(".", basename($this->path));
-
-        return $exploded[count($exploded) - 1];
-    }
-
-    /**
-     * Get hash code
-     *
-     * @return string Hash code
-     */
-    public function getHashCode()
-    {
-        return md5($this->path . parent::getHashCode() . __CLASS__);
-    }
-}
+class Drawing extends File
+{}

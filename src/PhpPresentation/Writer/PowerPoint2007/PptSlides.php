@@ -90,7 +90,12 @@ class PptSlides extends AbstractDecoratorWriter
             // Loop trough images and write relationships
             $iterator = $pSlide->getShapeCollection()->getIterator();
             while ($iterator->valid()) {
-                if ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
+                if ($iterator->current() instanceof Media) {
+                    // Write relationship for image drawing
+                    $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $iterator->current()->getIndexedFilename());
+                    $iterator->current()->relationId = 'rId' . $relId;
+                    ++$relId;
+                } elseif ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
                     // Write relationship for image drawing
                     $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $iterator->current()->getIndexedFilename());
                     $iterator->current()->relationId = 'rId' . $relId;
@@ -105,7 +110,12 @@ class PptSlides extends AbstractDecoratorWriter
                 } elseif ($iterator->current() instanceof Group) {
                     $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
                     while ($iterator2->valid()) {
-                        if ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
+                        if ($iterator->current() instanceof Media) {
+                            // Write relationship for image drawing
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $iterator->current()->getIndexedFilename());
+                            $iterator->current()->relationId = 'rId' . $relId;
+                            ++$relId;
+                        } elseif ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
                             // Write relationship for image drawing
                             $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $iterator2->current()->getIndexedFilename());
                             $iterator2->current()->relationId = 'rId' . $relId;

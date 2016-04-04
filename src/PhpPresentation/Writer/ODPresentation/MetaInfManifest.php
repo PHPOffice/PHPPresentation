@@ -67,9 +67,6 @@ class MetaInfManifest extends AbstractDecoratorWriter
             if (! ($shape instanceof ShapeDrawing\AbstractDrawingAdapter)) {
                 continue;
             }
-            if (in_array($shape->getIndexedFilename(), $arrMedia)) {
-                continue;
-            }
             $arrMedia[] = $shape->getIndexedFilename();
             $objWriter->startElement('manifest:file-entry');
             $objWriter->writeAttribute('manifest:media-type', $shape->getMimeType());
@@ -80,7 +77,8 @@ class MetaInfManifest extends AbstractDecoratorWriter
         foreach ($this->getPresentation()->getAllSlides() as $numSlide => $oSlide) {
             $oBkgImage = $oSlide->getBackground();
             if ($oBkgImage instanceof Image) {
-                $mimeType   = $this->getImageMimeType($oBkgImage->getPath());
+                $arrayImage = getimagesize($oBkgImage->getPath());
+                $mimeType  = image_type_to_mime_type($arrayImage[2]);
 
                 $objWriter->startElement('manifest:file-entry');
                 $objWriter->writeAttribute('manifest:media-type', $mimeType);
@@ -107,50 +105,5 @@ class MetaInfManifest extends AbstractDecoratorWriter
 
         $this->getZip()->addFromString('META-INF/manifest.xml', $objWriter->getData());
         return $this->getZip();
-    }
-
-    /**
-     * Get image mime type
-     *
-     * @param  string    $pFile Filename
-     * @return string    Mime Type
-     * @throws \Exception
-     * @todo PowerPoint2007\ContentTypes duplicate Code : getImageMimeType
-     */
-    private function getImageMimeType($pFile = '')
-    {
-        if (strpos($pFile, 'zip://') === 0) {
-            $pZIPFile = str_replace('zip://', '', $pFile);
-            $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
-            if (!File::fileExists($pZIPFile)) {
-                throw new \Exception("File $pFile does not exist");
-            }
-            $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
-            $oArchive = new \ZipArchive();
-            $oArchive->open($pZIPFile);
-            if (!function_exists('getimagesizefromstring')) {
-                $uri = 'data://application/octet-stream;base64,' . base64_encode($oArchive->getFromName($pImgFile));
-                $image = getimagesize($uri);
-            } else {
-                $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
-            }
-        } elseif (strpos($pFile, 'data:image/') === 0) {
-            $sImage = $pFile;
-            list(, $sImage) = explode(';', $sImage);
-            list(, $sImage) = explode(',', $sImage);
-            if (!function_exists('getimagesizefromstring')) {
-                $uri = 'data://application/octet-stream;base64,' . base64_encode($sImage);
-                $image = getimagesize($uri);
-            } else {
-                $image = getimagesizefromstring($sImage);
-            }
-        } else {
-            if (!File::fileExists($pFile)) {
-                throw new \Exception("File $pFile does not exist");
-            }
-            $image = getimagesize($pFile);
-        }
-
-        return image_type_to_mime_type($image[2]);
     }
 }

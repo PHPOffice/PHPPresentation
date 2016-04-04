@@ -43,19 +43,21 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         'D' => 3,
         'E' => 2,
     );
-
+    /**
+     * Executed before each method of the class
+     */
     public function setUp()
     {
         $this->oPresentation = new PhpPresentation();
     }
 
     /**
-     * Executed before each method of the class
+     * Executed after each method of the class
      */
     public function tearDown()
     {
-        $this->oPresentation = null;
         TestHelperDOCX::clear();
+        $this->oPresentation = null;
     }
 
     /**

@@ -33,7 +33,6 @@ class PptCharts extends AbstractDecoratorWriter
             if ($shape instanceof Chart) {
                 $this->getZip()->addFromString('ppt/charts/' . $shape->getIndexedFilename(), $this->writeChart($shape));
 
-                // Chart relations?
                 if ($shape->hasIncludedSpreadsheet()) {
                     $this->getZip()->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $this->writeChartRelationships($shape));
                     $pFilename = 'PHPExcel';

@@ -12,7 +12,7 @@ Example:
     use PhpOffice\PhpPresentation\Shape\Media;
 
     $oMedia = new Media();
-    $oMedia->setPath('file.mp4');
+    $oMedia->setPath('file.wmv');
     // $oMedia->setPath('file.ogv');
     $oSlide->addShape($oMedia);
 
@@ -32,5 +32,5 @@ Example:
 Quirks
 ------
 
-For PowerPoint2007 Writer, the prefered file format is MP4.
-For ODPresentation Writer, the prefered file format is OGV.
+For Windows readers, the prefered file format is WMV.
+For Linux readers, the prefered file format is OGV.

@@ -38,8 +38,10 @@ class File extends AbstractDrawingAdapter
         }
         $this->path = $pValue;
 
-        if ($this->width == 0 && $this->height == 0) {
-            list($this->width, $this->height) = getimagesize($this->getPath());
+        if ($pVerifyFile) {
+            if ($this->width == 0 && $this->height == 0) {
+                list($this->width, $this->height) = getimagesize($this->getPath());
+            }
         }
 
         return $this;
@@ -67,6 +69,9 @@ class File extends AbstractDrawingAdapter
      */
     public function getMimeType()
     {
+        if (!file_exists($this->getPath())) {
+            throw new \Exception('File '.$this->getPath().' does not exist');
+        }
         $image = getimagesize($this->getPath());
         return image_type_to_mime_type($image[2]);
     }

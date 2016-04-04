@@ -20,9 +20,6 @@ class Pictures extends AbstractDecoratorWriter
             if (!($shape instanceof Drawing\AbstractDrawingAdapter)) {
                 continue;
             }
-            if (in_array($shape->getIndexedFilename(), $arrMedia)) {
-                continue;
-            }
             $arrMedia[] = $shape->getIndexedFilename();
             $this->getZip()->addFromString('Pictures/' . $shape->getIndexedFilename(), $shape->getContents());
         }
