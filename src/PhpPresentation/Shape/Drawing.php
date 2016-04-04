@@ -24,4 +24,5 @@ use PhpOffice\PhpPresentation\Shape\Drawing\File;
  * @deprecated Drawing\File
  */
 class Drawing extends File
-{}
+{
+}

@@ -300,7 +300,6 @@ class PptSlides extends AbstractDecoratorWriter
 
                         $iterator2->next();
                     }
-
                 }
 
                 $iterator->next();

@@ -2,7 +2,6 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
-
 class Base64 extends AbstractDrawingAdapter
 {
     /**
