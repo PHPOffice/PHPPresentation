@@ -27,6 +27,7 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Slide\Animation;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
@@ -131,6 +132,26 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
         $this->assertEquals(Alignment::VERTICAL_TOP, $pres->getElementAttribute($element, 'anchor', 'ppt/slides/slide1.xml'));
+    }
+
+    public function testAnimation()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape1 = $oSlide->createRichTextShape();
+        $oShape2 = $oSlide->createRichTextShape();
+        $oAnimation = new Animation();
+        $oAnimation->addShape($oShape1);
+        $oAnimation->addShape($oShape2);
+        $oSlide->addAnimation($oAnimation);
+
+        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $element = '/p:sld/p:timing';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
     }
 
     public function testCommentRelationship()

@@ -368,7 +368,7 @@ class PptSlides extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
         $objWriter->writeAttributeIf(!$pSlide->isVisible(), 'show', 0);
 
-        // p:sld\p:cSld
+        // p:sld/p:cSld
         $objWriter->startElement('p:cSld');
 
         // Background
@@ -476,7 +476,7 @@ class PptSlides extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         // Loop shapes
-        $shapeId = 1;
+        $shapeId = 0;
         $shapes  = $pSlide->getShapeCollection();
         foreach ($shapes as $shape) {
             // Increment $shapeId
@@ -505,286 +505,267 @@ class PptSlides extends AbstractDecoratorWriter
 
         // p:clrMapOvr
         $objWriter->startElement('p:clrMapOvr');
-
-        // a:masterClrMapping
+        // p:clrMapOvr\a:masterClrMapping
         $objWriter->writeElement('a:masterClrMapping', null);
-
+        // ##p:clrMapOvr
         $objWriter->endElement();
 
-        if (!is_null($pSlide->getTransition())) {
-            $this->writeTransition($objWriter, $pSlide->getTransition());
-        }
-        $shapeId = 1;
-        $shapes  = $pSlide->getShapeCollection();
-        
-        $animations = $pSlide->getAnimations();
+        $this->writeSlideTransition($objWriter, $pSlide->getTransition());
 
-        if (count($animations) > 0) {
-            
-            $hashToIdMap = array();
-
-            foreach ($shapes as $shape) {
-                $shapeId += 1;
-                $hash = $shape->getHashCode();
-                $hashToIdMap[$hash] = $shapeId;
-            }
-
-            $animationIds = array();
-
-            foreach ($animations as $animation) {
-                $shapesInAnimation = $animation->getShapeCollection();
-                foreach ($shapesInAnimation as $shape) {
-                    $hash = $shape->getHashCode();
-                    $animationIds[] = $hashToIdMap[$hash];
-                }
-            }
-
-            $idCount = 1;
-
-            $objWriter->startElement('p:timing');
-
-            $objWriter->startElement('p:tnLst');
-
-            $objWriter->startElement('p:par');
-
-            $objWriter->startElement('p:cTn');
-            $objWriter->writeAttribute('id', $idCount);
-            $idCount += 1;
-            $objWriter->writeAttribute('dur', 'indefinite');
-            $objWriter->writeAttribute('restart', 'never');
-            $objWriter->writeAttribute('nodeType', 'tmRoot');
-
-            $objWriter->startElement('p:childTnLst');
-
-            $objWriter->startElement('p:seq');
-            $objWriter->writeAttribute('concurrent', '1');
-            $objWriter->writeAttribute('nextAc', 'seek');
-
-            $objWriter->startElement('p:cTn');
-            $objWriter->writeAttribute('id', $idCount);
-            $idCount += 1;
-            $objWriter->writeAttribute('dur', 'indefinite');
-            $objWriter->writeAttribute('nodeType', 'mainSeq');
-
-            $objWriter->startElement("p:childTnLst");
-
-            //each animation has multiple shapes
-            foreach ($animations as $animation) {
-
-                $objWriter->startElement("p:par");
-
-                $objWriter->startElement("p:cTn");
-                $objWriter->writeAttribute("id", $idCount);
-                $idCount += 1;
-                $objWriter->writeAttribute("fill", "hold");
-
-                $objWriter->startElement('p:stCondLst');
-
-                $objWriter->startElement('p:cond');
-                $objWriter->writeAttribute("delay", "indefinite");
-                $objWriter->endElement();
-
-                $objWriter->endElement();
-
-                $objWriter->startElement("p:childTnLst");
-
-                $objWriter->startElement("p:par");
-
-                $objWriter->startElement("p:cTn");
-                $objWriter->writeAttribute("id", $idCount);
-                $idCount += 1;
-                $objWriter->writeAttribute("fill", "hold");
-
-                $objWriter->startElement('p:stCondLst');
-
-                $objWriter->startElement('p:cond');
-                $objWriter->writeAttribute("delay", "0");
-                $objWriter->endElement();
-
-                $objWriter->endElement();
-
-                $objWriter->startElement("p:childTnLst");
-
-                $shapesInAnimation = $animation->getShapeCollection();
-
-                $firstInAni = true;
-
-                foreach ($shapesInAnimation as $shape) {
-                    $hash = $shape->getHashCode();
-                    $shapeId = $hashToIdMap[$hash];
-
-                    $objWriter->startElement("p:par");
-
-                    $objWriter->startElement("p:cTn");
-                    $objWriter->writeAttribute("id", $idCount);
-                    $idCount += 1;
-                    $objWriter->writeAttribute("presetID", "1");
-                    $objWriter->writeAttribute("presetClass", "entr");
-                    $objWriter->writeAttribute("fill", "hold");
-                    $objWriter->writeAttribute("presetSubtype", "0");
-                    $objWriter->writeAttribute("grpId", "0");
-
-                    $nodeType = $firstInAni ? "clickEffect" : "withEffect";
-
-                    $objWriter->writeAttribute("nodeType", $nodeType);
-
-                    $objWriter->startElement("p:stCondLst");
-
-                    $objWriter->startElement("p:cond");
-                    $objWriter->writeAttribute("delay", "0");
-                    $objWriter->endElement();
-
-                    $objWriter->endElement();
-
-                    $objWriter->startElement("p:childTnLst");
-
-                    $objWriter->startElement("p:set");
-
-                    $objWriter->startElement("p:cBhvr");
-
-                    $objWriter->startElement("p:cTn");
-                    $objWriter->writeAttribute("id", $idCount);
-                    $idCount +=  1;
-                    $objWriter->writeAttribute("dur", "1");
-                    $objWriter->writeAttribute("fill", "hold");
-
-                    $objWriter->startElement("p:stCondLst");
-
-                    $objWriter->startElement("p:cond");
-                    $objWriter->writeAttribute("delay", "0");
-                    $objWriter->endElement();
-
-                    $objWriter->endElement();
-
-
-
-                    $objWriter->endElement();
-
-                    $objWriter->startElement("p:tgtEl");
-
-                    $objWriter->startElement("p:spTgt");
-                    //shape id
-                    $objWriter->writeAttribute("spid", $shapeId);
-                    $objWriter->endElement();
-
-                    $objWriter->endElement();
-
-                    $objWriter->startElement("p:attrNameLst");
-
-                    $objWriter->writeElement("p:attrName", "style.visibility");
-
-                    $objWriter->endElement();
-
-                    $objWriter->endElement();
-
-                    $objWriter->startElement("p:to");
-
-                    $objWriter->startElement("p:strVal");
-                    $objWriter->writeAttribute("val", "visible");
-                    $objWriter->endElement();
-
-                    $objWriter->endElement();
-
-                    $objWriter->endElement();
-
-                    $objWriter->endElement(); //end child tn lst
-
-                    $objWriter->endElement(); //end ctn
-
-                    $objWriter->endElement();
-
-                    $firstInAni = false;
-                }
-
-
-                $objWriter->endElement(); //end child lst
-
-                $objWriter->endElement(); //end ctn
-
-                $objWriter->endElement(); //end par
-
-
-                $objWriter->endElement(); //end childtnlist
-
-                $objWriter->endElement(); //end ctn
-
-                $objWriter->endElement(); //end par
-
-            }
-
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-           ///prevCondLst
-            $objWriter->startElement("p:prevCondLst");
-
-            $objWriter->startElement('p:cond');
-            $objWriter->writeAttribute('evt', 'onPrev');
-            $objWriter->writeAttribute('delay', '0');
-
-            $objWriter->startElement('p:tgtEl');
-
-            $objWriter->writeElement('p:sldTgt', null);
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            //nextCondLst
-            $objWriter->startElement("p:nextCondLst");
-
-            $objWriter->startElement('p:cond');
-            $objWriter->writeAttribute('evt', 'onNext');
-            $objWriter->writeAttribute('delay', '0');
-
-            $objWriter->startElement('p:tgtEl');
-
-            $objWriter->writeElement('p:sldTgt', null);
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement(); //end p:seq
-
-            $objWriter->endElement(); //end p:childTnLst
-
-            $objWriter->endElement();  //end ctn
-
-            $objWriter->endElement(); //end par
-
-            $objWriter->endElement(); //end tnLst
-
-            $objWriter->startElement('p:bldLst');
-
-            //add in ids of all shapes in this slides animations
-
-            foreach ($animationIds as $id) {
-                $objWriter->startElement('p:bldP');
-                $objWriter->writeAttribute("spid", $id);
-                $objWriter->writeAttribute('grpId', 0);
-                $objWriter->endELement();
-            }
-
-
-            $objWriter->endElement(); // end bldLst
-
-            $objWriter->endElement(); //end timing
-
-            $objWriter->endElement();
-        }
-        
+        $this->writeSlideAnimations($objWriter, $pSlide);
 
         $objWriter->endElement();
 
         // Return
         return $objWriter->getData();
+    }
+
+    /**
+     * @param XMLWriter $objWriter
+     * @param Slide $oSlide
+     */
+    protected function writeSlideAnimations(XMLWriter $objWriter, Slide $oSlide)
+    {
+        $arrayAnimations = $oSlide->getAnimations();
+        if (count($arrayAnimations) <= 0) {
+            return;
+        }
+
+        // Variables
+        $shapeId = 1;
+        $idCount = 1;
+        $hashToIdMap = array();
+        $arrayAnimationIds = array();
+
+        foreach ($oSlide->getShapeCollection() as $shape) {
+            $hashToIdMap[$shape->getHashCode()] = $shapeId++;
+        }
+        foreach ($arrayAnimations as $oAnimation) {
+            foreach ($oAnimation->getShapeCollection() as $oShape) {
+                $arrayAnimationIds[] = $hashToIdMap[$oShape->getHashCode()];
+            }
+        }
+
+        // p:timing
+        $objWriter->startElement('p:timing');
+        // p:timing/p:tnLst
+        $objWriter->startElement('p:tnLst');
+        // p:timing/p:tnLst/p:par
+        $objWriter->startElement('p:par');
+        // p:timing/p:tnLst/p:par/p:cTn
+        $objWriter->startElement('p:cTn');
+        $objWriter->writeAttribute('id', $idCount++);
+        $objWriter->writeAttribute('dur', 'indefinite');
+        $objWriter->writeAttribute('restart', 'never');
+        $objWriter->writeAttribute('nodeType', 'tmRoot');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst
+        $objWriter->startElement('p:childTnLst');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq
+        $objWriter->startElement('p:seq');
+        $objWriter->writeAttribute('concurrent', '1');
+        $objWriter->writeAttribute('nextAc', 'seek');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn
+        $objWriter->startElement('p:cTn');
+        $objWriter->writeAttribute('id', $idCount++);
+        $objWriter->writeAttribute('dur', 'indefinite');
+        $objWriter->writeAttribute('nodeType', 'mainSeq');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst
+        $objWriter->startElement('p:childTnLst');
+
+        // Each animation has multiple shapes
+        foreach ($arrayAnimations as $oAnimation) {
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par
+            $objWriter->startElement('p:par');
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn
+            $objWriter->startElement('p:cTn');
+            $objWriter->writeAttribute('id', $idCount++);
+            $objWriter->writeAttribute('fill', 'hold');
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst
+            $objWriter->startElement('p:stCondLst');
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst/p:cond
+            $objWriter->startElement('p:cond');
+            $objWriter->writeAttribute('delay', 'indefinite');
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn\##p:stCondLst
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst
+            $objWriter->startElement('p:childTnLst');
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par
+            $objWriter->startElement('p:par');
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn
+            $objWriter->startElement('p:cTn');
+            $objWriter->writeAttribute('id', $idCount++);
+            $objWriter->writeAttribute('fill', 'hold');
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst
+            $objWriter->startElement('p:stCondLst');
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:stCondLst/p:cond
+            $objWriter->startElement('p:cond');
+            $objWriter->writeAttribute('delay', '0');
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn\##p:stCondLst
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst
+            $objWriter->startElement('p:childTnLst');
+
+            $firstAnimation = true;
+            foreach ($oAnimation->getShapeCollection() as $oShape) {
+                $nodeType = $firstAnimation ? 'clickEffect' : 'withEffect';
+                $shapeId = $hashToIdMap[$oShape->getHashCode()];
+
+                // p:par
+                $objWriter->startElement('p:par');
+                // p:par/p:cTn
+                $objWriter->startElement('p:cTn');
+                $objWriter->writeAttribute('id', $idCount++);
+                $objWriter->writeAttribute('presetID', '1');
+                $objWriter->writeAttribute('presetClass', 'entr');
+                $objWriter->writeAttribute('fill', 'hold');
+                $objWriter->writeAttribute('presetSubtype', '0');
+                $objWriter->writeAttribute('grpId', '0');
+                $objWriter->writeAttribute('nodeType', $nodeType);
+                // p:par/p:cTn/p:stCondLst
+                $objWriter->startElement('p:stCondLst');
+                // p:par/p:cTn/p:stCondLst/p:cond
+                $objWriter->startElement('p:cond');
+                $objWriter->writeAttribute('delay', '0');
+                $objWriter->endElement();
+                // p:par/p:cTn\##p:stCondLst
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst
+                $objWriter->startElement('p:childTnLst');
+                // p:par/p:cTn/p:childTnLst/p:set
+                $objWriter->startElement('p:set');
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr
+                $objWriter->startElement('p:cBhvr');
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr/p:cTn
+                $objWriter->startElement('p:cTn');
+                $objWriter->writeAttribute('id', $idCount++);
+                $objWriter->writeAttribute('dur', '1');
+                $objWriter->writeAttribute('fill', 'hold');
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr/p:cTn/p:stCondLst
+                $objWriter->startElement('p:stCondLst');
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr/p:cTn/p:stCondLst/p:cond
+                $objWriter->startElement('p:cond');
+                $objWriter->writeAttribute('delay', '0');
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr/p:cTn\##p:stCondLst
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr\##p:cTn
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr/p:tgtEl
+                $objWriter->startElement('p:tgtEl');
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr/p:tgtEl/p:spTgt
+                $objWriter->startElement('p:spTgt');
+                $objWriter->writeAttribute('spid', $shapeId);
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr\##p:tgtEl
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr/p:attrNameLst
+                $objWriter->startElement('p:attrNameLst');
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr/p:attrNameLst/p:attrName
+                $objWriter->writeElement('p:attrName', 'style.visibility');
+                // p:par/p:cTn/p:childTnLst/p:set/p:cBhvr\##p:attrNameLst
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst/p:set\##p:cBhvr
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst/p:set/p:to
+                $objWriter->startElement('p:to');
+                // p:par/p:cTn/p:childTnLst/p:set/p:to/p:strVal
+                $objWriter->startElement('p:strVal');
+                $objWriter->writeAttribute('val', 'visible');
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst/p:set\##p:to
+                $objWriter->endElement();
+                // p:par/p:cTn/p:childTnLst\##p:set
+                $objWriter->endElement();
+                // p:par/p:cTn\##p:childTnLst
+                $objWriter->endElement();
+                // p:par\##p:cTn
+                $objWriter->endElement();
+                // ##p:par
+                $objWriter->endElement();
+
+                $firstAnimation = false;
+            }
+
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn\##p:childTnLst
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par\##p:cTn
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst\##p:par
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn\##p:childTnLst
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par\##p:cTn
+            $objWriter->endElement();
+            // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst\##p:par
+            $objWriter->endElement();
+        }
+
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn\##p:childTnLst
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq\##p:cTn
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:prevCondLst
+        $objWriter->startElement('p:prevCondLst');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:prevCondLst/p:cond
+        $objWriter->startElement('p:cond');
+        $objWriter->writeAttribute('evt', 'onPrev');
+        $objWriter->writeAttribute('delay', '0');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:prevCondLst/p:cond/p:tgtEl
+        $objWriter->startElement('p:tgtEl');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:prevCondLst/p:cond/p:tgtEl/p:sldTgt
+        $objWriter->writeElement('p:sldTgt', null);
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:prevCondLst/p:cond\##p:tgtEl
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:prevCondLst\##p:cond
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq\##p:prevCondLst
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst
+        $objWriter->startElement('p:nextCondLst');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond
+        $objWriter->startElement('p:cond');
+        $objWriter->writeAttribute('evt', 'onNext');
+        $objWriter->writeAttribute('delay', '0');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl
+        $objWriter->startElement('p:tgtEl');
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond/p:tgtEl/p:sldTgt
+        $objWriter->writeElement('p:sldTgt', null);
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst/p:cond\##p:tgtEl
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:nextCondLst\##p:cond
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq\##p:nextCondLst
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn/p:childTnLst\##p:seq
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par/p:cTn\##p:childTnLst
+        $objWriter->endElement();
+        // p:timing/p:tnLst/p:par\##p:cTn
+        $objWriter->endElement();
+        // p:timing/p:tnLst\##p:par
+        $objWriter->endElement();
+        // p:timing\##p:tnLst
+        $objWriter->endElement();
+
+        // p:timing/p:bldLst
+        $objWriter->startElement('p:bldLst');
+
+        // Add in ids of all shapes in this slides animations
+        foreach ($arrayAnimationIds as $id) {
+            // p:timing/p:bldLst/p:bldP
+            $objWriter->startElement('p:bldP');
+            $objWriter->writeAttribute('spid', $id);
+            $objWriter->writeAttribute('grpId', 0);
+            $objWriter->endELement();
+        }
+
+        // p:timing\##p:bldLst
+        $objWriter->endElement();
+
+        // ##p:timing
+        $objWriter->endElement();
     }
 
     /**
@@ -1079,10 +1060,10 @@ class PptSlides extends AbstractDecoratorWriter
         // p:sp
         $objWriter->startElement('p:sp');
 
-        // p:sp\p:nvSpPr
+        // p:sp/p:nvSpPr
         $objWriter->startElement('p:nvSpPr');
 
-        // p:sp\p:nvSpPr\p:cNvPr
+        // p:sp/p:nvSpPr/p:cNvPr
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', '');
@@ -1091,41 +1072,41 @@ class PptSlides extends AbstractDecoratorWriter
         if ($shape->hasHyperlink()) {
             $this->writeHyperlink($objWriter, $shape);
         }
-        // > p:sp\p:nvSpPr
+        // > p:sp/p:nvSpPr
         $objWriter->endElement();
 
-        // p:sp\p:cNvSpPr
+        // p:sp/p:cNvSpPr
         $objWriter->startElement('p:cNvSpPr');
         $objWriter->writeAttribute('txBox', '1');
         $objWriter->endElement();
-        // p:sp\p:cNvSpPr\p:nvPr
+        // p:sp/p:cNvSpPr/p:nvPr
         $objWriter->writeElement('p:nvPr', null);
-        // > p:sp\p:cNvSpPr
+        // > p:sp/p:cNvSpPr
         $objWriter->endElement();
 
-        // p:sp\p:spPr
+        // p:sp/p:spPr
         $objWriter->startElement('p:spPr');
 
-        // p:sp\p:spPr\a:xfrm
+        // p:sp/p:spPr\a:xfrm
         $objWriter->startElement('a:xfrm');
         $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
 
-        // p:sp\p:spPr\a:xfrm\a:off
+        // p:sp/p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
 
-        // p:sp\p:spPr\a:xfrm\a:ext
+        // p:sp/p:spPr\a:xfrm\a:ext
         $objWriter->startElement('a:ext');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
 
-        // > p:sp\p:spPr\a:xfrm
+        // > p:sp/p:spPr\a:xfrm
         $objWriter->endElement();
 
-        // p:sp\p:spPr\a:prstGeom
+        // p:sp/p:spPr\a:prstGeom
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
@@ -1136,7 +1117,7 @@ class PptSlides extends AbstractDecoratorWriter
         $this->writeBorder($objWriter, $shape->getBorder(), '');
         $this->writeShadow($objWriter, $shape->getShadow());
 
-        // > p:sp\p:spPr
+        // > p:sp/p:spPr
         $objWriter->endElement();
 
         // p:txBody
@@ -1996,8 +1977,11 @@ class PptSlides extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Transition $transition
      */
-    protected function writeTransition(XMLWriter $objWriter, Transition $transition)
+    protected function writeSlideTransition(XMLWriter $objWriter, $transition)
     {
+        if (!$transition instanceof Transition) {
+            return;
+        }
         $objWriter->startElement('p:transition');
         if (!is_null($transition->getSpeed())) {
             $objWriter->writeAttribute('spd', $transition->getSpeed());
