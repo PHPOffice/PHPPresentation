@@ -12,6 +12,7 @@
 - PhpOffice\PhpPresentation\Shape\Type\AbstracType\getData has been deprecated for PhpOffice\PhpPresentation\Shape\Type\AbstracType\getSeries - @Progi1984 GH-169
 - PhpOffice\PhpPresentation\Shape\Type\AbstracType\setData has been deprecated for PhpOffice\PhpPresentation\Shape\Type\AbstracType\setSeries - @Progi1984 GH-169
 - Added documentation for chart series (font, outline, marker) - @Progi1984 GH-169
+- Internal Structure for Drawing Shape - @Progi1984 GH-192
 
 ### Features
 - ODPresentation & PowerPoint2007 Writer : Add support for Comment - @Progi1984 GH-116
@@ -27,6 +28,7 @@
 - ODPresentation & PowerPoint2007 Writer : Support for Visibility for slides - @Progi1984
 - PowerPoint2007 Writer : Presentation with predefined View Type - @Progi1984 GH-120
 - PowerPoint2007 Writer : Implement alpha channel to Fills - @Dayjo GH-203 / @Progi1984 GH-215
+- PowerPoint2007 Writer : Implement Animations - @JewrassicPark GH-214 / @Progi1984 GH-217
 
 ## 0.6.0 - 2016-01-24
 
