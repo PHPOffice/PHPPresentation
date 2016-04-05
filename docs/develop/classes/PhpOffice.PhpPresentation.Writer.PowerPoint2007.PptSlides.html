@@ -167,7 +167,7 @@
         </a>
     </li>
 
-                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
@@ -262,8 +262,18 @@
                             </a>
                         </li>
                                                                                                                     <li class="method protected">
+                            <a href="#method_writeSlideAnimations" title="writeSlideAnimations :: ">
+                                <span class="description"></span><pre>writeSlideAnimations</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
                             <a href="#method_writeSlideRelationships" title="writeSlideRelationships :: Write slide relationships to XML format">
                                 <span class="description">Write slide relationships to XML format</span><pre>writeSlideRelationships</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_writeSlideTransition" title="writeSlideTransition :: Write Transition Slide">
+                                <span class="description">Write Transition Slide</span><pre>writeSlideTransition</pre>
                             </a>
                         </li>
                                                                                 <li class="method protected inherited">
@@ -271,16 +281,11 @@
                                 <span class="description">Write Solid Fill</span><pre>writeSolidFill</pre>
                             </a>
                         </li>
-                                                                                <li class="method protected">
-                            <a href="#method_writeTransition" title="writeTransition :: Write Transition Slide">
-                                <span class="description">Write Transition Slide</span><pre>writeTransition</pre>
-                            </a>
-                        </li>
                                                 </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -1313,6 +1318,42 @@
                             </div>
 
                         </div>
+                                            <a id="method_writeSlideAnimations"></a>
+                        <div class="element clickable method protected  method_writeSlideAnimations" data-toggle="collapse" data-target=".method_writeSlideAnimations .collapse">
+                            <h2>writeSlideAnimations</h2>
+                            <pre>writeSlideAnimations(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Slide $oSlide) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oSlide</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Slide.html">\PhpOffice\PhpPresentation\Slide</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_writeSlideRelationships"></a>
                         <div class="element clickable method protected  method_writeSlideRelationships" data-toggle="collapse" data-target=".method_writeSlideRelationships .collapse">
                             <h2>Write slide relationships to XML format</h2>
@@ -1345,6 +1386,51 @@
                                                                             
                                                                             <h3>Response</h3>
                                         <code>string</code><p><p>XML Output</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_writeSlideTransition"></a>
+                        <div class="element clickable method protected  method_writeSlideTransition" data-toggle="collapse" data-target=".method_writeSlideTransition .collapse">
+                            <h2>Write Transition Slide</h2>
+                            <pre>writeSlideTransition(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Slide\Transition $transition) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    link
+                                                </th>
+                                                <td>
+                                                                                                                                                                        
+                                                                                                                                                                        <p><a href="http://officeopenxml.com/prSlide-transitions.php">http://officeopenxml.com/prSlide-transitions.php</a></p>
+                                                                                                    </td>
+                                            </tr>
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$objWriter</h4>
+                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$transition</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Slide.Transition.html">\PhpOffice\PhpPresentation\Slide\Transition</a></code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
 
@@ -1388,51 +1474,6 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$pFill</h4>
                                                 <code><a href="../classes/PhpOffice.PhpPresentation.Style.Fill.html">\PhpOffice\PhpPresentation\Style\Fill</a></code><p><p>Fill style</p></p>
-                                            </div>
-                                                                            
-                                                                    </div>
-                            </div>
-
-                        </div>
-                                            <a id="method_writeTransition"></a>
-                        <div class="element clickable method protected  method_writeTransition" data-toggle="collapse" data-target=".method_writeTransition .collapse">
-                            <h2>Write Transition Slide</h2>
-                            <pre>writeTransition(\PhpOffice\Common\XMLWriter $objWriter, \PhpOffice\PhpPresentation\Slide\Transition $transition) </pre>
-                            <div class="labels">
-                                                                                                                                                                                            </div>
-
-                            
-                            <div class="row collapse">
-                                <div class="detail-description">
-                                    <div class="long_description"></div>
-
-                                    <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    link
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        <p><a href="http://officeopenxml.com/prSlide-transitions.php">http://officeopenxml.com/prSlide-transitions.php</a></p>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                            </table>
-
-                                                                            <h3>Arguments</h3>
-                                                                                    <div class="subelement argument">
-                                                <h4>$objWriter</h4>
-                                                <code>\PhpOffice\Common\XMLWriter</code><p></p>
-                                            </div>
-                                                                                    <div class="subelement argument">
-                                                <h4>$transition</h4>
-                                                <code><a href="../classes/PhpOffice.PhpPresentation.Slide.Transition.html">\PhpOffice\PhpPresentation\Slide\Transition</a></code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -1540,7 +1581,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 04 Apr 2016 15:30:08 +0000.<br/>
+            generated on Tue, 05 Apr 2016 08:12:28 +0000.<br/>
     </footer>
     </body>
 </html>
