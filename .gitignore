@@ -26,3 +26,4 @@ vendor
 /samples/Github_*.*
 /samples/results
 /composer.lock
+/nbproject/

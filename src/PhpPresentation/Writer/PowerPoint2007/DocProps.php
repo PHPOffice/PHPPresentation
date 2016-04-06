@@ -78,7 +78,7 @@ class DocProps extends AbstractPart
 
         // Variant
         $objWriter->startElement('vt:variant');
-        $objWriter->writeElement('vt:i4', '1');
+        $objWriter->writeElement('vt:i4', '2');
         $objWriter->endElement();
 
         $objWriter->endElement();

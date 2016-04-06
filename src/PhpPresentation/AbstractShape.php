@@ -102,6 +102,13 @@ abstract class AbstractShape implements ComparableInterface
      * @var string
      */
     private $hashIndex;
+    
+    
+    private $nvId;
+    private $nvName;
+    private $phType;
+    private $phSize;
+    private $phIdx;
 
     /**
      * Create a new self
@@ -120,6 +127,12 @@ abstract class AbstractShape implements ComparableInterface
         $this->shadow    = new Style\Shadow();
 
         $this->border->setLineStyle(Style\Border::LINE_NONE);
+        
+        $this->nvId   = '';
+        $this->nvName = '';
+        $this->phType = '';
+        $this->phSize = '';
+        $this->phIdx  = '';
     }
     
     public function __clone()
@@ -431,5 +444,57 @@ abstract class AbstractShape implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+    }
+
+    
+    /**
+     * Get/Set Placeholder Properties
+     *
+     * @return string
+     */
+    public function getNvId()
+    {
+        return $this->nvId;
+    }
+    public function setNvId($pValue = '')
+    {
+        $this->nvId = $pValue;
+        return $this;
+    }
+    public function getNvName()
+    {
+        return $this->nvName;
+    }
+    public function setNvName($pValue = '')
+    {
+        $this->nvName = $pValue;
+        return $this;
+    }
+    public function getPhType()
+    {
+        return $this->phType;
+    }
+    public function setPhType($pValue = '')
+    {
+        $this->phType = $pValue;
+        return $this;
+    }
+    public function getPhSize()
+    {
+        return $this->phSize;
+    }
+    public function setPhSize($pValue = '')
+    {
+        $this->phSize = $pValue;
+        return $this;
+    }
+    public function getPhIdx()
+    {
+        return $this->phIdx;
+    }
+    public function setPhIdx($pValue = '')
+    {
+        $this->phIdx = $pValue;
+        return $this;
     }
 }

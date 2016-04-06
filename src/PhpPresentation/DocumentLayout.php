@@ -24,7 +24,7 @@ use PhpOffice\Common\Drawing;
  */
 class DocumentLayout
 {
-    const LAYOUT_CUSTOM = '';
+    const LAYOUT_CUSTOM = 'custom';
     const LAYOUT_SCREEN_4X3 = 'screen4x3';
     const LAYOUT_SCREEN_16X10 = 'screen16x10';
     const LAYOUT_SCREEN_16X9 = 'screen16x9';
@@ -36,6 +36,7 @@ class DocumentLayout
     const LAYOUT_BANNER = 'banner';
     const LAYOUT_LETTER = 'letter';
     const LAYOUT_OVERHEAD = 'overhead';
+    const LAYOUT_WIDSCREEN = 'widescreen';
 
     const UNIT_EMU = 'emu';
     const UNIT_CENTIMETER = 'cm';
@@ -53,6 +54,7 @@ class DocumentLayout
      * centimeter, 914400 EMUs per inch, 12700 EMUs per point.
      */
     private $dimension = array(
+        self::LAYOUT_CUSTOM => array('cx' => 0, 'cy' => 0),
         self::LAYOUT_SCREEN_4X3 => array('cx' => 9144000, 'cy' => 6858000),
         self::LAYOUT_SCREEN_16X10 => array('cx' => 9144000, 'cy' => 5715000),
         self::LAYOUT_SCREEN_16X9 => array('cx' => 9144000, 'cy' => 5143500),
@@ -90,9 +92,13 @@ class DocumentLayout
     /**
      * Create a new \PhpOffice\PhpPresentation\DocumentLayout
      */
-    public function __construct()
+    public function __construct($cx = '', $cy = '')
     {
-        $this->setDocumentLayout(self::LAYOUT_SCREEN_4X3);
+        if ($cx == '' && $cy == '') {
+            $this->setDocumentLayout(self::LAYOUT_SCREEN_4X3);
+        } else {
+            $this->setDocumentLayoutByDimensions($cx, $cy);
+        }
     }
 
     /**
@@ -143,6 +149,24 @@ class DocumentLayout
             $this->dimensionX = $this->dimensionY;
             $this->dimensionY = $tmp;
         }
+
+        return $this;
+    }
+    
+    public function setDocumentLayoutByDimensions($cx, $cy)
+    {
+        $layout = self::LAYOUT_CUSTOM;
+        foreach ($this->dimension as $lo_name => $dim) {
+            if ($dim['cx'] == $cx && $dim['cy'] == $cy) {
+                $layout = $lo_name;
+                break;
+            }
+        }
+        $this->layout = $layout;
+        $this->dimensionX = $cx;
+        $this->dimensionY = $cy;
+        $this->dimension[$this->layout]['cx'] = $cx;
+        $this->dimension[$this->layout]['cy'] = $cy;
 
         return $this;
     }

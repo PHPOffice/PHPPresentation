@@ -219,6 +219,10 @@ class PowerPoint2007 implements ReaderInterface
         $xmlReader = new XMLReader();
         if ($xmlReader->getDomFromString($sPart)) {
             $fileRels = 'ppt/_rels/presentation.xml.rels';
+            $oElement = $xmlReader->getElement('/p:presentation/p:sldSz');
+            if ($oElement) {
+                $this->oPhpPresentation->setLayoutByDimensions($oElement->getAttribute('cx'), $oElement->getAttribute('cy'));
+            }
             $this->loadRels($fileRels);
             foreach ($xmlReader->getElements('/p:presentation/p:sldIdLst/p:sldId') as $oElement) {
                 $rId = $oElement->getAttribute('r:id');
@@ -432,6 +436,29 @@ class PowerPoint2007 implements ReaderInterface
         $oShape->setParagraphs(array());
         // Variables
         $fileRels = 'ppt/slides/_rels/'.$baseFile.'.rels';
+        
+        $oElement = $document->getElement('p:nvSpPr/p:cNvPr', $node);
+        if ($oElement) {
+            if ($oElement->hasAttribute('id')) {
+                $oShape->setNvId($oElement->getAttribute('id'));
+            }
+            if ($oElement->hasAttribute('name')) {
+                $oShape->setNvName($oElement->getAttribute('name'));
+            }
+        }
+        
+        $oElement = $document->getElement('p:nvSpPr/p:nvPr/p:ph', $node);
+        if ($oElement) {
+            if ($oElement->hasAttribute('type')) {
+                $oShape->setPhType($oElement->getAttribute('type'));
+            }
+            if ($oElement->hasAttribute('size')) {
+                $oShape->setPhSize($oElement->getAttribute('sz'));
+            }
+            if ($oElement->hasAttribute('idx')) {
+                $oShape->setPhIdx($oElement->getAttribute('idx'));
+            }
+        }
         
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
         if ($oElement && $oElement->hasAttribute('rot')) {

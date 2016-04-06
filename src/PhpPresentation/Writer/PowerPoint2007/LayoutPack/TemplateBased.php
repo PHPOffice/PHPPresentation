@@ -59,7 +59,7 @@ class TemplateBased extends AbstractLayoutPack
                 foreach ($presentationRels->Relationship as $presRel) {
                     if ($presRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster") {
                         // Found slide master!
-                        $slideMasterId         = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));
+                        $slideMasterId = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));
                         $this->masterSlides[] = array(
                             'masterid' => $slideMasterId,
                             'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . basename($presRel["Target"])))
@@ -70,7 +70,7 @@ class TemplateBased extends AbstractLayoutPack
                         foreach ($masterRelations->Relationship as $masterRel) {
                             if ($masterRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                 // Found theme!
-                                $themeId                     = str_replace('theme', '', basename($masterRel["Target"], '.xml'));
+                                $themeId = str_replace('theme', '', basename($masterRel["Target"], '.xml'));
                                 $this->themes[$themeId - 1] = array(
                                     'masterid' => $slideMasterId,
                                     'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))

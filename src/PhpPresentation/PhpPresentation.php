@@ -177,6 +177,12 @@ class PhpPresentation
 
         return $this;
     }
+    public function setLayoutByDimensions($cx, $cy)
+    {
+        $this->layout = new DocumentLayout($cx, $cy);
+
+        return $this;
+    }
 
     /**
      * Get active slide
