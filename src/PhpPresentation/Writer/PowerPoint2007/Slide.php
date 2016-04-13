@@ -153,26 +153,34 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        //$objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
+        //$objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->writeAttribute('x', $pSlide->getOffsetX());
+        $objWriter->writeAttribute('y', $pSlide->getOffsetY());
         $objWriter->endElement(); // a:off
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
+        //$objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
+        //$objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->writeAttribute('cx', $pSlide->getExtentX());
+        $objWriter->writeAttribute('cy', $pSlide->getExtentY());
         $objWriter->endElement(); // a:ext
 
         // a:chOff
         $objWriter->startElement('a:chOff');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        //$objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pSlide->getOffsetX()));
+        //$objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pSlide->getOffsetY()));
+        $objWriter->writeAttribute('x', $pSlide->getOffsetX());
+        $objWriter->writeAttribute('y', $pSlide->getOffsetY());
         $objWriter->endElement(); // a:chOff
 
         // a:chExt
         $objWriter->startElement('a:chExt');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
+        //$objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pSlide->getExtentX()));
+        //$objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pSlide->getExtentY()));
+        $objWriter->writeAttribute('cx', $pSlide->getExtentX());
+        $objWriter->writeAttribute('cy', $pSlide->getExtentY());
         $objWriter->endElement(); // a:chExt
 
         $objWriter->endElement();
@@ -336,10 +344,21 @@ class Slide extends AbstractPart
         $objWriter->endElement();
 
         // p:cNvGraphicFramePr
-        $objWriter->writeElement('p:cNvGraphicFramePr', null);
+        //$objWriter->writeElement('p:cNvGraphicFramePr', null);
+        $objWriter->startElement('p:cNvGraphicFramePr');
+            $objWriter->startElement('a:graphicFrameLocks');
+            $objWriter->writeAttribute('noGrp', '1');
+            $objWriter->endElement();
+        $objWriter->endElement();
 
         // p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        $objWriter->startElement('p:nvPr');
+        $objWriter->writeElement('p:ph', null);
+        /*$objWriter->writeAttribute('type', 'chart');
+        $objWriter->writeAttribute('sz', 'full');
+        $objWriter->writeAttribute('idx', '1');
+        $objWriter->endElement();*/
+        $objWriter->endElement();
 
         $objWriter->endElement();
 
@@ -349,14 +368,18 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        /*$objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));*/
+        $objWriter->writeAttribute('x', $shape->getOffsetX());
+        $objWriter->writeAttribute('y', $shape->getOffsetY());
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        /*$objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));*/
+        $objWriter->writeAttribute('cx', $shape->getWidth());
+        $objWriter->writeAttribute('cy', $shape->getHeight());
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -422,7 +445,14 @@ class Slide extends AbstractPart
         $objWriter->endElement();
 
         // p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        $objWriter->startElement('p:nvPr');
+        $objWriter->writeElement('p:ph', null);
+        /*$objWriter->writeAttribute('type', 'pic');
+        $objWriter->writeAttribute('sz', 'full');
+        $objWriter->writeAttribute('idx', '1');
+        $objWriter->endElement();*/
+        $objWriter->endElement();
+        
         $objWriter->endElement();
 
         // p:blipFill
@@ -449,14 +479,18 @@ class Slide extends AbstractPart
 
         // a:off
         $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        /*$objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));*/
+        $objWriter->writeAttribute('x', $shape->getOffsetX());
+        $objWriter->writeAttribute('y', $shape->getOffsetY());
         $objWriter->endElement();
 
         // a:ext
         $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        /*$objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));*/
+        $objWriter->writeAttribute('cx', $shape->getWidth());
+        $objWriter->writeAttribute('cy', $shape->getHeight());
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -529,7 +563,7 @@ class Slide extends AbstractPart
                         if ($shape->getPhType() != '')
                             $objWriter->writeAttribute('type', $shape->getPhType());
                         if ($shape->getPhSize() != '')
-                            $objWriter->writeAttribute('size', $shape->getPhSize());
+                            $objWriter->writeAttribute('sz', $shape->getPhSize());
                         if ($shape->getPhIdx() != '')
                             $objWriter->writeAttribute('idx', $shape->getPhIdx());
                         $objWriter->endElement();

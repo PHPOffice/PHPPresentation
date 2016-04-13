@@ -394,7 +394,7 @@ class Chart extends Slide
         $objWriter->startElement('c:title');
 
         // c:tx
-        $objWriter->startElement('c:tx');
+        /*$objWriter->startElement('c:tx');
 
         // c:rich
         $objWriter->startElement('c:rich');
@@ -476,10 +476,10 @@ class Chart extends Slide
 
         $objWriter->endElement();
 
-        $objWriter->endElement();
+        $objWriter->endElement();*/
 
         // Write layout
-        $this->writeLayout($objWriter, $subject);
+        //$this->writeLayout($objWriter, $subject);
 
         // c:overlay
         $objWriter->startElement('c:overlay');
@@ -503,7 +503,7 @@ class Chart extends Slide
         $objWriter->startElement('c:plotArea');
 
         // Write layout
-        $this->writeLayout($objWriter, $subject);
+        //$this->writeLayout($objWriter, $subject);
 
         // Write chart
         $chartType = $subject->getType();
