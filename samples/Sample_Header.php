@@ -324,6 +324,7 @@ class PhpPptTree {
         $this->append('<dt>Hyperlink</dt><dd>'.ucfirst(var_export($oShape->hasHyperlink(), true)).'</dd>');
         $this->append('<dt>Fill</dt><dd>@Todo</dd>');
         $this->append('<dt>Border</dt><dd>@Todo</dd>');
+        $this->append('<dt>IsPlaceholder</dt><dd>' . ($oShape->isPlaceholder() ? 'true' : 'false') . '</dd>');
         if($oShape instanceof MemoryDrawing) {
             $this->append('<dt>Name</dt><dd>'.$oShape->getName().'</dd>');
             $this->append('<dt>Description</dt><dd>'.$oShape->getDescription().'</dd>');

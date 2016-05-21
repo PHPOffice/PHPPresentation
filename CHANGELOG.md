@@ -26,9 +26,11 @@
 - ODPresentation & PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
 - ODPresentation & PowerPoint2007 Writer : Support for video - @Progi1984 GH-123
 - ODPresentation & PowerPoint2007 Writer : Support for Visibility for slides - @Progi1984
+- PowerPoint2007 Reader : Layout Management - @vincentKool @Progi1984 GH-161 
 - PowerPoint2007 Writer : Presentation with predefined View Type - @Progi1984 GH-120
 - PowerPoint2007 Writer : Implement alpha channel to Fills - @Dayjo GH-203 / @Progi1984 GH-215
 - PowerPoint2007 Writer : Implement Animations - @JewrassicPark GH-214 / @Progi1984 GH-217
+- PowerPoint2007 Writer : Layout Management - @vincentKool @Progi1984 GH-161 
 
 ## 0.6.0 - 2016-01-24
 

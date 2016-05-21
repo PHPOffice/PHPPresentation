@@ -80,8 +80,9 @@ class PptSlides extends AbstractDecoratorWriter
         $idxSlide = $pSlide->getParent()->getIndex($pSlide);
 
         // Write slideLayout relationship
-        $oLayoutPack  = new PackDefault();
-        $layoutId = $oLayoutPack->findlayoutId($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
+        // $oLayoutPack  = new PackDefault();
+        // $layoutId = $oLayoutPack->findlayoutId($pSlide->getSlideLayout(), $pSlide->getSlideMasterId());
+        $layoutId = 1;
 
         $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
 
@@ -1080,7 +1081,16 @@ class PptSlides extends AbstractDecoratorWriter
         $objWriter->writeAttribute('txBox', '1');
         $objWriter->endElement();
         // p:sp/p:cNvSpPr/p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        if ($shape->isPlaceholder()) {
+            $objWriter->startElement('p:nvPr');
+            $objWriter->startElement('p:ph');
+            $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
+            $objWriter->endElement();
+            $objWriter->endElement();
+        } else {
+            $objWriter->writeElement('p:nvPr', null);
+        }
+
         // > p:sp/p:cNvSpPr
         $objWriter->endElement();
 

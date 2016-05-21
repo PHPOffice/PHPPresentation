@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation;
 
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Iterator;
+use PhpOffice\PhpPresentation\Slide\SlideMaster;
 
 /**
  * PhpPresentation
@@ -61,6 +62,12 @@ class PhpPresentation
     protected $activeSlideIndex = 0;
 
     /**
+     * Collection of Master Slides
+     * @var \ArrayObject|\PhpOffice\PhpPresentation\Slide\SlideMaster[]
+     */
+    protected $slideMasters;
+
+    /**
      * Create a new PhpPresentation with one Slide
      */
     public function __construct()
@@ -73,6 +80,9 @@ class PhpPresentation
         $this->setDocumentProperties(new DocumentProperties());
         $this->setPresentationProperties(new PresentationProperties());
         $this->setLayout(new DocumentLayout());
+
+        // Set empty Master & SlideLayout
+        $this->createMasterSlide()->createSlideLayout();
     }
 
     /**
@@ -97,7 +107,7 @@ class PhpPresentation
     {
         return $this->setDocumentProperties($value);
     }
-    
+
     /**
      * Get properties
      *
@@ -205,7 +215,7 @@ class PhpPresentation
     /**
      * Remove slide by index
      *
-     * @param  int           $index Slide index
+     * @param  int $index Slide index
      * @throws \Exception
      * @return PhpPresentation
      */
@@ -223,7 +233,7 @@ class PhpPresentation
     /**
      * Get slide by index
      *
-     * @param  int                 $index Slide index
+     * @param  int $index Slide index
      * @return \PhpOffice\PhpPresentation\Slide
      * @throws \Exception
      */
@@ -288,7 +298,7 @@ class PhpPresentation
     /**
      * Set active slide index
      *
-     * @param  int                 $index Active slide index
+     * @param  int $index Active slide index
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Slide
      */
@@ -325,6 +335,32 @@ class PhpPresentation
     public function getSlideIterator()
     {
         return new Iterator($this);
+    }
+
+    /**
+     * Create a masterslide and add it to this presentation
+     *
+     * @return \PhpOffice\PhpPresentation\Slide\SlideMaster
+     */
+    public function createMasterSlide()
+    {
+        $newMasterSlide = new SlideMaster($this);
+        $this->addMasterSlide($newMasterSlide);
+        return $newMasterSlide;
+    }
+
+    /**
+     * Add masterslide
+     *
+     * @param  \PhpOffice\PhpPresentation\Slide\SlideMaster $slide
+     * @throws \Exception
+     * @retun \PhpOffice\PhpPresentation\Slide\SlideMaster
+     */
+    public function addMasterSlide(SlideMaster $slide = null)
+    {
+        $this->slideMasters[] = $slide;
+
+        return $slide;
     }
 
     /**
@@ -385,5 +421,10 @@ class PhpPresentation
     public function getZoom()
     {
         return $this->getPresentationProperties()->getZoom();
+    }
+
+    public function getAllMasterSlides()
+    {
+        return $this->slideMasters;
     }
 }
