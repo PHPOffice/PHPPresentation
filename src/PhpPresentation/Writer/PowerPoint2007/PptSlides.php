@@ -538,7 +538,7 @@ class PptSlides extends AbstractDecoratorWriter
         $arrayAnimationIds = array();
 
         foreach ($oSlide->getShapeCollection() as $shape) {
-            $hashToIdMap[$shape->getHashCode()] = $shapeId++;
+            $hashToIdMap[$shape->getHashCode()] = ++$shapeId;
         }
         foreach ($arrayAnimations as $oAnimation) {
             foreach ($oAnimation->getShapeCollection() as $oShape) {
