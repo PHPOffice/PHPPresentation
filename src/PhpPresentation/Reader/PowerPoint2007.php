@@ -554,10 +554,10 @@ class PowerPoint2007 implements ReaderInterface
                         }
                     //} else {
                         // $oText = $oParagraph->createText();
-                    }
 
-                    $oSubSubElement = $document->getElement('a:t', $oSubElement);
-                    $oText->setText($oSubSubElement->nodeValue);
+                        $oSubSubElement = $document->getElement('a:t', $oSubElement);
+                        $oText->setText($oSubSubElement->nodeValue);
+                    }
                 }
             }
         }
