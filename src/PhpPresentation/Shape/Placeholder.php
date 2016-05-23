@@ -1,19 +1,22 @@
 <?php
 /**
- * Created by PhpStorm.
- * Author: Vincent Kool
- * User: vakool
- * Date: 14-03-16
- * Time: 14:56
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
  *
- * Description: Placeholders are created at the master and layout levels.
- * That is, they can be added and deleted at those levels but not at the slide level.
- * At the slide level they are only referenced or linked to the lower layout layer.
- * That is, a slide can reference a placeholder at the layout level but not at the master level.
- * Similarly a layout can reference a placeholder at the master slide level.
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
  *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @link        https://github.com/PHPOffice/PHPPresentation
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpPresentation\Shape;
+
 class Placeholder
 {
     /** Placeholder Type constants */
