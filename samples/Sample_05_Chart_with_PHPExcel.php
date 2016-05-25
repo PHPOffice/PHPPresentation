@@ -19,7 +19,7 @@ if (!class_exists('PHPExcel')) {
 	
 	// Set properties
 	echo date('H:i:s') . ' Set properties'.EOL;
-	$objPHPPresentation->getProperties()->setCreator('PHPOffice')
+	$objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')
 										->setLastModifiedBy('PHPPresentation Team')
 										->setTitle('Sample 08 Title')
 										->setSubject('Sample 08 Subject')

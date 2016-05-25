@@ -59,7 +59,7 @@ $objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$oProperties = $objPHPPresentation->getProperties();
+$oProperties = $objPHPPresentation->getDocumentProperties();
 $oProperties->setCreator('PHPOffice')
             ->setLastModifiedBy('PHPPresentation Team')
             ->setTitle('Sample 11 Title')

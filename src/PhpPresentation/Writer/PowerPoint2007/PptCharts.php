@@ -222,7 +222,7 @@ class PptCharts extends AbstractDecoratorWriter
         if (strlen($title) == 0) {
             $title = 'Chart';
         }
-        $workbook->getProperties()->setCreator($presentation->getProperties()->getCreator())->setLastModifiedBy($presentation->getProperties()->getLastModifiedBy())->setTitle($title);
+        $workbook->getProperties()->setCreator($presentation->getDocumentProperties()->getCreator())->setLastModifiedBy($presentation->getDocumentProperties()->getLastModifiedBy())->setTitle($title);
 
         // Add chart data
         $sheet = $workbook->setActiveSheetIndex(0);

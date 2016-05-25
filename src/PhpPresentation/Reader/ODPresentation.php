@@ -158,7 +158,7 @@ class ODPresentation implements ReaderInterface
             '/office:document-meta/office:meta/meta:creation-date' => 'setCreated',
             '/office:document-meta/office:meta/dc:date' => 'setModified',
         );
-        $oProperties = $this->oPhpPresentation->getProperties();
+        $oProperties = $this->oPhpPresentation->getDocumentProperties();
         foreach ($arrayProperties as $path => $property) {
             if (is_object($oElement = $this->oXMLReader->getElement($path))) {
                 if (in_array($property, array('setCreated', 'setModified'))) {
