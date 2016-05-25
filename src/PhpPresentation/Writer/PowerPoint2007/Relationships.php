@@ -55,9 +55,10 @@ class Relationships extends AbstractDecoratorWriter
             if ($gdImage) {
                 imagedestroy($gdImage);
                 // Relationship docProps/thumbnail.jpeg
-                $this->writeRelationship($objWriter, $idxRelation++, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
+                $this->writeRelationship($objWriter, $idxRelation, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
             }
         }
+        // ++$idxRelation
 
         $objWriter->endElement();
 

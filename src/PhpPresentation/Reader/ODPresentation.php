@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Font;
@@ -214,7 +215,7 @@ class ODPresentation implements ReaderInterface
                     $contentImg = $this->oZip->getFromName($this->arrayCommonStyles[$nameStyle]['path']);
                     file_put_contents($tmpBkgImg, $contentImg);
 
-                    $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Image();
+                    $oBackground = new Image();
                     $oBackground->setPath($tmpBkgImg);
                 }
             }

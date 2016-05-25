@@ -2006,19 +2006,16 @@ class PptCharts extends AbstractDecoratorWriter
             return;
         }
 
-        switch ($typeAxis) {
-            case Chart\Axis::AXIS_X:
-                $mainElement = 'c:catAx';
-                $axIdVal = '52743552';
-                $axPosVal = 'b';
-                $crossAxVal = '52749440';
-                break;
-            case Chart\Axis::AXIS_Y:
-                $mainElement = 'c:valAx';
-                $axIdVal = '52749440';
-                $axPosVal = 'l';
-                $crossAxVal = '52743552';
-                break;
+        if ($typeAxis == Chart\Axis::AXIS_X) {
+            $mainElement = 'c:catAx';
+            $axIdVal = '52743552';
+            $axPosVal = 'b';
+            $crossAxVal = '52749440';
+        } else {
+            $mainElement = 'c:valAx';
+            $axIdVal = '52749440';
+            $axPosVal = 'l';
+            $crossAxVal = '52743552';
         }
 
         // $mainElement

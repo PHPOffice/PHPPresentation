@@ -17,8 +17,6 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
-use PhpOffice\PhpPresentation\ComparableInterface;
-
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Axis
  */
