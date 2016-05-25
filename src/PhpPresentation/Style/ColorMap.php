@@ -22,6 +22,19 @@ namespace PhpOffice\PhpPresentation\Style;
  */
 class ColorMap
 {
+    const COLOR_BG1 = 'bg1';
+    const COLOR_BG2 = 'bg2';
+    const COLOR_TX1 = 'tx1';
+    const COLOR_TX2 = 'tx2';
+    const COLOR_ACCENT1 = 'accent1';
+    const COLOR_ACCENT2 = 'accent2';
+    const COLOR_ACCENT3 = 'accent3';
+    const COLOR_ACCENT4 = 'accent4';
+    const COLOR_ACCENT5 = 'accent5';
+    const COLOR_ACCENT6 = 'accent6';
+    const COLOR_HLINK = 'hlink';
+    const COLOR_FOLHLINK = 'folHlink';
+
     /**
      * Mapping - Stores the mapping betweenSlide and theme
      *
@@ -29,24 +42,28 @@ class ColorMap
      */
     protected $mapping = array();
 
+    public static $MAPPING_DEFAULT = array(
+        self::COLOR_BG1 => 'lt1',
+        self::COLOR_TX1 => 'dk1',
+        self::COLOR_BG2 => 'lt2',
+        self::COLOR_TX2 => 'dk2',
+        self::COLOR_ACCENT1 => 'accent1',
+        self::COLOR_ACCENT2 => 'accent2',
+        self::COLOR_ACCENT3 => 'accent3',
+        self::COLOR_ACCENT4 => 'accent4',
+        self::COLOR_ACCENT5 => 'accent5',
+        self::COLOR_ACCENT6 => 'accent6',
+        self::COLOR_HLINK => 'hlink',
+        self::COLOR_FOLHLINK => 'folHlink'
+    );
+
     /**
      * ColorMap constructor.
      * Create a new ColorMap with standard values
      */
     public function __construct()
     {
-        $this->mapping = array("bg1" => "lt1",
-            "tx1" => "dk1",
-            "bg2" => "lt2",
-            "tx2" => "dk2",
-            "accent1" => "accent1",
-            "accent2" => "accent2",
-            "accent3" => "accent3",
-            "accent4" => "accent4",
-            "accent5" => "accent5",
-            "accent6" => "accent6",
-            "hlink" => "hlink",
-            "folHlink" => "folHlink");
+        $this->mapping = self::$MAPPING_DEFAULT;
     }
 
     /**
@@ -63,11 +80,11 @@ class ColorMap
     /**
      * Store a new map. For use with the reader
      *
-     * @param $newMappingArray
+     * @param array $arrayMapping
      */
-    public function setNewMapping($newMappingArray)
+    public function setMapping(array $arrayMapping = array())
     {
-        $this->mapping = $newMappingArray;
+        $this->mapping = $arrayMapping;
     }
 
     /**

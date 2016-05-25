@@ -22,6 +22,7 @@ use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide\Background\Color as BackgroundColor;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\ColorMap;
+use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
 
 /**
@@ -45,14 +46,10 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
      * @var \PhpOffice\PhpPresentation\Style\TextStyle
      */
     protected $textStyles;
-
     /**
-     * @return TextStyle
+     * @var \PhpOffice\PhpPresentation\Style\SchemeColor[]
      */
-    public function getTextStyles()
-    {
-        return $this->textStyles;
-    }
+    protected $arraySchemeColor = array();
 
     /**
      * Create a new slideMaster
@@ -69,6 +66,7 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
         $this->identifier = md5(rand(0, 9999) . time());
         // Set a basic colorMap
         $this->colorMap = new ColorMap();
+        // Set a white background
         $this->background = new BackgroundColor();
         $this->background->setColor(new Color(Color::COLOR_WHITE));
         // Set basic textStyles
@@ -90,18 +88,57 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * Add slideLayout
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\SlideLayout $slide
+     * @param  \PhpOffice\PhpPresentation\Slide\SlideLayout $slideLayout
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Slide\SlideLayout
      */
-    public function addSlideLayout(SlideLayout $slide = null)
+    public function addSlideLayout(SlideLayout $slideLayout = null)
     {
-        $this->slideLayouts[] = $slide;
-        return $slide;
+        $this->slideLayouts[] = $slideLayout;
+        return $slideLayout;
     }
 
+    /**
+     * @return SlideLayout[]
+     */
     public function getAllSlideLayouts()
     {
         return $this->slideLayouts;
+    }
+
+    /**
+     * @return TextStyle
+     */
+    public function getTextStyles()
+    {
+        return $this->textStyles;
+    }
+
+    /**
+     * @param TextStyle $textStyle
+     * @return $this
+     */
+    public function setTextStyles(TextStyle $textStyle)
+    {
+        $this->textStyles = $textStyle;
+        return $this;
+    }
+
+    /**
+     * @param SchemeColor $schemeColor
+     * @return $this
+     */
+    public function addSchemeColor(SchemeColor $schemeColor)
+    {
+        $this->arraySchemeColor[] = $schemeColor;
+        return $this;
+    }
+
+    /**
+     * @return \PhpOffice\PhpPresentation\Style\SchemeColor[]
+     */
+    public function getAllSchemeColors()
+    {
+        return $this->arraySchemeColor;
     }
 }

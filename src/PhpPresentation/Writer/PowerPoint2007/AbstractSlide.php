@@ -22,10 +22,10 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
-use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
+use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing as MemoryDrawing;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
@@ -33,9 +33,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
 use PhpOffice\PhpPresentation\Slide;
-use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Slide\Note;
-use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
@@ -58,7 +56,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             // Loop trough images and write relationships
             $iterator = $pSlideMaster->getShapeCollection()->getIterator();
             while ($iterator->valid()) {
-                if ($iterator->current() instanceof ShapeDrawing || $iterator->current() instanceof MemoryDrawing) {
+                if ($iterator->current() instanceof ShapeDrawingFile || $iterator->current() instanceof ShapeDrawingGd) {
                     // Write relationship for image drawing
                     $this->writeRelationship(
                         $objWriter,
@@ -81,8 +79,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 } elseif ($iterator->current() instanceof Group) {
                     $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
                     while ($iterator2->valid()) {
-                        if ($iterator2->current() instanceof ShapeDrawing ||
-                            $iterator2->current() instanceof MemoryDrawing
+                        if ($iterator2->current() instanceof ShapeDrawingFile ||
+                            $iterator2->current() instanceof ShapeDrawingGd
                         ) {
                             // Write relationship for image drawing
                             $this->writeRelationship(
@@ -108,6 +106,33 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                     }
                 }
                 $iterator->next();
+            }
+        }
+    }
+
+    /**
+     * @param XMLWriter $objWriter
+     * @param \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[] $shapes
+     * @param int $shapeId
+     */
+    protected function writeShapeCollection(XMLWriter $objWriter, $shapes = array(), &$shapeId = 0)
+    {
+        foreach ($shapes as $shape) {
+            // Increment $shapeId
+            ++$shapeId;
+            // Check type
+            if ($shape instanceof RichText) {
+                $this->writeShapeText($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof ShapeTable) {
+                $this->writeShapeTable($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Line) {
+                $this->writeShapeLine($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof ShapeChart) {
+                $this->writeShapeChart($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof AbstractDrawing) {
+                $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Group) {
+                $this->writeShapeGroup($objWriter, $shape, $shapeId);
             }
         }
     }
@@ -163,7 +188,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:spPr');
         // p:sp\p:spPr\a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
         // p:sp\p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
@@ -180,9 +205,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
         $objWriter->endElement();
-        if ($shape->getFill()) {
-            $this->writeFill($objWriter, $shape->getFill());
-        }
+        $this->writeFill($objWriter, $shape->getFill());
         if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
             $this->writeBorder($objWriter, $shape->getBorder(), '');
         }
@@ -632,10 +655,19 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Shadow $oShadow
      */
-    protected function writeShadow(XMLWriter $objWriter, Shadow $oShadow)
+    protected function writeShadow(XMLWriter $objWriter, $oShadow)
     {
+        if (!($oShadow instanceof Shadow)) {
+            return;
+        }
+
+        if (!$oShadow->isVisible()) {
+            return;
+        }
+
         // a:effectLst
         $objWriter->startElement('a:effectLst');
+
         // a:outerShdw
         $objWriter->startElement('a:outerShdw');
         $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
@@ -643,15 +675,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($oShadow->getDirection()));
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
-        // a:srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $oShadow->getColor()->getRGB());
-        // a:alpha
-        $objWriter->startElement('a:alpha');
-        $objWriter->writeAttribute('val', $oShadow->getAlpha() * 1000);
+
+        $this->writeColor($objWriter, $oShadow->getColor(), $oShadow->getAlpha());
+
         $objWriter->endElement();
-        $objWriter->endElement();
-        $objWriter->endElement();
+
         $objWriter->endElement();
     }
 
@@ -815,7 +843,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement();
         // p:xfrm
         $objWriter->startElement('p:xfrm');
-        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
         // a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
@@ -892,7 +920,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:spPr');
         // a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttribute('rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
         // a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
@@ -970,40 +998,27 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement(); // a:chExt
         $objWriter->endElement(); // a:xfrm
         $objWriter->endElement(); // p:grpSpPr
-        $shapes = $group->getShapeCollection();
-        foreach ($shapes as $shape) {
-            // Increment $shapeId
-            ++$shapeId;
-            // Check type
-            if ($shape instanceof RichText) {
-                $this->writeShapeText($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof ShapeTable) {
-                $this->writeShapeTable($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Line) {
-                $this->writeShapeLine($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof ShapeChart) {
-                $this->writeShapeChart($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof AbstractDrawing) {
-                $this->writeShapePic($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Group) {
-                $this->writeShapeGroup($objWriter, $shape, $shapeId);
-            }
-        }
+
+        $this->writeShapeCollection($objWriter, $group->getShapeCollection(), $shapeId);
+
         $objWriter->endElement(); // p:grpSp
     }
 
     /**
-     * @param SlideMaster $pSlide
+     * @param \PhpOffice\PhpPresentation\Slide\AbstractSlide $pSlide
      * @param $objWriter
      */
-    protected function writeSlideBackground(SlideMaster $pSlide, XMLWriter $objWriter)
+    protected function writeSlideBackground(AbstractSlideAlias $pSlide, XMLWriter $objWriter)
     {
+        if (!($pSlide->getBackground() instanceof Slide\AbstractBackground)) {
+            return;
+        }
         $oBackground = $pSlide->getBackground();
         // p:bg
         $objWriter->startElement('p:bg');
-        // p:bgPr
-        $objWriter->startElement('p:bgPr');
         if ($oBackground instanceof Slide\Background\Color) {
+            // p:bgPr
+            $objWriter->startElement('p:bgPr');
             // a:solidFill
             $objWriter->startElement('a:solidFill');
             // a:srgbClr
@@ -1012,8 +1027,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->endElement();
             // > a:solidFill
             $objWriter->endElement();
+            // > p:bgPr
+            $objWriter->endElement();
         }
         if ($oBackground instanceof Slide\Background\Image) {
+            // p:bgPr
+            $objWriter->startElement('p:bgPr');
             // a:blipFill
             $objWriter->startElement('a:blipFill');
             // a:blip
@@ -1029,9 +1048,23 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->endElement();
             // > a:blipFill
             $objWriter->endElement();
+            // > p:bgPr
+            $objWriter->endElement();
         }
-        // > p:bgPr
-        $objWriter->endElement();
+        /**
+         * @link : http://www.officeopenxml.com/prSlide-background.php
+         */
+        if ($oBackground instanceof Slide\Background\SchemeColor) {
+            // p:bgRef
+            $objWriter->startElement('p:bgRef');
+            $objWriter->writeAttribute('idx', '1001');
+            // a:schemeClr
+            $objWriter->startElement('a:schemeClr');
+            $objWriter->writeAttribute('val', $oBackground->getSchemeColor()->getValue());
+            $objWriter->endElement();
+            // > p:bgRef
+            $objWriter->endElement();
+        }
         // > p:bg
         $objWriter->endElement();
     }

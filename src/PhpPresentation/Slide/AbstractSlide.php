@@ -21,7 +21,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart;
-use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\PhpPresentation\Shape\Drawing\File;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -31,22 +31,15 @@ use PhpOffice\PhpPresentation\Slide;
 
 abstract class AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
+    /**
+     * @var string
+     */
     protected $relsIndex;
     /**
      *
      * @var \PhpOffice\PhpPresentation\Slide\Transition
      */
     protected $slideTransition;
-
-    public function getRelsIndex()
-    {
-        return $this->relsIndex;
-    }
-
-    public function setRelsIndex($indexName)
-    {
-        $this->relsIndex = $indexName;
-    }
 
     /**
      * Collection of shapes
@@ -264,11 +257,11 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     /**
      * Create drawing shape
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing
+     * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
      */
     public function createDrawingShape()
     {
-        $shape = new Drawing();
+        $shape = new File();
         $this->addShape($shape);
         return $shape;
     }
@@ -357,5 +350,21 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     {
         $this->slideTransition = $transition;
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelsIndex()
+    {
+        return $this->relsIndex;
+    }
+
+    /**
+     * @param string $indexName
+     */
+    public function setRelsIndex($indexName)
+    {
+        $this->relsIndex = $indexName;
     }
 }

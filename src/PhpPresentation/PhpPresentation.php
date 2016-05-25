@@ -72,6 +72,9 @@ class PhpPresentation
      */
     public function __construct()
     {
+        // Set empty Master & SlideLayout
+        $this->createMasterSlide()->createSlideLayout();
+
         // Initialise slide collection and add one slide
         $this->createSlide();
         $this->setActiveSlideIndex();
@@ -80,9 +83,6 @@ class PhpPresentation
         $this->setDocumentProperties(new DocumentProperties());
         $this->setPresentationProperties(new PresentationProperties());
         $this->setLayout(new DocumentLayout());
-
-        // Set empty Master & SlideLayout
-        $this->createMasterSlide()->createSlideLayout();
     }
 
     /**
@@ -259,11 +259,11 @@ class PhpPresentation
     /**
      * Get index for slide
      *
-     * @param  \PhpOffice\PhpPresentation\Slide $slide
+     * @param  \PhpOffice\PhpPresentation\Slide\AbstractSlide $slide
      * @return int
      * @throws \Exception
      */
-    public function getIndex(Slide $slide)
+    public function getIndex(Slide\AbstractSlide $slide)
     {
         $index = null;
         foreach ($this->slideCollection as $key => $value) {
@@ -423,8 +423,23 @@ class PhpPresentation
         return $this->getPresentationProperties()->getZoom();
     }
 
+    /**
+     * @return \ArrayObject|Slide\SlideMaster[]
+     */
     public function getAllMasterSlides()
     {
         return $this->slideMasters;
+    }
+
+    /**
+     * @param \ArrayObject|Slide\SlideMaster[] $slideMasters
+     * @return $this
+     */
+    public function setAllMasterSlides($slideMasters = array())
+    {
+        if ($slideMasters instanceof \ArrayObject || is_array($slideMasters)) {
+            $this->slideMasters = $slideMasters;
+        }
+        return $this;
     }
 }

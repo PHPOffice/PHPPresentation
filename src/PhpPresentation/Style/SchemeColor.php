@@ -21,6 +21,11 @@ class SchemeColor extends Color
 {
     protected $value;
 
+    public function __construct()
+    {
+        return $this;
+    }
+
     /**
      * @return string
      */
@@ -35,10 +40,5 @@ class SchemeColor extends Color
     public function setValue($value)
     {
         $this->value = $value;
-    }
-
-    public function __construct()
-    {
-        return $this;
     }
 }

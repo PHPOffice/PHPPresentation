@@ -87,12 +87,9 @@ class Relationships extends AbstractDecoratorWriter
         // Relation id
         $relationId = 1;
 
-        $oLayoutPack = new PackDefault();
-
-        $masterSlides = $oLayoutPack->getMasterSlides();
-        foreach ($masterSlides as $masterSlide) {
+        foreach ($this->getPresentation()->getAllMasterSlides() as $oMasterSlide) {
             // Relationship slideMasters/slideMasterX.xml
-            $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', 'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml');
+            $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', 'slideMasters/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml');
         }
 
         // Add slide theme (only one!)

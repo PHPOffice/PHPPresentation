@@ -20,11 +20,9 @@ namespace PhpOffice\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
-use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
-use PhpOffice\PhpPresentation\Slide\Layout;
 use PhpOffice\PhpPresentation\Slide\Note;
-use PhpOffice\PhpPresentation\Slide\Transition;
+use PhpOffice\PhpPresentation\Slide\SlideLayout;
 
 /**
  * Slide class
@@ -40,7 +38,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Slide layout
      *
-     * @var string
+     * @var SlideLayout
      */
     private $slideLayout;
 
@@ -79,12 +77,8 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     {
         // Set parent
         $this->parent = $pParent;
-
-        $this->slideLayout = Slide\Layout::BLANK;
-
         // Shape collection
         $this->shapeCollection = new \ArrayObject();
-
         // Set identifier
         $this->identifier = md5(rand(0, 9999) . time());
     }
@@ -92,7 +86,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Get slide layout
      *
-     * @return string
+     * @return SlideLayout
      */
     public function getSlideLayout()
     {
@@ -102,13 +96,12 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Set slide layout
      *
-     * @param  string              $layout
+     * @param  SlideLayout $layout
      * @return \PhpOffice\PhpPresentation\Slide
      */
-    public function setSlideLayout($layout = Layout::BLANK)
+    public function setSlideLayout(SlideLayout $layout)
     {
         $this->slideLayout = $layout;
-
         return $this;
     }
 
@@ -225,7 +218,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Get collection of animations
      *
-     * @return \PhpOffice\PhpPresentation\Slide\Animation
+     * @return \PhpOffice\PhpPresentation\Slide\Animation[]
      */
     public function getAnimations()
     {

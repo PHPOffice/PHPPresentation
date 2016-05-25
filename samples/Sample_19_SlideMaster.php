@@ -15,9 +15,9 @@ $objPHPPresentation = new PhpPresentation();
 echo date('H:i:s') . ' Set properties' . EOL;
 $objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')
     ->setLastModifiedBy('PHPPresentation Team')
-    ->setTitle('Sample 01 SlideMaster')
-    ->setSubject('Sample 01 Subject')
-    ->setDescription('Sample 01 Description')
+    ->setTitle('Sample 19 SlideMaster')
+    ->setSubject('Sample 19 Subject')
+    ->setDescription('Sample 19 Description')
     ->setKeywords('office 2007 openxml libreoffice odt php')
     ->setCategory('Sample Category');
 
@@ -84,7 +84,7 @@ $shape->getShadow()->setVisible(true)
     ->setDistance(10);
 $shape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/')->setTooltip('PHPPresentation');
 
-// Create a shape (text)
+// Create a shape (text) linked to a PlaceHolder
 echo date('H:i:s') . ' Create a shape (rich text)' . EOL;
 $shape = $currentSlide->createRichTextShape()->setWidthAndHeight(960, 80)->setOffsetX(0)->setOffsetY(60);
 $shape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
