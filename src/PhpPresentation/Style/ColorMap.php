@@ -42,7 +42,7 @@ class ColorMap
      */
     protected $mapping = array();
 
-    public static $MAPPING_DEFAULT = array(
+    public static $mappingDefault = array(
         self::COLOR_BG1 => 'lt1',
         self::COLOR_TX1 => 'dk1',
         self::COLOR_BG2 => 'lt2',
@@ -63,7 +63,7 @@ class ColorMap
      */
     public function __construct()
     {
-        $this->mapping = self::$MAPPING_DEFAULT;
+        $this->mapping = self::$mappingDefault;
     }
 
     /**

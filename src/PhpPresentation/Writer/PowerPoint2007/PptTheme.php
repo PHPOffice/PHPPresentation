@@ -146,6 +146,8 @@ class PptTheme extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
         // Other relationships
+        //@todo
+        $masterId;
         /*
         $otherRelations = $oLayoutPack->getThemeRelations();
         foreach ($otherRelations as $otherRelation) {

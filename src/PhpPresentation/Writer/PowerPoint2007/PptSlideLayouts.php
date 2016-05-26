@@ -15,7 +15,7 @@ class PptSlideLayouts extends AbstractSlide
      */
     public function render()
     {
-        foreach ($this->oPresentation->getAllMasterSlides() as $idx => $oSlideMaster) {
+        foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
             foreach ($oSlideMaster->getAllSlideLayouts() as &$oSlideLayout) {
                 $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideLayout->layoutNr, $oSlideMaster->getRelsIndex()));
                 $this->oZip->addFromString('ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', $this->writeSlideLayout($oSlideLayout));
@@ -59,6 +59,8 @@ class PptSlideLayouts extends AbstractSlide
         $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
 
         // Other relationships
+        //@todo
+        $slideLayoutIndex;
         /*
         foreach ($oLayoutPack->getLayoutRelations() as $otherRelation) {
             if ($otherRelation['layoutId'] == $slideLayoutIndex) {
@@ -149,7 +151,7 @@ class PptSlideLayouts extends AbstractSlide
 
         // p:sldLayout\p:clrMapOvr
         $objWriter->startElement('p:clrMapOvr');
-        $arrayDiff = array_diff_assoc(ColorMap::$MAPPING_DEFAULT, $pSlideLayout->colorMap->getMapping());
+        $arrayDiff = array_diff_assoc(ColorMap::$mappingDefault, $pSlideLayout->colorMap->getMapping());
         if (!empty($arrayDiff)) {
             // p:sldLayout\p:clrMapOvr\a:overrideClrMapping
             $objWriter->startElement('a:overrideClrMapping');

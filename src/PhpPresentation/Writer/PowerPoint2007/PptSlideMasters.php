@@ -19,7 +19,7 @@ class PptSlideMasters extends AbstractSlide
      */
     public function render()
     {
-        foreach ($this->oPresentation->getAllMasterSlides() as $idx => $oMasterSlide) {
+        foreach ($this->oPresentation->getAllMasterSlides() as $oMasterSlide) {
             // Add the relations from the masterSlide to the ZIP file
             $this->oZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml.rels', $this->writeSlideMasterRelationships($oMasterSlide));
             // Add the information from the masterSlide to the ZIP file
@@ -181,12 +181,21 @@ class PptSlideMasters extends AbstractSlide
                 $elementName = ($lvl == 0 ? 'a:defPPr' : 'a:lvl' . $lvl . 'pPr');
                 $objWriter->startElement($elementName);
                 $objWriter->writeAttribute('algn', $oParagraph->getAlignment()->getHorizontal());
-                $objWriter->writeAttributeIf($oParagraph->getAlignment()->getMarginLeft() != 0, 'marL',
-                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getMarginLeft()));
-                $objWriter->writeAttributeIf($oParagraph->getAlignment()->getMarginRight() != 0, 'marR',
-                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getMarginRight()));
-                $objWriter->writeAttributeIf($oParagraph->getAlignment()->getIndent() != 0, 'indent',
-                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getIndent()));
+                $objWriter->writeAttributeIf(
+                    $oParagraph->getAlignment()->getMarginLeft() != 0,
+                    'marL',
+                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getMarginLeft())
+                );
+                $objWriter->writeAttributeIf(
+                    $oParagraph->getAlignment()->getMarginRight() != 0,
+                    'marR',
+                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getMarginRight())
+                );
+                $objWriter->writeAttributeIf(
+                    $oParagraph->getAlignment()->getIndent() != 0,
+                    'indent',
+                    CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getIndent())
+                );
                 $objWriter->startElement('a:defRPr');
                 $objWriter->writeAttributeIf($oParagraph->getFont()->getSize() != 10, 'sz', $oParagraph->getFont()->getSize() * 100);
                 $objWriter->writeAttributeIf($oParagraph->getFont()->isBold(), 'b', 1);

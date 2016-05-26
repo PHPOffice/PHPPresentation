@@ -408,39 +408,39 @@ class PowerPoint2007 implements ReaderInterface
                             $level = str_replace('pPr', '', $level);
                         }
 
-                        if($oElementLvl->hasAttribute('algn')) {
+                        if ($oElementLvl->hasAttribute('algn')) {
                             $oRTParagraph->getAlignment()->setHorizontal($oElementLvl->getAttribute('algn'));
                         }
-                        if($oElementLvl->hasAttribute('marL')) {
+                        if ($oElementLvl->hasAttribute('marL')) {
                             $val = $oElementLvl->getAttribute('marL');
                             $val = CommonDrawing::emuToPixels($val);
                             $oRTParagraph->getAlignment()->setMarginLeft($val);
                         }
-                        if($oElementLvl->hasAttribute('marR')) {
+                        if ($oElementLvl->hasAttribute('marR')) {
                             $val = $oElementLvl->getAttribute('marR');
                             $val = CommonDrawing::emuToPixels($val);
                             $oRTParagraph->getAlignment()->setMarginRight($val);
                         }
-                        if($oElementLvl->hasAttribute('indent')) {
+                        if ($oElementLvl->hasAttribute('indent')) {
                             $val = $oElementLvl->getAttribute('indent');
                             $val = CommonDrawing::emuToPixels($val);
                             $oRTParagraph->getAlignment()->setIndent($val);
                         }
                         $oElementLvlDefRPR = $xmlReader->getElement('a:defRPr', $oElementLvl);
                         if ($oElementLvlDefRPR) {
-                            if($oElementLvlDefRPR->hasAttribute('sz')) {
+                            if ($oElementLvlDefRPR->hasAttribute('sz')) {
                                 $oRTParagraph->getFont()->setSize($oElementLvlDefRPR->getAttribute('sz') / 100);
                             }
-                            if($oElementLvlDefRPR->hasAttribute('b') && $oElementLvlDefRPR->getAttribute('b') == 1) {
+                            if ($oElementLvlDefRPR->hasAttribute('b') && $oElementLvlDefRPR->getAttribute('b') == 1) {
                                 $oRTParagraph->getFont()->setBold(true);
                             }
-                            if($oElementLvlDefRPR->hasAttribute('i') && $oElementLvlDefRPR->getAttribute('i') == 1) {
+                            if ($oElementLvlDefRPR->hasAttribute('i') && $oElementLvlDefRPR->getAttribute('i') == 1) {
                                 $oRTParagraph->getFont()->setItalic(true);
                             }
                         }
                         $oElementSchemeColor = $xmlReader->getElement('a:defRPr/a:solidFill/a:schemeClr', $oElementLvl);
                         if ($oElementSchemeColor) {
-                            if($oElementSchemeColor->hasAttribute('val')) {
+                            if ($oElementSchemeColor->hasAttribute('val')) {
                                 $oRTParagraph->getFont()->setColor(new SchemeColor())->getColor()->setValue($oElementSchemeColor->getAttribute('val'));
                             }
                         }

@@ -194,7 +194,7 @@ abstract class AbstractLayoutPack
      * @return int
      * @throws \Exception
      */
-    public function findLayoutId($name = '', $masterId = 1)
+    public function findLayoutId($name = '')
     {
         foreach ($this->layouts as $layoutId => $layout) {
             if ($layout['name'] == $name) {
@@ -213,7 +213,7 @@ abstract class AbstractLayoutPack
      * @return int
      * @throws \Exception
      */
-    public function findLayoutName($idLayout = '', $masterId = 1)
+    public function findLayoutName($idLayout = '')
     {
         foreach ($this->layouts as $layoutId => $layout) {
             if ($layoutId == $idLayout) {
