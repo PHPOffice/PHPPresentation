@@ -17,9 +17,9 @@
     <rule ref="rulesets/design.xml/GotoStatement" />
     <rule ref="rulesets/design.xml/DepthOfInheritance" />
     <rule ref="rulesets/design.xml/CouplingBetweenObjects">
-        <!-- AbstractContainer needs more coupling (default: 13) -->
+        <!-- PptSlides needs more coupling (default: 13) -->
         <properties>
-            <property name="minimum" value="20" />
+            <property name="minimum" value="29" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">
