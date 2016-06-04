@@ -19,7 +19,7 @@
     <rule ref="rulesets/design.xml/CouplingBetweenObjects">
         <!-- PptSlides needs more coupling (default: 13) -->
         <properties>
-            <property name="minimum" value="29" />
+            <property name="minimum" value="30" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">
