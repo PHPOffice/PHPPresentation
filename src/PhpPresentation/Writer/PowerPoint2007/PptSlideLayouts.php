@@ -16,7 +16,7 @@ class PptSlideLayouts extends AbstractSlide
     public function render()
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
-            foreach ($oSlideMaster->getAllSlideLayouts() as &$oSlideLayout) {
+            foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
                 $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideLayout->layoutNr, $oSlideMaster->getRelsIndex()));
                 $this->oZip->addFromString('ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', $this->writeSlideLayout($oSlideLayout));
             }
