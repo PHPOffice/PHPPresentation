@@ -20,12 +20,14 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
+use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
@@ -114,9 +116,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[] $shapes
      * @param int $shapeId
+     * @throws \Exception
      */
     protected function writeShapeCollection(XMLWriter $objWriter, $shapes = array(), &$shapeId = 0)
     {
+        if (count($shapes) == 0) {
+            return;
+        }
         foreach ($shapes as $shape) {
             // Increment $shapeId
             ++$shapeId;
@@ -129,10 +135,14 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeShapeLine($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof ShapeChart) {
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof AbstractDrawing) {
+            } elseif ($shape instanceof AbstractGraphic) {
                 $this->writeShapePic($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof Comment) {
+                return;
+            } else {
+                throw new \Exception("Unknown Shape type: {get_class($shape)}");
             }
         }
     }
@@ -875,11 +885,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write pic
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\AbstractDrawing $shape
+     * @param  \PhpOffice\PhpPresentation\Shape\AbstractGraphic $shape
      * @param  int $shapeId
      * @throws \Exception
      */
-    protected function writeShapePic(XMLWriter $objWriter, AbstractDrawing $shape, $shapeId)
+    protected function writeShapePic(XMLWriter $objWriter, AbstractGraphic $shape, $shapeId)
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -903,7 +913,33 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement();
         $objWriter->endElement();
         // p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        $objWriter->startElement('p:nvPr');
+        /**
+         * @link : https://github.com/stefslon/exportToPPTX/blob/master/exportToPPTX.m#L2128
+         */
+        if ($shape instanceof Media) {
+            // p:nvPr > a:videoFile
+            $objWriter->startElement('a:videoFile');
+            $objWriter->writeAttribute('r:link', $shape->relationId);
+            $objWriter->endElement();
+            // p:nvPr > p:extLst
+            $objWriter->startElement('p:extLst');
+            // p:nvPr > p:extLst > p:ext
+            $objWriter->startElement('p:ext');
+            $objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
+            // p:nvPr > p:extLst > p:ext > p14:media
+            $objWriter->startElement('p14:media');
+            $objWriter->writeAttribute('r:embed', $shape->relationId);
+            $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
+            // p:nvPr > p:extLst > p:ext > ##p14:media
+            $objWriter->endElement();
+            // p:nvPr > p:extLst > ##p:ext
+            $objWriter->endElement();
+            // p:nvPr > ##p:extLst
+            $objWriter->endElement();
+        }
+        // ##p:nvPr
+        $objWriter->endElement();
         $objWriter->endElement();
         // p:blipFill
         $objWriter->startElement('p:blipFill');

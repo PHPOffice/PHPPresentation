@@ -69,7 +69,7 @@ class ContentTypes extends AbstractDecoratorWriter
             $oSlideMaster->setRelsIndex($idx + 1);
             $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/slideMaster' . $oSlideMaster->getRelsIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml');
             $this->writeOverrideContentType($objWriter, '/ppt/theme/theme' . $oSlideMaster->getRelsIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml');
-            foreach ($oSlideMaster->getAllSlideLayouts() as &$oSlideLayout) {
+            foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
                 $oSlideLayout->layoutNr = ++$sldLayoutNr;
                 $oSlideLayout->layoutId = ++$sldLayoutId;
                 $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml');
