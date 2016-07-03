@@ -43,7 +43,6 @@ use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Slide\Background;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
