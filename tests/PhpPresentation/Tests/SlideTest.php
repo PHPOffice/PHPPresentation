@@ -56,15 +56,16 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getParent());
     }
     
-    public function testSlideLayout()
-    {
-        $object = new Slide();
-        $this->assertEquals(Slide\Layout::BLANK, $object->getSlideLayout());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideLayout());
-        $this->assertEquals(Slide\Layout::BLANK, $object->getSlideLayout());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideLayout(Slide\Layout::TITLE_SLIDE));
-        $this->assertEquals(Slide\Layout::TITLE_SLIDE, $object->getSlideLayout());
-    }
+//    Standard Layouts have been removed
+//    public function testSlideLayout()
+//    {
+//        $object = new Slide();
+//        $this->assertEquals(Slide\Layout::BLANK, $object->getSlideLayout());
+//        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideLayout());
+//        $this->assertEquals(Slide\Layout::BLANK, $object->getSlideLayout());
+//        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideLayout(Slide\Layout::TITLE_SLIDE));
+//        $this->assertEquals(Slide\Layout::TITLE_SLIDE, $object->getSlideLayout());
+//    }
     
     public function testSlideMasterId()
     {

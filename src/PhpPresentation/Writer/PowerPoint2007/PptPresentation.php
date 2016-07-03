@@ -4,7 +4,6 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\DocumentLayout;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 
 class PptPresentation extends AbstractDecoratorWriter
 {
@@ -31,11 +30,9 @@ class PptPresentation extends AbstractDecoratorWriter
         // Add slide masters
         $relationId    = 1;
         $slideMasterId = 2147483648;
-        $oLayoutPack = new PackDefault();
-        $masterSlides  = $oLayoutPack->getMasterSlides();
-        $masterSlidesCount = count($masterSlides);
-        // @todo foreach ($masterSlides as $masterSlide)
-        for ($i = 0; $i < $masterSlidesCount; $i++) {
+
+        $countMasterSlides = count($this->oPresentation->getAllMasterSlides());
+        for ($inc = 1; $inc <= $countMasterSlides; $inc++) {
             // p:sldMasterId
             $objWriter->startElement('p:sldMasterId');
             $objWriter->writeAttribute('id', $slideMasterId);
