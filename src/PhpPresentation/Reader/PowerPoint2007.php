@@ -136,6 +136,7 @@ class PowerPoint2007 implements ReaderInterface
 
         $pptPresentation = $this->oZip->getFromName('ppt/presentation.xml');
         if ($pptPresentation !== false) {
+            $this->loadSideSize($pptPresentation);
             $this->loadSlides($pptPresentation);
         }
 
@@ -229,6 +230,31 @@ class PowerPoint2007 implements ReaderInterface
                         $this->loadRels('ppt/slides/_rels/'.basename($pathSlide).'.rels');
                         $this->loadSlide($pptSlide, basename($pathSlide));
                     }
+                }
+            }
+        }
+    }
+
+    /**
+     * Get slide size
+     */
+    protected function loadSideSize($sPart)
+    {
+        $xmlReader = new XMLReader();
+        if ($xmlReader->getDomFromString($sPart)) {
+            foreach ($xmlReader->getElements('/p:presentation/p:sldSz') as $oElement) {
+                $type = $oElement->getAttribute('type');
+                $layout = $this->oPhpPresentation->getLayout();
+                if( $type != "" ){
+                    $landScape = true;
+                    if( $oElement->getAttribute('cx') < $oElement->getAttribute('cy') ){
+                        $landScape = false;
+                    }
+                    $layout->setDocumentLayout($type, $landScape);
+                }
+                if( $layout->getDocumentLayout() == "" ){
+                    $layout->setCX($oElement->getAttribute('cx'));
+                    $layout->setCY($oElement->getAttribute('cy'));
                 }
             }
         }
