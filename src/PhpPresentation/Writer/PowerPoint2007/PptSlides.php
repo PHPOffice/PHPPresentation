@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 
@@ -1446,6 +1447,12 @@ class PptSlides extends AbstractDecoratorWriter
                     if ($paragraph->getBulletStyle()->getBulletNumericStartAt() != 1) {
                         $objWriter->writeAttribute('startAt', $paragraph->getBulletStyle()->getBulletNumericStartAt());
                     }
+                    $objWriter->endElement();
+                }
+                
+                if ($paragraph->getBulletStyle()->getBulletColor() instanceof Color) {
+                    $objWriter->startElement('a:buClr');
+                    $this->writeColor($objWriter, $paragraph->getBulletStyle()->getBulletColor());
                     $objWriter->endElement();
                 }
             }

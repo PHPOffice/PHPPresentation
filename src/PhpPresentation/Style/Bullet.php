@@ -109,6 +109,13 @@ class Bullet implements ComparableInterface
     private $bulletNumericStartAt = 1;
 
     /**
+     * Bullet color
+     *
+     * @var Color
+     */
+    private $bulletColor;
+
+    /**
      * Hash index
      *
      * @var string
@@ -245,6 +252,31 @@ class Bullet implements ComparableInterface
 
         return $this;
     }
+
+    /**
+     * Get bullet color
+     *
+     * @return Color
+     */
+    public function getBulletColor()
+    {
+        return $this->bulletColor;
+    }
+
+    /**
+     * Set bullet color
+     *
+     * @param Color $bulletColor
+     * @return \PhpOffice\PhpPresentation\Style\Bullet
+     */
+    public function setBulletColor(Color $bulletColor)
+    {
+        $this->bulletColor = $bulletColor;
+
+        return $this;
+    }
+
+
 
     /**
      * Get hash code
