@@ -19,7 +19,6 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
