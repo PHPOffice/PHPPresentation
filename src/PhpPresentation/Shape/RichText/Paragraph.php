@@ -63,6 +63,11 @@ class Paragraph implements ComparableInterface
     private $hashIndex;
 
     /**
+     * @var integer
+     */
+    private $lineSpacing = 100;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Paragraph instance
      */
     public function __construct()
@@ -303,4 +308,22 @@ class Paragraph implements ComparableInterface
     {
         $this->hashIndex = $value;
     }
+
+    /**
+     * @return int
+     */
+    public function getLineSpacing()
+    {
+        return $this->lineSpacing;
+    }
+
+    /**
+     * @param int $lineSpacing
+     */
+    public function setLineSpacing($lineSpacing)
+    {
+        $this->lineSpacing = $lineSpacing;
+    }
+
+
 }

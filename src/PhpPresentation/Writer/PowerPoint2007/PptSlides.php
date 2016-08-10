@@ -1457,6 +1457,12 @@ class PptSlides extends AbstractDecoratorWriter
                 }
             }
 
+            $objWriter->startElement('a:lnSpc');
+            $objWriter->startElement('a:spcPct');
+            $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+            $objWriter->endElement();
+            $objWriter->endElement();
+
             $objWriter->endElement();
 
             // Loop trough rich text elements
