@@ -1343,6 +1343,5 @@ class Content extends AbstractDecoratorWriter
         }
         $objWriter->writeAttribute('draw:shadow-opacity', (100 - $oShadow->getAlpha()) . '%');
         $objWriter->writeAttribute('style:mirror', 'none');
-
     }
 }
