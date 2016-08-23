@@ -19,7 +19,7 @@
     <rule ref="rulesets/design.xml/CouplingBetweenObjects">
         <!-- PptSlides needs more coupling (default: 13) -->
         <!-- Writer/Office2007/AbstractSlide needs more coupling (default: 13) -->
-        <properties>
+		<properties>
             <property name="minimum" value="31" />
         </properties>
     </rule>
