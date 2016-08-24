@@ -43,7 +43,6 @@ class Line extends AbstractShape implements ComparableInterface
         $this->setOffsetY($fromY);
         $this->setWidth($toX - $fromX);
         $this->setHeight($toY - $fromY);
-
     }
 
     /**
