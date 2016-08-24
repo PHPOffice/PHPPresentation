@@ -86,7 +86,6 @@ class ObjectsChartTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('normal', $oXMLDoc->getElementAttribute($element, 'fo:font-style', 'Object 1/content.xml'));//Italic YAxis
         $this->assertEquals('16pt', $oXMLDoc->getElementAttribute($element, 'fo:font-size', 'Object 1/content.xml'));//Size YAxis
         $this->assertEquals('Arial', $oXMLDoc->getElementAttribute($element, 'fo:font-family', 'Object 1/content.xml'));//Size YAxis
-
     }
 
     public function testLegend()
