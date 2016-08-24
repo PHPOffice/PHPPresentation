@@ -13,6 +13,7 @@
 - PhpOffice\PhpPresentation\Shape\Type\AbstracType\setData has been deprecated for PhpOffice\PhpPresentation\Shape\Type\AbstracType\setSeries - @Progi1984 GH-169
 - Added documentation for chart series (font, outline, marker) - @Progi1984 GH-169
 - Internal Structure for Drawing Shape - @Progi1984 GH-192
+- Documentation about manual installation - @danielbair GH-254
 
 ### Features
 - ODPresentation & PowerPoint2007 Writer : Add support for Comment - @Progi1984 GH-116
