@@ -48,6 +48,8 @@ PHPPresentation requires the following:
 
 ### Installation
 
+#### Composer method
+
 It is recommended that you install the PHPPresentation library [through composer](http://getcomposer.org/). To do so, add
 the following lines to your ``composer.json``.
 
@@ -59,12 +61,23 @@ the following lines to your ``composer.json``.
 }
 ```
 
-Alternatively, you can download the latest release from the [releases page](https://github.com/PHPOffice/PHPPresentation/releases).
-In this case, you will have to register the autoloader. Register autoloading is required only if you do not use composer in your project.
+#### Manual download method
+
+Alternatively, you can download the latest release from the [releases page](https://github.com/PHPOffice/PHPPresentation/releases).  
+In this case, you will have to register the autoloader.  
+(Register autoloading is required only if you do not use composer in your project.)
 
 ```php
 require_once 'path/to/PhpPresentation/src/PhpPresentation/Autoloader.php';
 \PhpOffice\PhpPresentation\Autoloader::register();
+```
+
+You will also need to download the latest PHPOffice/Common release from its [releases page](https://github.com/PHPOffice/Common/releases).  
+And you will also have to register its autoloader, too. 
+
+```php
+require_once 'path/to/PhpOffice/Common/src/Common/Autoloader.php';
+\PhpOffice\Common\Autoloader::register();
 ```
 
 ## Getting started
@@ -75,6 +88,8 @@ The following is a basic usage example of the PHPPresentation library.
 // with your own install
 require_once 'src/PhpPresentation/Autoloader.php';
 \PhpOffice\PhpPresentation\Autoloader::register();
+require_once 'src/Common/Autoloader.php';
+\PhpOffice\Common\Autoloader::register();
 
 // with Composer
 require_once 'vendor/autoload.php';
