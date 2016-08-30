@@ -50,6 +50,23 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
      * @var \PhpOffice\PhpPresentation\Style\SchemeColor[]
      */
     protected $arraySchemeColor = array();
+    /**
+     * @var array
+     */
+    protected $defaultSchemeColor = array(
+        'dk1' => '000000',
+        'lt1' => 'FFFFFF',
+        'dk2' => '1F497D',
+        'lt2' => 'EEECE1',
+        'accent1' => '4F81BD',
+        'accent2' => 'C0504D',
+        'accent3' => '9BBB59',
+        'accent4' => '8064A2',
+        'accent5' => '4BACC6',
+        'accent6' => 'F79646',
+        'hlink' => '0000FF',
+        'folHlink' => '800080',
+    );
 
     /**
      * Create a new slideMaster
@@ -71,6 +88,13 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
         $this->background->setColor(new Color(Color::COLOR_WHITE));
         // Set basic textStyles
         $this->textStyles = new TextStyle(true);
+        // Set basic scheme colors
+        foreach ($this->defaultSchemeColor as $key => $value) {
+            $oSchemeColor = new SchemeColor();
+            $oSchemeColor->setValue($key);
+            $oSchemeColor->setRGB($value);
+            $this->addSchemeColor($oSchemeColor);
+        }
     }
 
     /**
@@ -130,7 +154,7 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
      */
     public function addSchemeColor(SchemeColor $schemeColor)
     {
-        $this->arraySchemeColor[] = $schemeColor;
+        $this->arraySchemeColor[$schemeColor->getValue()] = $schemeColor;
         return $this;
     }
 
