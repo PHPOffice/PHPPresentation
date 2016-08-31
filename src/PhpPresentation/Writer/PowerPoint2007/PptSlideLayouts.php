@@ -22,15 +22,6 @@ class PptSlideLayouts extends AbstractSlide
             }
         }
 
-        /*
-        foreach ($oLayoutPack->getLayoutRelations() as $otherRelation) {
-          if (strpos($otherRelation['target'], 'http://') === 0) {
-              continue;
-          }
-          $this->oZip->addFromString($this->absoluteZipPath('ppt/slideLayouts/' . $otherRelation['target']), $otherRelation['contents']);
-        }
-        */
-
         return $this->oZip;
     }
 
@@ -57,17 +48,6 @@ class PptSlideLayouts extends AbstractSlide
 
         // Write slideMaster relationship
         $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
-
-        // Other relationships
-        //@todo
-        $slideLayoutIndex;
-        /*
-        foreach ($oLayoutPack->getLayoutRelations() as $otherRelation) {
-            if ($otherRelation['layoutId'] == $slideLayoutIndex) {
-                $this->writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
-            }
-        }
-        */
 
         $objWriter->endElement();
 

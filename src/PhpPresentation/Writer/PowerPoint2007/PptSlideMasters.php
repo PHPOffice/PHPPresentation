@@ -25,17 +25,7 @@ class PptSlideMasters extends AbstractSlide
             // Add the information from the masterSlide to the ZIP file
             $this->oZip->addFromString('ppt/slideMasters/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml', $this->writeSlideMaster($oMasterSlide));
         }
-        
-//        // Add layoutpack relations
-//        $otherRelations = $oLayoutPack->getMasterSlideRelations();
-//        foreach ($otherRelations as $otherRelation) {
-//            if (strpos($otherRelation['target'], 'http://') !== 0) {
-//                $this->oZip->addFromString(
-//                  $this->absoluteZipPath('ppt/slideMasters/' . $otherRelation['target']),
-//                  $otherRelation['contents']
-//              );
-//            }
-//        }
+
         return $this->oZip;
     }
 
