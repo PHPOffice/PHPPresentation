@@ -142,6 +142,7 @@ class PptSlideLayouts extends AbstractSlide
         $objWriter->endElement();
         // p:sldLayout\p:cSld\p:spTree\p:grpSpPr\
         $objWriter->endElement();
+
         // Loop shapes
         $this->writeShapeCollection($objWriter, $pSlideLayout->getShapeCollection());
         // p:sldLayout\p:cSld\p:spTree\

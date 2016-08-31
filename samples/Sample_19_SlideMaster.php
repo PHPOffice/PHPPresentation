@@ -26,7 +26,7 @@ echo date('H:i:s') . ' Create slide' . EOL;
 $currentSlide = $objPHPPresentation->getActiveSlide();
 
 // Create a master layout
-echo date('H:i:s') . ' Create masterslide' . EOL;
+echo date('H:i:s') . ' Create masterslide layout' . EOL;
 // Some decorative lines
 $oMasterSlide = $objPHPPresentation->getAllMasterSlides()[0];
 $shape = $oMasterSlide->createLineShape(0, 670, 960, 670)->getBorder()->setColor(new Color(Color::COLOR_RED))->setLineWidth(2);
@@ -93,6 +93,11 @@ $shape->getActiveParagraph()->getAlignment()
     ->setVertical(Alignment::VERTICAL_CENTER);
 $shape->setAutoFit(RichText::AUTOFIT_NORMAL);
 $shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_TITLE));
+
+echo date('H:i:s') . ' Apply the shape collection of the slide master to the slide layout' . EOL;
+$oSlideLayout = $oMasterSlide->getAllSlideLayouts()[0];
+$oSlideLayout->setShapeCollection($oMasterSlide->getShapeCollection());
+$currentSlide->setSlideLayout($oSlideLayout);
 
 // Save file
 echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
