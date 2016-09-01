@@ -34,6 +34,7 @@ interface ReaderInterface
      * Loads PhpPresentation from file
      *
      * @param  string    $pFilename
+     * @return \PhpOffice\PhpPresentation\PhpPresentation
      * @throws \Exception
      */
     public function load($pFilename);

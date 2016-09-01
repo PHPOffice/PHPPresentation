@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased
+ * @deprecated 0.7
  */
 class TemplateBased extends AbstractLayoutPack
 {
