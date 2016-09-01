@@ -17,7 +17,7 @@ class PptSlideLayouts extends AbstractSlide
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
             foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
-                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideLayout->layoutNr, $oSlideMaster->getRelsIndex()));
+                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideMaster->getRelsIndex()));
                 $this->oZip->addFromString('ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', $this->writeSlideLayout($oSlideLayout));
             }
         }
@@ -29,12 +29,11 @@ class PptSlideLayouts extends AbstractSlide
     /**
      * Write slide layout relationships to XML format
      *
-     * @param  int       $slideLayoutIndex
      * @param  int       $masterId
      * @return string    XML Output
      * @throws \Exception
      */
-    public function writeSlideLayoutRelationships($slideLayoutIndex, $masterId = 1)
+    public function writeSlideLayoutRelationships($masterId = 1)
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
