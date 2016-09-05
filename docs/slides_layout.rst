@@ -13,9 +13,38 @@ Placeholders permit to link these three components together in order that the ov
 Master slides
 -------------
 
-You can access to all master slides with the method ``getAllMasterSlides`` or create on with ``createMasterSlide``.
+You can access to all master slides with the method ``getAllMasterSlides`` or create one with ``createMasterSlide``.
 
 .. code-block:: php
 
-	$array = $oPHPPresentation->getAllMasterSlides();
-	$oMasterSlide = $oPHPPresentation->createMasterSlide();
+    $arraySlideMasters = $oPHPPresentation->getAllMasterSlides();
+    $oMasterSlide = $oPHPPresentation->createMasterSlide();
+
+Slides Layout
+-------------
+
+You can access to all slide layout from a master with the method ``getAllSlideLayouts`` or create one with ``createSlideLayout``.
+
+.. code-block:: php
+
+    $arraySlideLayouts = $oMasterSlide->getAllSlideLayouts();
+    $oSlideLayout = $oMasterSlide->createSlideLayout();
+
+Placeholders
+------------
+
+For each master slide or slide layout, you can add any shape like on a slide.
+
+.. code-block:: php
+
+    $oShape = $oMasterSlide->createChartShape();
+    $oShape = $oSlideLayout->createTableShape();
+
+You can define a shape as a placeholder for each level with the method ``setPlaceHolder``.
+A shape defined in each level will have an override for its formatting in each level.
+
+.. code-block:: php
+
+    use PhpOffice\PhpPresentation\Shape\Placeholder;
+    $oShape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_TITLE));
+
