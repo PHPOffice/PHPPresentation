@@ -494,4 +494,17 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
         $this->assertEquals(2.68, $oPhpPresentation->getZoom());
     }
+
+    public function testSlideLayout()
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_00150.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+
+        $this->assertCount(3, $oPhpPresentation->getAllMasterSlides());
+        $this->assertCount(11, $oPhpPresentation->getAllMasterSlides()[0]->getAllSlideLayouts());
+        $this->assertCount(11, $oPhpPresentation->getAllMasterSlides()[1]->getAllSlideLayouts());
+        $this->assertCount(11, $oPhpPresentation->getAllMasterSlides()[2]->getAllSlideLayouts());
+    }
 }
