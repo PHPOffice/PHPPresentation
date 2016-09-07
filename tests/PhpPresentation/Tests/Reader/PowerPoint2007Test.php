@@ -502,9 +502,10 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
 
-        $this->assertCount(3, $oPhpPresentation->getAllMasterSlides());
-        $this->assertCount(11, $oPhpPresentation->getAllMasterSlides()[0]->getAllSlideLayouts());
-        $this->assertCount(11, $oPhpPresentation->getAllMasterSlides()[1]->getAllSlideLayouts());
-        $this->assertCount(11, $oPhpPresentation->getAllMasterSlides()[2]->getAllSlideLayouts());
+        $masterSlides = $oPhpPresentation->getAllMasterSlides();
+        $this->assertCount(3, $masterSlides);
+        $this->assertCount(11, $masterSlides[0]->getAllSlideLayouts());
+        $this->assertCount(11, $masterSlides[1]->getAllSlideLayouts());
+        $this->assertCount(11, $masterSlides[2]->getAllSlideLayouts());
     }
 }
