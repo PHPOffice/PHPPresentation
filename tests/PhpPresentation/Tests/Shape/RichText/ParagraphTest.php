@@ -98,6 +98,18 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test get/set linespacing
+     */
+    public function testLineSpacing()
+    {
+        $object = new Paragraph();
+        $valueExpected = rand(1, 100);
+        $this->assertEquals(100, $object->getLineSpacing());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setLineSpacing($valueExpected));
+        $this->assertEquals($valueExpected, $object->getLineSpacing());
+    }
+
+    /**
      * Test get/set richTextElements
      */
     public function testRichTextElements()

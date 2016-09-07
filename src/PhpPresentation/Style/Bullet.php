@@ -95,6 +95,13 @@ class Bullet implements ComparableInterface
     private $bulletChar = '-';
 
     /**
+     * Bullet char
+     *
+     * @var Color
+     */
+    private $bulletColor;
+
+    /**
      * Bullet numeric style
      *
      * @var string
@@ -124,6 +131,7 @@ class Bullet implements ComparableInterface
         $this->bulletType              = self::TYPE_NONE;
         $this->bulletFont              = 'Calibri';
         $this->bulletChar              = '-';
+        $this->bulletColor             = new Color();
         $this->bulletNumericStyle      = self::NUMERIC_DEFAULT;
         $this->bulletNumericStartAt    = 1;
     }
@@ -287,5 +295,23 @@ class Bullet implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+    }
+
+    /**
+     * @return Color
+     */
+    public function getBulletColor()
+    {
+        return $this->bulletColor;
+    }
+
+    /**
+     * @param Color $bulletColor
+     * @return Bullet
+     */
+    public function setBulletColor(Color $bulletColor)
+    {
+        $this->bulletColor = $bulletColor;
+        return $this;
     }
 }

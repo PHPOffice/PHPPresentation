@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Style\Color;
 
 /**
  * Test class for PhpPresentation
@@ -49,6 +50,25 @@ class BulletTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('-', $object->getBulletChar());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletChar('a'));
         $this->assertEquals('a', $object->getBulletChar());
+    }
+
+    /**
+     * Test get/set bullet color
+     */
+    public function testSetGetBulletColor()
+    {
+        $object = new Bullet();
+
+        $expectedARGB = '01234567';
+
+        // default
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
+        $this->assertEquals(Color::COLOR_BLACK, $object->getBulletColor()->getARGB());
+
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletColor(new Color($expectedARGB)));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
+        $this->assertEquals($expectedARGB, $object->getBulletColor()->getARGB());
     }
 
     /**

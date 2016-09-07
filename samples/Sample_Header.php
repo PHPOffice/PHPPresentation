@@ -349,7 +349,10 @@ class PhpPptTree {
                 $this->append('<dt>Alignment Indent</dt><dd>'.$oParagraph->getAlignment()->getIndent().' px</dd>');
                 $this->append('<dt>Alignment Level</dt><dd>'.$oParagraph->getAlignment()->getLevel().'</dd>');
                 $this->append('<dt>Bullet Style</dt><dd> Bullet::'.$this->getConstantName('\PhpOffice\PhpPresentation\Style\Bullet', $oParagraph->getBulletStyle()->getBulletType()).'</dd>');
-                $this->append('<dt>Bullet Font</dt><dd>'.$oParagraph->getBulletStyle()->getBulletFont().'</dd>');
+                if ($oParagraph->getBulletStyle()->getBulletType() != Bullet::TYPE_NONE) {
+                    $this->append('<dt>Bullet Font</dt><dd>' . $oParagraph->getBulletStyle()->getBulletFont() . '</dd>');
+                    $this->append('<dt>Bullet Color</dt><dd>' . $oParagraph->getBulletStyle()->getBulletColor()->getARGB() . '</dd>');
+                }
                 if ($oParagraph->getBulletStyle()->getBulletType() == Bullet::TYPE_BULLET) {
                     $this->append('<dt>Bullet Char</dt><dd>'.$oParagraph->getBulletStyle()->getBulletChar().'</dd>');
                 }
@@ -357,6 +360,7 @@ class PhpPptTree {
                     $this->append('<dt>Bullet Start At</dt><dd>'.$oParagraph->getBulletStyle()->getBulletNumericStartAt().'</dd>');
                     $this->append('<dt>Bullet Style</dt><dd>'.$oParagraph->getBulletStyle()->getBulletNumericStyle().'</dd>');
                 }
+                $this->append('<dt>Line Spacing</dt><dd>'.$oParagraph->getLineSpacing().'</dd>');
                 $this->append('<dt>RichText</dt><dd><dl>');
                 foreach ($oParagraph->getRichTextElements() as $oRichText) {
                     if($oRichText instanceof BreakElement) {
