@@ -18,18 +18,18 @@
 namespace PhpOffice\PhpPresentation\Reader;
 
 use PhpOffice\Common\Microsoft\OLERead;
-use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Style\Alignment;
-use PhpOffice\PhpPresentation\Style\Color;
-use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\AbstractShape;
-use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Shape;
+use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Line;
-use PhpOffice\Common\Text;
-use PhpOffice\PhpPresentation\Shape\Group;
-use PhpOffice\PhpPresentation\Shape\PhpOffice\PhpPresentation\Shape;
+use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Bullet;
 
 /**
  * Serialized format reader

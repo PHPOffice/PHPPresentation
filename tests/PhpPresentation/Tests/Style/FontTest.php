@@ -47,12 +47,22 @@ class FontTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test get/set color
+     * @expectedException \Exception
+     * @expectedExceptionMessage $pValue must be an instance of \PhpOffice\PhpPresentation\Style\Color
+     */
+    public function testSetGetColorException()
+    {
+        $object = new Font();
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor());
+    }
+
+    /**
+     * Test get/set color
      */
     public function testSetGetColor()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor());
-        $this->assertNull($object->getColor());
+        $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor(new Color(Color::COLOR_BLUE)));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
         $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());

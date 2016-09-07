@@ -188,7 +188,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-        $this->assertEquals('rId3', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId2', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
     }
 
     public function testDrawingShapeBorder()
@@ -828,7 +828,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:txBody/a:p/a:r/a:rPr/a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-        $this->assertEquals('rId2', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId1', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
     }
 
     public function testTransition()

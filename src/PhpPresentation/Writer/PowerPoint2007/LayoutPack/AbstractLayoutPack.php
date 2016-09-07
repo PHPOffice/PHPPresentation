@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack
+ * @deprecated 0.7
  */
 abstract class AbstractLayoutPack
 {
@@ -194,10 +195,10 @@ abstract class AbstractLayoutPack
      * @return int
      * @throws \Exception
      */
-    public function findLayoutId($name = '', $masterId = 1)
+    public function findLayoutId($name = '')
     {
         foreach ($this->layouts as $layoutId => $layout) {
-            if ($layout['name'] == $name && $layout['masterid'] == $masterId) {
+            if ($layout['name'] == $name) {
                 return $layoutId;
             }
         }
@@ -213,10 +214,10 @@ abstract class AbstractLayoutPack
      * @return int
      * @throws \Exception
      */
-    public function findLayoutName($idLayout = '', $masterId = 1)
+    public function findLayoutName($idLayout = '')
     {
         foreach ($this->layouts as $layoutId => $layout) {
-            if ($layoutId == $idLayout && $layout['masterid'] == $masterId) {
+            if ($layoutId == $idLayout) {
                 return $layout['name'];
             }
         }

@@ -222,7 +222,7 @@ class PptCharts extends AbstractDecoratorWriter
         if (strlen($title) == 0) {
             $title = 'Chart';
         }
-        $workbook->getProperties()->setCreator($presentation->getProperties()->getCreator())->setLastModifiedBy($presentation->getProperties()->getLastModifiedBy())->setTitle($title);
+        $workbook->getProperties()->setCreator($presentation->getDocumentProperties()->getCreator())->setLastModifiedBy($presentation->getDocumentProperties()->getLastModifiedBy())->setTitle($title);
 
         // Add chart data
         $sheet = $workbook->setActiveSheetIndex(0);
@@ -2006,19 +2006,16 @@ class PptCharts extends AbstractDecoratorWriter
             return;
         }
 
-        switch ($typeAxis) {
-            case Chart\Axis::AXIS_X:
-                $mainElement = 'c:catAx';
-                $axIdVal = '52743552';
-                $axPosVal = 'b';
-                $crossAxVal = '52749440';
-                break;
-            case Chart\Axis::AXIS_Y:
-                $mainElement = 'c:valAx';
-                $axIdVal = '52749440';
-                $axPosVal = 'l';
-                $crossAxVal = '52743552';
-                break;
+        if ($typeAxis == Chart\Axis::AXIS_X) {
+            $mainElement = 'c:catAx';
+            $axIdVal = '52743552';
+            $axPosVal = 'b';
+            $crossAxVal = '52749440';
+        } else {
+            $mainElement = 'c:valAx';
+            $axIdVal = '52749440';
+            $axPosVal = 'l';
+            $crossAxVal = '52743552';
         }
 
         // $mainElement

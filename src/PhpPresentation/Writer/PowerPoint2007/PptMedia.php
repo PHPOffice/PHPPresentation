@@ -2,7 +2,7 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 
 class PptMedia extends AbstractDecoratorWriter
 {
@@ -13,7 +13,7 @@ class PptMedia extends AbstractDecoratorWriter
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
-            if (!$shape instanceof Drawing\AbstractDrawingAdapter) {
+            if (!$shape instanceof AbstractDrawingAdapter) {
                 continue;
             }
             $this->getZip()->addFromString('ppt/media/' . $shape->getIndexedFilename(), $shape->getContents());

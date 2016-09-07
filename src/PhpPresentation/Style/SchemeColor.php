@@ -15,27 +15,30 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPresentation\Reader;
+namespace PhpOffice\PhpPresentation\Style;
 
-/**
- * Reader interface
- */
-interface ReaderInterface
+class SchemeColor extends Color
 {
-    /**
-     * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
-     *
-     * @param  string  $pFilename
-     * @return boolean
-     */
-    public function canRead($pFilename);
+    protected $value;
+
+    public function __construct()
+    {
+        return $this;
+    }
 
     /**
-     * Loads PhpPresentation from file
-     *
-     * @param  string    $pFilename
-     * @return \PhpOffice\PhpPresentation\PhpPresentation
-     * @throws \Exception
+     * @return string
      */
-    public function load($pFilename);
+    public function getValue()
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param string $value
+     */
+    public function setValue($value)
+    {
+        $this->value = $value;
+    }
 }

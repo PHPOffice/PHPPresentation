@@ -143,8 +143,12 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
-    protected function writeFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writeFill(XMLWriter $objWriter, $pFill)
     {
+        if (! $pFill instanceof Fill) {
+            return;
+        }
+
         // Is it a fill?
         if ($pFill->getFillType() == Fill::FILL_NONE) {
             return;

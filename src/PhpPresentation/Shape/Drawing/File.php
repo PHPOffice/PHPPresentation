@@ -2,8 +2,6 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
-use SplFileInfo;
-
 class File extends AbstractDrawingAdapter
 {
     /**

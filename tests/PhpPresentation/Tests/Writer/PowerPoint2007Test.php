@@ -129,6 +129,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
 
     /**
      * Test LayoutPack
+     * @deprecated 0.7
      */
     public function testLayoutPack()
     {
