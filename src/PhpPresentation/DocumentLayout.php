@@ -150,7 +150,7 @@ class DocumentLayout
     /**
      * Get Document Layout cx
      *
-     * @param float $unit
+     * @param string $unit
      * @return integer
      */
     public function getCX($unit = self::UNIT_EMU)
@@ -161,7 +161,7 @@ class DocumentLayout
     /**
      * Get Document Layout cy
      *
-     * @param float $unit
+     * @param string $unit
      * @return integer
      */
     public function getCY($unit = self::UNIT_EMU)
@@ -173,8 +173,8 @@ class DocumentLayout
      * Get Document Layout cx
      *
      * @param float $value
-     * @param float $unit
-     * @return integer
+     * @param string $unit
+     * @return DocumentLayout
      */
     public function setCX($value, $unit = self::UNIT_EMU)
     {
@@ -187,8 +187,8 @@ class DocumentLayout
      * Get Document Layout cy
      *
      * @param float $value
-     * @param float $unit
-     * @return integer
+     * @param string $unit
+     * @return DocumentLayout
      */
     public function setCY($value, $unit = self::UNIT_EMU)
     {
@@ -202,6 +202,7 @@ class DocumentLayout
      * @param float $value
      * @param string $fromUnit
      * @param string $toUnit
+     * @return float
      */
     protected function convertUnit($value, $fromUnit, $toUnit)
     {

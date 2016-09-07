@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
+use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
@@ -148,10 +149,35 @@ class PowerPoint2007 implements ReaderInterface
 
         $pptPresentation = $this->oZip->getFromName('ppt/presentation.xml');
         if ($pptPresentation !== false) {
+            $this->loadDocumentLayout($pptPresentation);
             $this->loadSlides($pptPresentation);
         }
 
         return $this->oPhpPresentation;
+    }
+
+    /**
+     * Read Document Layout
+     * @param $sPart
+     */
+    protected function loadDocumentLayout($sPart)
+    {
+        $xmlReader = new XMLReader();
+        if ($xmlReader->getDomFromString($sPart)) {
+            foreach ($xmlReader->getElements('/p:presentation/p:sldSz') as $oElement) {
+                $type = $oElement->getAttribute('type');
+                $oLayout = $this->oPhpPresentation->getLayout();
+                if ($type == DocumentLayout::LAYOUT_CUSTOM) {
+                    $oLayout->setCX($oElement->getAttribute('cx'));
+                    $oLayout->setCY($oElement->getAttribute('cy'));
+                } else {
+                    $oLayout->setDocumentLayout($type, true);
+                    if ($oElement->getAttribute('cx') < $oElement->getAttribute('cy')) {
+                        $oLayout->setDocumentLayout($type, false);
+                    }
+                }
+            }
+        }
     }
 
     /**

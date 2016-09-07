@@ -28,6 +28,7 @@
 - ODPresentation & PowerPoint2007 Writer : Support for video - @Progi1984 GH-123
 - ODPresentation & PowerPoint2007 Writer : Support for Visibility for slides - @Progi1984
 - PowerPoint2007 Reader : Layout Management - @vincentKool @Progi1984 GH-161 
+- PowerPoint2007 Reader : Slide size - @loverslcn @Progi1984 GH-246 
 - PowerPoint2007 Reader : Bullet Color - @Progi1984 GH-257 
 - PowerPoint2007 Reader : Line Spacing - @Progi1984 GH-257 
 - PowerPoint2007 Writer : Presentation with predefined View Type - @Progi1984 GH-120
