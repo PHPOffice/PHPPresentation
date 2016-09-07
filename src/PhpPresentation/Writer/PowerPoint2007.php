@@ -48,7 +48,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
 
     /**
      * Layout pack to use
-     *
+     * @deprecated 0.7
      * @var \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
      */
     protected $layoutPack;
@@ -188,6 +188,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Get layout pack to use
      *
+     * @deprecated 0.7
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
      */
     public function getLayoutPack()
@@ -198,6 +199,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Set layout pack to use
      *
+     * @deprecated 0.7
      * @param \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack $pValue
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
      */

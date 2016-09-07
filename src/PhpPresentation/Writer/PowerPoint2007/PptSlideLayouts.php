@@ -17,19 +17,10 @@ class PptSlideLayouts extends AbstractSlide
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
             foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
-                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideLayout->layoutNr, $oSlideMaster->getRelsIndex()));
+                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideMaster->getRelsIndex()));
                 $this->oZip->addFromString('ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', $this->writeSlideLayout($oSlideLayout));
             }
         }
-
-        /*
-        foreach ($oLayoutPack->getLayoutRelations() as $otherRelation) {
-          if (strpos($otherRelation['target'], 'http://') === 0) {
-              continue;
-          }
-          $this->oZip->addFromString($this->absoluteZipPath('ppt/slideLayouts/' . $otherRelation['target']), $otherRelation['contents']);
-        }
-        */
 
         return $this->oZip;
     }
@@ -38,12 +29,11 @@ class PptSlideLayouts extends AbstractSlide
     /**
      * Write slide layout relationships to XML format
      *
-     * @param  int       $slideLayoutIndex
      * @param  int       $masterId
      * @return string    XML Output
      * @throws \Exception
      */
-    public function writeSlideLayoutRelationships($slideLayoutIndex, $masterId = 1)
+    public function writeSlideLayoutRelationships($masterId = 1)
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -57,17 +47,6 @@ class PptSlideLayouts extends AbstractSlide
 
         // Write slideMaster relationship
         $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
-
-        // Other relationships
-        //@todo
-        $slideLayoutIndex;
-        /*
-        foreach ($oLayoutPack->getLayoutRelations() as $otherRelation) {
-            if ($otherRelation['layoutId'] == $slideLayoutIndex) {
-                $this->writeRelationship($objWriter, $otherRelation['id'], $otherRelation['type'], $otherRelation['target']);
-            }
-        }
-        */
 
         $objWriter->endElement();
 
@@ -142,6 +121,7 @@ class PptSlideLayouts extends AbstractSlide
         $objWriter->endElement();
         // p:sldLayout\p:cSld\p:spTree\p:grpSpPr\
         $objWriter->endElement();
+
         // Loop shapes
         $this->writeShapeCollection($objWriter, $pSlideLayout->getShapeCollection());
         // p:sldLayout\p:cSld\p:spTree\

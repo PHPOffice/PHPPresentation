@@ -21,6 +21,7 @@ use PhpOffice\PhpPresentation\Slide\Layout;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\Default
+ * @deprecated 0.7
  */
 class PackDefault extends AbstractLayoutPack
 {

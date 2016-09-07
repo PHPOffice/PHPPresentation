@@ -17,8 +17,6 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
-/** This file will be edited to also read slideLayout things */
-
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PhpOffice\PhpPresentation\Shape\Placeholder;

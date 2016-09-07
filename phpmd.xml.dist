@@ -18,8 +18,9 @@
     <rule ref="rulesets/design.xml/DepthOfInheritance" />
     <rule ref="rulesets/design.xml/CouplingBetweenObjects">
         <!-- PptSlides needs more coupling (default: 13) -->
-        <properties>
-            <property name="minimum" value="30" />
+        <!-- Writer/Office2007/AbstractSlide needs more coupling (default: 13) -->
+		<properties>
+            <property name="minimum" value="31" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/NumberOfChildren">

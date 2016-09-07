@@ -85,26 +85,6 @@ class ContentTypes extends AbstractDecoratorWriter
             }
         }
 
-        // Add layoutpack content types
-/*        $otherRelations = $oLayoutPack->getMasterSlideRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelation['target'], $otherRelation['contentType']);
-            }
-        }
-        $otherRelations = $oLayoutPack->getThemeRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelation['target'], $otherRelation['contentType']);
-            }
-        }
-        $otherRelations = $oLayoutPack->getLayoutRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelation['target'], $otherRelation['contentType']);
-            }
-        }
-*/
         // Add media content-types
         $aMediaContentTypes = array();
 

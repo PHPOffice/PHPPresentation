@@ -19,7 +19,6 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -214,6 +213,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:sp\p:spPr\a:prstGeom
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
+
+        // p:sp\p:spPr\a:prstGeom\a:avLst
+        $objWriter->writeElement('a:avLst');
+
         $objWriter->endElement();
         $this->writeFill($objWriter, $shape->getFill());
         if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
@@ -652,6 +655,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // a:prstGeom
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'line');
+
+        // a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst');
+
         $objWriter->endElement();
         if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
             $this->writeBorder($objWriter, $shape->getBorder(), '');
@@ -1063,6 +1070,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->endElement();
             // > a:solidFill
             $objWriter->endElement();
+
+            // p:bgPr/a:effectLst
+            $objWriter->writeElement('a:effectLst');
+
             // > p:bgPr
             $objWriter->endElement();
         }
