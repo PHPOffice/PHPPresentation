@@ -797,8 +797,9 @@ class PowerPoint2007 implements ReaderInterface
                     $oParagraph->getAlignment()->setLevel($oSubElement->getAttribute('lvl'));
                 }
 
-                $oElementBuFont = $document->getElement('a:buFont', $oSubElement);
                 $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
+
+                $oElementBuFont = $document->getElement('a:buFont', $oSubElement);
                 if ($oElementBuFont) {
                     if ($oElementBuFont->hasAttribute('typeface')) {
                         $oParagraph->getBulletStyle()->setBulletFont($oElementBuFont->getAttribute('typeface'));
@@ -811,7 +812,7 @@ class PowerPoint2007 implements ReaderInterface
                         $oParagraph->getBulletStyle()->setBulletChar($oElementBuChar->getAttribute('char'));
                     }
                 }
-                /*$oElementBuAutoNum = $document->getElement('a:buAutoNum', $oSubElement);
+                $oElementBuAutoNum = $document->getElement('a:buAutoNum', $oSubElement);
                 if ($oElementBuAutoNum) {
                     $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NUMERIC);
                     if ($oElementBuAutoNum->hasAttribute('type')) {
@@ -820,7 +821,19 @@ class PowerPoint2007 implements ReaderInterface
                     if ($oElementBuAutoNum->hasAttribute('startAt') && $oElementBuAutoNum->getAttribute('startAt') != 1) {
                         $oParagraph->getBulletStyle()->setBulletNumericStartAt($oElementBuAutoNum->getAttribute('startAt'));
                     }
-                }*/
+                }
+                $oElementBuClr = $document->getElement('a:buClr', $oSubElement);
+                if ($oElementBuClr) {
+                    $oColor = new Color();
+                    /**
+                     * @todo Create protected for reading Color
+                     */
+                    $oElementColor = $document->getElement('a:srgbClr', $oElementBuClr);
+                    if ($oElementColor) {
+                        $oColor->setRGB($oElementColor->hasAttribute('val') ? $oElementColor->getAttribute('val') : null);
+                    }
+                    $oParagraph->getBulletStyle()->setBulletColor($oColor);
+                }
             }
             $arraySubElements = $document->getElements('(a:r|a:br)', $oElement);
             foreach ($arraySubElements as $oSubElement) {

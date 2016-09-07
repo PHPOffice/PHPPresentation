@@ -422,8 +422,14 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
+        $oRichText->getActiveParagraph()->getBulletStyle()->setBulletColor(new Color('76543210'));
+
         $oExpectedFont = $oRichText->getActiveParagraph()->getBulletStyle()->getBulletFont();
         $oExpectedChar = $oRichText->getActiveParagraph()->getBulletStyle()->getBulletChar();
+        $oExpectedColor = $oRichText->getActiveParagraph()->getBulletStyle()->getBulletColor()->getRGB();
+        $oExpectedAlpha = $oRichText->getActiveParagraph()->getBulletStyle()->getBulletColor()->getAlpha();
+        $oExpectedAlpha *= 1000;
+
         $oRichText->createTextRun('Alpha');
         $oRichText->createParagraph()->createTextRun('Beta');
         $oRichText->createParagraph()->createTextRun('Delta');
@@ -436,6 +442,11 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($oExpectedFont, $pres->getElementAttribute($element . '/a:buFont', 'typeface', 'ppt/slides/slide1.xml'));
         $this->assertTrue($pres->elementExists($element . '/a:buChar', 'ppt/slides/slide1.xml'));
         $this->assertEquals($oExpectedChar, $pres->getElementAttribute($element . '/a:buChar', 'char', 'ppt/slides/slide1.xml'));
+        $this->assertTrue($pres->elementExists($element . '/a:buClr', 'ppt/slides/slide1.xml'));
+        $this->assertTrue($pres->elementExists($element . '/a:buClr/a:srgbClr', 'ppt/slides/slide1.xml'));
+        $this->assertEquals($oExpectedColor, $pres->getElementAttribute($element . '/a:buClr/a:srgbClr', 'val', 'ppt/slides/slide1.xml'));
+        $this->assertTrue($pres->elementExists($element . '/a:buClr/a:srgbClr/a:alpha', 'ppt/slides/slide1.xml'));
+        $this->assertEquals($oExpectedAlpha, $pres->getElementAttribute($element . '/a:buClr/a:srgbClr/a:alpha', 'val', 'ppt/slides/slide1.xml'));
     }
 
     public function testListNumeric()
@@ -613,6 +624,23 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp//a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+    }
+
+    public function testRichTextLineSpacing()
+    {
+        $expectedLineSpacing = rand(1, 100);
+
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->createTextRun('AAA');
+        $oRichText->getActiveParagraph()->setLineSpacing($expectedLineSpacing);
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:lnSpc/a:spcPct';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals($expectedLineSpacing * 1000, $pres->getElementAttribute($element, 'val', 'ppt/slides/slide1.xml'));
     }
 
     public function testRichTextRunLanguage()

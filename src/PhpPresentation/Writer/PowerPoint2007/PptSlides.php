@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Color;
 
 class PptSlides extends AbstractSlide
 {
@@ -1435,7 +1436,18 @@ class PptSlides extends AbstractSlide
                         }
                         $objWriter->endElement();
                     }
+                    if ($paragraph->getBulletStyle()->getBulletColor() instanceof Color) {
+                        $objWriter->startElement('a:buClr');
+                        $this->writeColor($objWriter, $paragraph->getBulletStyle()->getBulletColor());
+                        $objWriter->endElement();
+                    }
                 }
+
+                $objWriter->startElement('a:lnSpc');
+                $objWriter->startElement('a:spcPct');
+                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+                $objWriter->endElement();
+                $objWriter->endElement();
 
                 $objWriter->endElement();
             }
