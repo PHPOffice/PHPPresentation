@@ -71,7 +71,6 @@ class SlideMasterTest extends \PHPUnit_Framework_TestCase
         // Add new value
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorNew));
         $this->assertCount(13, $object->getAllSchemeColors());
-
     }
 
     public function testTextStyles()
