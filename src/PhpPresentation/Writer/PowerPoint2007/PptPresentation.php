@@ -75,7 +75,7 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->writeAttribute('cy', '9144000');
         $objWriter->endElement();
 
-        $objWriter->writeRaw(' <p:defaultTextStyle>
+        $objWriter->writeRaw('<p:defaultTextStyle>
   <a:defPPr>
    <a:defRPr lang="fr-FR"/>
   </a:defPPr>
