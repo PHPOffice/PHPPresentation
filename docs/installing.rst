@@ -42,16 +42,19 @@ To install via Composer, add the following lines to your
 Manual install
 ~~~~~~~~~~~~~~
 
-To install manually, `download PHPPresentation package from
-github <https://github.com/PHPOffice/PHPPresentation/archive/master.zip>`__.
-Extract the package and put the contents to your machine. To use the
-library, include ``src/PhpPresentation/Autoloader.php`` in your script and
-invoke ``Autoloader::register``.
+To install manually, `download PHPOffice\PHPPresentation package from
+GitHub <https://github.com/PHPOffice/PHPPresentation/archive/master.zip>`__
+and `download PHPOffice\Common package from
+GitHub <https://github.com/PHPOffice/Common/archive/master.zip>`__.
+Extract the package and put the contents to your machine.
 
 .. code-block:: php
 
-    require_once '/path/to/src/PhpPresentation/Autoloader.php';
+    require_once 'path/to/PhpPresentation/src/PhpPresentation/Autoloader.php';
     \PhpOffice\PhpPresentation\Autoloader::register();
+
+    require_once 'path/to/PhpOffice/Common/src/Common/Autoloader.php';
+    \PhpOffice\Common\Autoloader::register();
 
 Using samples
 -------------
