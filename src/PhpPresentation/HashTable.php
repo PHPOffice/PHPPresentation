@@ -17,8 +17,6 @@
 
 namespace PhpOffice\PhpPresentation;
 
-use PhpOffice\PhpPresentation\ComparableInterface;
-
 /**
  * \PhpOffice\PhpPresentation\HashTable
  */

@@ -23,6 +23,7 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased;
 /**
  * Test class for TemplateBased
  *
+ * @deprecated 0.7
  * @coversDefaultClass TemplateBased
  */
 class TemplateBasedTest extends \PHPUnit_Framework_TestCase

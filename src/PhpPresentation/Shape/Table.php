@@ -23,7 +23,7 @@ use PhpOffice\PhpPresentation\Shape\Table\Row;
 /**
  * Table shape
  */
-class Table extends AbstractDrawing implements ComparableInterface
+class Table extends AbstractGraphic implements ComparableInterface
 {
     /**
      * Rows

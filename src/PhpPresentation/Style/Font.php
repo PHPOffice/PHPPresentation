@@ -344,7 +344,7 @@ class Font implements ComparableInterface
     /**
      * Get Color
      *
-     * @return \PhpOffice\PhpPresentation\Style\Color
+     * @return \PhpOffice\PhpPresentation\Style\Color|\PhpOffice\PhpPresentation\Style\SchemeColor
      */
     public function getColor()
     {
@@ -354,12 +354,15 @@ class Font implements ComparableInterface
     /**
      * Set Color
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Color $pValue
+     * @param  \PhpOffice\PhpPresentation\Style\Color|\PhpOffice\PhpPresentation\Style\SchemeColor $pValue
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setColor(Color $pValue = null)
+    public function setColor($pValue = null)
     {
+        if (!$pValue instanceof Color) {
+            throw new \Exception('$pValue must be an instance of \PhpOffice\PhpPresentation\Style\Color');
+        }
         $this->color = $pValue;
 
         return $this;

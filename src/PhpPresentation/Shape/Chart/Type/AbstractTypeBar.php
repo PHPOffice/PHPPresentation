@@ -100,7 +100,7 @@ class AbstractTypeBar extends AbstractType
     public function getHashCode()
     {
         $hash = '';
-        foreach ($this->getData() as $series) {
+        foreach ($this->getSeries() as $series) {
             $hash .= $series->getHashCode();
         }
         return $hash;

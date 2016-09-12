@@ -35,11 +35,11 @@ class TestHelperDOCX
     /**
      * Get document content
      *
-     * @param \PhpOffice\PhpPresentation\PhpPresentation $PhpPresentation
+     * @param \PhpOffice\PhpPresentation\PhpPresentation $phpPresentation
      * @param string $writerName
      * @return \PhpOffice\PhpPresentation\Tests\XmlDocument
      */
-    public static function getDocument(PhpPresentation $phpPresentation, $writerName = 'PowerPoint2007')
+    public static function getDocument(PhpPresentation $phpPresentation, $writerName)
     {
         self::$file = tempnam(sys_get_temp_dir(), 'PhpPresentation');
         if (!is_dir(sys_get_temp_dir() . '/PhpPresentation_Unit_Test/')) {

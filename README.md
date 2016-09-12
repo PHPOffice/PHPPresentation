@@ -1,17 +1,17 @@
-# ![PHPPresentation](https://github.com/PHPOffice/PHPPresentation/raw/master/docs/images/PHPPowerPointLogo.png "PHPPresentation")
+# ![PHPPresentation](https://raw.githubusercontent.com/mvargasmoran/PHPPresentation/develop/docs/images/PHPPresentationLogo.png "PHPPresentation")
 
-[![Latest Stable Version](https://poser.pugx.org/phpoffice/phppowerpoint/v/stable.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
+[![Latest Stable Version](https://poser.pugx.org/phpoffice/phppresentation/v/stable.png)](https://packagist.org/packages/phpoffice/phppresentation)
 [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation)
-[![Code Quality](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/quality-score.png?s=b5997ce59ac2816b4514f3a38de9900f6d492c1d)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
-[![Code Coverage](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/badges/coverage.png?s=742a98745725c562955440edc8d2c39d7ff5ae25)](https://scrutinizer-ci.com/g/PHPOffice/PHPPowerPoint/)
-[![Total Downloads](https://poser.pugx.org/phpoffice/phppowerpoint/downloads.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
-[![License](https://poser.pugx.org/phpoffice/phppowerpoint/license.png)](https://packagist.org/packages/phpoffice/phppowerpoint)
-[![Join the chat at https://gitter.im/PHPOffice/PHPPowerPoint](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/PHPOffice/PHPPowerPoint)
+[![Code Climate](https://codeclimate.com/github/PHPOffice/PHPPresentation/badges/gpa.svg)](https://codeclimate.com/github/PHPOffice/PHPPresentation)
+[![Test Coverage](https://codeclimate.com/github/PHPOffice/PHPPresentation/badges/coverage.svg)](https://codeclimate.com/github/PHPOffice/PHPPresentation/coverage)
+[![Total Downloads](https://poser.pugx.org/phpoffice/phppresentation/downloads.png)](https://packagist.org/packages/phpoffice/phppresentation)
+[![License](https://poser.pugx.org/phpoffice/phppresentation/license.png)](https://packagist.org/packages/phpoffice/phppresentation)
+[![Join the chat at https://gitter.im/PHPOffice/PHPPresentation](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/PHPOffice/PHPPresentation)
 
 
 PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF). 
 
-PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPresentation) and [unit testing](http://phpoffice.github.io/PHPPresentation/coverage/develop/). You can learn more about PHPPresentation by reading the [Developers' Documentation](http://phppowerpoint.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/develop/).
+PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPresentation) and [unit testing](http://phpoffice.github.io/PHPPresentation/coverage/develop/). You can learn more about PHPPresentation by reading the [Developers' Documentation](http://phppresentation.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/develop/).
 
 Read more about PHPPresentation:
 
@@ -20,7 +20,7 @@ Read more about PHPPresentation:
 - [Installation](#installation)
 - [Getting started](#getting-started)
 - [Contributing](#contributing)
-- [Developers' Documentation](http://phppowerpoint.readthedocs.org/)
+- [Developers' Documentation](http://phppresentation.readthedocs.org/)
 - [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/)
 
 ### Features
@@ -48,6 +48,8 @@ PHPPresentation requires the following:
 
 ### Installation
 
+#### Composer method
+
 It is recommended that you install the PHPPresentation library [through composer](http://getcomposer.org/). To do so, add
 the following lines to your ``composer.json``.
 
@@ -59,12 +61,23 @@ the following lines to your ``composer.json``.
 }
 ```
 
-Alternatively, you can download the latest release from the [releases page](https://github.com/PHPOffice/PHPPresentation/releases).
-In this case, you will have to register the autoloader. Register autoloading is required only if you do not use composer in your project.
+#### Manual download method
+
+Alternatively, you can download the latest release from the [releases page](https://github.com/PHPOffice/PHPPresentation/releases).  
+In this case, you will have to register the autoloader.  
+(Register autoloading is required only if you do not use composer in your project.)
 
 ```php
 require_once 'path/to/PhpPresentation/src/PhpPresentation/Autoloader.php';
 \PhpOffice\PhpPresentation\Autoloader::register();
+```
+
+You will also need to download the latest PHPOffice/Common release from its [releases page](https://github.com/PHPOffice/Common/releases).  
+And you will also have to register its autoloader, too. 
+
+```php
+require_once 'path/to/PhpOffice/Common/src/Common/Autoloader.php';
+\PhpOffice\Common\Autoloader::register();
 ```
 
 ## Getting started
@@ -75,6 +88,8 @@ The following is a basic usage example of the PHPPresentation library.
 // with your own install
 require_once 'src/PhpPresentation/Autoloader.php';
 \PhpOffice\PhpPresentation\Autoloader::register();
+require_once 'src/Common/Autoloader.php';
+\PhpOffice\Common\Autoloader::register();
 
 // with Composer
 require_once 'vendor/autoload.php';
@@ -119,7 +134,7 @@ $oWriterODP = IOFactory::createWriter($objPHPPowerPoint, 'ODPresentation');
 $oWriterODP->save(__DIR__ . "/sample.odp");
 ```
 
-More examples are provided in the [samples folder](samples/). You can also read the [Developers' Documentation](http://phppowerpoint.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/) for more detail.
+More examples are provided in the [samples folder](samples/). You can also read the [Developers' Documentation](http://phppresentation.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/) for more detail.
 
 
 ## Contributing

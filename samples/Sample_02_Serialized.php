@@ -13,7 +13,7 @@ $objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPresentation->getProperties()->setCreator('PHPOffice')
+$objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')
                                   ->setLastModifiedBy('PHPPresentation Team')
                                   ->setTitle('Sample 03 Title')
                                   ->setSubject('Sample 03 Subject')

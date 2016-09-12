@@ -88,6 +88,21 @@ class Color implements ComparableInterface
     }
 
     /**
+     * Get the alpha % of the ARGB
+     * Will return 100 if no ARGB
+     * @return integer
+     */
+    public function getAlpha()
+    {
+        $alpha = 100;
+        if (strlen($this->argb) >= 6) {
+            $dec = hexdec(substr($this->argb, 0, 2));
+            $alpha = number_format(($dec/255) * 100, 2);
+        }
+        return $alpha;
+    }
+
+    /**
      * Get RGB
      *
      * @return string

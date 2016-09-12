@@ -20,7 +20,7 @@ $objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties' . EOL;
-$objPHPPresentation->getProperties()->setCreator('PHPOffice')->setLastModifiedBy('PHPPresentation Team')->setTitle('Sample 07 Title')->setSubject('Sample 07 Subject')->setDescription('Sample 07 Description')->setKeywords('office 2007 openxml libreoffice odt php')->setCategory('Sample Category');
+$objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')->setLastModifiedBy('PHPPresentation Team')->setTitle('Sample 07 Title')->setSubject('Sample 07 Subject')->setDescription('Sample 07 Description')->setKeywords('office 2007 openxml libreoffice odt php')->setCategory('Sample Category');
 
 // Remove first slide
 echo date('H:i:s') . ' Remove first slide' . EOL;
@@ -36,13 +36,13 @@ $oShadow->setVisible(true)->setDirection(45)->setDistance(10);
 // Generate sample data for chart
 echo date('H:i:s') . ' Generate sample data for chart' . EOL;
 $seriesData = array(
-	'Monday' => 12,
-	'Tuesday' => 15,
-	'Wednesday' => 13,
-	'Thursday' => 17,
-	'Friday' => 14,
-	'Saturday' => 9,
-	'Sunday' => 7
+    'Monday' => 12,
+    'Tuesday' => 15,
+    'Wednesday' => 13,
+    'Thursday' => 17,
+    'Friday' => 14,
+    'Saturday' => 9,
+    'Sunday' => 7
 );
 
 // Create templated slide
@@ -77,8 +77,18 @@ echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
 $currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
+$oOutline = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutline->getFill()->setFillType(Fill::FILL_SOLID);
+$oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
+$oOutline->setWidth(2);
+
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
 $lineChart1 = clone $lineChart;
+$series1 = $lineChart1->getSeries();
+$series1[0]->setOutline($oOutline);
+$series1[0]->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_DIAMOND);
+$series1[0]->getMarker()->setSize(7);
+$lineChart1->setSeries($series1);
 
 // Create a shape (chart)
 echo date('H:i:s') . ' Create a shape (chart)' . EOL;
@@ -98,9 +108,11 @@ $currentSlide = createTemplatedSlide($objPHPPresentation);
 // Create a line chart (that should be inserted in a shape)
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
 $lineChart2 = clone $lineChart;
-$series2 = $lineChart2->getData();
-$series2[0]->getFill()->setFillType(Fill::FILL_SOLID);
-$lineChart2->setData($series2);
+$series2 = $lineChart2->getSeries();
+$series2[0]->getFont()->setSize(25);
+$series2[0]->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_TRIANGLE);
+$series2[0]->getMarker()->setSize(10);
+$lineChart2->setSeries($series2);
 
 // Create a shape (chart)
 echo date('H:i:s') . ' Create a shape (chart)' . EOL;
@@ -113,9 +125,36 @@ $shape2->getPlotArea()->setType($lineChart2);
 $shape2->getPlotArea()->getAxisY()->setFormatCode('#,##0');
 $currentSlide->addShape($shape2);
 
+
+// Create templated slide
+echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+$currentSlide = createTemplatedSlide($objPHPPresentation);
+
+// Create a line chart (that should be inserted in a shape)
+echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
+$lineChart3 = clone $lineChart;
+
+$oGridLines1 = new \PhpOffice\PhpPresentation\Shape\Chart\Gridlines();
+$oGridLines1->getOutline()->setWidth(10);
+$oGridLines1->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
+$oGridLines2 = new \PhpOffice\PhpPresentation\Shape\Chart\Gridlines();
+$oGridLines2->getOutline()->setWidth(1);
+$oGridLines2->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKGREEN));
+
+// Create a shape (chart)
+echo date('H:i:s') . ' Create a shape (chart3)' . EOL;
+echo date('H:i:s') . ' Feature : Gridlines' . EOL;
+$shape3 = clone $shape;
+$shape3->setName('Shape 3');
+$shape3->getTitle()->setText('Chart with Gridlines');
+$shape3->getPlotArea()->setType($lineChart3);
+$shape3->getPlotArea()->getAxisX()->setMajorGridlines($oGridLines1);
+$shape3->getPlotArea()->getAxisY()->setMinorGridlines($oGridLines2);
+$currentSlide->addShape($shape3);
 // Save file
 echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 
 if (!CLI) {
-	include_once 'Sample_Footer.php';
+    include_once 'Sample_Footer.php';
 }

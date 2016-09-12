@@ -53,7 +53,7 @@ Document information
 --------------------
 
 You can set the document information such as title, creator, and company
-name. Use the following functions:
+name. Use the following functions :
 
 .. code-block:: php
 
@@ -69,3 +69,76 @@ name. Use the following functions:
     $properties->setSubject('My subject');
     $properties->setKeywords('my, key, word');
 
+
+Presentation Properties
+-----------------------
+
+You can define some properties which are relative to the presentation, like the zoom or the thumbnail.
+
+Comments
+````````
+
+You can define if the presentation display or not the comments with the method ``setCommentVisible``.
+
+.. code-block:: php
+
+    $oPresentation = new PhpPresentation();
+    $oProperties = $oPresentation->getPresentationProperties();
+    // Get the display for comment
+    var_export($oProperties->isCommentVisible());
+    // Output : false
+    // Enable the display for comment
+    $oProperties->setCommentVisible(true);
+    // Get the display for comment
+    var_export($oProperties->isCommentVisible());
+    // Output : true
+
+Last View
+`````````
+
+You can define the last view of the presentation with the method ``setLastView``.
+
+.. code-block:: php
+
+    $oPresentation = new PhpPresentation();
+    $oProperties = $oPresentation->getPresentationProperties();
+    // Get the last view of the presentation
+    echo $oProperties->getZoom();
+    // Output : PresentationProperties::VIEW_SLIDE
+    // Set the last view of the presentation
+    $oProperties->setLastView(PresentationProperties::VIEW_NOTES);
+    // Get the last view of the presentation
+    echo $oProperties->getZoom();
+    // Output : PresentationProperties::VIEW_NOTES
+
+Thumbnail
+`````````
+
+You can define the thumbnail of the presentation with the method ``setThumbnailPath``.
+
+.. code-block:: php
+
+    $oPresentation = new PhpPresentation();
+    $oProperties = $oPresentation->getPresentationProperties();
+    // Set path of the thumbnail
+    $oProperties->setThumbnailPath(__DIR__.'\resources\phppowerpoint_logo.gif');
+    // Get path of the thumbnail
+    echo $oProperties->getThumbnailPath();
+
+Zoom
+````
+
+You can define the zoom of the presentation with the method ``setZoom``.
+
+.. code-block:: php
+
+    $oPresentation = new PhpPresentation();
+    $oProperties = $oPresentation->getPresentationProperties();
+    // Get zoom of the presentation
+    echo $oProperties->getZoom();
+    // Output : 1
+    // Set zoom of the presentation (3 = 300%)
+    $oProperties->setZoom(3);
+    // Get zoom of the presentation
+    echo $oProperties->getZoom();
+    // Output : 3

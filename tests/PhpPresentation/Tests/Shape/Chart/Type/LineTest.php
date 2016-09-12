@@ -31,18 +31,18 @@ class LineTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Line();
 
-        $this->assertInternalType('array', $object->getData());
-        $this->assertEmpty($object->getData());
+        $this->assertInternalType('array', $object->getSeries());
+        $this->assertEmpty($object->getSeries());
 
         $array = array(
             new Series(),
             new Series(),
         );
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->setData());
-        $this->assertEmpty($object->getData());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->setData($array));
-        $this->assertCount(count($array), $object->getData());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->setSeries());
+        $this->assertEmpty($object->getSeries());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->setSeries($array));
+        $this->assertCount(count($array), $object->getSeries());
     }
 
     public function testSerties()
@@ -50,7 +50,7 @@ class LineTest extends \PHPUnit_Framework_TestCase
         $object = new Line();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->addSeries(new Series()));
-        $this->assertCount(1, $object->getData());
+        $this->assertCount(1, $object->getSeries());
     }
 
     public function testHashCode()

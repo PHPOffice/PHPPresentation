@@ -86,12 +86,12 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
         // Document Properties
-        $this->assertEquals('PHPOffice', $oPhpPresentation->getProperties()->getCreator());
-        $this->assertEquals('PHPPresentation Team', $oPhpPresentation->getProperties()->getLastModifiedBy());
-        $this->assertEquals('Sample 02 Title', $oPhpPresentation->getProperties()->getTitle());
-        $this->assertEquals('Sample 02 Subject', $oPhpPresentation->getProperties()->getSubject());
-        $this->assertEquals('Sample 02 Description', $oPhpPresentation->getProperties()->getDescription());
-        $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getProperties()->getKeywords());
+        $this->assertEquals('PHPOffice', $oPhpPresentation->getDocumentProperties()->getCreator());
+        $this->assertEquals('PHPPresentation Team', $oPhpPresentation->getDocumentProperties()->getLastModifiedBy());
+        $this->assertEquals('Sample 02 Title', $oPhpPresentation->getDocumentProperties()->getTitle());
+        $this->assertEquals('Sample 02 Subject', $oPhpPresentation->getDocumentProperties()->getSubject());
+        $this->assertEquals('Sample 02 Description', $oPhpPresentation->getDocumentProperties()->getDescription());
+        $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
         //
         $this->assertCount(4, $oPhpPresentation->getAllSlides());
         
@@ -101,7 +101,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $arrayShape);
         // Slide 1 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -147,7 +147,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 2 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -244,7 +244,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 3 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -401,7 +401,7 @@ class ODPresentationTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 4 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());

@@ -21,17 +21,15 @@ use ZipArchive;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Hyperlink;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
+use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Style\Alignment;
-use PhpOffice\PhpPresentation\Style\PhpOffice\PhpPresentation\Style;
-use PhpOffice\PhpPresentation\Shape\RichText;
-use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
-use PhpOffice\Common\PhpOffice\Common;
 
 /**
  * Serialized format reader
@@ -161,7 +159,7 @@ class ODPresentation implements ReaderInterface
             '/office:document-meta/office:meta/meta:creation-date' => 'setCreated',
             '/office:document-meta/office:meta/dc:date' => 'setModified',
         );
-        $oProperties = $this->oPhpPresentation->getProperties();
+        $oProperties = $this->oPhpPresentation->getDocumentProperties();
         foreach ($arrayProperties as $path => $property) {
             if (is_object($oElement = $this->oXMLReader->getElement($path))) {
                 if (in_array($property, array('setCreated', 'setModified'))) {
@@ -217,7 +215,7 @@ class ODPresentation implements ReaderInterface
                     $contentImg = $this->oZip->getFromName($this->arrayCommonStyles[$nameStyle]['path']);
                     file_put_contents($tmpBkgImg, $contentImg);
 
-                    $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Image();
+                    $oBackground = new Image();
                     $oBackground->setPath($tmpBkgImg);
                 }
             }
@@ -365,9 +363,9 @@ class ODPresentation implements ReaderInterface
     protected function loadShapeDrawing(\DOMElement $oNodeFrame)
     {
         // Core
-        $oShape = new MemoryDrawing();
+        $oShape = new Gd();
         $oShape->getShadow()->setVisible(false);
-        
+
         $oNodeImage = $this->oXMLReader->getElement('draw:image', $oNodeFrame);
         if ($oNodeImage) {
             if ($oNodeImage->hasAttribute('xlink:href')) {

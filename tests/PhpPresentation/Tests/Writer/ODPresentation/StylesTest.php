@@ -77,38 +77,6 @@ class StylesTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('sPL0', $pres->getElementAttribute($element, 'style:page-layout-name', 'styles.xml'));
     }
     
-    public function testFillGradientLinearRichText()
-    {
-        $oPhpPresentation = new PhpPresentation();
-        $oSlide = $oPhpPresentation->getActiveSlide();
-        $oShape = $oSlide->createRichTextShape();
-        $oShape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
-        
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
-        $element = '/office:document-styles/office:styles/draw:gradient';
-        $this->assertEquals('gradient_'.$oShape->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:name', 'styles.xml'));
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('gradient', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
-        $this->assertEquals('gradient_'.$oShape->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:fill-gradient-name', 'content.xml'));
-    }
-    
-    public function testFillSolidRichText()
-    {
-        $oPhpPresentation = new PhpPresentation();
-        $oSlide = $oPhpPresentation->getActiveSlide();
-        $oShape = $oSlide->createRichTextShape();
-        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF4672A8'));
-        
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
-        $this->assertEquals('#'.$oShape->getFill()->getStartColor()->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
-        $this->assertEquals('#'.$oShape->getFill()->getEndColor()->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
-    }
-    
     public function testGradientTable()
     {
         $oPhpPresentation = new PhpPresentation();

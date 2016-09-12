@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 Welcome to PHPPresentation's documentation
-========================================
+==========================================
 
 |PHPPresentation|
 
@@ -19,12 +19,21 @@ PHPPresentation is a library written in pure PHP that provides a set of classes 
    slides
    shapes
    styles
-   writersreaders
+   writers
+   readers
    recipes
    faq
    credits
    references
-   
+
+.. _slidesdocs:
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Slides
+
+   slides_animation
+
 .. _shapesdocs:
 
 .. toctree::
@@ -32,6 +41,10 @@ PHPPresentation is a library written in pure PHP that provides a set of classes 
    :caption: Shapes
    
    shapes_chart
+   shapes_comment
+   shapes_drawing
+   shapes_media
+   shapes_richtext
    shapes_table
 
 Indices and tables

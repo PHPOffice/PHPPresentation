@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
+use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
@@ -83,14 +84,19 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
         // Document Properties
-        $this->assertEquals('PHPOffice', $oPhpPresentation->getProperties()->getCreator());
-        $this->assertEquals('PHPPresentation Team', $oPhpPresentation->getProperties()->getLastModifiedBy());
-        $this->assertEquals('Sample 02 Title', $oPhpPresentation->getProperties()->getTitle());
-        $this->assertEquals('Sample 02 Subject', $oPhpPresentation->getProperties()->getSubject());
-        $this->assertEquals('Sample 02 Description', $oPhpPresentation->getProperties()->getDescription());
-        $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getProperties()->getKeywords());
-        $this->assertEquals('Sample Category', $oPhpPresentation->getProperties()->getCategory());
-        //
+        $this->assertEquals('PHPOffice', $oPhpPresentation->getDocumentProperties()->getCreator());
+        $this->assertEquals('PHPPresentation Team', $oPhpPresentation->getDocumentProperties()->getLastModifiedBy());
+        $this->assertEquals('Sample 02 Title', $oPhpPresentation->getDocumentProperties()->getTitle());
+        $this->assertEquals('Sample 02 Subject', $oPhpPresentation->getDocumentProperties()->getSubject());
+        $this->assertEquals('Sample 02 Description', $oPhpPresentation->getDocumentProperties()->getDescription());
+        $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
+        $this->assertEquals('Sample Category', $oPhpPresentation->getDocumentProperties()->getCategory());
+        // Document Layout
+        $this->assertEquals(DocumentLayout::LAYOUT_SCREEN_4X3, $oPhpPresentation->getLayout()->getDocumentLayout());
+        $this->assertEquals(254, $oPhpPresentation->getLayout()->getCX(DocumentLayout::UNIT_MILLIMETER));
+        $this->assertEquals(190.5, $oPhpPresentation->getLayout()->getCY(DocumentLayout::UNIT_MILLIMETER));
+
+        // Slides
         $this->assertCount(4, $oPhpPresentation->getAllSlides());
         
         // Slide 1
@@ -99,7 +105,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertCount(2, $arrayShape);
         // Slide 1 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -145,7 +151,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 2 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -242,7 +248,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 3 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -399,7 +405,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $this->assertCount(3, $arrayShape);
         // Slide 4 : Shape 1
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\MemoryDrawing', $oShape);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -469,14 +475,14 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $object = new PowerPoint2007();
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
-        $this->assertFalse($oPhpPresentation->isMarkedAsFinal());
+        $this->assertFalse($oPhpPresentation->getPresentationProperties()->isMarkedAsFinal());
 
 
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_MarkAsFinal.pptx';
         $object = new PowerPoint2007();
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
-        $this->assertTrue($oPhpPresentation->isMarkedAsFinal());
+        $this->assertTrue($oPhpPresentation->getPresentationProperties()->isMarkedAsFinal());
     }
 
     public function testZoom()
@@ -485,13 +491,27 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
         $object = new PowerPoint2007();
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
-        $this->assertEquals(1, $oPhpPresentation->getZoom());
+        $this->assertEquals(1, $oPhpPresentation->getPresentationProperties()->getZoom());
 
 
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_Zoom.pptx';
         $object = new PowerPoint2007();
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
-        $this->assertEquals(2.68, $oPhpPresentation->getZoom());
+        $this->assertEquals(2.68, $oPhpPresentation->getPresentationProperties()->getZoom());
+    }
+
+    public function testSlideLayout()
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_00150.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+
+        $masterSlides = $oPhpPresentation->getAllMasterSlides();
+        $this->assertCount(3, $masterSlides);
+        $this->assertCount(11, $masterSlides[0]->getAllSlideLayouts());
+        $this->assertCount(11, $masterSlides[1]->getAllSlideLayouts());
+        $this->assertCount(11, $masterSlides[2]->getAllSlideLayouts());
     }
 }
