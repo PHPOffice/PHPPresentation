@@ -125,21 +125,39 @@
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                                                                                <li class="method public inherited">
+        <a href="#method_getDrawingHashTable" title="getDrawingHashTable :: Get drawing hash table">
+            <span class="description">Get drawing hash table</span><pre>getDrawingHashTable</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
         <a href="#method_getPhpPresentation" title="getPhpPresentation :: Get PhpPresentation object">
             <span class="description">Get PhpPresentation object</span><pre>getPhpPresentation</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                        <li class="method public inherited">
+        <a href="#method_getZipAdapter" title="getZipAdapter :: ">
+            <span class="description"></span><pre>getZipAdapter</pre>
+        </a>
+    </li>
+
+                                                                                                                                                                <li class="method public">
         <a href="#method_save" title="save :: Save PhpPresentation to file">
             <span class="description">Save PhpPresentation to file</span><pre>save</pre>
         </a>
     </li>
 
-                                                                                                        <li class="method public">
+                                                                                                        <li class="method public inherited">
         <a href="#method_setPhpPresentation" title="setPhpPresentation :: Get PhpPresentation object">
             <span class="description">Get PhpPresentation object</span><pre>setPhpPresentation</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public inherited">
+        <a href="#method_setZipAdapter" title="setZipAdapter :: ">
+            <span class="description"></span><pre>setZipAdapter</pre>
         </a>
     </li>
 
@@ -147,11 +165,21 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                </ul>
+                                                                                                                <li class="method protected inherited">
+                            <a href="#method_allDrawings" title="allDrawings :: Get an array of all drawings">
+                                <span class="description">Get an array of all drawings</span><pre>allDrawings</pre>
+                            </a>
+                        </li>
+                                                                                                                                                                                                                                                                                                                                                </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                            <li class="method private">
+                                                                                                                                                                                                                                                                <li class="method private inherited">
+                            <a href="#method_iterateCollection" title="iterateCollection :: ">
+                                <span class="description"></span><pre>iterateCollection</pre>
+                            </a>
+                        </li>
+                                                                                                                                                                                            <li class="method private">
                             <a href="#method_writeSerialized" title="writeSerialized :: Serialize PhpPresentation object to XML">
                                 <span class="description">Serialize PhpPresentation object to XML</span><pre>writeSerialized</pre>
                             </a>
@@ -172,6 +200,7 @@
             <div class="element class">
                 <h1>Serialized</h1>
                 <small style="display: block; text-align: right">
+                                            Extends <a href="../classes/PhpOffice.PhpPresentation.Writer.AbstractWriter.html">\PhpOffice\PhpPresentation\Writer\AbstractWriter</a>
                                                                 Implements <a href="../classes/PhpOffice.PhpPresentation.Writer.WriterInterface.html">\PhpOffice\PhpPresentation\Writer\WriterInterface</a>
                                     </small>
                 <p class="short_description">\PhpOffice\PhpPresentation\Writer\Serialized</p>
@@ -212,7 +241,7 @@
                                                 <td>
                                                                                                     </td>
                                             </tr>
-                                                                            </table>
+                                                                                                                    </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
@@ -224,12 +253,12 @@
                             </div>
 
                         </div>
-                                            <a id="method_getPhpPresentation"></a>
-                        <div class="element clickable method public  method_getPhpPresentation" data-toggle="collapse" data-target=".method_getPhpPresentation .collapse">
-                            <h2>Get PhpPresentation object</h2>
-                            <pre>getPhpPresentation() : \PhpOffice\PhpPresentation\PhpPresentation</pre>
+                                            <a id="method_allDrawings"></a>
+                        <div class="element clickable method protected  method_allDrawings inherited" data-toggle="collapse" data-target=".method_allDrawings .collapse">
+                            <h2>Get an array of all drawings</h2>
+                            <pre>allDrawings() : array&lt;mixed,\PhpOffice\PhpPresentation\Shape\AbstractDrawing&gt;</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -239,11 +268,143 @@
                                     <table class="table">
                                                                                     <tr>
                                                 <th>
-                                                    throws
+                                                    
                                                 </th>
                                                 <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>array&lt;mixed,\PhpOffice\PhpPresentation\Shape\AbstractDrawing&gt;</code><p><p>All drawings in PhpPresentation</p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getDrawingHashTable"></a>
+                        <div class="element clickable method public  method_getDrawingHashTable inherited" data-toggle="collapse" data-target=".method_getDrawingHashTable .collapse">
+                            <h2>Get drawing hash table</h2>
+                            <pre>getDrawingHashTable() : \PhpOffice\PhpPresentation\HashTable</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPresentation.HashTable.html">\PhpOffice\PhpPresentation\HashTable</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getPhpPresentation"></a>
+                        <div class="element clickable method public  method_getPhpPresentation inherited" data-toggle="collapse" data-target=".method_getPhpPresentation .collapse">
+                            <h2>Get PhpPresentation object</h2>
+                            <pre>getPhpPresentation() : \PhpOffice\PhpPresentation\PhpPresentation</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPresentation.PhpPresentation.html">\PhpOffice\PhpPresentation\PhpPresentation</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_getZipAdapter"></a>
+                        <div class="element clickable method public  method_getZipAdapter inherited" data-toggle="collapse" data-target=".method_getZipAdapter .collapse">
+                            <h2>getZipAdapter</h2>
+                            <pre>getZipAdapter() : \PhpOffice\Common\Adapter\Zip\ZipInterface</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>\PhpOffice\Common\Adapter\Zip\ZipInterface</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_iterateCollection"></a>
+                        <div class="element clickable method private  method_iterateCollection inherited" data-toggle="collapse" data-target=".method_iterateCollection .collapse">
+                            <h2>iterateCollection</h2>
+                            <pre>iterateCollection(\ArrayIterator $oIterator) </pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
                                                                                                     </td>
                                             </tr>
                                                                                     <tr>
@@ -253,11 +414,14 @@
                                                 <td>
                                                                                                     </td>
                                             </tr>
-                                                                            </table>
+                                                                                                                    </table>
 
-                                    
-                                                                            <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPresentation.PhpPresentation.html">\PhpOffice\PhpPresentation\PhpPresentation</a></code><p></p>
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oIterator</h4>
+                                                <code>\ArrayIterator</code><p></p>
+                                            </div>
+                                                                            
                                                                     </div>
                             </div>
 
@@ -277,19 +441,19 @@
                                     <table class="table">
                                                                                     <tr>
                                                 <th>
-                                                    throws
-                                                </th>
-                                                <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
                                                     
                                                 </th>
                                                 <td>
                                                                                                     </td>
+                                            </tr>
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
                                             </tr>
                                                                             </table>
 
@@ -304,11 +468,11 @@
 
                         </div>
                                             <a id="method_setPhpPresentation"></a>
-                        <div class="element clickable method public  method_setPhpPresentation" data-toggle="collapse" data-target=".method_setPhpPresentation .collapse">
+                        <div class="element clickable method public  method_setPhpPresentation inherited" data-toggle="collapse" data-target=".method_setPhpPresentation .collapse">
                             <h2>Get PhpPresentation object</h2>
-                            <pre>setPhpPresentation(\PhpOffice\PhpPresentation\PhpPresentation $pPhpPresentation = null) : \PhpOffice\PhpPresentation\Writer\Serialized</pre>
+                            <pre>setPhpPresentation(\PhpOffice\PhpPresentation\PhpPresentation $pPhpPresentation = null) : \PhpOffice\PhpPresentation\Writer\ODPresentation</pre>
                             <div class="labels">
-                                                                                                                                                                                            </div>
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
 
                             
                             <div class="row collapse">
@@ -316,14 +480,14 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
+                                                                                                                            <tr>
+                                                <th>Throws</th>
                                                 <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
                                             </tr>
                                                                             </table>
 
@@ -334,7 +498,34 @@
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
-                                        <code><a href="../classes/PhpOffice.PhpPresentation.Writer.Serialized.html">\PhpOffice\PhpPresentation\Writer\Serialized</a></code><p></p>
+                                        <code><a href="../classes/PhpOffice.PhpPresentation.Writer.ODPresentation.html">\PhpOffice\PhpPresentation\Writer\ODPresentation</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setZipAdapter"></a>
+                        <div class="element clickable method public  method_setZipAdapter inherited" data-toggle="collapse" data-target=".method_setZipAdapter .collapse">
+                            <h2>setZipAdapter</h2>
+                            <pre>setZipAdapter(\PhpOffice\Common\Adapter\Zip\ZipInterface $oZipAdapter) : $this</pre>
+                            <div class="labels">
+                                <span class="label">inherited</span>                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oZipAdapter</h4>
+                                                <code>\PhpOffice\Common\Adapter\Zip\ZipInterface</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>$this</code><p></p>
                                                                     </div>
                             </div>
 
@@ -352,14 +543,14 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    throws
-                                                </th>
+                                                                                                                            <tr>
+                                                <th>Throws</th>
                                                 <td>
-                                                                                                                                                                        
-                                                                                                                                                                        
-                                                                                                    </td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
                                             </tr>
                                                                             </table>
 
@@ -382,12 +573,38 @@
                     
                     
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
-                                                    <a id="property_presentation"> </a>
-                            <div class="element clickable property  private property_presentation" data-toggle="collapse" data-target=".property_presentation .collapse">
-                                <h2>Private PhpPresentation</h2>
-                                <pre>presentation : \PhpOffice\PhpPresentation\PhpPresentation</pre>
+                                                    <a id="property_oDrawingHashTable"> </a>
+                            <div class="element clickable property  protected property_oDrawingHashTable inherited" data-toggle="collapse" data-target=".property_oDrawingHashTable .collapse">
+                                <h2>Private unique hash table</h2>
+                                <pre>oDrawingHashTable : \PhpOffice\PhpPresentation\HashTable</pre>
                                 <div class="labels">
-                                                                                                        </div>
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code><a href="../classes/PhpOffice.PhpPresentation.HashTable.html">\PhpOffice\PhpPresentation\HashTable</a></code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_oPresentation"> </a>
+                            <div class="element clickable property  protected property_oPresentation inherited" data-toggle="collapse" data-target=".property_oPresentation .collapse">
+                                <h2>Private PhpPresentation</h2>
+                                <pre>oPresentation : \PhpOffice\PhpPresentation\PhpPresentation</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
                                 <div class="row collapse">
                                     <div class="detail-description">
                                         <div class="long_description"></div>
@@ -405,6 +622,32 @@
 
                                                                                     <h3>Type(s)</h3>
                                             <code><a href="../classes/PhpOffice.PhpPresentation.PhpPresentation.html">\PhpOffice\PhpPresentation\PhpPresentation</a></code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_oZipAdapter"> </a>
+                            <div class="element clickable property  protected property_oZipAdapter inherited" data-toggle="collapse" data-target=".property_oZipAdapter .collapse">
+                                <h2>oZipAdapter</h2>
+                                <pre>oZipAdapter : \PhpOffice\Common\Adapter\Zip\ZipInterface</pre>
+                                <div class="labels">
+                                    <span class="label">inherited</span>                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>\PhpOffice\Common\Adapter\Zip\ZipInterface</code>
                                                                             </div>
                                 </div>
                             </div>
@@ -428,7 +671,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Sun, 24 Jan 2016 10:45:27 +0000.<br/>
+            generated on Mon, 12 Sep 2016 10:29:02 +0000.<br/>
     </footer>
     </body>
 </html>
