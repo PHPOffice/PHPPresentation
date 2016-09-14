@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Axis
@@ -60,6 +61,11 @@ class Axis implements ComparableInterface
     protected $minorGridlines;
 
     /**
+     * @var Outline
+     */
+    protected $outline;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
      *
      * @param string $title Title
@@ -68,6 +74,7 @@ class Axis implements ComparableInterface
     {
         $this->title = $title;
         $this->font  = new Font();
+        $this->outline = new Outline();
     }
 
     /**
@@ -172,6 +179,24 @@ class Axis implements ComparableInterface
     public function setMinorGridlines(Gridlines $minorGridlines)
     {
         $this->minorGridlines = $minorGridlines;
+        return $this;
+    }
+
+    /**
+     * @return Outline
+     */
+    public function getOutline()
+    {
+        return $this->outline;
+    }
+
+    /**
+     * @param Outline $outline
+     * @return Axis
+     */
+    public function setOutline($outline)
+    {
+        $this->outline = $outline;
         return $this;
     }
 

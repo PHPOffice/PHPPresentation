@@ -132,6 +132,46 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Font::UNDERLINE_DASH, $oXMLDoc->getElementAttribute($element, 'u', 'ppt/charts/'.$oShape->getIndexedFilename())); //Underline YAxis
     }
 
+    public function testAxisOutline()
+    {
+        $expectedWidthX = 2;
+        $expectedColorX = 'ABCDEF';
+        $expectedWidthY = 4;
+        $expectedColorY = '012345';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oBar = new Bar();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->setWidth($expectedWidthX);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorX);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->setWidth($expectedWidthY);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorY);
+
+
+        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals(Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthX)), $oXMLDoc->getElementAttribute($element, 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedColorX, $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals(Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthY)), $oXMLDoc->getElementAttribute($element, 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
+        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertEquals($expectedColorY, $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+    }
+
     public function testTypeArea()
     {
         $oSlide = $this->oPresentation->getActiveSlide();

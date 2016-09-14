@@ -2076,6 +2076,13 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', 'nextTo');
         $objWriter->endElement();
 
+        // c:spPr
+        $objWriter->startElement('c:spPr');
+        // Outline
+        $this->writeOutline($objWriter, $oAxis->getOutline());
+        // ##c:spPr
+        $objWriter->endElement();
+
         // c:txPr
         $objWriter->startElement('c:txPr');
 

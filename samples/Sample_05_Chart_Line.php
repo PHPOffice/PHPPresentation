@@ -125,7 +125,6 @@ $shape2->getPlotArea()->setType($lineChart2);
 $shape2->getPlotArea()->getAxisY()->setFormatCode('#,##0');
 $currentSlide->addShape($shape2);
 
-
 // Create templated slide
 echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
 $currentSlide = createTemplatedSlide($objPHPPresentation);
@@ -152,6 +151,37 @@ $shape3->getPlotArea()->setType($lineChart3);
 $shape3->getPlotArea()->getAxisX()->setMajorGridlines($oGridLines1);
 $shape3->getPlotArea()->getAxisY()->setMinorGridlines($oGridLines2);
 $currentSlide->addShape($shape3);
+
+// Create templated slide
+echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+$currentSlide = createTemplatedSlide($objPHPPresentation);
+
+// Create a line chart (that should be inserted in a shape)
+echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
+$lineChart4 = clone $lineChart;
+
+$oOutlineAxisX = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutlineAxisX->setWidth(2);
+$oOutlineAxisX->getFill()->setFillType(Fill::FILL_SOLID);
+$oOutlineAxisX->getFill()->getStartColor()->setRGB('012345');
+
+$oOutlineAxisY = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutlineAxisY->setWidth(5);
+$oOutlineAxisY->getFill()->setFillType(Fill::FILL_SOLID);
+$oOutlineAxisY->getFill()->getStartColor()->setRGB('ABCDEF');
+
+// Create a shape (chart)
+echo date('H:i:s') . ' Create a shape (chart4)' . EOL;
+echo date('H:i:s') . ' Feature : Axis Outline' . EOL;
+$shape4 = clone $shape;
+$shape4->setName('Shape 4');
+$shape4->getTitle()->setText('Chart with Outline on Axis');
+$shape4->getPlotArea()->setType($lineChart4);
+$shape4->getPlotArea()->getAxisX()->setOutline($oOutlineAxisX);
+$shape4->getPlotArea()->getAxisY()->setOutline($oOutlineAxisY);
+$currentSlide->addShape($shape4);
+
+
 // Save file
 echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 

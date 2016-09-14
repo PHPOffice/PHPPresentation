@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.8.0 - WIP
+
+### Bugfix
+
+### Changes
+
+### Features
+- PowerPoint2007 Writer : Add support for Outline in Axis - @Progi1984 GH-255
+
 ## 0.7.0 - 2016-09-12
 
 ### Bugfix

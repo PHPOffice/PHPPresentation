@@ -34,6 +34,17 @@ For each gridline, you can custom the width (in points), the fill type and the f
     $oShape->getPlotArea()->setType($oLine);
     $oShape->getPlotArea()->getAxisX()->setMajorGridlines($oGridLines);
 
+You can define outline for each axis (X & Y).
+
+.. code-block:: php
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
+    $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
 Title
 ^^^^^
 
