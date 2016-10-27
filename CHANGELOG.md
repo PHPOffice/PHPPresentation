@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0 - WIP
+
+### Bugfix
+- Fixed the marker on line chart when symbol is none - @Napryc GH-211
+
 ## 0.7.0 - 2016-09-12
 
 ### Bugfix
