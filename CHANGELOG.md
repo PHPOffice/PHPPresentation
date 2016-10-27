@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0 - WIP 
+
+### Bugfix
+- Fixed the format value in Pie Chart - @Napryc GH-212
+
 ## 0.7.0 - 2016-09-12
 
 ### Bugfix
