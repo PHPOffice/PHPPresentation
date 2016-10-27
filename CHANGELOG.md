@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0 - WIP
+
+### Bugfix
+- Fixed the label position in bar chart - @pgee70 GH-268
+
 ## 0.7.0 - 2016-09-12
 
 ### Bugfix
