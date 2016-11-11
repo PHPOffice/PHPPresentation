@@ -131,8 +131,14 @@ class Gd extends AbstractDrawingAdapter
      */
     public function getContents()
     {
+        $imageResource = $this->getImageResource();
+        if ($this->getMimeType() === self::MIMETYPE_PNG) {
+            imagealphablending($imageResource, true);
+            imagesavealpha($imageResource, true);
+        }
+
         ob_start();
-        call_user_func($this->getRenderingFunction(), $this->getImageResource());
+        call_user_func($this->getRenderingFunction(), $imageResource);
         $imageContents = ob_get_contents();
         ob_end_clean();
         return $imageContents;
