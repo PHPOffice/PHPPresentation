@@ -22,6 +22,7 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Shape\Group;
@@ -33,6 +34,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -40,25 +42,40 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
-use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Slide\Background;
 
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
     /**
-     * @param SlideMaster $pSlideMaster
-     * @param $objWriter
-     * @param $relId
-     * @throws \Exception
+     * @param ShapeContainerInterface $container
+     * @param XMLWriter $objWriter
+     * @param RelCounter $relCounter
      */
-    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, $objWriter, $relId)
+    protected function writeDrawingRelations(ShapeContainerInterface $container, XMLWriter $objWriter, RelCounter $relCounter)
     {
-        if ($pSlideMaster->getShapeCollection()->count() > 0) {
+        if ($container->getShapeCollection()->count() > 0) {
             // Loop trough images and write relationships
-            $iterator = $pSlideMaster->getShapeCollection()->getIterator();
+            $iterator = $container->getShapeCollection()->getIterator();
             while ($iterator->valid()) {
-                if ($iterator->current() instanceof ShapeDrawingFile || $iterator->current() instanceof ShapeDrawingGd) {
+                $shape = $iterator->current();
+                if ($shape instanceof ShapeContainerInterface) {
+                    $this->writeDrawingRelations($shape, $objWriter, $relCounter);
+
+                }elseif ($iterator->current() instanceof Media) {
                     // Write relationship for image drawing
+                    $relCounter->next();
+                    $relId = $relCounter->current();
+                    $this->writeRelationship(
+                        $objWriter,
+                        $relId,
+                        'http://schemas.microsoft.com/office/2007/relationships/media',
+                        '../media/' . $iterator->current()->getIndexedFilename()
+                    );
+                    $iterator->current()->relationId = 'rId' . $relId;
+                }elseif ($iterator->current() instanceof AbstractDrawingAdapter) {
+                    // Write relationship for image drawing
+                    $relCounter->next();
+                    $relId = $relCounter->current();
                     $this->writeRelationship(
                         $objWriter,
                         $relId,
@@ -66,9 +83,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         '../media/' . str_replace(' ', '_', $iterator->current()->getIndexedFilename())
                     );
                     $iterator->current()->relationId = 'rId' . $relId;
-                    ++$relId;
                 } elseif ($iterator->current() instanceof ShapeChart) {
                     // Write relationship for chart drawing
+                    $relCounter->next();
+                    $relId = $relCounter->current();
                     $this->writeRelationship(
                         $objWriter,
                         $relId,
@@ -76,38 +94,33 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         '../charts/' . $iterator->current()->getIndexedFilename()
                     );
                     $iterator->current()->relationId = 'rId' . $relId;
-                    ++$relId;
-                } elseif ($iterator->current() instanceof Group) {
-                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
-                    while ($iterator2->valid()) {
-                        if ($iterator2->current() instanceof ShapeDrawingFile ||
-                            $iterator2->current() instanceof ShapeDrawingGd
-                        ) {
-                            // Write relationship for image drawing
-                            $this->writeRelationship(
-                                $objWriter,
-                                $relId,
-                                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
-                                '../media/' . str_replace(' ', '_', $iterator2->current()->getIndexedFilename())
-                            );
-                            $iterator2->current()->relationId = 'rId' . $relId;
-                            ++$relId;
-                        } elseif ($iterator2->current() instanceof ShapeChart) {
-                            // Write relationship for chart drawing
-                            $this->writeRelationship(
-                                $objWriter,
-                                $relId,
-                                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart',
-                                '../charts/' . $iterator2->current()->getIndexedFilename()
-                            );
-                            $iterator2->current()->relationId = 'rId' . $relId;
-                            ++$relId;
-                        }
-                        $iterator2->next();
-                    }
                 }
                 $iterator->next();
             }
+        }
+    }
+
+    /**
+     * @param AbstractSlideAlias $pSlide
+     * @param XMLWriter $objWriter
+     * @param RelCounter $relCounter
+     * @param $idxSlide
+     */
+    protected function writeBackgroundRelation(AbstractSlideAlias $pSlide, XMLWriter $objWriter, RelCounter $relCounter, $idxSlide)
+    {
+        $background = $pSlide->getBackground();
+        if ($background instanceof Slide\Background\Image) {
+            // Loop trough images and write relationships
+            $relCounter->next();
+            $relId = $relCounter->current();
+            $this->writeRelationship(
+                $objWriter,
+                $relId,
+                'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image',
+                '../media/' . str_replace(' ', '_', $background->getIndexedFilename($idxSlide))
+            );
+
+            $background->relationId = 'rId' . $relId;
         }
     }
 

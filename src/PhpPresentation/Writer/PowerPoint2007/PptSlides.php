@@ -75,73 +75,22 @@ class PptSlides extends AbstractSlide
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
 
         // Starting relation id
-        $relId = 1;
         $idxSlide = $pSlide->getParent()->getIndex($pSlide);
+        $relCounter = new RelCounter();
 
         // Write slideLayout relationship
         if ($pSlide->getSlideLayout()) {
+            $relCounter->next();
+            $relId = $relCounter->current();
             $layoutId = $pSlide->getSlideLayout()->layoutNr;
-            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
         }
 
-        // Write drawing relationships?
-        if ($pSlide->getShapeCollection()->count() > 0) {
-            // Loop trough images and write relationships
-            $iterator = $pSlide->getShapeCollection()->getIterator();
-            while ($iterator->valid()) {
-                if ($iterator->current() instanceof Media) {
-                    // Write relationship for image drawing
-                    $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $iterator->current()->getIndexedFilename());
-                    $iterator->current()->relationId = 'rId' . $relId;
-                    ++$relId;
-                } elseif ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
-                    // Write relationship for image drawing
-                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $iterator->current()->getIndexedFilename());
-                    $iterator->current()->relationId = 'rId' . $relId;
-                    ++$relId;
-                } elseif ($iterator->current() instanceof ShapeChart) {
-                    // Write relationship for chart drawing
-                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator->current()->getIndexedFilename());
+        $this->writeDrawingRelations($pSlide, $objWriter, $relCounter);
+        $this->writeBackgroundRelation($pSlide, $objWriter, $relCounter, $idxSlide);
 
-                    $iterator->current()->relationId = 'rId' . $relId;
-
-                    ++$relId;
-                } elseif ($iterator->current() instanceof Group) {
-                    $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
-                    while ($iterator2->valid()) {
-                        if ($iterator->current() instanceof Media) {
-                            // Write relationship for image drawing
-                            $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $iterator->current()->getIndexedFilename());
-                            $iterator->current()->relationId = 'rId' . $relId;
-                            ++$relId;
-                        } elseif ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
-                            // Write relationship for image drawing
-                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $iterator2->current()->getIndexedFilename());
-                            $iterator2->current()->relationId = 'rId' . $relId;
-
-                            ++$relId;
-                        } elseif ($iterator2->current() instanceof ShapeChart) {
-                            // Write relationship for chart drawing
-                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/chart', '../charts/' . $iterator2->current()->getIndexedFilename());
-                            $iterator2->current()->relationId = 'rId' . $relId;
-
-                            ++$relId;
-                        }
-                        $iterator2->next();
-                    }
-                }
-
-                $iterator->next();
-            }
-        }
-
-        // Write background relationships?
-        $oBackground = $pSlide->getBackground();
-        if ($oBackground instanceof Image) {
-            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($idxSlide));
-            $oBackground->relationId = 'rId' . $relId;
-            ++$relId;
-        }
+        $relCounter->next();
+        $relId = $relCounter->current();
 
         // Write hyperlink relationships?
         if ($pSlide->getShapeCollection()->count() > 0) {
