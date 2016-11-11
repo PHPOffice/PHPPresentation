@@ -313,46 +313,9 @@ class PowerPoint2007 implements ReaderInterface
             $oSlide->setRelsIndex('ppt/slides/_rels/' . $baseFile . '.rels');
 
             // Background
-            $oElement = $xmlReader->getElement('/p:sld/p:cSld/p:bg/p:bgPr');
+            $oElement = $xmlReader->getElement('/p:sld/p:cSld/p:bg');
             if ($oElement) {
-                $oElementColor = $xmlReader->getElement('a:solidFill/a:srgbClr', $oElement);
-                if ($oElementColor) {
-                    // Color
-                    $oColor = new Color();
-                    $oColor->setRGB($oElementColor->hasAttribute('val') ? $oElementColor->getAttribute('val') : null);
-                    // Background
-                    $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Color();
-                    $oBackground->setColor($oColor);
-                    // Slide Background
-                    $oSlide = $this->oPhpPresentation->getActiveSlide();
-                    $oSlide->setBackground($oBackground);
-                }
-                $oElementImage = $xmlReader->getElement('a:blipFill/a:blip', $oElement);
-                if ($oElementImage) {
-                    $relImg = $this->arrayRels['ppt/slides/_rels/' . $baseFile . '.rels'][$oElementImage->getAttribute('r:embed')];
-                    if (is_array($relImg)) {
-                        // File
-                        $pathImage = 'ppt/slides/' . $relImg['Target'];
-                        $pathImage = explode('/', $pathImage);
-                        foreach ($pathImage as $key => $partPath) {
-                            if ($partPath == '..') {
-                                unset($pathImage[$key - 1]);
-                                unset($pathImage[$key]);
-                            }
-                        }
-                        $pathImage = implode('/', $pathImage);
-                        $contentImg = $this->oZip->getFromName($pathImage);
-
-                        $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderPpt2007Bkg');
-                        file_put_contents($tmpBkgImg, $contentImg);
-                        // Background
-                        $oBackground = new Image();
-                        $oBackground->setPath($tmpBkgImg);
-                        // Slide Background
-                        $oSlide = $this->oPhpPresentation->getActiveSlide();
-                        $oSlide->setBackground($oBackground);
-                    }
-                }
+                $this->loadSlideBackground($xmlReader, $oElement, $oSlide);
             }
 
             // Shapes
@@ -368,9 +331,9 @@ class PowerPoint2007 implements ReaderInterface
                         //var_export($oNode->tagName);
                 }
             }
+
             // Layout
-            $oSlide = $this->oPhpPresentation->getActiveSlide();
-            foreach ($this->arrayRels['ppt/slides/_rels/' . $baseFile . '.rels'] as $valueRel) {
+            foreach ($this->arrayRels[$oSlide->getRelsIndex()] as $valueRel) {
                 if ($valueRel['Type'] == 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout') {
                     $layoutBasename = basename($valueRel['Target']);
                     if (array_key_exists($layoutBasename, $this->arraySlideLayouts)) {
