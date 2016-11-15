@@ -4,20 +4,13 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\HashTable;
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
-use \ZipArchive;
+use PhpOffice\PhpPresentation\Style\Outline;
 
-abstract class AbstractDecoratorWriter
+abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer\AbstractDecoratorWriter
 {
-    /**
-     * @return \ZipArchive
-     */
-    abstract public function render();
-
-
     /**
      * Write relationship
      *
@@ -30,82 +23,24 @@ abstract class AbstractDecoratorWriter
      */
     protected function writeRelationship(XMLWriter $objWriter, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
     {
-        if ($pType != '' && $pTarget != '') {
-            if (strpos($pId, 'rId') === false) {
-                $pId = 'rId' . $pId;
-            }
-
-            // Write relationship
-            $objWriter->startElement('Relationship');
-            $objWriter->writeAttribute('Id', $pId);
-            $objWriter->writeAttribute('Type', $pType);
-            $objWriter->writeAttribute('Target', $pTarget);
-
-            if ($pTargetMode != '') {
-                $objWriter->writeAttribute('TargetMode', $pTargetMode);
-            }
-
-            $objWriter->endElement();
-        } else {
+        if ($pType == '' || $pTarget == '') {
             throw new \Exception("Invalid parameters passed.");
         }
-    }
+        if (strpos($pId, 'rId') === false) {
+            $pId = 'rId' . $pId;
+        }
 
-    /**
-     * @var \PhpOffice\PhpPresentation\HashTable
-     */
-    protected $hashTable;
+        // Write relationship
+        $objWriter->startElement('Relationship');
+        $objWriter->writeAttribute('Id', $pId);
+        $objWriter->writeAttribute('Type', $pType);
+        $objWriter->writeAttribute('Target', $pTarget);
 
-    public function setDrawingHashTable(HashTable $hashTable)
-    {
-        $this->hashTable = $hashTable;
-        return $this;
-    }
+        if ($pTargetMode != '') {
+            $objWriter->writeAttribute('TargetMode', $pTargetMode);
+        }
 
-    /**
-     * @return HashTable
-     */
-    public function getDrawingHashTable()
-    {
-        return $this->hashTable;
-    }
-
-    /**
-     * @var ZipArchive
-     */
-    protected $oZip;
-
-    public function setZip(ZipArchive $oZip)
-    {
-        $this->oZip = $oZip;
-        return $this;
-    }
-
-    /**
-     * @return ZipArchive
-     */
-    public function getZip()
-    {
-        return $this->oZip;
-    }
-
-    /**
-     * @var PhpPresentation
-     */
-    protected $oPresentation;
-
-    public function setPresentation(PhpPresentation $oPresentation)
-    {
-        $this->oPresentation = $oPresentation;
-        return $this;
-    }
-
-    /**
-     * @return PhpPresentation
-     */
-    public function getPresentation()
-    {
-        return $this->oPresentation;
+        $objWriter->endElement();
     }
 
     /**
@@ -116,8 +51,16 @@ abstract class AbstractDecoratorWriter
      * @param  string                         $pElementName Element name
      * @throws \Exception
      */
-    protected function writeBorder(XMLWriter $objWriter, Border $pBorder, $pElementName = 'L')
+    protected function writeBorder(XMLWriter $objWriter, $pBorder, $pElementName = 'L')
     {
+        if (!($pBorder instanceof Border)) {
+            return;
+        }
+
+        if ($pBorder->getLineStyle() == Border::LINE_NONE && $pElementName == '') {
+            return;
+        }
+
         // Line style
         $lineStyle = $pBorder->getLineStyle();
         if ($lineStyle == Border::LINE_NONE) {
@@ -141,12 +84,7 @@ abstract class AbstractDecoratorWriter
         } else {
             // a:solidFill
             $objWriter->startElement('a:solidFill');
-
-            // a:srgbClr
-            $objWriter->startElement('a:srgbClr');
-            $objWriter->writeAttribute('val', $pBorder->getColor()->getRGB());
-            $objWriter->endElement();
-
+            $this->writeColor($objWriter, $pBorder->getColor());
             $objWriter->endElement();
         }
 
@@ -176,14 +114,41 @@ abstract class AbstractDecoratorWriter
     }
 
     /**
+     * @param XMLWriter $objWriter
+     * @param Color $color
+     * @param int|null $alpha
+     */
+    protected function writeColor(XMLWriter $objWriter, Color $color, $alpha = null)
+    {
+        if (is_null($alpha)) {
+            $alpha = $color->getAlpha();
+        }
+
+        // a:srgbClr
+        $objWriter->startElement('a:srgbClr');
+        $objWriter->writeAttribute('val', $color->getRGB());
+
+        // a:alpha
+        $objWriter->startElement('a:alpha');
+        $objWriter->writeAttribute('val', $alpha * 1000);
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+    }
+
+    /**
      * Write Fill
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
-    protected function writeFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writeFill(XMLWriter $objWriter, $pFill)
     {
+        if (! $pFill instanceof Fill) {
+            return;
+        }
+
         // Is it a fill?
         if ($pFill->getFillType() == Fill::FILL_NONE) {
             return;
@@ -205,7 +170,6 @@ abstract class AbstractDecoratorWriter
         }
     }
 
-
     /**
      * Write Solid Fill
      *
@@ -217,12 +181,7 @@ abstract class AbstractDecoratorWriter
     {
         // a:gradFill
         $objWriter->startElement('a:solidFill');
-
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
-        $objWriter->endElement();
-
+        $this->writeColor($objWriter, $pFill->getStartColor());
         $objWriter->endElement();
     }
 
@@ -243,23 +202,13 @@ abstract class AbstractDecoratorWriter
         // a:gs
         $objWriter->startElement('a:gs');
         $objWriter->writeAttribute('pos', '0');
-
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
-        $objWriter->endElement();
-
+        $this->writeColor($objWriter, $pFill->getStartColor());
         $objWriter->endElement();
 
         // a:gs
         $objWriter->startElement('a:gs');
         $objWriter->writeAttribute('pos', '100000');
-
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getEndColor()->getRGB());
-        $objWriter->endElement();
-
+        $this->writeColor($objWriter, $pFill->getEndColor());
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -288,23 +237,45 @@ abstract class AbstractDecoratorWriter
         // fgClr
         $objWriter->startElement('a:fgClr');
 
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getStartColor()->getRGB());
-        $objWriter->endElement();
+        $this->writeColor($objWriter, $pFill->getStartColor());
 
         $objWriter->endElement();
 
         // bgClr
         $objWriter->startElement('a:bgClr');
 
-        // srgbClr
-        $objWriter->startElement('a:srgbClr');
-        $objWriter->writeAttribute('val', $pFill->getEndColor()->getRGB());
-        $objWriter->endElement();
+        $this->writeColor($objWriter, $pFill->getEndColor());
 
         $objWriter->endElement();
 
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write Outline
+     * @param XMLWriter $objWriter
+     * @param Outline $oOutline
+     */
+    protected function writeOutline(XMLWriter $objWriter, $oOutline)
+    {
+        if (!$oOutline instanceof Outline) {
+            return;
+        }
+        // Width : pts
+        $width = $oOutline->getWidth();
+        // Width : pts => px
+        $width = CommonDrawing::pointsToPixels($width);
+        // Width : px => emu
+        $width = CommonDrawing::pixelsToEmu($width);
+
+        // a:ln
+        $objWriter->startElement('a:ln');
+        $objWriter->writeAttribute('w', $width);
+
+        // Fill
+        $this->writeFill($objWriter, $oOutline->getFill());
+
+        // > a:ln
         $objWriter->endElement();
     }
 

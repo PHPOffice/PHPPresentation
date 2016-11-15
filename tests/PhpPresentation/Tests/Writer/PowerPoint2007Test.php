@@ -78,7 +78,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
      * Test save with empty assignation
      *
      * @expectedException Exception
-     * @expectedExceptionMessage PhpPresentation object unassigned
+     * @expectedExceptionMessage No PhpPresentation assigned.
      */
     public function testSaveUnassignedException()
     {
@@ -129,6 +129,7 @@ class PowerPoint2007Test extends \PHPUnit_Framework_TestCase
 
     /**
      * Test LayoutPack
+     * @deprecated 0.7
      */
     public function testLayoutPack()
     {

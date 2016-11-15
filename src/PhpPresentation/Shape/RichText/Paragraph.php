@@ -56,6 +56,11 @@ class Paragraph implements ComparableInterface
     private $bulletStyle;
 
     /**
+     * @var integer
+     */
+    private $lineSpacing = 100;
+
+    /**
      * Hash index
      *
      * @var string
@@ -69,9 +74,9 @@ class Paragraph implements ComparableInterface
     {
         // Initialise variables
         $this->richTextElements = array();
-        $this->alignment        = new Alignment();
-        $this->font             = new Font();
-        $this->bulletStyle      = new Bullet();
+        $this->alignment = new Alignment();
+        $this->font = new Font();
+        $this->bulletStyle = new Bullet();
     }
 
     /**
@@ -87,7 +92,7 @@ class Paragraph implements ComparableInterface
     /**
      * Set alignment
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Alignment          $alignment
+     * @param  \PhpOffice\PhpPresentation\Style\Alignment $alignment
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
      */
     public function setAlignment(Alignment $alignment)
@@ -110,7 +115,7 @@ class Paragraph implements ComparableInterface
     /**
      * Set font
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
+     * @param  \PhpOffice\PhpPresentation\Style\Font $pFont Font
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
      */
@@ -134,7 +139,7 @@ class Paragraph implements ComparableInterface
     /**
      * Set bullet style
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Bullet             $style
+     * @param  \PhpOffice\PhpPresentation\Style\Bullet $style
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
      */
@@ -143,6 +148,21 @@ class Paragraph implements ComparableInterface
         $this->bulletStyle = $style;
 
         return $this;
+    }
+
+    /**
+     * Create text (can not be formatted !)
+     *
+     * @param  string $pText Text
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
+     * @throws \Exception
+     */
+    public function createText($pText = '')
+    {
+        $objText = new TextElement($pText);
+        $this->addText($objText);
+
+        return $objText;
     }
 
     /**
@@ -157,21 +177,6 @@ class Paragraph implements ComparableInterface
         $this->richTextElements[] = $pText;
 
         return $this;
-    }
-
-    /**
-     * Create text (can not be formatted !)
-     *
-     * @param  string                                   $pText Text
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
-     * @throws \Exception
-     */
-    public function createText($pText = '')
-    {
-        $objText = new TextElement($pText);
-        $this->addText($objText);
-
-        return $objText;
     }
 
     /**
@@ -191,7 +196,7 @@ class Paragraph implements ComparableInterface
     /**
      * Create text run (can be formatted)
      *
-     * @param  string                           $pText Text
+     * @param  string $pText Text
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Run
      * @throws \Exception
      */
@@ -202,6 +207,16 @@ class Paragraph implements ComparableInterface
         $this->addText($objText);
 
         return $objText;
+    }
+
+    /**
+     * Convert to string
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getPlainText();
     }
 
     /**
@@ -223,16 +238,6 @@ class Paragraph implements ComparableInterface
 
         // Return
         return $returnValue;
-    }
-
-    /**
-     * Convert to string
-     *
-     * @return string
-     */
-    public function __toString()
-    {
-        return $this->getPlainText();
     }
 
     /**
@@ -302,5 +307,23 @@ class Paragraph implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLineSpacing()
+    {
+        return $this->lineSpacing;
+    }
+
+    /**
+     * @param int $lineSpacing
+     * @return Paragraph
+     */
+    public function setLineSpacing($lineSpacing)
+    {
+        $this->lineSpacing = $lineSpacing;
+        return $this;
     }
 }

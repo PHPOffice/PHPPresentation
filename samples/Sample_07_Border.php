@@ -14,7 +14,7 @@ $objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties' . EOL;
-$objPHPPresentation->getProperties()->setCreator('PHPOffice')->setLastModifiedBy('PHPPresentation Team')->setTitle('Sample 01 Title')->setSubject('Sample 01 Subject')->setDescription('Sample 01 Description')->setKeywords('office 2007 openxml libreoffice odt php')->setCategory('Sample Category');
+$objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')->setLastModifiedBy('PHPPresentation Team')->setTitle('Sample 01 Title')->setSubject('Sample 01 Subject')->setDescription('Sample 01 Description')->setKeywords('office 2007 openxml libreoffice odt php')->setCategory('Sample Category');
 
 // Create slide
 echo date('H:i:s') . ' Create slide' . EOL;

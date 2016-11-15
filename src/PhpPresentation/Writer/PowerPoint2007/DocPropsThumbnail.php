@@ -4,8 +4,8 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 class DocPropsThumbnail extends AbstractDecoratorWriter
 {
-    /*
-     *
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
      */
     public function render()
     {

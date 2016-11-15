@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation\Writer;
 
+use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
@@ -24,15 +25,8 @@ use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 /**
  * \PhpOffice\PhpPresentation\Writer\Serialized
  */
-class Serialized implements WriterInterface
+class Serialized extends AbstractWriter implements WriterInterface
 {
-    /**
-     * Private PhpPresentation
-     *
-     * @var \PhpOffice\PhpPresentation\PhpPresentation
-     */
-    private $presentation;
-
     /**
      * Create a new \PhpOffice\PhpPresentation\Writer\Serialized
      *
@@ -40,8 +34,11 @@ class Serialized implements WriterInterface
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
     {
-        // Assign PhpPresentation
+        // Set PhpPresentation
         $this->setPhpPresentation($pPhpPresentation);
+
+        // Set ZIP Adapter
+        $this->setZipAdapter(new ZipArchiveAdapter());
     }
 
     /**
@@ -55,67 +52,30 @@ class Serialized implements WriterInterface
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty.");
         }
-        if (!is_null($this->presentation)) {
-            // Create new ZIP file and open it for writing
-            $objZip = new \ZipArchive();
+        $oPresentation = $this->getPhpPresentation();
 
-            // Try opening the ZIP file
-            if ($objZip->open($pFilename, \ZipArchive::CREATE) !== true) {
-                if ($objZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
-                    throw new \Exception("Could not open " . $pFilename . " for writing.");
+        // Create new ZIP file and open it for writing
+        $objZip = $this->getZipAdapter();
+
+        // Try opening the ZIP file
+        $objZip->open($pFilename);
+
+        // Add media
+        $slideCount = $oPresentation->getSlideCount();
+        for ($i = 0; $i < $slideCount; ++$i) {
+            for ($j = 0; $j < $oPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
+                if ($oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
+                    $imgTemp = $oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
+                    $objZip->addFromString('media/' . $imgTemp->getFilename(), file_get_contents($imgTemp->getPath()));
                 }
             }
-
-            // Add media
-            $slideCount = $this->presentation->getSlideCount();
-            for ($i = 0; $i < $slideCount; ++$i) {
-                for ($j = 0; $j < $this->presentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                    if ($this->presentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
-                        $imgTemp = $this->presentation->getSlide($i)->getShapeCollection()->offsetGet($j);
-                        $objZip->addFromString('media/' . $imgTemp->getFilename(), file_get_contents($imgTemp->getPath()));
-                    }
-                }
-            }
-
-            // Add PhpPresentation.xml to the document, which represents a PHP serialized PhpPresentation object
-            $objZip->addFromString('PhpPresentation.xml', $this->writeSerialized($this->presentation, $pFilename));
-
-            // Close file
-            if ($objZip->close() === false) {
-                throw new \Exception("Could not close zip file $pFilename.");
-            }
-        } else {
-            throw new \Exception("PhpPresentation object unassigned.");
         }
-    }
 
-    /**
-     * Get PhpPresentation object
-     *
-     * @return PhpPresentation
-     * @throws \Exception
-     */
-    public function getPhpPresentation()
-    {
-        if (!is_null($this->presentation)) {
-            return $this->presentation;
-        } else {
-            throw new \Exception("No PhpPresentation assigned.");
-        }
-    }
+        // Add PhpPresentation.xml to the document, which represents a PHP serialized PhpPresentation object
+        $objZip->addFromString('PhpPresentation.xml', $this->writeSerialized($oPresentation, $pFilename));
 
-    /**
-     * Get PhpPresentation object
-     *
-     * @param  PhpPresentation                   $pPhpPresentation PhpPresentation object
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\Serialized
-     */
-    public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
-    {
-        $this->presentation = $pPhpPresentation;
-
-        return $this;
+        // Close file
+        $objZip->close();
     }
 
     /**

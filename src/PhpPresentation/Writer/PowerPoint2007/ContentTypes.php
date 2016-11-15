@@ -19,8 +19,6 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
-use PhpOffice\Common\File;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
@@ -29,10 +27,12 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
  */
 class ContentTypes extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @throws \Exception
+     */
     public function render()
     {
-        $oLayoutPack = new PowerPoint2007\LayoutPack\PackDefault();
-
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
@@ -49,12 +49,6 @@ class ContentTypes extends AbstractDecoratorWriter
         // XML
         $this->writeDefaultContentType($objWriter, 'xml', 'application/xml');
 
-        // Themes
-        $masterSlides = $oLayoutPack->getMasterSlides();
-        foreach ($masterSlides as $masterSlide) {
-            $this->writeOverrideContentType($objWriter, '/ppt/theme/theme' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml');
-        }
-
         // Presentation
         $this->writeOverrideContentType($objWriter, '/ppt/presentation.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml');
 
@@ -69,16 +63,17 @@ class ContentTypes extends AbstractDecoratorWriter
         $this->writeOverrideContentType($objWriter, '/docProps/custom.xml', 'application/vnd.openxmlformats-officedocument.custom-properties+xml');
 
         // Slide masters
-        $masterSlides = $oLayoutPack->getMasterSlides();
-        foreach ($masterSlides as $masterSlide) {
-            $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml');
-        }
-
-        // Slide layouts
-        $slideLayouts = $oLayoutPack->getLayouts();
-        $numSlideLayouts = count($slideLayouts);
-        for ($i = 0; $i < $numSlideLayouts; ++$i) {
-            $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/slideLayout' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml');
+        $sldLayoutNr = 0;
+        $sldLayoutId = time() + 689016272; // requires minimum value of 2 147 483 648
+        foreach ($this->oPresentation->getAllMasterSlides() as $idx => $oSlideMaster) {
+            $oSlideMaster->setRelsIndex($idx + 1);
+            $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/slideMaster' . $oSlideMaster->getRelsIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml');
+            $this->writeOverrideContentType($objWriter, '/ppt/theme/theme' . $oSlideMaster->getRelsIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml');
+            foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
+                $oSlideLayout->layoutNr = ++$sldLayoutNr;
+                $oSlideLayout->layoutId = ++$sldLayoutId;
+                $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideLayout+xml');
+            }
         }
 
         // Slides
@@ -87,26 +82,6 @@ class ContentTypes extends AbstractDecoratorWriter
             $this->writeOverrideContentType($objWriter, '/ppt/slides/slide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slide+xml');
             if ($this->oPresentation->getSlide($i)->getNote()->getShapeCollection()->count() > 0) {
                 $this->writeOverrideContentType($objWriter, '/ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml');
-            }
-        }
-
-        // Add layoutpack content types
-        $otherRelations = $oLayoutPack->getMasterSlideRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/' . $otherRelation['target'], $otherRelation['contentType']);
-            }
-        }
-        $otherRelations = $oLayoutPack->getThemeRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/theme/' . $otherRelation['target'], $otherRelation['contentType']);
-            }
-        }
-        $otherRelations = $oLayoutPack->getLayoutRelations();
-        foreach ($otherRelations as $otherRelation) {
-            if (strpos($otherRelation['target'], 'http://') !== 0 && $otherRelation['contentType'] != '') {
-                $this->writeOverrideContentType($objWriter, '/ppt/slideLayouts/' . $otherRelation['target'], $otherRelation['contentType']);
             }
         }
 
@@ -128,24 +103,13 @@ class ContentTypes extends AbstractDecoratorWriter
         // Other media content types
         $mediaCount = $this->getDrawingHashTable()->count();
         for ($i = 0; $i < $mediaCount; ++$i) {
-            $extension = '';
-            $mimeType  = '';
-
             $shapeIndex = $this->getDrawingHashTable()->getByIndex($i);
             if ($shapeIndex instanceof ShapeChart) {
                 // Chart content type
                 $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $shapeIndex->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
             } else {
-                if ($shapeIndex instanceof ShapeDrawing) {
-                    $extension = strtolower($shapeIndex->getExtension());
-                    $mimeType  = $this->getImageMimeType($shapeIndex->getPath());
-                } elseif ($shapeIndex instanceof MemoryDrawing) {
-                    $extension = strtolower($shapeIndex->getMimeType());
-                    $extension = explode('/', $extension);
-                    $extension = $extension[1];
-
-                    $mimeType = $shapeIndex->getMimeType();
-                }
+                $extension = strtolower($shapeIndex->getExtension());
+                $mimeType = $shapeIndex->getMimeType();
 
                 if (!isset($aMediaContentTypes[$extension])) {
                     $aMediaContentTypes[$extension] = $mimeType;
@@ -163,40 +127,6 @@ class ContentTypes extends AbstractDecoratorWriter
     }
 
     /**
-     * Get image mime type
-     *
-     * @param  string    $pFile Filename
-     * @return string    Mime Type
-     * @throws \Exception
-     */
-    private function getImageMimeType($pFile = '')
-    {
-        if (strpos($pFile, 'zip://') === 0) {
-            $pZIPFile = str_replace('zip://', '', $pFile);
-            $pZIPFile = substr($pZIPFile, 0, strpos($pZIPFile, '#'));
-            if (!File::fileExists($pZIPFile)) {
-                throw new \Exception("File $pFile does not exist");
-            }
-            $pImgFile = substr($pFile, strpos($pFile, '#') + 1);
-            $oArchive = new \ZipArchive();
-            $oArchive->open($pZIPFile);
-            if (!function_exists('getimagesizefromstring')) {
-                $uri = 'data://application/octet-stream;base64,' . base64_encode($oArchive->getFromName($pImgFile));
-                $image = getimagesize($uri);
-            } else {
-                $image = getimagesizefromstring($oArchive->getFromName($pImgFile));
-            }
-        } else {
-            if (!File::fileExists($pFile)) {
-                throw new \Exception("File $pFile does not exist");
-            }
-            $image = getimagesize($pFile);
-        }
-
-        return image_type_to_mime_type($image[2]);
-    }
-
-    /**
      * Write Default content type
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
@@ -206,15 +136,14 @@ class ContentTypes extends AbstractDecoratorWriter
      */
     private function writeDefaultContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
     {
-        if ($pPartname != '' && $pContentType != '') {
-            // Write content type
-            $objWriter->startElement('Default');
-            $objWriter->writeAttribute('Extension', $pPartname);
-            $objWriter->writeAttribute('ContentType', $pContentType);
-            $objWriter->endElement();
-        } else {
+        if ($pPartname == '' || $pContentType == '') {
             throw new \Exception("Invalid parameters passed.");
         }
+        // Write content type
+        $objWriter->startElement('Default');
+        $objWriter->writeAttribute('Extension', $pPartname);
+        $objWriter->writeAttribute('ContentType', $pContentType);
+        $objWriter->endElement();
     }
 
     /**
@@ -227,14 +156,13 @@ class ContentTypes extends AbstractDecoratorWriter
      */
     private function writeOverrideContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
     {
-        if ($pPartname != '' && $pContentType != '') {
-            // Write content type
-            $objWriter->startElement('Override');
-            $objWriter->writeAttribute('PartName', $pPartname);
-            $objWriter->writeAttribute('ContentType', $pContentType);
-            $objWriter->endElement();
-        } else {
+        if ($pPartname == '' || $pContentType == '') {
             throw new \Exception("Invalid parameters passed.");
         }
+        // Write content type
+        $objWriter->startElement('Override');
+        $objWriter->writeAttribute('PartName', $pPartname);
+        $objWriter->writeAttribute('ContentType', $pContentType);
+        $objWriter->endElement();
     }
 }

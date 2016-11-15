@@ -45,6 +45,7 @@ function fnSlide_Area(PhpPresentation $objPHPPresentation) {
     $series->setShowSeriesName(true);
     $series->setShowValue(true);
     $series->getFill()->setStartColor(new Color('FF93A9CE'));
+    $series->setLabelPosition(Series::LABEL_INSIDEEND);
     $areaChart->addSeries($series);
     
     // Create a shape (chart)
@@ -210,6 +211,7 @@ function fnSlide_BarStacked(PhpPresentation $objPHPPresentation) {
     $shape->getLegend()->getBorder()->setLineStyle( Border::LINE_SINGLE );
     $shape->getLegend()->getFont()->setItalic( true );
 }
+
 function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
@@ -493,17 +495,19 @@ function fnSlide_Scatter(PhpPresentation $objPHPPresentation) {
     $lineChart = new Scatter();
     $series = new Series('Downloads', $seriesData);
     $series->setShowSeriesName(true);
+    $series->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_DASH);
+    $series->getMarker()->setSize(10);
     $lineChart->addSeries($series);
     
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
     $shape->setName('PHPPresentation Daily Download Distribution')
-    ->setResizeProportional(false)
-    ->setHeight(550)
-    ->setWidth(700)
-    ->setOffsetX(120)
-    ->setOffsetY(80);
+        ->setResizeProportional(false)
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
     $shape->setShadow($oShadow);
     $shape->setFill($oFill);
     $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
@@ -522,7 +526,7 @@ $objPHPPresentation = new PhpPresentation();
 
 // Set properties
 echo date('H:i:s') . ' Set properties'.EOL;
-$objPHPPresentation->getProperties()->setCreator('PHPOffice')
+$objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')
                                   ->setLastModifiedBy('PHPPresentation Team')
                                   ->setTitle('Sample 07 Title')
                                   ->setSubject('Sample 07 Subject')

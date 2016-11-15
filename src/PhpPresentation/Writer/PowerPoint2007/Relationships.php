@@ -2,15 +2,15 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
+use PhpOffice\PhpPresentation\Shape\Comment;
+use PhpOffice\PhpPresentation\Shape\Comment\Author;
 use PhpOffice\Common\XMLWriter;
 
 class Relationships extends AbstractDecoratorWriter
 {
     /**
      * Add relationships to ZIP file
-     *
-     * @return \ZipArchive
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
      */
     public function render()
     {
@@ -37,28 +37,27 @@ class Relationships extends AbstractDecoratorWriter
         // Relationships
         $objWriter->startElement('Relationships');
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
-
+        // Relationship ppt/presentation.xml
+        $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument', 'ppt/presentation.xml');
+        // Relationship docProps/core.xml
+        $this->writeRelationship($objWriter, 2, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties', 'docProps/core.xml');
+        // Relationship docProps/app.xml
+        $this->writeRelationship($objWriter, 3, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties', 'docProps/app.xml');
         // Relationship docProps/custom.xml
         $this->writeRelationship($objWriter, 4, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties', 'docProps/custom.xml');
 
-        // Relationship docProps/app.xml
-        $this->writeRelationship($objWriter, 3, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties', 'docProps/app.xml');
-
-        // Relationship docProps/core.xml
-        $this->writeRelationship($objWriter, 2, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties', 'docProps/core.xml');
-
-        // Relationship ppt/presentation.xml
-        $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument', 'ppt/presentation.xml');
-
+        $idxRelation = 5;
+        // Thumbnail
         if ($this->getPresentation()->getPresentationProperties()->getThumbnailPath()) {
             $pathThumbnail = file_get_contents($this->getPresentation()->getPresentationProperties()->getThumbnailPath());
             $gdImage = imagecreatefromstring($pathThumbnail);
             if ($gdImage) {
                 imagedestroy($gdImage);
                 // Relationship docProps/thumbnail.jpeg
-                $this->writeRelationship($objWriter, 5, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
+                $this->writeRelationship($objWriter, $idxRelation, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
             }
         }
+        // ++$idxRelation
 
         $objWriter->endElement();
 
@@ -87,12 +86,9 @@ class Relationships extends AbstractDecoratorWriter
         // Relation id
         $relationId = 1;
 
-        $oLayoutPack = new PackDefault();
-
-        $masterSlides = $oLayoutPack->getMasterSlides();
-        foreach ($masterSlides as $masterSlide) {
+        foreach ($this->getPresentation()->getAllMasterSlides() as $oMasterSlide) {
             // Relationship slideMasters/slideMasterX.xml
-            $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', 'slideMasters/slideMaster' . $masterSlide['masterid'] . '.xml');
+            $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', 'slideMasters/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml');
         }
 
         // Add slide theme (only one!)
@@ -107,8 +103,23 @@ class Relationships extends AbstractDecoratorWriter
 
         $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/presProps', 'presProps.xml');
         $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/viewProps', 'viewProps.xml');
-        $this->writeRelationship($objWriter, $relationId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles', 'tableStyles.xml');
+        $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles', 'tableStyles.xml');
 
+
+        // Comments Authors
+        foreach ($this->getPresentation()->getAllSlides() as $oSlide) {
+            foreach ($oSlide->getShapeCollection() as $oShape) {
+                if (!($oShape instanceof Comment)) {
+                    continue;
+                }
+                $oAuthor = $oShape->getAuthor();
+                if (!($oAuthor instanceof Author)) {
+                    continue;
+                }
+                $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/commentAuthors', 'commentAuthors.xml');
+                break 2;
+            }
+        }
         $objWriter->endElement();
 
         // Return

@@ -31,18 +31,18 @@ class AreaTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Area();
 
-        $this->assertInternalType('array', $object->getData());
-        $this->assertEmpty($object->getData());
+        $this->assertInternalType('array', $object->getSeries());
+        $this->assertEmpty($object->getSeries());
 
         $array = array(
             new Series(),
             new Series(),
         );
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setData());
-        $this->assertEmpty($object->getData());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setData($array));
-        $this->assertCount(count($array), $object->getData());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setSeries());
+        $this->assertEmpty($object->getSeries());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setSeries($array));
+        $this->assertCount(count($array), $object->getSeries());
     }
 
     public function testSeries()
@@ -50,7 +50,7 @@ class AreaTest extends \PHPUnit_Framework_TestCase
         $object = new Area();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->addSeries(new Series()));
-        $this->assertCount(1, $object->getData());
+        $this->assertCount(1, $object->getSeries());
     }
 
     public function testHashCode()

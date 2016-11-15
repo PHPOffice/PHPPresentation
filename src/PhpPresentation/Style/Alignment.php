@@ -39,6 +39,12 @@ class Alignment implements ComparableInterface
     const VERTICAL_TOP                      = 't';
     const VERTICAL_CENTER                   = 'ctr';
 
+    private $supportedStyles = array(
+        self::HORIZONTAL_GENERAL,
+        self::HORIZONTAL_LEFT,
+        self::HORIZONTAL_RIGHT,
+    );
+
     /**
      * Horizontal
      *
@@ -58,28 +64,28 @@ class Alignment implements ComparableInterface
      *
      * @var int
      */
-    private $level;
+    private $level = 0;
 
     /**
      * Indent - only possible with horizontal alignment left and right
      *
      * @var int
      */
-    private $indent;
+    private $indent = 0;
 
     /**
      * Margin left - only possible with horizontal alignment left and right
      *
      * @var int
      */
-    private $marginLeft;
+    private $marginLeft = 0;
 
     /**
      * Margin right - only possible with horizontal alignment left and right
      *
      * @var int
      */
-    private $marginRight;
+    private $marginRight = 0;
 
     /**
      * Hash index
@@ -96,10 +102,6 @@ class Alignment implements ComparableInterface
         // Initialise values
         $this->horizontal          = self::HORIZONTAL_LEFT;
         $this->vertical            = self::VERTICAL_BASE;
-        $this->level               = 0;
-        $this->indent              = 0;
-        $this->marginLeft          = 0;
-        $this->marginRight         = 0;
     }
 
     /**
@@ -199,10 +201,8 @@ class Alignment implements ComparableInterface
      */
     public function setIndent($pValue = 0)
     {
-        if ($pValue > 0) {
-            if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
-                $pValue = 0; // indent not supported
-            }
+        if ($pValue > 0 && !in_array($this->getHorizontal(), $this->supportedStyles)) {
+            $pValue = 0; // indent not supported
         }
 
         $this->indent = $pValue;
@@ -228,10 +228,8 @@ class Alignment implements ComparableInterface
      */
     public function setMarginLeft($pValue = 0)
     {
-        if ($pValue > 0) {
-            if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
-                $pValue = 0; // margin left not supported
-            }
+        if ($pValue > 0 && !in_array($this->getHorizontal(), $this->supportedStyles)) {
+            $pValue = 0; // margin left not supported
         }
 
         $this->marginLeft = $pValue;
@@ -257,10 +255,8 @@ class Alignment implements ComparableInterface
      */
     public function setMarginRight($pValue = 0)
     {
-        if ($pValue > 0) {
-            if ($this->getHorizontal() != self::HORIZONTAL_GENERAL && $this->getHorizontal() != self::HORIZONTAL_LEFT && $this->getHorizontal() != self::HORIZONTAL_RIGHT) {
-                $pValue = 0; // margin left not supported
-            }
+        if ($pValue > 0 && !in_array($this->getHorizontal(), $this->supportedStyles)) {
+            $pValue = 0; // margin right not supported
         }
 
         $this->marginRight = $pValue;

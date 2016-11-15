@@ -18,11 +18,11 @@
 namespace PhpOffice\PhpPresentation\Writer;
 
 use DirectoryIterator;
+use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart as ChartShape;
-use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
@@ -30,22 +30,8 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007
  */
-class PowerPoint2007 implements WriterInterface
+class PowerPoint2007 extends AbstractWriter implements WriterInterface
 {
-    /**
-     * Private PhpPresentation
-     *
-     * @var \PhpOffice\PhpPresentation\PhpPresentation
-     */
-    protected $presentation;
-
-    /**
-     * Private unique hash table
-     *
-     * @var \PhpOffice\PhpPresentation\HashTable
-     */
-    protected $drawingHashTable;
-
     /**
      * Use disk caching where possible?
      *
@@ -62,13 +48,13 @@ class PowerPoint2007 implements WriterInterface
 
     /**
      * Layout pack to use
-     *
+     * @deprecated 0.7
      * @var \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
      */
     protected $layoutPack;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Writer\PowerPoint2007
+     * Create a new PowerPoint2007 file
      *
      * @param PhpPresentation $pPhpPresentation
      */
@@ -84,7 +70,9 @@ class PowerPoint2007 implements WriterInterface
         $this->layoutPack = new PackDefault();
 
         // Set HashTable variables
-        $this->drawingHashTable = new HashTable();
+        $this->oDrawingHashTable = new HashTable();
+
+        $this->setZipAdapter(new ZipArchiveAdapter());
     }
 
     /**
@@ -98,9 +86,8 @@ class PowerPoint2007 implements WriterInterface
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty");
         }
-        if (empty($this->presentation)) {
-            throw new \Exception("PhpPresentation object unassigned");
-        }
+        $oPresentation = $this->getPhpPresentation();
+
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
         if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
@@ -111,40 +98,39 @@ class PowerPoint2007 implements WriterInterface
         }
 
         // Create drawing dictionary
-        $this->drawingHashTable->addFromSource($this->allDrawings());
+        $this->getDrawingHashTable()->addFromSource($this->allDrawings());
 
-        $oZip = new \ZipArchive();
-
-        // Try opening the ZIP file
-        if ($oZip->open($pFilename, \ZipArchive::OVERWRITE) !== true) {
-            if ($oZip->open($pFilename, \ZipArchive::CREATE) !== true) {
-                throw new \Exception("Could not open " . $pFilename . " for writing.");
-            }
-        }
+        $oZip = $this->getZipAdapter();
+        $oZip->open($pFilename);
 
         $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'PowerPoint2007');
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;
             }
-            $class = __NAMESPACE__.'\\PowerPoint2007\\'.$oFile->getBasename('.php');
+
+            $class = __NAMESPACE__ . '\\PowerPoint2007\\' . $oFile->getBasename('.php');
             $o = new \ReflectionClass($class);
 
             if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')) {
                 continue;
             }
+            $arrayFiles[$oFile->getBasename('.php')] = $o;
+        }
+
+        ksort($arrayFiles);
+
+        foreach ($arrayFiles as $o) {
             $oService = $o->newInstance();
             $oService->setZip($oZip);
-            $oService->setPresentation($this->presentation);
-            $oService->setDrawingHashTable($this->drawingHashTable);
+            $oService->setPresentation($oPresentation);
+            $oService->setDrawingHashTable($this->getDrawingHashTable());
             $oZip = $oService->render();
             unset($oService);
         }
 
         // Close file
-        if ($oZip->close() === false) {
-            throw new \Exception("Could not close zip file $pFilename.");
-        }
+        $oZip->close();
 
         // If a temporary file was used, copy it to the correct file stream
         if ($originalFilename != $pFilename) {
@@ -155,33 +141,6 @@ class PowerPoint2007 implements WriterInterface
                 throw new \Exception('The file '.$pFilename.' could not be removed.');
             }
         }
-    }
-
-    /**
-     * Get PhpPresentation object
-     *
-     * @return PhpPresentation
-     * @throws \Exception
-     */
-    public function getPhpPresentation()
-    {
-        if (empty($this->presentation)) {
-            throw new \Exception("No PhpPresentation assigned.");
-        }
-        return $this->presentation;
-    }
-
-    /**
-     * Set PhpPresentation object
-     *
-     * @param  PhpPresentation $pPhpPresentation PhpPresentation object
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
-     */
-    public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
-    {
-        $this->presentation = $pPhpPresentation;
-        return $this;
     }
 
     /**
@@ -207,11 +166,10 @@ class PowerPoint2007 implements WriterInterface
         $this->useDiskCaching = $pValue;
 
         if (!is_null($pDirectory)) {
-            if (is_dir($pDirectory)) {
-                $this->diskCachingDir = $pDirectory;
-            } else {
+            if (!is_dir($pDirectory)) {
                 throw new \Exception("Directory does not exist: $pDirectory");
             }
+            $this->diskCachingDir = $pDirectory;
         }
 
         return $this;
@@ -230,6 +188,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Get layout pack to use
      *
+     * @deprecated 0.7
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
      */
     public function getLayoutPack()
@@ -240,6 +199,7 @@ class PowerPoint2007 implements WriterInterface
     /**
      * Set layout pack to use
      *
+     * @deprecated 0.7
      * @param \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack $pValue
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
      */
@@ -248,43 +208,5 @@ class PowerPoint2007 implements WriterInterface
         $this->layoutPack = $pValue;
 
         return $this;
-    }
-
-    /**
-     * Get an array of all drawings
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
-     * @throws \Exception
-     */
-    protected function allDrawings()
-    {
-        // Get an array of all drawings
-        $aDrawings  = array();
-
-        // Loop trough PhpPresentation
-        foreach ($this->getPhpPresentation()->getAllSlides() as $oSlide) {
-            $oCollection = $oSlide->getShapeCollection();
-            if ($oCollection->count() <= 0) {
-                continue;
-            }
-            $oIterator = $oCollection->getIterator();
-            while ($oIterator->valid()) {
-                if ($oIterator->current() instanceof AbstractDrawing && !($oIterator->current() instanceof Table)) {
-                    $aDrawings[] = $oIterator->current();
-                } elseif ($oIterator->current() instanceof Group) {
-                    $oSubIterator = $oIterator->current()->getShapeCollection()->getIterator();
-                    while ($oSubIterator->valid()) {
-                        if ($oSubIterator->current() instanceof AbstractDrawing && !($oSubIterator->current() instanceof Table)) {
-                            $aDrawings[] = $oSubIterator->current();
-                        }
-                        $oSubIterator->next();
-                    }
-                }
-
-                $oIterator->next();
-            }
-        }
-
-        return $aDrawings;
     }
 }

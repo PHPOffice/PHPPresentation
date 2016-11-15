@@ -18,19 +18,18 @@
 namespace PhpOffice\PhpPresentation\Reader;
 
 use PhpOffice\Common\Microsoft\OLERead;
-use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\MemoryDrawing;
-use PhpOffice\PhpPresentation\Style\Alignment;
-use PhpOffice\PhpPresentation\Style\Color;
-use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\AbstractShape;
-use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Shape;
+use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Line;
-use PhpOffice\Common\Text;
-use PhpOffice\PhpPresentation\Shape\Group;
-use PhpOffice\PhpPresentation\Shape\PhpOffice\PhpPresentation\Shape;
+use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Bullet;
 
 /**
  * Serialized format reader
@@ -465,10 +464,10 @@ class PowerPoint97 implements ReaderInterface
         $stream = $this->streamPictures;
 
         $pos = 0;
-        $readSuccess = true;
         do {
             $arrayRH = $this->loadRecordHeader($stream, $pos);
             $pos += 8;
+            $readSuccess = false;
             if ($arrayRH['recVer'] == 0x00 && ($arrayRH['recType'] == 0xF007 || ($arrayRH['recType'] >= 0xF018 && $arrayRH['recType'] <= 0xF117))) {
                 //@link : http://msdn.microsoft.com/en-us/library/dd950560(v=office.12).aspx
                 if ($arrayRH['recType'] == 0xF007) {
@@ -482,8 +481,7 @@ class PowerPoint97 implements ReaderInterface
                         $this->arrayPictures[] = $arrayRecord['picture'];
                     }
                 }
-            } else {
-                $readSuccess = false;
+                $readSuccess = true;
             }
         } while ($readSuccess === true);
     }
@@ -678,11 +676,11 @@ class PowerPoint97 implements ReaderInterface
         // http://sourceforge.net/tracker/index.php?func=detail&aid=1487372&group_id=99160&atid=623334
         // Hacked by Andreas Rehm 2006 to ensure correct result of the <<24 block on 32 and 64bit systems
         $or24 = ord($data[$pos + 3]);
+
+        $ord24 = ($or24 & 127) << 24;
         if ($or24 >= 128) {
             // negative number
             $ord24 = -abs((256 - $or24) << 24);
-        } else {
-            $ord24 = ($or24 & 127) << 24;
         }
         return ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | $ord24;
     }
@@ -826,37 +824,36 @@ class PowerPoint97 implements ReaderInterface
                     $fontCollection['recLen'] -= 8;
                     if ($fontEntityAtom['recVer'] != 0x0 || $fontEntityAtom['recInstance'] > 128 || $fontEntityAtom['recType'] != self::RT_FONTENTITYATOM) {
                         throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > RT_Environment > RT_FontCollection > RT_FontEntityAtom).');
-                    } else {
-                        $string = '';
-                        for ($inc = 0; $inc < 32; $inc++) {
-                            $char = self::getInt2d($stream, $pos);
-                            $pos += 2;
-                            $fontCollection['recLen'] -= 2;
-                            $string .= chr($char);
-                        }
-                        $this->arrayFonts[] = $string;
-
-                        // lfCharSet (1 byte)
-                        $pos += 1;
-                        $fontCollection['recLen'] -= 1;
-
-                        // fEmbedSubsetted (1 bit)
-                        // unused (7 bits)
-                        $pos += 1;
-                        $fontCollection['recLen'] -= 1;
-
-                        // rasterFontType (1 bit)
-                        // deviceFontType (1 bit)
-                        // truetypeFontType (1 bit)
-                        // fNoFontSubstitution (1 bit)
-                        // reserved (4 bits)
-                        $pos += 1;
-                        $fontCollection['recLen'] -= 1;
-
-                        // lfPitchAndFamily (1 byte)
-                        $pos += 1;
-                        $fontCollection['recLen'] -= 1;
                     }
+                    $string = '';
+                    for ($inc = 0; $inc < 32; $inc++) {
+                        $char = self::getInt2d($stream, $pos);
+                        $pos += 2;
+                        $fontCollection['recLen'] -= 2;
+                        $string .= chr($char);
+                    }
+                    $this->arrayFonts[] = $string;
+
+                    // lfCharSet (1 byte)
+                    $pos += 1;
+                    $fontCollection['recLen'] -= 1;
+
+                    // fEmbedSubsetted (1 bit)
+                    // unused (7 bits)
+                    $pos += 1;
+                    $fontCollection['recLen'] -= 1;
+
+                    // rasterFontType (1 bit)
+                    // deviceFontType (1 bit)
+                    // truetypeFontType (1 bit)
+                    // fNoFontSubstitution (1 bit)
+                    // reserved (4 bits)
+                    $pos += 1;
+                    $fontCollection['recLen'] -= 1;
+
+                    // lfPitchAndFamily (1 byte)
+                    $pos += 1;
+                    $fontCollection['recLen'] -= 1;
 
                     $fontEmbedData1 = $this->loadRecordHeader($stream, $pos);
                     if ($fontEmbedData1['recVer'] == 0x0 && $fontEmbedData1['recInstance'] >= 0x000 && $fontEmbedData1['recInstance'] <= 0x003 && $fontEmbedData1['recType'] == self::RT_FONTEMBEDDATABLOB) {
@@ -889,7 +886,6 @@ class PowerPoint97 implements ReaderInterface
                         $pos += $fontEmbedData4['recLen'];
                         $fontCollection['recLen'] -= $fontEmbedData4['recLen'];
                     }
-
                 } while ($fontCollection['recLen'] > 0);
             }
         }
@@ -1422,7 +1418,7 @@ class PowerPoint97 implements ReaderInterface
                     $drawingPib = $shpPrimaryOptions['pib'];
                     if (isset($this->arrayPictures[$drawingPib - 1])) {
                         $gdImage = imagecreatefromstring($this->arrayPictures[$drawingPib - 1]);
-                        $arrayReturn['shape'] = new MemoryDrawing();
+                        $arrayReturn['shape'] = new Drawing\Gd();
                         $arrayReturn['shape']->setImageResource($gdImage);
                     }
                 } elseif (isset($shpPrimaryOptions['line']) && $shpPrimaryOptions['line']) {

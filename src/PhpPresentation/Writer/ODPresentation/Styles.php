@@ -1,26 +1,10 @@
 <?php
-/**
- * This file is part of PHPPresentation - A pure PHP library for reading and writing
- * presentations documents.
- *
- * PHPPresentation is free software distributed under the terms of the GNU Lesser
- * General Public License version 3 as published by the Free Software Foundation.
- *
- * For the full copyright and license information, please read the LICENSE
- * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
- *
- * @link        https://github.com/PHPOffice/PHPPresentation
- * @copyright   2009-2015 PHPPresentation contributors
- * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- */
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
@@ -28,37 +12,40 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Border;
 
-/**
- * \PhpOffice\PhpPresentation\Writer\ODPresentation\Styles
- */
-class Styles extends AbstractPart
+class Styles extends AbstractDecoratorWriter
 {
     /**
      * Stores font styles draw:gradient nodes
      *
      * @var array
      */
-    private $arrayGradient = array();
+    protected $arrayGradient = array();
     /**
      * Stores font styles draw:stroke-dash nodes
      *
      * @var array
      */
-    private $arrayStrokeDash = array();
-    
+    protected $arrayStrokeDash = array();
+
+    /**
+     * @return ZipInterface
+     */
+    public function render()
+    {
+        $this->getZip()->addFromString('styles.xml', $this->writePart());
+        return $this->getZip();
+    }
+
     /**
      * Write Meta file to XML format
      *
-     * @param  PhpPresentation $pPhpPresentation
      * @return string        XML Output
      * @throws \Exception
      */
-    public function writePart(PhpPresentation $pPhpPresentation)
+    protected function writePart()
     {
         // Create XML writer
-        $objWriter = $this->getXMLWriter();
-
-        // XML header
+        $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
         $objWriter->startDocument('1.0', 'UTF-8');
 
         // office:document-meta
@@ -97,7 +84,10 @@ class Styles extends AbstractPart
         $objWriter->writeAttribute('office:version', '1.2');
 
         // Variables
-        $stylePageLayout = $pPhpPresentation->getLayout()->getDocumentLayout();
+        $stylePageLayout = $this->getPresentation()->getLayout()->getDocumentLayout();
+        if (empty($stylePageLayout)) {
+            $stylePageLayout = 'sPL0';
+        }
 
         // office:styles
         $objWriter->startElement('office:styles');
@@ -114,7 +104,7 @@ class Styles extends AbstractPart
         // > style:style
         $objWriter->endElement();
 
-        foreach ($pPhpPresentation->getAllSlides() as $keySlide => $oSlide) {
+        foreach ($this->getPresentation()->getAllSlides() as $keySlide => $oSlide) {
             foreach ($oSlide->getShapeCollection() as $shape) {
                 if ($shape instanceof Table) {
                     $this->writeTableStyle($objWriter, $shape);
@@ -136,24 +126,20 @@ class Styles extends AbstractPart
         $objWriter->startElement('office:automatic-styles');
         // style:page-layout
         $objWriter->startElement('style:page-layout');
-        if (empty($stylePageLayout)) {
-            $objWriter->writeAttribute('style:name', 'sPL0');
-        } else {
-            $objWriter->writeAttribute('style:name', $stylePageLayout);
-        }
+        $objWriter->writeAttribute('style:name', $stylePageLayout);
         // style:page-layout-properties
         $objWriter->startElement('style:page-layout-properties');
         $objWriter->writeAttribute('fo:margin-top', '0cm');
         $objWriter->writeAttribute('fo:margin-bottom', '0cm');
         $objWriter->writeAttribute('fo:margin-left', '0cm');
         $objWriter->writeAttribute('fo:margin-right', '0cm');
-        $objWriter->writeAttribute('fo:page-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels($pPhpPresentation->getLayout()->getCX())), 1) . 'cm');
-        $objWriter->writeAttribute('fo:page-height', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels($pPhpPresentation->getLayout()->getCY())), 1) . 'cm');
-        if ($pPhpPresentation->getLayout()->getCX() > $pPhpPresentation->getLayout()->getCY()) {
-            $objWriter->writeAttribute('style:print-orientation', 'landscape');
-        } else {
-            $objWriter->writeAttribute('style:print-orientation', 'portrait');
+        $objWriter->writeAttribute('fo:page-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels($this->getPresentation()->getLayout()->getCX())), 1) . 'cm');
+        $objWriter->writeAttribute('fo:page-height', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::emuToPixels($this->getPresentation()->getLayout()->getCY())), 1) . 'cm');
+        $printOrientation = 'portrait';
+        if ($this->getPresentation()->getLayout()->getCX() > $this->getPresentation()->getLayout()->getCY()) {
+            $printOrientation = 'landscape';
         }
+        $objWriter->writeAttribute('style:print-orientation', $printOrientation);
         $objWriter->endElement();
         $objWriter->endElement();
         $objWriter->endElement();
@@ -164,40 +150,38 @@ class Styles extends AbstractPart
         $objWriter->startElement('style:master-page');
         $objWriter->writeAttribute('style:name', 'Standard');
         $objWriter->writeAttribute('style:display-name', 'Standard');
-        if (empty($stylePageLayout)) {
-            $objWriter->writeAttribute('style:page-layout-name', 'sPL0');
-        } else {
-            $objWriter->writeAttribute('style:page-layout-name', $stylePageLayout);
-        }
+        $objWriter->writeAttribute('style:page-layout-name', $stylePageLayout);
         $objWriter->writeAttribute('draw:style-name', 'sPres0');
         $objWriter->endElement();
         $objWriter->endElement();
-        
+
         $objWriter->endElement();
 
         // Return
         return $objWriter->getData();
     }
-    
+
     /**
      * Write the default style information for a RichText shape
      *
      * @param XMLWriter $objWriter
      * @param RichText $shape
      */
-    public function writeRichTextStyle(XMLWriter $objWriter, RichText $shape)
+    protected function writeRichTextStyle(XMLWriter $objWriter, RichText $shape)
     {
-        if ($shape->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR || $shape->getFill()->getFillType() == Fill::FILL_GRADIENT_PATH) {
-            if (!in_array($shape->getFill()->getHashCode(), $this->arrayGradient)) {
-                $this->writeGradientFill($objWriter, $shape->getFill());
+        $oFill = $shape->getFill();
+        if ($oFill->getFillType() == Fill::FILL_GRADIENT_LINEAR || $oFill->getFillType() == Fill::FILL_GRADIENT_PATH) {
+            if (!in_array($oFill->getHashCode(), $this->arrayGradient)) {
+                $this->writeGradientFill($objWriter, $oFill);
             }
         }
-        if ($shape->getBorder()->getDashStyle() != Border::DASH_SOLID) {
-            if (!in_array($shape->getBorder()->getDashStyle(), $this->arrayStrokeDash)) {
+        $oBorder = $shape->getBorder();
+        if ($oBorder->getDashStyle() != Border::DASH_SOLID) {
+            if (!in_array($oBorder->getDashStyle(), $this->arrayStrokeDash)) {
                 $objWriter->startElement('draw:stroke-dash');
-                $objWriter->writeAttribute('draw:name', 'strokeDash_'.$shape->getBorder()->getDashStyle());
+                $objWriter->writeAttribute('draw:name', 'strokeDash_'.$oBorder->getDashStyle());
                 $objWriter->writeAttribute('draw:style', 'rect');
-                switch ($shape->getBorder()->getDashStyle()) {
+                switch ($oBorder->getDashStyle()) {
                     case Border::DASH_DASH:
                         $objWriter->writeAttribute('draw:distance', '0.105cm');
                         $objWriter->writeAttribute('draw:dots2', '1');
@@ -260,18 +244,18 @@ class Styles extends AbstractPart
                         break;
                 }
                 $objWriter->endElement();
-                $this->arrayStrokeDash[] = $shape->getBorder()->getDashStyle();
+                $this->arrayStrokeDash[] = $oBorder->getDashStyle();
             }
         }
     }
-    
+
     /**
      * Write the default style information for a Table shape
      *
      * @param XMLWriter $objWriter
      * @param Table $shape
      */
-    public function writeTableStyle(XMLWriter $objWriter, Table $shape)
+    protected function writeTableStyle(XMLWriter $objWriter, Table $shape)
     {
         foreach ($shape->getRows() as $row) {
             foreach ($row->getCells() as $cell) {
@@ -290,7 +274,7 @@ class Styles extends AbstractPart
      * @param XMLWriter $objWriter
      * @param Group $group
      */
-    public function writeGroupStyle(XMLWriter $objWriter, Group $group)
+    protected function writeGroupStyle(XMLWriter $objWriter, Group $group)
     {
         $shapes = $group->getShapeCollection();
         foreach ($shapes as $shape) {
@@ -301,7 +285,7 @@ class Styles extends AbstractPart
             }
         }
     }
-    
+
     /**
      * Write the gradient style
      * @param XMLWriter $objWriter

@@ -4,10 +4,12 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\DocumentLayout;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 
 class PptPresentation extends AbstractDecoratorWriter
 {
+    /**
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     */
     public function render()
     {
         // Create XML writer
@@ -28,11 +30,9 @@ class PptPresentation extends AbstractDecoratorWriter
         // Add slide masters
         $relationId    = 1;
         $slideMasterId = 2147483648;
-        $oLayoutPack = new PackDefault();
-        $masterSlides  = $oLayoutPack->getMasterSlides();
-        $masterSlidesCount = count($masterSlides);
-        // @todo foreach ($masterSlides as $masterSlide)
-        for ($i = 0; $i < $masterSlidesCount; $i++) {
+
+        $countMasterSlides = count($this->oPresentation->getAllMasterSlides());
+        for ($inc = 1; $inc <= $countMasterSlides; $inc++) {
             // p:sldMasterId
             $objWriter->startElement('p:sldMasterId');
             $objWriter->writeAttribute('id', $slideMasterId);
@@ -74,6 +74,103 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->writeAttribute('cx', '6858000');
         $objWriter->writeAttribute('cy', '9144000');
         $objWriter->endElement();
+
+        $objWriter->writeRaw('<p:defaultTextStyle>
+  <a:defPPr>
+   <a:defRPr lang="fr-FR"/>
+  </a:defPPr>
+  <a:lvl1pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="0" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl1pPr>
+  <a:lvl2pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="457200" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl2pPr>
+  <a:lvl3pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="914400" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl3pPr>
+  <a:lvl4pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="1371600" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl4pPr>
+  <a:lvl5pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="1828800" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl5pPr>
+  <a:lvl6pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="2286000" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl6pPr>
+  <a:lvl7pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="2743200" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl7pPr>
+  <a:lvl8pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="3200400" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl8pPr>
+  <a:lvl9pPr algn="l" defTabSz="914400" eaLnBrk="1" hangingPunct="1" latinLnBrk="0" marL="3657600" rtl="0">
+   <a:defRPr kern="1200" sz="1800">
+    <a:solidFill>
+     <a:schemeClr val="tx1"/>
+    </a:solidFill>
+    <a:latin typeface="+mn-lt"/>
+    <a:ea typeface="+mn-ea"/>
+    <a:cs typeface="+mn-cs"/>
+   </a:defRPr>
+  </a:lvl9pPr>
+ </p:defaultTextStyle>
+');
 
         $objWriter->endElement();
 

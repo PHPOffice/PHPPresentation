@@ -56,16 +56,6 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getParent());
     }
     
-    public function testSlideLayout()
-    {
-        $object = new Slide();
-        $this->assertEquals(Slide\Layout::BLANK, $object->getSlideLayout());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideLayout());
-        $this->assertEquals(Slide\Layout::BLANK, $object->getSlideLayout());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideLayout(Slide\Layout::TITLE_SLIDE));
-        $this->assertEquals(Slide\Layout::TITLE_SLIDE, $object->getSlideLayout());
-    }
-    
     public function testSlideMasterId()
     {
         $value = rand(1, 100);
@@ -76,6 +66,24 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $object->getSlideMasterId());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideMasterId($value));
         $this->assertEquals($value, $object->getSlideMasterId());
+    }
+
+    public function testAnimations()
+    {
+        $oStub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\Animation');
+
+        $object = new Slide();
+        $this->assertInternalType('array', $object->getAnimations());
+        $this->assertCount(0, $object->getAnimations());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->addAnimation($oStub));
+        $this->assertInternalType('array', $object->getAnimations());
+        $this->assertCount(1, $object->getAnimations());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setAnimations());
+        $this->assertInternalType('array', $object->getAnimations());
+        $this->assertCount(0, $object->getAnimations());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setAnimations(array($oStub)));
+        $this->assertInternalType('array', $object->getAnimations());
+        $this->assertCount(1, $object->getAnimations());
     }
 
     public function testBackground()
@@ -117,5 +125,15 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Transition', $object->getTransition());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setTransition(null));
         $this->assertNull($object->getTransition());
+    }
+
+    public function testVisible()
+    {
+        $object = new Slide();
+        $this->assertTrue($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setIsVisible(false));
+        $this->assertFalse($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setIsVisible());
+        $this->assertTrue($object->isVisible());
     }
 }

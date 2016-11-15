@@ -88,6 +88,5 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($object->getTransitionType());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Transition', $object->setTransitionType(Transition::TRANSITION_RANDOM));
         $this->assertEquals(Transition::TRANSITION_RANDOM, $object->getTransitionType());
-
     }
 }

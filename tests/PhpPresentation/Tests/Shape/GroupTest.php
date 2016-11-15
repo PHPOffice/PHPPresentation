@@ -45,7 +45,7 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $object = new Group();
         
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $object->createChartShape());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing', $object->createDrawingShape());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->createDrawingShape());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Line', $object->createLineShape(10, 10, 10, 10));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->createTableShape());
