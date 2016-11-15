@@ -81,8 +81,10 @@ class PptSlides extends AbstractSlide
         // Write slideLayout relationship
         if ($pSlide->getSlideLayout()) {
             $layoutId = $pSlide->getSlideLayout()->layoutNr;
-            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
+        } else {
+            $layoutId = 1;
         }
+        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
 
         // Write drawing relationships?
         if ($pSlide->getShapeCollection()->count() > 0) {
