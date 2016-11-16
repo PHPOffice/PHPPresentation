@@ -79,10 +79,9 @@ class PptSlides extends AbstractSlide
         $idxSlide = $pSlide->getParent()->getIndex($pSlide);
 
         // Write slideLayout relationship
+        $layoutId = 1;
         if ($pSlide->getSlideLayout()) {
             $layoutId = $pSlide->getSlideLayout()->layoutNr;
-        } else {
-            $layoutId = 1;
         }
         $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
 
