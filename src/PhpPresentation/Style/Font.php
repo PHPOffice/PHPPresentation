@@ -122,6 +122,7 @@ class Font implements ComparableInterface
         // Initialise values
         $this->name          = 'Calibri';
         $this->size          = 10;
+        $this->cspace        = 0;
         $this->bold          = false;
         $this->italic        = false;
         $this->superScript   = false;
@@ -155,6 +156,32 @@ class Font implements ComparableInterface
         $this->name = $pValue;
 
         return $this;
+    }
+    
+    /**
+     * Get Character Spacing
+     *
+     * @return double
+     */
+    public function getCSpacing()
+    {
+    	return $this->cspace;
+    }
+    
+    /**
+     * Set Character Spacing
+     * Value in pt
+     * @param float|int $pValue
+     * @return \PhpOffice\PhpPresentation\Style\Font
+     */
+    public function setCSpacing($pValue = 0)
+    {
+    	if ($pValue == '') {
+    		$pValue = 0;
+    	}
+    	$this->cspace = $pValue*100;
+    
+    	return $this;
     }
 
     /**
