@@ -709,6 +709,14 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('vert', $pres->getElementAttribute($element, 'vert', 'ppt/slides/slide1.xml'));
     }
 
+    public function testSlideLayoutExists()
+    {
+        $oPhpPresentation = new PhpPresentation();
+    
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($pres->fileExists('ppt/slideLayouts/slideLayout1.xml'));
+    }
+
     public function testStyleSubScript()
     {
         $oPhpPresentation = new PhpPresentation();
