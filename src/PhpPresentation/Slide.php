@@ -54,7 +54,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
      * @var \PhpOffice\PhpPresentation\Slide\Note
      */
     private $slideNote;
-  
+
     /**
      *
      * @var \PhpOffice\PhpPresentation\Slide\Animation[]
@@ -81,6 +81,14 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
         $this->shapeCollection = new \ArrayObject();
         // Set identifier
         $this->identifier = md5(rand(0, 9999) . time());
+        // Set Slide Layout
+        if ($this->parent instanceof PhpPresentation) {
+            $arrayMasterSlides = $this->parent->getAllMasterSlides();
+            $oMasterSlide = reset($arrayMasterSlides);
+            $arraySlideLayouts = $oMasterSlide->getAllSlideLayouts();
+            $oSlideLayout = reset($arraySlideLayouts);
+            $this->setSlideLayout($oSlideLayout);
+        }
     }
 
     /**
@@ -118,7 +126,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Set slide master id
      *
-     * @param  int                 $masterId
+     * @param  int $masterId
      * @return \PhpOffice\PhpPresentation\Slide
      */
     public function setSlideMasterId($masterId = 1)

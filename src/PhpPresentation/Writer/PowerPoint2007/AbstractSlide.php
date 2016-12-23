@@ -139,7 +139,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Comment) {
-                return;
             } else {
                 throw new \Exception("Unknown Shape type: {get_class($shape)}");
             }
