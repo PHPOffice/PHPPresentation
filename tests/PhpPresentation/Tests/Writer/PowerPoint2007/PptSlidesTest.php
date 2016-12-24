@@ -30,6 +30,7 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Slide\Animation;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\Slide;
@@ -39,7 +40,7 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\Slide;
  *
  * @coversDefaultClass PowerPoint2007
  */
-class SlideTest extends \PHPUnit_Framework_TestCase
+class SlideTest extends PhpPresentationTestCase
 {
     /**
      * Executed before each method of the class
