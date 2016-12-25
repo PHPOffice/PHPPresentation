@@ -120,16 +120,16 @@ class Font implements ComparableInterface
     public function __construct()
     {
         // Initialise values
-        $this->name          = 'Calibri';
-        $this->size          = 10;
-        $this->cspace        = 0;
-        $this->bold          = false;
-        $this->italic        = false;
-        $this->superScript   = false;
-        $this->subScript     = false;
-        $this->underline     = self::UNDERLINE_NONE;
-        $this->strikethrough = false;
-        $this->color         = new Color(Color::COLOR_BLACK);
+        $this->name             = 'Calibri';
+        $this->size             = 10;
+        $this->characterSpacing = 0;
+        $this->bold             = false;
+        $this->italic           = false;
+        $this->superScript      = false;
+        $this->subScript        = false;
+        $this->underline        = self::UNDERLINE_NONE;
+        $this->strikethrough    = false;
+        $this->color            = new Color(Color::COLOR_BLACK);
     }
 
     /**
@@ -163,9 +163,9 @@ class Font implements ComparableInterface
      *
      * @return double
      */
-    public function getCSpacing()
+    public function getCharacterSpacing()
     {
-    	return $this->cspace;
+    	return $this->characterSpacing;
     }
     
     /**
@@ -174,12 +174,12 @@ class Font implements ComparableInterface
      * @param float|int $pValue
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setCSpacing($pValue = 0)
+    public function setCharacterSpacing($pValue = 0)
     {
     	if ($pValue == '') {
     		$pValue = 0;
     	}
-    	$this->cspace = $pValue*100;
+    	$this->characterSpacing = $pValue*100;
     
     	return $this;
     }
