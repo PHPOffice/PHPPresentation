@@ -5,6 +5,9 @@
 ### Bugfix
 - PowerPoint2007 Writer : The presentation need repairs on Mac @jrking4 GH-266 GH-276
 
+### Features
+- PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301
+
 ## 0.7.0 - 2016-09-12
 
 ### Bugfix
