@@ -1479,7 +1479,7 @@ class PptSlides extends AbstractSlide
                         $objWriter->writeAttribute('sz', ($element->getFont()->getSize() * 100));
                         
                         // Character spacing
-                        $objWriter->writeAttribute('spc', $element->getFont()->getCSpacing());
+                        $objWriter->writeAttribute('spc', $element->getFont()->getCharacterSpacing());
 
                         // Underline
                         $objWriter->writeAttribute('u', $element->getFont()->getUnderline());
