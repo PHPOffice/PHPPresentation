@@ -17,7 +17,7 @@ class GridlinesTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Gridlines();
 
-        $oStub = $this->getMock('PhpOffice\PhpPresentation\Style\Outline');
+        $oStub = $this->getMockBuilder('PhpOffice\PhpPresentation\Style\Outline')->getMock();
 
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\Outline', $object->getOutline());
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Gridlines', $object->setOutline($oStub));

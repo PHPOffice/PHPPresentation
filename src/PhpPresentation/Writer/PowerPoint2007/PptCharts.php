@@ -99,7 +99,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:hPercent
         $objWriter->startElement('c:hPercent');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getHeightPercent());
+        $objWriter->writeAttribute('val', $chart->getView3D()->getHeightPercent() . '%');
         $objWriter->endElement();
 
         // c:rotY
@@ -109,7 +109,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:depthPercent
         $objWriter->startElement('c:depthPercent');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getDepthPercent());
+        $objWriter->writeAttribute('val', $chart->getView3D()->getDepthPercent() . '%');
         $objWriter->endElement();
 
         // c:rAngAx
@@ -1629,6 +1629,15 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
+            // c:spPr
+            $objWriter->startElement('c:spPr');
+            // Write fill
+            $this->writeFill($objWriter, $series->getFill());
+            // Write outline
+            $this->writeOutline($objWriter, $series->getOutline());
+            // ## c:spPr
+            $objWriter->endElement();
+
             // Marker
             $this->writeSeriesMarker($objWriter, $series->getMarker());
 
@@ -1703,15 +1712,6 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             // > c:dLbls
-            $objWriter->endElement();
-
-            // c:spPr
-            $objWriter->startElement('c:spPr');
-            // Write fill
-            $this->writeFill($objWriter, $series->getFill());
-            // Write outline
-            $this->writeOutline($objWriter, $series->getOutline());
-            // ## c:spPr
             $objWriter->endElement();
 
             // Write X axis data
@@ -2164,7 +2164,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:lblOffset
             $objWriter->startElement('c:lblOffset');
-            $objWriter->writeAttribute('val', '100');
+            $objWriter->writeAttribute('val', '100%');
             $objWriter->endElement();
         }
 

@@ -306,7 +306,7 @@ class PackDefault extends AbstractLayoutPack
         <p:bodyStyle>
             <a:lvl1pPr marL="342900" indent="-342900" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="&#149;" />
@@ -321,7 +321,7 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl1pPr>
             <a:lvl2pPr marL="742950" indent="-285750" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="-" />
@@ -336,7 +336,7 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl2pPr>
             <a:lvl3pPr marL="1143000" indent="-228600" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="&#149;" />
@@ -351,7 +351,7 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl3pPr>
             <a:lvl4pPr marL="1600200" indent="-228600" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="-" />
@@ -366,7 +366,7 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl4pPr>
             <a:lvl5pPr marL="2057400" indent="-228600" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="&#187;" />
@@ -381,7 +381,7 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl5pPr>
             <a:lvl6pPr marL="2514600" indent="-228600" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="&#149;" />
@@ -396,7 +396,7 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl6pPr>
             <a:lvl7pPr marL="2971800" indent="-228600" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="&#149;" />
@@ -411,7 +411,7 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl7pPr>
             <a:lvl8pPr marL="3429000" indent="-228600" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="&#149;" />
@@ -426,7 +426,7 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl8pPr>
             <a:lvl9pPr marL="3886200" indent="-228600" algn="l" defTabSz="914400" rtl="0" eaLnBrk="1" latinLnBrk="0" hangingPunct="1">
                 <a:spcBef>
-                    <a:spcPct val="20000" />
+                    <a:spcPct val="20%" />
                 </a:spcBef>
                 <a:buFont typeface="Arial" pitchFamily="34" charset="0" />
                 <a:buChar char="&#149;" />
@@ -794,7 +794,7 @@ class PackDefault extends AbstractLayoutPack
       </a:gs>
       <a:gs pos="100000">
        <a:schemeClr val="phClr">
-        <a:shade val="20000"/>
+        <a:shade val="20%"/>
         <a:satMod val="255000"/>
        </a:schemeClr>
       </a:gs>
