@@ -129,7 +129,7 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
 
         // image
         $currentSlide = $objPHPPresentation->createSlide();
-        $gdImage = @imagecreatetruecolor(140, 20) or die('Cannot Initialize new GD image stream');
+        $gdImage = @imagecreatetruecolor(140, 20);
         $textColor = imagecolorallocate($gdImage, 255, 255, 255);
         imagestring($gdImage, 1, 5, 5,  'Created with PHPPresentation', $textColor);
 
