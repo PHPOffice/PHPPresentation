@@ -4,6 +4,7 @@
 
 ### Bugfix
 - PowerPoint2007 Writer : The presentation need repairs on Mac @jrking4 GH-266 GH-276
+- PowerPoint2007 Writer : Fix for PowerPoint2007 Writer (Need repair) @Progi1984 GH-266 GH-274 GH-276 GH-282 GH-302
 
 ## 0.7.0 - 2016-09-12
 
