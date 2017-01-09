@@ -131,7 +131,7 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
         $currentSlide = $objPHPPresentation->createSlide();
         $gdImage = @imagecreatetruecolor(140, 20);
         $textColor = imagecolorallocate($gdImage, 255, 255, 255);
-        imagestring($gdImage, 1, 5, 5,  'Created with PHPPresentation', $textColor);
+        imagestring($gdImage, 1, 5, 5, 'Created with PHPPresentation', $textColor);
 
         $shape = new Drawing\Gd();
         $shape->setName('Sample image')
@@ -221,42 +221,42 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
         // fill
         $currentSlide = $objPHPPresentation->createSlide();
 
-        for($inc = 1 ; $inc <= 4 ; $inc++){
+        for ($inc = 1; $inc <= 4; $inc++) {
             // Create a shape (text)
             $shape = $currentSlide->createRichTextShape()
                 ->setHeight(200)
                 ->setWidth(300);
-            if($inc == 1 || $inc == 3){
+            if ($inc == 1 || $inc == 3) {
                 $shape->setOffsetX(10);
             } else {
                 $shape->setOffsetX(320);
             }
-            if($inc == 1 || $inc == 2){
+            if ($inc == 1 || $inc == 2) {
                 $shape->setOffsetY(10);
             } else {
                 $shape->setOffsetY(220);
             }
-            $shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
+            $shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 
             switch ($inc) {
-                case 1 :
+                case 1:
                     $shape->getFill()->setFillType(Fill::FILL_NONE);
                     break;
-                case 2 :
-                    $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF000000' ));
+                case 2:
+                    $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF000000'));
                     break;
-                case 3 :
-                    $shape->getFill()->setFillType(Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF000000' ));
+                case 3:
+                    $shape->getFill()->setFillType(Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF000000'));
                     break;
-                case 4 :
-                    $shape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color( 'FF4672A8' ))->setEndColor(new Color( 'FF4672A8' ));
+                case 4:
+                    $shape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF4672A8'));
                     break;
             }
 
             $textRun = $shape->createTextRun('Use PHPPresentation!');
             $textRun->getFont()->setBold(true)
                 ->setSize(30)
-                ->setColor( new Color('FFE06B20') );
+                ->setColor(new Color('FFE06B20'));
         }
 
         // slide note
@@ -317,11 +317,11 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
             ->setWidth(600)
             ->setOffsetX(170)
             ->setOffsetY(180);
-        $shapeRichText->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
+        $shapeRichText->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $textRun = $shapeRichText->createTextRun('Thank you for using PHPPresentation!');
         $textRun->getFont()->setBold(true)
             ->setSize(60)
-            ->setColor( new Color( 'FFE06B20' ) );
+            ->setColor(new Color('FFE06B20'));
 
         $oTransition = new Transition();
         $oTransition->setManualTrigger(false);
@@ -349,11 +349,11 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
             ->setWidth(600)
             ->setOffsetX(170)
             ->setOffsetY(180);
-        $oShapeRichText->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
+        $oShapeRichText->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $textRun = $oShapeRichText->createTextRun('Thank you for using PHPPresentation!');
         $textRun->getFont()->setBold(true)
             ->setSize(60)
-            ->setColor( new Color( 'FFE06B20' ) );
+            ->setColor(new Color('FFE06B20'));
 
         $currentSlide->addShape(clone $oShapeDrawing);
         $currentSlide->addShape(clone $oShapeRichText);
