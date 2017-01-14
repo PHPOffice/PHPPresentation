@@ -63,6 +63,7 @@ class File extends AbstractDrawingAdapter
     }
 
     /**
+     * @throws \Exception
      * @return string
      */
     public function getMimeType()

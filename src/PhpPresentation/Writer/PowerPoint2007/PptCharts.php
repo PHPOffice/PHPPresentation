@@ -508,12 +508,12 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Write X axis?
         if ($chartType->hasAxisX()) {
-            $this->writeAxis($objWriter, $subject->getAxisX(), Chart\Axis::AXIS_X);
+            $this->writeAxis($objWriter, $subject->getAxisX(), Chart\Axis::AXIS_X, $chartType);
         }
 
         // Write Y axis?
         if ($chartType->hasAxisY()) {
-            $this->writeAxis($objWriter, $subject->getAxisY(), Chart\Axis::AXIS_Y);
+            $this->writeAxis($objWriter, $subject->getAxisY(), Chart\Axis::AXIS_Y, $chartType);
         }
 
         $objWriter->endElement();
@@ -715,67 +715,8 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
 
             // c:ser > c:dLbls
+            // @link : https://msdn.microsoft.com/en-us/library/documentformat.openxml.drawing.charts.areachartseries.aspx
             $objWriter->startElement('c:dLbls');
-
-            // c:ser > c:dLbls > c:txPr
-            $objWriter->startElement('c:txPr');
-
-            // c:ser > c:dLbls > c:txPr > a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
-
-            // c:ser > c:dLbls > c:txPr > a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
-
-            // c:ser > c:dLbls > c:txPr > a:p
-            $objWriter->startElement('a:p');
-
-            // c:ser > c:dLbls > c:txPr > a:p > a:pPr
-            $objWriter->startElement('a:pPr');
-
-            // c:ser > c:dLbls > c:txPr > a:p > a:pPr > a:defRPr
-            $objWriter->startElement('a:defRPr');
-
-            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
-            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '30000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-25000');
-
-            // c:ser > c:dLbls > c:txPr > a:p > a:pPr > a:defRPr > a:solidFill
-            $objWriter->startElement('a:solidFill');
-
-            $this->writeColor($objWriter, $series->getFont()->getColor());
-
-            // c:ser > c:dLbls > c:txPr > a:p > a:pPr > a:defRPr > ## a:solidFill
-            $objWriter->endElement();
-
-            // c:ser > c:dLbls > c:txPr > a:p > a:pPr > a:defRPr > a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-
-            // c:ser > c:dLbls > c:txPr > a:p > a:pPr > ##a:defRPr
-            $objWriter->endElement();
-
-            // c:ser > c:dLbls > c:txPr > a:p > ##a:pPr
-            $objWriter->endElement();
-
-            // c:ser > c:dLbls > c:txPr > a:p > a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            // c:ser > c:dLbls > c:txPr > ##a:p
-            $objWriter->endElement();
-
-            // c:ser > c:dLbls > ##c:txPr
-            $objWriter->endElement();
-
-            // c:ser > c:dLbls > c:dLblPos
-            $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
 
             // c:ser > c:dLbls > c:showVal
             $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
@@ -788,9 +729,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:ser > c:dLbls > c:showPercent
             $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
-
-            // c:ser > c:dLbls > c:showLeaderLines
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             // c:ser > ##c:dLbls
             $objWriter->endElement();
@@ -825,16 +763,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             ++$seriesIndex;
         }
-
-        // c:marker
-        $objWriter->startElement('c:marker');
-        $objWriter->writeAttribute('val', '1');
-        $objWriter->endElement();
-
-        // c:smooth
-        $objWriter->startElement('c:smooth');
-        $objWriter->writeAttribute('val', '0');
-        $objWriter->endElement();
 
         // c:axId
         $objWriter->startElement('c:axId');
@@ -2000,8 +1928,9 @@ class PptCharts extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Chart\Axis $oAxis
      * @param $typeAxis
+     * @param Chart\Type\AbstractType $typeChart
      */
-    protected function writeAxis(XMLWriter $objWriter, Chart\Axis $oAxis, $typeAxis)
+    protected function writeAxis(XMLWriter $objWriter, Chart\Axis $oAxis, $typeAxis, Chart\Type\AbstractType $typeChart)
     {
         if ($typeAxis != Chart\Axis::AXIS_X && $typeAxis != Chart\Axis::AXIS_Y) {
             return;
@@ -2064,7 +1993,7 @@ class PptCharts extends AbstractDecoratorWriter
         // c:numFmt
         $objWriter->startElement('c:numFmt');
         $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
-        $objWriter->writeAttribute('sourceLinked', '0');
+        $objWriter->writeAttribute('sourceLinked', '1');
         $objWriter->endElement();
 
         // c:majorTickMark
@@ -2172,7 +2101,13 @@ class PptCharts extends AbstractDecoratorWriter
         if ($typeAxis == Chart\Axis::AXIS_Y) {
             // c:crossBetween
             $objWriter->startElement('c:crossBetween');
-            $objWriter->writeAttribute('val', 'between');
+            // midCat : Position Axis On Tick Marks
+            // between : Between Tick Marks
+            if ($typeChart instanceof Area) {
+                $objWriter->writeAttribute('val', 'midCat');
+            } else {
+                $objWriter->writeAttribute('val', 'between');
+            }
             $objWriter->endElement();
         }
 

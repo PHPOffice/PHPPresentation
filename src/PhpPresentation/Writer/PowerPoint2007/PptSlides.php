@@ -79,10 +79,12 @@ class PptSlides extends AbstractSlide
         $idxSlide = $pSlide->getParent()->getIndex($pSlide);
 
         // Write slideLayout relationship
+        $layoutId = 1;
         if ($pSlide->getSlideLayout()) {
             $layoutId = $pSlide->getSlideLayout()->layoutNr;
-            $this->writeRelationship($objWriter, $relId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
         }
+        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout', '../slideLayouts/slideLayout' . $layoutId . '.xml');
+        ++$relId;
 
         // Write drawing relationships?
         if ($pSlide->getShapeCollection()->count() > 0) {
@@ -91,8 +93,10 @@ class PptSlides extends AbstractSlide
             while ($iterator->valid()) {
                 if ($iterator->current() instanceof Media) {
                     // Write relationship for image drawing
-                    $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $iterator->current()->getIndexedFilename());
                     $iterator->current()->relationId = 'rId' . $relId;
+                    $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/video', '../media/' . $iterator->current()->getIndexedFilename());
+                    ++$relId;
+                    $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $iterator->current()->getIndexedFilename());
                     ++$relId;
                 } elseif ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
                     // Write relationship for image drawing
@@ -109,12 +113,14 @@ class PptSlides extends AbstractSlide
                 } elseif ($iterator->current() instanceof Group) {
                     $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
                     while ($iterator2->valid()) {
-                        if ($iterator->current() instanceof Media) {
+                        if ($iterator2->current() instanceof Media) {
                             // Write relationship for image drawing
-                            $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $iterator->current()->getIndexedFilename());
-                            $iterator->current()->relationId = 'rId' . $relId;
+                            $iterator2->current()->relationId = 'rId' . $relId;
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/video', '../media/' . $iterator->current()->getIndexedFilename());
                             ++$relId;
-                        } elseif ($iterator->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
+                            $this->writeRelationship($objWriter, $relId, 'http://schemas.microsoft.com/office/2007/relationships/media', '../media/' . $iterator->current()->getIndexedFilename());
+                            ++$relId;
+                        } elseif ($iterator2->current() instanceof ShapeDrawing\AbstractDrawingAdapter) {
                             // Write relationship for image drawing
                             $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $iterator2->current()->getIndexedFilename());
                             $iterator2->current()->relationId = 'rId' . $relId;
@@ -952,7 +958,7 @@ class PptSlides extends AbstractSlide
             $objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
             // p:nvPr > p:extLst > p:ext > p14:media
             $objWriter->startElement('p14:media');
-            $objWriter->writeAttribute('r:embed', $shape->relationId);
+            $objWriter->writeAttribute('r:embed', ($shape->relationId + 1));
             $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
             // p:nvPr > p:extLst > p:ext > ##p14:media
             $objWriter->endElement();
@@ -1415,8 +1421,22 @@ class PptSlides extends AbstractSlide
                 $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
                 $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
+                $objWriter->startElement('a:lnSpc');
+                $objWriter->startElement('a:spcPct');
+                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+                $objWriter->endElement();
+                $objWriter->endElement();
+
                 // Bullet type specified?
                 if ($paragraph->getBulletStyle()->getBulletType() != Bullet::TYPE_NONE) {
+                    // Color
+                    // a:buClr must be before a:buFont (else PowerPoint crashes at launch)
+                    if ($paragraph->getBulletStyle()->getBulletColor() instanceof Color) {
+                        $objWriter->startElement('a:buClr');
+                        $this->writeColor($objWriter, $paragraph->getBulletStyle()->getBulletColor());
+                        $objWriter->endElement();
+                    }
+
                     // a:buFont
                     $objWriter->startElement('a:buFont');
                     $objWriter->writeAttribute('typeface', $paragraph->getBulletStyle()->getBulletFont());
@@ -1436,18 +1456,7 @@ class PptSlides extends AbstractSlide
                         }
                         $objWriter->endElement();
                     }
-                    if ($paragraph->getBulletStyle()->getBulletColor() instanceof Color) {
-                        $objWriter->startElement('a:buClr');
-                        $this->writeColor($objWriter, $paragraph->getBulletStyle()->getBulletColor());
-                        $objWriter->endElement();
-                    }
                 }
-
-                $objWriter->startElement('a:lnSpc');
-                $objWriter->startElement('a:spcPct');
-                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
-                $objWriter->endElement();
-                $objWriter->endElement();
 
                 $objWriter->endElement();
             }
