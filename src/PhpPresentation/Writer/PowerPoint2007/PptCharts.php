@@ -196,9 +196,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write chart to XML format
      *
-     * @param  PhpPresentation             $presentation
+     * @param  PhpPresentation $presentation
      * @param  \PhpOffice\PhpPresentation\Shape\Chart $chart
-     * @param  string                    $tempName
+     * @param  string $tempName
      * @return string                    String output
      * @throws \Exception
      */
@@ -258,7 +258,7 @@ class PptCharts extends AbstractDecoratorWriter
         // Load file in memory
         $returnValue = file_get_contents($tempName);
         if (@unlink($tempName) === false) {
-            throw new \Exception('The file '.$tempName.' could not removed.');
+            throw new \Exception('The file ' . $tempName . ' could not removed.');
         }
 
         return $returnValue;
@@ -267,9 +267,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write element with value attribute
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter   XML Writer
-     * @param string                         $elementName
-     * @param string                         $value
+     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param string $elementName
+     * @param string $value
      */
     protected function writeElementWithValAttribute($objWriter, $elementName, $value)
     {
@@ -281,10 +281,10 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write single value or reference
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter   XML Writer
-     * @param boolean                        $isReference
-     * @param mixed                          $value
-     * @param string                         $reference
+     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param boolean $isReference
+     * @param mixed $value
+     * @param string $reference
      */
     protected function writeSingleValueOrReference($objWriter, $isReference, $value, $reference)
     {
@@ -313,10 +313,10 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write series value or reference
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter   XML Writer
-     * @param boolean                        $isReference
-     * @param mixed                          $values
-     * @param string                         $reference
+     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param boolean $isReference
+     * @param mixed $values
+     * @param string $reference
      */
     protected function writeMultipleValuesOrReference($objWriter, $isReference, $values, $reference)
     {
@@ -374,7 +374,7 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Title
      *
-     * @param  \PhpOffice\Common\XMLWriter  $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Title $subject
      * @throws \Exception
      */
@@ -473,9 +473,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Plot Area
      *
-     * @param  \PhpOffice\Common\XMLWriter     $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\PlotArea $subject
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart          $chart
+     * @param  \PhpOffice\PhpPresentation\Shape\Chart $chart
      * @throws \Exception
      */
     protected function writePlotArea(XMLWriter $objWriter, PlotArea $subject, Chart $chart)
@@ -522,7 +522,7 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Legend
      *
-     * @param  \PhpOffice\Common\XMLWriter   $objWriter XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Legend $subject
      * @throws \Exception
      */
@@ -622,7 +622,7 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Layout
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  mixed                          $subject
+     * @param  mixed $subject
      * @throws \Exception
      */
     protected function writeLayout(XMLWriter $objWriter, $subject)
@@ -677,9 +677,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Area
      *
-     * @param  \PhpOffice\Common\XMLWriter      $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Area $subject
-     * @param  boolean                             $includeSheet
+     * @param  boolean $includeSheet
      * @throws \Exception
      */
     protected function writeTypeArea(XMLWriter $objWriter, Area $subject, $includeSheet = false)
@@ -780,9 +780,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Bar
      *
-     * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar $subject
-     * @param  boolean                              $includeSheet
+     * @param  boolean $includeSheet
      * @throws \Exception
      */
     protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, $includeSheet = false)
@@ -996,9 +996,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Bar3D
      *
-     * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D $subject
-     * @param  boolean                              $includeSheet
+     * @param  boolean $includeSheet
      * @throws \Exception
      */
     protected function writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, $includeSheet = false)
@@ -1195,9 +1195,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Pie
      *
-     * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Pie $subject
-     * @param  boolean                              $includeSheet
+     * @param  boolean $includeSheet
      * @throws \Exception
      */
     protected function writeTypePie(XMLWriter $objWriter, Pie $subject, $includeSheet = false)
@@ -1355,9 +1355,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Pie3D
      *
-     * @param  \PhpOffice\Common\XMLWriter       $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D $subject
-     * @param  boolean                              $includeSheet
+     * @param  boolean $includeSheet
      * @throws \Exception
      */
     protected function writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, $includeSheet = false)
@@ -1520,9 +1520,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Line
      *
-     * @param  \PhpOffice\Common\XMLWriter      $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Line $subject
-     * @param  boolean                             $includeSheet
+     * @param  boolean $includeSheet
      * @throws \Exception
      */
     protected function writeTypeLine(XMLWriter $objWriter, Line $subject, $includeSheet = false)
@@ -1690,9 +1690,9 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Scatter
      *
-     * @param  \PhpOffice\Common\XMLWriter         $objWriter    XML Writer
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter $subject
-     * @param  boolean                                $includeSheet
+     * @param  boolean $includeSheet
      * @throws \Exception
      */
     protected function writeTypeScatter(XMLWriter $objWriter, Scatter $subject, $includeSheet = false)
@@ -1858,6 +1858,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         $objWriter->endElement();
     }
+
     /**
      * Write chart relationships to XML format
      *
@@ -1894,6 +1895,14 @@ class PptCharts extends AbstractDecoratorWriter
      */
     protected function writeSeriesMarker(XMLWriter $objWriter, Chart\Marker $oMarker)
     {
+        // c:marker
+        $objWriter->startElement('c:marker');
+        // c:marker > c:symbol
+        $objWriter->startElement('c:symbol');
+        $objWriter->writeAttribute('val', $oMarker->getSymbol());
+        $objWriter->endElement();
+
+        // Size if different of none
         if ($oMarker->getSymbol() != Chart\Marker::SYMBOL_NONE) {
             $markerSize = (int)$oMarker->getSize();
             if ($markerSize < 2) {
@@ -1903,13 +1912,6 @@ class PptCharts extends AbstractDecoratorWriter
                 $markerSize = 72;
             }
 
-            // c:marker
-            $objWriter->startElement('c:marker');
-
-            // c:marker > c:symbol
-            $objWriter->startElement('c:symbol');
-            $objWriter->writeAttribute('val', $oMarker->getSymbol());
-            $objWriter->endElement();
             /**
              * c:marker > c:size
              * Size in points
@@ -1918,9 +1920,8 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('c:size');
             $objWriter->writeAttribute('val', $markerSize);
             $objWriter->endElement();
-
-            $objWriter->endElement();
         }
+        $objWriter->endElement();
     }
 
     /**
