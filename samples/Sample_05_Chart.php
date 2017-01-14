@@ -456,6 +456,7 @@ function fnSlide_Pie(PhpPresentation $objPHPPresentation) {
     $series->setShowValue( false );
     $series->setShowSeriesName( false );
     $series->setShowCategoryName( true );
+    $series->setDlblNumFormat('%d');
     $pieChart->addSeries($series);
 
     // Create a shape (chart)
