@@ -16,12 +16,11 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
-use PhpOffice\PhpPresentation\Style\PhpOffice\PhpPresentation\Style;
 
 function fnSlide_Area(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
-    
+
     // Generate sample data for chart
     echo date('H:i:s') . ' Generate sample data for chart' . EOL;
     $seriesData = array(
@@ -33,11 +32,11 @@ function fnSlide_Area(PhpPresentation $objPHPPresentation) {
         'Saturday' => 9,
         'Sunday' => 7
     );
-    
+
     // Create templated slide
     echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
     $currentSlide = createTemplatedSlide($objPHPPresentation);
-    
+
     // Create a line chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a area chart (that should be inserted in a chart shape)' . EOL;
     $areaChart = new Area();
@@ -47,7 +46,7 @@ function fnSlide_Area(PhpPresentation $objPHPPresentation) {
     $series->getFill()->setStartColor(new Color('FF93A9CE'));
     $series->setLabelPosition(Series::LABEL_INSIDEEND);
     $areaChart->addSeries($series);
-    
+
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
@@ -457,6 +456,7 @@ function fnSlide_Pie(PhpPresentation $objPHPPresentation) {
     $series->setShowValue( false );
     $series->setShowSeriesName( false );
     $series->setShowCategoryName( true );
+    $series->setDlblNumFormat('%d');
     $pieChart->addSeries($series);
 
     // Create a shape (chart)
