@@ -91,6 +91,7 @@ function fnSlide_Bar(PhpPresentation $objPHPPresentation) {
     $series2->setShowSeriesName(true);
     $series2->getFont()->getColor()->setRGB('FF0000');
     $series2->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFC0504D'));
+    $series2->setLabelPosition(Series::LABEL_INSIDEEND);
     $barChart->addSeries($series1);
     $barChart->addSeries($series2);
 
