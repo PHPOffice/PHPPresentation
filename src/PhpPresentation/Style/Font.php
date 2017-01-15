@@ -165,7 +165,7 @@ class Font implements ComparableInterface
      */
     public function getCharacterSpacing()
     {
-    	return $this->characterSpacing;
+        return $this->characterSpacing;
     }
     
     /**
@@ -176,12 +176,12 @@ class Font implements ComparableInterface
      */
     public function setCharacterSpacing($pValue = 0)
     {
-    	if ($pValue == '') {
-    		$pValue = 0;
-    	}
-    	$this->characterSpacing = $pValue*100;
+        if ($pValue == '') {
+            $pValue = 0;
+        }
+        $this->characterSpacing = $pValue * 100;
     
-    	return $this;
+        return $this;
     }
 
     /**
