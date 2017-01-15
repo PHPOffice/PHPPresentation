@@ -58,6 +58,8 @@ function fnSlide_Area(PhpPresentation $objPHPPresentation) {
     $shape->getTitle()->setText('PHPPresentation Daily Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
     $shape->getPlotArea()->setType($areaChart);
+    $shape->getPlotArea()->getAxisX()->setTitle('Axis X');
+    $shape->getPlotArea()->getAxisY()->setTitle('Axis Y');
     $shape->getView3D()->setRotationX(30);
     $shape->getView3D()->setPerspective(30);
     $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
