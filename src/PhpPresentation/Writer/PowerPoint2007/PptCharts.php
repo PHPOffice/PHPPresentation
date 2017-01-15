@@ -2017,8 +2017,11 @@ class PptCharts extends AbstractDecoratorWriter
         // c:title
         $objWriter->startElement('c:title');
 
-        // c:txPr
-        $objWriter->startElement('c:txPr');
+        // c:tx
+        $objWriter->startElement('c:tx');
+
+        // c:rich
+        $objWriter->startElement('c:rich');
 
         // a:bodyPr
         $objWriter->writeElement('a:bodyPr', null);
@@ -2084,7 +2087,10 @@ class PptCharts extends AbstractDecoratorWriter
         // ## a:p
         $objWriter->endElement();
 
-        // ## c:txPr
+        // ## c:rich
+        $objWriter->endElement();
+
+        // ## c:tx
         $objWriter->endElement();
 
         // ## c:title
