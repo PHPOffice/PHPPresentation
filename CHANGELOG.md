@@ -10,6 +10,9 @@
 - PowerPoint2007 Writer : Fixed the axis title in bar chart - @pgee70 GH-267
 - PowerPoint2007 Writer : Fixed the label position in bar chart - @pgee70 GH-268
 
+### Features
+- PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301
+
 ## 0.7.0 - 2016-09-12
 
 ### Bugfix
