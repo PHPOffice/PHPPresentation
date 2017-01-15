@@ -45,6 +45,7 @@ PHPPresentation requires the following:
 - [Zip extension](http://php.net/manual/en/book.zip.php)
 - [XML Parser extension](http://www.php.net/manual/en/xml.installation.php)
 - [XMLWriter extension](http://php.net/manual/en/book.xmlwriter.php) (optional, used to write DOCX and ODT)
+- [GD](http://php.net/manual/en/book.image.php)
 
 ### Installation
 

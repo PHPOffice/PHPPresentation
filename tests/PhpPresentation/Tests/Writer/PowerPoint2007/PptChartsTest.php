@@ -392,7 +392,7 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oLine->setSeries(array($oSeries));
 
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertFalse($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/' . $oShape->getIndexedFilename()));
         $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 
@@ -644,7 +644,7 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oScatter->setSeries(array($oSeries));
 
         $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertFalse($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertTrue($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/' . $oShape->getIndexedFilename()));
         $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
     }
 
