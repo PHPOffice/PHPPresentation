@@ -64,11 +64,11 @@ class FontTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Font();
         $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(0);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(0));
         $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(10);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(10));
         $this->assertEquals(1000, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing();
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing());
         $this->assertEquals(0, $object->getCharacterSpacing());
     }
 
