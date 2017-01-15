@@ -4,6 +4,7 @@
 
 ### Bugfix
 - PowerPoint2007 Writer : Fixed the marker on line chart when symbol is none - @Napryc GH-211
+- PowerPoint2007 Writer : Fixed the format value in Pie Chart - @Napryc GH-212
 - PowerPoint2007 Writer : The presentation need repairs on Mac @jrking4 GH-266 GH-276
 - PowerPoint2007 Writer : Fix for PowerPoint2007 Writer (Need repair) @Progi1984 GH-266 GH-274 GH-276 GH-282 GH-302
 
