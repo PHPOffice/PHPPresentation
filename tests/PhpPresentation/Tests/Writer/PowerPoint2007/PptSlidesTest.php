@@ -39,7 +39,7 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\Slide;
  *
  * @coversDefaultClass PowerPoint2007
  */
-class SlideTest extends \PHPUnit_Framework_TestCase
+class PptSlideTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Executed before each method of the class
@@ -188,7 +188,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-        $this->assertEquals('rId2', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId3', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
     }
 
     public function testDrawingShapeBorder()
@@ -716,6 +716,27 @@ class SlideTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($pres->fileExists('ppt/slideLayouts/slideLayout1.xml'));
     }
 
+    public function testStyleCharacterSpacing()
+    {
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
+        
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('pText');
+        // Default : $oRun->getFont()->setCharacterSpacing(0);
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals('0', $pres->getElementAttribute($element, 'spc', 'ppt/slides/slide1.xml'));
+        
+        $oRun->getFont()->setCharacterSpacing(42);
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals('4200', $pres->getElementAttribute($element, 'spc', 'ppt/slides/slide1.xml'));
+    }
+
     public function testStyleSubScript()
     {
         $oPhpPresentation = new PhpPresentation();
@@ -863,7 +884,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:txBody/a:p/a:r/a:rPr/a:hlinkClick';
         $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
-        $this->assertEquals('rId1', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
+        $this->assertEquals('rId2', $pres->getElementAttribute($element, 'r:id', 'ppt/slides/slide1.xml'));
     }
 
     public function testTransition()
