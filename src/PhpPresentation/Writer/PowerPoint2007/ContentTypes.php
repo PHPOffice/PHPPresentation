@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
+use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
@@ -77,12 +78,25 @@ class ContentTypes extends AbstractDecoratorWriter
         }
 
         // Slides
+        $hasComments = false;
         $slideCount = $this->oPresentation->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
+            $oSlide = $this->oPresentation->getSlide($i);
             $this->writeOverrideContentType($objWriter, '/ppt/slides/slide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slide+xml');
-            if ($this->oPresentation->getSlide($i)->getNote()->getShapeCollection()->count() > 0) {
+            if ($oSlide->getNote()->getShapeCollection()->count() > 0) {
                 $this->writeOverrideContentType($objWriter, '/ppt/notesSlides/notesSlide' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.notesSlide+xml');
             }
+            foreach ($oSlide->getShapeCollection() as $oShape) {
+                if ($oShape instanceof Comment) {
+                    $this->writeOverrideContentType($objWriter, '/ppt/comments/comment' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.comments+xml');
+                    $hasComments = true;
+                    break;
+                }
+            }
+        }
+
+        if ($hasComments) {
+            $this->writeOverrideContentType($objWriter, '/ppt/commentAuthors.xml', 'application/vnd.openxmlformats-officedocument.presentationml.commentAuthors+xml');
         }
 
         // Add media content-types
