@@ -108,6 +108,13 @@ class Font implements ComparableInterface
     private $color;
 
     /**
+     * Character Spacing
+     *
+     * @var int
+     */
+    private $characterSpacing;
+
+    /**
      * Hash index
      *
      * @var string
