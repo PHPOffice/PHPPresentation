@@ -88,6 +88,20 @@ class Alignment implements ComparableInterface
     private $marginRight = 0;
 
     /**
+     * Margin top
+     *
+     * @var int
+     */
+    private $marginTop = 0;
+
+    /**
+     * Margin bottom
+     *
+     * @var int
+     */
+    private $marginBottom = 0;
+
+    /**
      * Hash index
      *
      * @var string
@@ -260,6 +274,52 @@ class Alignment implements ComparableInterface
         }
 
         $this->marginRight = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get margin top
+     *
+     * @return int
+     */
+    public function getMarginTop()
+    {
+        return $this->marginTop;
+    }
+
+    /**
+     * Set margin top
+     *
+     * @param  int                           $pValue
+     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     */
+    public function setMarginTop($pValue = 0)
+    {
+        $this->marginTop = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get margin bottom
+     *
+     * @return int
+     */
+    public function getMarginBottom()
+    {
+        return $this->marginBottom;
+    }
+
+    /**
+     * Set margin bottom
+     *
+     * @param  int                           $pValue
+     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     */
+    public function setMarginBottom($pValue = 0)
+    {
+        $this->marginBottom = $pValue;
 
         return $this;
     }
