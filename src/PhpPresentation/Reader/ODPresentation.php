@@ -510,7 +510,7 @@ class ODPresentation implements ReaderInterface
         $oParagraph = $oShape->createParagraph();
         if ($oNodeParagraph->hasAttribute('text:style-name')) {
             $keyStyle = $oNodeParagraph->getAttribute('text:style-name');
-            if (isset($this->arrayStyles[$keyStyle])) {
+            if (isset($this->arrayStyles[$keyStyle]) && !empty($this->arrayStyles[$keyStyle]['listStyle'])) {
                 $oParagraph->setAlignment($this->arrayStyles[$keyStyle]['listStyle'][$this->levelParagraph]['alignment']);
                 $oParagraph->setBulletStyle($this->arrayStyles[$keyStyle]['listStyle'][$this->levelParagraph]['bullet']);
             }
