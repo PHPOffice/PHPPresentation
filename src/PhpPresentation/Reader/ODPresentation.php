@@ -442,12 +442,9 @@ class ODPresentation implements ReaderInterface
     {
         $oParagraph = $oShape->createParagraph();
         $oDomList = $this->oXMLReader->getElements('text:span', $oNodeParent);
-        if ($oDomList->length == 0) {
-            $this->readParagraphItem($oParagraph, $oNodeParent);
-        } else {
-            foreach ($oDomList as $oNodeRichTextElement) {
-                $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
-            }
+        $this->readParagraphItem($oParagraph, $oNodeParent);
+        foreach ($oDomList as $oNodeRichTextElement) {
+            $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
         }
     }
     
