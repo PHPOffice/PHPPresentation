@@ -9,6 +9,7 @@
 - PowerPoint2007 Writer : Fix for PowerPoint2007 Writer (Need repair) @Progi1984 GH-266 GH-274 GH-276 GH-282 GH-302
 - PowerPoint2007 Writer : Fixed the axis title in bar chart - @pgee70 GH-267
 - PowerPoint2007 Writer : Fixed the label position in bar chart - @pgee70 GH-268
+- PowerPoint2007 Writer : Support of margins in cell in table - @carlosafonso @Progi1984 GH-273 GH-315
 
 ### Features
 - PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301

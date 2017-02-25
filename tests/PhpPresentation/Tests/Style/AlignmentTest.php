@@ -38,6 +38,8 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $object->getIndent());
         $this->assertEquals(0, $object->getMarginLeft());
         $this->assertEquals(0, $object->getMarginRight());
+        $this->assertEquals(0, $object->getMarginTop());
+        $this->assertEquals(0, $object->getMarginBottom());
     }
 
     /**
@@ -110,6 +112,19 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test get/set margin bottom
+     */
+    public function testSetGetMarginBottom()
+    {
+        $object = new Alignment();
+        $value = rand(0, 100);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginBottom($value));
+        $this->assertEquals($value, $object->getMarginBottom());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginBottom());
+        $this->assertEquals(0, $object->getMarginBottom());
+    }
+
+    /**
      * Test get/set margin left
      */
     public function testSetGetMarginLeft()
@@ -155,6 +170,19 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $value = rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginRight($value));
         $this->assertEquals($value, $object->getMarginRight());
+    }
+
+    /**
+     * Test get/set margin top
+     */
+    public function testSetGetMarginTop()
+    {
+        $object = new Alignment();
+        $value = rand(1, 100);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginTop($value));
+        $this->assertEquals($value, $object->getMarginTop());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginTop());
+        $this->assertEquals(0, $object->getMarginTop());
     }
 
     /**
