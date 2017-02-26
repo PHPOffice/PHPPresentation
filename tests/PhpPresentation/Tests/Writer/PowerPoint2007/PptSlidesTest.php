@@ -827,6 +827,31 @@ class SlideTest extends PhpPresentationTestCase
         $this->assertTrue($pres->elementExists($element . '/a:lnB[@cmpd="' . Border::LINE_SINGLE . '"]/a:prstDash[@val="' . Border::DASH_SOLID . '"]', 'ppt/slides/slide1.xml'));
     }
 
+    public function testTableWithCellMargin()
+    {
+        $oPhpPresentation = new PhpPresentation();
+        $oSlide = $oPhpPresentation->getActiveSlide();
+        $oShape = $oSlide->createTableShape(4);
+        $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
+        $oRow = $oShape->createRow();
+        $oCell = $oRow->getCell();
+        $oCell->createTextRun('AAA');
+        $oCell->getActiveParagraph()->getAlignment()
+            ->setMarginBottom(10)
+            ->setMarginLeft(20)
+            ->setMarginRight(30)
+            ->setMarginTop(40);
+
+        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr';
+        $this->assertTrue($pres->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertEquals(10, $pres->getElementAttribute($element, 'marB', 'ppt/slides/slide1.xml'));
+        $this->assertEquals(20, $pres->getElementAttribute($element, 'marL', 'ppt/slides/slide1.xml'));
+        $this->assertEquals(30, $pres->getElementAttribute($element, 'marR', 'ppt/slides/slide1.xml'));
+        $this->assertEquals(40, $pres->getElementAttribute($element, 'marT', 'ppt/slides/slide1.xml'));
+    }
+
     public function testTableWithColspan()
     {
         $oPhpPresentation = new PhpPresentation();

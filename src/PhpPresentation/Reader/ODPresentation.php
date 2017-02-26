@@ -442,12 +442,15 @@ class ODPresentation implements ReaderInterface
     {
         $oParagraph = $oShape->createParagraph();
         $oDomList = $this->oXMLReader->getElements('text:span', $oNodeParent);
-        if ($oDomList->length == 0) {
-            $this->readParagraphItem($oParagraph, $oNodeParent);
-        } else {
-            foreach ($oDomList as $oNodeRichTextElement) {
-                $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+        $oDomTextNodes = $this->oXMLReader->getElements('text()', $oNodeParent);
+        foreach ($oDomTextNodes as $oDomTextNode) {
+            if (trim($oDomTextNode->nodeValue) != '') {
+                $oTextRun = $oParagraph->createTextRun();
+                $oTextRun->setText(trim($oDomTextNode->nodeValue));
             }
+        }
+        foreach ($oDomList as $oNodeRichTextElement) {
+            $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
         }
     }
     
@@ -510,7 +513,7 @@ class ODPresentation implements ReaderInterface
         $oParagraph = $oShape->createParagraph();
         if ($oNodeParagraph->hasAttribute('text:style-name')) {
             $keyStyle = $oNodeParagraph->getAttribute('text:style-name');
-            if (isset($this->arrayStyles[$keyStyle])) {
+            if (isset($this->arrayStyles[$keyStyle]) && !empty($this->arrayStyles[$keyStyle]['listStyle'])) {
                 $oParagraph->setAlignment($this->arrayStyles[$keyStyle]['listStyle'][$this->levelParagraph]['alignment']);
                 $oParagraph->setBulletStyle($this->arrayStyles[$keyStyle]['listStyle'][$this->levelParagraph]['bullet']);
             }

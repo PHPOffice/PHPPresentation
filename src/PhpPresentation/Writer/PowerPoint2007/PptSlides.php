@@ -1352,6 +1352,13 @@ class PptSlides extends AbstractSlide
                     $objWriter->writeAttribute('anchor', $verticalAlign);
                 }
 
+                // Margins
+                $alignment = $firstParagraph->getAlignment();
+                $objWriter->writeAttribute('marL', $alignment->getMarginLeft());
+                $objWriter->writeAttribute('marR', $alignment->getMarginRight());
+                $objWriter->writeAttribute('marT', $alignment->getMarginTop());
+                $objWriter->writeAttribute('marB', $alignment->getMarginBottom());
+
                 // Determine borders
                 $borderLeft         = $currentCell->getBorders()->getLeft();
                 $borderRight        = $currentCell->getBorders()->getRight();
@@ -1485,7 +1492,7 @@ class PptSlides extends AbstractSlide
 
                         // Size
                         $objWriter->writeAttribute('sz', ($element->getFont()->getSize() * 100));
-                        
+
                         // Character spacing
                         $objWriter->writeAttribute('spc', $element->getFont()->getCharacterSpacing());
 
