@@ -13,8 +13,6 @@ class DocPropsThumbnailTest extends PhpPresentationTestCase
     public function testRender()
     {
         $this->assertZipFileNotExists($this->oPresentation, 'PowerPoint2007', 'docProps/thumbnail.jpeg');
-        // Test if error
-        $this->assertZipFileExists($this->oPresentation, 'PowerPoint2007', 'docProps/thumbnail.jpeg');
     }
 
     public function testFeatureThumbnail()

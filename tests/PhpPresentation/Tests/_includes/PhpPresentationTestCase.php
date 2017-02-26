@@ -5,7 +5,7 @@ namespace PhpOffice\PhpPresentation\Tests;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\PhpPresentation;
 
-class PhpPresentationTestCase extends \PHPUnit_Framework_Assert
+class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var PhpPresentation
@@ -23,24 +23,36 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_Assert
     protected $workDirectory;
 
     /**
-     * Executed before any method of the class, once
+     * DOMDocument object
+     *
+     * @var \DOMDocument
      */
-    public function setUpBeforeClass()
-    {
-        $this->workDirectory = sys_get_temp_dir() . '/PhpPresentation_Unit_Test/';
-    }
+    private $xmlDom;
+
+    /**
+     * DOMXpath object
+     *
+     * @var \DOMXpath
+     */
+    private $xmlXPath;
+
+    /**
+     * File name
+     *
+     * @var string
+     */
+    private $xmlFile;
 
     /**
      * Executed before each method of the class
      */
     public function setUp()
     {
+        $this->workDirectory = sys_get_temp_dir() . '/PhpPresentation_Unit_Test/';
         $this->oPresentation = new PhpPresentation();
 
         $this->filePath = tempnam(sys_get_temp_dir(), 'PhpPresentation');
-        if (!is_dir($this->workDirectory)) {
-            mkdir($this->workDirectory);
-        }
+        $this->resetPresentationFile();
     }
 
     /**
@@ -49,12 +61,7 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_Assert
     public function tearDown()
     {
         $this->oPresentation = null;
-        if (file_exists($this->filePath)) {
-            unlink($this->filePath);
-        }
-        if (is_dir($this->workDirectory)) {
-            $this->deleteDir($this->workDirectory);
-        }
+        $this->resetPresentationFile();
     }
 
     /**
@@ -77,13 +84,55 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_Assert
         rmdir($dir);
     }
 
+    private function getXmlDom($file)
+    {
+        $baseFile = $file;
+        if (null !== $this->xmlDom && $file === $this->xmlFile) {
+            return $this->xmlDom;
+        }
+
+        $this->xmlXPath = null;
+        $this->xmlFile = $file;
+
+        $file = $this->workDirectory . '/' . $file;
+        $this->xmlDom = new \DOMDocument();
+        $strContent = file_get_contents($file);
+        // docProps/app.xml
+        if ($baseFile == 'docProps/app.xml') {
+            $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"', '', $strContent);
+        }
+        // docProps/custom.xml
+        if ($baseFile == 'docProps/custom.xml') {
+            $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $strContent);
+        }
+        // _rels/.rels
+        if (strpos($baseFile, '_rels/') !== false && strpos($baseFile, '.rels') !== false) {
+            $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/package/2006/relationships"', '', $strContent);
+        }
+        $this->xmlDom->loadXML($strContent);
+        return $this->xmlDom;
+    }
+
+    private function getXmlNodeList($file, $xpath)
+    {
+        if ($this->xmlDom === null || $file !== $this->xmlFile) {
+            $this->getXmlDom($file);
+        }
+
+        if (null === $this->xmlXPath) {
+            $this->xmlXPath = new \DOMXpath($this->xmlDom);
+        }
+
+        return $this->xmlXPath->query($xpath);
+    }
+
     /**
      * @param PhpPresentation $oPhpPresentation
      * @param string $writerName
      */
-    private function writePresentationFile(PhpPresentation $oPhpPresentation, $writerName)
+    protected function writePresentationFile(PhpPresentation $oPhpPresentation, $writerName)
     {
-        if (file_exists($this->filePath)) {
+        if (is_file($this->filePath)) {
             return;
         }
 
@@ -98,6 +147,19 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_Assert
         }
     }
 
+    protected function resetPresentationFile()
+    {
+        if (is_file($this->filePath)) {
+            unlink($this->filePath);
+        }
+        if (is_dir($this->workDirectory)) {
+            $this->deleteDir($this->workDirectory);
+        }
+        if (!is_dir($this->workDirectory)) {
+            mkdir($this->workDirectory);
+        }
+    }
+
     /**
      * @param PhpPresentation $oPhpPresentation
      * @param string $writerName
@@ -106,7 +168,7 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_Assert
     public function assertZipFileExists(PhpPresentation $oPhpPresentation, $writerName, $filePath)
     {
         $this->writePresentationFile($oPhpPresentation, $writerName);
-        self::assertThat(file_exists($this->workDirectory . $filePath), self::isTrue());
+        self::assertThat(is_file($this->workDirectory . $filePath), self::isTrue());
     }
 
     /**
@@ -117,6 +179,75 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_Assert
     public function assertZipFileNotExists(PhpPresentation $oPhpPresentation, $writerName, $filePath)
     {
         $this->writePresentationFile($oPhpPresentation, $writerName);
-        self::assertThat(file_exists($this->workDirectory . $filePath), self::isFalse());
+        self::assertThat(is_file($this->workDirectory . $filePath), self::isFalse());
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     */
+    public function assertZipXmlElementExists(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertThat(!($nodeList->length == 0), self::isTrue());
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     */
+    public function assertZipXmlElementNotExists(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertThat(!($nodeList->length == 0), self::isFalse());
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     * @param mixed $value
+     */
+    public function assertZipXmlElementEquals(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $value)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertEquals($nodeList->item(0)->nodeValue, $value);
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     * @param int $num
+     */
+    public function assertZipXmlElementCount(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $num)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertEquals($nodeList->length, $num);
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     * @param string $attribute
+     * @param mixed $value
+     */
+    public function assertZipXmlAttributeEquals(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute, $value)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertEquals($value, $nodeList->item(0)->getAttribute($attribute));
     }
 }
