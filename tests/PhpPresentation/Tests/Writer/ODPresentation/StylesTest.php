@@ -16,6 +16,8 @@ use PhpOffice\PhpPresentation\Writer\ODPresentation;
  */
 class StylesTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'ODPresentation';
+
     public function testDocumentLayout()
     {
         $element = "/office:document-styles/office:automatic-styles/style:page-layout/style:page-layout-properties";
@@ -24,15 +26,15 @@ class StylesTest extends PhpPresentationTestCase
         $oDocumentLayout->setDocumentLayout(DocumentLayout::LAYOUT_A4, true);
         $this->oPresentation->setLayout($oDocumentLayout);
 
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'style:print-orientation', 'landscape');
+        $this->assertZipXmlElementExists('styles.xml', $element);
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:print-orientation', 'landscape');
         
         $oDocumentLayout->setDocumentLayout(DocumentLayout::LAYOUT_A4, false);
         $this->oPresentation->setLayout($oDocumentLayout);
         $this->resetPresentationFile();
 
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'style:print-orientation', 'portrait');
+        $this->assertZipXmlElementExists('styles.xml', $element);
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:print-orientation', 'portrait');
     }
     
     public function testCustomDocumentLayout()
@@ -42,12 +44,12 @@ class StylesTest extends PhpPresentationTestCase
         $this->oPresentation->setLayout($oDocumentLayout);
         
         $element = "/office:document-styles/office:automatic-styles/style:page-layout";
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'style:name', 'sPL0');
+        $this->assertZipXmlElementExists('styles.xml', $element);
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:name', 'sPL0');
         
         $element = "/office:document-styles/office:master-styles/style:master-page";
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'style:page-layout-name', 'sPL0');
+        $this->assertZipXmlElementExists('styles.xml', $element);
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:page-layout-name', 'sPL0');
     }
     
     public function testGradientTable()
@@ -59,7 +61,7 @@ class StylesTest extends PhpPresentationTestCase
         $oCell->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
 
         $element = "/office:document-styles/office:styles/draw:gradient";
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:name', 'gradient_' . $oCell->getFill()->getHashCode());
+        $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', 'gradient_' . $oCell->getFill()->getHashCode());
     }
     
     public function testStrokeDash()
@@ -84,31 +86,31 @@ class StylesTest extends PhpPresentationTestCase
             $oRichText1->getBorder()->setDashStyle($style);
 
             $element = '/office:document-styles/office:styles/draw:stroke-dash[@draw:name=\'strokeDash_'.$style.'\']';
-            $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element);
-            $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:style', 'rect');
-            $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:distance');
+            $this->assertZipXmlElementExists('styles.xml', $element);
+            $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:style', 'rect');
+            $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:distance');
             
             switch ($style) {
                 case Border::DASH_DOT:
                 case Border::DASH_SYSDOT:
-                    $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:dots1');
-                    $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:dots1-length');
+                    $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots1');
+                    $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots1-length');
                     break;
                 case Border::DASH_DASH:
                 case Border::DASH_LARGEDASH:
                 case Border::DASH_SYSDASH:
-                    $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:dots2');
-                    $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:dots2-length');
+                    $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2');
+                    $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2-length');
                     break;
                 case Border::DASH_DASHDOT:
                 case Border::DASH_LARGEDASHDOT:
                 case Border::DASH_LARGEDASHDOTDOT:
                 case Border::DASH_SYSDASHDOT:
                 case Border::DASH_SYSDASHDOTDOT:
-                    $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:dots1');
-                    $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:dots1-length');
-                    $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:dots2');
-                    $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:dots2-length');
+                    $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots1');
+                    $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots1-length');
+                    $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2');
+                    $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2-length');
                     break;
             }
             $this->resetPresentationFile();

@@ -13,6 +13,8 @@ use PhpOffice\PhpPresentation\Writer\ODPresentation;
  */
 class ODPresentationTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'ODPresentation';
+
     /**
      * Test create new instance
      */
@@ -104,15 +106,15 @@ class ODPresentationTest extends PhpPresentationTestCase
 
         $xPathManifest = '/manifest:manifest/manifest:file-entry[@manifest:media-type=\'image/png\'][@manifest:full-path=\'Thumbnails/thumbnail.png\']';
 
-        $this->assertZipFileNotExists($this->oPresentation, 'ODPresentation', 'Thumbnails/thumbnail.png');
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml');
-        $this->assertZipXmlElementNotExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $xPathManifest);
+        $this->assertZipFileNotExists('Thumbnails/thumbnail.png');
+        $this->assertZipFileExists('META-INF/manifest.xml');
+        $this->assertZipXmlElementNotExists('META-INF/manifest.xml', $xPathManifest);
 
         $this->oPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
         $this->resetPresentationFile();
 
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Thumbnails/thumbnail.png');
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $xPathManifest);
+        $this->assertZipFileExists('Thumbnails/thumbnail.png');
+        $this->assertZipFileExists('META-INF/manifest.xml');
+        $this->assertZipXmlElementExists('META-INF/manifest.xml', $xPathManifest);
     }
 }

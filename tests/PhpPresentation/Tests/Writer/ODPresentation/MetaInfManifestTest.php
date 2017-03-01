@@ -14,6 +14,8 @@ use PhpOffice\PhpPresentation\Writer\ODPresentation;
  */
 class MetaInfManifestTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'ODPresentation';
+
     public function testDrawing()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -21,9 +23,9 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
 
         $element = '/manifest:manifest/manifest:file-entry[5]';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element);
-        $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/PhpPresentationLogo');
-        $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element, 'manifest:full-path', '.png');
+        $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
+        $this->assertZipXmlAttributeStartsWith('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/PhpPresentationLogo');
+        $this->assertZipXmlAttributeEndsWith('META-INF/manifest.xml', $element, 'manifest:full-path', '.png');
     }
 
     /**
@@ -51,8 +53,8 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $oSlide->addShape($oShape);
 
         $element = '/manifest:manifest/manifest:file-entry[5]';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
+        $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
     }
 
     public function testDrawingZip()
@@ -64,8 +66,8 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $oSlide->addShape($oShape);
 
         $element = '/manifest:manifest/manifest:file-entry[5]';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
+        $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
     }
 
     /**
@@ -88,8 +90,8 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->oPresentation->getActiveSlide()->addShape($oShape);
 
         $element = '/manifest:manifest/manifest:file-entry[5]';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
+        $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
     }
 
     public function testSlideBackground()
@@ -99,7 +101,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->oPresentation->getActiveSlide()->setBackground($oBkgImage);
 
         $element = '/manifest:manifest/manifest:file-entry[5]';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename(0)));
+        $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
+        $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename(0)));
     }
 }

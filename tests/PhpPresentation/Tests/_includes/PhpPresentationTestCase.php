@@ -23,6 +23,11 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
     protected $workDirectory;
 
     /**
+     * @var string
+     */
+    protected $writerName;
+
+    /**
      * DOMDocument object
      *
      * @var \DOMDocument
@@ -164,165 +169,141 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      */
-    public function assertZipFileExists(PhpPresentation $oPhpPresentation, $writerName, $filePath)
+    public function assertZipFileExists($filePath)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         self::assertThat(is_file($this->workDirectory . $filePath), self::isTrue());
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      */
-    public function assertZipFileNotExists(PhpPresentation $oPhpPresentation, $writerName, $filePath)
+    public function assertZipFileNotExists($filePath)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         self::assertThat(is_file($this->workDirectory . $filePath), self::isFalse());
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      */
-    public function assertZipXmlElementExists(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath)
+    public function assertZipXmlElementExists($filePath, $xPath)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertThat(!($nodeList->length == 0), self::isTrue());
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      */
-    public function assertZipXmlElementNotExists(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath)
+    public function assertZipXmlElementNotExists($filePath, $xPath)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertThat(!($nodeList->length == 0), self::isFalse());
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      * @param mixed $value
      */
-    public function assertZipXmlElementEquals(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $value)
+    public function assertZipXmlElementEquals($filePath, $xPath, $value)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertEquals($nodeList->item(0)->nodeValue, $value);
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      * @param int $num
      */
-    public function assertZipXmlElementCount(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $num)
+    public function assertZipXmlElementCount($filePath, $xPath, $num)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertEquals($nodeList->length, $num);
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeEquals(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute, $value)
+    public function assertZipXmlAttributeEquals($filePath, $xPath, $attribute, $value)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertEquals($value, $nodeList->item(0)->getAttribute($attribute));
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeStartsWith(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute, $value)
+    public function assertZipXmlAttributeStartsWith($filePath, $xPath, $attribute, $value)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertStringStartsWith($value, $nodeList->item(0)->getAttribute($attribute));
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeEndsWith(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute, $value)
+    public function assertZipXmlAttributeEndsWith($filePath, $xPath, $attribute, $value)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertStringEndsWith($value, $nodeList->item(0)->getAttribute($attribute));
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeContains(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute, $value)
+    public function assertZipXmlAttributeContains($filePath, $xPath, $attribute, $value)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertContains($value, $nodeList->item(0)->getAttribute($attribute));
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      * @param string $attribute
      */
-    public function assertZipXmlAttributeExists(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute)
+    public function assertZipXmlAttributeExists($filePath, $xPath, $attribute)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertTrue($nodeList->item(0)->hasAttribute($attribute));
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
-     * @param string $writerName
      * @param string $filePath
      * @param string $xPath
      * @param string $attribute
      */
-    public function assertZipXmlAttributeNotExists(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute)
+    public function assertZipXmlAttributeNotExists($filePath, $xPath, $attribute)
     {
-        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertFalse($nodeList->item(0)->hasAttribute($attribute));
     }

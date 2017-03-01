@@ -7,6 +7,8 @@ use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 class CommentAuthorsTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'PowerPoint2007';
+
     public function testComments()
     {
         $expectedElement = '/p:cmAuthorLst/p:cmAuthor';
@@ -20,16 +22,16 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $oComment->setAuthor($oAuthor);
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
-        $this->assertZipFileExists($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml', $expectedElement);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml', $expectedElement, 'id', 0);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml', $expectedElement, 'name', $expectedName);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml', $expectedElement, 'initials', $expectedInitials);
+        $this->assertZipFileExists('ppt/commentAuthors.xml');
+        $this->assertZipXmlElementExists('ppt/commentAuthors.xml', $expectedElement);
+        $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'id', 0);
+        $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'name', $expectedName);
+        $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'initials', $expectedInitials);
     }
 
     public function testWithoutComment()
     {
-        $this->assertZipFileNotExists($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml');
+        $this->assertZipFileNotExists('ppt/commentAuthors.xml');
     }
 
     public function testWithoutCommentAuthor()
@@ -37,7 +39,7 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $oComment = new Comment();
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
-        $this->assertZipFileNotExists($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml');
+        $this->assertZipFileNotExists('ppt/commentAuthors.xml');
     }
 
     public function testWithSameAuthor()
@@ -53,8 +55,8 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $oComment2->setAuthor($oAuthor);
         $this->oPresentation->getActiveSlide()->addShape($oComment2);
 
-        $this->assertZipFileExists($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml', $expectedElement);
-        $this->assertZipXmlElementCount($this->oPresentation, 'PowerPoint2007', 'ppt/commentAuthors.xml', $expectedElement, 1);
+        $this->assertZipFileExists('ppt/commentAuthors.xml');
+        $this->assertZipXmlElementExists('ppt/commentAuthors.xml', $expectedElement);
+        $this->assertZipXmlElementCount('ppt/commentAuthors.xml', $expectedElement, 1);
     }
 }

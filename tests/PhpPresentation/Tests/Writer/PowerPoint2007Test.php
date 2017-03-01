@@ -12,6 +12,8 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
  */
 class PowerPoint2007Test extends PhpPresentationTestCase
 {
+    protected $writerName = 'PowerPoint2007';
+
     /**
      * Test create new instance
      */
@@ -125,23 +127,23 @@ class PowerPoint2007Test extends PhpPresentationTestCase
 
     public function testZoom()
     {
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'n', 100);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'd', 100);
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', 100);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 100);
+        $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx');
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'n', 100);
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'd', 100);
+        $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy');
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', 100);
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 100);
 
         $value = rand(1, 100);
         $this->oPresentation->getPresentationProperties()->setZoom($value);
         $this->resetPresentationFile();
 
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'n', $value * 100);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'd', 100);
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', $value * 100);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'PowerPoint2007', 'ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 100);
+        $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx');
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'n', $value * 100);
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'd', 100);
+        $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy');
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', $value * 100);
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 100);
     }
 
     public function testFeatureThumbnail()
@@ -150,13 +152,13 @@ class PowerPoint2007Test extends PhpPresentationTestCase
 
         $xPathManifest = '/Relationships/Relationship[@Target=\'docProps/thumbnail.jpeg\'][@Type=\'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail\']';
 
-        $this->assertZipFileExists($this->oPresentation, 'PowerPoint2007', '_rels/.rels');
-        $this->assertZipXmlElementNotExists($this->oPresentation, 'PowerPoint2007', '_rels/.rels', $xPathManifest);
+        $this->assertZipFileExists('_rels/.rels');
+        $this->assertZipXmlElementNotExists('_rels/.rels', $xPathManifest);
 
         $this->oPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
         $this->resetPresentationFile();
 
-        $this->assertZipFileExists($this->oPresentation, 'PowerPoint2007', '_rels/.rels');
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', '_rels/.rels', $xPathManifest);
+        $this->assertZipFileExists('_rels/.rels');
+        $this->assertZipXmlElementExists('_rels/.rels', $xPathManifest);
     }
 }

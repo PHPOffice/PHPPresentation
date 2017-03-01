@@ -10,9 +10,11 @@ use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
  */
 class DocPropsThumbnailTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'PowerPoint2007';
+
     public function testRender()
     {
-        $this->assertZipFileNotExists($this->oPresentation, 'PowerPoint2007', 'docProps/thumbnail.jpeg');
+        $this->assertZipFileNotExists('docProps/thumbnail.jpeg');
     }
 
     public function testFeatureThumbnail()
@@ -20,6 +22,6 @@ class DocPropsThumbnailTest extends PhpPresentationTestCase
         $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
 
         $this->oPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
-        $this->assertZipFileExists($this->oPresentation, 'PowerPoint2007', 'docProps/thumbnail.jpeg');
+        $this->assertZipFileExists('docProps/thumbnail.jpeg');
     }
 }

@@ -7,6 +7,8 @@ use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 class RelationshipsTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'PowerPoint2007';
+
     public function testCommentsAuthors()
     {
         $oAuthor = new Comment\Author();
@@ -14,6 +16,6 @@ class RelationshipsTest extends PhpPresentationTestCase
         $oComment->setAuthor($oAuthor);
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', 'ppt/_rels/presentation.xml.rels', '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/commentAuthors"]');
+        $this->assertZipXmlElementExists('ppt/_rels/presentation.xml.rels', '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/commentAuthors"]');
     }
 }

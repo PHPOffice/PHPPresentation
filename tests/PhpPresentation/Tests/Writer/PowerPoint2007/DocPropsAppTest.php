@@ -12,9 +12,11 @@ use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 class DocPropsAppTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'PowerPoint2007';
+
     public function testRender()
     {
-        $this->assertZipFileExists($this->oPresentation, 'PowerPoint2007', 'docProps/app.xml');
+        $this->assertZipFileExists('docProps/app.xml');
     }
 
     public function testCompany()
@@ -23,8 +25,8 @@ class DocPropsAppTest extends PhpPresentationTestCase
 
         $this->oPresentation->getDocumentProperties()->setCompany($expected);
 
-        $this->assertZipFileExists($this->oPresentation, 'PowerPoint2007', 'docProps/app.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'PowerPoint2007', 'docProps/app.xml', '/Properties/Company');
-        $this->assertZipXmlElementEquals($this->oPresentation, 'PowerPoint2007', 'docProps/app.xml', '/Properties/Company', $expected);
+        $this->assertZipFileExists('docProps/app.xml');
+        $this->assertZipXmlElementExists('docProps/app.xml', '/Properties/Company');
+        $this->assertZipXmlElementEquals('docProps/app.xml', '/Properties/Company', $expected);
     }
 }

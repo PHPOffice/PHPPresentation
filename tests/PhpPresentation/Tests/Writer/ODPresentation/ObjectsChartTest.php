@@ -26,6 +26,8 @@ use PhpOffice\PhpPresentation\Writer\ODPresentation;
  */
 class ObjectsChartTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'ODPresentation';
+
     public function testAxisFont()
     {
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
@@ -40,25 +42,25 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->getAxisY()->getFont()->setSize(16);
         $oShape->getPlotArea()->getAxisY()->getFont()->setName('Arial');
 
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml');
+        $this->assertZipFileExists('Object 1/content.xml');
 
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:bar');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:bar');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:text-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'fo:color', '#AABBCC');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'fo:font-style', 'italic');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'fo:font-size', '10pt');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'fo:font-family', 'Calibri');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:color', '#AABBCC');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-style', 'italic');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-size', '10pt');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Calibri');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:text-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'fo:color', '#00FF00');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'fo:font-style', 'normal');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'fo:font-size', '16pt');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'fo:font-family', 'Arial');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:color', '#00FF00');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-style', 'normal');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-size', '16pt');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Arial');
     }
 
     public function testLegend()
@@ -71,15 +73,15 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oLine);
 
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
     }
 
     public function testTitleVisibility()
@@ -93,13 +95,13 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $this->assertTrue($oShape->getTitle()->isVisible());
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $elementTitle);
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $elementStyle);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $elementTitle);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $elementStyle);
 
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
         $this->resetPresentationFile();
-        $this->assertZipXmlElementNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $elementTitle);
-        $this->assertZipXmlElementNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $elementStyle);
+        $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementTitle);
+        $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementStyle);
     }
 
     public function testTypeArea()
@@ -112,18 +114,18 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oArea);
 
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:area');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:area');
 
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:area');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:area');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\']/style:graphic-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'draw:fill');
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'draw:fill-color');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'draw:fill-color', '#93A9CE');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'draw:fill');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'draw:fill-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill-color', '#93A9CE');
     }
 
     public function testTypeBar()
@@ -139,21 +141,21 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oBar);
 
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:bar');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:bar');
 
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:vertical', 'false');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:three-dimensional');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:right-angled-axes');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:stacked', 'false');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:overlap', '0');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:percentage');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:data-label-number', 'value');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:vertical', 'false');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:three-dimensional');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:right-angled-axes');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:stacked', 'false');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:overlap', '0');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:percentage');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
     }
 
     public function testTypeBarGroupingStacked()
@@ -165,11 +167,11 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oBar);
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:stacked', 'true');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:overlap', '100');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:percentage');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:data-label-number', 'value');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:stacked', 'true');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:overlap', '100');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:percentage');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
     }
 
     public function testTypeBarGroupingPercentStacked()
@@ -181,11 +183,11 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oBar);
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:stacked', 'true');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:overlap', '100');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:percentage', 'true');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:stacked', 'true');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:overlap', '100');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:percentage', 'true');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
     }
 
     public function testTypeBarHorizontal()
@@ -202,14 +204,14 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oBar);
 
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:bar');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:bar');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:vertical', 'true');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:three-dimensional');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:right-angled-axes');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:vertical', 'true');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:three-dimensional');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:right-angled-axes');
     }
 
     public function testTypeBar3D()
@@ -225,19 +227,19 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oBar3D);
         
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:bar');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:bar');
         
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:vertical', 'false');
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:three-dimensional');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:three-dimensional', 'true');
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:right-angled-axes');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:right-angled-axes', 'true');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:vertical', 'false');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:three-dimensional');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:three-dimensional', 'true');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:right-angled-axes');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:right-angled-axes', 'true');
     }
 
     public function testTypeBar3DHorizontal()
@@ -254,16 +256,16 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oBar3D);
         
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:bar');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:bar');
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:vertical', 'true');
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:three-dimensional');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:three-dimensional', 'true');
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:right-angled-axes');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:right-angled-axes', 'true');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:vertical', 'true');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:three-dimensional');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:three-dimensional', 'true');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:right-angled-axes');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:right-angled-axes', 'true');
     }
     
     public function testTypeLine()
@@ -276,29 +278,29 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oLine);
     
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:line');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:line');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:tick-marks-major-inner', 'false');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:tick-marks-major-outer', 'false');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:tick-marks-major-inner', 'false');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:tick-marks-major-outer', 'false');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:graphic-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'svg:stroke-width', '0.026cm');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.026cm');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
 
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:tick-marks-major-inner', 'false');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:tick-marks-major-outer', 'false');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:tick-marks-major-inner', 'false');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:tick-marks-major-outer', 'false');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:graphic-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'svg:stroke-width', '0.026cm');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.026cm');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
     }
 
     public function testTypeLineGridlines()
@@ -359,18 +361,18 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $oGridlines->getOutline()->setWidth($expectedSizePts);
             $oShape->getPlotArea()->{$arrayTest['methodAxis']}()->{$arrayTest['methodGrid']}($oGridlines);
 
-            $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml');
-            $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementGrid);
-            $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementGrid, 'chart:style-name');
-            $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementGrid, 'chart:style-name', $arrayTest['styleName']);
-            $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementGrid, 'chart:class');
-            $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementGrid, 'chart:class', $arrayTest['styleClass']);
+            $this->assertZipFileExists('Object 1/content.xml');
+            $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElementGrid);
+            $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElementGrid, 'chart:style-name');
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElementGrid, 'chart:style-name', $arrayTest['styleName']);
+            $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElementGrid, 'chart:class');
+            $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElementGrid, 'chart:class', $arrayTest['styleClass']);
 
-            $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementStyle);
-            $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementStyle, 'svg:stroke-width', $expectedSizeCm);
-            $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementStyle, 'svg:stroke-width', 'cm');
-            $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementStyle, 'svg:stroke-color', '#');
-            $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElementStyle, 'svg:stroke-color', $expectedColor->getRGB());
+            $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElementStyle);
+            $this->assertZipXmlAttributeStartsWith('Object 1/content.xml', $expectedElementStyle, 'svg:stroke-width', $expectedSizeCm);
+            $this->assertZipXmlAttributeEndsWith('Object 1/content.xml', $expectedElementStyle, 'svg:stroke-width', 'cm');
+            $this->assertZipXmlAttributeStartsWith('Object 1/content.xml', $expectedElementStyle, 'svg:stroke-color', '#');
+            $this->assertZipXmlAttributeEndsWith('Object 1/content.xml', $expectedElementStyle, 'svg:stroke-color', $expectedColor->getRGB());
 
         }
     }
@@ -400,37 +402,37 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name', $expectedSymbol1);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-width', $expectedSizeCm);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-height', $expectedSizeCm);
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', $expectedSymbol1);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-width', $expectedSizeCm);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-height', $expectedSizeCm);
 
         $oSeries->getMarker()->setSymbol($expectedSymbol2);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol3);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol4);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol5);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-width');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-height');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-name');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-width');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-height');
     }
 
     public function testTypeLineSeriesOutline()
@@ -459,23 +461,23 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement);
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-width');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
 
         $oSeries->setOutline($oOutline);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement);
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-width');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-width', $expectedWidthCm);
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', $expectedWidthCm);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
     }
     
     public function testTypePie()
@@ -491,19 +493,19 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oPie);
     
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:circle');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:circle');
         
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
     }
 
     public function testTypePie3D()
@@ -519,19 +521,19 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oPie3D);
 
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:circle');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:circle');
 
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
     }
     
     public function testTypePie3DExplosion()
@@ -547,8 +549,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oPie3D);
     
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:pie-offset', $value);
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:pie-offset', $value);
     }
     
     public function testTypeScatter()
@@ -561,8 +563,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart->getPlotArea()->setType($oScatter);
     
         $element = '/office:document-content/office:body/office:chart/chart:chart';
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $element, 'chart:class', 'chart:scatter');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:scatter');
     }
 
     public function testTypeScatterMarker()
@@ -589,37 +591,37 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name', $expectedSymbol1);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-width', $expectedSizeCm);
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-height', $expectedSizeCm);
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', $expectedSymbol1);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-width', $expectedSizeCm);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-height', $expectedSizeCm);
 
         $oSeries->getMarker()->setSymbol($expectedSymbol2);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol3);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol4);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol5);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-name');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-width');
-        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'chart:symbol-height');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-name');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-width');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-height');
     }
 
     public function testTypeScatterSeriesOutline()
@@ -647,22 +649,22 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement);
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-width');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
 
         $oSeries->setOutline($oOutline);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
-        $this->assertZipFileExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml');
-        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement);
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-width');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-width', $expectedWidthCm);
-        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-color');
-        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', $expectedWidthCm);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
     }
 }
