@@ -55,7 +55,6 @@ class Placeholder
     public function __construct($type)
     {
         $this->type = $type;
-        return $this;
     }
 
     /**

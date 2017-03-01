@@ -62,7 +62,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
     * Get collection of shapes
     *
-    * @return \ArrayObject
+     * @return \ArrayObject|AbstractShape[]
     */
     public function getShapeCollection()
     {

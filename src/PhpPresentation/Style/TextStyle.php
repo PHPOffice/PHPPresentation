@@ -44,19 +44,23 @@ class TextStyle
     public function __construct($default = true)
     {
         if ($default) {
+            $oColorLT1 = new SchemeColor();
+            $oColorLT1->setValue('lt1');
+            $oColorTX1 = new SchemeColor();
+            $oColorTX1->setValue('tx1');
             $oRTParagraph = new RichTextParagraph();
             $oRTParagraph->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-            $oRTParagraph->getFont()->setSize(44)->setColor(new SchemeColor())->getColor()->setValue("lt1");
+            $oRTParagraph->getFont()->setSize(44)->setColor($oColorLT1);
             $this->titleStyle[1] = $oRTParagraph;
             $oRTParagraph = new RichTextParagraph();
             $oRTParagraph->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
                 ->setIndent(-324900 / 9525)
                 ->setMarginLeft(342900 / 9525);
-            $oRTParagraph->getFont()->setSize(32)->setColor(new SchemeColor())->getColor()->setValue("tx1");
+            $oRTParagraph->getFont()->setSize(32)->setColor($oColorTX1);
             $this->bodyStyle[1] = $oRTParagraph;
             $oRTParagraph = new RichTextParagraph();
             $oRTParagraph->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-            $oRTParagraph->getFont()->setSize(10)->setColor(new SchemeColor())->getColor()->setValue("tx1");
+            $oRTParagraph->getFont()->setSize(10)->setColor($oColorTX1);
             $this->otherStyle[0] = $oRTParagraph;
         }
     }

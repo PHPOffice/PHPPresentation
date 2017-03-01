@@ -208,7 +208,7 @@ class PptSlideMasters extends AbstractSlide
         // p:sldMaster\p:txStyles\
 
         if (!is_null($pSlide->getTransition())) {
-            $this->writeTransition($objWriter, $pSlide->getTransition());
+            $this->writeSlideTransition($objWriter, $pSlide->getTransition());
         }
 
         // p:sldMaster\
