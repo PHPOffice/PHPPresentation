@@ -39,8 +39,10 @@ class PptSlides extends AbstractSlide
             $this->oZip->addFromString('ppt/slides/slide' . ($idx + 1) . '.xml', $this->writeSlide($oSlide));
 
             // Add note slide
-            if ($oSlide->getNote()->getShapeCollection()->count() > 0) {
-                $this->oZip->addFromString('ppt/notesSlides/notesSlide' . ($idx + 1) . '.xml', $this->writeNote($oSlide->getNote()));
+            if ($oSlide->getNote() instanceof Note) {
+                if ($oSlide->getNote()->getShapeCollection()->count() > 0) {
+                    $this->oZip->addFromString('ppt/notesSlides/notesSlide' . ($idx + 1) . '.xml', $this->writeNote($oSlide->getNote()));
+                }
             }
 
             // Add background image slide

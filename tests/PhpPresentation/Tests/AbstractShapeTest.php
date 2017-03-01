@@ -157,6 +157,7 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
     {
         $object = new RichText();
         $this->assertFalse($object->isPlaceholder(), 'Standard Shape should not be a placeholder object');
+        $this->assertNull($object->getPlaceholder());
         $this->assertInstanceOf(
             'PhpOffice\\PhpPresentation\\AbstractShape',
             $object->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_TITLE))
@@ -173,5 +174,35 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($object->isPlaceholder());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Placeholder', $object->getPlaceholder());
         $this->assertEquals('subTitle', $object->getPlaceholder()->getType());
+    }
+
+    public function testContainer()
+    {
+        $object = new RichText();
+        $object2 = new RichText();
+        $object2->setWrap(RichText::WRAP_NONE);
+        $oSlide = new Slide();
+        $oSlide->addShape($object2);
+
+        $this->assertNull($object->getContainer());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer($oSlide));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getContainer());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer(null, true));
+        $this->assertNull($object->getContainer());
+    }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage A \PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPresentation\ShapeContainerInterface.
+     */
+    public function testContainerException()
+    {
+        $object = new RichText();
+        $oSlide = new Slide();
+
+        $this->assertNull($object->getContainer());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer($oSlide));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getContainer());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer(null));
     }
 }
