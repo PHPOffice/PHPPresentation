@@ -149,6 +149,9 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
 
     protected function resetPresentationFile()
     {
+        $this->xmlFile = null;
+        $this->xmlDom = null;
+        $this->xmlXPath = null;
         if (is_file($this->filePath)) {
             unlink($this->filePath);
         }
@@ -249,5 +252,78 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
         $this->writePresentationFile($oPhpPresentation, $writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertEquals($value, $nodeList->item(0)->getAttribute($attribute));
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     * @param string $attribute
+     * @param mixed $value
+     */
+    public function assertZipXmlAttributeStartsWith(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute, $value)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertStringStartsWith($value, $nodeList->item(0)->getAttribute($attribute));
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     * @param string $attribute
+     * @param mixed $value
+     */
+    public function assertZipXmlAttributeEndsWith(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute, $value)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertStringEndsWith($value, $nodeList->item(0)->getAttribute($attribute));
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     * @param string $attribute
+     * @param mixed $value
+     */
+    public function assertZipXmlAttributeContains(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute, $value)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertContains($value, $nodeList->item(0)->getAttribute($attribute));
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     * @param string $attribute
+     */
+    public function assertZipXmlAttributeExists(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertTrue($nodeList->item(0)->hasAttribute($attribute));
+    }
+
+    /**
+     * @param PhpPresentation $oPhpPresentation
+     * @param string $writerName
+     * @param string $filePath
+     * @param string $xPath
+     * @param string $attribute
+     */
+    public function assertZipXmlAttributeNotExists(PhpPresentation $oPhpPresentation, $writerName, $filePath, $xPath, $attribute)
+    {
+        $this->writePresentationFile($oPhpPresentation, $writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertFalse($nodeList->item(0)->hasAttribute($attribute));
     }
 }

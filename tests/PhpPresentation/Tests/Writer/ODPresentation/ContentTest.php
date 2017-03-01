@@ -1,25 +1,9 @@
 <?php
-/**
- * This file is part of PHPPresentation - A pure PHP library for reading and writing
- * presentations documents.
- *
- * PHPPresentation is free software distributed under the terms of the GNU Lesser
- * General Public License version 3 as published by the Free Software Foundation.
- *
- * For the full copyright and license information, please read the LICENSE
- * file that was distributed with this source code. For the full list of
- * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
- *
- * @copyright   2009-2015 PHPPresentation contributors
- * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
- */
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
@@ -29,8 +13,8 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
 use PhpOffice\Common\Drawing;
 
 /**
@@ -38,29 +22,8 @@ use PhpOffice\Common\Drawing;
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
  */
-class ContentTest extends \PHPUnit_Framework_TestCase
+class ContentTest extends PhpPresentationTestCase
 {
-    /**
-     * @var PhpPresentation
-     */
-    protected $oPresentation;
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->oPresentation = new PhpPresentation();
-    }
-
-    /**
-     * Executed before each method of the class
-     */
-    public function tearDown()
-    {
-        $this->oPresentation = null;
-        TestHelperDOCX::clear();
-    }
-
     public function testDrawingWithHyperlink()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -68,11 +31,9 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
         $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
     
-        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
-    
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
     }
 
     public function testComment()
@@ -87,18 +48,17 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oComment->setText($expectedText);
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
-        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
         $element = '/office:document-content';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'xmlns:officeooo', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'xmlns:officeooo');
         $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation/dc:creator';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals($expectedName, $pres->getElement($element, 'content.xml')->nodeValue);
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlElementEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, $expectedName);
         $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation/text:p';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals($expectedText, $pres->getElement($element, 'content.xml')->nodeValue);
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlElementEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, $expectedText);
     }
 
     public function testCommentWithoutAuthor()
@@ -106,90 +66,70 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oComment = new Comment();
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
-        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
         $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($element, 'dc:creator', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'dc:creator');
     }
 
     public function testFillGradientLinearRichText()
     {
-        $oPhpPresentation = new PhpPresentation();
-        $oSlide = $oPhpPresentation->getActiveSlide();
-        $oShape = $oSlide->createRichTextShape();
+        $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oShape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
 
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
         $element = '/office:document-styles/office:styles/draw:gradient';
-        $this->assertEquals('gradient_'.$oShape->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:name', 'styles.xml'));
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'styles.xml', $element, 'draw:name', 'gradient_' . $oShape->getFill()->getHashCode());
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('gradient', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
-        $this->assertEquals('gradient_'.$oShape->getFill()->getHashCode(), $pres->getElementAttribute($element, 'draw:fill-gradient-name', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:fill', 'gradient');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:fill-gradient-name', 'gradient_' . $oShape->getFill()->getHashCode());
     }
 
     public function testFillSolidRichText()
     {
-        $oPhpPresentation = new PhpPresentation();
-        $oSlide = $oPhpPresentation->getActiveSlide();
-        $oShape = $oSlide->createRichTextShape();
+        $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF4672A8'));
 
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
-        $this->assertEquals('#'.$oShape->getFill()->getStartColor()->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
-        $this->assertEquals('#'.$oShape->getFill()->getEndColor()->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:fill-color', '#' . $oShape->getFill()->getStartColor()->getRGB());
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:fill-color', '#' . $oShape->getFill()->getEndColor()->getRGB());
     }
 
     public function testGroup()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oShapeGroup = $oSlide->createGroup();
+        $oShapeGroup = $this->oPresentation->getActiveSlide()->createGroup();
         $oShape = $oShapeGroup->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
         $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
     
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-    
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g/draw:frame/office:event-listeners/presentation:event-listener';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
     }
     
     public function testList()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oRichText = $oSlide->createRichTextShape();
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
         $oRichText->createTextRun('Alpha');
         $oRichText->createParagraph()->createTextRun('Beta');
         $oRichText->createParagraph()->createTextRun('Delta');
         $oRichText->createParagraph()->createTextRun('Epsilon');
         
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        
         $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-bullet';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
     }
 
     public function testInnerList()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        
-        $oRichText = $oSlide->createRichTextShape();
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setMarginLeft(25)->setIndent(-25);
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
         
@@ -206,23 +146,17 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oRichText->createParagraph()->createTextRun('Beta.Beta');
         $oRichText->createParagraph()->createTextRun('Beta.Delta');
         
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        
         $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-bullet';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:list/text:list-item/text:p/text:span';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
     }
 
     public function testParagraphRichText()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oRichText = $oSlide->createRichTextShape();
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->createTextRun('Alpha');
         $oRichText->createBreak();
         $oRichText->createText('Beta');
@@ -230,33 +164,27 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oRun = $oRichText->createTextRun('Delta');
         $oRun->getHyperlink()->setUrl('http://www.google.fr');
         
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:line-break';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:a';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('http://www.google.fr', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'xlink:href', 'http://www.google.fr');
     }
 
     public function testListWithRichText()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oRichText = $oSlide->createRichTextShape();
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
         $oRun = $oRichText->createTextRun('Alpha');
         $oRun->getHyperlink()->setUrl('http://www.google.fr');
         $oRichText->createBreak();
         $oRichText->createTextRun('Beta');
         
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span/text:a';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span/text:line-break';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
     }
 
     public function testMedia()
@@ -275,142 +203,123 @@ class ContentTest extends \PHPUnit_Framework_TestCase
             ->setWidth($expectedWidth)
             ->setOffsetX($expectedX)
             ->setOffsetY($expectedY);
+        $this->oPresentation->getActiveSlide()->addShape($oMedia);
 
         $expectedWidth = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedWidth), 3) . 'cm';
         $expectedHeight = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedHeight), 3) . 'cm';
         $expectedX = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedX), 3) . 'cm';
         $expectedY = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedY), 3) . 'cm';
 
-        $oPhpPresentation = new PhpPresentation();
-        $oSlide = $oPhpPresentation->getActiveSlide();
-        $oSlide->addShape($oMedia);
-
-        $xmlObject = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
-        $this->assertTrue($xmlObject->elementExists($element, 'content.xml'));
-        $this->assertEquals($expectedName, $xmlObject->getElementAttribute($element, 'draw:name', 'content.xml'));
-        $this->assertEquals($expectedWidth, $xmlObject->getElementAttribute($element, 'svg:width', 'content.xml'));
-        $this->assertEquals($expectedHeight, $xmlObject->getElementAttribute($element, 'svg:height', 'content.xml'));
-        $this->assertEquals($expectedX, $xmlObject->getElementAttribute($element, 'svg:x', 'content.xml'));
-        $this->assertEquals($expectedY, $xmlObject->getElementAttribute($element, 'svg:y', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:name', $expectedName);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:width', $expectedWidth);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:height', $expectedHeight);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:x', $expectedX);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:y', $expectedY);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:plugin';
-        $this->assertTrue($xmlObject->elementExists($element, 'content.xml'));
-        $this->assertEquals('application/vnd.sun.star.media', $xmlObject->getElementAttribute($element, 'draw:mime-type', 'content.xml'));
-        $this->assertStringStartsWith('Pictures/', $xmlObject->getElementAttribute($element, 'xlink:href', 'content.xml'));
-        $this->assertStringEndsWith('ogv', $xmlObject->getElementAttribute($element, 'xlink:href', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:mime-type', 'application/vnd.sun.star.media');
+        $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:mime-type', 'application/vnd.sun.star.media');
+        $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'xlink:href', 'Pictures/');
+        $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'xlink:href', 'ogv');
     }
 
     public function testNote()
     {
-        $oPhpPresentation = new PhpPresentation();
-        $oSlide = $oPhpPresentation->getActiveSlide();
-        $oNote = $oSlide->getNote();
+        $oNote = $this->oPresentation->getActiveSlide()->getNote();
         $oRichText = $oNote->createRichTextShape()->setHeight(300)->setWidth(600);
         $oRichText->createTextRun('testNote');
-        
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/presentation:notes';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/presentation:notes/draw:frame/draw:text-box/text:p/text:span';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
     }
 
     public function testRichTextAutoShrink()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oRichText1 = $oSlide->createRichTextShape();
-        
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+        $oRichText1 = $this->oPresentation->getActiveSlide()->createRichTextShape();
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertFalse($pres->attributeElementExists($element, 'draw:auto-grow-height', 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-height');
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-width');
 
         $oRichText1->setAutoShrinkHorizontal(false);
         $oRichText1->setAutoShrinkVertical(true);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-height', 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
-        $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-height', 'content.xml'));
-        $this->assertEquals('false', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
-        
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-height');
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-width');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-height', 'true');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-width', 'false');
 
         $oRichText1->setAutoShrinkHorizontal(true);
         $oRichText1->setAutoShrinkVertical(false);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-height', 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'draw:auto-grow-width', 'content.xml'));
-        $this->assertEquals('false', $pres->getElementAttribute($element, 'draw:auto-grow-height', 'content.xml'));
-        $this->assertEquals('true', $pres->getElementAttribute($element, 'draw:auto-grow-width', 'content.xml'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-height');
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-width');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-height', 'false');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:auto-grow-width', 'true');
     }
 
     public function testRichTextRunLanguage()
     {
-        $oPhpPresentation = new PhpPresentation();
-        $oSlide = $oPhpPresentation->getActiveSlide();
-        $oRichText = $oSlide->createRichTextShape();
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRun = $oRichText->createTextRun('MyText');
 
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
-        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$oRun->getHashCode().'\']/style:text-properties';
-        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($expectedElement, 'fo:language', 'content.xml'));
-        $this->assertEquals('en-US', $pres->getElementAttribute($expectedElement, 'fo:language', 'content.xml'));
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $oRun->getHashCode() . '\']/style:text-properties';
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:language', 'en-US');
 
         $oRun->setLanguage('de_DE');
+        $this->resetPresentationFile();
 
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'ODPresentation');
-        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$oRun->getHashCode().'\']/style:text-properties';
-        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($expectedElement, 'fo:language', 'content.xml'));
-        $this->assertEquals('de_DE', $pres->getElementAttribute($expectedElement, 'fo:language', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:language', 'de_DE');
     }
 
     public function testRichTextBorder()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oRichText1 = $oSlide->createRichTextShape();
+        $oRichText1 = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_NONE);
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-
-        $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_NONE);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($element, 'svg:stroke-color', 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($element, 'svg:stroke-width', 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke', 'content.xml'));
-        $this->assertEquals('none', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:stroke-color');
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:stroke-width');
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke', 'none');
         
         $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_SINGLE);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'svg:stroke-color', 'content.xml'));
-        $this->assertEquals('#'.$oRichText1->getBorder()->getColor()->getRGB(), $pres->getElementAttribute($element, 'svg:stroke-color', 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'svg:stroke-width', 'content.xml'));
-        $this->assertStringEndsWith('cm', $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
-        $this->assertStringStartsWith((string) number_format(CommonDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''), $pres->getElementAttribute($element, 'svg:stroke-width', 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke', 'content.xml'));
-        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($element, 'draw:stroke-dash', 'content.xml'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:stroke-color', '#' . $oRichText1->getBorder()->getColor()->getRGB());
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:stroke-width');
+        $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:stroke-width', (string)number_format(CommonDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''));
+        $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'svg:stroke-width', 'cm');
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke', 'solid');
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke-dash');
 
         $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_DASH);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
-        $this->assertEquals('dash', $pres->getElementAttribute($element, 'draw:stroke', 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'draw:stroke-dash', 'content.xml'));
-        $this->assertStringStartsWith('strokeDash_', $pres->getElementAttribute($element, 'draw:stroke-dash', 'content.xml'));
-        $this->assertStringEndsWith($oRichText1->getBorder()->getDashStyle(), $pres->getElementAttribute($element, 'draw:stroke-dash', 'content.xml'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke', 'dash');
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke-dash');
+        $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke-dash', 'strokeDash_');
+        $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:stroke-dash', $oRichText1->getBorder()->getDashStyle());
     }
     
     public function testRichTextShadow()
     {
         $randAlpha = rand(0, 100);
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oRichText = $oSlide->createRichTextShape();
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->createTextRun('AAA');
         $oRichText->getShadow()->setVisible(true)->setAlpha($randAlpha)->setBlurRadius(2);
         
@@ -418,152 +327,133 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         for ($inc = 0; $inc <= 360; $inc += 45) {
             $randDistance = rand(0, 100);
             $oRichText->getShadow()->setDirection($inc)->setDistance($randDistance);
-            $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-            $this->assertTrue($pres->elementExists($element, 'content.xml'));
-            $this->assertEquals('visible', $pres->getElementAttribute($element, 'draw:shadow', 'content.xml'));
-            $this->assertEquals('none', $pres->getElementAttribute($element, 'style:mirror', 'content.xml'));
+
+            $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+            $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow', 'visible');
+            $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'style:mirror', 'none');
             // Opacity
-            $this->assertStringStartsWith((string)(100 - $randAlpha), $pres->getElementAttribute($element, 'draw:shadow-opacity', 'content.xml'));
-            $this->assertStringEndsWith('%', $pres->getElementAttribute($element, 'draw:shadow-opacity', 'content.xml'));
+            $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-opacity', (string)(100 - $randAlpha));
+            $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-opacity', '%');
             // Color
-            $this->assertStringStartsWith('#', $pres->getElementAttribute($element, 'draw:shadow-color', 'content.xml'));
+            $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-color', '#');
             // X
-            $xOffset = $pres->getElementAttribute($element, 'draw:shadow-offset-x', 'content.xml');
             if ($inc == 90 || $inc == 270) {
-                $this->assertEquals('0cm', $xOffset);
+                $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-offset-x', '0cm');
             } else {
                 if ($inc > 90 && $inc < 270) {
-                    $this->assertEquals('-'.Drawing::pixelsToCentimeters($randDistance).'cm', $xOffset);
+                    $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-offset-x', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
                 } else {
-                    $this->assertEquals(Drawing::pixelsToCentimeters($randDistance).'cm', $xOffset);
+                    $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-offset-x', Drawing::pixelsToCentimeters($randDistance) . 'cm');
                 }
             }
             // Y
-            $yOffset = $pres->getElementAttribute($element, 'draw:shadow-offset-y', 'content.xml');
             if ($inc == 0 || $inc == 180 || $inc == 360) {
-                $this->assertEquals('0cm', $yOffset);
+                $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-offset-y', '0cm');
             } else {
                 if (($inc > 0 && $inc < 180) || $inc == 360) {
-                    $this->assertEquals(Drawing::pixelsToCentimeters($randDistance).'cm', $yOffset);
+                    $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-offset-y', Drawing::pixelsToCentimeters($randDistance) . 'cm');
                 } else {
-                    $this->assertEquals('-'.Drawing::pixelsToCentimeters($randDistance).'cm', $yOffset);
+                    $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:shadow-offset-y', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
                 }
             }
+            $this->resetPresentationFile();
         }
     }
 
     public function testSlideName()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-
         $element = '/office:document-content/office:body/office:presentation/draw:page';
 
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($element, 'draw:name', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:name');
 
-        $oSlide->setName('AAAA');
+        $this->oPresentation->getActiveSlide()->setName('AAAA');
+        $this->resetPresentationFile();
 
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'draw:name', 'content.xml'));
-        $this->assertEquals('AAAA', $pres->getElementAttribute($element, 'draw:name', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:name');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:name', 'AAAA');
 
-        $oSlide->setName();
+        $this->oPresentation->getActiveSlide()->setName();
+        $this->resetPresentationFile();
 
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($element, 'draw:name', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:name');
     }
 
     public function testStyleAlignment()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
+        $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText1 = $oSlide->createRichTextShape();
         $oRichText1->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
         $oRichText1->createTextRun('Run1');
-        $p1HashCode = $oRichText1->getActiveParagraph()->getHashCode();
-        
         $oRichText2 = $oSlide->createRichTextShape();
         $oRichText2->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_DISTRIBUTED);
         $oRichText2->createTextRun('Run2');
-        $p2HashCode = $oRichText2->getActiveParagraph()->getHashCode();
-        
         $oRichText3 = $oSlide->createRichTextShape();
         $oRichText3->getActiveParagraph()->getAlignment()->setHorizontal('AAAAA');
         $oRichText3->createTextRun('Run3');
-        $p3HashCode = $oRichText3->getActiveParagraph()->getHashCode();
-        
         $oRichText4 = $oSlide->createRichTextShape();
         $oRichText4->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_JUSTIFY);
         $oRichText4->createTextRun('Run4');
-        $p4HashCode = $oRichText4->getActiveParagraph()->getHashCode();
-        
         $oRichText5 = $oSlide->createRichTextShape();
         $oRichText5->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
         $oRichText5->createTextRun('Run5');
-        $p5HashCode = $oRichText5->getActiveParagraph()->getHashCode();
-        
         $oRichText6 = $oSlide->createRichTextShape();
         $oRichText6->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
         $oRichText6->createTextRun('Run6');
+
+        $p1HashCode = $oRichText1->getActiveParagraph()->getHashCode();
+        $p2HashCode = $oRichText2->getActiveParagraph()->getHashCode();
+        $p3HashCode = $oRichText3->getActiveParagraph()->getHashCode();
+        $p4HashCode = $oRichText4->getActiveParagraph()->getHashCode();
+        $p5HashCode = $oRichText5->getActiveParagraph()->getHashCode();
         $p6HashCode = $oRichText6->getActiveParagraph()->getHashCode();
         
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p1HashCode.'\']/style:paragraph-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('center', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:text-align', 'center');
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p2HashCode.'\']/style:paragraph-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('justify', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:text-align', 'justify');
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p3HashCode.'\']/style:paragraph-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('left', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:text-align', 'left');
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p4HashCode.'\']/style:paragraph-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('justify', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:text-align', 'justify');
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p5HashCode.'\']/style:paragraph-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('left', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:text-align', 'left');
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p6HashCode.'\']/style:paragraph-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('right', $pres->getElementAttribute($element, 'fo:text-align', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:text-align', 'right');
     }
     
     public function testStyleFont()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oRichText = $oSlide->createRichTextShape();
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRun = $oRichText->createTextRun('Run1');
         $oRun->getFont()->setBold(true);
         
         $expectedHashCode = $oRun->getHashCode();
         
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$expectedHashCode.'\']/style:text-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('bold', $pres->getElementAttribute($element, 'fo:font-weight', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'fo:font-weight', 'bold');
     }
     
     public function testTable()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oSlide->createTableShape();
-        
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+        $this->oPresentation->getActiveSlide()->createTableShape();
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
     }
     
     public function testTableCellFill()
@@ -573,40 +463,35 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         
         $oFill = new Fill();
         $oFill->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
-        
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oShape = $oSlide->createTableShape();
+
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
         $oRow = $oShape->createRow();
         $oCell = $oRow->getCell();
         $oCell->setFill($oFill);
-        
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('table-cell', $pres->getElementAttribute($element, 'style:family', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'style:family', 'table-cell');
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1r0c0\']/style:graphic-properties';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('solid', $pres->getElementAttribute($element, 'draw:fill', 'content.xml'));
-        $this->assertStringStartsWith('#', $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
-        $this->assertStringEndsWith($oColor->getRGB(), $pres->getElementAttribute($element, 'draw:fill-color', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:fill-color', '#');
+        $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'draw:fill-color', $oColor->getRGB());
     }
     
     public function testTableWithColspan()
     {
         $value = rand(2, 100);
-        
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oShape = $oSlide->createTableShape($value);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape($value);
         $oRow = $oShape->createRow();
         $oCell = $oRow->getCell();
         $oCell->setColSpan($value);
-        
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals($value, $pres->getElementAttribute($element, 'table:number-columns-spanned', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'table:number-columns-spanned', $value);
     }
     
     /**
@@ -614,9 +499,7 @@ class ContentTest extends \PHPUnit_Framework_TestCase
      */
     public function testTableWithHyperlink()
     {
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oShape = $oSlide->createTableShape(4);
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape(4);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
         $oRow = $oShape->createRow();
         $oCell = $oRow->getCell();
@@ -624,71 +507,64 @@ class ContentTest extends \PHPUnit_Framework_TestCase
         $oHyperlink = $oTextRun->getHyperlink();
         $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPresentation/');
     
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-    
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $pres->getElementAttribute($element, 'xlink:href', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
     }
     
     public function testTableWithText()
     {
         $oRun = new Run();
         $oRun->setText('Test');
-        
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-        $oShape = $oSlide->createTableShape();
+
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
         $oRow = $oShape->createRow();
         $oCell = $oRow->getCell();
         $oCell->addText($oRun);
         $oCell->createBreak();
-        
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertEquals('Test', $pres->getElement($element, 'content.xml')->nodeValue);
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlElementEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'Test');
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:line-break';
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
     }
 
     public function testTransition()
     {
         $value = rand(1000, 5000);
 
-        $oTransition = new Transition();
-
-        $phpPresentation = new PhpPresentation();
-        $oSlide = $phpPresentation->getActiveSlide();
-
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
 
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($element, 'presentation:duration', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:duration');
 
+        $oTransition = new Transition();
         $oTransition->setTimeTrigger(true, $value);
-        $oSlide->setTransition($oTransition);
+        $this->oPresentation->getActiveSlide()->setTransition($oTransition);
+        $this->resetPresentationFile();
 
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($element, 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($element, 'presentation:duration', 'content.xml'));
-        $this->assertStringStartsWith('PT', $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
-        $this->assertStringEndsWith('S', $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
-        $this->assertContains(number_format($value / 1000, 6, '.', ''), $pres->getElementAttribute($element, 'presentation:duration', 'content.xml'));
-        $this->assertContains('automatic', $pres->getElementAttribute($element, 'presentation:transition-type', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:duration');
+        $this->assertZipXmlAttributeStartsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:duration', 'PT');
+        $this->assertZipXmlAttributeEndsWith($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:duration', 'S');
+        $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:duration', number_format($value / 1000, 6, '.', ''));
+        $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-type', 'automatic');
 
         $oTransition->setSpeed(Transition::SPEED_FAST);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertContains('fast', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-speed', 'fast');
 
         $oTransition->setSpeed(Transition::SPEED_MEDIUM);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertContains('medium', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-speed', 'medium');
 
         $oTransition->setSpeed(Transition::SPEED_SLOW);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertContains('slow', $pres->getElementAttribute($element, 'presentation:transition-speed', 'content.xml'));
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-speed', 'slow');
 
         $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
@@ -696,178 +572,176 @@ class ContentTest extends \PHPUnit_Framework_TestCase
             if (strpos($key, 'TRANSITION_') !== 0) {
                 continue;
             }
-
+            $this->resetPresentationFile();
             $oTransition->setTransitionType($rcTransition->getConstant($key));
-            $oSlide->setTransition($oTransition);
-            $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
+            $this->oPresentation->getActiveSlide()->setTransition($oTransition);
             switch ($key) {
                 case 'TRANSITION_BLINDS_HORIZONTAL':
-                    $this->assertContains('horizontal-stripes', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'horizontal-stripes');
                     break;
                 case 'TRANSITION_BLINDS_VERTICAL':
-                    $this->assertContains('vertical-stripes', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'vertical-stripes');
                     break;
                 case 'TRANSITION_CHECKER_HORIZONTAL':
-                    $this->assertContains('horizontal-checkerboard', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'horizontal-checkerboard');
                     break;
                 case 'TRANSITION_CHECKER_VERTICAL':
-                    $this->assertContains('vertical-checkerboard', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'vertical-checkerboard');
                     break;
                 case 'TRANSITION_CIRCLE_HORIZONTAL':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_CIRCLE_VERTICAL':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_COMB_HORIZONTAL':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_COMB_VERTICAL':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_COVER_DOWN':
-                    $this->assertContains('uncover-to-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'uncover-to-bottom');
                     break;
                 case 'TRANSITION_COVER_LEFT':
-                    $this->assertContains('uncover-to-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'uncover-to-left');
                     break;
                 case 'TRANSITION_COVER_LEFT_DOWN':
-                    $this->assertContains('uncover-to-lowerleft', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'uncover-to-lowerleft');
                     break;
                 case 'TRANSITION_COVER_LEFT_UP':
-                    $this->assertContains('uncover-to-upperleft', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'uncover-to-upperleft');
                     break;
                 case 'TRANSITION_COVER_RIGHT':
-                    $this->assertContains('uncover-to-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'uncover-to-right');
                     break;
                 case 'TRANSITION_COVER_RIGHT_DOWN':
-                    $this->assertContains('uncover-to-lowerright', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'uncover-to-lowerright');
                     break;
                 case 'TRANSITION_COVER_RIGHT_UP':
-                    $this->assertContains('uncover-to-upperright', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'uncover-to-upperright');
                     break;
                 case 'TRANSITION_COVER_UP':
-                    $this->assertContains('uncover-to-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'uncover-to-top');
                     break;
                 case 'TRANSITION_CUT':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_DIAMOND':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_DISSOLVE':
-                    $this->assertContains('dissolve', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'dissolve');
                     break;
                 case 'TRANSITION_FADE':
-                    $this->assertContains('fade-from-center', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'fade-from-center');
                     break;
                 case 'TRANSITION_NEWSFLASH':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_PLUS':
-                    $this->assertContains('close', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'close');
                     break;
                 case 'TRANSITION_PULL_DOWN':
-                    $this->assertContains('stretch-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'stretch-from-bottom');
                     break;
                 case 'TRANSITION_PULL_LEFT':
-                    $this->assertContains('stretch-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'stretch-from-left');
                     break;
                 case 'TRANSITION_PULL_RIGHT':
-                    $this->assertContains('stretch-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'stretch-from-right');
                     break;
                 case 'TRANSITION_PULL_UP':
-                    $this->assertContains('stretch-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'stretch-from-top');
                     break;
                 case 'TRANSITION_PUSH_DOWN':
-                    $this->assertContains('roll-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'roll-from-bottom');
                     break;
                 case 'TRANSITION_PUSH_LEFT':
-                    $this->assertContains('roll-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'roll-from-left');
                     break;
                 case 'TRANSITION_PUSH_RIGHT':
-                    $this->assertContains('roll-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'roll-from-right');
                     break;
                 case 'TRANSITION_PUSH_UP':
-                    $this->assertContains('roll-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'roll-from-top');
                     break;
                 case 'TRANSITION_RANDOM':
-                    $this->assertContains('random', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'random');
                     break;
                 case 'TRANSITION_RANDOMBAR_HORIZONTAL':
-                    $this->assertContains('horizontal-lines', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'horizontal-lines');
                     break;
                 case 'TRANSITION_RANDOMBAR_VERTICAL':
-                    $this->assertContains('vertical-lines', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'vertical-lines');
                     break;
                 case 'TRANSITION_SPLIT_IN_HORIZONTAL':
-                    $this->assertContains('close-horizontal', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'close-horizontal');
                     break;
                 case 'TRANSITION_SPLIT_OUT_HORIZONTAL':
-                    $this->assertContains('open-horizontal', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'open-horizontal');
                     break;
                 case 'TRANSITION_SPLIT_IN_VERTICAL':
-                    $this->assertContains('close-vertical', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'close-vertical');
                     break;
                 case 'TRANSITION_SPLIT_OUT_VERTICAL':
-                    $this->assertContains('open-vertical', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'open-vertical');
                     break;
                 case 'TRANSITION_STRIPS_LEFT_DOWN':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_STRIPS_LEFT_UP':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_STRIPS_RIGHT_DOWN':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_STRIPS_RIGHT_UP':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_WEDGE':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_WIPE_DOWN':
-                    $this->assertContains('fade-from-bottom', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'fade-from-bottom');
                     break;
                 case 'TRANSITION_WIPE_LEFT':
-                    $this->assertContains('fade-from-left', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'fade-from-left');
                     break;
                 case 'TRANSITION_WIPE_RIGHT':
-                    $this->assertContains('fade-from-right', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'fade-from-right');
                     break;
                 case 'TRANSITION_WIPE_UP':
-                    $this->assertContains('fade-from-top', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'fade-from-top');
                     break;
                 case 'TRANSITION_ZOOM_IN':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
                 case 'TRANSITION_ZOOM_OUT':
-                    $this->assertContains('none', $pres->getElementAttribute($element, 'presentation:transition-style', 'content.xml'));
+                    $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-style', 'none');
                     break;
             }
         }
 
         $oTransition->setTimeTrigger(false);
         $oTransition->setManualTrigger(true);
-        $pres = TestHelperDOCX::getDocument($phpPresentation, 'ODPresentation');
-        $this->assertContains('manual', $pres->getElementAttribute($element, 'presentation:transition-type', 'content.xml'));
+        $this->resetPresentationFile();
+        $this->assertZipXmlAttributeContains($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:transition-type', 'manual');
     }
 
     public function testVisibility()
     {
-        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
 
-        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
-        $this->assertFalse($pres->attributeElementExists($expectedElement, 'presentation:visibility', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeNotExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:visibility');
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oSlide->setIsVisible(false);
+        $this->resetPresentationFile();
 
-        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'ODPresentation');
-        $this->assertTrue($pres->elementExists($expectedElement, 'content.xml'));
-        $this->assertTrue($pres->attributeElementExists($expectedElement, 'presentation:visibility', 'content.xml'));
-        $this->assertEquals('hidden', $pres->getElementAttribute($expectedElement, 'presentation:visibility', 'content.xml'));
+        $this->assertZipXmlElementExists($this->oPresentation, 'ODPresentation', 'content.xml', $element);
+        $this->assertZipXmlAttributeExists($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:visibility');
+        $this->assertZipXmlAttributeEquals($this->oPresentation, 'ODPresentation', 'content.xml', $element, 'presentation:visibility', 'hidden');
     }
 }
