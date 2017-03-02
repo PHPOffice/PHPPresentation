@@ -57,6 +57,9 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
     }
 
+    /**
+     * @requires PHP 5.4
+     */
     public function testDrawingZip()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -73,6 +76,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage does not exist
+     * @requires PHP 5.4
      */
     public function testDrawingZipException()
     {
@@ -83,6 +87,9 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->writePresentationFile($this->oPresentation, 'ODPresentation');
     }
 
+    /**
+     * @requires PHP 5.4
+     */
     public function testDrawingBase64()
     {
         $oShape = new Drawing\Base64();

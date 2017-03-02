@@ -36,6 +36,9 @@ class PptMediaTest extends PhpPresentationTestCase
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
 
+    /**
+     * @requires PHP 5.4
+     */
     public function testDrawingZip()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -49,6 +52,7 @@ class PptMediaTest extends PhpPresentationTestCase
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage does not exist
+     * @requires PHP 5.4
      */
     public function testDrawingZipException()
     {
@@ -61,6 +65,9 @@ class PptMediaTest extends PhpPresentationTestCase
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
 
+    /**
+     * @requires PHP 5.4
+     */
     public function testDrawingBase64()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
