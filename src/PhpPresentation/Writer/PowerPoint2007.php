@@ -21,9 +21,6 @@ use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
-use PhpOffice\PhpPresentation\Shape\Chart as ChartShape;
-use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 

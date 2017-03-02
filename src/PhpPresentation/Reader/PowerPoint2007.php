@@ -280,7 +280,7 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Extract all MasterSlides
      * @param XMLReader $xmlReader
-     * @param $fileRels
+     * @param string $fileRels
      */
     protected function loadMasterSlides(XMLReader $xmlReader, $fileRels)
     {
@@ -384,6 +384,9 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
+    /**
+     * @param string $baseFile
+     */
     private function loadMasterSlide($sPart, $baseFile)
     {
         $xmlReader = new XMLReader();
@@ -518,6 +521,9 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
+    /**
+     * @param string $baseFile
+     */
     private function loadLayoutSlide($sPart, $baseFile, SlideMaster $oSlideMaster)
     {
         $xmlReader = new XMLReader();
@@ -945,8 +951,8 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * @param $oSlide
-     * @param $oElements
-     * @param $xmlReader
+     * @param \DOMNodeList $oElements
+     * @param XMLReader $xmlReader
      * @internal param $baseFile
      */
     private function loadSlideShapes($oSlide, $oElements, $xmlReader)
