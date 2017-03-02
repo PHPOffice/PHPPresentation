@@ -209,7 +209,7 @@
      </tr>
 
      <tr>
-      <td class="success" colspan="4">&nbsp;<a href="#198">findLayoutId($name = '')</a></td>
+      <td class="success" colspan="4">&nbsp;<a href="#197">findLayoutId($name = '')</a></td>
       <td class="success big">       <div class="progress progress-success" style="width: 100px;">
         <div class="bar" style="width: 100.00%;"></div>
        </div>
@@ -226,7 +226,7 @@
      </tr>
 
      <tr>
-      <td class="success" colspan="4">&nbsp;<a href="#217">findLayoutName($idLayout = '')</a></td>
+      <td class="success" colspan="4">&nbsp;<a href="#215">findLayoutName($idLayout = null)</a></td>
       <td class="success big">       <div class="progress progress-success" style="width: 100px;">
         <div class="bar" style="width: 100.00%;"></div>
        </div>
@@ -440,40 +440,38 @@
      <tr><td><div align="right"><a name="191"></a><a href="#191">191</a></div></td><td class="codeLine">     * Find specific slide layout id.</td></tr>
      <tr><td><div align="right"><a name="192"></a><a href="#192">192</a></div></td><td class="codeLine">     *</td></tr>
      <tr><td><div align="right"><a name="193"></a><a href="#193">193</a></div></td><td class="codeLine">     * @param string $name</td></tr>
-     <tr><td><div align="right"><a name="194"></a><a href="#194">194</a></div></td><td class="codeLine">     * @param int $masterId</td></tr>
-     <tr><td><div align="right"><a name="195"></a><a href="#195">195</a></div></td><td class="codeLine">     * @return int</td></tr>
-     <tr><td><div align="right"><a name="196"></a><a href="#196">196</a></div></td><td class="codeLine">     * @throws \Exception</td></tr>
-     <tr><td><div align="right"><a name="197"></a><a href="#197">197</a></div></td><td class="codeLine">     */</td></tr>
-     <tr><td><div align="right"><a name="198"></a><a href="#198">198</a></div></td><td class="codeLine">    public function findLayoutId($name = '')</td></tr>
-     <tr><td><div align="right"><a name="199"></a><a href="#199">199</a></div></td><td class="codeLine">    {</td></tr>
-     <tr class="success popin" data-title="2 tests cover line 200" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutId&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutIdException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="200"></a><a href="#200">200</a></div></td><td class="codeLine">        foreach ($this-&gt;layouts as $layoutId =&gt; $layout) {</td></tr>
-     <tr class="success popin" data-title="2 tests cover line 201" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutId&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutIdException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="201"></a><a href="#201">201</a></div></td><td class="codeLine">            if ($layout['name'] == $name) {</td></tr>
-     <tr class="success popin" data-title="1 test covers line 202" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutId&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="202"></a><a href="#202">202</a></div></td><td class="codeLine">                return $layoutId;</td></tr>
-     <tr class="warning"><td><div align="right"><a name="203"></a><a href="#203">203</a></div></td><td class="codeLine">            }</td></tr>
-     <tr class="success popin" data-title="2 tests cover line 204" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutId&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutIdException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="204"></a><a href="#204">204</a></div></td><td class="codeLine">        }</td></tr>
-     <tr><td><div align="right"><a name="205"></a><a href="#205">205</a></div></td><td class="codeLine"></td></tr>
-     <tr class="success popin" data-title="1 test covers line 206" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutIdException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="206"></a><a href="#206">206</a></div></td><td class="codeLine">        throw new \Exception(&quot;Could not find slide layout $name in current layout pack.&quot;);</td></tr>
-     <tr class="warning"><td><div align="right"><a name="207"></a><a href="#207">207</a></div></td><td class="codeLine">    }</td></tr>
-     <tr><td><div align="right"><a name="208"></a><a href="#208">208</a></div></td><td class="codeLine"></td></tr>
-     <tr><td><div align="right"><a name="209"></a><a href="#209">209</a></div></td><td class="codeLine">    /**</td></tr>
-     <tr><td><div align="right"><a name="210"></a><a href="#210">210</a></div></td><td class="codeLine">     * Find specific slide layout name.</td></tr>
-     <tr><td><div align="right"><a name="211"></a><a href="#211">211</a></div></td><td class="codeLine">     *</td></tr>
-     <tr><td><div align="right"><a name="212"></a><a href="#212">212</a></div></td><td class="codeLine">     * @param int $idLayout</td></tr>
-     <tr><td><div align="right"><a name="213"></a><a href="#213">213</a></div></td><td class="codeLine">     * @param int $masterId</td></tr>
-     <tr><td><div align="right"><a name="214"></a><a href="#214">214</a></div></td><td class="codeLine">     * @return int</td></tr>
-     <tr><td><div align="right"><a name="215"></a><a href="#215">215</a></div></td><td class="codeLine">     * @throws \Exception</td></tr>
-     <tr><td><div align="right"><a name="216"></a><a href="#216">216</a></div></td><td class="codeLine">     */</td></tr>
-     <tr><td><div align="right"><a name="217"></a><a href="#217">217</a></div></td><td class="codeLine">    public function findLayoutName($idLayout = '')</td></tr>
-     <tr><td><div align="right"><a name="218"></a><a href="#218">218</a></div></td><td class="codeLine">    {</td></tr>
-     <tr class="success popin" data-title="2 tests cover line 219" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutName&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutNameException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="219"></a><a href="#219">219</a></div></td><td class="codeLine">        foreach ($this-&gt;layouts as $layoutId =&gt; $layout) {</td></tr>
-     <tr class="success popin" data-title="2 tests cover line 220" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutName&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutNameException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="220"></a><a href="#220">220</a></div></td><td class="codeLine">            if ($layoutId == $idLayout) {</td></tr>
-     <tr class="success popin" data-title="1 test covers line 221" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutName&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="221"></a><a href="#221">221</a></div></td><td class="codeLine">                return $layout['name'];</td></tr>
-     <tr class="warning"><td><div align="right"><a name="222"></a><a href="#222">222</a></div></td><td class="codeLine">            }</td></tr>
-     <tr class="success popin" data-title="2 tests cover line 223" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutName&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutNameException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="223"></a><a href="#223">223</a></div></td><td class="codeLine">        }</td></tr>
-     <tr><td><div align="right"><a name="224"></a><a href="#224">224</a></div></td><td class="codeLine"></td></tr>
-     <tr class="success popin" data-title="1 test covers line 225" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutNameException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="225"></a><a href="#225">225</a></div></td><td class="codeLine">        throw new \Exception(&quot;Could not find slide layout $idLayout in current layout pack.&quot;);</td></tr>
-     <tr class="warning"><td><div align="right"><a name="226"></a><a href="#226">226</a></div></td><td class="codeLine">    }</td></tr>
-     <tr><td><div align="right"><a name="227"></a><a href="#227">227</a></div></td><td class="codeLine">}</td></tr>
+     <tr><td><div align="right"><a name="194"></a><a href="#194">194</a></div></td><td class="codeLine">     * @return int</td></tr>
+     <tr><td><div align="right"><a name="195"></a><a href="#195">195</a></div></td><td class="codeLine">     * @throws \Exception</td></tr>
+     <tr><td><div align="right"><a name="196"></a><a href="#196">196</a></div></td><td class="codeLine">     */</td></tr>
+     <tr><td><div align="right"><a name="197"></a><a href="#197">197</a></div></td><td class="codeLine">    public function findLayoutId($name = '')</td></tr>
+     <tr><td><div align="right"><a name="198"></a><a href="#198">198</a></div></td><td class="codeLine">    {</td></tr>
+     <tr class="success popin" data-title="2 tests cover line 199" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutId&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutIdException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="199"></a><a href="#199">199</a></div></td><td class="codeLine">        foreach ($this-&gt;layouts as $layoutId =&gt; $layout) {</td></tr>
+     <tr class="success popin" data-title="2 tests cover line 200" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutId&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutIdException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="200"></a><a href="#200">200</a></div></td><td class="codeLine">            if ($layout['name'] == $name) {</td></tr>
+     <tr class="success popin" data-title="1 test covers line 201" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutId&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="201"></a><a href="#201">201</a></div></td><td class="codeLine">                return $layoutId;</td></tr>
+     <tr class="warning"><td><div align="right"><a name="202"></a><a href="#202">202</a></div></td><td class="codeLine">            }</td></tr>
+     <tr class="success popin" data-title="2 tests cover line 203" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutId&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutIdException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="203"></a><a href="#203">203</a></div></td><td class="codeLine">        }</td></tr>
+     <tr><td><div align="right"><a name="204"></a><a href="#204">204</a></div></td><td class="codeLine"></td></tr>
+     <tr class="success popin" data-title="1 test covers line 205" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutIdException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="205"></a><a href="#205">205</a></div></td><td class="codeLine">        throw new \Exception(&quot;Could not find slide layout $name in current layout pack.&quot;);</td></tr>
+     <tr class="warning"><td><div align="right"><a name="206"></a><a href="#206">206</a></div></td><td class="codeLine">    }</td></tr>
+     <tr><td><div align="right"><a name="207"></a><a href="#207">207</a></div></td><td class="codeLine"></td></tr>
+     <tr><td><div align="right"><a name="208"></a><a href="#208">208</a></div></td><td class="codeLine">    /**</td></tr>
+     <tr><td><div align="right"><a name="209"></a><a href="#209">209</a></div></td><td class="codeLine">     * Find specific slide layout name.</td></tr>
+     <tr><td><div align="right"><a name="210"></a><a href="#210">210</a></div></td><td class="codeLine">     *</td></tr>
+     <tr><td><div align="right"><a name="211"></a><a href="#211">211</a></div></td><td class="codeLine">     * @param int $idLayout</td></tr>
+     <tr><td><div align="right"><a name="212"></a><a href="#212">212</a></div></td><td class="codeLine">     * @return int</td></tr>
+     <tr><td><div align="right"><a name="213"></a><a href="#213">213</a></div></td><td class="codeLine">     * @throws \Exception</td></tr>
+     <tr><td><div align="right"><a name="214"></a><a href="#214">214</a></div></td><td class="codeLine">     */</td></tr>
+     <tr><td><div align="right"><a name="215"></a><a href="#215">215</a></div></td><td class="codeLine">    public function findLayoutName($idLayout = null)</td></tr>
+     <tr><td><div align="right"><a name="216"></a><a href="#216">216</a></div></td><td class="codeLine">    {</td></tr>
+     <tr class="success popin" data-title="2 tests cover line 217" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutName&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutNameException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="217"></a><a href="#217">217</a></div></td><td class="codeLine">        foreach ($this-&gt;layouts as $layoutId =&gt; $layout) {</td></tr>
+     <tr class="success popin" data-title="2 tests cover line 218" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutName&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutNameException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="218"></a><a href="#218">218</a></div></td><td class="codeLine">            if ($layoutId == $idLayout) {</td></tr>
+     <tr class="success popin" data-title="1 test covers line 219" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutName&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="219"></a><a href="#219">219</a></div></td><td class="codeLine">                return $layout['name'];</td></tr>
+     <tr class="warning"><td><div align="right"><a name="220"></a><a href="#220">220</a></div></td><td class="codeLine">            }</td></tr>
+     <tr class="success popin" data-title="2 tests cover line 221" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutName&lt;/li&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutNameException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="221"></a><a href="#221">221</a></div></td><td class="codeLine">        }</td></tr>
+     <tr><td><div align="right"><a name="222"></a><a href="#222">222</a></div></td><td class="codeLine"></td></tr>
+     <tr class="success popin" data-title="1 test covers line 223" data-content="&lt;ul&gt;&lt;li class=&quot;success&quot;&gt;PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack\TemplateBasedTest::testFindLayoutNameException&lt;/li&gt;&lt;/ul&gt;" data-placement="bottom" data-html="true"><td><div align="right"><a name="223"></a><a href="#223">223</a></div></td><td class="codeLine">        throw new \Exception(&quot;Could not find slide layout $idLayout in current layout pack.&quot;);</td></tr>
+     <tr class="warning"><td><div align="right"><a name="224"></a><a href="#224">224</a></div></td><td class="codeLine">    }</td></tr>
+     <tr><td><div align="right"><a name="225"></a><a href="#225">225</a></div></td><td class="codeLine">}</td></tr>
 
     </tbody>
    </table>
@@ -485,7 +483,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.18</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.21</a> and <a href="http://phpunit.de/">PHPUnit 3.7.38</a> at Sat Feb 25 14:49:50 UTC 2017.</small>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 1.2.18</a> using <a href="http://www.php.net/" target="_top">PHP 5.5.21</a> and <a href="http://phpunit.de/">PHPUnit 3.7.38</a> at Thu Mar 2 22:10:58 UTC 2017.</small>
     </p>
    </footer>
   </div>
