@@ -64,6 +64,9 @@ class Base64Test extends \PHPUnit_Framework_TestCase
         $oDrawing->getExtension();
     }
 
+    /**
+     * @requires PHP 5.4
+     */
     public function testMimeType()
     {
         $oDrawing = new Base64();
@@ -71,6 +74,9 @@ class Base64Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals('image/jpeg', $oDrawing->getMimeType());
     }
 
+    /**
+     * @requires PHP 5.4
+     */
     public function testMimeTypeFunctionNotExists()
     {
         DrawingTest::$getimagesizefromstringExists = false;
