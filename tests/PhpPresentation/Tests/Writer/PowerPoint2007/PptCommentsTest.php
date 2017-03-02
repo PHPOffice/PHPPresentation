@@ -2,30 +2,12 @@
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Comment;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
-class PptCommentsTest extends \PHPUnit_Framework_TestCase
+class PptCommentsTest extends PhpPresentationTestCase
 {
-    /**
-     * @var PhpPresentation;
-     */
-    protected $oPresentation;
-
-    public function setUp()
-    {
-        $this->oPresentation = new PhpPresentation();
-    }
-
-    /**
-     * Executed before each method of the class
-     */
-    public function tearDown()
-    {
-        $this->oPresentation = null;
-        TestHelperDOCX::clear();
-    }
+    protected $writerName = 'PowerPoint2007';
 
     public function testComments()
     {
@@ -36,14 +18,12 @@ class PptCommentsTest extends \PHPUnit_Framework_TestCase
         $oComment->setAuthor($oAuthor);
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
-        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($pres->fileExists('ppt/comments/comment1.xml'));
-        $this->assertTrue($pres->elementExists($expectedElement, 'ppt/comments/comment1.xml'));
-        $this->assertEquals(0, $pres->getElementAttribute($expectedElement, 'authorId', 'ppt/comments/comment1.xml'));
+        $this->assertZipFileExists('ppt/comments/comment1.xml');
+        $this->assertZipXmlElementExists('ppt/comments/comment1.xml', $expectedElement);
+        $this->assertZipXmlAttributeEquals('ppt/comments/comment1.xml', $expectedElement, 'authorId', 0);
     }
     public function testWithoutComment()
     {
-        $pres = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertFalse($pres->fileExists('ppt/comments/comment1.xml'));
+        $this->assertZipFileNotExists('ppt/comments/comment1.xml');
     }
 }

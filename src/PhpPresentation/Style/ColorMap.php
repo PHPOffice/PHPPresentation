@@ -71,20 +71,24 @@ class ColorMap
      *
      * @param string $item
      * @param string $newThemeColor
+     * @return ColorMap
      */
     public function changeColor($item, $newThemeColor)
     {
         $this->mapping[$item] = $newThemeColor;
+        return $this;
     }
 
     /**
      * Store a new map. For use with the reader
      *
      * @param array $arrayMapping
+     * @return ColorMap
      */
     public function setMapping(array $arrayMapping = array())
     {
         $this->mapping = $arrayMapping;
+        return $this;
     }
 
     /**

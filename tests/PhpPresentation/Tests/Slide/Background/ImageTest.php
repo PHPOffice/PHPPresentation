@@ -30,4 +30,14 @@ class ImageTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($object->getExtension());
         $this->assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
     }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage File not found :
+     */
+    public function testPathException()
+    {
+        $object = new Image();
+        $object->setPath('pathDoesntExist', true);
+    }
 }

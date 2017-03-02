@@ -32,7 +32,7 @@ class Outline
     protected $width;
 
     /**
-     * @return void
+     * @return Outline
      */
     public function __construct()
     {
