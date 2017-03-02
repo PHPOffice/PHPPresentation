@@ -12,6 +12,7 @@
 - PowerPoint2007 Writer : Support of margins in cell in table - @carlosafonso @Progi1984 GH-273 GH-315
 
 ### Features
+- ODPresentation Writer : Show/Hide Value / Name / Series Name in Chart - @Progi1984 GH-272
 - PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301
 
 ## 0.7.0 - 2016-09-12

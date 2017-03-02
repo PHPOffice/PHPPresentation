@@ -666,4 +666,56 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
     }
+
+    public function testSeries()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oPie = new Pie();
+        $oPie->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oPie);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\']/style:chart-properties';
+
+        // $showCategoryName = false / $showPercentage = false / $showValue = true
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+
+        $oSeries->setShowValue(false);
+        $this->resetPresentationFile();
+
+        // $showCategoryName = false / $showPercentage = false / $showValue = false
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+
+        // $showCategoryName = false / $showPercentage = true / $showValue = true
+        $oSeries->setShowValue(true);
+        $oSeries->setShowPercentage(true);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value-and-percentage');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+
+        // $showCategoryName = false / $showPercentage = true / $showValue = false
+        $oSeries->setShowValue(false);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+
+        // $showCategoryName = false / $showPercentage = true / $showValue = false
+        $oSeries->setShowCategoryName(true);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-text', 'true');
+    }
 }
