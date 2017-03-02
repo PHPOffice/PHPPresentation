@@ -40,13 +40,11 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
-use PhpOffice\PhpPresentation\Slide\SlideMaster;
-use PhpOffice\PhpPresentation\Slide\Background;
 
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
     /**
-     * @param SlideMaster $pSlideMaster
+     * @param AbstractSlideAlias $pSlideMaster
      * @param $objWriter
      * @param $relId
      * @throws \Exception

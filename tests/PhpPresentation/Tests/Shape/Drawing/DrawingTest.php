@@ -29,9 +29,15 @@ function function_exists($function)
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
+// @codingStandardsIgnoreStart
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
+// @codingStandardsIgnoreEnd
 class DrawingTest extends PhpPresentationTestCase
 {
-    static $getimagesizefromstringExists = true;
+    public static $getimagesizefromstringExists = true;
+
+    public function testIgnore()
+    {
+    }
 }

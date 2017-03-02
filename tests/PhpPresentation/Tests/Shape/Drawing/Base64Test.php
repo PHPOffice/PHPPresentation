@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
+
 /**
  * Test class for Drawing element
  *
@@ -70,14 +71,8 @@ class Base64Test extends \PHPUnit_Framework_TestCase
         $this->assertEquals('image/jpeg', $oDrawing->getMimeType());
     }
 
-    function function_exists($function)
-    {
-        return false;
-    }
-
     public function testMimeTypeFunctionNotExists()
     {
-        // Hack
         DrawingTest::$getimagesizefromstringExists = false;
         $oDrawing = new Base64();
         $oDrawing->setData($this->imageData);
