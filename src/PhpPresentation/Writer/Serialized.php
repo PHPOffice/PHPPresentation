@@ -66,7 +66,7 @@ class Serialized extends AbstractWriter implements WriterInterface
             for ($j = 0; $j < $oPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
                 if ($oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
                     $imgTemp = $oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $objZip->addFromString('media/' . $imgTemp->getFilename(), file_get_contents($imgTemp->getPath()));
+                    $objZip->addFromString('media/' . $imgTemp->getIndexedFilename(), file_get_contents($imgTemp->getPath()));
                 }
             }
         }
@@ -96,7 +96,7 @@ class Serialized extends AbstractWriter implements WriterInterface
         for ($i = 0; $i < $slideCount; ++$i) {
             for ($j = 0; $j < $pPhpPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
                 if ($pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                    $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
+                    $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j)->getIndexedFilename(), false);
                 }
             }
         }

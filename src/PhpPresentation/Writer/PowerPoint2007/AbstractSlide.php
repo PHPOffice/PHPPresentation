@@ -42,7 +42,6 @@ use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Slide\Background;
-use PhpOffice\PhpPresentation\Slide\Transition;
 
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
@@ -1121,11 +1120,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write Transition Slide
      * @link http://officeopenxml.com/prSlide-transitions.php
      * @param XMLWriter $objWriter
-     * @param Transition $transition
+     * @param Slide\Transition $transition
      */
     protected function writeSlideTransition(XMLWriter $objWriter, $transition)
     {
-        if (!$transition instanceof Transition) {
+        if (!$transition instanceof Slide\Transition) {
             return;
         }
         $objWriter->startElement('p:transition');
@@ -1138,230 +1137,230 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         }
 
         switch ($transition->getTransitionType()) {
-            case Transition::TRANSITION_BLINDS_HORIZONTAL:
+            case Slide\Transition::TRANSITION_BLINDS_HORIZONTAL:
                 $objWriter->startElement('p:blinds');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_BLINDS_VERTICAL:
+            case Slide\Transition::TRANSITION_BLINDS_VERTICAL:
                 $objWriter->startElement('p:blinds');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_CHECKER_HORIZONTAL:
+            case Slide\Transition::TRANSITION_CHECKER_HORIZONTAL:
                 $objWriter->startElement('p:checker');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_CHECKER_VERTICAL:
+            case Slide\Transition::TRANSITION_CHECKER_VERTICAL:
                 $objWriter->startElement('p:checker');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_CIRCLE_HORIZONTAL:
+            case Slide\Transition::TRANSITION_CIRCLE_HORIZONTAL:
                 $objWriter->startElement('p:circle');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_CIRCLE_VERTICAL:
+            case Slide\Transition::TRANSITION_CIRCLE_VERTICAL:
                 $objWriter->startElement('p:circle');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COMB_HORIZONTAL:
+            case Slide\Transition::TRANSITION_COMB_HORIZONTAL:
                 $objWriter->startElement('p:comb');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COMB_VERTICAL:
+            case Slide\Transition::TRANSITION_COMB_VERTICAL:
                 $objWriter->startElement('p:comb');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COVER_DOWN:
+            case Slide\Transition::TRANSITION_COVER_DOWN:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'd');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COVER_LEFT:
+            case Slide\Transition::TRANSITION_COVER_LEFT:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'l');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COVER_LEFT_DOWN:
+            case Slide\Transition::TRANSITION_COVER_LEFT_DOWN:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'ld');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COVER_LEFT_UP:
+            case Slide\Transition::TRANSITION_COVER_LEFT_UP:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'lu');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COVER_RIGHT:
+            case Slide\Transition::TRANSITION_COVER_RIGHT:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'r');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COVER_RIGHT_DOWN:
+            case Slide\Transition::TRANSITION_COVER_RIGHT_DOWN:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'rd');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COVER_RIGHT_UP:
+            case Slide\Transition::TRANSITION_COVER_RIGHT_UP:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'ru');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_COVER_UP:
+            case Slide\Transition::TRANSITION_COVER_UP:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'u');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_CUT:
+            case Slide\Transition::TRANSITION_CUT:
                 $objWriter->writeElement('p:cut');
                 break;
-            case Transition::TRANSITION_DIAMOND:
+            case Slide\Transition::TRANSITION_DIAMOND:
                 $objWriter->writeElement('p:diamond');
                 break;
-            case Transition::TRANSITION_DISSOLVE:
+            case Slide\Transition::TRANSITION_DISSOLVE:
                 $objWriter->writeElement('p:dissolve');
                 break;
-            case Transition::TRANSITION_FADE:
+            case Slide\Transition::TRANSITION_FADE:
                 $objWriter->writeElement('p:fade');
                 break;
-            case Transition::TRANSITION_NEWSFLASH:
+            case Slide\Transition::TRANSITION_NEWSFLASH:
                 $objWriter->writeElement('p:newsflash');
                 break;
-            case Transition::TRANSITION_PLUS:
+            case Slide\Transition::TRANSITION_PLUS:
                 $objWriter->writeElement('p:plus');
                 break;
-            case Transition::TRANSITION_PULL_DOWN:
+            case Slide\Transition::TRANSITION_PULL_DOWN:
                 $objWriter->startElement('p:pull');
                 $objWriter->writeAttribute('dir', 'd');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_PULL_LEFT:
+            case Slide\Transition::TRANSITION_PULL_LEFT:
                 $objWriter->startElement('p:pull');
                 $objWriter->writeAttribute('dir', 'l');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_PULL_RIGHT:
+            case Slide\Transition::TRANSITION_PULL_RIGHT:
                 $objWriter->startElement('p:pull');
                 $objWriter->writeAttribute('dir', 'r');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_PULL_UP:
+            case Slide\Transition::TRANSITION_PULL_UP:
                 $objWriter->startElement('p:pull');
                 $objWriter->writeAttribute('dir', 'u');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_PUSH_DOWN:
+            case Slide\Transition::TRANSITION_PUSH_DOWN:
                 $objWriter->startElement('p:push');
                 $objWriter->writeAttribute('dir', 'd');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_PUSH_LEFT:
+            case Slide\Transition::TRANSITION_PUSH_LEFT:
                 $objWriter->startElement('p:push');
                 $objWriter->writeAttribute('dir', 'l');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_PUSH_RIGHT:
+            case Slide\Transition::TRANSITION_PUSH_RIGHT:
                 $objWriter->startElement('p:push');
                 $objWriter->writeAttribute('dir', 'r');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_PUSH_UP:
+            case Slide\Transition::TRANSITION_PUSH_UP:
                 $objWriter->startElement('p:push');
                 $objWriter->writeAttribute('dir', 'u');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_RANDOM:
+            case Slide\Transition::TRANSITION_RANDOM:
                 $objWriter->writeElement('p:random');
                 break;
-            case Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
+            case Slide\Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
                 $objWriter->startElement('p:randomBar');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_RANDOMBAR_VERTICAL:
+            case Slide\Transition::TRANSITION_RANDOMBAR_VERTICAL:
                 $objWriter->startElement('p:randomBar');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
+            case Slide\Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
                 $objWriter->startElement('p:split');
                 $objWriter->writeAttribute('dir', 'in');
                 $objWriter->writeAttribute('orient', 'horz');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
+            case Slide\Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
                 $objWriter->startElement('p:split');
                 $objWriter->writeAttribute('dir', 'out');
                 $objWriter->writeAttribute('orient', 'horz');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_SPLIT_IN_VERTICAL:
+            case Slide\Transition::TRANSITION_SPLIT_IN_VERTICAL:
                 $objWriter->startElement('p:split');
                 $objWriter->writeAttribute('dir', 'in');
                 $objWriter->writeAttribute('orient', 'vert');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_SPLIT_OUT_VERTICAL:
+            case Slide\Transition::TRANSITION_SPLIT_OUT_VERTICAL:
                 $objWriter->startElement('p:split');
                 $objWriter->writeAttribute('dir', 'out');
                 $objWriter->writeAttribute('orient', 'vert');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_STRIPS_LEFT_DOWN:
+            case Slide\Transition::TRANSITION_STRIPS_LEFT_DOWN:
                 $objWriter->startElement('p:strips');
                 $objWriter->writeAttribute('dir', 'ld');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_STRIPS_LEFT_UP:
+            case Slide\Transition::TRANSITION_STRIPS_LEFT_UP:
                 $objWriter->startElement('p:strips');
                 $objWriter->writeAttribute('dir', 'lu');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_STRIPS_RIGHT_DOWN:
+            case Slide\Transition::TRANSITION_STRIPS_RIGHT_DOWN:
                 $objWriter->startElement('p:strips');
                 $objWriter->writeAttribute('dir', 'rd');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_STRIPS_RIGHT_UP:
+            case Slide\Transition::TRANSITION_STRIPS_RIGHT_UP:
                 $objWriter->startElement('p:strips');
                 $objWriter->writeAttribute('dir', 'ru');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_WEDGE:
+            case Slide\Transition::TRANSITION_WEDGE:
                 $objWriter->writeElement('p:wedge');
                 break;
-            case Transition::TRANSITION_WIPE_DOWN:
+            case Slide\Transition::TRANSITION_WIPE_DOWN:
                 $objWriter->startElement('p:wipe');
                 $objWriter->writeAttribute('dir', 'd');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_WIPE_LEFT:
+            case Slide\Transition::TRANSITION_WIPE_LEFT:
                 $objWriter->startElement('p:wipe');
                 $objWriter->writeAttribute('dir', 'l');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_WIPE_RIGHT:
+            case Slide\Transition::TRANSITION_WIPE_RIGHT:
                 $objWriter->startElement('p:wipe');
                 $objWriter->writeAttribute('dir', 'r');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_WIPE_UP:
+            case Slide\Transition::TRANSITION_WIPE_UP:
                 $objWriter->startElement('p:wipe');
                 $objWriter->writeAttribute('dir', 'u');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_ZOOM_IN:
+            case Slide\Transition::TRANSITION_ZOOM_IN:
                 $objWriter->startElement('p:zoom');
                 $objWriter->writeAttribute('dir', 'in');
                 $objWriter->endElement();
                 break;
-            case Transition::TRANSITION_ZOOM_OUT:
+            case Slide\Transition::TRANSITION_ZOOM_OUT:
                 $objWriter->startElement('p:zoom');
                 $objWriter->writeAttribute('dir', 'out');
                 $objWriter->endElement();

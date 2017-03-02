@@ -215,4 +215,14 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->addValue(4, 'e'));
         $this->assertCount(count($array) + 1, $object->getValues());
     }
+
+    public function testClone()
+    {
+        $object = new Series();
+        $object->setOutline(new Outline());
+        $clone = clone $object;
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $clone);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $clone->getOutline());
+    }
 }

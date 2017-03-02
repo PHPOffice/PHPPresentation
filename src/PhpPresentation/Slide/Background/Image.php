@@ -50,7 +50,7 @@ class Image extends AbstractBackground
     {
         if ($pVerifyFile) {
             if (!file_exists($pValue)) {
-                throw new \Exception("File $pValue not found!");
+                throw new \Exception("File not found : $pValue");
             }
 
             if ($this->width == 0 && $this->height == 0) {

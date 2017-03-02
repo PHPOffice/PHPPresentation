@@ -30,7 +30,59 @@ class AbstractGraphicTest extends \PHPUnit_Framework_TestCase
     {
         $min = 10;
         $max = 20;
+        /** @var AbstractGraphic $stub */
         $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic');
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(false));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($min));
+        $this->assertEquals($min, $stub->getWidth());
+        $this->assertEquals(0, $stub->getHeight());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($max));
+        $this->assertEquals($min, $stub->getWidth());
+        $this->assertEquals($max, $stub->getHeight());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
+        $this->assertEquals($min, $stub->getWidth());
+        $this->assertEquals($max, $stub->getHeight());
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(true));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
+        $this->assertEquals($max, $stub->getWidth());
+        $this->assertEquals($max * ($max / $min), $stub->getHeight());
+        $this->assertEquals($max, $stub->getWidth());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
+        $this->assertEquals($min * ($max / ($max * ($max / $min))), $stub->getWidth());
+        $this->assertEquals($min, $stub->getHeight());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
+        $this->assertEquals($min, $stub->getWidth());
+        $this->assertEquals($max, $stub->getHeight());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($max, $min));
+        $this->assertEquals($min * ($min / $max), $stub->getWidth());
+        $this->assertEquals($min, $stub->getHeight());
+    }
+
+    public function testWidthAndHeight2()
+    {
+        $min = 10;
+        $max = 20;
+        /** @var AbstractGraphic $stub */
+        $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic');
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(false));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
+        $this->assertEquals($max, $stub->getWidth());
+        $this->assertEquals(0, $stub->getHeight());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
+        $this->assertEquals($max, $stub->getWidth());
+        $this->assertEquals($min, $stub->getHeight());
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(true));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
+        $this->assertEquals($max, $stub->getWidth());
+        $this->assertEquals($max * ($min / $max), $stub->getHeight());
+        $this->assertEquals($max, $stub->getWidth());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
+        $this->assertEquals($max * ($min / ($max * ($min / $max))), $stub->getWidth());
+        $this->assertEquals($min, $stub->getHeight());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
+        $this->assertEquals($min, $stub->getWidth());
+        $this->assertEquals($min * ($min / ($max * ($min / ($max * ($min / $max))))), $stub->getHeight());
     }
 }

@@ -34,6 +34,8 @@ class ZipFileTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
 
+        DrawingTest::$getimagesizefromstringExists = true;
+
         $this->fileOk = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif';
         $this->fileKoZip = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'fileNotExist.pptx#ppt/media/phppowerpoint_logo1.gif';
         $this->fileKoFile = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/filenotexists.gif';
@@ -59,6 +61,14 @@ class ZipFileTest extends \PHPUnit_Framework_TestCase
 
     public function testMimeType()
     {
+        $oDrawing = new ZipFile();
+        $oDrawing->setPath($this->fileOk);
+        $this->assertEquals('image/gif', $oDrawing->getMimeType());
+    }
+
+    public function testMimeTypeFunctionNotExists()
+    {
+        DrawingTest::$getimagesizefromstringExists = false;
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileOk);
         $this->assertEquals('image/gif', $oDrawing->getMimeType());
