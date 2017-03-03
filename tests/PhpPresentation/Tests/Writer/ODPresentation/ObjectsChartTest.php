@@ -128,6 +128,47 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill-color', '#93A9CE');
     }
 
+    public function testTypeAxisBounds()
+    {
+        $value = rand(0, 100);
+
+        $oSeries = new Series('Downloads', array('A' => 1, 'B' => 2, 'C' => 4, 'D' => 3, 'E' => 2));
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:minimum');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:maximum');
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:maximum');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:minimum');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:minimum', $value);
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds(null);
+        $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:minimum');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:maximum');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:maximum', $value);
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
+        $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:minimum');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:minimum', $value);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:maximum');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:maximum', $value);
+    }
+
     public function testTypeBar()
     {
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));

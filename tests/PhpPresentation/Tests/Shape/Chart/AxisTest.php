@@ -68,6 +68,24 @@ class AxisTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Gridlines', $object->getMinorGridlines());
     }
 
+    public function testBounds()
+    {
+        $value = rand(0, 100);
+        $object = new Axis();
+
+        $this->assertNull($object->getMinBounds());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMinBounds($value));
+        $this->assertEquals($value, $object->getMinBounds());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMinBounds());
+        $this->assertNull($object->getMinBounds());
+
+        $this->assertNull($object->getMaxBounds());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMaxBounds($value));
+        $this->assertEquals($value, $object->getMaxBounds());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMaxBounds());
+        $this->assertNull($object->getMaxBounds());
+    }
+
     public function testHashIndex()
     {
         $object = new Axis();

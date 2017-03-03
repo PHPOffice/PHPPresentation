@@ -117,7 +117,7 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
      * Set Name
      *
      * @param  string                          $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing
+     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
      */
     public function setName($pValue = '')
     {
