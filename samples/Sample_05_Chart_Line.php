@@ -3,12 +3,8 @@
 include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
-use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
@@ -181,7 +177,17 @@ $shape4->getPlotArea()->getAxisX()->setOutline($oOutlineAxisX);
 $shape4->getPlotArea()->getAxisY()->setOutline($oOutlineAxisY);
 $currentSlide->addShape($shape4);
 
+// Create templated slide
+echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+$currentSlide = createTemplatedSlide($objPHPPresentation);
 
+// Create a shape (chart)
+echo date('H:i:s') . ' Create a shape (chart5)' . EOL;
+echo date('H:i:s') . ' Feature : Gridlines' . EOL;
+$shape5 = clone $shape;
+$shape5->getPlotArea()->getAxisY()->setMinBounds(5);
+$shape5->getPlotArea()->getAxisY()->setMaxBounds(20);
+$currentSlide->addShape($shape5);
 // Save file
 echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 

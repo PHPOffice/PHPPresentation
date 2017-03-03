@@ -17,8 +17,8 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\Common\File;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 
 /**
  * Serialized format reader
@@ -96,8 +96,8 @@ class Serialized implements ReaderInterface
                 // Update media links
                 for ($i = 0; $i < $file->getSlideCount(); ++$i) {
                     for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                        if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
-                            $file->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $file->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
+                        if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
+                            $file->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $file->getSlide($i)->getShapeCollection()->offsetGet($j)->getIndexedFilename(), false);
                         }
                     }
                 }

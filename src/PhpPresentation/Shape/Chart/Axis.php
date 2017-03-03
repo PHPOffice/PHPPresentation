@@ -61,6 +61,16 @@ class Axis implements ComparableInterface
     protected $minorGridlines;
 
     /**
+     * @var int
+     */
+    protected $minBounds;
+
+    /**
+     * @var int
+     */
+    protected $maxBounds;
+
+    /**
      * @var Outline
      */
     protected $outline;
@@ -74,7 +84,6 @@ class Axis implements ComparableInterface
     {
         $this->title = $title;
         $this->font  = new Font();
-        $this->outline = new Outline();
     }
 
     /**
@@ -179,6 +188,42 @@ class Axis implements ComparableInterface
     public function setMinorGridlines(Gridlines $minorGridlines)
     {
         $this->minorGridlines = $minorGridlines;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMinBounds()
+    {
+        return $this->minBounds;
+    }
+
+    /**
+     * @param int|null $minBounds
+     * @return Axis
+     */
+    public function setMinBounds($minBounds = null)
+    {
+        $this->minBounds = is_null($minBounds) ? null : (int) $minBounds;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxBounds()
+    {
+        return $this->maxBounds;
+    }
+
+    /**
+     * @param int|null $maxBounds
+     * @return Axis
+     */
+    public function setMaxBounds($maxBounds = null)
+    {
+        $this->maxBounds = is_null($maxBounds) ? null : (int) $maxBounds;
         return $this;
     }
 

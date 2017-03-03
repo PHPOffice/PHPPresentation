@@ -1,53 +1,34 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lefevre_f
- * Date: 01/03/2016
- * Time: 12:35
- */
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
-class PptPresPropsTest extends \PHPUnit_Framework_TestCase
+class PptPresPropsTest extends PhpPresentationTestCase
 {
-    /**
-     * Executed before each method of the class
-     */
-    public function tearDown()
-    {
-        TestHelperDOCX::clear();
-    }
+    protected $writerName = 'PowerPoint2007';
 
     public function testRender()
     {
-        $oPhpPresentation = new PhpPresentation();
-
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/presProps.xml'));
+        $this->assertZipFileExists('ppt/presProps.xml');
         $element = '/p:presentationPr/p:extLst/p:ext';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/presProps.xml'));
-        $this->assertEquals('{E76CE94A-603C-4142-B9EB-6D1370010A27}', $oXMLDoc->getElementAttribute($element, 'uri', 'ppt/presProps.xml'));
+        $this->assertZipXmlElementExists('ppt/presProps.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/presProps.xml', $element, 'uri', '{E76CE94A-603C-4142-B9EB-6D1370010A27}');
     }
 
     public function testLoopContinuously()
     {
-        $oPhpPresentation = new PhpPresentation();
-
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/presProps.xml'));
+        $this->assertZipFileExists('ppt/presProps.xml');
         $element = '/p:presentationPr/p:showPr';
-        $this->assertFalse($oXMLDoc->elementExists($element, 'ppt/presProps.xml'));
+        $this->assertZipXmlElementNotExists('ppt/presProps.xml', $element);
 
-        $oPhpPresentation->getPresentationProperties()->setLoopContinuouslyUntilEsc(true);
+        $this->oPresentation->getPresentationProperties()->setLoopContinuouslyUntilEsc(true);
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/presProps.xml'));
+        $this->assertZipFileExists('ppt/presProps.xml');
         $element = '/p:presentationPr/p:showPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/presProps.xml'));
-        $this->assertTrue($oXMLDoc->attributeElementExists($element, 'loop', 'ppt/presProps.xml'));
-        $this->assertEquals(1, $oXMLDoc->getElementAttribute($element, 'loop', 'ppt/presProps.xml'));
+        $this->assertZipXmlElementExists('ppt/presProps.xml', $element);
+        $this->assertZipXmlAttributeExists('ppt/presProps.xml', $element, 'loop');
+        $this->assertZipXmlAttributeEquals('ppt/presProps.xml', $element, 'loop', 1);
     }
 }

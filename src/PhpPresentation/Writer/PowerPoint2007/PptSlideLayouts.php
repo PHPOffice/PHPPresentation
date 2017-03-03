@@ -147,7 +147,7 @@ class PptSlideLayouts extends AbstractSlide
         $objWriter->endElement();
 
         if (!is_null($pSlideLayout->getTransition())) {
-            $this->writeTransition($objWriter, $pSlideLayout->getTransition());
+            $this->writeSlideTransition($objWriter, $pSlideLayout->getTransition());
         }
 
         // p:sldLayout\

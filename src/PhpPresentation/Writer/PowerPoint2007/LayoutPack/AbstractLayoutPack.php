@@ -191,7 +191,6 @@ abstract class AbstractLayoutPack
      * Find specific slide layout id.
      *
      * @param string $name
-     * @param int $masterId
      * @return int
      * @throws \Exception
      */
@@ -210,11 +209,10 @@ abstract class AbstractLayoutPack
      * Find specific slide layout name.
      *
      * @param int $idLayout
-     * @param int $masterId
      * @return int
      * @throws \Exception
      */
-    public function findLayoutName($idLayout = '')
+    public function findLayoutName($idLayout = null)
     {
         foreach ($this->layouts as $layoutId => $layout) {
             if ($layoutId == $idLayout) {

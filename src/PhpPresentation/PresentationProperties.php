@@ -145,7 +145,7 @@ class PresentationProperties
     public function setZoom($zoom = 1)
     {
         if (is_numeric($zoom)) {
-            $this->zoom = $zoom;
+            $this->zoom = (float)$zoom;
         }
         return $this;
     }

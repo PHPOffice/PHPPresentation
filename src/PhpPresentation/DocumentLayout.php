@@ -74,16 +74,14 @@ class DocumentLayout
     private $layout;
 
     /**
-     * Layout x dimension
-     *
-     * @var integer
+     * Layout X dimension
+     * @var float
      */
     private $dimensionX;
 
     /**
-     * Layout y dimension
-     *
-     * @var integer
+     * Layout Y dimension
+     * @var float
      */
     private $dimensionY;
 

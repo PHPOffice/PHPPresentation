@@ -50,6 +50,8 @@ $cell->createTextRun('Title row')->getFont()->setBold(true)->setSize(16);
 $cell->getBorders()->getBottom()->setLineWidth(4)
                                 ->setLineStyle(Border::LINE_SINGLE)
                                 ->setDashStyle(Border::DASH_DASH);
+$cell->getActiveParagraph()->getAlignment()
+	->setMarginLeft(10);
 
 // Add row
 echo date('H:i:s') . ' Add row'.EOL;
@@ -60,6 +62,7 @@ $row->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
                ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFFFFFFF'));
 $row->nextCell()->createTextRun('R1C1')->getFont()->setBold(true);
+$row->getCell()->getActiveParagraph()->getAlignment()->setMarginLeft(20);
 $row->nextCell()->createTextRun('R1C2')->getFont()->setBold(true);
 $row->nextCell()->createTextRun('R1C3')->getFont()->setBold(true);
 
@@ -76,6 +79,7 @@ $row->getFill()->setFillType(Fill::FILL_SOLID)
 			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
 $row->nextCell()->createTextRun('R2C1');
+$row->getCell()->getActiveParagraph()->getAlignment()->setMarginLeft(30);
 $row->nextCell()->createTextRun('R2C2');
 $row->nextCell()->createTextRun('R2C3');
 
@@ -86,6 +90,7 @@ $row->getFill()->setFillType(Fill::FILL_SOLID)
 			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
 $row->nextCell()->createTextRun('R3C1');
+$row->getCell()->getActiveParagraph()->getAlignment()->setMarginLeft(40);
 $row->nextCell()->createTextRun('R3C2');
 $row->nextCell()->createTextRun('R3C3');
 
@@ -98,6 +103,7 @@ $row->getFill()->setFillType(Fill::FILL_SOLID)
 $cellC1 = $row->nextCell();
 $textRunC1 = $cellC1->createTextRun('Link');
 $textRunC1->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/')->setTooltip('PHPPresentation');
+$cellC1->getActiveParagraph()->getAlignment()->setMarginLeft(50);
 $cellC2 = $row->nextCell();
 $textRunC2 = $cellC2->createTextRun('RichText with');
 $textRunC2->getFont()->setBold(true);

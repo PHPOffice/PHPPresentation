@@ -282,6 +282,18 @@ class Legend implements ComparableInterface
     }
 
     /**
+     * Set Border
+     *
+     * @param  \PhpOffice\PhpPresentation\Style\Border $border
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     */
+    public function setBorder(Border $border)
+    {
+        $this->border = $border;
+        return $this;
+    }
+
+    /**
      * Get Fill
      *
      * @return \PhpOffice\PhpPresentation\Style\Fill
@@ -289,6 +301,18 @@ class Legend implements ComparableInterface
     public function getFill()
     {
         return $this->fill;
+    }
+
+    /**
+     * Set Fill
+     *
+     * @param  \PhpOffice\PhpPresentation\Style\Fill $fill
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     */
+    public function setFill(Fill $fill)
+    {
+        $this->fill = $fill;
+        return $this;
     }
 
     /**

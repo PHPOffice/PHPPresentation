@@ -55,7 +55,6 @@ class Placeholder
     public function __construct($type)
     {
         $this->type = $type;
-        return $this;
     }
 
     /**
@@ -68,7 +67,7 @@ class Placeholder
 
     /**
      * @param mixed $type
-     * @return string
+     * @return Placeholder
      */
     public function setType($type)
     {
@@ -86,9 +85,11 @@ class Placeholder
 
     /**
      * @param int $idx
+     * @return Placeholder
      */
     public function setIdx($idx)
     {
         $this->idx = $idx;
+        return $this;
     }
 }

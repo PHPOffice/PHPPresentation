@@ -3,11 +3,21 @@
 ## 0.8.0 - WIP
 
 ### Bugfix
-
-### Changes
+- PowerPoint2007 Writer : Fixed the marker on line chart when symbol is none - @Napryc GH-211
+- PowerPoint2007 Writer : Fixed the format value in Pie Chart - @Napryc GH-212
+- PowerPoint2007 Writer : The presentation need repairs on Mac @jrking4 GH-266 GH-276
+- PowerPoint2007 Writer : Fix for PowerPoint2007 Writer (Need repair) @Progi1984 GH-266 GH-274 GH-276 GH-282 GH-302
+- PowerPoint2007 Writer : Fixed the axis title in bar chart - @pgee70 GH-267
+- PowerPoint2007 Writer : Fixed the label position in bar chart - @pgee70 GH-268
+- PowerPoint2007 Writer : Support of margins in cell in table - @carlosafonso @Progi1984 GH-273 GH-315
 
 ### Features
+- ODPresentation Writer : Show/Hide Value / Name / Series Name in Chart - @Progi1984 GH-272
+- ODPresentation Writer : Axis Bounds in Chart - @Progi1984 GH-269
+- PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301
+- PowerPoint2007 Writer : Axis Bounds in Chart - @Progi1984 GH-269
 - PowerPoint2007 Writer : Add support for Outline in Axis - @Progi1984 GH-255
+- Misc : Added two methods for setting Border & Fill in Legend - @Progi1984 GH-265
 
 ## 0.7.0 - 2016-09-12
 

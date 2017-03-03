@@ -21,11 +21,6 @@ class SchemeColor extends Color
 {
     protected $value;
 
-    public function __construct()
-    {
-        return $this;
-    }
-
     /**
      * @return string
      */
