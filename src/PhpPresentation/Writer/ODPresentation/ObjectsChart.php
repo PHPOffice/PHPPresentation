@@ -651,7 +651,20 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('style:family', 'chart');
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
-        $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
+        if ($series->hasShowValue()) {
+            if ($series->hasShowPercentage()) {
+                $this->xmlContent->writeAttribute('chart:data-label-number', 'value-and-percentage');
+            } else {
+                $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
+            }
+        } else {
+            if ($series->hasShowPercentage()) {
+                $this->xmlContent->writeAttribute('chart:data-label-number', 'percentage');
+            }
+        }
+        if ($series->hasShowCategoryName()) {
+            $this->xmlContent->writeAttribute('chart:data-label-text', 'true');
+        }
         $this->xmlContent->writeAttribute('chart:label-position', 'center');
         if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:pie-offset', $chartType->getExplosion());
