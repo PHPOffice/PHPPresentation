@@ -1975,13 +1975,13 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', 'minMax');
         $objWriter->endElement();
 
-        if($oAxis->getMaxBounds() != null) {
+        if ($oAxis->getMaxBounds() != null) {
             $objWriter->startElement('c:max');
             $objWriter->writeAttribute('val', $oAxis->getMaxBounds());
             $objWriter->endElement();
         }
 
-        if($oAxis->getMinBounds() != null) {
+        if ($oAxis->getMinBounds() != null) {
             $objWriter->startElement('c:min');
             $objWriter->writeAttribute('val', $oAxis->getMinBounds());
             $objWriter->endElement();
