@@ -13,7 +13,9 @@
 
 ### Features
 - ODPresentation Writer : Show/Hide Value / Name / Series Name in Chart - @Progi1984 GH-272
+- ODPresentation Writer : Axis Bounds in Chart - @Progi1984 GH-269
 - PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301
+- PowerPoint2007 Writer : Axis Bounds in Chart - @Progi1984 GH-269
 
 ## 0.7.0 - 2016-09-12
 

@@ -34,6 +34,20 @@ For each gridline, you can custom the width (in points), the fill type and the f
     $oShape->getPlotArea()->setType($oLine);
     $oShape->getPlotArea()->getAxisX()->setMajorGridlines($oGridLines);
 
+For Axis, you can define the min & max bounds with `setMinBounds` & `setMaxBounds` methods.
+For resetting them, you pass null as parameter to these methods.
+
+.. code-block:: php
+
+    use \PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->setMinBounds(0);
+    $oShape->getPlotArea()->getAxisX()->setMaxBounds(200);
+
 Title
 ^^^^^
 
