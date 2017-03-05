@@ -18,6 +18,7 @@
 - PowerPoint2007 Reader : Support of Table - @Progi1984 GH-240
 - PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301
 - PowerPoint2007 Writer : Axis Bounds in Chart - @Progi1984 GH-269
+- PowerPoint2007 Writer : Implement Legend Key in Series for Chart  - @Progi1984 GH-319
 - Misc : Added two methods for setting Border & Fill in Legend - @Progi1984 GH-265
 
 ## 0.7.0 - 2016-09-12

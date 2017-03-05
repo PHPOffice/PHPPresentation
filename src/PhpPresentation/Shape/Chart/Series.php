@@ -98,6 +98,13 @@ class Series implements ComparableInterface
     private $showLeaderLines = true;
 
     /**
+     * Show Legend Key
+     *
+     * @var boolean
+     */
+    private $showLegendKey = false;
+
+    /**
      * ShowPercentage
      *
      * @var boolean
@@ -346,6 +353,29 @@ class Series implements ComparableInterface
      *
      * @return boolean
      */
+    public function hasShowLegendKey()
+    {
+        return $this->showLegendKey;
+    }
+
+    /**
+     * Set ShowValue
+     *
+     * @param  boolean                          $value
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     */
+    public function setShowLegendKey($value)
+    {
+        $this->showLegendKey = (bool)$value;
+
+        return $this;
+    }
+
+    /**
+     * Get ShowValue
+     *
+     * @return boolean
+     */
     public function hasShowValue()
     {
         return $this->showValue;
@@ -354,7 +384,7 @@ class Series implements ComparableInterface
     /**
      * Set ShowValue
      *
-     * @param  boolean                          $value
+     * @param  boolean $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
      */
     public function setShowValue($value)
