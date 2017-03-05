@@ -50,4 +50,14 @@ class SlideLayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideLayout', $object->setLayoutName($expectedLayoutName));
         $this->assertEquals($expectedLayoutName, $object->getLayoutName());
     }
+
+    public function testSlideMaster()
+    {
+        // Mocks
+        $mockSlideMaster = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\SlideMaster');
+
+        $object = new SlideLayout($mockSlideMaster);
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->getSlideMaster());
+    }
 }

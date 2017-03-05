@@ -303,55 +303,64 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
-        // p:nvGraphicFramePr
+        // p:graphicFrame/p:nvGraphicFramePr
         $objWriter->startElement('p:nvGraphicFramePr');
-        // p:cNvPr
+        // p:graphicFrame/p:nvGraphicFramePr/p:cNvPr
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
         $objWriter->endElement();
-        // p:cNvGraphicFramePr
+        // p:graphicFrame/p:nvGraphicFramePr/p:cNvGraphicFramePr
         $objWriter->startElement('p:cNvGraphicFramePr');
-        // a:graphicFrameLocks
+        // p:graphicFrame/p:nvGraphicFramePr/p:cNvGraphicFramePr/a:graphicFrameLocks
         $objWriter->startElement('a:graphicFrameLocks');
         $objWriter->writeAttribute('noGrp', '1');
         $objWriter->endElement();
+        // p:graphicFrame/p:nvGraphicFramePr/p:cNvGraphicFramePr/
         $objWriter->endElement();
-        // p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        // p:graphicFrame/p:nvGraphicFramePr/p:nvPr
+        $objWriter->startElement('p:nvPr');
+        if ($shape->isPlaceholder()) {
+            $objWriter->startElement('p:ph');
+            $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
+            $objWriter->endElement();
+        }
         $objWriter->endElement();
-        // p:xfrm
+        // p:graphicFrame/p:nvGraphicFramePr/
+        $objWriter->endElement();
+        // p:graphicFrame/p:xfrm
         $objWriter->startElement('p:xfrm');
-        // a:off
+        // p:graphicFrame/p:xfrm/a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
-        // a:ext
+        // p:graphicFrame/p:xfrm/a:ext
         $objWriter->startElement('a:ext');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
+        // p:graphicFrame/p:xfrm/
         $objWriter->endElement();
-        // a:graphic
+        // p:graphicFrame/a:graphic
         $objWriter->startElement('a:graphic');
-        // a:graphicData
+        // p:graphicFrame/a:graphic/a:graphicData
         $objWriter->startElement('a:graphicData');
         $objWriter->writeAttribute('uri', 'http://schemas.openxmlformats.org/drawingml/2006/table');
-        // a:tbl
+        // p:graphicFrame/a:graphic/a:graphicData/a:tbl
         $objWriter->startElement('a:tbl');
-        // a:tblPr
+        // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblPr
         $objWriter->startElement('a:tblPr');
         $objWriter->writeAttribute('firstRow', '1');
         $objWriter->writeAttribute('bandRow', '1');
         $objWriter->endElement();
-        // a:tblGrid
+        // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblGrid
         $objWriter->startElement('a:tblGrid');
         // Write cell widths
         $countCells = count($shape->getRow(0)->getCells());
         for ($cell = 0; $cell < $countCells; $cell++) {
-            // a:gridCol
+            //  p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblGrid/a:gridCol
             $objWriter->startElement('a:gridCol');
             // Calculate column width
             $width = $shape->getRow(0)->getCell($cell)->getWidth();
@@ -363,6 +372,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('w', CommonDrawing::pixelsToEmu($width));
             $objWriter->endElement();
         }
+        // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblGrid/
         $objWriter->endElement();
         // Colspan / rowspan containers
         $colSpan = array();
@@ -372,7 +382,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // Write rows
         $countRows = count($shape->getRows());
         for ($row = 0; $row < $countRows; $row++) {
-            // a:tr
+            // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr
             $objWriter->startElement('a:tr');
             $objWriter->writeAttribute('h', CommonDrawing::pixelsToEmu($shape->getRow($row)->getHeight()));
             // Write cells
@@ -408,12 +418,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 }
                 // a:txBody
                 $objWriter->startElement('a:txBody');
-                // a:bodyPr
+                // a:txBody/a:bodyPr
                 $objWriter->startElement('a:bodyPr');
                 $objWriter->writeAttribute('wrap', 'square');
                 $objWriter->writeAttribute('rtlCol', '0');
-                // a:spAutoFit
+                // a:txBody/a:bodyPr/a:spAutoFit
                 $objWriter->writeElement('a:spAutoFit', null);
+                // a:txBody/a:bodyPr/
                 $objWriter->endElement();
                 // a:lstStyle
                 $objWriter->writeElement('a:lstStyle', null);
@@ -428,6 +439,14 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
                     $objWriter->writeAttribute('anchor', $verticalAlign);
                 }
+
+                // Margins
+                $alignment = $firstParagraph->getAlignment();
+                $objWriter->writeAttribute('marL', $alignment->getMarginLeft());
+                $objWriter->writeAttribute('marR', $alignment->getMarginRight());
+                $objWriter->writeAttribute('marT', $alignment->getMarginTop());
+                $objWriter->writeAttribute('marB', $alignment->getMarginBottom());
+
                 // Determine borders
                 $borderLeft = $currentCell->getBorders()->getLeft();
                 $borderRight = $currentCell->getBorders()->getRight();

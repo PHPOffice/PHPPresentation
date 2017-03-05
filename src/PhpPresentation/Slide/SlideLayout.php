@@ -88,4 +88,12 @@ class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeCon
         $this->layoutName = $layoutName;
         return $this;
     }
+
+    /**
+     * @return SlideMaster
+     */
+    public function getSlideMaster()
+    {
+        return $this->slideMaster;
+    }
 }
