@@ -1321,6 +1321,9 @@ class PptCharts extends AbstractDecoratorWriter
             // c:dLblPos
             $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
 
+            // c:showLegendKey
+            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+
             // c:showVal
             $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
@@ -1802,7 +1805,7 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
 
             // c:showLegendKey
-            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
 
             // c:showVal
             $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
