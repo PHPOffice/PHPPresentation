@@ -34,6 +34,7 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $object = new Alignment();
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $object->getHorizontal());
         $this->assertEquals(Alignment::VERTICAL_BASE, $object->getVertical());
+        $this->assertEquals(Alignment::TEXT_DIRECTION_HORIZONTAL, $object->getTextDirection());
         $this->assertEquals(0, $object->getLevel());
         $this->assertEquals(0, $object->getIndent());
         $this->assertEquals(0, $object->getMarginLeft());
@@ -52,6 +53,20 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $object->getHorizontal());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setHorizontal(Alignment::HORIZONTAL_GENERAL));
         $this->assertEquals(Alignment::HORIZONTAL_GENERAL, $object->getHorizontal());
+    }
+
+    /**
+     * Test get/set vertical
+     */
+    public function testTextDirection()
+    {
+        $object = new Alignment();
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setTextDirection(null));
+        $this->assertEquals(Alignment::TEXT_DIRECTION_HORIZONTAL, $object->getTextDirection());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setTextDirection(Alignment::TEXT_DIRECTION_VERTICAL_90));
+        $this->assertEquals(Alignment::TEXT_DIRECTION_VERTICAL_90, $object->getTextDirection());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setTextDirection());
+        $this->assertEquals(Alignment::TEXT_DIRECTION_HORIZONTAL, $object->getTextDirection());
     }
 
     /**

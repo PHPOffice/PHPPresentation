@@ -947,6 +947,9 @@ class PowerPoint2007 implements ReaderInterface
                 if ($oElementTcPr instanceof \DOMElement) {
                     $numParagraphs = count($oCell->getParagraphs());
                     if ($numParagraphs > 0) {
+                        if ($oElementTcPr->hasAttribute('vert')) {
+                            $oCell->getParagraph(0)->getAlignment()->setTextDirection($oElementTcPr->getAttribute('vert'));
+                        }
                         if ($oElementTcPr->hasAttribute('anchor')) {
                             $oCell->getParagraph(0)->getAlignment()->setVertical($oElementTcPr->getAttribute('anchor'));
                         }
