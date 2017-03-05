@@ -39,7 +39,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $object = new Table();
 
         $this->assertEquals(1, $object->getNumColumn());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setNumColumn($value));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->setNumColumn($value));
         $this->assertEquals($value, $object->getNumColumn());
     }
 
