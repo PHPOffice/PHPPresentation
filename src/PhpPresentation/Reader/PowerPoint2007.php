@@ -287,7 +287,7 @@ class PowerPoint2007 implements ReaderInterface
                         $slideRels = 'ppt/slides/_rels/' . basename($pathSlide) . '.rels';
                         $this->loadRels($slideRels);
                         $this->loadSlide($pptSlide, basename($pathSlide));
-                        foreach ($this->arrayRels[$slideRels] as $key => $rel) {
+                        foreach ($this->arrayRels[$slideRels] as $rel) {
                             if ($rel['Type'] == 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/notesSlide') {
                                 $this->loadSlideNote(basename($rel['Target']), $this->oPhpPresentation->getActiveSlide());
                             }

@@ -938,9 +938,9 @@ class PowerPoint97 implements ReaderInterface
 
         $drawingGroup = $this->loadRecordHeader($stream, $pos);
         if ($drawingGroup['recVer'] == 0xF && $drawingGroup['recInstance'] == 0x000 && $drawingGroup['recType'] == self::RT_DRAWINGGROUP) {
-            //$drawing = $this->readRecordDrawingGroupContainer($stream, $pos);
+            $drawing = $this->readRecordDrawingGroupContainer($stream, $pos);
             $pos += 8;
-            $pos += $drawingGroup['recLen'];
+            $pos += $drawing['length'];
         }
 
         $masterList = $this->loadRecordHeader($stream, $pos);
@@ -973,8 +973,8 @@ class PowerPoint97 implements ReaderInterface
             $pos += 8;
             do {
                 // SlideListWithTextSubContainerOrAtom
-                $rh = $this->loadRecordHeader($stream, $pos);
-                if ($rh['recVer'] == 0x0 && $rh['recInstance'] == 0x000 && $rh['recType'] == self::RT_SLIDEPERSISTATOM && $rh['recLen'] == 0x00000014) {
+                $rhSlideList = $this->loadRecordHeader($stream, $pos);
+                if ($rhSlideList['recVer'] == 0x0 && $rhSlideList['recInstance'] == 0x000 && $rhSlideList['recType'] == self::RT_SLIDEPERSISTATOM && $rhSlideList['recLen'] == 0x00000014) {
                     $pos += 8;
                     $slideList['recLen'] -= 8;
                     // persistIdRef
@@ -3390,7 +3390,7 @@ class PowerPoint97 implements ReaderInterface
 
         // drawing
         $drawing = $this->readRecordDrawingContainer($stream, $pos);
-        // $pos += $drawing['length'];
+        $pos += $drawing['length'];
 
         // slideSchemeColorSchemeAtom
         // slideNameAtom
