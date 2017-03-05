@@ -38,9 +38,9 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $value = rand(1, 100);
         $object = new Table();
 
-        $this->assertEquals(1, $object->getNumColumn());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->setNumColumn($value));
-        $this->assertEquals($value, $object->getNumColumn());
+        $this->assertEquals(1, $object->getNumColumns());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->setNumColumns($value));
+        $this->assertEquals($value, $object->getNumColumns());
     }
 
     public function testRows()

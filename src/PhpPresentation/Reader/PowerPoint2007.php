@@ -988,7 +988,7 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         $arrayElements = $document->getElements('a:graphic/a:graphicData/a:tbl/a:tblGrid/a:gridCol', $node);
-        $oShape->setNumColumn($arrayElements->length);
+        $oShape->setNumColumns($arrayElements->length);
         $oShape->createRow();
         foreach ($arrayElements as $key => $oElement) {
             if ($oElement instanceof \DOMElement && $oElement->getAttribute('w')) {

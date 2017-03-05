@@ -103,7 +103,7 @@ class Table extends AbstractGraphic implements ComparableInterface
     /**
      * @return int
      */
-    public function getNumColumn()
+    public function getNumColumns()
     {
         return $this->columnCount;
     }
@@ -112,7 +112,7 @@ class Table extends AbstractGraphic implements ComparableInterface
      * @param int $numColumn
      * @return Table
      */
-    public function setNumColumn($numColumn)
+    public function setNumColumns($numColumn)
     {
         $this->columnCount = $numColumn;
         return $this;
