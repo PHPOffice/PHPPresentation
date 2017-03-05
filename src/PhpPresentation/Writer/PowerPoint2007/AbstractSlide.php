@@ -744,89 +744,254 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
+
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');
+
         // p:notes
         $objWriter->startElement('p:notes');
         $objWriter->writeAttribute('xmlns:a', 'http://schemas.openxmlformats.org/drawingml/2006/main');
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
         $objWriter->writeAttribute('xmlns:r', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships');
-        // p:cSld
+
+        // p:notes/p:cSld
         $objWriter->startElement('p:cSld');
-        // p:spTree
+
+        // p:notes/p:cSld/p:spTree
         $objWriter->startElement('p:spTree');
-        // p:nvGrpSpPr
+
+        // p:notes/p:cSld/p:spTree/p:nvGrpSpPr
         $objWriter->startElement('p:nvGrpSpPr');
-        // p:cNvPr
+
+        // p:notes/p:cSld/p:spTree/p:nvGrpSpPr/p:cNvPr
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('id', '1');
         $objWriter->writeAttribute('name', '');
         $objWriter->endElement();
-        // p:cNvGrpSpPr
+
+        // p:notes/p:cSld/p:spTree/p:nvGrpSpPr/p:cNvGrpSpPr
         $objWriter->writeElement('p:cNvGrpSpPr', null);
-        // p:nvPr
+
+        // p:notes/p:cSld/p:spTree/p:nvGrpSpPr/p:nvPr
         $objWriter->writeElement('p:nvPr', null);
-        // ## p:nvGrpSpPr
+
+        // p:notes/p:cSld/p:spTree/p:nvGrpSpPr
         $objWriter->endElement();
-        // p:grpSpPr
+
+        // p:notes/p:cSld/p:spTree/p:grpSpPr
         $objWriter->startElement('p:grpSpPr');
-        // a:xfrm
+
+        // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm
         $objWriter->startElement('a:xfrm');
-        // a:off
+
+        // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm/a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
         $objWriter->endElement(); // a:off
-        // a:ext
+
+        // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm/a:ext
         $objWriter->startElement('a:ext');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
         $objWriter->endElement(); // a:ext
-        // a:chOff
+
+        // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm/a:chOff
         $objWriter->startElement('a:chOff');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($pNote->getOffsetY()));
         $objWriter->endElement(); // a:chOff
-        // a:chExt
+
+        // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm/a:chExt
         $objWriter->startElement('a:chExt');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($pNote->getExtentX()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($pNote->getExtentY()));
         $objWriter->endElement(); // a:chExt
-        // ## a:xfrm
+
+        // p:notes/p:cSld/p:spTree/p:grpSpPr/a:xfrm
         $objWriter->endElement();
-        // ## p:grpSpPr
+
+        // p:notes/p:cSld/p:spTree/p:grpSpPr
         $objWriter->endElement();
-        // p:sp
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]
         $objWriter->startElement('p:sp');
-        // p:nvSpPr
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr
         $objWriter->startElement('p:nvSpPr');
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr/p:cNvPr
         $objWriter->startElement('p:cNvPr');
-        $objWriter->writeAttribute('id', '1');
+        $objWriter->writeAttribute('id', '2');
+        $objWriter->writeAttribute('name', 'Slide Image Placeholder 1');
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr/p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr/p:cNvSpPr/a:spLocks
+        $objWriter->startElement('a:spLocks');
+        $objWriter->writeAttribute('noGrp', '1');
+        $objWriter->writeAttribute('noRot', '1');
+        $objWriter->writeAttribute('noChangeAspect', '1');
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr/p:cNvSpPr
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr/p:nvPr
+        $objWriter->startElement('p:nvPr');
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr/p:nvPr/p:ph
+        $objWriter->startElement('p:ph');
+        $objWriter->writeAttribute('type', 'sldImg');
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr/p:nvPr
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:nvSpPr
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr
+        $objWriter->startElement('p:spPr');
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm/a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', 0);
+        $objWriter->writeAttribute('y', 0);
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm/a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(round($pNote->getExtentX() / 2)));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(round($pNote->getExtentY() / 2)));
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:xfrm
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'rect');
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst', null);
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:prstGeom
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:noFill
+        $objWriter->writeElement('a:noFill', null);
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:ln
+        $objWriter->startElement('a:ln');
+        $objWriter->writeAttribute('w', '12700');
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:ln/a:solidFill
+        $objWriter->startElement('a:solidFill');
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:ln/a:solidFill/a:prstClr
+        $objWriter->startElement('a:prstClr');
+        $objWriter->writeAttribute('val', 'black');
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:ln/a:solidFill
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr/a:ln
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]/p:spPr
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[1]
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]
+        $objWriter->startElement('p:sp');
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr/p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', '3');
         $objWriter->writeAttribute('name', 'Notes Placeholder');
         $objWriter->endElement();
-        // p:cNvSpPr
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr/p:cNvSpPr
         $objWriter->startElement('p:cNvSpPr');
-        //a:spLocks
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr/p:cNvSpPr/a:spLocks
         $objWriter->startElement('a:spLocks');
         $objWriter->writeAttribute('noGrp', '1');
         $objWriter->endElement();
-        // ## p:cNvSpPr
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr/p:cNvSpPr
         $objWriter->endElement();
-        // p:nvPr
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr/p:nvPr
         $objWriter->startElement('p:nvPr');
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr/p:nvPr/p:ph
         $objWriter->startElement('p:ph');
         $objWriter->writeAttribute('type', 'body');
         $objWriter->writeAttribute('idx', '1');
         $objWriter->endElement();
-        // ## p:nvPr
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr/p:nvPr
         $objWriter->endElement();
-        // ## p:nvSpPr
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:nvSpPr
         $objWriter->endElement();
-        $objWriter->writeElement('p:spPr', null);
-        // p:txBody
+
+        // START notes print below rectangle section
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr
+        $objWriter->startElement('p:spPr');
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm/a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($pNote->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu(round($pNote->getExtentY() / 2) + $pNote->getOffsetY()));
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm/a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', '5486400');
+        $objWriter->writeAttribute('cy', '3600450');
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:xfrm
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'rect');
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst', null);
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr/a:prstGeom
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:spPr
+        $objWriter->endElement();
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:txBody
         $objWriter->startElement('p:txBody');
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:txBody/a:bodyPr
         $objWriter->writeElement('a:bodyPr', null);
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:txBody/a:lstStyle
         $objWriter->writeElement('a:lstStyle', null);
+
         // Loop shapes
         $shapes = $pNote->getShapeCollection();
         foreach ($shapes as $shape) {
@@ -836,16 +1001,22 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeParagraphs($objWriter, $paragraphs);
             }
         }
-        // ## p:txBody
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]/p:txBody
         $objWriter->endElement();
-        // ## p:sp
+
+        // p:notes/p:cSld/p:spTree/p:sp[2]
         $objWriter->endElement();
-        // ## p:spTree
+
+        // p:notes/p:cSld/p:spTree
         $objWriter->endElement();
-        // ## p:cSld
+
+        // p:notes/p:cSld
         $objWriter->endElement();
-        // ## p:notes
+
+        // p:notes
         $objWriter->endElement();
+
         // Return
         return $objWriter->getData();
     }

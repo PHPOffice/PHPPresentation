@@ -86,6 +86,7 @@ if ($handle = opendir('.')) {
  * @param \PhpOffice\PhpPresentation\PhpPresentation $phpPresentation
  * @param string $filename
  * @param array $writers
+ * @return string
  */
 function write($phpPresentation, $filename, $writers)
 {
@@ -113,6 +114,7 @@ function write($phpPresentation, $filename, $writers)
  * Get ending notes
  *
  * @param array $writers
+ * @return string
  */
 function getEndingNotes($writers)
 {
@@ -296,6 +298,14 @@ class PhpPptTree {
                     $this->append('<dt>Background Image</dt><dd><img src="data:image/png;base64,'.base64_encode($sBkgImgContents).'"></dd>');
                 }
             }
+            $oNote = $oSlide->getNote();
+            foreach ($oNote->getShapeCollection() as $oShape) {
+                $this->append('<dt>Notes</dt>');
+                if ($oShape instanceof RichText) {
+                    $this->append('<dd>' . $oShape->getPlainText() . '</dd>');
+                }
+            }
+
             $this->append('</dl>');
             $this->append('</div>');
 
