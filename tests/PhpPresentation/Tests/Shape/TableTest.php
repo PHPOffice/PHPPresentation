@@ -33,6 +33,16 @@ class TableTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($object->isResizeProportional());
     }
 
+    public function testNumColums()
+    {
+        $value = rand(1, 100);
+        $object = new Table();
+
+        $this->assertNull($object->getNumColumn());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setNumColumn($value));
+        $this->assertCount($value, $object->getRows());
+    }
+
     public function testRows()
     {
         $object = new Table();
