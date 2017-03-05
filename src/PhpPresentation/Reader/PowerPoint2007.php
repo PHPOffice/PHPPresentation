@@ -826,7 +826,8 @@ class PowerPoint2007 implements ReaderInterface
      * @param Cell|RichText $oShape
      * @throws \Exception
      */
-    protected function loadParagraph(XMLReader $document, \DOMElement $oElement, $oShape) {
+    protected function loadParagraph(XMLReader $document, \DOMElement $oElement, $oShape)
+    {
         // Core
         $oParagraph = $oShape->createParagraph();
         $oParagraph->setRichTextElements(array());
