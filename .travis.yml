@@ -12,7 +12,7 @@ php:
 
 matrix:
   allow_failures:
-    - 7.1
+    - php: 7.1
     - php: hhvm
 
 env:
