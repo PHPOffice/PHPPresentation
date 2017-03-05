@@ -320,7 +320,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:graphicFrame/p:nvGraphicFramePr/p:cNvGraphicFramePr/
         $objWriter->endElement();
         // p:graphicFrame/p:nvGraphicFramePr/p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        $objWriter->startElement('p:nvPr');
+        if ($shape->isPlaceholder()) {
+            $objWriter->startElement('p:ph');
+            $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
+            $objWriter->endElement();
+        }
+        $objWriter->endElement();
         // p:graphicFrame/p:nvGraphicFramePr/
         $objWriter->endElement();
         // p:graphicFrame/p:xfrm
@@ -433,6 +439,14 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
                     $objWriter->writeAttribute('anchor', $verticalAlign);
                 }
+
+                // Margins
+                $alignment = $firstParagraph->getAlignment();
+                $objWriter->writeAttribute('marL', $alignment->getMarginLeft());
+                $objWriter->writeAttribute('marR', $alignment->getMarginRight());
+                $objWriter->writeAttribute('marT', $alignment->getMarginTop());
+                $objWriter->writeAttribute('marB', $alignment->getMarginBottom());
+
                 // Determine borders
                 $borderLeft = $currentCell->getBorders()->getLeft();
                 $borderRight = $currentCell->getBorders()->getRight();

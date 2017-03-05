@@ -28,6 +28,8 @@ use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Borders;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
@@ -899,10 +901,12 @@ class PowerPoint2007 implements ReaderInterface
                     $oText = $oParagraph->createTextRun();
 
                     if ($oElementrPr->hasAttribute('b')) {
-                        $oText->getFont()->setBold($oElementrPr->getAttribute('b') == 'true' ? true : false);
+                        $att = $oElementrPr->getAttribute('b');
+                        $oText->getFont()->setBold($att == 'true' || $att == '1' ? true : false);
                     }
                     if ($oElementrPr->hasAttribute('i')) {
-                        $oText->getFont()->setItalic($oElementrPr->getAttribute('i') == 'true' ? true : false);
+                        $att = $oElementrPr->getAttribute('i');
+                        $oText->getFont()->setItalic($att == 'true' || $att == '1' ? true : false);
                     }
                     if ($oElementrPr->hasAttribute('strike')) {
                         $oText->getFont()->setStrikethrough($oElementrPr->getAttribute('strike') == 'noStrike' ? false : true);
@@ -1009,6 +1013,7 @@ class PowerPoint2007 implements ReaderInterface
                     continue;
                 }
                 $oCell = $oRow->getCell($keyCell);
+                $oCell->setParagraphs(array());
                 if ($oElementCell->hasAttribute('gridSpan')) {
                     $oCell->setColSpan($oElementCell->getAttribute('gridSpan'));
                 }
@@ -1022,10 +1027,56 @@ class PowerPoint2007 implements ReaderInterface
 
                 $oElementTcPr = $document->getElement('a:tcPr', $oElementCell);
                 if ($oElementTcPr instanceof \DOMElement) {
+                    $numParagraphs = count($oCell->getParagraphs());
+                    if ($numParagraphs > 0) {
+                        if ($oElementTcPr->hasAttribute('anchor')) {
+                            $oCell->getParagraph(0)->getAlignment()->setVertical($oElementTcPr->getAttribute('anchor'));
+                        }
+                        if ($oElementTcPr->hasAttribute('marB')) {
+                            $oCell->getParagraph(0)->getAlignment()->setMarginBottom($oElementTcPr->getAttribute('marB'));
+                        }
+                        if ($oElementTcPr->hasAttribute('marL')) {
+                            $oCell->getParagraph(0)->getAlignment()->setMarginLeft($oElementTcPr->getAttribute('marL'));
+                        }
+                        if ($oElementTcPr->hasAttribute('marR')) {
+                            $oCell->getParagraph(0)->getAlignment()->setMarginRight($oElementTcPr->getAttribute('marR'));
+                        }
+                        if ($oElementTcPr->hasAttribute('marT')) {
+                            $oCell->getParagraph(0)->getAlignment()->setMarginTop($oElementTcPr->getAttribute('marT'));
+                        }
+                    }
+
                     $oFill = $this->loadStyleFill($document, $oElementTcPr, $oSlide);
                     if ($oFill instanceof Fill) {
                         $oCell->setFill($oFill);
                     }
+
+                    $oBorders = new Borders();
+                    $oElementBorderL = $document->getElement('a:lnL', $oElementTcPr);
+                    if ($oElementBorderL instanceof \DOMElement) {
+                        $this->loadBorder($document, $oElementBorderL, $oBorders->getLeft());
+                    }
+                    $oElementBorderR = $document->getElement('a:lnR', $oElementTcPr);
+                    if ($oElementBorderR instanceof \DOMElement) {
+                        $this->loadBorder($document, $oElementBorderR, $oBorders->getRight());
+                    }
+                    $oElementBorderT = $document->getElement('a:lnT', $oElementTcPr);
+                    if ($oElementBorderT instanceof \DOMElement) {
+                        $this->loadBorder($document, $oElementBorderT, $oBorders->getTop());
+                    }
+                    $oElementBorderB = $document->getElement('a:lnB', $oElementTcPr);
+                    if ($oElementBorderB instanceof \DOMElement) {
+                        $this->loadBorder($document, $oElementBorderB, $oBorders->getBottom());
+                    }
+                    $oElementBorderDiagDown = $document->getElement('a:lnTlToBr', $oElementTcPr);
+                    if ($oElementBorderDiagDown instanceof \DOMElement) {
+                        $this->loadBorder($document, $oElementBorderDiagDown, $oBorders->getDiagonalDown());
+                    }
+                    $oElementBorderDiagUp = $document->getElement('a:lnBlToTr', $oElementTcPr);
+                    if ($oElementBorderDiagUp instanceof \DOMElement) {
+                        $this->loadBorder($document, $oElementBorderDiagUp, $oBorders->getDiagonalUp());
+                    }
+                    $oCell->setBorders($oBorders);
                 }
             }
         }
@@ -1047,22 +1098,12 @@ class PowerPoint2007 implements ReaderInterface
 
             $oElementColor = $xmlReader->getElement('a:gsLst/a:gs[@pos="0"]/a:srgbClr', $oElementFill);
             if ($oElementColor instanceof \DOMElement && $oElementColor->hasAttribute('val')) {
-                $oFill->getStartColor()->setRGB($oElementColor->getAttribute('val'));
-                $oElementAlpha = $xmlReader->getElement('a:alpha', $oElementColor);
-                if ($oElementAlpha instanceof \DOMElement && $oElementAlpha->hasAttribute('val')) {
-                    $alpha = strtoupper(dechex((($oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
-                    $oFill->getStartColor()->setRGB($oElementColor->getAttribute('val'), $alpha);
-                }
+                $oFill->setStartColor($this->loadStyleColor($xmlReader, $oElementColor));
             }
 
             $oElementColor = $xmlReader->getElement('a:gsLst/a:gs[@pos="100000"]/a:srgbClr', $oElementFill);
             if ($oElementColor instanceof \DOMElement && $oElementColor->hasAttribute('val')) {
-                $oFill->getEndColor()->setRGB($oElementColor->getAttribute('val'));
-                $oElementAlpha = $xmlReader->getElement('a:alpha', $oElementColor);
-                if ($oElementAlpha instanceof \DOMElement && $oElementAlpha->hasAttribute('val')) {
-                    $alpha = strtoupper(dechex((($oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
-                    $oFill->getEndColor()->setRGB($oElementColor->getAttribute('val'), $alpha);
-                }
+                $oFill->setEndColor($this->loadStyleColor($xmlReader, $oElementColor));
             }
 
             $oRotation = $xmlReader->getElement('a:lin', $oElementFill);
@@ -1079,19 +1120,60 @@ class PowerPoint2007 implements ReaderInterface
             $oFill->setFillType(Fill::FILL_SOLID);
 
             $oElementColor = $xmlReader->getElement('a:srgbClr', $oElementFill);
-            if ($oElementColor instanceof \DOMElement && $oElementColor->hasAttribute('val')) {
-                $oFill->getStartColor()->setRGB($oElementColor->getAttribute('val'));
-                $oElementAlpha = $xmlReader->getElement('a:alpha', $oElementColor);
-                if ($oElementAlpha instanceof \DOMElement && $oElementAlpha->hasAttribute('val')) {
-                    $alpha = strtoupper(dechex((($oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
-                    $oFill->getStartColor()->setRGB($oElementColor->getAttribute('val'), $alpha);
-                }
+            if ($oElementColor instanceof \DOMElement) {
+                $oFill->setStartColor($this->loadStyleColor($xmlReader, $oElementColor));
             }
             return $oFill;
         }
         return null;
     }
 
+    /**
+     * @param XMLReader $xmlReader
+     * @param \DOMElement $oElement
+     * @return Color
+     */
+    protected function loadStyleColor(XMLReader $xmlReader, \DOMElement $oElement)
+    {
+        $oColor = new Color();
+        $oColor->setRGB($oElement->getAttribute('val'));
+        $oElementAlpha = $xmlReader->getElement('a:alpha', $oElement);
+        if ($oElementAlpha instanceof \DOMElement && $oElementAlpha->hasAttribute('val')) {
+            $alpha = strtoupper(dechex((($oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
+            $oColor->setRGB($oElement->getAttribute('val'), $alpha);
+        }
+        return $oColor;
+    }
+
+    /**
+     * @param XMLReader $xmlReader
+     * @param \DOMElement $oElement
+     * @param Border $oBorder
+     */
+    protected function loadBorder(XMLReader $xmlReader, \DOMElement $oElement, Border $oBorder)
+    {
+        if ($oElement->hasAttribute('w')) {
+            $oBorder->setLineWidth($oElement->getAttribute('w') / 12700);
+        }
+        if ($oElement->hasAttribute('cmpd')) {
+            $oBorder->setLineStyle($oElement->getAttribute('cmpd'));
+        }
+
+        $oElementNoFill = $xmlReader->getElement('a:noFill', $oElement);
+        if ($oElementNoFill instanceof \DOMElement && $oBorder->getLineStyle() == Border::LINE_SINGLE) {
+            $oBorder->setLineStyle(Border::LINE_NONE);
+        }
+
+        $oElementColor = $xmlReader->getElement('a:solidFill/a:srgbClr', $oElement);
+        if ($oElementColor instanceof \DOMElement) {
+            $oBorder->setColor($this->loadStyleColor($xmlReader, $oElementColor));
+        }
+
+        $oElementDashStyle = $xmlReader->getElement('a:prstDash', $oElement);
+        if ($oElementDashStyle instanceof \DOMElement && $oElementDashStyle->hasAttribute('val')) {
+            $oBorder->setDashStyle($oElementDashStyle->getAttribute('val'));
+        }
+    }
     /**
      *
      * @param string $fileRels
