@@ -56,7 +56,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $value = rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setParagraphs(array()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setParagraphs(array()));
         $this->assertCount(0, $object->getParagraphs());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
         $this->assertCount(1, $object->getParagraphs());
