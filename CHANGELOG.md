@@ -15,6 +15,7 @@
 ### Features
 - ODPresentation Writer : Show/Hide Value / Name / Series Name in Chart - @Progi1984 GH-272
 - ODPresentation Writer : Axis Bounds in Chart - @Progi1984 GH-269
+- PowerPoint97 Reader : Support of Slide Note - @Progi1984 GH-226
 - PowerPoint2007 Reader : Support of Shape Table - @Progi1984 GH-240
 - PowerPoint2007 Reader : Support of Slide Note - @Progi1984 GH-226
 - PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301

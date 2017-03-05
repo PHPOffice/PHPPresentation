@@ -299,10 +299,12 @@ class PhpPptTree {
                 }
             }
             $oNote = $oSlide->getNote();
-            foreach ($oNote->getShapeCollection() as $oShape) {
+            if ($oNote->getShapeCollection()->count() > 0) {
                 $this->append('<dt>Notes</dt>');
-                if ($oShape instanceof RichText) {
-                    $this->append('<dd>' . $oShape->getPlainText() . '</dd>');
+                foreach ($oNote->getShapeCollection() as $oShape) {
+                    if ($oShape instanceof RichText) {
+                        $this->append('<dd>' . $oShape->getPlainText() . '</dd>');
+                    }
                 }
             }
 

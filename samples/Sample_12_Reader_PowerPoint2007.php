@@ -9,7 +9,7 @@ use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Shape\RichText;
 
 $pptReader = IOFactory::createReader('PowerPoint2007');
-$oPHPPresentation = $pptReader->load('results/Sample_01_Simple.pptx');
+$oPHPPresentation = $pptReader->load('resources/Sample_12.pptx');
 
 $oTree = new PhpPptTree($oPHPPresentation);
 echo $oTree->display();
