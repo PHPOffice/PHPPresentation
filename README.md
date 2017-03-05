@@ -8,7 +8,7 @@
 [![BountySource](https://img.shields.io/bountysource/team/phpoffice/activity.svg)](https://www.bountysource.com/teams/phpoffice)
 [![Join the chat at https://gitter.im/PHPOffice/PHPPresentation](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/PHPOffice/PHPPresentation)
 
-Branch Master : [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation) [![Documentation Status](https://readthedocs.org/projects/phppresentation/badge/?version=master)](http://phppresentation.readthedocs.io/en/latest/?badge=master)
+Branch Master : [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation) [![Documentation Status](https://readthedocs.org/projects/phppresentation/badge/?version=master)](http://phppresentation.readthedocs.io/en/latest/?badge=master)  
 Branch Develop : [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=develop)](https://travis-ci.org/PHPOffice/PHPPresentation) [![Documentation Status](https://readthedocs.org/projects/phppresentation/badge/?version=develop)](http://phppresentation.readthedocs.io/en/latest/?badge=develop)
 
 PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF). 
