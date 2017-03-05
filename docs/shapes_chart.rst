@@ -104,6 +104,18 @@ Each position is described in `MSDN <https://msdn.microsoft.com/en-us/library/mt
     $oSeries = new Series('Downloads', $seriesData);
     $oSeries->setLabelPosition(Series::LABEL_INSIDEEND);
 
+You can define if some informations are displayed.
+
+.. code-block:: php
+
+    $oSeries = new Series('Downloads', $seriesData);
+    $oSeries->setShowCategoryName(true);
+    $oSeries->setShowLeaderLines(true);
+    $oSeries->setShowLegendKey(true);
+    $oSeries->setShowPercentage(true);
+    $oSeries->setShowSeriesName(true);
+    $oSeries->setShowValue(true);
+
 Types
 -----
 

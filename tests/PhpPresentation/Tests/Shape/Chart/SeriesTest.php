@@ -43,6 +43,7 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($object->getValues());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->getMarker());
         $this->assertNull($object->getOutline());
+        $this->assertFalse($object->hasShowLegendKey());
     }
     
     public function testDataLabelNumFormat()
@@ -153,6 +154,21 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($object->hasShowLeaderLines());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setShowLeaderLines(false));
         $this->assertFalse($object->hasShowLeaderLines());
+    }
+
+    public function testShowLegendKey()
+    {
+        $object = new Series();
+
+        $this->assertFalse($object->hasShowLegendKey());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setShowLegendKey(true));
+        $this->assertTrue($object->hasShowLegendKey());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setShowLegendKey(false));
+        $this->assertFalse($object->hasShowLegendKey());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setShowLegendKey(1));
+        $this->assertTrue($object->hasShowLegendKey());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setShowLegendKey(0));
+        $this->assertFalse($object->hasShowLegendKey());
     }
 
     public function testShowPercentage()
