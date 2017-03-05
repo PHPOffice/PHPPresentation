@@ -1047,7 +1047,7 @@ class PowerPoint2007 implements ReaderInterface
                         }
                     }
 
-                    $oFill = $this->loadStyleFill($document, $oElementTcPr, $oSlide);
+                    $oFill = $this->loadStyleFill($document, $oElementTcPr);
                     if ($oFill instanceof Fill) {
                         $oCell->setFill($oFill);
                     }
@@ -1086,10 +1086,9 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * @param XMLReader $xmlReader
      * @param \DOMElement $oElement
-     * @param AbstractSlide $oSlide
      * @return null|Fill
      */
-    protected function loadStyleFill(XMLReader $xmlReader, \DOMElement $oElement, AbstractSlide $oSlide)
+    protected function loadStyleFill(XMLReader $xmlReader, \DOMElement $oElement)
     {
         // Gradient fill
         $oElementFill = $xmlReader->getElement('a:gradFill', $oElement);
