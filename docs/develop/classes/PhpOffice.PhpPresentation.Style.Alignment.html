@@ -180,6 +180,12 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_getTextDirection" title="getTextDirection :: ">
+            <span class="description"></span><pre>getTextDirection</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_getVertical" title="getVertical :: Get Vertical">
             <span class="description">Get Vertical</span><pre>getVertical</pre>
         </a>
@@ -234,6 +240,12 @@
     </li>
 
                                                                                                         <li class="method public">
+        <a href="#method_setTextDirection" title="setTextDirection :: ">
+            <span class="description"></span><pre>setTextDirection</pre>
+        </a>
+    </li>
+
+                                                                                                        <li class="method public">
         <a href="#method_setVertical" title="setVertical :: Set Vertical">
             <span class="description">Set Vertical</span><pre>setVertical</pre>
         </a>
@@ -243,11 +255,11 @@
         </li>
         <li class="nav-header protected">» Protected
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -280,6 +292,26 @@
                                 <li class="constant ">
                     <a href="#constant_HORIZONTAL_RIGHT" title="HORIZONTAL_RIGHT :: ">
                         <span class="description"></span><pre>HORIZONTAL_RIGHT</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_TEXT_DIRECTION_HORIZONTAL" title="TEXT_DIRECTION_HORIZONTAL :: ">
+                        <span class="description"></span><pre>TEXT_DIRECTION_HORIZONTAL</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_TEXT_DIRECTION_STACKED" title="TEXT_DIRECTION_STACKED :: ">
+                        <span class="description"></span><pre>TEXT_DIRECTION_STACKED</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_TEXT_DIRECTION_VERTICAL_270" title="TEXT_DIRECTION_VERTICAL_270 :: ">
+                        <span class="description"></span><pre>TEXT_DIRECTION_VERTICAL_270</pre>
+                    </a>
+                </li>
+                                <li class="constant ">
+                    <a href="#constant_TEXT_DIRECTION_VERTICAL_90" title="TEXT_DIRECTION_VERTICAL_90 :: ">
+                        <span class="description"></span><pre>TEXT_DIRECTION_VERTICAL_90</pre>
                     </a>
                 </li>
                                 <li class="constant ">
@@ -634,6 +666,35 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                             </div>
 
                         </div>
+                                            <a id="method_getTextDirection"></a>
+                        <div class="element clickable method public  method_getTextDirection" data-toggle="collapse" data-target=".method_getTextDirection .collapse">
+                            <h2>getTextDirection</h2>
+                            <pre>getTextDirection() : string</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                    
+                                                                            <h3>Response</h3>
+                                        <code>string</code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_getVertical"></a>
                         <div class="element clickable method public  method_getVertical" data-toggle="collapse" data-target=".method_getVertical .collapse">
                             <h2>Get Vertical</h2>
@@ -886,6 +947,33 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                                                                     <div class="subelement argument">
                                                 <h4>$pValue</h4>
                                                 <code>integer</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPresentation.Style.Alignment.html">\PhpOffice\PhpPresentation\Style\Alignment</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_setTextDirection"></a>
+                        <div class="element clickable method public  method_setTextDirection" data-toggle="collapse" data-target=".method_setTextDirection .collapse">
+                            <h2>setTextDirection</h2>
+                            <pre>setTextDirection(string $pValue = self::TEXT_DIRECTION_HORIZONTAL) : \PhpOffice\PhpPresentation\Style\Alignment</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$pValue</h4>
+                                                <code>string</code><p></p>
                                             </div>
                                                                             
                                                                             <h3>Response</h3>
@@ -1154,6 +1242,90 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                                     </div>
                                 </div>
                             </div>
+                                                    <a id="constant_TEXT_DIRECTION_HORIZONTAL"> </a>
+                            <div class="element clickable constant  constant_TEXT_DIRECTION_HORIZONTAL" data-toggle="collapse" data-target=".constant_TEXT_DIRECTION_HORIZONTAL .collapse">
+                                <h2>TEXT_DIRECTION_HORIZONTAL</h2>
+                                <pre>TEXT_DIRECTION_HORIZONTAL</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_TEXT_DIRECTION_VERTICAL_90"> </a>
+                            <div class="element clickable constant  constant_TEXT_DIRECTION_VERTICAL_90" data-toggle="collapse" data-target=".constant_TEXT_DIRECTION_VERTICAL_90 .collapse">
+                                <h2>TEXT_DIRECTION_VERTICAL_90</h2>
+                                <pre>TEXT_DIRECTION_VERTICAL_90</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_TEXT_DIRECTION_VERTICAL_270"> </a>
+                            <div class="element clickable constant  constant_TEXT_DIRECTION_VERTICAL_270" data-toggle="collapse" data-target=".constant_TEXT_DIRECTION_VERTICAL_270 .collapse">
+                                <h2>TEXT_DIRECTION_VERTICAL_270</h2>
+                                <pre>TEXT_DIRECTION_VERTICAL_270</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
+                                                    <a id="constant_TEXT_DIRECTION_STACKED"> </a>
+                            <div class="element clickable constant  constant_TEXT_DIRECTION_STACKED" data-toggle="collapse" data-target=".constant_TEXT_DIRECTION_STACKED .collapse">
+                                <h2>TEXT_DIRECTION_STACKED</h2>
+                                <pre>TEXT_DIRECTION_STACKED</pre>
+                                <div class="labels">
+                                                                    </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+                                    </div>
+                                </div>
+                            </div>
                                             
                                                                 <h3><i class="icon-custom icon-property"></i> Properties</h3>
                                                     <a id="property_supportedStyles"> </a>
@@ -1211,6 +1383,32 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
                             <div class="element clickable property  private property_vertical" data-toggle="collapse" data-target=".property_vertical .collapse">
                                 <h2>Vertical</h2>
                                 <pre>vertical : string</pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        var
+                                                    </th>
+                                                    <td>
+                                                                                                                    
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code>string</code>
+                                                                            </div>
+                                </div>
+                            </div>
+                                                    <a id="property_textDirection"> </a>
+                            <div class="element clickable property  private property_textDirection" data-toggle="collapse" data-target=".property_textDirection .collapse">
+                                <h2>Text Direction</h2>
+                                <pre>textDirection : string</pre>
                                 <div class="labels">
                                                                                                         </div>
                                 <div class="row collapse">
@@ -1435,7 +1633,7 @@ while doing a write of a workbook and when changes are not allowed.</p></div>
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Sun, 05 Mar 2017 23:15:23 +0000.<br/>
+            generated on Mon, 06 Mar 2017 17:57:36 +0000.<br/>
     </footer>
     </body>
 </html>
