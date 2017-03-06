@@ -79,7 +79,9 @@ $row->getFill()->setFillType(Fill::FILL_SOLID)
 			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
 $row->nextCell()->createTextRun('R2C1');
-$row->getCell()->getActiveParagraph()->getAlignment()->setMarginLeft(30);
+$row->getCell()->getActiveParagraph()->getAlignment()
+	->setMarginLeft(30)
+	->setTextDirection(\PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
 $row->nextCell()->createTextRun('R2C2');
 $row->nextCell()->createTextRun('R2C3');
 

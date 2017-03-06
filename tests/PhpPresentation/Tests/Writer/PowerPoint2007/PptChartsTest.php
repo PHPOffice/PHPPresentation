@@ -5,6 +5,7 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 use \Exception;
 use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
@@ -178,6 +179,94 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
         $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+    }
+
+    public function testTypeAxisTickMark()
+    {
+        $value = Axis::TICK_MARK_CROSS;
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorTickMark';
+        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorTickMark';
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark();
+        $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
+        $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+    }
+
+    public function testTypeAxisUnit()
+    {
+        $value = rand(0, 100);
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorUnit';
+        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorUnit';
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorUnit(null);
+        $oShape->getPlotArea()->getAxisY()->setMajorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorUnit($value);
+        $oShape->getPlotArea()->getAxisY()->setMajorUnit($value);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
@@ -514,6 +603,28 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:showLegendKey';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 1);
+    }
+
+    public function testTypePieSeparator()
+    {
+        $value = ';';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oPie = new Pie();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oPie->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oPie);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+
+        $oSeries->setSeparator($value);
+        $this->resetPresentationFile();
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $value);
     }
 
     public function testTypePie3D()

@@ -48,6 +48,34 @@ For resetting them, you pass null as parameter to these methods.
     $oShape->getPlotArea()->getAxisX()->setMinBounds(0);
     $oShape->getPlotArea()->getAxisX()->setMaxBounds(200);
 
+For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.
+For resetting them, you pass Axis::TICK_MARK_NONE as parameter to these methods.
+
+.. code-block:: php
+
+    use \PhpOffice\PhpPresentation\Shape\Chart\Axis;
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisY()->setMinorTickMark(Axis::TICK_MARK_NONE);
+    $oShape->getPlotArea()->getAxisY()->setMajorTickMark(Axis::TICK_MARK_INSIDE);
+
+For Axis Y, you can define unit with `setMinorUnit` & `setMajorUnit` methods.
+For resetting them, you pass null as parameter to these methods.
+
+.. code-block:: php
+
+    use \PhpOffice\PhpPresentation\Shape\Chart\Axis;
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisY()->setMinorUnit(null);
+    $oShape->getPlotArea()->getAxisY()->setMajorUnit(0.05);
+
 Title
 ^^^^^
 
@@ -109,6 +137,7 @@ You can define if some informations are displayed.
 .. code-block:: php
 
     $oSeries = new Series('Downloads', $seriesData);
+    $oSeries->setSeparator(';');
     $oSeries->setShowCategoryName(true);
     $oSeries->setShowLeaderLines(true);
     $oSeries->setShowLegendKey(true);
