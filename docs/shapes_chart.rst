@@ -145,6 +145,15 @@ You can define if some informations are displayed.
     $oSeries->setShowSeriesName(true);
     $oSeries->setShowValue(true);
 
+View3D
+^^^^^^
+
+For enabling the autoscale for a shape, you must reset the height percent.
+
+.. code-block:: php
+
+    $oShape->getView3D()->setHeightPercent(null);
+
 Types
 -----
 

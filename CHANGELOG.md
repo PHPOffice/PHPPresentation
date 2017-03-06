@@ -25,6 +25,7 @@
 - PowerPoint2007 Writer : Support text direction in Alignment for Table - @SeregPie GH-218
 - PowerPoint2007 Writer : Support tick mark & unit in Axis for Chart - @Faab GH-218
 - PowerPoint2007 Writer : Support separator in Series for Chart - @jphchaput GH-218
+- PowerPoint2007 Writer : Support autoscale for Chart - @Progi1984 GH-293
 - Misc : Added two methods for setting Border & Fill in Legend - @Progi1984 GH-265
 
 ## 0.7.0 - 2016-09-12

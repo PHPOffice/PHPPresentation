@@ -97,15 +97,14 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', $chart->getView3D()->getRotationX());
         $objWriter->endElement();
 
-        // c:hPercent
-        $objWriter->startElement('c:hPercent');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getHeightPercent());
-        $objWriter->endElement();
-
         // c:rotY
         $objWriter->startElement('c:rotY');
         $objWriter->writeAttribute('val', $chart->getView3D()->getRotationY());
         $objWriter->endElement();
+
+        // c:hPercent
+        $hPercent = $chart->getView3D()->getHeightPercent();
+        $objWriter->writeElementIf($hPercent != null, 'c:hPercent', 'val', $hPercent);
 
         // c:depthPercent
         $objWriter->startElement('c:depthPercent');
