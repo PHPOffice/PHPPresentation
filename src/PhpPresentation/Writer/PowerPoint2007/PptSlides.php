@@ -1288,7 +1288,13 @@ class PptSlides extends AbstractSlide
 
                     // t
                     $objWriter->startElement('a:t');
-                    $objWriter->writeCData(Text::controlCharacterPHP2OOXML($element->getText()));
+
+                    $text_element = $element->getText();
+
+                    if (! empty($text_element)) {
+                        $objWriter->writeCData(Text::controlCharacterPHP2OOXML($element->getText() ));
+                    }
+
                     $objWriter->endElement();
 
                     $objWriter->endElement();
