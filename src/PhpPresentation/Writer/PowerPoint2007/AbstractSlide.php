@@ -193,36 +193,36 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement();
         // p:sp\p:spPr
         $objWriter->startElement('p:spPr');
-        // p:sp\p:spPr\a:xfrm
-        $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
-        // p:sp\p:spPr\a:xfrm\a:off
-        $objWriter->startElement('a:off');
-        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
-        $objWriter->endElement();
-        // p:sp\p:spPr\a:xfrm\a:ext
-        $objWriter->startElement('a:ext');
-        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
-        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
-        $objWriter->endElement();
-        // > p:sp\p:spPr\a:xfrm
-        $objWriter->endElement();
-        // p:sp\p:spPr\a:prstGeom
-        $objWriter->startElement('a:prstGeom');
-        $objWriter->writeAttribute('prst', 'rect');
 
-        // p:sp\p:spPr\a:prstGeom\a:avLst
-        $objWriter->writeElement('a:avLst');
+        if (!$shape->isPlaceholder()) {
+            // p:sp\p:spPr\a:xfrm
+            $objWriter->startElement('a:xfrm');
+            $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+            // p:sp\p:spPr\a:xfrm\a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // p:sp\p:spPr\a:xfrm\a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+            // > p:sp\p:spPr\a:xfrm
+            $objWriter->endElement();
+            // p:sp\p:spPr\a:prstGeom
+            $objWriter->startElement('a:prstGeom');
+            $objWriter->writeAttribute('prst', 'rect');
 
-        $objWriter->endElement();
+            // p:sp\p:spPr\a:prstGeom\a:avLst
+            $objWriter->writeElement('a:avLst');
+
+            $objWriter->endElement();
+        }
         $this->writeFill($objWriter, $shape->getFill());
-        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->writeBorder($objWriter, $shape->getBorder(), '');
-        }
-        if ($shape->getShadow()->isVisible()) {
-            $this->writeShadow($objWriter, $shape->getShadow());
-        }
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $this->writeShadow($objWriter, $shape->getShadow());
+
         // > p:sp\p:spPr
         $objWriter->endElement();
         // p:txBody
@@ -230,44 +230,46 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // a:bodyPr
         //@link :http://msdn.microsoft.com/en-us/library/documentformat.openxml.drawing.bodyproperties%28v=office.14%29.aspx
         $objWriter->startElement('a:bodyPr');
-        $verticalAlign = $shape->getActiveParagraph()->getAlignment()->getVertical();
-        if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
-            $objWriter->writeAttribute('anchor', $verticalAlign);
-        }
-        if ($shape->getWrap() != RichText::WRAP_SQUARE) {
-            $objWriter->writeAttribute('wrap', $shape->getWrap());
-        }
-        $objWriter->writeAttribute('rtlCol', '0');
-        if ($shape->getHorizontalOverflow() != RichText::OVERFLOW_OVERFLOW) {
-            $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
-        }
-        if ($shape->getVerticalOverflow() != RichText::OVERFLOW_OVERFLOW) {
-            $objWriter->writeAttribute('vertOverflow', $shape->getVerticalOverflow());
-        }
-        if ($shape->isUpright()) {
-            $objWriter->writeAttribute('upright', '1');
-        }
-        if ($shape->isVertical()) {
-            $objWriter->writeAttribute('vert', 'vert');
-        }
-        $objWriter->writeAttribute('bIns', CommonDrawing::pixelsToEmu($shape->getInsetBottom()));
-        $objWriter->writeAttribute('lIns', CommonDrawing::pixelsToEmu($shape->getInsetLeft()));
-        $objWriter->writeAttribute('rIns', CommonDrawing::pixelsToEmu($shape->getInsetRight()));
-        $objWriter->writeAttribute('tIns', CommonDrawing::pixelsToEmu($shape->getInsetTop()));
-        if ($shape->getColumns() <> 1) {
-            $objWriter->writeAttribute('numCol', $shape->getColumns());
-        }
-        // a:spAutoFit
-        $objWriter->startElement('a:' . $shape->getAutoFit());
-        if ($shape->getAutoFit() == RichText::AUTOFIT_NORMAL) {
-            if (!is_null($shape->getFontScale())) {
-                $objWriter->writeAttribute('fontScale', (int)($shape->getFontScale() * 1000));
+        if (!$shape->isPlaceholder()) {
+            $verticalAlign = $shape->getActiveParagraph()->getAlignment()->getVertical();
+            if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
+                $objWriter->writeAttribute('anchor', $verticalAlign);
             }
-            if (!is_null($shape->getLineSpaceReduction())) {
-                $objWriter->writeAttribute('lnSpcReduction', (int)($shape->getLineSpaceReduction() * 1000));
+            if ($shape->getWrap() != RichText::WRAP_SQUARE) {
+                $objWriter->writeAttribute('wrap', $shape->getWrap());
             }
+            $objWriter->writeAttribute('rtlCol', '0');
+            if ($shape->getHorizontalOverflow() != RichText::OVERFLOW_OVERFLOW) {
+                $objWriter->writeAttribute('horzOverflow', $shape->getHorizontalOverflow());
+            }
+            if ($shape->getVerticalOverflow() != RichText::OVERFLOW_OVERFLOW) {
+                $objWriter->writeAttribute('vertOverflow', $shape->getVerticalOverflow());
+            }
+            if ($shape->isUpright()) {
+                $objWriter->writeAttribute('upright', '1');
+            }
+            if ($shape->isVertical()) {
+                $objWriter->writeAttribute('vert', 'vert');
+            }
+            $objWriter->writeAttribute('bIns', CommonDrawing::pixelsToEmu($shape->getInsetBottom()));
+            $objWriter->writeAttribute('lIns', CommonDrawing::pixelsToEmu($shape->getInsetLeft()));
+            $objWriter->writeAttribute('rIns', CommonDrawing::pixelsToEmu($shape->getInsetRight()));
+            $objWriter->writeAttribute('tIns', CommonDrawing::pixelsToEmu($shape->getInsetTop()));
+            if ($shape->getColumns() <> 1) {
+                $objWriter->writeAttribute('numCol', $shape->getColumns());
+            }
+            // a:spAutoFit
+            $objWriter->startElement('a:' . $shape->getAutoFit());
+            if ($shape->getAutoFit() == RichText::AUTOFIT_NORMAL) {
+                if (!is_null($shape->getFontScale())) {
+                    $objWriter->writeAttribute('fontScale', (int)($shape->getFontScale() * 1000));
+                }
+                if (!is_null($shape->getLineSpaceReduction())) {
+                    $objWriter->writeAttribute('lnSpcReduction', (int)($shape->getLineSpaceReduction() * 1000));
+                }
+            }
+            $objWriter->endElement();
         }
-        $objWriter->endElement();
         $objWriter->endElement();
         // a:lstStyle
         $objWriter->writeElement('a:lstStyle', null);
@@ -642,7 +644,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:cNvCxnSpPr
         $objWriter->writeElement('p:cNvCxnSpPr', null);
         // p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        $objWriter->startElement('p:nvPr');
+        if ($shape->isPlaceholder()) {
+            $objWriter->startElement('p:ph');
+            $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
+            $objWriter->endElement();
+        }
+        $objWriter->endElement();
         $objWriter->endElement();
         // p:spPr
         $objWriter->startElement('p:spPr');
@@ -704,9 +712,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeElement('a:avLst');
 
         $objWriter->endElement();
-        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->writeBorder($objWriter, $shape->getBorder(), '');
-        }
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
         $objWriter->endElement();
         $objWriter->endElement();
     }
@@ -752,6 +758,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      */
     protected function writeHyperlink(XMLWriter $objWriter, $shape)
     {
+        if (!$shape->hasHyperlink()) {
+            return;
+        }
         // a:hlinkClick
         $objWriter->startElement('a:hlinkClick');
         $objWriter->writeAttribute('r:id', $shape->getHyperlink()->relationId);
@@ -1071,7 +1080,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:cNvGraphicFramePr
         $objWriter->writeElement('p:cNvGraphicFramePr', null);
         // p:nvPr
-        $objWriter->writeElement('p:nvPr', null);
+        $objWriter->startElement('p:nvPr');
+        if ($shape->isPlaceholder()) {
+            $objWriter->startElement('p:ph');
+            $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
+            $objWriter->endElement();
+        }
+        $objWriter->endElement();
         $objWriter->endElement();
         // p:xfrm
         $objWriter->startElement('p:xfrm');
