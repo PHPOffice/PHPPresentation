@@ -40,38 +40,39 @@ class Series implements ComparableInterface
 
     /**
      * DataPointFills (key/value)
-     *
      * @var array
      */
-    private $dataPointFills = array();
+    protected $dataPointFills = array();
 
     /**
      * Data Label Number Format
-     *
      * @var string
      */
-    private $DlblNumFormat = '';
+    protected $DlblNumFormat = '';
+
+    /**
+     * Separator
+     * @var string
+     */
+    protected $separator = null;
 
     /**
      * Fill
-     *
      * @var \PhpOffice\PhpPresentation\Style\Fill
      */
-    private $fill;
+    protected $fill;
 
     /**
      * Font
-     *
      * @var \PhpOffice\PhpPresentation\Style\Font
      */
-    private $font;
+    protected $font;
 
     /**
      * Label position
-     *
      * @var string
      */
-    private $labelPosition = 'ctr';
+    protected $labelPosition = 'ctr';
 
     /**
      * @var Marker
@@ -84,57 +85,55 @@ class Series implements ComparableInterface
     protected $outline;
 
     /**
-     * ShowCategoryName
-     *
+     * Show Category Name
      * @var boolean
      */
     private $showCategoryName = false;
 
     /**
-     * ShowLeaderLines
-     *
+     * Show Leader Lines
      * @var boolean
      */
     private $showLeaderLines = true;
 
     /**
+     * Show Legend Key
+     * @var boolean
+     */
+    private $showLegendKey = false;
+
+    /**
      * ShowPercentage
-     *
      * @var boolean
      */
     private $showPercentage = false;
 
     /**
      * ShowSeriesName
-     *
      * @var boolean
      */
     private $showSeriesName = false;
 
     /**
      * ShowValue
-     *
      * @var boolean
      */
     private $showValue = true;
 
     /**
      * Title
-     *
      * @var string
      */
     private $title = 'Series Title';
 
     /**
      * Values (key/value)
-     *
      * @var array
      */
     private $values = array();
 
     /**
      * Hash index
-     *
      * @var string
      */
     private $hashIndex;
@@ -346,6 +345,29 @@ class Series implements ComparableInterface
      *
      * @return boolean
      */
+    public function hasShowLegendKey()
+    {
+        return $this->showLegendKey;
+    }
+
+    /**
+     * Set ShowValue
+     *
+     * @param  boolean                          $value
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     */
+    public function setShowLegendKey($value)
+    {
+        $this->showLegendKey = (bool)$value;
+
+        return $this;
+    }
+
+    /**
+     * Get ShowValue
+     *
+     * @return boolean
+     */
     public function hasShowValue()
     {
         return $this->showValue;
@@ -354,7 +376,7 @@ class Series implements ComparableInterface
     /**
      * Set ShowValue
      *
-     * @param  boolean                          $value
+     * @param  boolean $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
      */
     public function setShowValue($value)
@@ -385,6 +407,36 @@ class Series implements ComparableInterface
         $this->showPercentage = $value;
 
         return $this;
+    }
+
+    /**
+     * Get ShowLeaderLines
+     *
+     * @return boolean
+     */
+    public function hasShowSeparator()
+    {
+        return is_null($this->separator) ? false : true;
+    }
+
+    /**
+     * Set Separator
+     * @param  string $pValue
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     */
+    public function setSeparator($pValue)
+    {
+        $this->separator = $pValue;
+        return $this;
+    }
+
+    /**
+     * Get Separator
+     * @return string
+     */
+    public function getSeparator()
+    {
+        return $this->separator;
     }
 
     /**

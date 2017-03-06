@@ -360,7 +360,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $oRichText->createParagraph()->createTextRun('Delta');
         $oRichText->createParagraph()->createTextRun('Epsilon');
 
-
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:buFont');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/a:buFont', 'typeface', $oExpectedFont);
@@ -657,11 +656,19 @@ class PptSlideTest extends PhpPresentationTestCase
         $oRow = $oShape->createRow();
         $oCell = $oRow->getCell();
         $oCell->createTextRun('AAA');
-        $oCell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_BOTTOM);
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'anchor');
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'vert');
+
+        $oCell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_BOTTOM);
+        $oCell->getActiveParagraph()->getAlignment()->setTextDirection(Alignment::TEXT_DIRECTION_STACKED);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'anchor', Alignment::VERTICAL_BOTTOM);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'vert', Alignment::TEXT_DIRECTION_STACKED);
     }
 
     public function testTableWithBorder()

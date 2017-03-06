@@ -101,6 +101,24 @@ class Table extends AbstractGraphic implements ComparableInterface
     }
 
     /**
+     * @return int
+     */
+    public function getNumColumns()
+    {
+        return $this->columnCount;
+    }
+
+    /**
+     * @param int $numColumn
+     * @return Table
+     */
+    public function setNumColumns($numColumn)
+    {
+        $this->columnCount = $numColumn;
+        return $this;
+    }
+
+    /**
      * Get hash code
      *
      * @return string Hash code

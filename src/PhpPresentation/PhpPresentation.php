@@ -324,6 +324,8 @@ class PhpPresentation
     {
         $slide->rebindParent($this);
 
+        $this->addMasterSlide($slide->getSlideLayout()->getSlideMaster());
+
         return $this->addSlide($slide);
     }
 
@@ -353,8 +355,8 @@ class PhpPresentation
      * Add masterslide
      *
      * @param  \PhpOffice\PhpPresentation\Slide\SlideMaster $slide
+     * @return \PhpOffice\PhpPresentation\Slide\SlideMaster
      * @throws \Exception
-     * @retun \PhpOffice\PhpPresentation\Slide\SlideMaster
      */
     public function addMasterSlide(SlideMaster $slide = null)
     {

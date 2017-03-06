@@ -10,12 +10,21 @@
 - PowerPoint2007 Writer : Fixed the axis title in bar chart - @pgee70 GH-267
 - PowerPoint2007 Writer : Fixed the label position in bar chart - @pgee70 GH-268
 - PowerPoint2007 Writer : Support of margins in cell in table - @carlosafonso @Progi1984 GH-273 GH-315
+- Fixed the corruption of file when an addExternalSlide is called - @Progi1984 GH-240
 
 ### Features
 - ODPresentation Writer : Show/Hide Value / Name / Series Name in Chart - @Progi1984 GH-272
 - ODPresentation Writer : Axis Bounds in Chart - @Progi1984 GH-269
+- PowerPoint97 Reader : Support of Slide Note - @Progi1984 GH-226
+- PowerPoint2007 Reader : Support of Shape Table - @Progi1984 GH-240
+- PowerPoint2007 Reader : Support of Slide Note - @Progi1984 GH-226
+- PowerPoint2007 Reader : Support text direction in Alignment for Table - @Progi1984 GH-218
 - PowerPoint2007 Writer : Implement character spacing - @jvanoostrom GH-301
 - PowerPoint2007 Writer : Axis Bounds in Chart - @Progi1984 GH-269
+- PowerPoint2007 Writer : Implement Legend Key in Series for Chart - @Progi1984 GH-319
+- PowerPoint2007 Writer : Support text direction in Alignment for Table - @SeregPie GH-218
+- PowerPoint2007 Writer : Support tick mark & unit in Axis for Chart - @Faab GH-218
+- PowerPoint2007 Writer : Support separator in Series for Chart - @jphchaput GH-218
 - PowerPoint2007 Writer : Add support for Outline in Axis - @Progi1984 GH-255
 - Misc : Added two methods for setting Border & Fill in Legend - @Progi1984 GH-265
 
