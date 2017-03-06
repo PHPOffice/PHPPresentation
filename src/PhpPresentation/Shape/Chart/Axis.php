@@ -108,6 +108,7 @@ class Axis implements ComparableInterface
     public function __construct($title = 'Axis Title')
     {
         $this->title = $title;
+        $this->outline = new Outline();
         $this->font  = new Font();
     }
 

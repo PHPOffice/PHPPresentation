@@ -147,23 +147,22 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorY);
 
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals(Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthX)), $oXMLDoc->getElementAttribute($element, 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthX)));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedColorX, $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorX);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals(Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthY)), $oXMLDoc->getElementAttribute($element, 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthY)));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedColorY, $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorY);
     }
 
     public function testTypeArea()
@@ -549,10 +548,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:spPr/a:ln';
 
         $oOutline = new Outline();
-        // Define the color
         $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
         $oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
-        // Define the width (in points)
         $oOutline->setWidth($expectedWidth);
 
         $oSlide = $this->oPresentation->getActiveSlide();

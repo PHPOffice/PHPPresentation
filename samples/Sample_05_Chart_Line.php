@@ -87,7 +87,7 @@ $series1[0]->getMarker()->setSize(7);
 $lineChart1->setSeries($series1);
 
 // Create a shape (chart)
-echo date('H:i:s') . ' Create a shape (chart)' . EOL;
+echo date('H:i:s') . ' Create a shape (chart1)' . EOL;
 echo date('H:i:s') . ' Differences with previous : Values on right axis and Legend hidden' . EOL;
 $shape1 = clone $shape;
 $shape1->getLegend()->setVisible(false);
@@ -111,7 +111,7 @@ $series2[0]->getMarker()->setSize(10);
 $lineChart2->setSeries($series2);
 
 // Create a shape (chart)
-echo date('H:i:s') . ' Create a shape (chart)' . EOL;
+echo date('H:i:s') . ' Create a shape (chart2)' . EOL;
 echo date('H:i:s') . ' Differences with previous : Values on right axis and Legend hidden' . EOL;
 $shape2 = clone $shape;
 $shape2->getLegend()->setVisible(false);
@@ -122,7 +122,7 @@ $shape2->getPlotArea()->getAxisY()->setFormatCode('#,##0');
 $currentSlide->addShape($shape2);
 
 // Create templated slide
-echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+echo EOL . date('H:i:s') . ' Create templated slide #3' . EOL;
 $currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
@@ -149,7 +149,7 @@ $shape3->getPlotArea()->getAxisY()->setMinorGridlines($oGridLines2);
 $currentSlide->addShape($shape3);
 
 // Create templated slide
-echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+echo EOL . date('H:i:s') . ' Create templated slide #4' . EOL;
 $currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
@@ -178,7 +178,7 @@ $shape4->getPlotArea()->getAxisY()->setOutline($oOutlineAxisY);
 $currentSlide->addShape($shape4);
 
 // Create templated slide
-echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+echo EOL . date('H:i:s') . ' Create templated slide #5' . EOL;
 $currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a shape (chart)
