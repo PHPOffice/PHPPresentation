@@ -605,6 +605,28 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 1);
     }
 
+    public function testTypePieSeparator()
+    {
+        $value = ';';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oPie = new Pie();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oPie->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oPie);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+
+        $oSeries->setSeparator($value);
+        $this->resetPresentationFile();
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $value);
+    }
+
     public function testTypePie3D()
     {
         $oSlide = $this->oPresentation->getActiveSlide();

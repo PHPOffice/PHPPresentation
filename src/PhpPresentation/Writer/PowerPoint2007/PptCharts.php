@@ -925,6 +925,11 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
+            // c:separator
+            if ($series->hasShowSeparator()) {
+                $this->writeElementWithValAttribute($objWriter, 'c:separator', $series->getSeparator());
+            }
+
             $objWriter->endElement();
 
             // c:spPr
@@ -1133,6 +1138,11 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
+            // c:separator
+            if ($series->hasShowSeparator()) {
+                $this->writeElementWithValAttribute($objWriter, 'c:separator', $series->getSeparator());
+            }
+
             $objWriter->endElement();
 
             // c:spPr
@@ -1339,6 +1349,11 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
+            // c:separator
+            if ($series->hasShowSeparator()) {
+                $this->writeElementWithValAttribute($objWriter, 'c:separator', $series->getSeparator());
+            }
+
             $objWriter->endElement();
 
             // Write X axis data
@@ -1504,6 +1519,11 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
+            // c:separator
+            if ($series->hasShowSeparator()) {
+                $this->writeElementWithValAttribute($objWriter, 'c:separator', $series->getSeparator());
+            }
+
             $objWriter->endElement();
 
             // Write X axis data
@@ -1643,6 +1663,11 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+            // c:separator
+            if ($series->hasShowSeparator()) {
+                $this->writeElementWithValAttribute($objWriter, 'c:separator', $series->getSeparator());
+            }
 
             // > c:dLbls
             $objWriter->endElement();
@@ -1821,6 +1846,11 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+            // c:separator
+            if ($series->hasShowSeparator()) {
+                $this->writeElementWithValAttribute($objWriter, 'c:separator', $series->getSeparator());
+            }
 
             $objWriter->endElement();
 

@@ -137,6 +137,7 @@ You can define if some informations are displayed.
 .. code-block:: php
 
     $oSeries = new Series('Downloads', $seriesData);
+    $oSeries->setSeparator(';');
     $oSeries->setShowCategoryName(true);
     $oSeries->setShowLeaderLines(true);
     $oSeries->setShowLegendKey(true);

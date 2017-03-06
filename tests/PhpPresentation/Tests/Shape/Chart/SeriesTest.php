@@ -181,6 +181,19 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($object->hasShowPercentage());
     }
 
+    public function testShowSeparator()
+    {
+        $value = ';';
+        $object = new Series();
+
+        $this->assertFalse($object->hasShowSeparator());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setSeparator($value));
+        $this->assertEquals($value, $object->getSeparator());
+        $this->assertTrue($object->hasShowSeparator());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setSeparator(''));
+        $this->assertFalse($object->hasShowPercentage());
+    }
+
     public function testShowSeriesName()
     {
         $object = new Series();
