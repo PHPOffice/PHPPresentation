@@ -2024,7 +2024,12 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:majorTickMark
         $objWriter->startElement('c:majorTickMark');
-        $objWriter->writeAttribute('val', 'none');
+        $objWriter->writeAttribute('val', $oAxis->getMajorTickMark());
+        $objWriter->endElement();
+
+        // c:minorTickMark
+        $objWriter->startElement('c:minorTickMark');
+        $objWriter->writeAttribute('val', $oAxis->getMinorTickMark());
         $objWriter->endElement();
 
         // c:tickLblPos
@@ -2066,9 +2071,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // Font - a:solidFill
         $objWriter->startElement('a:solidFill');
-
         $this->writeColor($objWriter, $oAxis->getFont()->getColor());
-
         $objWriter->endElement();
 
         // Font - a:latin
@@ -2147,6 +2150,20 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('val', 'between');
             }
             $objWriter->endElement();
+
+            // c:majorUnit
+            if ($oAxis->getMajorUnit() != null) {
+                $objWriter->startElement('c:majorUnit');
+                $objWriter->writeAttribute('val', $oAxis->getMajorUnit());
+                $objWriter->endElement();
+            }
+
+            // c:minorUnit
+            if ($oAxis->getMinorUnit() != null) {
+                $objWriter->startElement('c:minorUnit');
+                $objWriter->writeAttribute('val', $oAxis->getMinorUnit());
+                $objWriter->endElement();
+            }
         }
 
         $objWriter->endElement();

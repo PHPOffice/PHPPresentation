@@ -28,6 +28,11 @@ class Axis implements ComparableInterface
     const AXIS_X = 'x';
     const AXIS_Y = 'y';
 
+    const TICK_MARK_NONE = 'none';
+    const TICK_MARK_CROSS = 'cross';
+    const TICK_MARK_INSIDE = 'in';
+    const TICK_MARK_OUTSIDE = 'out';
+
     /**
      * Title
      *
@@ -68,6 +73,26 @@ class Axis implements ComparableInterface
      * @var int
      */
     protected $maxBounds;
+
+    /**
+     * @var string
+     */
+    protected $minorTickMark = self::TICK_MARK_NONE;
+
+    /**
+     * @var string
+     */
+    protected $majorTickMark = self::TICK_MARK_NONE;
+
+    /**
+     * @var float
+     */
+    protected $minorUnit;
+
+    /**
+     * @var float
+     */
+    protected $majorUnit;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
@@ -150,6 +175,42 @@ class Axis implements ComparableInterface
     }
 
     /**
+     * @return int|null
+     */
+    public function getMinBounds()
+    {
+        return $this->minBounds;
+    }
+
+    /**
+     * @param int|null $minBounds
+     * @return Axis
+     */
+    public function setMinBounds($minBounds = null)
+    {
+        $this->minBounds = is_null($minBounds) ? null : (int)$minBounds;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxBounds()
+    {
+        return $this->maxBounds;
+    }
+
+    /**
+     * @param int|null $maxBounds
+     * @return Axis
+     */
+    public function setMaxBounds($maxBounds = null)
+    {
+        $this->maxBounds = is_null($maxBounds) ? null : (int)$maxBounds;
+        return $this;
+    }
+
+    /**
      * @return Gridlines
      */
     public function getMajorGridlines()
@@ -186,38 +247,74 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * @return int|null
+     * @return string
      */
-    public function getMinBounds()
+    public function getMinorTickMark()
     {
-        return $this->minBounds;
+        return $this->minorTickMark;
     }
 
     /**
-     * @param int|null $minBounds
+     * @param string $pTickMark
      * @return Axis
      */
-    public function setMinBounds($minBounds = null)
+    public function setMinorTickMark($pTickMark = self::TICK_MARK_NONE)
     {
-        $this->minBounds = is_null($minBounds) ? null : (int) $minBounds;
+        $this->minorTickMark = $pTickMark;
         return $this;
     }
 
     /**
-     * @return int|null
+     * @return string
      */
-    public function getMaxBounds()
+    public function getMajorTickMark()
     {
-        return $this->maxBounds;
+        return $this->majorTickMark;
     }
 
     /**
-     * @param int|null $maxBounds
+     * @param string $pTickMark
      * @return Axis
      */
-    public function setMaxBounds($maxBounds = null)
+    public function setMajorTickMark($pTickMark = self::TICK_MARK_NONE)
     {
-        $this->maxBounds = is_null($maxBounds) ? null : (int) $maxBounds;
+        $this->majorTickMark = $pTickMark;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMinorUnit()
+    {
+        return $this->minorUnit;
+    }
+
+    /**
+     * @param float $pUnit
+     * @return Axis
+     */
+    public function setMinorUnit($pUnit = null)
+    {
+        $this->minorUnit = $pUnit;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMajorUnit()
+    {
+        return $this->majorUnit;
+    }
+
+    /**
+     * @param float $pUnit
+     * @return Axis
+     */
+    public function setMajorUnit($pUnit = null)
+    {
+        $this->majorUnit = $pUnit;
         return $this;
     }
 
