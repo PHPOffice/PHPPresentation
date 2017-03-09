@@ -48,6 +48,17 @@ For resetting them, you pass null as parameter to these methods.
     $oShape->getPlotArea()->getAxisX()->setMinBounds(0);
     $oShape->getPlotArea()->getAxisX()->setMaxBounds(200);
 
+You can define outline for each axis (X & Y).
+
+.. code-block:: php
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
+    $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
 For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.
 For resetting them, you pass Axis::TICK_MARK_NONE as parameter to these methods.
 

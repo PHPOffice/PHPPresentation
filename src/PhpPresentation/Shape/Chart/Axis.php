@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Axis
@@ -95,6 +96,11 @@ class Axis implements ComparableInterface
     protected $majorUnit;
 
     /**
+     * @var Outline
+     */
+    protected $outline;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
      *
      * @param string $title Title
@@ -102,6 +108,7 @@ class Axis implements ComparableInterface
     public function __construct($title = 'Axis Title')
     {
         $this->title = $title;
+        $this->outline = new Outline();
         $this->font  = new Font();
     }
 
@@ -315,6 +322,24 @@ class Axis implements ComparableInterface
     public function setMajorUnit($pUnit = null)
     {
         $this->majorUnit = $pUnit;
+        return $this;
+    }
+
+    /**
+     * @return Outline
+     */
+    public function getOutline()
+    {
+        return $this->outline;
+    }
+
+    /**
+     * @param Outline $outline
+     * @return Axis
+     */
+    public function setOutline($outline)
+    {
+        $this->outline = $outline;
         return $this;
     }
 
