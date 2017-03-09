@@ -12,6 +12,9 @@
 - PowerPoint2007 Writer : Support of margins in cell in table - @carlosafonso @Progi1984 GH-273 GH-315
 - Fixed the corruption of file when an addExternalSlide is called - @Progi1984 GH-240
 
+### Changes
+- Misc : Added two methods for setting Border & Fill in Legend - @Progi1984 GH-265
+
 ### Features
 - ODPresentation Writer : Show/Hide Value / Name / Series Name in Chart - @Progi1984 GH-272
 - ODPresentation Writer : Axis Bounds in Chart - @Progi1984 GH-269
@@ -26,7 +29,7 @@
 - PowerPoint2007 Writer : Support tick mark & unit in Axis for Chart - @Faab GH-218
 - PowerPoint2007 Writer : Support separator in Series for Chart - @jphchaput GH-218
 - PowerPoint2007 Writer : Add support for Outline in Axis - @Progi1984 GH-255
-- Misc : Added two methods for setting Border & Fill in Legend - @Progi1984 GH-265
+- PowerPoint2007 Writer : Support autoscale for Chart - @Progi1984 GH-293
 
 ## 0.7.0 - 2016-09-12
 

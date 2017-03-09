@@ -880,4 +880,22 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
     }
+
+    public function testView3D()
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oLine = new Line();
+        $oLine->addSeries(new Series('Downloads', $this->seriesData));
+        $oShape = $oSlide->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 100);
+
+        $oShape->getView3D()->setHeightPercent(null);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+    }
 }
