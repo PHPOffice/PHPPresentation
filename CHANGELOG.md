@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.8.0 - WIP
+## 0.8.0 - 2017-04-03
 
 ### Bugfix
 - PowerPoint2007 Writer : Fixed the marker on line chart when symbol is none - @Napryc GH-211
