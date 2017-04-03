@@ -137,7 +137,7 @@
         </a>
     </li>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </ul>
         </li>
         <li class="nav-header protected">» Protected
             <ul>
@@ -161,9 +161,24 @@
                                 <span class="description">Load PhpPresentation Serialized file</span><pre>loadFile</pre>
                             </a>
                         </li>
-                                                                                                                                                        <li class="method protected">
+                                                                                <li class="method protected">
+                            <a href="#method_loadLayoutSlide" title="loadLayoutSlide :: ">
+                                <span class="description"></span><pre>loadLayoutSlide</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_loadMasterSlide" title="loadMasterSlide :: ">
+                                <span class="description"></span><pre>loadMasterSlide</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
                             <a href="#method_loadMasterSlides" title="loadMasterSlides :: Extract all MasterSlides">
                                 <span class="description">Extract all MasterSlides</span><pre>loadMasterSlides</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_loadParagraph" title="loadParagraph :: ">
+                                <span class="description"></span><pre>loadParagraph</pre>
                             </a>
                         </li>
                                                                                 <li class="method protected">
@@ -182,16 +197,51 @@
                             </a>
                         </li>
                                                                                 <li class="method protected">
+                            <a href="#method_loadShapeTable" title="loadShapeTable :: ">
+                                <span class="description"></span><pre>loadShapeTable</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
                             <a href="#method_loadSlide" title="loadSlide :: Extract data from slide">
                                 <span class="description">Extract data from slide</span><pre>loadSlide</pre>
                             </a>
                         </li>
-                                                                                                                    <li class="method protected">
+                                                                                <li class="method protected">
+                            <a href="#method_loadSlideBackground" title="loadSlideBackground :: ">
+                                <span class="description"></span><pre>loadSlideBackground</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_loadSlideNote" title="loadSlideNote :: ">
+                                <span class="description"></span><pre>loadSlideNote</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
                             <a href="#method_loadSlides" title="loadSlides :: Extract all slides">
                                 <span class="description">Extract all slides</span><pre>loadSlides</pre>
                             </a>
                         </li>
-                                                                                                                    <li class="method protected">
+                                                                                <li class="method protected">
+                            <a href="#method_loadStyleBorder" title="loadStyleBorder :: ">
+                                <span class="description"></span><pre>loadStyleBorder</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_loadStyleColor" title="loadStyleColor :: ">
+                                <span class="description"></span><pre>loadStyleColor</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_loadStyleFill" title="loadStyleFill :: ">
+                                <span class="description"></span><pre>loadStyleFill</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
+                            <a href="#method_loadTheme" title="loadTheme :: ">
+                                <span class="description"></span><pre>loadTheme</pre>
+                            </a>
+                        </li>
+                                                                                <li class="method protected">
                             <a href="#method_loadViewProperties" title="loadViewProperties :: Read View Properties">
                                 <span class="description">Read View Properties</span><pre>loadViewProperties</pre>
                             </a>
@@ -200,27 +250,7 @@
         </li>
         <li class="nav-header private">» Private
             <ul>
-                                                                                                                                                                                                                                                                                                                                        <li class="method private">
-                            <a href="#method_loadLayoutSlide" title="loadLayoutSlide :: ">
-                                <span class="description"></span><pre>loadLayoutSlide</pre>
-                            </a>
-                        </li>
-                                                                                <li class="method private">
-                            <a href="#method_loadMasterSlide" title="loadMasterSlide :: ">
-                                <span class="description"></span><pre>loadMasterSlide</pre>
-                            </a>
-                        </li>
-                                                                                                                                                                                                                                                                    <li class="method private">
-                            <a href="#method_loadSlideBackground" title="loadSlideBackground :: ">
-                                <span class="description"></span><pre>loadSlideBackground</pre>
-                            </a>
-                        </li>
-                                                                                                                    <li class="method private">
-                            <a href="#method_loadTheme" title="loadTheme :: ">
-                                <span class="description"></span><pre>loadTheme</pre>
-                            </a>
-                        </li>
-                                                                                    </ul>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </ul>
         </li>
         <li class="nav-header">
             <i class="icon-custom icon-constant"></i> Constants
@@ -488,9 +518,9 @@
 
                         </div>
                                             <a id="method_loadLayoutSlide"></a>
-                        <div class="element clickable method private  method_loadLayoutSlide" data-toggle="collapse" data-target=".method_loadLayoutSlide .collapse">
+                        <div class="element clickable method protected  method_loadLayoutSlide" data-toggle="collapse" data-target=".method_loadLayoutSlide .collapse">
                             <h2>loadLayoutSlide</h2>
-                            <pre>loadLayoutSlide( $sPart,  $baseFile, \PhpOffice\PhpPresentation\Slide\SlideMaster $oSlideMaster) </pre>
+                            <pre>loadLayoutSlide(string $sPart, string $baseFile, \PhpOffice\PhpPresentation\Slide\SlideMaster $oSlideMaster) : \PhpOffice\PhpPresentation\Slide\SlideLayout|null</pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -500,44 +530,32 @@
                                     <div class="long_description"></div>
 
                                     <table class="table">
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                                                                     </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$sPart</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$baseFile</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$oSlideMaster</h4>
                                                 <code><a href="../classes/PhpOffice.PhpPresentation.Slide.SlideMaster.html">\PhpOffice\PhpPresentation\Slide\SlideMaster</a></code><p></p>
                                             </div>
                                                                             
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPresentation.Slide.SlideLayout.html">\PhpOffice\PhpPresentation\Slide\SlideLayout</a>|null</code><p></p>
                                                                     </div>
                             </div>
 
                         </div>
                                             <a id="method_loadMasterSlide"></a>
-                        <div class="element clickable method private  method_loadMasterSlide" data-toggle="collapse" data-target=".method_loadMasterSlide .collapse">
+                        <div class="element clickable method protected  method_loadMasterSlide" data-toggle="collapse" data-target=".method_loadMasterSlide .collapse">
                             <h2>loadMasterSlide</h2>
-                            <pre>loadMasterSlide( $sPart,  $baseFile) </pre>
+                            <pre>loadMasterSlide(string $sPart, string $baseFile) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -554,23 +572,16 @@
                                                 <td>
                                                                                                     </td>
                                             </tr>
-                                                                                    <tr>
-                                                <th>
-                                                    
-                                                </th>
-                                                <td>
-                                                                                                    </td>
-                                            </tr>
                                                                                                                     </table>
 
                                                                             <h3>Arguments</h3>
                                                                                     <div class="subelement argument">
                                                 <h4>$sPart</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$baseFile</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -580,7 +591,7 @@
                                             <a id="method_loadMasterSlides"></a>
                         <div class="element clickable method protected  method_loadMasterSlides" data-toggle="collapse" data-target=".method_loadMasterSlides .collapse">
                             <h2>Extract all MasterSlides</h2>
-                            <pre>loadMasterSlides(\PhpOffice\Common\XMLReader $xmlReader,  $fileRels) </pre>
+                            <pre>loadMasterSlides(\PhpOffice\Common\XMLReader $xmlReader, string $fileRels) </pre>
                             <div class="labels">
                                                                                                                                                                                             </div>
 
@@ -606,7 +617,56 @@
                                             </div>
                                                                                     <div class="subelement argument">
                                                 <h4>$fileRels</h4>
-                                                <code></code><p></p>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_loadParagraph"></a>
+                        <div class="element clickable method protected  method_loadParagraph" data-toggle="collapse" data-target=".method_loadParagraph .collapse">
+                            <h2>loadParagraph</h2>
+                            <pre>loadParagraph(\PhpOffice\Common\XMLReader $document, \DOMElement $oElement, \PhpOffice\PhpPresentation\Shape\Table\Cell|\PhpOffice\PhpPresentation\Shape\RichText $oShape) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$document</h4>
+                                                <code>\PhpOffice\Common\XMLReader</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oElement</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oShape</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Shape.Table.Cell.html">\PhpOffice\PhpPresentation\Shape\Table\Cell</a>|<a href="../classes/PhpOffice.PhpPresentation.Shape.RichText.html">\PhpOffice\PhpPresentation\Shape\RichText</a></code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -729,6 +789,55 @@
                             </div>
 
                         </div>
+                                            <a id="method_loadShapeTable"></a>
+                        <div class="element clickable method protected  method_loadShapeTable" data-toggle="collapse" data-target=".method_loadShapeTable .collapse">
+                            <h2>loadShapeTable</h2>
+                            <pre>loadShapeTable(\PhpOffice\Common\XMLReader $document, \DOMElement $node, \PhpOffice\PhpPresentation\Slide\AbstractSlide $oSlide) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                            <tr>
+                                                <th>Throws</th>
+                                                <td>
+                                                    <dl>
+                                                                                                            <dt>\Exception</dt>
+                                                        <dd></dd>
+                                                                                                                                                            </dl>
+                                                </td>
+                                            </tr>
+                                                                            </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$document</h4>
+                                                <code>\PhpOffice\Common\XMLReader</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$node</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oSlide</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Slide.AbstractSlide.html">\PhpOffice\PhpPresentation\Slide\AbstractSlide</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_loadSlide"></a>
                         <div class="element clickable method protected  method_loadSlide" data-toggle="collapse" data-target=".method_loadSlide .collapse">
                             <h2>Extract data from slide</h2>
@@ -766,7 +875,7 @@
 
                         </div>
                                             <a id="method_loadSlideBackground"></a>
-                        <div class="element clickable method private  method_loadSlideBackground" data-toggle="collapse" data-target=".method_loadSlideBackground .collapse">
+                        <div class="element clickable method protected  method_loadSlideBackground" data-toggle="collapse" data-target=".method_loadSlideBackground .collapse">
                             <h2>loadSlideBackground</h2>
                             <pre>loadSlideBackground(\PhpOffice\Common\XMLReader $xmlReader, \DOMElement $oElement, \PhpOffice\PhpPresentation\Slide\AbstractSlide $oSlide) </pre>
                             <div class="labels">
@@ -799,6 +908,42 @@
                                                                                     <div class="subelement argument">
                                                 <h4>$oSlide</h4>
                                                 <code><a href="../classes/PhpOffice.PhpPresentation.Slide.AbstractSlide.html">\PhpOffice\PhpPresentation\Slide\AbstractSlide</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_loadSlideNote"></a>
+                        <div class="element clickable method protected  method_loadSlideNote" data-toggle="collapse" data-target=".method_loadSlideNote .collapse">
+                            <h2>loadSlideNote</h2>
+                            <pre>loadSlideNote(string $baseFile, \PhpOffice\PhpPresentation\Slide $oSlide) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$baseFile</h4>
+                                                <code>string</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oSlide</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Slide.html">\PhpOffice\PhpPresentation\Slide</a></code><p></p>
                                             </div>
                                                                             
                                                                     </div>
@@ -844,8 +989,110 @@
                             </div>
 
                         </div>
+                                            <a id="method_loadStyleBorder"></a>
+                        <div class="element clickable method protected  method_loadStyleBorder" data-toggle="collapse" data-target=".method_loadStyleBorder .collapse">
+                            <h2>loadStyleBorder</h2>
+                            <pre>loadStyleBorder(\PhpOffice\Common\XMLReader $xmlReader, \DOMElement $oElement, \PhpOffice\PhpPresentation\Style\Border $oBorder) </pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                    <tr>
+                                                <th>
+                                                    
+                                                </th>
+                                                <td>
+                                                                                                    </td>
+                                            </tr>
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$xmlReader</h4>
+                                                <code>\PhpOffice\Common\XMLReader</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oElement</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oBorder</h4>
+                                                <code><a href="../classes/PhpOffice.PhpPresentation.Style.Border.html">\PhpOffice\PhpPresentation\Style\Border</a></code><p></p>
+                                            </div>
+                                                                            
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_loadStyleColor"></a>
+                        <div class="element clickable method protected  method_loadStyleColor" data-toggle="collapse" data-target=".method_loadStyleColor .collapse">
+                            <h2>loadStyleColor</h2>
+                            <pre>loadStyleColor(\PhpOffice\Common\XMLReader $xmlReader, \DOMElement $oElement) : \PhpOffice\PhpPresentation\Style\Color</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$xmlReader</h4>
+                                                <code>\PhpOffice\Common\XMLReader</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oElement</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code><a href="../classes/PhpOffice.PhpPresentation.Style.Color.html">\PhpOffice\PhpPresentation\Style\Color</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
+                                            <a id="method_loadStyleFill"></a>
+                        <div class="element clickable method protected  method_loadStyleFill" data-toggle="collapse" data-target=".method_loadStyleFill .collapse">
+                            <h2>loadStyleFill</h2>
+                            <pre>loadStyleFill(\PhpOffice\Common\XMLReader $xmlReader, \DOMElement $oElement) : null|\PhpOffice\PhpPresentation\Style\Fill</pre>
+                            <div class="labels">
+                                                                                                                                                                                            </div>
+
+                            
+                            <div class="row collapse">
+                                <div class="detail-description">
+                                    <div class="long_description"></div>
+
+                                    <table class="table">
+                                                                                                                    </table>
+
+                                                                            <h3>Arguments</h3>
+                                                                                    <div class="subelement argument">
+                                                <h4>$xmlReader</h4>
+                                                <code>\PhpOffice\Common\XMLReader</code><p></p>
+                                            </div>
+                                                                                    <div class="subelement argument">
+                                                <h4>$oElement</h4>
+                                                <code>\DOMElement</code><p></p>
+                                            </div>
+                                                                            
+                                                                            <h3>Response</h3>
+                                        <code>null|<a href="../classes/PhpOffice.PhpPresentation.Style.Fill.html">\PhpOffice\PhpPresentation\Style\Fill</a></code><p></p>
+                                                                    </div>
+                            </div>
+
+                        </div>
                                             <a id="method_loadTheme"></a>
-                        <div class="element clickable method private  method_loadTheme" data-toggle="collapse" data-target=".method_loadTheme .collapse">
+                        <div class="element clickable method protected  method_loadTheme" data-toggle="collapse" data-target=".method_loadTheme .collapse">
                             <h2>loadTheme</h2>
                             <pre>loadTheme(string $sPart, \PhpOffice\PhpPresentation\Slide\SlideMaster $oSlideMaster) </pre>
                             <div class="labels">
@@ -1044,6 +1291,31 @@
                                                                             </div>
                                 </div>
                             </div>
+                                                    <a id="property_fileRels"> </a>
+                            <div class="element clickable property  protected property_fileRels" data-toggle="collapse" data-target=".property_fileRels .collapse">
+                                <h2>fileRels</h2>
+                                <pre>fileRels : </pre>
+                                <div class="labels">
+                                                                                                        </div>
+                                <div class="row collapse">
+                                    <div class="detail-description">
+                                        <div class="long_description"></div>
+
+                                        <table class="table">
+                                                                                            <tr>
+                                                    <th>
+                                                        
+                                                    </th>
+                                                    <td>
+                                                                                                            </td>
+                                                </tr>
+                                                                                    </table>
+
+                                                                                    <h3>Type(s)</h3>
+                                            <code></code>
+                                                                            </div>
+                                </div>
+                            </div>
                                                             </div>
             </div>
             <a id="\PhpOffice\PhpPresentation\Reader\PowerPoint2007"></a>
@@ -1064,7 +1336,7 @@
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by
             <a href="http://glyphicons.com/">Glyphicons</a>.<br/>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and<br/>
-            generated on Mon, 12 Sep 2016 10:28:55 +0000.<br/>
+            generated on Mon, 03 Apr 2017 12:49:09 +0000.<br/>
     </footer>
     </body>
 </html>
