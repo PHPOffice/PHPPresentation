@@ -3,12 +3,8 @@
 include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
-use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
@@ -91,7 +87,7 @@ $series1[0]->getMarker()->setSize(7);
 $lineChart1->setSeries($series1);
 
 // Create a shape (chart)
-echo date('H:i:s') . ' Create a shape (chart)' . EOL;
+echo date('H:i:s') . ' Create a shape (chart1)' . EOL;
 echo date('H:i:s') . ' Differences with previous : Values on right axis and Legend hidden' . EOL;
 $shape1 = clone $shape;
 $shape1->getLegend()->setVisible(false);
@@ -115,7 +111,7 @@ $series2[0]->getMarker()->setSize(10);
 $lineChart2->setSeries($series2);
 
 // Create a shape (chart)
-echo date('H:i:s') . ' Create a shape (chart)' . EOL;
+echo date('H:i:s') . ' Create a shape (chart2)' . EOL;
 echo date('H:i:s') . ' Differences with previous : Values on right axis and Legend hidden' . EOL;
 $shape2 = clone $shape;
 $shape2->getLegend()->setVisible(false);
@@ -125,9 +121,8 @@ $shape2->getPlotArea()->setType($lineChart2);
 $shape2->getPlotArea()->getAxisY()->setFormatCode('#,##0');
 $currentSlide->addShape($shape2);
 
-
 // Create templated slide
-echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+echo EOL . date('H:i:s') . ' Create templated slide #3' . EOL;
 $currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
@@ -152,6 +147,47 @@ $shape3->getPlotArea()->setType($lineChart3);
 $shape3->getPlotArea()->getAxisX()->setMajorGridlines($oGridLines1);
 $shape3->getPlotArea()->getAxisY()->setMinorGridlines($oGridLines2);
 $currentSlide->addShape($shape3);
+
+// Create templated slide
+echo EOL . date('H:i:s') . ' Create templated slide #4' . EOL;
+$currentSlide = createTemplatedSlide($objPHPPresentation);
+
+// Create a line chart (that should be inserted in a shape)
+echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
+$lineChart4 = clone $lineChart;
+
+$oOutlineAxisX = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutlineAxisX->setWidth(2);
+$oOutlineAxisX->getFill()->setFillType(Fill::FILL_SOLID);
+$oOutlineAxisX->getFill()->getStartColor()->setRGB('012345');
+
+$oOutlineAxisY = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutlineAxisY->setWidth(5);
+$oOutlineAxisY->getFill()->setFillType(Fill::FILL_SOLID);
+$oOutlineAxisY->getFill()->getStartColor()->setRGB('ABCDEF');
+
+// Create a shape (chart)
+echo date('H:i:s') . ' Create a shape (chart4)' . EOL;
+echo date('H:i:s') . ' Feature : Axis Outline' . EOL;
+$shape4 = clone $shape;
+$shape4->setName('Shape 4');
+$shape4->getTitle()->setText('Chart with Outline on Axis');
+$shape4->getPlotArea()->setType($lineChart4);
+$shape4->getPlotArea()->getAxisX()->setOutline($oOutlineAxisX);
+$shape4->getPlotArea()->getAxisY()->setOutline($oOutlineAxisY);
+$currentSlide->addShape($shape4);
+
+// Create templated slide
+echo EOL . date('H:i:s') . ' Create templated slide #5' . EOL;
+$currentSlide = createTemplatedSlide($objPHPPresentation);
+
+// Create a shape (chart)
+echo date('H:i:s') . ' Create a shape (chart5)' . EOL;
+echo date('H:i:s') . ' Feature : Gridlines' . EOL;
+$shape5 = clone $shape;
+$shape5->getPlotArea()->getAxisY()->setMinBounds(5);
+$shape5->getPlotArea()->getAxisY()->setMaxBounds(20);
+$currentSlide->addShape($shape5);
 // Save file
 echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 

@@ -1,51 +1,33 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lefevre_f
- * Date: 01/03/2016
- * Time: 12:35
- */
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
-class PptViewPropsTest extends \PHPUnit_Framework_TestCase
+class PptViewPropsTest extends PhpPresentationTestCase
 {
-    /**
-     * Executed before each method of the class
-     */
-    public function tearDown()
-    {
-        TestHelperDOCX::clear();
-    }
+    protected $writerName = 'PowerPoint2007';
 
     public function testRender()
     {
         $expectedElement = '/p:viewPr';
 
-        $oPhpPresentation = new PhpPresentation();
-
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/viewProps.xml'));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/viewProps.xml'));
-        $this->assertEquals('0', $oXMLDoc->getElementAttribute($expectedElement, 'showComments', 'ppt/viewProps.xml'));
-        $this->assertEquals(PresentationProperties::VIEW_SLIDE, $oXMLDoc->getElementAttribute($expectedElement, 'lastView', 'ppt/viewProps.xml'));
+        $this->assertZipFileExists('ppt/viewProps.xml');
+        $this->assertZipXmlElementExists('ppt/viewProps.xml', $expectedElement);
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', $expectedElement, 'showComments', 0);
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', $expectedElement, 'lastView', PresentationProperties::VIEW_SLIDE);
     }
 
     public function testCommentVisible()
     {
         $expectedElement ='/p:viewPr';
 
-        $oPhpPresentation = new PhpPresentation();
-        $oPhpPresentation->getPresentationProperties()->setCommentVisible(true);
+        $this->oPresentation->getPresentationProperties()->setCommentVisible(true);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/viewProps.xml'));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/viewProps.xml'));
-        $this->assertEquals(1, $oXMLDoc->getElementAttribute($expectedElement, 'showComments', 'ppt/viewProps.xml'));
+        $this->assertZipFileExists('ppt/viewProps.xml');
+        $this->assertZipXmlElementExists('ppt/viewProps.xml', $expectedElement);
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', $expectedElement, 'showComments', 1);
     }
 
     public function testLastView()
@@ -53,12 +35,10 @@ class PptViewPropsTest extends \PHPUnit_Framework_TestCase
         $expectedElement ='/p:viewPr';
         $expectedLastView = PresentationProperties::VIEW_OUTLINE;
 
-        $oPhpPresentation = new PhpPresentation();
-        $oPhpPresentation->getPresentationProperties()->setLastView($expectedLastView);
+        $this->oPresentation->getPresentationProperties()->setLastView($expectedLastView);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/viewProps.xml'));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/viewProps.xml'));
-        $this->assertEquals($expectedLastView, $oXMLDoc->getElementAttribute($expectedElement, 'lastView', 'ppt/viewProps.xml'));
+        $this->assertZipFileExists('ppt/viewProps.xml');
+        $this->assertZipXmlElementExists('ppt/viewProps.xml', $expectedElement);
+        $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', $expectedElement, 'lastView', $expectedLastView);
     }
 }

@@ -34,6 +34,59 @@ For each gridline, you can custom the width (in points), the fill type and the f
     $oShape->getPlotArea()->setType($oLine);
     $oShape->getPlotArea()->getAxisX()->setMajorGridlines($oGridLines);
 
+For Axis, you can define the min & max bounds with `setMinBounds` & `setMaxBounds` methods.
+For resetting them, you pass null as parameter to these methods.
+
+.. code-block:: php
+
+    use \PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->setMinBounds(0);
+    $oShape->getPlotArea()->getAxisX()->setMaxBounds(200);
+
+You can define outline for each axis (X & Y).
+
+.. code-block:: php
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
+    $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
+For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.
+For resetting them, you pass Axis::TICK_MARK_NONE as parameter to these methods.
+
+.. code-block:: php
+
+    use \PhpOffice\PhpPresentation\Shape\Chart\Axis;
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisY()->setMinorTickMark(Axis::TICK_MARK_NONE);
+    $oShape->getPlotArea()->getAxisY()->setMajorTickMark(Axis::TICK_MARK_INSIDE);
+
+For Axis Y, you can define unit with `setMinorUnit` & `setMajorUnit` methods.
+For resetting them, you pass null as parameter to these methods.
+
+.. code-block:: php
+
+    use \PhpOffice\PhpPresentation\Shape\Chart\Axis;
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisY()->setMinorUnit(null);
+    $oShape->getPlotArea()->getAxisY()->setMajorUnit(0.05);
+
 Title
 ^^^^^
 
@@ -89,6 +142,28 @@ Each position is described in `MSDN <https://msdn.microsoft.com/en-us/library/mt
 
     $oSeries = new Series('Downloads', $seriesData);
     $oSeries->setLabelPosition(Series::LABEL_INSIDEEND);
+
+You can define if some informations are displayed.
+
+.. code-block:: php
+
+    $oSeries = new Series('Downloads', $seriesData);
+    $oSeries->setSeparator(';');
+    $oSeries->setShowCategoryName(true);
+    $oSeries->setShowLeaderLines(true);
+    $oSeries->setShowLegendKey(true);
+    $oSeries->setShowPercentage(true);
+    $oSeries->setShowSeriesName(true);
+    $oSeries->setShowValue(true);
+
+View3D
+^^^^^^
+
+For enabling the autoscale for a shape, you must reset the height percent.
+
+.. code-block:: php
+
+    $oShape->getView3D()->setHeightPercent(null);
 
 Types
 -----

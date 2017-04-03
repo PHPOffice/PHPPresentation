@@ -289,6 +289,12 @@ class ObjectsChart extends AbstractDecoratorWriter
         if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
+        if ($chart->getPlotArea()->getAxisX()->getMinBounds() != null) {
+            $this->xmlContent->writeAttribute('chart:minimum', $chart->getPlotArea()->getAxisX()->getMinBounds());
+        }
+        if ($chart->getPlotArea()->getAxisX()->getMaxBounds() != null) {
+            $this->xmlContent->writeAttribute('chart:maximum', $chart->getPlotArea()->getAxisX()->getMaxBounds());
+        }
         $this->xmlContent->endElement();
         // style:style > style:text-properties
         $oFont = $chart->getPlotArea()->getAxisX()->getFont();
@@ -324,6 +330,12 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
         if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
+        }
+        if ($chart->getPlotArea()->getAxisY()->getMinBounds() != null) {
+            $this->xmlContent->writeAttribute('chart:minimum', $chart->getPlotArea()->getAxisY()->getMinBounds());
+        }
+        if ($chart->getPlotArea()->getAxisY()->getMaxBounds() != null) {
+            $this->xmlContent->writeAttribute('chart:maximum', $chart->getPlotArea()->getAxisY()->getMaxBounds());
         }
         $this->xmlContent->endElement();
         // style:style > style:text-properties
@@ -651,7 +663,20 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('style:family', 'chart');
         // style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
-        $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
+        if ($series->hasShowValue()) {
+            if ($series->hasShowPercentage()) {
+                $this->xmlContent->writeAttribute('chart:data-label-number', 'value-and-percentage');
+            } else {
+                $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
+            }
+        } else {
+            if ($series->hasShowPercentage()) {
+                $this->xmlContent->writeAttribute('chart:data-label-number', 'percentage');
+            }
+        }
+        if ($series->hasShowCategoryName()) {
+            $this->xmlContent->writeAttribute('chart:data-label-text', 'true');
+        }
         $this->xmlContent->writeAttribute('chart:label-position', 'center');
         if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:pie-offset', $chartType->getExplosion());

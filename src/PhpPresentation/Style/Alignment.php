@@ -24,7 +24,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
  */
 class Alignment implements ComparableInterface
 {
-    /* Horizontal alignment styles */
+    /* Horizontal alignment */
     const HORIZONTAL_GENERAL                = 'l';
     const HORIZONTAL_LEFT                   = 'l';
     const HORIZONTAL_RIGHT                  = 'r';
@@ -32,12 +32,18 @@ class Alignment implements ComparableInterface
     const HORIZONTAL_JUSTIFY                = 'just';
     const HORIZONTAL_DISTRIBUTED            = 'dist';
 
-    /* Vertical alignment styles */
+    /* Vertical alignment */
     const VERTICAL_BASE                     = 'base';
     const VERTICAL_AUTO                     = 'auto';
     const VERTICAL_BOTTOM                   = 'b';
     const VERTICAL_TOP                      = 't';
     const VERTICAL_CENTER                   = 'ctr';
+
+    /* Text direction */
+    const TEXT_DIRECTION_HORIZONTAL = 'horz';
+    const TEXT_DIRECTION_VERTICAL_90 = 'vert';
+    const TEXT_DIRECTION_VERTICAL_270 = 'vert270';
+    const TEXT_DIRECTION_STACKED = 'wordArtVert';
 
     private $supportedStyles = array(
         self::HORIZONTAL_GENERAL,
@@ -47,49 +53,60 @@ class Alignment implements ComparableInterface
 
     /**
      * Horizontal
-     *
      * @var string
      */
     private $horizontal;
 
     /**
      * Vertical
-     *
      * @var string
      */
     private $vertical;
 
     /**
+     * Text Direction
+     * @var string
+     */
+    private $textDirection = self::TEXT_DIRECTION_HORIZONTAL;
+
+    /**
      * Level
-     *
      * @var int
      */
     private $level = 0;
 
     /**
      * Indent - only possible with horizontal alignment left and right
-     *
      * @var int
      */
     private $indent = 0;
 
     /**
      * Margin left - only possible with horizontal alignment left and right
-     *
      * @var int
      */
     private $marginLeft = 0;
 
     /**
      * Margin right - only possible with horizontal alignment left and right
-     *
      * @var int
      */
     private $marginRight = 0;
 
     /**
+     * Margin top
+     * @var int
+     */
+    private $marginTop = 0;
+
+    /**
+     * Margin bottom
+     * @var int
+     */
+    private $marginBottom = 0;
+
+    /**
      * Hash index
-     *
      * @var string
      */
     private $hashIndex;
@@ -261,6 +278,73 @@ class Alignment implements ComparableInterface
 
         $this->marginRight = $pValue;
 
+        return $this;
+    }
+
+    /**
+     * Get margin top
+     *
+     * @return int
+     */
+    public function getMarginTop()
+    {
+        return $this->marginTop;
+    }
+
+    /**
+     * Set margin top
+     *
+     * @param  int                           $pValue
+     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     */
+    public function setMarginTop($pValue = 0)
+    {
+        $this->marginTop = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get margin bottom
+     *
+     * @return int
+     */
+    public function getMarginBottom()
+    {
+        return $this->marginBottom;
+    }
+
+    /**
+     * Set margin bottom
+     *
+     * @param  int                           $pValue
+     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     */
+    public function setMarginBottom($pValue = 0)
+    {
+        $this->marginBottom = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTextDirection()
+    {
+        return $this->textDirection;
+    }
+
+    /**
+     * @param string $pValue
+     * @return Alignment
+     */
+    public function setTextDirection($pValue = self::TEXT_DIRECTION_HORIZONTAL)
+    {
+        if (empty($pValue)) {
+            $pValue = self::TEXT_DIRECTION_HORIZONTAL;
+        }
+        $this->textDirection = $pValue;
         return $this;
     }
 
