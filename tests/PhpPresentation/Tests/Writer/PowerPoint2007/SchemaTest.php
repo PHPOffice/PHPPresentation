@@ -16,25 +16,28 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Shape\Media;
 use Symfony\Component\Finder\SplFileInfo;
 
-class SchemaTest extends \PHPUnit_Framework_TestCase
+class SchemaTest extends PhpPresentationTestCase
 {
     private $internalErrors;
 
-    protected function setUp()
+    public function setUp()
     {
+        parent::setUp();
+
         libxml_clear_errors();
         $this->internalErrors = libxml_use_internal_errors(true);
     }
 
-    protected function tearDown()
+    public function tearDown()
     {
+        parent::tearDown();
+
         libxml_use_internal_errors($this->internalErrors);
-        TestHelperDOCX::clear();
     }
 
     /**
@@ -45,10 +48,10 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
      */
     public function testSchema(PhpPresentation $presentation)
     {
-        $xml = TestHelperDOCX::getDocument($presentation, 'PowerPoint2007');
+        $this->writePresentationFile($presentation, 'PowerPoint2007');
 
         // validate all XML files
-        $path = realpath($xml->getPath() . '/ppt');
+        $path = realpath($this->workDirectory . '/ppt');
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
 
         foreach ($iterator as $file) {
@@ -58,7 +61,7 @@ class SchemaTest extends \PHPUnit_Framework_TestCase
             }
 
             $fileName = str_replace('\\', '/', substr($file->getRealPath(), strlen($path) + 1));
-            $dom = $xml->getFileDom('ppt/' . $fileName);
+            $dom = $this->getXmlDom('ppt/' . $fileName);
             $xmlSource = $dom->saveXML();
 
             // In the ISO/ECMA standard the namespace has changed from
