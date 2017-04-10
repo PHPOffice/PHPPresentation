@@ -521,7 +521,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
                 $objWriter->startElement('a:lnSpc');
                 $objWriter->startElement('a:spcPct');
-                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() . "%");
                 $objWriter->endElement();
                 $objWriter->endElement();
 
