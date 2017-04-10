@@ -85,7 +85,7 @@ class SchemaTest extends PhpPresentationTestCase
 
             $error = libxml_get_last_error();
             if ($error) {
-                $this->fail(sprintf("Validation error: %s in file %s on line %s", $error->message, $file, $error->line));
+                $this->fail(sprintf("Validation error: %s in file %s on line %s\n%s", $error->message, $file, $error->line, $dom->saveXML()));
             }
         }
     }

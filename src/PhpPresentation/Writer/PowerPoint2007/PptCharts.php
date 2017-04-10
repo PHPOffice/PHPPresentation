@@ -97,14 +97,14 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', $chart->getView3D()->getRotationX());
         $objWriter->endElement();
 
+        // c:hPercent
+        $hPercent = $chart->getView3D()->getHeightPercent();
+        $objWriter->writeElementIf($hPercent != null, 'c:hPercent', 'val', $hPercent . '%');
+
         // c:rotY
         $objWriter->startElement('c:rotY');
         $objWriter->writeAttribute('val', $chart->getView3D()->getRotationY());
         $objWriter->endElement();
-
-        // c:hPercent
-        $hPercent = $chart->getView3D()->getHeightPercent();
-        $objWriter->writeElementIf($hPercent != null, 'c:hPercent', 'val', $hPercent);
 
         // c:depthPercent
         $objWriter->startElement('c:depthPercent');
@@ -2033,34 +2033,6 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
         }
 
-        // c:numFmt
-        $objWriter->startElement('c:numFmt');
-        $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
-        $objWriter->writeAttribute('sourceLinked', '1');
-        $objWriter->endElement();
-
-        // c:majorTickMark
-        $objWriter->startElement('c:majorTickMark');
-        $objWriter->writeAttribute('val', $oAxis->getMajorTickMark());
-        $objWriter->endElement();
-
-        // c:minorTickMark
-        $objWriter->startElement('c:minorTickMark');
-        $objWriter->writeAttribute('val', $oAxis->getMinorTickMark());
-        $objWriter->endElement();
-
-        // c:tickLblPos
-        $objWriter->startElement('c:tickLblPos');
-        $objWriter->writeAttribute('val', 'nextTo');
-        $objWriter->endElement();
-
-        // c:spPr
-        $objWriter->startElement('c:spPr');
-        // Outline
-        $this->writeOutline($objWriter, $oAxis->getOutline());
-        // ##c:spPr
-        $objWriter->endElement();
-
         if ($oAxis->getTitle() != '') {
             // c:title
             $objWriter->startElement('c:title');
@@ -2142,6 +2114,34 @@ class PptCharts extends AbstractDecoratorWriter
             // ## c:title
             $objWriter->endElement();
         }
+
+        // c:numFmt
+        $objWriter->startElement('c:numFmt');
+        $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
+        $objWriter->writeAttribute('sourceLinked', '1');
+        $objWriter->endElement();
+
+        // c:majorTickMark
+        $objWriter->startElement('c:majorTickMark');
+        $objWriter->writeAttribute('val', $oAxis->getMajorTickMark());
+        $objWriter->endElement();
+
+        // c:minorTickMark
+        $objWriter->startElement('c:minorTickMark');
+        $objWriter->writeAttribute('val', $oAxis->getMinorTickMark());
+        $objWriter->endElement();
+
+        // c:tickLblPos
+        $objWriter->startElement('c:tickLblPos');
+        $objWriter->writeAttribute('val', 'nextTo');
+        $objWriter->endElement();
+
+        // c:spPr
+        $objWriter->startElement('c:spPr');
+        // Outline
+        $this->writeOutline($objWriter, $oAxis->getOutline());
+        // ##c:spPr
+        $objWriter->endElement();
 
         // c:crossAx
         $objWriter->startElement('c:crossAx');
