@@ -1,52 +1,33 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lefevre_f
- * Date: 01/03/2016
- * Time: 12:35
- */
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
-class DocPropsCustomTest extends \PHPUnit_Framework_TestCase
+class DocPropsCustomTest extends PhpPresentationTestCase
 {
-    /**
-     * Executed before each method of the class
-     */
-    public function tearDown()
-    {
-        TestHelperDOCX::clear();
-    }
+    protected $writerName = 'PowerPoint2007';
 
     public function testRender()
     {
-        $oPhpPresentation = new PhpPresentation();
-
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('docProps/custom.xml'));
+        $this->assertZipFileExists('docProps/custom.xml');
+        $this->assertZipXmlElementNotExists('docProps/custom.xml', '/Properties/property[@name="_MarkAsFinal"]');
     }
 
-    public function testMarkAsFinal()
+    public function testMarkAsFinalTrue()
     {
-        $oPhpPresentation = new PhpPresentation();
+        $this->oPresentation->getPresentationProperties()->markAsFinal(true);
 
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertFalse($pres->elementExists('/Properties/property[@name="_MarkAsFinal"]', 'docProps/custom.xml'));
+        $this->assertZipXmlElementExists('docProps/custom.xml', '/Properties');
+        $this->assertZipXmlElementExists('docProps/custom.xml', '/Properties/property');
+        $this->assertZipXmlElementExists('docProps/custom.xml', '/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]');
+        $this->assertZipXmlElementExists('docProps/custom.xml', '/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool');
+    }
 
-        $oPhpPresentation->getPresentationProperties()->markAsFinal(true);
+    public function testMarkAsFinalFalse()
+    {
+        $this->oPresentation->getPresentationProperties()->markAsFinal(false);
 
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($pres->elementExists('/Properties', 'docProps/custom.xml'));
-        $this->assertTrue($pres->elementExists('/Properties/property', 'docProps/custom.xml'));
-        $this->assertTrue($pres->elementExists('/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]', 'docProps/custom.xml'));
-        $this->assertTrue($pres->elementExists('/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool', 'docProps/custom.xml'));
-
-        $oPhpPresentation->getPresentationProperties()->markAsFinal(false);
-
-        $pres = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertFalse($pres->elementExists('/Properties/property[@name="_MarkAsFinal"]', 'docProps/custom.xml'));
+        $this->assertZipXmlElementNotExists('docProps/custom.xml', '/Properties/property[@name="_MarkAsFinal"]');
     }
 }

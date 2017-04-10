@@ -151,6 +151,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         // Is it a fill?
         if ($pFill->getFillType() == Fill::FILL_NONE) {
+            $objWriter->writeElement('a:noFill');
             return;
         }
 

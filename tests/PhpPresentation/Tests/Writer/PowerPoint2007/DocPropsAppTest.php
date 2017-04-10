@@ -8,37 +8,25 @@
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
-class DocPropsAppTest extends \PHPUnit_Framework_TestCase
+class DocPropsAppTest extends PhpPresentationTestCase
 {
-    /**
-     * Executed before each method of the class
-     */
-    public function tearDown()
-    {
-        TestHelperDOCX::clear();
-    }
+    protected $writerName = 'PowerPoint2007';
 
     public function testRender()
     {
-        $oPhpPresentation = new PhpPresentation();
-
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('docProps/app.xml'));
+        $this->assertZipFileExists('docProps/app.xml');
     }
 
     public function testCompany()
     {
         $expected = 'aAbBcDeE';
 
-        $oPhpPresentation = new PhpPresentation();
-        $oPhpPresentation->getDocumentProperties()->setCompany($expected);
+        $this->oPresentation->getDocumentProperties()->setCompany($expected);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($oPhpPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('docProps/app.xml'));
-        $this->assertTrue($oXMLDoc->elementExists('/Properties/Company', 'docProps/app.xml'));
-        $this->assertEquals($expected, $oXMLDoc->getElement('/Properties/Company', 'docProps/app.xml')->nodeValue);
+        $this->assertZipFileExists('docProps/app.xml');
+        $this->assertZipXmlElementExists('docProps/app.xml', '/Properties/Company');
+        $this->assertZipXmlElementEquals('docProps/app.xml', '/Properties/Company', $expected);
     }
 }

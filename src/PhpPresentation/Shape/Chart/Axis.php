@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Axis
@@ -27,6 +28,11 @@ class Axis implements ComparableInterface
 {
     const AXIS_X = 'x';
     const AXIS_Y = 'y';
+
+    const TICK_MARK_NONE = 'none';
+    const TICK_MARK_CROSS = 'cross';
+    const TICK_MARK_INSIDE = 'in';
+    const TICK_MARK_OUTSIDE = 'out';
 
     /**
      * Title
@@ -60,6 +66,41 @@ class Axis implements ComparableInterface
     protected $minorGridlines;
 
     /**
+     * @var int
+     */
+    protected $minBounds;
+
+    /**
+     * @var int
+     */
+    protected $maxBounds;
+
+    /**
+     * @var string
+     */
+    protected $minorTickMark = self::TICK_MARK_NONE;
+
+    /**
+     * @var string
+     */
+    protected $majorTickMark = self::TICK_MARK_NONE;
+
+    /**
+     * @var float
+     */
+    protected $minorUnit;
+
+    /**
+     * @var float
+     */
+    protected $majorUnit;
+
+    /**
+     * @var Outline
+     */
+    protected $outline;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
      *
      * @param string $title Title
@@ -67,6 +108,7 @@ class Axis implements ComparableInterface
     public function __construct($title = 'Axis Title')
     {
         $this->title = $title;
+        $this->outline = new Outline();
         $this->font  = new Font();
     }
 
@@ -140,6 +182,42 @@ class Axis implements ComparableInterface
     }
 
     /**
+     * @return int|null
+     */
+    public function getMinBounds()
+    {
+        return $this->minBounds;
+    }
+
+    /**
+     * @param int|null $minBounds
+     * @return Axis
+     */
+    public function setMinBounds($minBounds = null)
+    {
+        $this->minBounds = is_null($minBounds) ? null : (int)$minBounds;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getMaxBounds()
+    {
+        return $this->maxBounds;
+    }
+
+    /**
+     * @param int|null $maxBounds
+     * @return Axis
+     */
+    public function setMaxBounds($maxBounds = null)
+    {
+        $this->maxBounds = is_null($maxBounds) ? null : (int)$maxBounds;
+        return $this;
+    }
+
+    /**
      * @return Gridlines
      */
     public function getMajorGridlines()
@@ -172,6 +250,96 @@ class Axis implements ComparableInterface
     public function setMinorGridlines(Gridlines $minorGridlines)
     {
         $this->minorGridlines = $minorGridlines;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinorTickMark()
+    {
+        return $this->minorTickMark;
+    }
+
+    /**
+     * @param string $pTickMark
+     * @return Axis
+     */
+    public function setMinorTickMark($pTickMark = self::TICK_MARK_NONE)
+    {
+        $this->minorTickMark = $pTickMark;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMajorTickMark()
+    {
+        return $this->majorTickMark;
+    }
+
+    /**
+     * @param string $pTickMark
+     * @return Axis
+     */
+    public function setMajorTickMark($pTickMark = self::TICK_MARK_NONE)
+    {
+        $this->majorTickMark = $pTickMark;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMinorUnit()
+    {
+        return $this->minorUnit;
+    }
+
+    /**
+     * @param float $pUnit
+     * @return Axis
+     */
+    public function setMinorUnit($pUnit = null)
+    {
+        $this->minorUnit = $pUnit;
+        return $this;
+    }
+
+    /**
+     * @return float
+     */
+    public function getMajorUnit()
+    {
+        return $this->majorUnit;
+    }
+
+    /**
+     * @param float $pUnit
+     * @return Axis
+     */
+    public function setMajorUnit($pUnit = null)
+    {
+        $this->majorUnit = $pUnit;
+        return $this;
+    }
+
+    /**
+     * @return Outline
+     */
+    public function getOutline()
+    {
+        return $this->outline;
+    }
+
+    /**
+     * @param Outline $outline
+     * @return Axis
+     */
+    public function setOutline($outline)
+    {
+        $this->outline = $outline;
         return $this;
     }
 

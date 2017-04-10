@@ -119,15 +119,19 @@ class Color implements ComparableInterface
     /**
      * Set RGB
      *
-     * @param  string                    $pValue
+     * @param  string $pValue
+     * @param  string $pAlpha
      * @return \PhpOffice\PhpPresentation\Style\Color
      */
-    public function setRGB($pValue = '000000')
+    public function setRGB($pValue = '000000', $pAlpha = 'FF')
     {
         if ($pValue == '') {
             $pValue = '000000';
         }
-        $this->argb = 'FF' . $pValue;
+        if ($pAlpha == '') {
+            $pAlpha = 'FF';
+        }
+        $this->argb = $pAlpha . $pValue;
 
         return $this;
     }

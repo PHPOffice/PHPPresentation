@@ -20,7 +20,7 @@ namespace PhpOffice\PhpPresentation\Writer;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\Serialized
@@ -64,9 +64,9 @@ class Serialized extends AbstractWriter implements WriterInterface
         $slideCount = $oPresentation->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
             for ($j = 0; $j < $oPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
+                if ($oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
                     $imgTemp = $oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $objZip->addFromString('media/' . $imgTemp->getFilename(), file_get_contents($imgTemp->getPath()));
+                    $objZip->addFromString('media/' . $imgTemp->getIndexedFilename(), file_get_contents($imgTemp->getPath()));
                 }
             }
         }
@@ -95,8 +95,8 @@ class Serialized extends AbstractWriter implements WriterInterface
         $slideCount = $pPhpPresentation->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
             for ($j = 0; $j < $pPhpPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawing) {
-                    $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j)->getFilename(), false);
+                if ($pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
+                    $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j)->getIndexedFilename(), false);
                 }
             }
         }

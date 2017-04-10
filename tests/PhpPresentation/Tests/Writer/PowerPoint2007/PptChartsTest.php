@@ -1,15 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: lefevre_f
- * Date: 01/03/2016
- * Time: 12:35
- */
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
+use \Exception;
 use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
@@ -24,14 +20,11 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Outline;
-use PhpOffice\PhpPresentation\Tests\TestHelperDOCX;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
-class PptChartsTest extends \PHPUnit_Framework_TestCase
+class PptChartsTest extends PhpPresentationTestCase
 {
-    /**
-     * @var PhpPresentation;
-     */
-    protected $oPresentation;
+    protected $writerName = 'PowerPoint2007';
 
     /**
      * @var array
@@ -43,26 +36,10 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         'D' => 3,
         'E' => 2,
     );
-    /**
-     * Executed before each method of the class
-     */
-    public function setUp()
-    {
-        $this->oPresentation = new PhpPresentation();
-    }
 
     /**
-     * Executed after each method of the class
-     */
-    public function tearDown()
-    {
-        TestHelperDOCX::clear();
-        $this->oPresentation = null;
-    }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage The chart type provided could not be rendered.
+     * @expectedException Exception
+     * @expectedExceptionMessage The chart type provided could not be rendered
      */
     public function testPlotAreaBadType()
     {
@@ -72,10 +49,10 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $stub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType');
         $oShape->getPlotArea()->setType($stub);
 
-        TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
 
-    public function testTitleVisibility()
+    public function testTitleVisibilityTrue()
     {
         $element = '/c:chartSpace/c:chart/c:autoTitleDeleted';
         
@@ -84,16 +61,30 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oLine = new Line();
         $oShape->getPlotArea()->setType($oLine);
 
+        // Default
         $this->assertTrue($oShape->getTitle()->isVisible());
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('0', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
 
+        // Set Visible : TRUE
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
+        $this->assertTrue($oShape->getTitle()->isVisible());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
+    }
+
+    public function testTitleVisibilityFalse()
+    {
+        $element = '/c:chartSpace/c:chart/c:autoTitleDeleted';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+
+        // Set Visible : FALSE
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('1', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertFalse($oShape->getTitle()->isVisible());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
     }
 
     public function testAxisFont()
@@ -111,25 +102,67 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oShape->getPlotArea()->getAxisY()->getFont()->setSize(16);
         $oShape->getPlotArea()->getAxisY()->getFont()->setUnderline(Font::UNDERLINE_DASH);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
+        $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr/a:solidFill/a:srgbClr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('AABBCC', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));  //Color XAxis
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'val', 'AABBCC');
+
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('true', $oXMLDoc->getElementAttribute($element, 'i', 'ppt/charts/'.$oShape->getIndexedFilename())); //Italic XAxis
-        $this->assertEquals(10*100, $oXMLDoc->getElementAttribute($element, 'sz', 'ppt/charts/'.$oShape->getIndexedFilename())); //Size XAxis
-        $this->assertEquals('sngStrike', $oXMLDoc->getElementAttribute($element, 'strike', 'ppt/charts/'.$oShape->getIndexedFilename())); //StrikeThrough XAxis
-        $this->assertEquals(Font::UNDERLINE_NONE, $oXMLDoc->getElementAttribute($element, 'u', 'ppt/charts/'.$oShape->getIndexedFilename())); //Underline XAxis
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'i', 'true');
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'sz', 1000);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'strike', 'sngStrike');
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'u', Font::UNDERLINE_NONE);
+
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr/a:solidFill/a:srgbClr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('00FF00', $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename())); //Color YAxis
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'val', '00FF00');
+
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('false', $oXMLDoc->getElementAttribute($element, 'i', 'ppt/charts/'.$oShape->getIndexedFilename())); //Italic YAxis
-        $this->assertEquals(16*100, $oXMLDoc->getElementAttribute($element, 'sz', 'ppt/charts/'.$oShape->getIndexedFilename())); //Size YAxis
-        $this->assertEquals('noStrike', $oXMLDoc->getElementAttribute($element, 'strike', 'ppt/charts/'.$oShape->getIndexedFilename())); //StrikeThrough YAxis
-        $this->assertEquals(Font::UNDERLINE_DASH, $oXMLDoc->getElementAttribute($element, 'u', 'ppt/charts/'.$oShape->getIndexedFilename())); //Underline YAxis
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'i', 'false');
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'sz', 1600);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'strike', 'noStrike');
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'u', Font::UNDERLINE_DASH);
+    }
+
+    public function testAxisOutline()
+    {
+        $expectedWidthX = 2;
+        $expectedColorX = 'ABCDEF';
+        $expectedWidthY = 4;
+        $expectedColorY = '012345';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oBar = new Bar();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->setWidth($expectedWidthX);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorX);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->setWidth($expectedWidthY);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorY);
+
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthX)));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorX);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthY)));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorY);
     }
 
     public function testTypeArea()
@@ -143,14 +176,142 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oArea->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oArea);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart/c:ser';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+    }
+
+    public function testTypeAxisBounds()
+    {
+        $value = rand(0, 100);
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:max';
+        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:min';
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds(null);
+        $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
+        $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+    }
+
+    public function testTypeAxisTickMark()
+    {
+        $value = Axis::TICK_MARK_CROSS;
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorTickMark';
+        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorTickMark';
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark();
+        $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
+        $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+    }
+
+    public function testTypeAxisUnit()
+    {
+        $value = rand(0, 100);
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorUnit';
+        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorUnit';
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorUnit(null);
+        $oShape->getPlotArea()->getAxisY()->setMajorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $oShape->getPlotArea()->getAxisY()->setMinorUnit($value);
+        $oShape->getPlotArea()->getAxisY()->setMajorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
     }
 
     public function testTypeBar()
@@ -168,18 +329,16 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oBar->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser/c:dPt/c:spPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser/c:tx/c:v';
-        $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
     }
 
     public function testTypeBar3D()
@@ -197,18 +356,16 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oBar3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar3D);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dPt/c:spPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:tx/c:v';
-        $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
     }
 
     public function testTypeBar3DSubScript()
@@ -222,11 +379,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oBar3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar3D);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('-25000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-25000');
     }
 
     public function testTypeBar3DSuperScript()
@@ -240,11 +395,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oBar3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar3D);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('30000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
     }
 
     public function testTypeBar3DBarDirection()
@@ -258,11 +411,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oBar3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar3D);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:barDir';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals(Bar3D::DIRECTION_HORIZONTAL, $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Bar3D::DIRECTION_HORIZONTAL);
     }
 
     public function testTypeLine()
@@ -275,16 +426,14 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:v';
-        $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
     }
 
     public function testTypeLineGridlines()
@@ -320,9 +469,8 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
             $expectedSizePts = rand(1, 100);
             $expectedSizeEmu = round(Drawing::pointsToPixels(Drawing::pixelsToEmu($expectedSizePts)));
 
-            $oPresentation = new PhpPresentation();
-            $oSlide = $oPresentation->getActiveSlide();
-            $oShape = $oSlide->createChartShape();
+            $this->oPresentation->removeSlideByIndex()->createSlide();
+            $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
             $oLine = new Line();
             $oLine->addSeries(new Series('Downloads', array(
                 'A' => 1,
@@ -337,17 +485,15 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
             $oGridlines->getOutline()->setWidth($expectedSizePts);
             $oShape->getPlotArea()->{$arrayTest['methodAxis']}()->{$arrayTest['methodGrid']}($oGridlines);
 
-            $oXMLDoc = TestHelperDOCX::getDocument($oPresentation, 'PowerPoint2007');
-            $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
-            $this->assertTrue($oXMLDoc->elementExists($arrayTest['expectedElement'], 'ppt/charts/'.$oShape->getIndexedFilename()));
-            $this->assertTrue($oXMLDoc->attributeElementExists($arrayTest['expectedElement'], 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
-            $this->assertEquals($expectedSizeEmu, $oXMLDoc->getElementAttribute($arrayTest['expectedElement'], 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
-            $this->assertTrue($oXMLDoc->elementExists($arrayTest['expectedElementColor'], 'ppt/charts/'.$oShape->getIndexedFilename()));
-            $this->assertTrue($oXMLDoc->attributeElementExists($arrayTest['expectedElementColor'], 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
-            $this->assertEquals($expectedColor->getRGB(), $oXMLDoc->getElementAttribute($arrayTest['expectedElementColor'], 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+            $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+            $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $arrayTest['expectedElement']);
+            $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $arrayTest['expectedElement'], 'w');
+            $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $arrayTest['expectedElement'], 'w', $expectedSizeEmu);
+            $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $arrayTest['expectedElementColor']);
+            $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $arrayTest['expectedElementColor'], 'val');
+            $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $arrayTest['expectedElementColor'], 'val', $expectedColor->getRGB());
 
-            unset($oPresentation);
-            TestHelperDOCX::clear();
+            $this->resetPresentationFile();
         }
     }
 
@@ -368,32 +514,31 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedSymbol, $oXMLDoc->getElementAttribute($expectedEltSymbol, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedSize, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol, 'val', $expectedSymbol);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', $expectedSize);
 
         $oSeries->getMarker()->setSize(1);
         $oLine->setSeries(array($oSeries));
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals(2, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', 2);
 
         $oSeries->getMarker()->setSize(73);
         $oLine->setSeries(array($oSeries));
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals(72, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', 72);
 
         $oSeries->getMarker()->setSymbol(Marker::SYMBOL_NONE);
         $oLine->setSeries(array($oSeries));
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/' . $oShape->getIndexedFilename()));
-        $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
     }
 
     public function testTypeLineSeriesOutline()
@@ -403,10 +548,8 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:spPr/a:ln';
 
         $oOutline = new Outline();
-        // Define the color
         $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
         $oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
-        // Define the width (in points)
         $oOutline->setWidth($expectedWidth);
 
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -417,18 +560,17 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertFalse($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
 
         $oSeries->setOutline($oOutline);
         $oLine->setSeries(array($oSeries));
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedWidthEmu, $oXMLDoc->getElementAttribute($expectedElement, 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElement.'/a:solidFill', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement, 'w', $expectedWidthEmu);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement . '/a:solidFill');
     }
 
     public function testTypeLineSubScript()
@@ -442,11 +584,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('-25000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-25000');
     }
 
     public function testTypeLineSuperScript()
@@ -460,11 +600,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('30000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
     }
 
     public function testTypePie()
@@ -482,18 +620,48 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oPie->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oPie);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dPt/c:spPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:tx/c:v';
-        $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:showLegendKey';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
+
+        $oSeries->setShowLegendKey(true);
+        $this->resetPresentationFile();
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:showLegendKey';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 1);
+    }
+
+    public function testTypePieSeparator()
+    {
+        $value = ';';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oPie = new Pie();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oPie->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oPie);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+
+        $oSeries->setSeparator($value);
+        $this->resetPresentationFile();
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $value);
     }
 
     public function testTypePie3D()
@@ -511,18 +679,16 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oPie3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oPie3D);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dPt/c:spPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:tx/c:v';
-        $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
     }
 
     public function testTypePie3DExplosion()
@@ -538,11 +704,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oPie3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oPie3D);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:explosion';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($value, $oXMLDoc->getElementAttribute($element, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $value);
     }
 
     public function testTypePie3DSubScript()
@@ -556,11 +720,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oPie3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oPie3D);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('-25000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-25000');
     }
 
     public function testTypePie3DSuperScript()
@@ -574,11 +736,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oPie3D->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oPie3D);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('30000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
     }
 
     public function testTypeScatter()
@@ -591,16 +751,24 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/slides/slide1.xml'));
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:tx/c:v';
-        $this->assertEquals($oSeries->getTitle(), $oXMLDoc->getElement($element, 'ppt/charts/'.$oShape->getIndexedFilename())->nodeValue);
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:showLegendKey';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
+
+        $oSeries->setShowLegendKey(true);
+        $this->resetPresentationFile();
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:showLegendKey';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 1);
     }
 
     public function testTypeScatterMarker()
@@ -620,32 +788,31 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedSymbol, $oXMLDoc->getElementAttribute($expectedEltSymbol, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedSize, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol, 'val', $expectedSymbol);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', $expectedSize);
 
         $oSeries->getMarker()->setSize(1);
         $oScatter->setSeries(array($oSeries));
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals(2, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', 2);
 
         $oSeries->getMarker()->setSize(73);
         $oScatter->setSeries(array($oSeries));
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals(72, $oXMLDoc->getElementAttribute($expectedElementSize, 'val', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', 72);
 
         $oSeries->getMarker()->setSymbol(Marker::SYMBOL_NONE);
         $oScatter->setSeries(array($oSeries));
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->elementExists($expectedEltSymbol, 'ppt/charts/' . $oShape->getIndexedFilename()));
-        $this->assertFalse($oXMLDoc->elementExists($expectedElementSize, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
     }
 
     public function testTypeScatterSeriesOutline()
@@ -669,18 +836,17 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertFalse($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
 
         $oSeries->setOutline($oOutline);
         $oScatter->setSeries(array($oSeries));
+        $this->resetPresentationFile();
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-        $this->assertTrue($oXMLDoc->fileExists('ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElement, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals($expectedWidthEmu, $oXMLDoc->getElementAttribute($expectedElement, 'w', 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertTrue($oXMLDoc->elementExists($expectedElement.'/a:solidFill', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement, 'w', $expectedWidthEmu);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement . '/a:solidFill');
     }
 
     public function testTypeScatterSubScript()
@@ -694,11 +860,9 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('-25000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-25000');
     }
 
     public function testTypeScatterSuperScript()
@@ -712,10 +876,26 @@ class PptChartsTest extends \PHPUnit_Framework_TestCase
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 
-        $oXMLDoc = TestHelperDOCX::getDocument($this->oPresentation, 'PowerPoint2007');
-
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
-        $this->assertTrue($oXMLDoc->elementExists($element, 'ppt/charts/'.$oShape->getIndexedFilename()));
-        $this->assertEquals('30000', $oXMLDoc->getElementAttribute($element, 'baseline', 'ppt/charts/'.$oShape->getIndexedFilename()));
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
+    }
+
+    public function testView3D()
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oLine = new Line();
+        $oLine->addSeries(new Series('Downloads', $this->seriesData));
+        $oShape = $oSlide->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 100);
+
+        $oShape->getView3D()->setHeightPercent(null);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
     }
 }

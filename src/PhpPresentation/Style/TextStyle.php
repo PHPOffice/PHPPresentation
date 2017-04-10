@@ -44,20 +44,28 @@ class TextStyle
     public function __construct($default = true)
     {
         if ($default) {
-            $oRTParagraph = new RichTextParagraph();
-            $oRTParagraph->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-            $oRTParagraph->getFont()->setSize(44)->setColor(new SchemeColor())->getColor()->setValue("lt1");
-            $this->titleStyle[1] = $oRTParagraph;
-            $oRTParagraph = new RichTextParagraph();
-            $oRTParagraph->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER)
+            $oColorLT1 = new SchemeColor();
+            $oColorLT1->setValue('lt1');
+            $oColorTX1 = new SchemeColor();
+            $oColorTX1->setValue('tx1');
+
+            $oRTParagraphBody = new RichTextParagraph();
+            $oRTParagraphBody->getAlignment()
+                ->setHorizontal(Alignment::HORIZONTAL_CENTER)
                 ->setIndent(-324900 / 9525)
                 ->setMarginLeft(342900 / 9525);
-            $oRTParagraph->getFont()->setSize(32)->setColor(new SchemeColor())->getColor()->setValue("tx1");
-            $this->bodyStyle[1] = $oRTParagraph;
-            $oRTParagraph = new RichTextParagraph();
-            $oRTParagraph->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-            $oRTParagraph->getFont()->setSize(10)->setColor(new SchemeColor())->getColor()->setValue("tx1");
-            $this->otherStyle[0] = $oRTParagraph;
+            $oRTParagraphBody->getFont()->setSize(32)->setColor($oColorTX1);
+            $this->bodyStyle[1] = $oRTParagraphBody;
+
+            $oRTParagraphOther = new RichTextParagraph();
+            $oRTParagraphOther->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $oRTParagraphOther->getFont()->setSize(10)->setColor($oColorTX1);
+            $this->otherStyle[0] = $oRTParagraphOther;
+
+            $oRTParagraphTitle = new RichTextParagraph();
+            $oRTParagraphTitle->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
+            $oRTParagraphTitle->getFont()->setSize(44)->setColor($oColorLT1);
+            $this->titleStyle[1] = $oRTParagraphTitle;
         }
     }
 
@@ -79,34 +87,40 @@ class TextStyle
     /**
      * @param RichTextParagraph $style
      * @param $lvl
+     * @return TextStyle
      */
     public function setBodyStyleAtLvl(RichTextParagraph $style, $lvl)
     {
-        if (!$this->checkLvl($lvl)) {
+        if ($this->checkLvl($lvl)) {
             $this->bodyStyle[$lvl] = $style;
         }
+        return $this;
     }
 
     /**
      * @param RichTextParagraph $style
      * @param $lvl
+     * @return TextStyle
      */
     public function setTitleStyleAtLvl(RichTextParagraph $style, $lvl)
     {
-        if (!$this->checkLvl($lvl)) {
+        if ($this->checkLvl($lvl)) {
             $this->titleStyle[$lvl] = $style;
         }
+        return $this;
     }
 
     /**
      * @param RichTextParagraph $style
      * @param $lvl
+     * @return TextStyle
      */
     public function setOtherStyleAtLvl(RichTextParagraph $style, $lvl)
     {
-        if (!$this->checkLvl($lvl)) {
+        if ($this->checkLvl($lvl)) {
             $this->otherStyle[$lvl] = $style;
         }
+        return $this;
     }
 
     /**
@@ -115,9 +129,10 @@ class TextStyle
      */
     public function getBodyStyleAtLvl($lvl)
     {
-        if (!$this->checkLvl($lvl)) {
+        if ($this->checkLvl($lvl) && !empty($this->bodyStyle[$lvl])) {
             return $this->bodyStyle[$lvl];
         }
+        return null;
     }
 
     /**
@@ -126,9 +141,10 @@ class TextStyle
      */
     public function getTitleStyleAtLvl($lvl)
     {
-        if (!$this->checkLvl($lvl)) {
-            return $this->bodyStyle[$lvl];
+        if ($this->checkLvl($lvl) && !empty($this->titleStyle[$lvl])) {
+            return $this->titleStyle[$lvl];
         }
+        return null;
     }
 
     /**
@@ -137,9 +153,10 @@ class TextStyle
      */
     public function getOtherStyleAtLvl($lvl)
     {
-        if (!$this->checkLvl($lvl)) {
-            return $this->bodyStyle[$lvl];
+        if ($this->checkLvl($lvl) && !empty($this->otherStyle[$lvl])) {
+            return $this->otherStyle[$lvl];
         }
+        return null;
     }
 
     /**

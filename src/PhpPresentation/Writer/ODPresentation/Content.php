@@ -9,9 +9,9 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Slide;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
@@ -134,7 +134,7 @@ class Content extends AbstractDecoratorWriter
                 if ($shape instanceof RichText) {
                     $this->writeTxtStyle($objWriter, $shape);
                 }
-                if ($shape instanceof AbstractDrawing) {
+                if ($shape instanceof AbstractDrawingAdapter) {
                     $this->writeDrawingStyle($objWriter, $shape);
                 }
                 if ($shape instanceof Line) {
@@ -284,7 +284,7 @@ class Content extends AbstractDecoratorWriter
                     $this->writeShapeChart($objWriter, $shape);
                 } elseif ($shape instanceof Media) {
                     $this->writeShapeMedia($objWriter, $shape);
-                } elseif ($shape instanceof ShapeDrawing\AbstractDrawingAdapter) {
+                } elseif ($shape instanceof AbstractDrawingAdapter) {
                     $this->writeShapeDrawing($objWriter, $shape);
                 } elseif ($shape instanceof Group) {
                     $this->writeShapeGroup($objWriter, $shape);
@@ -370,7 +370,7 @@ class Content extends AbstractDecoratorWriter
      * Write picture
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter
-     * @param \PhpOffice\PhpPresentation\Shape\AbstractDrawing $shape
+     * @param \PhpOffice\PhpPresentation\Shape\AbstractDrawingAdapter $shape
      */
     public function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape)
     {
@@ -384,7 +384,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         // draw:image
         $objWriter->startElement('draw:image');
-        if ($shape instanceof ShapeDrawing\AbstractDrawingAdapter) {
+        if ($shape instanceof AbstractDrawingAdapter) {
             $objWriter->writeAttribute('xlink:href', 'Pictures/' . $shape->getIndexedFilename());
         }
         $objWriter->writeAttribute('xlink:type', 'simple');
@@ -760,7 +760,7 @@ class Content extends AbstractDecoratorWriter
                 $this->writeShapeLine($objWriter, $shape);
             } elseif ($shape instanceof Chart) {
                 $this->writeShapeChart($objWriter, $shape);
-            } elseif ($shape instanceof ShapeDrawing\AbstractDrawingAdapter) {
+            } elseif ($shape instanceof AbstractDrawingAdapter) {
                 $this->writeShapeDrawing($objWriter, $shape);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape);
@@ -787,7 +787,7 @@ class Content extends AbstractDecoratorWriter
             if ($shape instanceof RichText) {
                 $this->writeTxtStyle($objWriter, $shape);
             }
-            if ($shape instanceof AbstractDrawing) {
+            if ($shape instanceof AbstractDrawingAdapter) {
                 $this->writeDrawingStyle($objWriter, $shape);
             }
             if ($shape instanceof Line) {
@@ -912,12 +912,12 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the default style information for an AbstractDrawing
+     * Write the default style information for an AbstractDrawingAdapter
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter
-     * @param \PhpOffice\PhpPresentation\Shape\AbstractDrawing $shape
+     * @param \PhpOffice\PhpPresentation\Shape\AbstractDrawingAdapter $shape
      */
-    public function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawing $shape)
+    public function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawingAdapter $shape)
     {
         // style:style
         $objWriter->startElement('style:style');
