@@ -541,7 +541,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:lnSpc/a:spcPct';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedLineSpacing * 1000);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedLineSpacing . '%');
     }
 
     public function testRichTextRunLanguage()
