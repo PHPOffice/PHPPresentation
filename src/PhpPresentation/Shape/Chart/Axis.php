@@ -103,7 +103,7 @@ class Axis implements ComparableInterface
     /**
      * @var int
      */
-    protected $deleted;
+    protected $deleted = 0;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
