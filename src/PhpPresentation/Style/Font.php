@@ -294,7 +294,9 @@ class Font implements ComparableInterface
         $this->superScript = $pValue;
 
 		// Set SubScript at false only if SuperScript is true
-		if($pValue == true) $this->subScript = false;
+		if ($pValue === true) {
+			$this->subScript = false;
+		}
 
         return $this;
     }
@@ -324,7 +326,9 @@ class Font implements ComparableInterface
         $this->subScript = $pValue;
 
 		// Set SuperScript at false only if SubScript is true
-		if($pValue == true) $this->superScript = false;
+		if ($pValue === true) {
+			$this->superScript = false;
+		}
 
         return $this;
     }
