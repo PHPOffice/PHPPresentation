@@ -183,16 +183,25 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript());
         $this->assertFalse($object->isSubScript());
-        $this->assertTrue($object->isSuperScript());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(''));
         $this->assertFalse($object->isSubScript());
-        $this->assertTrue($object->isSuperScript());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
         $this->assertFalse($object->isSubScript());
-        $this->assertTrue($object->isSuperScript());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
         $this->assertTrue($object->isSubScript());
-        $this->assertFalse($object->isSuperScript());
+
+		// Test toggle of SubScript
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
+		$this->assertFalse($object->isSubScript());
+
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
+		$this->assertFalse($object->isSubScript());
+
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
+		$this->assertTrue($object->isSubScript());
     }
 
     /**
@@ -203,16 +212,25 @@ class FontTest extends \PHPUnit_Framework_TestCase
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript());
         $this->assertFalse($object->isSuperScript());
-        $this->assertTrue($object->isSubScript());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(''));
         $this->assertFalse($object->isSuperScript());
-        $this->assertTrue($object->isSubScript());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
         $this->assertFalse($object->isSuperScript());
-        $this->assertTrue($object->isSubScript());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
         $this->assertTrue($object->isSuperScript());
-        $this->assertFalse($object->isSubScript());
+
+		// Test toggle of SubScript
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
+		$this->assertFalse($object->isSuperScript());
+
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
+		$this->assertFalse($object->isSuperScript());
+
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
+		$this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
+		$this->assertTrue($object->isSuperScript());
     }
 
     /**
