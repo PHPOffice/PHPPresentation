@@ -78,7 +78,7 @@ class AxisTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Axis();
 
-        $oMock = $this->getMock('PhpOffice\PhpPresentation\Shape\Chart\Gridlines');
+        $oMock = $this->getMockBuilder('PhpOffice\PhpPresentation\Shape\Chart\Gridlines')->getMock();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMajorGridlines($oMock));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Gridlines', $object->getMajorGridlines());
