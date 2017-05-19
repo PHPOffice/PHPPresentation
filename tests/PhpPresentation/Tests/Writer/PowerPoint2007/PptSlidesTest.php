@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Animation;
@@ -735,6 +736,97 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedVal * 100);
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testPlaceHolder(): void
+    {
+        $expectedType = Placeholder::PH_TYPE_SLIDENUM;
+        $expectedX = mt_rand(1, 100);
+        $expectedY = mt_rand(1, 100);
+        $expectedW = mt_rand(1, 100);
+        $expectedH = mt_rand(1, 100);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText
+            ->setPlaceHolder(new Placeholder($expectedType))
+            ->setOffsetX($expectedX)
+            ->setOffsetY($expectedY)
+            ->setWidth($expectedW)
+            ->setHeight($expectedH);
+        $oRichText->createTextRun('Test');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'name', 'Placeholder for sldNum');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:nvPr/p:ph';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'type', $expectedType);
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'idx');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:xfrm/a:off';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'x', Drawing::pixelsToEmu($expectedX));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'y', Drawing::pixelsToEmu($expectedY));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:xfrm/a:ext';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cx', Drawing::pixelsToEmu($expectedW));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cy', Drawing::pixelsToEmu($expectedH));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'type', 'slidenum');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld/a:rPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld/a:t';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlElementEquals('ppt/slides/slide1.xml', $element, '<nr.>');
+    }
+
+    public function testPlaceHolderWithIdx(): void
+    {
+        $expectedType = Placeholder::PH_TYPE_DATETIME;
+        $expectedIdx = 1;
+        $expectedX = mt_rand(1, 100);
+        $expectedY = mt_rand(1, 100);
+        $expectedW = mt_rand(1, 100);
+        $expectedH = mt_rand(1, 100);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText
+            ->setPlaceHolder((new Placeholder($expectedType))->setIdx($expectedIdx))
+            ->setOffsetX($expectedX)
+            ->setOffsetY($expectedY)
+            ->setWidth($expectedW)
+            ->setHeight($expectedH);
+        $oRichText->createTextRun('Test');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:cNvPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'name', 'Placeholder for dt');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:nvSpPr/p:nvPr/p:ph';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'type', $expectedType);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'idx', $expectedIdx);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:xfrm/a:off';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'x', Drawing::pixelsToEmu($expectedX));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'y', Drawing::pixelsToEmu($expectedY));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:xfrm/a:ext';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cx', Drawing::pixelsToEmu($expectedW));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cy', Drawing::pixelsToEmu($expectedH));
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'type', 'datetime');
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld/a:rPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:fld/a:t';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlElementEquals('ppt/slides/slide1.xml', $element, '03-04-05');
     }
 
     public function testRichTextAutoFitNormal(): void
