@@ -280,7 +280,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
             // Paragraph Style
             $paragraphs = $shape->getParagraphs();
-            if(!empty($paragraphs)) {
+            if (!empty($paragraphs)) {
                 $paragraph = &$paragraphs[0];
                 $this->writeParagraphStyles($objWriter, $paragraph, true);
             }
@@ -290,9 +290,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('type', (
             $shape->getPlaceholder()->getType() == Placeholder::PH_TYPE_SLIDENUM ? 'slidenum' : 'datetime'));
 
-            if(isset($paragraph)) {
+            if (isset($paragraph)) {
                 $elements = $paragraph->getRichTextElements();
-                if(!empty($elements)) {
+                if (!empty($elements)) {
                     $element = &$elements[0];
                     $this->writeRunStyles($objWriter, $element);
                 }
@@ -578,7 +578,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement();
         $objWriter->endElement();
 
-        if(!$isPlaceholder) {
+        if (!$isPlaceholder) {
             // Bullet type specified?
             if ($paragraph->getBulletStyle()->getBulletType() != Bullet::TYPE_NONE) {
                 // Color
@@ -1657,6 +1657,4 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             return $uuid;
         }
     }
-
-
 }
