@@ -6,7 +6,8 @@
 - PowerPoint2007 Writer : Write percentage values with a trailing percent sign instead of formatted as 1000th of a percent to comply with the standard - @k42b3 GH-307
 
 ### Features
-- PowerPoint2007 Writer : Implemented XSD validation test case according to the ECMA/ISO standard - @k42b3 GH-307
+- PowerPoint2007 Writer : Implement XSD validation test case according to the ECMA/ISO standard - @k42b3 GH-307
+- PowerPoint2007 Writer : Implement visibility for axis - @kw-pr @Progi1984 GH-356 
 
 ## 0.8.0 - 2017-04-03
 

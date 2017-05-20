@@ -165,6 +165,38 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorY);
     }
 
+    public function testAxisVisibilityFalse()
+    {
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:delete';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+
+        // Set Visible : FALSE
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(false));
+        $this->assertFalse($oShape->getPlotArea()->getAxisX()->isVisible());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
+    }
+
+    public function testAxisVisibilityTrue()
+    {
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:delete';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+
+        // Set Visible : TRUE
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(true));
+        $this->assertTrue($oShape->getPlotArea()->getAxisX()->isVisible());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
+    }
+
     public function testTypeArea()
     {
         $oSlide = $this->oPresentation->getActiveSlide();

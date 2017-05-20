@@ -2012,7 +2012,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // $mainElement > c:delete
         $objWriter->startElement('c:delete');
-        $objWriter->writeAttribute('val', $oAxis->getDelete());
+        $objWriter->writeAttribute('val', $oAxis->isVisible() ? '0' : '1');
         $objWriter->endElement();
 
         // $mainElement > c:axPos
