@@ -2010,6 +2010,11 @@ class PptCharts extends AbstractDecoratorWriter
         // $mainElement > ##c:scaling
         $objWriter->endElement();
 
+        // $mainElement > c:delete
+        $objWriter->startElement('c:delete');
+        $objWriter->writeAttribute('val', $oAxis->getDelete());
+        $objWriter->endElement();
+
         // $mainElement > c:axPos
         $objWriter->startElement('c:axPos');
         $objWriter->writeAttribute('val', $axPosVal);

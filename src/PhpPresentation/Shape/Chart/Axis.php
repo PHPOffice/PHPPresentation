@@ -101,6 +101,11 @@ class Axis implements ComparableInterface
     protected $outline;
 
     /**
+     * @var int
+     */
+    protected $delete = 0;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
      *
      * @param string $title Title
@@ -384,6 +389,28 @@ class Axis implements ComparableInterface
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+        return $this;
+    }
+
+    /**
+     * Axis deleted and not visible?
+     *
+     * @return int Hash index
+     */
+    public function getDelete()
+    {
+        return $this->delete;
+    }
+
+    /**
+     * Remove an axis.
+     * 0 not deleted, 1 = deleted and not visible
+     *
+     * @param int $value delete
+     */
+    public function setDelete($value)
+    {
+        $this->delete = $value;
         return $this;
     }
 }
