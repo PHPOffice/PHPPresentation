@@ -410,7 +410,7 @@ class Axis implements ComparableInterface
      */
     public function setIsVisible($value)
     {
-        $this->isVisible = boolval($value);
+        $this->isVisible = (bool)$value;
         return $this;
     }
 }
