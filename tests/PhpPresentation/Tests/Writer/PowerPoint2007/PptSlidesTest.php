@@ -724,10 +724,10 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marB', 10);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marL', 20);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marR', 30);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marT', 40);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marB', Drawing::pixelsToEmu(10));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marL', Drawing::pixelsToEmu(20));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marR', Drawing::pixelsToEmu(30));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marT', Drawing::pixelsToEmu(40));
     }
 
     public function testTableWithColspan()

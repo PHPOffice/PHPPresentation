@@ -51,6 +51,7 @@ You can access cell object directly.
 Define margins of a cell
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Margins of cells are defined by margins of the first paragraph of cell.
+Margins of cells are defined in pixels.
 
 For defining margins of cell, you can use the `setMargin*` method of a Alignment object of the active paragraph of a Cell object.
 

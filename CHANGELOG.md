@@ -2,6 +2,9 @@
 
 ## 0.9.0 - WIP
 
+### Bugfix
+- PowerPoint2007 Writer : Margins in table cell - @Progi1984 GH-347
+
 ### Changes
 - PowerPoint2007 Writer : Write percentage values with a trailing percent sign instead of formatted as 1000th of a percent to comply with the standard - @k42b3 GH-307
 
