@@ -7,6 +7,7 @@
 
 ### Features
 - PowerPoint2007 Writer : Implemented XSD validation test case according to the ECMA/ISO standard - @k42b3 GH-307
+- PowerPoint2007 Writer : Implement gap width in Bar(3D) Charts - @Progi1984 GH-358
 
 ## 0.8.0 - 2017-04-03
 
