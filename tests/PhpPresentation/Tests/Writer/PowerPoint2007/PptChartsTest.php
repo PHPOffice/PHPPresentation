@@ -348,10 +348,12 @@ class PptChartsTest extends PhpPresentationTestCase
 
     public function testTypeBar()
     {
+        $valueGapWidthPercent = rand(0, 500);
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oBar = new Bar();
+        $oBar->setGapWidthPercent($valueGapWidthPercent);
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKBLUE));
@@ -371,14 +373,18 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:gapWidth';
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
     }
 
     public function testTypeBar3D()
     {
+        $valueGapWidthPercent = rand(0, 500);
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oBar3D = new Bar3D();
+        $oBar3D->setGapWidthPercent($valueGapWidthPercent);
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKBLUE));
@@ -398,6 +404,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:gapWidth';
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
     }
 
     public function testTypeBar3DSubScript()

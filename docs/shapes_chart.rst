@@ -186,6 +186,17 @@ TODO
 Bar & Bar3D
 ^^^^^^^^^^^
 
+Gap Width
+"""""""""
+
+You can define the gap width between bar or columns clusters. It is defined in percent.
+The default value is 150%. The value must be defined between 0 and 500.
+
+.. code-block:: php
+
+    $oBarChart = new Bar();
+    $oBarChart->setGapWidthPercent(250);
+
 Stacking
 """"""""
 

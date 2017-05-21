@@ -972,7 +972,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:gapWidth
         $objWriter->startElement('c:gapWidth');
-        $objWriter->writeAttribute('val', '75');
+        $objWriter->writeAttribute('val', $subject->getGapWidthPercent());
         $objWriter->endElement();
 
         // c:shape
@@ -1174,7 +1174,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:gapWidth
         $objWriter->startElement('c:gapWidth');
-        $objWriter->writeAttribute('val', '75');
+        $objWriter->writeAttribute('val', $subject->getGapWidthPercent());
         $objWriter->endElement();
 
         // c:shape

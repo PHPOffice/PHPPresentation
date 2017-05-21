@@ -49,6 +49,14 @@ class AbstractTypeBar extends AbstractType
 
 
     /**
+     * Space between bar or columns clusters
+     *
+     * @var int
+     */
+    protected $gapWidthPercent = 150;
+
+
+    /**
      * Set bar orientation
      *
      * @param string                          $value
@@ -90,6 +98,30 @@ class AbstractTypeBar extends AbstractType
     public function getBarGrouping()
     {
         return $this->barGrouping;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGapWidthPercent()
+    {
+        return $this->gapWidthPercent;
+    }
+
+    /**
+     * @param int $gapWidthPercent
+     * @return $this
+     */
+    public function setGapWidthPercent($gapWidthPercent)
+    {
+        if ($gapWidthPercent < 0) {
+            $gapWidthPercent = 0;
+        }
+        if ($gapWidthPercent > 500) {
+            $gapWidthPercent = 500;
+        }
+        $this->gapWidthPercent = $gapWidthPercent;
+        return $this;
     }
     
     /**
