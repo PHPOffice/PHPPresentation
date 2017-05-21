@@ -96,6 +96,16 @@ class AxisTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
+    public function testIsVisible()
+    {
+        $object = new Axis();
+        $this->assertTrue($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setIsVisible(false));
+        $this->assertFalse($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setIsVisible(true));
+        $this->assertTrue($object->isVisible());
+    }
+
     public function testTitle()
     {
         $object = new Axis();
