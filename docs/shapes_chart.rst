@@ -87,6 +87,16 @@ For resetting them, you pass null as parameter to these methods.
     $oShape->getPlotArea()->getAxisY()->setMinorUnit(null);
     $oShape->getPlotArea()->getAxisY()->setMajorUnit(0.05);
 
+You can define visibility for each axis (X & Y).
+
+.. code-block:: php
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->setIsVisible(false);
+
 Title
 ^^^^^
 
