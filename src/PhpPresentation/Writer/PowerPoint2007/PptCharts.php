@@ -108,7 +108,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:depthPercent
         $objWriter->startElement('c:depthPercent');
-        $objWriter->writeAttribute('val', $chart->getView3D()->getDepthPercent() . '%');
+        $objWriter->writeAttribute('val', $chart->getView3D()->getDepthPercent());
         $objWriter->endElement();
 
         // c:rAngAx
