@@ -499,12 +499,36 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTypeAxisUnit(): void
+    public function testTypeAxisXUnit(): void
     {
         $value = mt_rand(0, 100);
 
         $oSeries = new Series('Downloads', $this->seriesData);
-        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:tickLblSkip';
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisX()->setMajorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testTypeAxisYUnit(): void
+    {
+        $value = mt_rand(0, 100);
+
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();

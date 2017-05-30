@@ -463,8 +463,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     {
         $value = mt_rand(0, 100);
 
-        $oSeries = new Series('Downloads', ['A' => '1', 'B' => '2', 'C' => '4', 'D' => '3', 'E' => '2']);
-        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
@@ -507,6 +506,58 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:minimum', $value);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:maximum');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:maximum', $value);
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testTypeAxisUnit(): void
+    {
+        $value = mt_rand(0, 100);
+
+        $series = new Series('Downloads', $this->seriesData);
+        $line = new Line();
+        $line->addSeries($series);
+        $shape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $shape->getPlotArea()->setType($line);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:interval-minor-divisor');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:interval-major');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $shape->getPlotArea()->getAxisX()->setMinorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:interval-major');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-minor-divisor');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-minor-divisor', $value);
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $shape->getPlotArea()->getAxisX()->setMinorUnit(null);
+        $shape->getPlotArea()->getAxisX()->setMajorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:interval-minor-divisor');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-major');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-major', $value);
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $shape->getPlotArea()->getAxisX()->setMinorUnit($value);
+        $shape->getPlotArea()->getAxisX()->setMajorUnit($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-minor-divisor');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-minor-divisor', $value);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-major');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-major', $value);
 
         // chart:title : Element chart failed to validate attributes
         $this->assertIsSchemaOpenDocumentNotValid('1.2');

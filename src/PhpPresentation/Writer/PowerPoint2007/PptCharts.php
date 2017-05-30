@@ -2314,6 +2314,13 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('c:lblOffset');
             $objWriter->writeAttribute('val', '100');
             $objWriter->endElement();
+
+            // c:majorUnit
+            if ($oAxis->getMajorUnit() != null) {
+                $objWriter->startElement('c:tickLblSkip');
+                $objWriter->writeAttribute('val', $oAxis->getMajorUnit());
+                $objWriter->endElement();
+            }
         }
 
         if (Chart\Axis::AXIS_Y == $typeAxis) {
