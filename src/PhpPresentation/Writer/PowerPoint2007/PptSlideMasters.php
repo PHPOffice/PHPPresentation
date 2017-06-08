@@ -55,7 +55,7 @@ class PptSlideMasters extends AbstractSlide
             $slideLayout->relationId = 'rId' . $relId;
         }
         // Write drawing relationships?
-        $this->writeDrawingRelations($oMasterSlide, $objWriter, $relId);
+        $this->writeDrawingRelations($oMasterSlide, $objWriter, ++$relId);
         // TODO: Write hyperlink relationships?
         // TODO: Write comment relationships
         // Relationship theme/theme1.xml
