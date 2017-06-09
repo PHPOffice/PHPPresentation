@@ -31,7 +31,6 @@ class PptSlideMasters extends AbstractSlide
             if ($oBkgImage instanceof Image) {
                 $this->oZip->addFromString('ppt/media/' . $oBkgImage->getIndexedFilename($oMasterSlide->getRelsIndex()), file_get_contents($oBkgImage->getPath()));
             }
-
         }
 
         return $this->oZip;
