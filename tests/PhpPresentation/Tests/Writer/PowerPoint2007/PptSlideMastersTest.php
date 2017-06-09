@@ -17,10 +17,10 @@ class PptSlideMastersTest extends \PHPUnit_Framework_TestCase
     {
         $writer = new PptSlideMasters();
         $slideMaster = $this->getMockBuilder('PhpOffice\\PhpPresentation\\Slide\\SlideMaster')
-            ->setMethods(['getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'])
+            ->setMethods(array('getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'))
             ->getMock();
 
-        $layouts = [new SlideLayout($slideMaster)];
+        $layouts = array(new SlideLayout($slideMaster));
 
         $slideMaster->expects($this->once())
             ->method('getAllSlideLayouts')
