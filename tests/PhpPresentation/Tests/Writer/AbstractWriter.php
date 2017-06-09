@@ -16,6 +16,7 @@
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
+
 use PhpOffice\PhpPresentation\Writer;
 
 /**

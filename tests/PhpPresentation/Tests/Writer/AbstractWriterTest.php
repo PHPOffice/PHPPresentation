@@ -16,6 +16,7 @@
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
+
 use PhpOffice\PhpPresentation\PhpPresentation;
 
 require 'AbstractWriter.php';
@@ -43,7 +44,7 @@ class AbstractWriterTest extends \PHPUnit_Framework_TestCase
     /**
      * Test all drawings method
      */
-    public function testAllDrawings_includesMasterSlides()
+    public function testAllDrawingsIncludesMasterSlides()
     {
         $presentation = new PhpPresentation();
 
