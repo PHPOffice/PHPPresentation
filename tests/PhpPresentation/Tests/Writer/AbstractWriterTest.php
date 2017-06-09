@@ -51,7 +51,8 @@ class AbstractWriterTest extends \PHPUnit_Framework_TestCase
         $activeSlide = $presentation->getActiveSlide();
         $activeSlide->createDrawingShape();
 
-        $masterSlide = $presentation->getAllMasterSlides()[0];
+        $masterSlides = $presentation->getAllMasterSlides();
+        $masterSlide = $masterSlides[0];
         $masterSlide->createDrawingShape();
 
         $writer = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Tests\\Writer\\AbstractWriter');
