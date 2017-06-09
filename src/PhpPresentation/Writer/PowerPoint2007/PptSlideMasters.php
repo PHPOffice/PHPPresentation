@@ -11,7 +11,6 @@ use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
-use PhpOffice\PhpPresentation\Slide\Background\Image;
 
 class PptSlideMasters extends AbstractSlide
 {
@@ -25,13 +24,6 @@ class PptSlideMasters extends AbstractSlide
             $this->oZip->addFromString('ppt/slideMasters/_rels/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml.rels', $this->writeSlideMasterRelationships($oMasterSlide));
             // Add the information from the masterSlide to the ZIP file
             $this->oZip->addFromString('ppt/slideMasters/slideMaster' . $oMasterSlide->getRelsIndex() . '.xml', $this->writeSlideMaster($oMasterSlide));
-
-            // Add background image slide
-            $oBkgImage = $oMasterSlide->getBackground();
-            if ($oBkgImage instanceof Image) {
-                $this->oZip->addFromString('ppt/media/' . $oBkgImage->getIndexedFilename($oMasterSlide->getRelsIndex()), file_get_contents($oBkgImage->getPath()));
-            }
-
         }
 
         return $this->oZip;
@@ -65,13 +57,6 @@ class PptSlideMasters extends AbstractSlide
 
         // Write drawing relationships?
         $relId = $this->writeDrawingRelations($oMasterSlide, $objWriter, ++$relId);
-
-        // Write background relationships?
-        $oBackground = $oMasterSlide->getBackground();
-        if ($oBackground instanceof Image) {
-            $this->writeRelationship($objWriter, ++$relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oMasterSlide->getRelsIndex()));
-            $oBackground->relationId = 'rId' . $relId;
-        }
 
         // TODO: Write hyperlink relationships?
         // TODO: Write comment relationships
