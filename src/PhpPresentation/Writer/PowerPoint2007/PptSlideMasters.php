@@ -70,12 +70,14 @@ class PptSlideMasters extends AbstractSlide
         if ($oBackground instanceof Image) {
             $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oMasterSlide->getRelsIndex()));
             $oBackground->relationId = 'rId' . $relId;
+
+            $relId++;
         }
 
         // TODO: Write hyperlink relationships?
         // TODO: Write comment relationships
         // Relationship theme/theme1.xml
-        $this->writeRelationship($objWriter, ++$relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $oMasterSlide->getRelsIndex() . '.xml');
+        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $oMasterSlide->getRelsIndex() . '.xml');
         $objWriter->endElement();
         // Return
         return $objWriter->getData();
