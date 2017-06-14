@@ -322,13 +322,16 @@ class PptCharts extends AbstractDecoratorWriter
         // c:strLit / c:numLit
         // c:strRef / c:numRef
         $referenceType = ($isReference ? 'Ref' : 'Lit');
-        $dataType = 'str';
-        if (is_int($values[0]) || is_float($values[0])) {
-            $dataType = 'num';
-        }
-        $objWriter->startElement('c:' . $dataType . $referenceType);
-
         $numValues = count($values);
+
+        $valueToCheck = null;
+        for ($i=0; $i < $numValues && $valueToCheck === null; $i++) {
+            $valueToCheck = $values[$i];
+        }
+        $dataType = (is_int($valueToCheck) || is_float($valueToCheck)) ? 'num' : 'str';
+        
+        $objWriter->startElement('c:' . $dataType . $referenceType);
+        
         if (!$isReference) {
             // Value
 
@@ -1967,8 +1970,13 @@ class PptCharts extends AbstractDecoratorWriter
             return;
         }
 
-        if ($typeAxis == Chart\Axis::AXIS_X) {
+        if ($typeAxis == Chart\Axis::AXIS_X && !($typeChart instanceof Scatter)) {
             $mainElement = 'c:catAx';
+            $axIdVal = '52743552';
+            $axPosVal = 'b';
+            $crossAxVal = '52749440';
+        } elseif ($typeAxis == Chart\Axis::AXIS_X && $typeChart instanceof Scatter) {
+            $mainElement = 'c:valAx';
             $axIdVal = '52743552';
             $axPosVal = 'b';
             $crossAxVal = '52749440';
@@ -2032,13 +2040,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->endElement();
         }
-
-        // c:numFmt
-        $objWriter->startElement('c:numFmt');
-        $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
-        $objWriter->writeAttribute('sourceLinked', '1');
-        $objWriter->endElement();
-
+        
         // c:majorTickMark
         $objWriter->startElement('c:majorTickMark');
         $objWriter->writeAttribute('val', $oAxis->getMajorTickMark());
@@ -2051,7 +2053,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:tickLblPos
         $objWriter->startElement('c:tickLblPos');
-        $objWriter->writeAttribute('val', 'nextTo');
+        $objWriter->writeAttribute('val', 'low');
         $objWriter->endElement();
 
         // c:spPr
@@ -2163,6 +2165,12 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('c:lblOffset');
             $objWriter->writeAttribute('val', '100');
             $objWriter->endElement();
+            
+            // c:numFmt
+            $objWriter->startElement('c:numFmt');
+            $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
+            $objWriter->writeAttribute('sourceLinked', '1');
+            $objWriter->endElement();
         }
 
         if ($typeAxis == Chart\Axis::AXIS_Y) {
@@ -2190,6 +2198,12 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('val', $oAxis->getMinorUnit());
                 $objWriter->endElement();
             }
+            
+            // c:numFmt
+            $objWriter->startElement('c:numFmt');
+            $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
+            $objWriter->writeAttribute('sourceLinked', '0');
+            $objWriter->endElement();
         }
 
         $objWriter->endElement();
