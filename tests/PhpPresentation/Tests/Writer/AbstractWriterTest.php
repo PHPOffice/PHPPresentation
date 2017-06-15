@@ -17,6 +17,10 @@
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
+use PhpOffice\PhpPresentation\PhpPresentation;
+
+require 'AbstractWriter.php';
+
 /**
  * Test class for AbstractWriter
  *
@@ -35,5 +39,26 @@ class AbstractWriterTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($oStubWriter->getZipAdapter());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Writer\\AbstractWriter', $oStubWriter->setZipAdapter($oStubZip));
         $this->assertInstanceOf('PhpOffice\\Common\\Adapter\\Zip\\ZipInterface', $oStubWriter->getZipAdapter());
+    }
+
+    /**
+     * Test all drawings method
+     */
+    public function testAllDrawingsIncludesMasterSlides()
+    {
+        $presentation = new PhpPresentation();
+
+        $activeSlide = $presentation->getActiveSlide();
+        $activeSlide->createDrawingShape();
+
+        $masterSlides = $presentation->getAllMasterSlides();
+        $masterSlide = $masterSlides[0];
+        $masterSlide->createDrawingShape();
+
+        $writer = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Tests\\Writer\\AbstractWriter');
+        $writer->setPhpPresentation($presentation);
+
+        $drawings = $writer->allDrawings();
+        $this->assertEquals(2, count($drawings), 'Number of drawings should equal two: one from normal slide and one from master slide');
     }
 }

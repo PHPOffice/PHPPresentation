@@ -108,6 +108,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $iterator->next();
             }
         }
+
+        return $relId;
     }
 
     /**
