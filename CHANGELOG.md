@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.9.0 - WIP
+## 0.9.0 - 2017-07-05
 
 ### Bugfix
 - PowerPoint2007 Writer : Margins in table cell - @Progi1984 GH-347
