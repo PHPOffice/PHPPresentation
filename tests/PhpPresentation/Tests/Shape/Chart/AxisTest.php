@@ -78,7 +78,7 @@ class AxisTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Axis();
 
-        $oMock = $this->getMock('PhpOffice\PhpPresentation\Shape\Chart\Gridlines');
+        $oMock = $this->getMockBuilder('PhpOffice\PhpPresentation\Shape\Chart\Gridlines')->getMock();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMajorGridlines($oMock));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Gridlines', $object->getMajorGridlines());
@@ -94,6 +94,16 @@ class AxisTest extends \PHPUnit_Framework_TestCase
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setHashIndex($value));
         $this->assertEquals($value, $object->getHashIndex());
+    }
+
+    public function testIsVisible()
+    {
+        $object = new Axis();
+        $this->assertTrue($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setIsVisible(false));
+        $this->assertFalse($object->isVisible());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setIsVisible(true));
+        $this->assertTrue($object->isVisible());
     }
 
     public function testTitle()

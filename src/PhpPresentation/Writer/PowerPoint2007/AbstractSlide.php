@@ -108,6 +108,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $iterator->next();
             }
         }
+
+        return $relId;
     }
 
     /**
@@ -451,10 +453,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 }
 
                 // Margins
-                $objWriter->writeAttribute('marL', $firstParagraphAlignment->getMarginLeft());
-                $objWriter->writeAttribute('marR', $firstParagraphAlignment->getMarginRight());
-                $objWriter->writeAttribute('marT', $firstParagraphAlignment->getMarginTop());
-                $objWriter->writeAttribute('marB', $firstParagraphAlignment->getMarginBottom());
+                $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($firstParagraphAlignment->getMarginLeft()));
+                $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($firstParagraphAlignment->getMarginRight()));
+                $objWriter->writeAttribute('marT', CommonDrawing::pixelsToEmu($firstParagraphAlignment->getMarginTop()));
+                $objWriter->writeAttribute('marB', CommonDrawing::pixelsToEmu($firstParagraphAlignment->getMarginBottom()));
 
                 // Determine borders
                 $borderLeft = $currentCell->getBorders()->getLeft();
@@ -521,7 +523,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
                 $objWriter->startElement('a:lnSpc');
                 $objWriter->startElement('a:spcPct');
-                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() . "%");
                 $objWriter->endElement();
                 $objWriter->endElement();
 

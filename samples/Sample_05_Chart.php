@@ -82,6 +82,7 @@ function fnSlide_Bar(PhpPresentation $objPHPPresentation) {
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a bar chart (that should be inserted in a chart shape)'.EOL;
     $barChart = new Bar();
+    $barChart->setGapWidthPercent(158);
     $series1 = new Series('2009', $series1Data);
     $series1->setShowSeriesName(true);
     $series1->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4F81BD'));

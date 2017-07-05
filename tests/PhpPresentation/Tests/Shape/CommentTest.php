@@ -41,7 +41,7 @@ class CommentTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Comment();
 
-        $oStub = $this->getMock('PhpOffice\PhpPresentation\Shape\Comment\Author');
+        $oStub = $this->getMockBuilder('PhpOffice\PhpPresentation\Shape\Comment\Author')->getMock();
 
         $this->assertNull($object->getAuthor());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment', $object->setAuthor($oStub));

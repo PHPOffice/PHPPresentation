@@ -89,7 +89,7 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
         rmdir($dir);
     }
 
-    private function getXmlDom($file)
+    protected function getXmlDom($file)
     {
         $baseFile = $file;
         if (null !== $this->xmlDom && $file === $this->xmlFile) {
