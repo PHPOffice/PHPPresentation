@@ -37,6 +37,11 @@ class PptCharts extends AbstractDecoratorWriter
                     $this->getZip()->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $this->writeChartRelationships($shape));
                     $pFilename = tempnam(sys_get_temp_dir(), 'PHPExcel');
                     $this->getZip()->addFromString('ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', $this->writeSpreadsheet($this->getPresentation(), $shape, $pFilename . '.xlsx'));
+                    
+                    // remove temp file
+                    if (@unlink($pFilename) === false) {
+                        throw new \Exception('The file ' . $pFilename . ' could not removed.');
+                    }
                 }
             }
         }
