@@ -49,14 +49,24 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
     private $xmlFile;
 
     /**
+     * @var boolean
+     */
+    private $xmlInternalErrors;
+
+    /**
      * Executed before each method of the class
      */
     public function setUp()
     {
         $this->workDirectory = sys_get_temp_dir() . '/PhpPresentation_Unit_Test/';
         $this->oPresentation = new PhpPresentation();
-
         $this->filePath = tempnam(sys_get_temp_dir(), 'PhpPresentation');
+
+        // Error XML
+        libxml_clear_errors();
+        $this->xmlInternalErrors = libxml_use_internal_errors(true);
+
+        // Reset file
         $this->resetPresentationFile();
     }
 
@@ -65,6 +75,7 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
      */
     public function tearDown()
     {
+        libxml_use_internal_errors($this->xmlInternalErrors);
         $this->oPresentation = null;
         $this->resetPresentationFile();
     }
@@ -306,5 +317,43 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertFalse($nodeList->item(0)->hasAttribute($attribute));
+    }
+
+    public function assertIsSchemaOOXMLValid()
+    {
+        // validate all XML files
+        $path = realpath($this->workDirectory . '/ppt');
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+
+        foreach ($iterator as $file) {
+            /** @var \SplFileInfo $file */
+            if ($file->getExtension() !== "xml") {
+                continue;
+            }
+
+            $fileName = str_replace('\\', '/', substr($file->getRealPath(), strlen($path) + 1));
+            $dom = $this->getXmlDom('ppt/' . $fileName);
+            $xmlSource = $dom->saveXML();
+
+            $dom->loadXML($xmlSource);
+            $dom->schemaValidate(__DIR__ . '/../../../resources/schema/ooxml/pml.xsd');
+
+            $error = libxml_get_last_error();
+            if ($error instanceof \LibXMLError) {
+                break;
+            }
+        }
+        unset($iterator);
+
+        if (is_object($error) && $error instanceof \LibXMLError) {
+            $errorLine = (int)$error->line;
+            $contents = explode("\n", $xmlSource);
+            $lines = array();
+            $lines[] = '>> ' . $contents[$errorLine - 2];
+            $lines[] = '>>> ' . $contents[$errorLine - 1];
+            $lines[] = '>> ' . $contents[$errorLine];
+            self::fail(sprintf("Validation error:\n - File : %s\n - Line : %s\n - Message : %s - Lines :\n%s", $file, $error->line, $error->message, implode(PHP_EOL, $lines)));
+        }
+
     }
 }

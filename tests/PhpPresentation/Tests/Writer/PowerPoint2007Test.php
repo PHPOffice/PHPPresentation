@@ -133,6 +133,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy');
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', 100);
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 100);
+        $this->assertIsSchemaOOXMLValid();
 
         $value = rand(1, 100);
         $this->oPresentation->getPresentationProperties()->setZoom($value);
@@ -144,6 +145,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy');
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'n', $value * 100);
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 100);
+        $this->assertIsSchemaOOXMLValid();
     }
 
     public function testFeatureThumbnail()
@@ -154,11 +156,13 @@ class PowerPoint2007Test extends PhpPresentationTestCase
 
         $this->assertZipFileExists('_rels/.rels');
         $this->assertZipXmlElementNotExists('_rels/.rels', $xPathManifest);
+        $this->assertIsSchemaOOXMLValid();
 
         $this->oPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
         $this->resetPresentationFile();
 
         $this->assertZipFileExists('_rels/.rels');
         $this->assertZipXmlElementExists('_rels/.rels', $xPathManifest);
+        $this->assertIsSchemaOOXMLValid();
     }
 }
