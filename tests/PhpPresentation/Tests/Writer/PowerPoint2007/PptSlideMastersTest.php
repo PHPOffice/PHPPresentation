@@ -14,6 +14,8 @@ use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
  */
 class PptSlideMastersTest extends PhpPresentationTestCase
 {
+    protected $writerName = 'PowerPoint2007';
+
     public function testWriteSlideMasterRelationships()
     {
         $writer = new PptSlideMasters();

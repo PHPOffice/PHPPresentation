@@ -104,7 +104,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:hPercent
         $hPercent = $chart->getView3D()->getHeightPercent();
-        $objWriter->writeElementIf($hPercent != null, 'c:hPercent', 'val', $hPercent . '%');
+        $objWriter->writeElementIf($hPercent != null, 'c:hPercent', 'val', $hPercent);
 
         // c:rotY
         $objWriter->startElement('c:rotY');
@@ -804,6 +804,34 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', $subject->getBarGrouping());
         $objWriter->endElement();
 
+        // c:gapWidth
+        $objWriter->startElement('c:gapWidth');
+        $objWriter->writeAttribute('val', $subject->getGapWidthPercent());
+        $objWriter->endElement();
+
+        // c:overlap
+        $objWriter->startElement('c:overlap');
+        if ($subject->getBarGrouping() == Bar::GROUPING_CLUSTERED) {
+            $objWriter->writeAttribute('val', '0');
+        } elseif ($subject->getBarGrouping() == Bar::GROUPING_STACKED || $subject->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED) {
+            $objWriter->writeAttribute('val', '100');
+        }
+        $objWriter->endElement();
+
+        // c:axId
+        $objWriter->startElement('c:axId');
+        $objWriter->writeAttribute('val', '52743552');
+        $objWriter->endElement();
+
+        // c:axId
+        $objWriter->startElement('c:axId');
+        $objWriter->writeAttribute('val', '52749440');
+        $objWriter->endElement();
+
+        // c:extLst
+        $objWriter->startElement('c:extLst');
+        $objWriter->endElement();
+
         // Write series
         $seriesIndex = 0;
         foreach ($subject->getSeries() as $series) {
@@ -930,7 +958,7 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
+            $this->writeElementWithValAttribute($objWriter, 'c:separator', $series->hasShowSeparator() ? $series->getSeparator() : '');
 
             $objWriter->endElement();
 
@@ -966,40 +994,6 @@ class PptCharts extends AbstractDecoratorWriter
             ++$seriesIndex;
         }
 
-        // c:overlap
-        $objWriter->startElement('c:overlap');
-        if ($subject->getBarGrouping() == Bar::GROUPING_CLUSTERED) {
-            $objWriter->writeAttribute('val', '0');
-        } elseif ($subject->getBarGrouping() == Bar::GROUPING_STACKED || $subject->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED) {
-            $objWriter->writeAttribute('val', '100');
-        }
-        $objWriter->endElement();
-
-        // c:gapWidth
-        $objWriter->startElement('c:gapWidth');
-        $objWriter->writeAttribute('val', $subject->getGapWidthPercent());
-        $objWriter->endElement();
-
-        // c:shape
-        $objWriter->startElement('c:shape');
-        $objWriter->writeAttribute('val', 'box');
-        $objWriter->endElement();
-
-        // c:axId
-        $objWriter->startElement('c:axId');
-        $objWriter->writeAttribute('val', '52743552');
-        $objWriter->endElement();
-
-        // c:axId
-        $objWriter->startElement('c:axId');
-        $objWriter->writeAttribute('val', '52749440');
-        $objWriter->endElement();
-
-        // c:axId
-        $objWriter->startElement('c:axId');
-        $objWriter->writeAttribute('val', '0');
-        $objWriter->endElement();
-
         $objWriter->endElement();
     }
 
@@ -1024,6 +1018,26 @@ class PptCharts extends AbstractDecoratorWriter
         // c:grouping
         $objWriter->startElement('c:grouping');
         $objWriter->writeAttribute('val', $subject->getBarGrouping());
+        $objWriter->endElement();
+
+        // c:gapWidth
+        $objWriter->startElement('c:gapWidth');
+        $objWriter->writeAttribute('val', $subject->getGapWidthPercent());
+        $objWriter->endElement();
+
+        // c:axId
+        $objWriter->startElement('c:axId');
+        $objWriter->writeAttribute('val', '52743552');
+        $objWriter->endElement();
+
+        // c:axId
+        $objWriter->startElement('c:axId');
+        $objWriter->writeAttribute('val', '52749440');
+        $objWriter->endElement();
+
+        // c:axId
+        $objWriter->startElement('c:axId');
+        $objWriter->writeAttribute('val', '0');
         $objWriter->endElement();
 
         // Write series
@@ -1140,9 +1154,6 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
-
             $objWriter->endElement();
 
             // c:spPr
@@ -1176,31 +1187,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             ++$seriesIndex;
         }
-
-        // c:gapWidth
-        $objWriter->startElement('c:gapWidth');
-        $objWriter->writeAttribute('val', $subject->getGapWidthPercent());
-        $objWriter->endElement();
-
-        // c:shape
-        $objWriter->startElement('c:shape');
-        $objWriter->writeAttribute('val', 'box');
-        $objWriter->endElement();
-
-        // c:axId
-        $objWriter->startElement('c:axId');
-        $objWriter->writeAttribute('val', '52743552');
-        $objWriter->endElement();
-
-        // c:axId
-        $objWriter->startElement('c:axId');
-        $objWriter->writeAttribute('val', '52749440');
-        $objWriter->endElement();
-
-        // c:axId
-        $objWriter->startElement('c:axId');
-        $objWriter->writeAttribute('val', '0');
-        $objWriter->endElement();
 
         $objWriter->endElement();
     }
@@ -1348,9 +1334,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
 
             $objWriter->endElement();
 
@@ -1517,9 +1500,6 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
-
             $objWriter->endElement();
 
             // Write X axis data
@@ -1668,9 +1648,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
 
             // > c:dLbls
             $objWriter->endElement();
@@ -1842,17 +1819,8 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
+            $this->writeElementWithValAttribute($objWriter, 'c:separator', $series->hasShowSeparator() ? $series->getSeparator() : '');
 
-            $objWriter->endElement();
-
-            // c:spPr
-            $objWriter->startElement('c:spPr');
-            // Write fill
-            $this->writeFill($objWriter, $series->getFill());
-            // Write outline
-            $this->writeOutline($objWriter, $series->getOutline());
-            // ## c:spPr
             $objWriter->endElement();
 
             // Write X axis data
@@ -1875,6 +1843,15 @@ class PptCharts extends AbstractDecoratorWriter
             // c:smooth
             $objWriter->startElement('c:smooth');
             $objWriter->writeAttribute('val', '0');
+            $objWriter->endElement();
+
+            // c:spPr
+            $objWriter->startElement('c:spPr');
+            // Write fill
+            $this->writeFill($objWriter, $series->getFill());
+            // Write outline
+            $this->writeOutline($objWriter, $series->getOutline());
+            // ## c:spPr
             $objWriter->endElement();
 
             $objWriter->endElement();
@@ -2171,7 +2148,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:lblOffset
             $objWriter->startElement('c:lblOffset');
-            $objWriter->writeAttribute('val', '100%');
+            $objWriter->writeAttribute('val', 100);
             $objWriter->endElement();
         }
 

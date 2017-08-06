@@ -1390,15 +1390,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
                 break;
-            case Slide\Transition::TRANSITION_CIRCLE_HORIZONTAL:
-                $objWriter->startElement('p:circle');
-                $objWriter->writeAttribute('dir', 'horz');
-                $objWriter->endElement();
-                break;
-            case Slide\Transition::TRANSITION_CIRCLE_VERTICAL:
-                $objWriter->startElement('p:circle');
-                $objWriter->writeAttribute('dir', 'vert');
-                $objWriter->endElement();
+            case Slide\Transition::TRANSITION_CIRCLE:
+                $objWriter->writeElement('p:circle');
                 break;
             case Slide\Transition::TRANSITION_COMB_HORIZONTAL:
                 $objWriter->startElement('p:comb');

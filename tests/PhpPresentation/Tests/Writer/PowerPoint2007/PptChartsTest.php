@@ -589,7 +589,8 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testTypeLineMarker()
     {
         do {
-            $expectedSymbol = array_rand(Marker::$arraySymbol);
+            $expectedSymbolKey = array_rand(Marker::$arraySymbol);
+            $expectedSymbol = Marker::$arraySymbol[$expectedSymbolKey];
         } while ($expectedSymbol == Marker::SYMBOL_NONE);
         $expectedSize = rand(2, 72);
         $expectedEltSymbol = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:symbol';
@@ -747,32 +748,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:showLegendKey';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 1);
-
-        $this->assertIsSchemaOOXMLValid();
-    }
-
-    public function testTypePieSeparator()
-    {
-        $value = ';';
-
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createChartShape();
-        $oPie = new Pie();
-        $oSeries = new Series('Downloads', $this->seriesData);
-        $oPie->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oPie);
-
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
-        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-
-        $this->assertIsSchemaOOXMLValid();
-
-        $oSeries->setSeparator($value);
-        $this->resetPresentationFile();
-
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $value);
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -948,6 +923,33 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaOOXMLValid();
     }
 
+    public function testTypeScatterSeparator()
+    {
+        $value = ';';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oScatter = new Scatter();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oScatter->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oScatter);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '');
+
+        $this->assertIsSchemaOOXMLValid();
+
+        $oSeries->setSeparator($value);
+        $this->resetPresentationFile();
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $value);
+
+        $this->assertIsSchemaOOXMLValid();
+    }
+
     public function testTypeScatterSeriesOutline()
     {
         $expectedWidth = rand(1, 100);
@@ -1032,7 +1034,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 100);
 
         $this->assertIsSchemaOOXMLValid();
 

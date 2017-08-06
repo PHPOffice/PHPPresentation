@@ -895,11 +895,8 @@ class PptSlideTest extends PhpPresentationTestCase
                 case 'TRANSITION_CHECKER_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:checker[@dir=\'vert\']');
                     break;
-                case 'TRANSITION_CIRCLE_HORIZONTAL':
-                    $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:circle[@dir=\'horz\']');
-                    break;
-                case 'TRANSITION_CIRCLE_VERTICAL':
-                    $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:circle[@dir=\'vert\']');
+                case 'TRANSITION_CIRCLE':
+                    $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:circle');
                     break;
                 case 'TRANSITION_COMB_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:comb[@dir=\'horz\']');

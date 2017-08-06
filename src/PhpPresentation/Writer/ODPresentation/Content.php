@@ -1152,10 +1152,7 @@ class Content extends AbstractDecoratorWriter
                 case Transition::TRANSITION_CHECKER_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'vertical-checkerboard');
                     break;
-                case Transition::TRANSITION_CIRCLE_HORIZONTAL:
-                    $objWriter->writeAttribute('presentation:transition-style', 'none');
-                    break;
-                case Transition::TRANSITION_CIRCLE_VERTICAL:
+                case Transition::TRANSITION_CIRCLE:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
                     break;
                 case Transition::TRANSITION_COMB_HORIZONTAL:
