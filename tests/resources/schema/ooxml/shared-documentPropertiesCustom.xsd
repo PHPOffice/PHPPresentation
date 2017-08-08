@@ -1,215 +1,59 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"
-			xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns:vt="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"
-			xmlns:s="http://schemas.openxmlformats.org/officeDocument/2006/sharedTypes"
-			targetNamespace="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"
-			blockDefault="#all" elementFormDefault="qualified">
-	<xsd:import namespace="http://schemas.openxmlformats.org/officeDocument/2006/docPropsVTypes"
-				schemaLocation="shared-documentPropertiesVariantTypes.xsd"/>
-	<xsd:import namespace="http://schemas.openxmlformats.org/officeDocument/2006/sharedTypes"
-				schemaLocation="shared-commonSimpleTypes.xsd"/>
-	<xsd:element name="Properties" type="CT_Properties">
-		<xsd:annotation>
-			<xsd:documentation>Custom File Properties</xsd:documentation>
-		</xsd:annotation>
-	</xsd:element>
-	<xsd:complexType name="CT_Properties">
-		<xsd:sequence>
-			<xsd:element name="property" minOccurs="0" maxOccurs="unbounded" type="CT_Property">
-				<xsd:annotation>
-					<xsd:documentation>Custom File Property</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-		</xsd:sequence>
-	</xsd:complexType>
-	<xsd:complexType name="CT_Property">
-		<xsd:choice minOccurs="1" maxOccurs="1">
-			<xsd:element ref="vt:vector">
-				<xsd:annotation>
-					<xsd:documentation>Vector</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:array">
-				<xsd:annotation>
-					<xsd:documentation>Array</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:blob">
-				<xsd:annotation>
-					<xsd:documentation>Binary Blob</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:oblob">
-				<xsd:annotation>
-					<xsd:documentation>Binary Blob Object</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:empty">
-				<xsd:annotation>
-					<xsd:documentation>Empty</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:null">
-				<xsd:annotation>
-					<xsd:documentation>Null</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:i1">
-				<xsd:annotation>
-					<xsd:documentation>1-Byte Signed Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:i2">
-				<xsd:annotation>
-					<xsd:documentation>2-Byte Signed Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:i4">
-				<xsd:annotation>
-					<xsd:documentation>4-Byte Signed Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:i8">
-				<xsd:annotation>
-					<xsd:documentation>8-Byte Signed Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:int">
-				<xsd:annotation>
-					<xsd:documentation>Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:ui1">
-				<xsd:annotation>
-					<xsd:documentation>1-Byte Unsigned Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:ui2">
-				<xsd:annotation>
-					<xsd:documentation>2-Byte Unsigned Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:ui4">
-				<xsd:annotation>
-					<xsd:documentation>4-Byte Unsigned Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:ui8">
-				<xsd:annotation>
-					<xsd:documentation>8-Byte Unsigned Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:uint">
-				<xsd:annotation>
-					<xsd:documentation>Unsigned Integer</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:r4">
-				<xsd:annotation>
-					<xsd:documentation>4-Byte Real Number</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:r8">
-				<xsd:annotation>
-					<xsd:documentation>8-Byte Real Number</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:decimal">
-				<xsd:annotation>
-					<xsd:documentation>Decimal</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:lpstr">
-				<xsd:annotation>
-					<xsd:documentation>LPSTR</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:lpwstr">
-				<xsd:annotation>
-					<xsd:documentation>LPWSTR</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:bstr">
-				<xsd:annotation>
-					<xsd:documentation>Basic String</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:date">
-				<xsd:annotation>
-					<xsd:documentation>Date and Time</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:filetime">
-				<xsd:annotation>
-					<xsd:documentation>File Time</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:bool">
-				<xsd:annotation>
-					<xsd:documentation>Boolean</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:cy">
-				<xsd:annotation>
-					<xsd:documentation>Currency</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:error">
-				<xsd:annotation>
-					<xsd:documentation>Error Status Code</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:stream">
-				<xsd:annotation>
-					<xsd:documentation>Binary Stream</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:ostream">
-				<xsd:annotation>
-					<xsd:documentation>Binary Stream Object</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:storage">
-				<xsd:annotation>
-					<xsd:documentation>Binary Storage</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:ostorage">
-				<xsd:annotation>
-					<xsd:documentation>Binary Storage Object</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:vstream">
-				<xsd:annotation>
-					<xsd:documentation>Binary Versioned Stream</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-			<xsd:element ref="vt:clsid">
-				<xsd:annotation>
-					<xsd:documentation>Class ID</xsd:documentation>
-				</xsd:annotation>
-			</xsd:element>
-		</xsd:choice>
-		<xsd:attribute name="fmtid" use="required" type="s:ST_Guid">
-			<xsd:annotation>
-				<xsd:documentation>Format ID</xsd:documentation>
-			</xsd:annotation>
-		</xsd:attribute>
-		<xsd:attribute name="pid" use="required" type="xsd:int">
-			<xsd:annotation>
-				<xsd:documentation>Property ID</xsd:documentation>
-			</xsd:annotation>
-		</xsd:attribute>
-		<xsd:attribute name="name" use="optional" type="xsd:string">
-			<xsd:annotation>
-				<xsd:documentation>Custom File Property Name</xsd:documentation>
-			</xsd:annotation>
-		</xsd:attribute>
-		<xsd:attribute name="linkTarget" use="optional" type="xsd:string">
-			<xsd:annotation>
-				<xsd:documentation>Bookmark Link Target</xsd:documentation>
-			</xsd:annotation>
-		</xsd:attribute>
-	</xsd:complexType>
+<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns="http://purl.oclc.org/ooxml/officeDocument/customProperties"
+  xmlns:vt="http://purl.oclc.org/ooxml/officeDocument/docPropsVTypes"
+  xmlns:s="http://purl.oclc.org/ooxml/officeDocument/sharedTypes"
+  targetNamespace="http://purl.oclc.org/ooxml/officeDocument/customProperties" blockDefault="#all"
+  elementFormDefault="qualified">
+  <xsd:import namespace="http://purl.oclc.org/ooxml/officeDocument/docPropsVTypes"
+    schemaLocation="shared-documentPropertiesVariantTypes.xsd"/>
+  <xsd:import namespace="http://purl.oclc.org/ooxml/officeDocument/sharedTypes"
+    schemaLocation="shared-commonSimpleTypes.xsd"/>
+  <xsd:element name="Properties" type="CT_Properties"/>
+  <xsd:complexType name="CT_Properties">
+    <xsd:sequence>
+      <xsd:element name="property" minOccurs="0" maxOccurs="unbounded" type="CT_Property"/>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Property">
+    <xsd:choice minOccurs="1" maxOccurs="1">
+      <xsd:element ref="vt:vector"/>
+      <xsd:element ref="vt:array"/>
+      <xsd:element ref="vt:blob"/>
+      <xsd:element ref="vt:oblob"/>
+      <xsd:element ref="vt:empty"/>
+      <xsd:element ref="vt:null"/>
+      <xsd:element ref="vt:i1"/>
+      <xsd:element ref="vt:i2"/>
+      <xsd:element ref="vt:i4"/>
+      <xsd:element ref="vt:i8"/>
+      <xsd:element ref="vt:int"/>
+      <xsd:element ref="vt:ui1"/>
+      <xsd:element ref="vt:ui2"/>
+      <xsd:element ref="vt:ui4"/>
+      <xsd:element ref="vt:ui8"/>
+      <xsd:element ref="vt:uint"/>
+      <xsd:element ref="vt:r4"/>
+      <xsd:element ref="vt:r8"/>
+      <xsd:element ref="vt:decimal"/>
+      <xsd:element ref="vt:lpstr"/>
+      <xsd:element ref="vt:lpwstr"/>
+      <xsd:element ref="vt:bstr"/>
+      <xsd:element ref="vt:date"/>
+      <xsd:element ref="vt:filetime"/>
+      <xsd:element ref="vt:bool"/>
+      <xsd:element ref="vt:cy"/>
+      <xsd:element ref="vt:error"/>
+      <xsd:element ref="vt:stream"/>
+      <xsd:element ref="vt:ostream"/>
+      <xsd:element ref="vt:storage"/>
+      <xsd:element ref="vt:ostorage"/>
+      <xsd:element ref="vt:vstream"/>
+      <xsd:element ref="vt:clsid"/>
+    </xsd:choice>
+    <xsd:attribute name="fmtid" use="required" type="s:ST_Guid"/>
+    <xsd:attribute name="pid" use="required" type="xsd:int"/>
+    <xsd:attribute name="name" use="optional" type="xsd:string"/>
+    <xsd:attribute name="linkTarget" use="optional" type="xsd:string"/>
+  </xsd:complexType>
 </xsd:schema>

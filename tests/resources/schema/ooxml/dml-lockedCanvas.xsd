@@ -1,13 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-			xmlns="http://schemas.openxmlformats.org/drawingml/2006/lockedCanvas"
-			xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main"
-			xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" elementFormDefault="qualified"
-			targetNamespace="http://schemas.openxmlformats.org/drawingml/2006/lockedCanvas">
-	<xsd:import namespace="http://schemas.openxmlformats.org/drawingml/2006/main" schemaLocation="dml-main.xsd"/>
-	<xsd:element name="lockedCanvas" type="a:CT_GvmlGroupShape">
-		<xsd:annotation>
-			<xsd:documentation>Locked Canvas Container</xsd:documentation>
-		</xsd:annotation>
-	</xsd:element>
+  xmlns="http://purl.oclc.org/ooxml/drawingml/lockedCanvas"
+  xmlns:a="http://purl.oclc.org/ooxml/drawingml/main"
+  xmlns:r="http://purl.oclc.org/ooxml/officeDocument/relationships" elementFormDefault="qualified"
+  targetNamespace="http://purl.oclc.org/ooxml/drawingml/lockedCanvas">
+  <xsd:import namespace="http://purl.oclc.org/ooxml/drawingml/main" schemaLocation="dml-main.xsd"/>
+  <xsd:element name="lockedCanvas" type="a:CT_GvmlGroupShape"/>
 </xsd:schema>
