@@ -54,6 +54,24 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
     private $xmlInternalErrors;
 
     /**
+     * @var array
+     */
+    private $arrayOpenDocumentRNG = array(
+        '1.0' => array(
+            'META-INF/manifest.xml' => 'OpenDocument-manifest-schema-v1.0-os.rng',
+            '*' => 'OpenDocument-strict-schema-v1.0-os.rng',
+        ),
+        '1.1' => array(
+            'META-INF/manifest.xml' => 'OpenDocument-manifest-schema-v1.1.rng',
+            '*' => 'OpenDocument-strict-schema-v1.1.rng',
+        ),
+        '1.2' => array(
+            'META-INF/manifest.xml' => 'OpenDocument-v1.2-os-manifest-schema.rng',
+            '*' => 'OpenDocument-v1.2-os-schema.rng',
+        )
+    );
+
+    /**
      * Executed before each method of the class
      */
     public function setUp()
@@ -340,20 +358,93 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
 
             $error = libxml_get_last_error();
             if ($error instanceof \LibXMLError) {
-                break;
+                $this->failXmlError($error, $fileName, $xmlSource);
             }
         }
         unset($iterator);
+    }
 
-        if (is_object($error) && $error instanceof \LibXMLError) {
-            $errorLine = (int)$error->line;
-            $contents = explode("\n", $xmlSource);
-            $lines = array();
-            $lines[] = '>> ' . $contents[$errorLine - 2];
-            $lines[] = '>>> ' . $contents[$errorLine - 1];
-            $lines[] = '>> ' . $contents[$errorLine];
-            self::fail(sprintf("Validation error:\n - File : %s\n - Line : %s\n - Message : %s - Lines :\n%s", $file, $error->line, $error->message, implode(PHP_EOL, $lines)));
+    public function assertIsSchemaOpenDocumentValid($version = '1.0')
+    {
+        if (!array_key_exists($version, $this->arrayOpenDocumentRNG)) {
+            self::fail('assertIsSchemaOpenDocumentValid > Use a valid version');
+            return;
         }
 
+        // validate all XML files
+        $path = realpath($this->workDirectory);
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+
+        foreach ($iterator as $file) {
+            /** @var \SplFileInfo $file */
+            if ($file->getExtension() !== "xml") {
+                continue;
+            }
+
+            $fileName = str_replace('\\', '/', substr($file->getRealPath(), strlen($path) + 1));
+            $dom = $this->getXmlDom($fileName);
+            $xmlSource = $dom->saveXML();
+
+            $dom->loadXML($xmlSource);
+            $pathRNG = __DIR__ . '/../../../resources/schema/opendocument/'.$version.'/';
+            if (isset($this->arrayOpenDocumentRNG[$version][$fileName])) {
+                $pathRNG .= $this->arrayOpenDocumentRNG[$version][$fileName];
+            } else {
+                $pathRNG .= $this->arrayOpenDocumentRNG[$version]['*'];
+            }
+            $dom->relaxNGValidate($pathRNG);
+
+            $error = libxml_get_last_error();
+            if ($error instanceof \LibXMLError) {
+                $this->failXmlError($error, $fileName, $xmlSource, array('version' => $version));
+            }
+        }
+        unset($iterator);
+    }
+
+    /**
+     * @param \LibXMLError $error
+     * @param string $fileName
+     * @param string $source
+     * @param array $params
+     */
+    protected function failXmlError(\LibXMLError $error, $fileName, $source, array $params = array())
+    {
+        switch ($error->level) {
+            case LIBXML_ERR_WARNING:
+                $errorType = 'warning';
+                break;
+            case LIBXML_ERR_ERROR:
+                $errorType = 'error';
+                break;
+            case LIBXML_ERR_FATAL:
+                $errorType = 'fatal';
+                break;
+            default:
+                $errorType = 'Error';
+                break;
+        }
+        $errorLine = (int)$error->line;
+        $contents = explode("\n", $source);
+        $lines = array();
+        $lines[] = '>> ' . $contents[$errorLine - 2];
+        $lines[] = '>>> ' . $contents[$errorLine - 1];
+        $lines[] = '>> ' . $contents[$errorLine];
+        $paramStr = '';
+        if (!empty($params)) {
+            $paramStr .= "\n" . ' - Parameters :'."\n";
+            foreach ($params as $key => $val) {
+                $paramStr .= '   - '.$key.' : '.$val."\n";
+            }
+        }
+        self::fail(sprintf(
+            "Validation %s :\n - File : %s\n - Line : %s\n - Message : %s - Lines :\n%s%s",
+            $errorType,
+            $fileName,
+            $error->line,
+            $error->message,
+            implode(PHP_EOL, $lines),
+            $paramStr
+        ));
     }
 }

@@ -61,6 +61,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-style', 'normal');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-size', '16pt');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Arial');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testLegend()
@@ -82,6 +84,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTitleVisibility()
@@ -98,10 +102,14 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $elementTitle);
         $this->assertZipXmlElementExists('Object 1/content.xml', $elementStyle);
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
         $this->resetPresentationFile();
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementTitle);
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementStyle);
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeArea()
@@ -126,6 +134,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'draw:fill');
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'draw:fill-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill-color', '#93A9CE');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeAxisBounds()
@@ -144,12 +154,16 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:minimum');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:maximum');
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
         $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:maximum');
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:minimum');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:minimum', $value);
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oShape->getPlotArea()->getAxisX()->setMinBounds(null);
         $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
@@ -159,6 +173,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:maximum');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:maximum', $value);
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
         $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
         $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
         $this->resetPresentationFile();
@@ -167,6 +183,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:minimum', $value);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:maximum');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:maximum', $value);
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeBar()
@@ -197,6 +215,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:overlap', '0');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:percentage');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeBarGroupingStacked()
@@ -213,6 +233,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:overlap', '100');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:percentage');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeBarGroupingPercentStacked()
@@ -229,6 +251,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:overlap', '100');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:percentage', 'true');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeBarHorizontal()
@@ -253,6 +277,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:vertical', 'true');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:three-dimensional');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:right-angled-axes');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeBar3D()
@@ -281,6 +307,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:three-dimensional', 'true');
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:right-angled-axes');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:right-angled-axes', 'true');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeBar3DHorizontal()
@@ -307,6 +335,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:three-dimensional', 'true');
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:right-angled-axes');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:right-angled-axes', 'true');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
     
     public function testTypeLine()
@@ -332,7 +362,6 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.026cm');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
 
-
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:tick-marks-major-inner', 'false');
@@ -342,6 +371,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.026cm');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeLineGridlines()
@@ -414,6 +445,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $this->assertZipXmlAttributeEndsWith('Object 1/content.xml', $expectedElementStyle, 'svg:stroke-width', 'cm');
             $this->assertZipXmlAttributeStartsWith('Object 1/content.xml', $expectedElementStyle, 'svg:stroke-color', '#');
             $this->assertZipXmlAttributeEndsWith('Object 1/content.xml', $expectedElementStyle, 'svg:stroke-color', $expectedColor->getRGB());
+
+            $this->assertIsSchemaOpenDocumentValid('1.2');
         }
     }
 
@@ -448,11 +481,15 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-width', $expectedSizeCm);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-height', $expectedSizeCm);
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
         $oSeries->getMarker()->setSymbol($expectedSymbol2);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol3);
         $oLine->setSeries(array($oSeries));
@@ -460,11 +497,15 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
         $oSeries->getMarker()->setSymbol($expectedSymbol4);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol5);
         $oLine->setSeries(array($oSeries));
@@ -473,6 +514,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-name');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-width');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-height');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeLineSeriesOutline()
@@ -507,6 +550,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->setOutline($oOutline);
         $oLine->setSeries(array($oSeries));
@@ -518,6 +562,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', $expectedWidthCm);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
     
     public function testTypePie()
@@ -546,6 +591,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypePie3D()
@@ -574,6 +621,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
     
     public function testTypePie3DExplosion()
@@ -591,6 +640,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:pie-offset', $value);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
     
     public function testTypeScatter()
@@ -605,6 +655,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:body/office:chart/chart:chart';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:scatter');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeScatterMarker()
@@ -637,11 +688,15 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-width', $expectedSizeCm);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-height', $expectedSizeCm);
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
         $oSeries->getMarker()->setSymbol($expectedSymbol2);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol3);
         $oScatter->setSeries(array($oSeries));
@@ -649,11 +704,15 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
 
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
         $oSeries->getMarker()->setSymbol($expectedSymbol4);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol5);
         $oScatter->setSeries(array($oSeries));
@@ -662,6 +721,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-name');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-width');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-height');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testTypeScatterSeriesOutline()
@@ -695,6 +756,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->setOutline($oOutline);
         $oScatter->setSeries(array($oSeries));
@@ -706,6 +768,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', $expectedWidthCm);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testSeries()
@@ -723,6 +786,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         $oSeries->setShowValue(false);
         $this->resetPresentationFile();
@@ -731,6 +795,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-number');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         // $showCategoryName = false / $showPercentage = true / $showValue = true
         $oSeries->setShowValue(true);
@@ -741,6 +806,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value-and-percentage');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         // $showCategoryName = false / $showPercentage = true / $showValue = false
         $oSeries->setShowValue(false);
@@ -750,6 +816,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
         // $showCategoryName = false / $showPercentage = true / $showValue = false
         $oSeries->setShowCategoryName(true);
@@ -758,5 +825,6 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-text');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-text', 'true');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 }
