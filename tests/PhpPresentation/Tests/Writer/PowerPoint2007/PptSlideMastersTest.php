@@ -2,23 +2,22 @@
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptSlideMasters;
-use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
+use PhpOffice\PhpPresentation\Slide\SlideLayout;
+use PhpOffice\PhpPresentation\Slide\SlideMaster;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptSlideMasters;
 
 /**
  * Test class for PowerPoint2007
  *
  * @coversDefaultClass PowerPoint2007
  */
-class PptSlideMastersTest extends PhpPresentationTestCase
+class PptSlideMastersTest extends \PHPUnit_Framework_TestCase
 {
-    protected $writerName = 'PowerPoint2007';
-
     public function testWriteSlideMasterRelationships()
     {
         $writer = new PptSlideMasters();
+        /** @var \PHPUnit_Framework_MockObject_MockObject|SlideMaster $slideMaster */
         $slideMaster = $this->getMockBuilder('PhpOffice\\PhpPresentation\\Slide\\SlideMaster')
             ->setMethods(array('getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'))
             ->getMock();
@@ -54,6 +53,5 @@ class PptSlideMastersTest extends PhpPresentationTestCase
         $this->assertEquals('rId3', $list->item(2)->getAttribute('Id'));
         $this->assertEquals('rId4', $list->item(3)->getAttribute('Id'));
         $this->assertEquals('rId5', $list->item(4)->getAttribute('Id'));
-        $this->assertIsSchemaOOXMLValid();
     }
 }
