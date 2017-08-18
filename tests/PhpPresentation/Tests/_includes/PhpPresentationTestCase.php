@@ -352,6 +352,21 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
             $fileName = str_replace('\\', '/', substr($file->getRealPath(), strlen($path) + 1));
             $dom = $this->getXmlDom('ppt/' . $fileName);
             $xmlSource = $dom->saveXML();
+            // In the ISO/ECMA standard the namespace has changed from
+            // http://schemas.openxmlformats.org/ to http://purl.oclc.org/ooxml/
+            // We need to use the http://purl.oclc.org/ooxml/ namespace to validate
+            // the xml against the current schema
+            $xmlSource = str_replace(array(
+                "http://schemas.openxmlformats.org/drawingml/2006/main",
+                "http://schemas.openxmlformats.org/drawingml/2006/chart",
+                "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
+                "http://schemas.openxmlformats.org/presentationml/2006/main",
+            ), array(
+                "http://purl.oclc.org/ooxml/drawingml/main",
+                "http://purl.oclc.org/ooxml/drawingml/chart",
+                "http://purl.oclc.org/ooxml/officeDocument/relationships",
+                "http://purl.oclc.org/ooxml/presentationml/main",
+            ), $xmlSource);
 
             $dom->loadXML($xmlSource);
             $dom->schemaValidate(__DIR__ . '/../../../resources/schema/ooxml/pml.xsd');
