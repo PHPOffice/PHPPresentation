@@ -6,6 +6,7 @@
 - PowerPoint2007 : Text is subscripted when set superscript to false - @qmachard GH-360
 
 ### Changes
+- PowerPoint2007 Reader : Background Color based on SchemeColor - @Progi1984 GH-397
 
 ### Features
 
