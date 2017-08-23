@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.10.0 - WIP
+
+### Bugfix
+- PowerPoint2007 : Text is subscripted when set superscript to false - @qmachard GH-360
+
+### Changes
+
+### Features
+
 ## 0.9.0 - 2017-07-05
 
 ### Bugfix
