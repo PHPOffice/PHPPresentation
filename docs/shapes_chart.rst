@@ -48,6 +48,17 @@ For resetting them, you pass null as parameter to these methods.
     $oShape->getPlotArea()->getAxisX()->setMinBounds(0);
     $oShape->getPlotArea()->getAxisX()->setMaxBounds(200);
 
+You can define outline for each axis (X & Y).
+
+.. code-block:: php
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
+    $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+
 For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.
 For resetting them, you pass Axis::TICK_MARK_NONE as parameter to these methods.
 
@@ -75,6 +86,16 @@ For resetting them, you pass null as parameter to these methods.
     $oShape->getPlotArea()->setType($oLine);
     $oShape->getPlotArea()->getAxisY()->setMinorUnit(null);
     $oShape->getPlotArea()->getAxisY()->setMajorUnit(0.05);
+
+You can define visibility for each axis (X & Y).
+
+.. code-block:: php
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->setIsVisible(false);
 
 Title
 ^^^^^
@@ -164,6 +185,17 @@ TODO
 
 Bar & Bar3D
 ^^^^^^^^^^^
+
+Gap Width
+"""""""""
+
+You can define the gap width between bar or columns clusters. It is defined in percent.
+The default value is 150%. The value must be defined between 0 and 500.
+
+.. code-block:: php
+
+    $oBarChart = new Bar();
+    $oBarChart->setGapWidthPercent(250);
 
 Stacking
 """"""""

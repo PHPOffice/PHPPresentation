@@ -114,7 +114,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
      */
     public function testLayoutPack()
     {
-        $oLayoutPack = $this->getMock('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack');
+        $oLayoutPack = $this->getMockBuilder('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack')->getMock();
 
         $object = new PowerPoint2007();
 

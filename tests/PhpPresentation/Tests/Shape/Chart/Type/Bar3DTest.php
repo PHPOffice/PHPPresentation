@@ -75,6 +75,19 @@ class Bar3DTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Bar3D::GROUPING_PERCENTSTACKED, $object->getBarGrouping());
     }
 
+    public function testGapWidthPercent()
+    {
+        $value = rand(0, 500);
+        $object = new Bar3D();
+        $this->assertEquals(150, $object->getGapWidthPercent());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar3D', $object->setGapWidthPercent($value));
+        $this->assertEquals($value, $object->getGapWidthPercent());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar3D', $object->setGapWidthPercent(-1));
+        $this->assertEquals(0, $object->getGapWidthPercent());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar3D', $object->setGapWidthPercent(501));
+        $this->assertEquals(500, $object->getGapWidthPercent());
+    }
+
     public function testHashCode()
     {
         $oSeries = new Series();

@@ -126,6 +126,77 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'u', Font::UNDERLINE_DASH);
     }
 
+    public function testAxisOutline()
+    {
+        $expectedWidthX = 2;
+        $expectedColorX = 'ABCDEF';
+        $expectedWidthY = 4;
+        $expectedColorY = '012345';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oBar = new Bar();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->setWidth($expectedWidthX);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
+        $oShape->getPlotArea()->getAxisX()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorX);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->setWidth($expectedWidthY);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
+        $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorY);
+
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthX)));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorX);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthY)));
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorY);
+    }
+
+    public function testAxisVisibilityFalse()
+    {
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:delete';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+
+        // Set Visible : FALSE
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(false));
+        $this->assertFalse($oShape->getPlotArea()->getAxisX()->isVisible());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
+    }
+
+    public function testAxisVisibilityTrue()
+    {
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:delete';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+
+        // Set Visible : TRUE
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(true));
+        $this->assertTrue($oShape->getPlotArea()->getAxisX()->isVisible());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
+    }
+
     public function testTypeArea()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -277,10 +348,12 @@ class PptChartsTest extends PhpPresentationTestCase
 
     public function testTypeBar()
     {
+        $valueGapWidthPercent = rand(0, 500);
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oBar = new Bar();
+        $oBar->setGapWidthPercent($valueGapWidthPercent);
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKBLUE));
@@ -300,14 +373,18 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:gapWidth';
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
     }
 
     public function testTypeBar3D()
     {
+        $valueGapWidthPercent = rand(0, 500);
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oBar3D = new Bar3D();
+        $oBar3D->setGapWidthPercent($valueGapWidthPercent);
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKBLUE));
@@ -327,6 +404,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:gapWidth';
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
     }
 
     public function testTypeBar3DSubScript()
@@ -509,10 +588,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:spPr/a:ln';
 
         $oOutline = new Outline();
-        // Define the color
         $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
         $oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
-        // Define the width (in points)
         $oOutline->setWidth($expectedWidth);
 
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -854,7 +931,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 100);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100%');
 
         $oShape->getView3D()->setHeightPercent(null);
         $this->resetPresentationFile();

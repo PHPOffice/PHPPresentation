@@ -1,6 +1,19 @@
 # Changelog
 
-## 0.8.0 - WIP
+## 0.9.0 - 2017-07-05
+
+### Bugfix
+- PowerPoint2007 Writer : Margins in table cell - @Progi1984 GH-347
+
+### Changes
+- PowerPoint2007 Writer : Write percentage values with a trailing percent sign instead of formatted as 1000th of a percent to comply with the standard - @k42b3 GH-307
+
+### Features
+- PowerPoint2007 Writer : Implemented XSD validation test case according to the ECMA/ISO standard - @k42b3 GH-307
+- PowerPoint2007 Writer : Implement visibility for axis - @kw-pr @Progi1984 GH-356 
+- PowerPoint2007 Writer : Implement gap width in Bar(3D) Charts - @Progi1984 GH-358
+
+## 0.8.0 - 2017-04-03
 
 ### Bugfix
 - PowerPoint2007 Writer : Fixed the marker on line chart when symbol is none - @Napryc GH-211
@@ -11,6 +24,9 @@
 - PowerPoint2007 Writer : Fixed the label position in bar chart - @pgee70 GH-268
 - PowerPoint2007 Writer : Support of margins in cell in table - @carlosafonso @Progi1984 GH-273 GH-315
 - Fixed the corruption of file when an addExternalSlide is called - @Progi1984 GH-240
+
+### Changes
+- Misc : Added two methods for setting Border & Fill in Legend - @Progi1984 GH-265
 
 ### Features
 - ODPresentation Writer : Show/Hide Value / Name / Series Name in Chart - @Progi1984 GH-272
@@ -25,8 +41,8 @@
 - PowerPoint2007 Writer : Support text direction in Alignment for Table - @SeregPie GH-218
 - PowerPoint2007 Writer : Support tick mark & unit in Axis for Chart - @Faab GH-218
 - PowerPoint2007 Writer : Support separator in Series for Chart - @jphchaput GH-218
+- PowerPoint2007 Writer : Add support for Outline in Axis - @Progi1984 GH-255
 - PowerPoint2007 Writer : Support autoscale for Chart - @Progi1984 GH-293
-- Misc : Added two methods for setting Border & Fill in Legend - @Progi1984 GH-265
 
 ## 0.7.0 - 2016-09-12
 

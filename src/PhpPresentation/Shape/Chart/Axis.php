@@ -19,6 +19,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Axis
@@ -95,6 +96,16 @@ class Axis implements ComparableInterface
     protected $majorUnit;
 
     /**
+     * @var Outline
+     */
+    protected $outline;
+
+    /**
+     * @var boolean
+     */
+    protected $isVisible = true;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
      *
      * @param string $title Title
@@ -102,6 +113,7 @@ class Axis implements ComparableInterface
     public function __construct($title = 'Axis Title')
     {
         $this->title = $title;
+        $this->outline = new Outline();
         $this->font  = new Font();
     }
 
@@ -319,6 +331,24 @@ class Axis implements ComparableInterface
     }
 
     /**
+     * @return Outline
+     */
+    public function getOutline()
+    {
+        return $this->outline;
+    }
+
+    /**
+     * @param Outline $outline
+     * @return Axis
+     */
+    public function setOutline($outline)
+    {
+        $this->outline = $outline;
+        return $this;
+    }
+
+    /**
      * Get hash code
      *
      * @return string Hash code
@@ -355,10 +385,32 @@ class Axis implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
+     * @return $this
      */
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+        return $this;
+    }
+
+    /**
+     * Axis is hidden ?
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->isVisible;
+    }
+
+    /**
+     * Hide an axis
+     *
+     * @param boolean $value delete
+     * @return $this
+     */
+    public function setIsVisible($value)
+    {
+        $this->isVisible = (bool)$value;
         return $this;
     }
 }
