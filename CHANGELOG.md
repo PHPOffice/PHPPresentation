@@ -8,6 +8,7 @@
 ### Changes
 
 ### Features
+- PowerPoint2007 Writer : Support for DoughnutChart - @Progi1984 GH-355
 
 ## 0.9.0 - 2017-07-05
 

@@ -13,6 +13,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypePie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
@@ -182,6 +183,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('chart:style-name', 'styleChart');
         $this->xmlContent->writeAttributeIf($chartType instanceof Area, 'chart:class', 'chart:area');
         $this->xmlContent->writeAttributeIf($chartType instanceof AbstractTypeBar, 'chart:class', 'chart:bar');
+        $this->xmlContent->writeAttributeIf($chartType instanceof Doughnut, 'chart:class', 'chart:ring');
         $this->xmlContent->writeAttributeIf($chartType instanceof Line, 'chart:class', 'chart:line');
         $this->xmlContent->writeAttributeIf($chartType instanceof AbstractTypePie, 'chart:class', 'chart:circle');
         $this->xmlContent->writeAttributeIf($chartType instanceof Scatter, 'chart:class', 'chart:scatter');
