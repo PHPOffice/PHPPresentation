@@ -7,6 +7,7 @@
 
 ### Changes
 - PHP 7.1 is now supported - @Progi1984 GH-355
+- PhpOffice\PhpPresentation\Style\Color : Define only the transparency - @Progi1984 GH-370 
 
 ### Features
 - ODPresentation Writer : Support for the position of Legend - @Progi1984 GH-355
