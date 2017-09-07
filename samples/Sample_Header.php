@@ -252,7 +252,7 @@ class PhpPptTree {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\File"</span></li>');
         } elseif($shape instanceof Drawing\Base64) {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Base64"</span></li>');
-        } elseif($shape instanceof Drawing\Zip) {
+        } elseif($shape instanceof Drawing\ZipFile) {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Zip"</span></li>');
         } elseif($shape instanceof RichText) {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "RichText"</span></li>');
@@ -338,7 +338,22 @@ class PhpPptTree {
         $this->append('<dt>Width</dt><dd>'.$oShape->getWidth().'</dd>');
         $this->append('<dt>Rotation</dt><dd>'.$oShape->getRotation().'°</dd>');
         $this->append('<dt>Hyperlink</dt><dd>'.ucfirst(var_export($oShape->hasHyperlink(), true)).'</dd>');
-        $this->append('<dt>Fill</dt><dd>@Todo</dd>');
+        $this->append('<dt>Fill</dt>');
+        if (is_null($oShape->getFill())) {
+            $this->append('<dd>None</dd>');
+        } else {
+            switch($oShape->getFill()->getFillType()) {
+                case \PhpOffice\PhpPresentation\Style\Fill::FILL_NONE:
+                    $this->append('<dd>None</dd>');
+                    break;
+                case \PhpOffice\PhpPresentation\Style\Fill::FILL_SOLID:
+                    $this->append('<dd>Solid (');
+                    $this->append('Color : #'.$oShape->getFill()->getStartColor()->getRGB());
+                    $this->append(' - Alpha : '.$oShape->getFill()->getStartColor()->getAlpha().'%');
+                    $this->append(')</dd>');
+                    break;
+            }
+        }
         $this->append('<dt>Border</dt><dd>@Todo</dd>');
         $this->append('<dt>IsPlaceholder</dt><dd>' . ($oShape->isPlaceholder() ? 'true' : 'false') . '</dd>');
         if($oShape instanceof Drawing\Gd) {
@@ -350,7 +365,7 @@ class PhpPptTree {
             ob_end_clean();
             $this->append('<dt>Mime-Type</dt><dd>'.$oShape->getMimeType().'</dd>');
             $this->append('<dt>Image</dt><dd><img src="data:'.$oShape->getMimeType().';base64,'.base64_encode($sShapeImgContents).'"></dd>');
-        } elseif($oShape instanceof Drawing) {
+        } elseif($oShape instanceof Drawing\AbstractDrawingAdapter) {
             $this->append('<dt>Name</dt><dd>'.$oShape->getName().'</dd>');
             $this->append('<dt>Description</dt><dd>'.$oShape->getDescription().'</dd>');
         } elseif($oShape instanceof RichText) {
@@ -460,10 +475,10 @@ class PhpPptTree {
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <?php foreach ($files as $key => $files)  :?>
+                <?php foreach ($files as $key => $fileStr)  :?>
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key?>x<strong class="caret"></strong></a>
-                    <ul class="dropdown-menu"><?php echo $files; ?></ul>
+                    <ul class="dropdown-menu"><?php echo $fileStr; ?></ul>
                 </li>
                 <?php endforeach; ?>
             </ul>
