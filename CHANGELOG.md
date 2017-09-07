@@ -13,6 +13,7 @@
 - ODPresentation Writer : Support for the position of Legend - @Progi1984 GH-355
 - ODPresentation Writer : Support for DoughnutChart - @Progi1984 GH-355
 - PowerPoint2007 Writer : Support for DoughnutChart - @Progi1984 GH-355
+- ODPresentation Writer : Support for fill for transparent image - @Progi1984 GH-370
 - PowerPoint2007 Writer : Support for fill for transparent image - @JewrassicPark GH-370
 
 ## 0.9.0 - 2017-07-05
