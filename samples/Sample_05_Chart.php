@@ -172,23 +172,23 @@ function fnSlide_BarStacked(PhpPresentation $objPHPPresentation) {
     echo date( 'H:i:s' ) . ' Create a stacked bar chart (that should be inserted in a chart shape)' . EOL;
     $StackedBarChart = new Bar();
     $series1 = new Series( '2009', $series1Data );
-    $series1->setShowSeriesName( false );
+    $series1->setShowSeriesName(false);
     $series1->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF4F81BD' ) );
     $series1->getFont()->getColor()->setRGB( '00FF00' );
-    $series1->setShowValue( true );
-    $series1->setShowPercentage( false );
+    $series1->setShowValue(true);
+    $series1->setShowPercentage(false);
     $series2 = new Series( '2010', $series2Data );
-    $series2->setShowSeriesName( false );
+    $series2->setShowSeriesName(false);
     $series2->getFont()->getColor()->setRGB( 'FF0000' );
     $series2->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FFC0504D' ) );
-    $series2->setShowValue( true );
-    $series2->setShowPercentage( false );
+    $series2->setShowValue(true);
+    $series2->setShowPercentage(false);
     $series3 = new Series( '2011', $series3Data );
-    $series3->setShowSeriesName( false );
+    $series3->setShowSeriesName(false);
     $series3->getFont()->getColor()->setRGB( 'FF0000' );
     $series3->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF804DC0' ) );
-    $series3->setShowValue( true );
-    $series3->setShowPercentage( false );
+    $series3->setShowValue(true);
+    $series3->setShowPercentage(false);
     $StackedBarChart->addSeries( $series1 );
     $StackedBarChart->addSeries( $series2 );
     $StackedBarChart->addSeries( $series3 );
@@ -197,7 +197,7 @@ function fnSlide_BarStacked(PhpPresentation $objPHPPresentation) {
     echo date( 'H:i:s' ) . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
     $shape->setName( 'PHPPresentation Monthly Downloads' )
-        ->setResizeProportional( false )
+        ->setResizeProportional(false)
         ->setHeight( 550 )
         ->setWidth( 700 )
         ->setOffsetX( 120 )
@@ -206,13 +206,13 @@ function fnSlide_BarStacked(PhpPresentation $objPHPPresentation) {
     $shape->setFill( $oFill );
     $shape->getBorder()->setLineStyle( Border::LINE_SINGLE );
     $shape->getTitle()->setText( 'PHPPresentation Monthly Downloads' );
-    $shape->getTitle()->getFont()->setItalic( true );
+    $shape->getTitle()->getFont()->setItalic(true);
     $shape->getTitle()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_RIGHT );
     $shape->getPlotArea()->getAxisX()->setTitle( 'Month' );
     $shape->getPlotArea()->getAxisY()->setTitle( 'Downloads' );
     $shape->getPlotArea()->setType( $StackedBarChart );
     $shape->getLegend()->getBorder()->setLineStyle( Border::LINE_SINGLE );
-    $shape->getLegend()->getFont()->setItalic( true );
+    $shape->getLegend()->getFont()->setItalic(true);
 }
 
 function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation) {
@@ -245,26 +245,26 @@ function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation) {
     echo date( 'H:i:s' ) . ' Create a percent stacked horizontal bar chart (that should be inserted in a chart shape)' . EOL;
     $PercentStackedBarChartHoriz = new Bar();
     $series1 = new Series( '2009', $series1Data );
-    $series1->setShowSeriesName( false );
+    $series1->setShowSeriesName(false);
     $series1->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF4F81BD' ) );
     $series1->getFont()->getColor()->setRGB( '00FF00' );
-    $series1->setShowValue( true );
-    $series1->setShowPercentage( false );
+    $series1->setShowValue(true);
+    $series1->setShowPercentage(false);
     // Set Data Label Format For Chart To Display Percent
     $series1->setDlblNumFormat( '#%' );
     $series2 = new Series( '2010', $series2Data );
-    $series2->setShowSeriesName( false );
+    $series2->setShowSeriesName(false);
     $series2->getFont()->getColor()->setRGB( 'FF0000' );
     $series2->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FFC0504D' ) );
-    $series2->setShowValue( true );
-    $series2->setShowPercentage( false );
+    $series2->setShowValue(true);
+    $series2->setShowPercentage(false);
     $series2->setDlblNumFormat( '#%' );
     $series3 = new Series( '2011', $series3Data );
-    $series3->setShowSeriesName( false );
+    $series3->setShowSeriesName(false);
     $series3->getFont()->getColor()->setRGB( 'FF0000' );
     $series3->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF804DC0' ) );
-    $series3->setShowValue( true );
-    $series3->setShowPercentage( false );
+    $series3->setShowValue(true);
+    $series3->setShowPercentage(false);
     $series3->setDlblNumFormat( '#%' );
     $PercentStackedBarChartHoriz->addSeries( $series1 );
     $PercentStackedBarChartHoriz->addSeries( $series2 );
@@ -275,7 +275,7 @@ function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation) {
     echo date( 'H:i:s' ) . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
     $shape->setName( 'PHPPresentation Monthly Downloads' )
-        ->setResizeProportional( false )
+        ->setResizeProportional(false)
         ->setHeight( 550 )
         ->setWidth( 700 )
         ->setOffsetX( 120 )
@@ -284,13 +284,13 @@ function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation) {
     $shape->setFill( $oFill );
     $shape->getBorder()->setLineStyle( Border::LINE_SINGLE );
     $shape->getTitle()->setText( 'PHPPresentation Monthly Downloads' );
-    $shape->getTitle()->getFont()->setItalic( true );
+    $shape->getTitle()->getFont()->setItalic(true);
     $shape->getTitle()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_RIGHT );
     $shape->getPlotArea()->getAxisX()->setTitle( 'Month' );
     $shape->getPlotArea()->getAxisY()->setTitle( 'Downloads' );
     $shape->getPlotArea()->setType( $PercentStackedBarChartHoriz );
     $shape->getLegend()->getBorder()->setLineStyle( Border::LINE_SINGLE );
-    $shape->getLegend()->getFont()->setItalic( true );
+    $shape->getLegend()->getFont()->setItalic(true);
 }
 
 function fnSlide_Bar3D(PhpPresentation $objPHPPresentation) {
@@ -384,6 +384,61 @@ function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
+function fnSlide_Doughnut(PhpPresentation $objPHPPresentation)
+{
+    global $oFill;
+    global $oShadow;
+
+    // Create templated slide
+    echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
+
+    // Generate sample data for second chart
+    echo date('H:i:s') . ' Generate sample data for chart' . EOL;
+    $seriesData = array('Monday' => 18, 'Tuesday' => 23, 'Wednesday' => 14, 'Thursday' => 12, 'Friday' => 20, 'Saturday' => 8, 'Sunday' => 10);
+
+    // Create a doughnut chart (that should be inserted in a shape)
+    echo date('H:i:s') . ' Create a non-3D Doughnut chart (that should be inserted in a chart shape)' . EOL;
+    $doughnutChart = new \PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut();
+    $doughnutChart->setHoleSize(43);
+    $series = new Series('Downloads', $seriesData);
+    $series->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF7CB5EC'));
+    $series->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF434348'));
+    $series->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF90ED7D'));
+    $series->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFF7A35C'));
+    $series->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8085E9'));
+    $series->getDataPointFill(5)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFF15C80'));
+    $series->getDataPointFill(6)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE4D354'));
+    $series->setShowPercentage(true);
+    $series->setShowValue(false);
+    $series->setShowSeriesName(false);
+    $series->setShowCategoryName(true);
+    $series->setDlblNumFormat('%d');
+    $series->setSeparator(' > ');
+    $series->getFont()->getColor()->setRGB('FFFF00');
+    $series->getFont()->setBold(true);
+    $doughnutChart->addSeries($series);
+
+    // Create a shape (chart)
+    echo date('H:i:s') . ' Create a shape (chart)' . EOL;
+    $shape = $currentSlide->createChartShape();
+    $shape->setName('PHPPresentation Daily Downloads')
+        ->setResizeProportional(false)
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
+    $shape->setShadow($oShadow);
+    $shape->setFill($oFill);
+    $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getTitle()->setText('PHPPresentation Daily Downloads');
+    $shape->getTitle()->getFont()->setItalic(true);
+    $shape->getPlotArea()->setType($doughnutChart);
+    $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getLegend()->getFont()->setItalic(true);
+    $shape->getLegend()->setPosition(\PhpOffice\PhpPresentation\Shape\Chart\Legend::POSITION_LEFT);
+}
+
 function fnSlide_Pie3D(PhpPresentation $objPHPPresentation) {
     global $oFill;
     global $oShadow;
@@ -456,10 +511,10 @@ function fnSlide_Pie(PhpPresentation $objPHPPresentation) {
     $series->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF8085E9'));
     $series->getDataPointFill(5)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFF15C80'));
     $series->getDataPointFill(6)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFE4D354'));
-    $series->setShowPercentage( true );
-    $series->setShowValue( false );
-    $series->setShowSeriesName( false );
-    $series->setShowCategoryName( true );
+    $series->setShowPercentage(true);
+    $series->setShowValue(false);
+    $series->setShowSeriesName(false);
+    $series->setShowCategoryName(true);
     $series->setDlblNumFormat('%d');
     $pieChart->addSeries($series);
 
@@ -562,6 +617,8 @@ fnSlide_BarHorizontal($objPHPPresentation);
 fnSlide_Bar3D($objPHPPresentation);
 
 fnSlide_Bar3DHorizontal($objPHPPresentation);
+
+fnSlide_Doughnut($objPHPPresentation);
 
 fnSlide_Pie3D($objPHPPresentation);
 
