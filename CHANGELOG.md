@@ -6,6 +6,7 @@
 - PowerPoint2007 : Text is subscripted when set superscript to false - @qmachard GH-360
 
 ### Changes
+- PHP 7.1 is now supported - @Progi1984 GH-355
 
 ### Features
 - ODPresentation Writer : Support for the position of Legend - @Progi1984 GH-355
