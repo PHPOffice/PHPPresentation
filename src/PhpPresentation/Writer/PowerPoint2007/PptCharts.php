@@ -1253,18 +1253,13 @@ class PptCharts extends AbstractDecoratorWriter
             foreach ($dataPointFills as $key => $value) {
                 // c:dPt
                 $objWriter->startElement('c:dPt');
-
-                // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
-
-                // c:spPr
+                // c:dPt/c:spPr
                 $objWriter->startElement('c:spPr');
-
-                // Write fill
                 $this->writeFill($objWriter, $value);
-
+                // c:dPt/##c:spPr
                 $objWriter->endElement();
-
+                // ##c:dPt
                 $objWriter->endElement();
             }
 
@@ -1355,6 +1350,13 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->endElement();
         // c:dLbls\c:txPr\
         $objWriter->endElement();
+
+        $separator = $series->getSeparator();
+        if (!empty($separator) && $separator != PHP_EOL) {
+            // c:dLbls\c:separator
+            $objWriter->writeElement('c:separator', $separator);
+        }
+
         // c:dLbls\
         $objWriter->endElement();
 
@@ -1409,18 +1411,13 @@ class PptCharts extends AbstractDecoratorWriter
             foreach ($dataPointFills as $key => $value) {
                 // c:dPt
                 $objWriter->startElement('c:dPt');
-
-                // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
-
-                // c:spPr
+                // c:dPt/c:spPr
                 $objWriter->startElement('c:spPr');
-
-                // Write fill
                 $this->writeFill($objWriter, $value);
-
+                // c:dPt/##c:spPr
                 $objWriter->endElement();
-
+                // ##c:dPt
                 $objWriter->endElement();
             }
 
@@ -1588,18 +1585,13 @@ class PptCharts extends AbstractDecoratorWriter
             foreach ($dataPointFills as $key => $value) {
                 // c:dPt
                 $objWriter->startElement('c:dPt');
-
-                // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
-
-                // c:spPr
+                // c:dPt/c:spPr
                 $objWriter->startElement('c:spPr');
-
-                // Write fill
                 $this->writeFill($objWriter, $value);
-
+                // c:dPt/##c:spPr
                 $objWriter->endElement();
-
+                // ##c:dPt
                 $objWriter->endElement();
             }
 

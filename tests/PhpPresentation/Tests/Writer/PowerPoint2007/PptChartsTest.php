@@ -8,6 +8,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
@@ -46,6 +47,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        /** @var AbstractType $stub */
         $stub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType');
         $oShape->getPlotArea()->setType($stub);
 
@@ -443,6 +445,7 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testTypeDoughnut()
     {
         $randHoleSize = rand(10, 90);
+        $randSeparator = chr(rand(ord('A'), ord('Z')));
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
@@ -467,6 +470,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:dLbls/c:separator';
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:dLbls/c:showBubbleSize';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
@@ -483,6 +488,13 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:holeSize';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $randHoleSize);
+
+        $oSeries->setSeparator($randSeparator);
+        $this->resetPresentationFile();
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:dLbls/c:separator';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $randSeparator);
     }
 
     public function testTypeBar3DBarDirection()

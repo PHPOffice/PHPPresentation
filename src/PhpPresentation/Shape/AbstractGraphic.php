@@ -226,7 +226,7 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
      * Set ResizeProportional
      *
      * @param  boolean                         $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing
+     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
      */
     public function setResizeProportional($pValue = true)
     {

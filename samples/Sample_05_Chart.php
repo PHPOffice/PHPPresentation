@@ -414,6 +414,7 @@ function fnSlide_Doughnut(PhpPresentation $objPHPPresentation)
     $series->setShowSeriesName(false);
     $series->setShowCategoryName(true);
     $series->setDlblNumFormat('%d');
+    $series->setSeparator(' > ');
     $series->getFont()->getColor()->setRGB('FFFF00');
     $series->getFont()->setBold(true);
     $doughnutChart->addSeries($series);
@@ -435,6 +436,7 @@ function fnSlide_Doughnut(PhpPresentation $objPHPPresentation)
     $shape->getPlotArea()->setType($doughnutChart);
     $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getLegend()->getFont()->setItalic(true);
+    $shape->getLegend()->setPosition(\PhpOffice\PhpPresentation\Shape\Chart\Legend::POSITION_LEFT);
 }
 
 function fnSlide_Pie3D(PhpPresentation $objPHPPresentation) {
