@@ -733,6 +733,12 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
 
+        $oElement = $document->getElement('p:spPr', $node);
+        if ($oElement instanceof \DOMElement) {
+            $oFill = $this->loadStyleFill($document, $oElement);
+            $oShape->setFill($oFill);
+        }
+
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
         if ($oElement instanceof \DOMElement) {
             if ($oElement->hasAttribute('rot')) {

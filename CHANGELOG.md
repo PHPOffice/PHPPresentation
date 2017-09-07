@@ -14,6 +14,7 @@
 - ODPresentation Writer : Support for DoughnutChart - @Progi1984 GH-355
 - PowerPoint2007 Writer : Support for DoughnutChart - @Progi1984 GH-355
 - ODPresentation Reader : Support for fill for image - @Progi1984 GH-370
+- PowerPoint2007 Reader : Support for fill for image - @Progi1984 GH-370
 - ODPresentation Writer : Support for fill for transparent image - @Progi1984 GH-370
 - PowerPoint2007 Writer : Support for fill for transparent image - @JewrassicPark GH-370
 
