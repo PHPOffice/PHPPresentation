@@ -466,8 +466,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('chart:style-name', 'styleLegend');
         // > chart:legend
         $this->xmlContent->endElement();
-
-
     }
 
     /**
