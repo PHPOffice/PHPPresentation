@@ -3,13 +3,13 @@
  * Header file
 */
 use PhpOffice\PhpPresentation\Autoloader;
-use PhpOffice\PhpPresentation\Settings;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
@@ -69,12 +69,16 @@ $textRun->getFont()->setBold(true)
 
 
 // Populate samples
-$files = '';
+$files = array();
 if ($handle = opendir('.')) {
     while (false !== ($file = readdir($handle))) {
         if (preg_match('/^Sample_\d+_/', $file)) {
             $name = str_replace('_', ' ', preg_replace('/(Sample_|\.php)/', '', $file));
-            $files .= "<li><a href='{$file}'>{$name}</a></li>";
+            $group = substr($name, 0, 1);
+            if (!isset($files[$group])) {
+                $files[$group] = '';
+            }
+            $files[$group] .= "<li><a href='{$file}'>{$name}</a></li>";
         }
     }
     closedir($handle);
@@ -456,10 +460,12 @@ class PhpPptTree {
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <?php foreach ($files as $key => $files)  :?>
                 <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples<strong class="caret"></strong></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key?>x<strong class="caret"></strong></a>
                     <ul class="dropdown-menu"><?php echo $files; ?></ul>
                 </li>
+                <?php endforeach; ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="https://github.com/PHPOffice/PHPPresentation"><i class="fa fa-github fa-lg" title="GitHub"></i>&nbsp;</a></li>
