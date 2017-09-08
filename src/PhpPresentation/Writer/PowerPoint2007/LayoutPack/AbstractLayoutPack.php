@@ -58,7 +58,7 @@ abstract class AbstractLayoutPack
      *
      * @var array
      */
-    protected $themes = '';
+    protected $themes = array();
 
     /**
      * Theme relations

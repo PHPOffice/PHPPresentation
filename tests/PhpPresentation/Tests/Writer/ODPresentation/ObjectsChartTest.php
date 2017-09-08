@@ -4,11 +4,13 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
@@ -27,6 +29,17 @@ use PhpOffice\PhpPresentation\Writer\ODPresentation;
 class ObjectsChartTest extends PhpPresentationTestCase
 {
     protected $writerName = 'ODPresentation';
+
+    /**
+     * @var array
+     */
+    protected $seriesData = array(
+        'A' => 1,
+        'B' => 2,
+        'C' => 4,
+        'D' => 3,
+        'E' => 2,
+    );
 
     public function testAxisFont()
     {
@@ -74,8 +87,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oLine);
 
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleLegend\']/style:chart-properties';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:auto-position', 'true');
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'end');
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row';
@@ -84,7 +101,103 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
+        $oChart->getLegend()->setPosition(Legend::POSITION_RIGHT);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'end');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oChart->getLegend()->setPosition(Legend::POSITION_LEFT);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'start');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oChart->getLegend()->setPosition(Legend::POSITION_BOTTOM);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'bottom');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oChart->getLegend()->setPosition(Legend::POSITION_TOP);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'top');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oChart->getLegend()->setPosition(Legend::POSITION_TOPRIGHT);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:legend';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'top-end');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testSeries()
+    {
+        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oPie = new Pie();
+        $oPie->addSeries($oSeries);
+        $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oChart->getPlotArea()->setType($oPie);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\']/style:chart-properties';
+
+        // $showCategoryName = false / $showPercentage = false / $showValue = true
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oSeries->setShowValue(false);
+        $this->resetPresentationFile();
+
+        // $showCategoryName = false / $showPercentage = false / $showValue = false
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // $showCategoryName = false / $showPercentage = true / $showValue = true
+        $oSeries->setShowValue(true);
+        $oSeries->setShowPercentage(true);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value-and-percentage');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // $showCategoryName = false / $showPercentage = true / $showValue = false
+        $oSeries->setShowValue(false);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-number');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // $showCategoryName = false / $showPercentage = true / $showValue = false
+        $oSeries->setShowCategoryName(true);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-text');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-text', 'true');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
@@ -338,7 +451,44 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
+
+    public function testTypeDoughnut()
+    {
+        // $randHoleSize = rand(10, 90);
+        $randSeparator = chr(rand(ord('A'), ord('Z')));
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oDoughnut = new Doughnut();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
+        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKBLUE));
+        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKGREEN));
+        $oSeries->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
+        $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
+        $oDoughnut->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oDoughnut);
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:ring');
+        $element = '/office:document-content/office:automatic-styles/style:style/style:chart-properties/chart:label-separator/text:p';
+        $this->assertZipXmlElementNotExists('Object 1/content.xml', $element);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        // $oDoughnut->setHoleSize($randHoleSize);
+        // $this->resetPresentationFile();
+
+        $oSeries->setSeparator($randSeparator);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:automatic-styles/style:style/style:chart-properties/chart:label-separator/text:p';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlElementEquals('Object 1/content.xml', $element, $randSeparator);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testTypeLine()
     {
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
