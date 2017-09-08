@@ -162,6 +162,25 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cmpd', Border::LINE_DOUBLE);
     }
 
+    public function testDrawingShapeFill()
+    {
+        $oColor = new Color(Color::COLOR_DARKRED);
+        $oColor->setAlpha(rand(0, 100));
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:solidFill/a:srgbClr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $oColor->getRGB());
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:solidFill/a:srgbClr/a:alpha';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeStartsWith('ppt/slides/slide1.xml', $element, 'val', $oColor->getAlpha());
+        $this->assertZipXmlAttributeEndsWith('ppt/slides/slide1.xml', $element, 'val', '%');
+    }
+
     public function testDrawingShapeShadow()
     {
         $oSlide = $this->oPresentation->getActiveSlide();

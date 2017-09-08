@@ -42,13 +42,16 @@ class ColorTest extends \PHPUnit_Framework_TestCase
      */
     public function testAlpha()
     {
+        $randAlpha = rand(0, 100);
         $object = new Color();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
         $this->assertEquals(100, $object->getAlpha());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
-        $this->assertEquals(100, $object->getAlpha());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB('AA0000FF'));
         $this->assertEquals(66.67, $object->getAlpha());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
+        $this->assertEquals(100, $object->getAlpha());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setAlpha($randAlpha));
+        $this->assertEquals($randAlpha, round($object->getAlpha()));
     }
 
     /**
