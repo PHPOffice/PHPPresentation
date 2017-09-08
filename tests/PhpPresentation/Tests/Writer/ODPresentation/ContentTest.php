@@ -38,6 +38,28 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
     }
 
+    public function testDrawingShapeFill()
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'none');
+
+        $oColor = new Color(Color::COLOR_DARKRED);
+        $oColor->setAlpha(rand(0, 100));
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:fill-color', '#');
+        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:fill-color', $oColor->getRGB());
+    }
+
     public function testComment()
     {
         $expectedName = 'Name';
