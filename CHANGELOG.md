@@ -8,6 +8,7 @@
 ### Changes
 - PHP 7.1 is now supported - @Progi1984 GH-355
 - PhpOffice\PhpPresentation\Style\Color : Define only the transparency - @Progi1984 GH-370 
+- PowerPoint2007 Reader : Background Color based on SchemeColor - @Progi1984 GH-397
 
 ### Features
 - ODPresentation Writer : Support for the position of Legend - @Progi1984 GH-355
