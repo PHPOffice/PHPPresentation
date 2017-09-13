@@ -67,7 +67,7 @@ class StylesTest extends PhpPresentationTestCase
         $element = "/office:document-styles/office:styles/draw:gradient";
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', 'gradient_' . $oCell->getFill()->getHashCode());
 
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
     
     public function testStrokeDash()

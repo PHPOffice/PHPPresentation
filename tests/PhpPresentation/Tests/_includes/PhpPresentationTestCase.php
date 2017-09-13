@@ -379,7 +379,12 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
         unset($iterator);
     }
 
-    public function assertIsSchemaOpenDocumentValid($version = '1.0')
+    /**
+     * @param string $version
+     * @param boolean $triggerError
+     * @return boolean
+     */
+    public function assertIsSchemaOpenDocumentValid($version = '1.0', $triggerError = true)
     {
         if (!array_key_exists($version, $this->arrayOpenDocumentRNG)) {
             self::fail('assertIsSchemaOpenDocumentValid > Use a valid version');
@@ -390,6 +395,7 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
         $path = realpath($this->workDirectory);
         $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
 
+        $isValid = true;
         foreach ($iterator as $file) {
             /** @var \SplFileInfo $file */
             if ($file->getExtension() !== "xml") {
@@ -411,10 +417,22 @@ class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
 
             $error = libxml_get_last_error();
             if ($error instanceof \LibXMLError) {
-                $this->failXmlError($error, $fileName, $xmlSource, array('version' => $version));
+                if ($triggerError) {
+                    $this->failXmlError($error, $fileName, $xmlSource, array('version' => $version));
+                }
+                $isValid = false;
             }
         }
         unset($iterator);
+        return $isValid;
+    }
+
+    public function assertIsSchemaOpenDocumentNotValid($version = '1.0')
+    {
+        $isValid = $this->assertIsSchemaOpenDocumentValid($version, false);
+        if ($isValid) {
+            self::fail('Failed : This document is currently valid (Schema version: '.$version.')');
+        }
     }
 
     /**

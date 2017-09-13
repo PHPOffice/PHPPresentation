@@ -583,6 +583,9 @@ class Content extends AbstractDecoratorWriter
      */
     public function writeShapeComment(XMLWriter $objWriter, Comment $oShape)
     {
+        /**
+         * Note : This element is not valid in the Schema 1.2
+         */
         // officeooo:annotation
         $objWriter->startElement('officeooo:annotation');
         $objWriter->writeAttribute('svg:x', number_format(CommonDrawing::pixelsToCentimeters($oShape->getOffsetX()), 2, '.', '').'cm');
@@ -632,75 +635,83 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
 
-        // table:table
-        $objWriter->startElement('table:table');
+        $arrayRows = $shape->getRows();
+        if (!empty($arrayRows)) {
+            $firstRow = reset($arrayRows);
+            // table:table
+            $objWriter->startElement('table:table');
+            foreach ($firstRow->getCells() as $cell) {
+                $objWriter->startElement('table:table-column');
+                $objWriter->endElement();
+            }
+            foreach ($arrayRows as $keyRow => $shapeRow) {
+                // table:table-row
+                $objWriter->startElement('table:table-row');
+                $objWriter->writeAttribute('table:style-name', 'gr'.$this->shapeId.'r'.$keyRow);
+                //@todo getFill
 
-        foreach ($shape->getRows() as $keyRow => $shapeRow) {
-            // table:table-row
-            $objWriter->startElement('table:table-row');
-            $objWriter->writeAttribute('table:style-name', 'gr'.$this->shapeId.'r'.$keyRow);
-            //@todo getFill
+                $numColspan = 0;
+                foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
+                    if ($numColspan == 0) {
+                        // table:table-cell
+                        $objWriter->startElement('table:table-cell');
+                        $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
+                        if ($shapeCell->getColspan() > 1) {
+                            $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
+                            $numColspan = $shapeCell->getColspan() - 1;
+                        }
 
-            $numColspan = 0;
-            foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
-                if ($numColspan == 0) {
-                    // table:table-cell
-                    $objWriter->startElement('table:table-cell');
-                    $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
-                    if ($shapeCell->getColspan() > 1) {
-                        $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
-                        $numColspan = $shapeCell->getColspan() - 1;
-                    }
+                        // text:p
+                        $objWriter->startElement('text:p');
 
-                    // text:p
-                    $objWriter->startElement('text:p');
-
-                    // text:span
-                    foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
-                        foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
-                            if ($shapeRichText instanceof TextElement || $shapeRichText instanceof Run) {
-                                // text:span
-                                $objWriter->startElement('text:span');
-                                if ($shapeRichText instanceof Run) {
-                                    $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getHashCode());
-                                }
-                                if ($shapeRichText->hasHyperlink() === true && $shapeRichText->getHyperlink()->getUrl() != '') {
-                                    // text:a
-                                    $objWriter->startElement('text:a');
-                                    $objWriter->writeAttribute('xlink:href', $shapeRichText->getHyperlink()->getUrl());
-                                    $objWriter->text($shapeRichText->getText());
+                        // text:span
+                        foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
+                            foreach ($shapeParagraph->getRichTextElements() as $shapeRichText) {
+                                if ($shapeRichText instanceof TextElement) {
+                                    // text:span
+                                    $objWriter->startElement('text:span');
+                                    if ($shapeRichText instanceof Run) {
+                                        $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getHashCode());
+                                    }
+                                    if ($shapeRichText->hasHyperlink() === true && $shapeRichText->getHyperlink()->getUrl() !== '') {
+                                        // text:a
+                                        $objWriter->startElement('text:a');
+                                        $objWriter->writeAttribute('xlink:type', 'simple');
+                                        $objWriter->writeAttribute('xlink:href', $shapeRichText->getHyperlink()->getUrl());
+                                        $objWriter->text($shapeRichText->getText());
+                                        $objWriter->endElement();
+                                    } else {
+                                        $objWriter->text($shapeRichText->getText());
+                                    }
                                     $objWriter->endElement();
-                                } else {
-                                    $objWriter->text($shapeRichText->getText());
+                                } elseif ($shapeRichText instanceof BreakElement) {
+                                    // text:span
+                                    $objWriter->startElement('text:span');
+                                    // text:line-break
+                                    $objWriter->startElement('text:line-break');
+                                    $objWriter->endElement();
+                                    $objWriter->endElement();
                                 }
-                                $objWriter->endElement();
-                            } elseif ($shapeRichText instanceof BreakElement) {
-                                // text:span
-                                $objWriter->startElement('text:span');
-                                // text:line-break
-                                $objWriter->startElement('text:line-break');
-                                $objWriter->endElement();
-                                $objWriter->endElement();
                             }
                         }
+
+                        // > text:p
+                        $objWriter->endElement();
+
+                        // > table:table-cell
+                        $objWriter->endElement();
+                    } else {
+                        // table:covered-table-cell
+                        $objWriter->writeElement('table:covered-table-cell');
+                        $numColspan--;
                     }
-
-                    // > text:p
-                    $objWriter->endElement();
-
-                    // > table:table-cell
-                    $objWriter->endElement();
-                } else {
-                    // table:covered-table-cell
-                    $objWriter->writeElement('table:covered-table-cell');
-                    $numColspan--;
                 }
+                // > table:table-row
+                $objWriter->endElement();
             }
-            // > table:table-row
+            // > table:table
             $objWriter->endElement();
         }
-        // > table:table
-        $objWriter->endElement();
         // > draw:frame
         $objWriter->endElement();
     }
@@ -999,25 +1010,31 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
                 $objWriter->writeAttribute('style:family', 'table-cell');
 
+                /**
+                 * Note : This element is not valid in the Schema 1.2
+                 */
                 // style:graphic-properties
-                $objWriter->startElement('style:graphic-properties');
-                if ($shapeCell->getFill()->getFillType() == Fill::FILL_SOLID) {
-                    $objWriter->writeAttribute('draw:fill', 'solid');
-                    $objWriter->writeAttribute('draw:fill-color', '#'.$shapeCell->getFill()->getStartColor()->getRGB());
+                if ($shapeCell->getFill()->getFillType() != Fill::FILL_NONE) {
+                    $objWriter->startElement('style:graphic-properties');
+                    if ($shapeCell->getFill()->getFillType() == Fill::FILL_SOLID) {
+                        $objWriter->writeAttribute('draw:fill', 'solid');
+                        $objWriter->writeAttribute('draw:fill-color', '#'.$shapeCell->getFill()->getStartColor()->getRGB());
+                    }
+                    if ($shapeCell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
+                        $objWriter->writeAttribute('draw:fill', 'gradient');
+                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_'.$shapeCell->getFill()->getHashCode());
+                    }
+                    $objWriter->endElement();
                 }
-                if ($shapeCell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
-                    $objWriter->writeAttribute('draw:fill', 'gradient');
-                    $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_'.$shapeCell->getFill()->getHashCode());
-                }
-                $objWriter->endElement();
-                // <style:graphic-properties
+                // >style:graphic-properties
 
                 // style:paragraph-properties
                 $objWriter->startElement('style:paragraph-properties');
                 $cellBorders = $shapeCell->getBorders();
-                if ($cellBorders->getBottom()->getHashCode() == $cellBorders->getTop()->getHashCode()
-                    && $cellBorders->getBottom()->getHashCode() == $cellBorders->getLeft()->getHashCode()
-                    && $cellBorders->getBottom()->getHashCode() == $cellBorders->getRight()->getHashCode()) {
+                $cellBordersBottomHashCode = $cellBorders->getBottom()->getHashCode();
+                if ($cellBordersBottomHashCode == $cellBorders->getTop()->getHashCode()
+                    && $cellBordersBottomHashCode == $cellBorders->getLeft()->getHashCode()
+                    && $cellBordersBottomHashCode == $cellBorders->getRight()->getHashCode()) {
                     $lineStyle = 'none';
                     $lineWidth = Text::numberFormat($cellBorders->getBottom()->getLineWidth() / 1.75, 2);
                     $lineColor = $cellBorders->getBottom()->getColor()->getRGB();

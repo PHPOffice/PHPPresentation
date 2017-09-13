@@ -84,7 +84,7 @@ class ContentTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation/text:p';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlElementEquals('content.xml', $element, $expectedText);
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
     public function testCommentWithoutAuthor()
@@ -95,7 +95,7 @@ class ContentTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeNotExists('content.xml', $element, 'dc:creator');
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
     public function testFillGradientLinearRichText()
@@ -544,7 +544,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:fill-color', '#');
         $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:fill-color', $oColor->getRGB());
 
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
     
     public function testTableWithColspan()
