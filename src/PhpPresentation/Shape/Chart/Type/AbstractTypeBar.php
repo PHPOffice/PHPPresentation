@@ -60,7 +60,7 @@ class AbstractTypeBar extends AbstractType
      * Set bar orientation
      *
      * @param string                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
+     * @return $this
      */
     public function setBarDirection($value = self::DIRECTION_VERTICAL)
     {

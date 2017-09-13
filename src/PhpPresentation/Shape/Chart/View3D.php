@@ -186,7 +186,7 @@ class View3D implements ComparableInterface
      * Set HeightPercent (5 to 500)
      *
      * @param  int  $value
-     * @return self
+     * @return $this
      */
     public function setHeightPercent($value = 100)
     {
@@ -209,7 +209,7 @@ class View3D implements ComparableInterface
      * Set DepthPercent (20 to 2000)
      *
      * @param  int  $value
-     * @return self
+     * @return $this
      */
     public function setDepthPercent($value = 100)
     {
