@@ -264,10 +264,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->startElement('a:' . $shape->getAutoFit());
             if ($shape->getAutoFit() == RichText::AUTOFIT_NORMAL) {
                 if (!is_null($shape->getFontScale())) {
-                    $objWriter->writeAttribute('fontScale', (int)($shape->getFontScale() * 1000));
+                    $objWriter->writeAttribute('fontScale', $shape->getFontScale() . '%');
                 }
                 if (!is_null($shape->getLineSpaceReduction())) {
-                    $objWriter->writeAttribute('lnSpcReduction', (int)($shape->getLineSpaceReduction() * 1000));
+                    $objWriter->writeAttribute('lnSpcReduction', $shape->getLineSpaceReduction() . '%');
                 }
             }
             $objWriter->endElement();
@@ -593,8 +593,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('u', $element->getFont()->getUnderline());
 
                         // Superscript / subscript
-                        $objWriter->writeAttributeIf($element->getFont()->isSuperScript(), 'baseline', '30000');
-                        $objWriter->writeAttributeIf($element->getFont()->isSubScript(), 'baseline', '-25000');
+                        $objWriter->writeAttributeIf($element->getFont()->isSuperScript(), 'baseline', '300%');
+                        $objWriter->writeAttributeIf($element->getFont()->isSubScript(), 'baseline', '-250%');
 
                         // Color - a:solidFill
                         $objWriter->startElement('a:solidFill');

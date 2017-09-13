@@ -15,7 +15,6 @@ use PhpOffice\PhpPresentation\Slide\Animation;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 /**
  * Test class for PowerPoint2007
@@ -175,7 +174,7 @@ class PptSlideTest extends PhpPresentationTestCase
     public function testDrawingShapeFill()
     {
         $oColor = new Color(Color::COLOR_DARKRED);
-        $oColor->setAlpha(rand(0, 100));
+        $oColor->setAlpha(mt_rand(0, 100));
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
@@ -189,6 +188,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeStartsWith('ppt/slides/slide1.xml', $element, 'val', $oColor->getAlpha());
         $this->assertZipXmlAttributeEndsWith('ppt/slides/slide1.xml', $element, 'val', '%');
+        $this->assertIsSchemaOOXMLValid();
     }
 
     public function testDrawingShapeShadow()
@@ -223,7 +223,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="100%"]/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -247,7 +246,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100%"]/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -271,7 +269,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="100%"]/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -295,7 +292,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100%"]/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -319,7 +315,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:pattFill/a:bgClr/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -470,10 +465,10 @@ class PptSlideTest extends PhpPresentationTestCase
     public function testMedia()
     {
         $expectedName = 'MyName';
-        $expectedWidth = rand(1, 100);
-        $expectedHeight = rand(1, 100);
-        $expectedX = rand(1, 100);
-        $expectedY = rand(1, 100);
+        $expectedWidth = mt_rand(1, 100);
+        $expectedHeight = mt_rand(1, 100);
+        $expectedX = mt_rand(1, 100);
+        $expectedY = mt_rand(1, 100);
 
         $oMedia = new Media();
         $oMedia->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv')
@@ -551,15 +546,18 @@ class PptSlideTest extends PhpPresentationTestCase
 
     public function testRichTextAutoFitNormal()
     {
+        $expectedFontScale = 47.5;
+        $expectedLnSpcReduction = 20;
+
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
-        $oRichText->setAutoFit(RichText::AUTOFIT_NORMAL, 47.5, 20);
+        $oRichText->setAutoFit(RichText::AUTOFIT_NORMAL, $expectedFontScale, $expectedLnSpcReduction);
         $oRichText->createTextRun('This is my text for the test.');
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr/a:normAutofit';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'fontScale', 47500);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'lnSpcReduction', 20000);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'fontScale', $expectedFontScale.'%');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'lnSpcReduction', $expectedLnSpcReduction . '%');
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -587,7 +585,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
     public function testRichTextLineSpacing()
     {
-        $expectedLineSpacing = rand(1, 100);
+        $expectedLineSpacing = mt_rand(1, 100);
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -610,7 +608,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $expectedElement, 'lang');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'lang', 'en-US');
-
         $this->assertIsSchemaOOXMLValid();
 
         $oRun->setLanguage('de_DE');
@@ -620,7 +617,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $expectedElement, 'lang');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'lang', 'de_DE');
-
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -698,7 +694,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '-25000');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '-250%');
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -711,7 +707,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '30000');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '300%');
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -860,7 +856,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
     public function testTransition()
     {
-        $value = rand(1000, 5000);
+        $value = mt_rand(1000, 5000);
         $element = '/p:sld/p:transition';
 
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element);
@@ -1049,6 +1045,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $oTransition->setManualTrigger(true);
         $this->resetPresentationFile();
+
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'advClick', '1');
         $this->assertIsSchemaOOXMLValid();
     }
