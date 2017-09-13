@@ -224,10 +224,10 @@ class ContentTest extends PhpPresentationTestCase
     public function testMedia()
     {
         $expectedName = 'MyName';
-        $expectedWidth = rand(1, 100);
-        $expectedHeight = rand(1, 100);
-        $expectedX = rand(1, 100);
-        $expectedY = rand(1, 100);
+        $expectedWidth = mt_rand(1, 100);
+        $expectedHeight = mt_rand(1, 100);
+        $expectedX = mt_rand(1, 100);
+        $expectedY = mt_rand(1, 100);
 
         $oMedia = new Media();
         $oMedia->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/videos/sintel_trailer-480p.ogv')
@@ -311,15 +311,15 @@ class ContentTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $oRun->getHashCode() . '\']/style:text-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:language');
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'en-US');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'en');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        $oRun->setLanguage('de_DE');
+        $oRun->setLanguage('de');
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:language');
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'de_DE');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'de');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
@@ -362,14 +362,14 @@ class ContentTest extends PhpPresentationTestCase
     
     public function testRichTextShadow()
     {
-        $randAlpha = rand(0, 100);
+        $randAlpha = mt_rand(0, 100);
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->createTextRun('AAA');
         $oRichText->getShadow()->setVisible(true)->setAlpha($randAlpha)->setBlurRadius(2);
         
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
         for ($inc = 0; $inc <= 360; $inc += 45) {
-            $randDistance = rand(0, 100);
+            $randDistance = mt_rand(0, 100);
             $oRichText->getShadow()->setDirection($inc)->setDistance($randDistance);
 
             $this->assertZipXmlElementExists('content.xml', $element);
@@ -502,10 +502,21 @@ class ContentTest extends PhpPresentationTestCase
     
     public function testTable()
     {
-        $this->oPresentation->getActiveSlide()->createTableShape();
+        $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
+        $oRow = $oShape->createRow();
 
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table';
         $this->assertZipXmlElementExists('content.xml', $element);
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testTableEmpty()
+    {
+        $this->oPresentation->getActiveSlide()->createTableShape();
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table';
+        $this->assertZipXmlElementNotExists('content.xml', $element);
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
@@ -538,7 +549,7 @@ class ContentTest extends PhpPresentationTestCase
     
     public function testTableWithColspan()
     {
-        $value = rand(2, 100);
+        $value = mt_rand(2, 100);
 
         $oShape = $this->oPresentation->getActiveSlide()->createTableShape($value);
         $oRow = $oShape->createRow();
@@ -594,7 +605,7 @@ class ContentTest extends PhpPresentationTestCase
 
     public function testTransition()
     {
-        $value = rand(1000, 5000);
+        $value = mt_rand(1000, 5000);
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
 

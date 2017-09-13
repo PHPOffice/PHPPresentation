@@ -181,7 +181,7 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('fo:font-family', $oStyle->getBulletFont());
                         $objWriter->writeAttribute('style:font-family-generic', 'swiss');
                         $objWriter->writeAttribute('style:use-window-font-color', 'true');
-                        $objWriter->writeAttribute('fo:font-size', '100');
+                        $objWriter->writeAttribute('fo:font-size', '100%');
                         $objWriter->endElement();
                         $objWriter->endElement();
                     }
@@ -238,7 +238,7 @@ class Content extends AbstractDecoratorWriter
                 if ($item->getFont()->isBold()) {
                     $objWriter->writeAttribute('fo:font-weight', 'bold');
                 }
-                $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en-US'));
+                $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en'));
 
                 // @todo : style:text-underline-style
                 $objWriter->endElement();
@@ -470,6 +470,7 @@ class Content extends AbstractDecoratorWriter
                         if ($richtext->hasHyperlink() === true && $richtext->getHyperlink()->getUrl() != '') {
                             // text:a
                             $objWriter->startElement('text:a');
+                            $objWriter->writeAttribute('xlink:type', 'simple');
                             $objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
                             $objWriter->text($richtext->getText());
                             $objWriter->endElement();
@@ -535,6 +536,7 @@ class Content extends AbstractDecoratorWriter
                         if ($richtext->hasHyperlink() === true && $richtext->getHyperlink()->getUrl() != '') {
                             // text:a
                             $objWriter->startElement('text:a');
+                            $objWriter->writeAttribute('xlink:type', 'simple');
                             $objWriter->writeAttribute('xlink:href', $richtext->getHyperlink()->getUrl());
                             $objWriter->text($richtext->getText());
                             $objWriter->endElement();
@@ -814,6 +816,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('style:parent-style-name', 'standard');
         // style:graphic-properties
         $objWriter->startElement('style:graphic-properties');
+        $objWriter->writeAttribute('style:mirror', 'none');
         $this->writeStylePartShadow($objWriter, $shape->getShadow());
         if (is_bool($shape->hasAutoShrinkVertical())) {
             $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
@@ -926,6 +929,7 @@ class Content extends AbstractDecoratorWriter
         // style:graphic-properties
         $objWriter->startElement('style:graphic-properties');
         $objWriter->writeAttribute('draw:stroke', 'none');
+        $objWriter->writeAttribute('style:mirror', 'none');
         $this->writeStylePartFill($objWriter, $shape->getFill());
         $this->writeStylePartShadow($objWriter, $shape->getShadow());
         $objWriter->endElement();
@@ -1059,8 +1063,9 @@ class Content extends AbstractDecoratorWriter
                     }
                     $objWriter->writeAttribute('fo:border-left', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
                 }
+                // >style:paragraph-properties
                 $objWriter->endElement();
-
+                // >style:style
                 $objWriter->endElement();
 
                 foreach ($shapeCell->getParagraphs() as $shapeParagraph) {
@@ -1314,7 +1319,6 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('draw:fill', 'none');
                 break;
         }
-        $objWriter->writeAttribute('style:mirror', 'none');
     }
 
 
@@ -1358,6 +1362,5 @@ class Content extends AbstractDecoratorWriter
             $objWriter->writeAttribute('draw:shadow-offset-y', '-' . $distanceCms . 'cm');
         }
         $objWriter->writeAttribute('draw:shadow-opacity', (100 - $oShadow->getAlpha()) . '%');
-        $objWriter->writeAttribute('style:mirror', 'none');
     }
 }

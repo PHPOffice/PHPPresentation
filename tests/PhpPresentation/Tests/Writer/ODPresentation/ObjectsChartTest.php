@@ -7,6 +7,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Title;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
@@ -19,7 +20,6 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
-use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
@@ -211,13 +211,13 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $elementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleTitle\']';
 
         $this->assertTrue($oShape->getTitle()->isVisible());
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
+        $this->assertInstanceOf(Title::class, $oShape->getTitle()->setVisible(true));
         $this->assertZipXmlElementExists('Object 1/content.xml', $elementTitle);
         $this->assertZipXmlElementExists('Object 1/content.xml', $elementStyle);
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
+        $this->assertInstanceOf(Title::class, $oShape->getTitle()->setVisible(false));
         $this->resetPresentationFile();
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementTitle);
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementStyle);
@@ -253,7 +253,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeAxisBounds()
     {
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $oSeries = new Series('Downloads', array('A' => 1, 'B' => 2, 'C' => 4, 'D' => 3, 'E' => 2));
         $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
@@ -454,8 +454,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeDoughnut()
     {
-        // $randHoleSize = rand(10, 90);
-        $randSeparator = chr(rand(ord('A'), ord('Z')));
+        // $randHoleSize = mt_rand(10, 90);
+        $randSeparator = chr(mt_rand(ord('A'), ord('Z')));
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
@@ -563,7 +563,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $this->resetPresentationFile();
             $this->oPresentation->removeSlideByIndex(0)->createSlide();
 
-            $expectedSizePts = rand(1, 100);
+            $expectedSizePts = mt_rand(1, 100);
             $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSizePts), 2, '.', '').'cm';
             $expectedElementGrid = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\''.$arrayTest['dimension'].'\']/chart:grid';
             $expectedElementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\''.$arrayTest['styleName'].'\']/style:graphic-properties';
@@ -609,7 +609,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $expectedSymbol5 = Marker::SYMBOL_NONE;
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
-        $expectedSize = rand(1, 100);
+        $expectedSize = mt_rand(1, 100);
         $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '').'cm';
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
@@ -670,7 +670,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeLineSeriesOutline()
     {
-        $expectedWidth = rand(1, 100);
+        $expectedWidth = mt_rand(1, 100);
         $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
@@ -777,7 +777,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     
     public function testTypePie3DExplosion()
     {
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
         
         $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
         $oSeries->setShowSeriesName(true);
@@ -816,7 +816,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $expectedSymbol4 = Marker::SYMBOL_TRIANGLE;
         $expectedSymbol5 = Marker::SYMBOL_NONE;
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
-        $expectedSize = rand(1, 100);
+        $expectedSize = mt_rand(1, 100);
         $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '').'cm';
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
@@ -877,7 +877,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeScatterSeriesOutline()
     {
-        $expectedWidth = rand(1, 100);
+        $expectedWidth = mt_rand(1, 100);
         $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
