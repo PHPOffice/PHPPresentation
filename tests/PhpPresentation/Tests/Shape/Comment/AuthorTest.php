@@ -37,7 +37,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
 
     public function testGetSetIndex()
     {
-        $expectedVal = rand(1, 100);
+        $expectedVal = mt_rand(1, 100);
 
         $object = new Author();
         $this->assertNull($object->getIndex());

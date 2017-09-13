@@ -35,7 +35,7 @@ class PlaceholderTest extends \PHPUnit_Framework_TestCase
 
     public function testIdx()
     {
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $object = new Placeholder(Placeholder::PH_TYPE_BODY);
         $this->assertNull($object->getIdx());

@@ -56,7 +56,7 @@ class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
 
     public function testCX()
     {
-        $value = rand(1, 100000);
+        $value = mt_rand(1, 100000);
         $object = new DocumentLayout();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentLayout', $object->setCX($value));
         $this->assertEquals($value, $object->getCX());
@@ -76,7 +76,7 @@ class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
 
     public function testCY()
     {
-        $value = rand(1, 100000);
+        $value = mt_rand(1, 100000);
         $object = new DocumentLayout();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentLayout', $object->setCY($value));
         $this->assertEquals($value, $object->getCY());

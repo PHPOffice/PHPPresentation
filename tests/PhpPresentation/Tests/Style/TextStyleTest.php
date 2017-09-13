@@ -86,7 +86,7 @@ class TextStyleTest extends \PHPUnit_Framework_TestCase
 
     public function testLevel()
     {
-        $value = rand(0, 9);
+        $value = mt_rand(0, 9);
         $object = new TextStyle(false);
         $oParagraph = new Paragraph();
 

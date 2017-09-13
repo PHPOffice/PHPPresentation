@@ -32,7 +32,7 @@ class LineTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object = new Line($value, $value, $value, $value);
 
         $this->assertEquals(Border::LINE_SINGLE, $object->getBorder()->getLineStyle());

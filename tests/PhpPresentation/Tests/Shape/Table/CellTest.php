@@ -48,12 +48,12 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $object->getActiveParagraphIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
         $this->assertCount(2, $object->getParagraphs());
-        $value = rand(0, 1);
+        $value = mt_rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setActiveParagraph($value));
         $this->assertEquals($value, $object->getActiveParagraphIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getActiveParagraph());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph());
-        $value = rand(0, 1);
+        $value = mt_rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs(array()));
@@ -88,7 +88,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
     public function testSetGetHashIndex()
     {
         $object = new Cell();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -154,7 +154,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setColSpan());
         $this->assertEquals(0, $object->getColSpan());
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setColSpan($value));
         $this->assertEquals($value, $object->getColSpan());
     }
@@ -174,7 +174,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setRowSpan());
         $this->assertEquals(0, $object->getRowSpan());
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setRowSpan($value));
         $this->assertEquals($value, $object->getRowSpan());
     }
@@ -186,7 +186,7 @@ class CellTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());
     }

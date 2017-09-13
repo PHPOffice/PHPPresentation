@@ -342,7 +342,7 @@ class Axis implements ComparableInterface
      * @param Outline $outline
      * @return Axis
      */
-    public function setOutline($outline)
+    public function setOutline(Outline $outline)
     {
         $this->outline = $outline;
         return $this;

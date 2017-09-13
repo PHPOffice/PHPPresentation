@@ -65,7 +65,7 @@ class HyperlinkTest extends \PHPUnit_Framework_TestCase
     public function testSetGetHashIndex()
     {
         $object = new Hyperlink();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -78,7 +78,7 @@ class HyperlinkTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $object->getSlideNumber());
         $this->assertEquals('ppaction://hlinksldjump', $object->getUrl());
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setSlideNumber($value));
         $this->assertEquals($value, $object->getSlideNumber());

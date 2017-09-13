@@ -42,7 +42,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
      */
     public function testAlpha()
     {
-        $randAlpha = rand(0, 100);
+        $randAlpha = mt_rand(0, 100);
         $object = new Color();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
         $this->assertEquals(100, $object->getAlpha());
@@ -94,7 +94,7 @@ class ColorTest extends \PHPUnit_Framework_TestCase
     public function testSetGetHashIndex()
     {
         $object = new Color();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }

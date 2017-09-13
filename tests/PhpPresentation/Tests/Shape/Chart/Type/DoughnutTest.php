@@ -47,7 +47,7 @@ class DoughnutTest extends \PHPUnit_Framework_TestCase
 
     public function testHoleSize()
     {
-        $rand = rand(10, 90);
+        $rand = mt_rand(10, 90);
         $object = new Doughnut();
 
         $this->assertEquals(50, $object->getHoleSize());

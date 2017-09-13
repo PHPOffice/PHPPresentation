@@ -55,7 +55,7 @@ class OutlineTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Outline();
         $this->assertNull($object->getWidth());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth(1.5));

@@ -63,7 +63,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlpha());
         $this->assertEquals(0, $object->getAlpha());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlpha($value));
         $this->assertEquals($value, $object->getAlpha());
     }
@@ -76,7 +76,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setBlurRadius());
         $this->assertEquals(6, $object->getBlurRadius());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setBlurRadius($value));
         $this->assertEquals($value, $object->getBlurRadius());
     }
@@ -102,7 +102,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDirection());
         $this->assertEquals(0, $object->getDirection());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDirection($value));
         $this->assertEquals($value, $object->getDirection());
     }
@@ -115,7 +115,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
         $object = new Shadow();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDistance());
         $this->assertEquals(2, $object->getDistance());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDistance($value));
         $this->assertEquals($value, $object->getDistance());
     }
@@ -126,7 +126,7 @@ class ShadowTest extends \PHPUnit_Framework_TestCase
     public function testSetGetHashIndex()
     {
         $object = new Shadow();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }

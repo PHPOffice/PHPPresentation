@@ -55,7 +55,7 @@ class Pie3DTest extends \PHPUnit_Framework_TestCase
 
     public function testExplosion()
     {
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
         
         $object = new Pie3D();
 

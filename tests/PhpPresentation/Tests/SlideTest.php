@@ -58,7 +58,7 @@ class SlideTest extends \PHPUnit_Framework_TestCase
     
     public function testSlideMasterId()
     {
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         
         $object = new Slide();
         $this->assertEquals(1, $object->getSlideMasterId());

@@ -135,7 +135,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sy', 'd', 100);
         $this->assertIsSchemaOOXMLValid();
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->oPresentation->getPresentationProperties()->setZoom($value);
         $this->resetPresentationFile();
 
