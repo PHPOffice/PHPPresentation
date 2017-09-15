@@ -7,7 +7,6 @@ use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
-use PhpOffice\PhpPresentation\Shape\Chart\Title;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
@@ -211,13 +210,13 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $elementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleTitle\']';
 
         $this->assertTrue($oShape->getTitle()->isVisible());
-        $this->assertInstanceOf(Title::class, $oShape->getTitle()->setVisible(true));
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
         $this->assertZipXmlElementExists('Object 1/content.xml', $elementTitle);
         $this->assertZipXmlElementExists('Object 1/content.xml', $elementStyle);
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        $this->assertInstanceOf(Title::class, $oShape->getTitle()->setVisible(false));
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
         $this->resetPresentationFile();
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementTitle);
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementStyle);
