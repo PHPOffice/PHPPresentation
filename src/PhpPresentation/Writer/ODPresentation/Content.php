@@ -25,7 +25,6 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
-use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 class Content extends AbstractDecoratorWriter
 {
@@ -638,9 +637,10 @@ class Content extends AbstractDecoratorWriter
         $arrayRows = $shape->getRows();
         if (!empty($arrayRows)) {
             $firstRow = reset($arrayRows);
+            $arrayCells = $firstRow->getCells();
             // table:table
             $objWriter->startElement('table:table');
-            foreach ($firstRow->getCells() as $cell) {
+            while (each($arrayCells)) {
                 $objWriter->startElement('table:table-column');
                 $objWriter->endElement();
             }

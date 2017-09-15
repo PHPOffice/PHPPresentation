@@ -503,7 +503,7 @@ class ContentTest extends PhpPresentationTestCase
     public function testTable()
     {
         $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
-        $oRow = $oShape->createRow();
+        $oShape->createRow();
 
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table';
         $this->assertZipXmlElementExists('content.xml', $element);
