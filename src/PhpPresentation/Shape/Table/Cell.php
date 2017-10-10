@@ -164,21 +164,18 @@ class Cell implements ComparableInterface
     public function createParagraph()
     {
         $this->richTextParagraphs[] = new Paragraph();
+        $totalRichTextParagraphs = count($this->richTextParagraphs);
+        $this->activeParagraph = $totalRichTextParagraphs - 1;
 
-        if (count($this->richTextParagraphs) > 1) {
+        if ($totalRichTextParagraphs > 1) {
             $alignment = clone $this->getActiveParagraph()->getAlignment();
             $font = clone $this->getActiveParagraph()->getFont();
             $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
 
-            $this->activeParagraph = count($this->richTextParagraphs) - 1;
-
             $this->getActiveParagraph()->setAlignment($alignment);
             $this->getActiveParagraph()->setFont($font);
             $this->getActiveParagraph()->setBulletStyle($bulletStyle);
-        } else {
-            $this->activeParagraph = count($this->richTextParagraphs) - 1;
-        }
-
+        } 
         return $this->getActiveParagraph();
     }
 
@@ -279,13 +276,11 @@ class Cell implements ComparableInterface
      */
     public function setParagraphs($paragraphs = null)
     {
-        if (is_array($paragraphs)) {
-            $this->richTextParagraphs = $paragraphs;
-            $this->activeParagraph    = count($this->richTextParagraphs) - 1;
-        } else {
+        if (!is_array($paragraphs)) {
             throw new \Exception("Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.");
         }
-
+        $this->richTextParagraphs = $paragraphs;
+        $this->activeParagraph    = count($this->richTextParagraphs) - 1;
         return $this;
     }
 

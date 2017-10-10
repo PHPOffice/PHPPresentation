@@ -223,9 +223,8 @@ class PhpPresentation
     {
         if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Slide index is out of bounds.");
-        } else {
-            array_splice($this->slideCollection, $index, 1);
-        }
+        } 
+        array_splice($this->slideCollection, $index, 1);
 
         return $this;
     }
@@ -241,9 +240,8 @@ class PhpPresentation
     {
         if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Slide index is out of bounds.");
-        } else {
-            return $this->slideCollection[$index];
         }
+        return $this->slideCollection[$index];
     }
 
     /**
@@ -306,9 +304,8 @@ class PhpPresentation
     {
         if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Active slide index is out of bounds.");
-        } else {
-            $this->activeSlideIndex = $index;
         }
+        $this->activeSlideIndex = $index;
 
         return $this->getActiveSlide();
     }

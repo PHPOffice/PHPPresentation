@@ -484,8 +484,6 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->startElement('text:line-break');
                         $objWriter->endElement();
                         $objWriter->endElement();
-                    } else {
-                        //echo '<pre>'.print_r($richtext, true).'</pre>';
                     }
                 }
                 $objWriter->endElement();
@@ -549,8 +547,6 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->startElement('text:line-break');
                         $objWriter->endElement();
                         $objWriter->endElement();
-                    } else {
-                        //echo '<pre>'.print_r($richtext, true).'</pre>';
                     }
                 }
                 $objWriter->endElement();
