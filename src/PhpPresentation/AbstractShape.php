@@ -85,7 +85,7 @@ abstract class AbstractShape implements ComparableInterface
      *
      * @var int
      */
-    protected $rotation;
+    protected $rotation = 0;
 
     /**
      * Shadow.
@@ -123,7 +123,7 @@ abstract class AbstractShape implements ComparableInterface
      */
     public function __construct()
     {
-        $this->offsetX = $this->offsetY = $this->width = $this->height = $this->rotation = 0;
+        $this->offsetX = $this->offsetY = $this->width = $this->height = 0;
         $this->fill = new Fill();
         $this->shadow = new Shadow();
         $this->border = new Border();
@@ -319,22 +319,16 @@ abstract class AbstractShape implements ComparableInterface
 
     /**
      * Get Rotation.
-     *
-     * @return int
      */
-    public function getRotation()
+    public function getRotation(): int
     {
         return $this->rotation;
     }
 
     /**
      * Set Rotation.
-     *
-     * @param int $pValue
-     *
-     * @return $this
      */
-    public function setRotation($pValue = 0)
+    public function setRotation(int $pValue = 0): self
     {
         $this->rotation = $pValue;
 

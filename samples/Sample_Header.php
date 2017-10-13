@@ -92,6 +92,7 @@ if ($handle = opendir('.')) {
         if (preg_match('/^Sample_\d+_/', $file)) {
             $name = str_replace('_', ' ', preg_replace('/(Sample_|\.php)/', '', $file));
             $group = substr($name, 0, 1);
+            $id = substr($name, 0, 2);
             if (!isset($files[$group])) {
                 $files[$group] = [];
             }
