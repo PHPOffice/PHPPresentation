@@ -246,7 +246,34 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testAxisVisibilityFalse(): void
+    public function testAxisTitleRotation(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->getPlotArea()->setType($oBar);
+
+        $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:bodyPr';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeNotExists($pathShape, $element, 'rot');
+
+        $this->resetPresentationFile();
+        $value = rand(0, 360);
+        $oShape->getPlotArea()->getAxisX()->setTitleRotation($value);
+
+        $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:bodyPr';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeExists($pathShape, $element, 'rot');
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'rot', Drawing::degreesToAngle($value));
+    }
+
+    public function testAxisVisibility(): void
     {
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:delete';
 
@@ -262,16 +289,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
 
         $this->assertIsSchemaECMA376Valid();
-    }
 
-    public function testAxisVisibilityTrue(): void
-    {
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:delete';
-
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createChartShape();
-        $oLine = new Line();
-        $oShape->getPlotArea()->setType($oLine);
+        $this->resetPresentationFile();
 
         // Set Visible : TRUE
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(true));
