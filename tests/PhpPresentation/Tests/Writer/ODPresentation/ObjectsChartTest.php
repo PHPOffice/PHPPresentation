@@ -16,6 +16,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
@@ -511,6 +512,86 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testTypeAxisOutline(): void
+    {
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:graphic-properties';
+
+        $series = new Series('Series', $this->seriesData);
+        $lineChart = new Line();
+        $lineChart->addSeries($series);
+        $shape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $shape->getPlotArea()->setType($lineChart);
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'draw:stroke');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:stroke', 'none');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'svg:stroke-width');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.035cm');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#000000');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $shape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
+        $shape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
+        $shape->getPlotArea()->getAxisX()->getOutline()->getFill()->getStartColor()->setRGB('ABCDEF');
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'draw:stroke');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:stroke', 'solid');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'svg:stroke-width');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.353cm');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#ABCDEF');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testTypeAxisTickLabelPosition(): void
+    {
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+
+        $oSeries = new Series('Series', $this->seriesData);
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'near-axis');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:axis-position');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->getPlotArea()->getAxisX()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_HIGH);
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'outside-end');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-position', '0');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->getPlotArea()->getAxisX()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'outside-start');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-position', '0');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:tick-mark-position', 'at-axis');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
     public function testTypeAxisUnit(): void
     {
         $value = mt_rand(0, 100);
@@ -558,50 +639,6 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-minor-divisor', $value);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:interval-major');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:interval-major', $value);
-
-        // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentNotValid('1.2');
-    }
-
-    public function testTypeAxisTickLabelPosition(): void
-    {
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
-
-        $oSeries = new Series('Series', $this->seriesData);
-        $oLine = new Line();
-        $oLine->addSeries($oSeries);
-        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
-
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'near-axis');
-        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:axis-position');
-        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
-
-        // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentNotValid('1.2');
-
-        $this->resetPresentationFile();
-        $oShape->getPlotArea()->getAxisX()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_HIGH);
-
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'outside-end');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-position');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-position', '0');
-        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
-
-        // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentNotValid('1.2');
-
-        $this->resetPresentationFile();
-        $oShape->getPlotArea()->getAxisX()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
-
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'outside-start');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-position');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-position', '0');
-        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:tick-mark-position', 'at-axis');
 
         // chart:title : Element chart failed to validate attributes
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
@@ -824,8 +861,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:graphic-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.026cm');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.035cm');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#000000');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
@@ -834,8 +871,8 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:graphic-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.026cm');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-width', '0.035cm');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#000000');
 
         // chart:title : Element chart failed to validate attributes
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
@@ -1129,6 +1166,76 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:pie-offset', $value);
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testTypeRadar(): void
+    {
+        $series = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $series->setShowSeriesName(true);
+
+        $radarChart = new Radar();
+        $radarChart->addSeries($series);
+
+        $chart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $chart->getPlotArea()->setType($radarChart);
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:class');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:radar');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:reverse-direction');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:reverse-direction');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testTypeRadarSeriesOutline(): void
+    {
+        $expectedWidth = mt_rand(1, 100);
+        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
+
+        $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
+
+        $color = new Color(Color::COLOR_YELLOW);
+
+        $outline = new Outline();
+        $outline->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($color);
+        $outline->setWidth($expectedWidth); // (in points)
+
+        $series = new Series('Downloads', $this->seriesData);
+
+        $radarChart = new Radar();
+        $radarChart->addSeries($series);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($radarChart);
+
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', '0.079cm');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $series->setOutline($outline);
+        $radarChart->setSeries([$series]);
+        $this->resetPresentationFile();
+
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $expectedElement);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-width');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-width', $expectedWidthCm);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $color->getRGB());
         // chart:title : Element chart failed to validate attributes
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }

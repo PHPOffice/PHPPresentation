@@ -16,52 +16,24 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
-namespace PhpOffice\PhpPresentation\Style;
+namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 
-/**
- * \PhpOffice\PhpPresentation\Style\Outline.
- */
-class Outline
+use PhpOffice\PhpPresentation\ComparableInterface;
+
+class Radar extends AbstractType implements ComparableInterface
 {
     /**
-     * @var Fill
+     * Get hash code
+     *
+     * @return string Hash code
      */
-    protected $fill;
-
-    /**
-     * @var float
-     */
-    protected $width = 1;
-
-    public function __construct()
+    public function getHashCode(): string
     {
-        $this->fill = new Fill();
-    }
+        $hash = '';
+        foreach ($this->getSeries() as $series) {
+            $hash .= $series->getHashCode();
+        }
 
-    public function getFill(): Fill
-    {
-        return $this->fill;
-    }
-
-    public function setFill(Fill $fill): self
-    {
-        $this->fill = $fill;
-
-        return $this;
-    }
-
-    public function getWidth(): float
-    {
-        return $this->width;
-    }
-
-    /**
-     * Value in points.
-     */
-    public function setWidth(float $pValue = 1): self
-    {
-        $this->width = $pValue;
-
-        return $this;
+        return md5($hash . __CLASS__);
     }
 }

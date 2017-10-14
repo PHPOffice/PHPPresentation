@@ -37,10 +37,10 @@ class FillTest extends TestCase
         $object = new Fill();
         $this->assertEquals(Fill::FILL_NONE, $object->getFillType());
         $this->assertEquals(0, $object->getRotation());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getStartColor());
-        $this->assertEquals(Color::COLOR_WHITE, $object->getStartColor()->getARGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getEndColor());
-        $this->assertEquals(Color::COLOR_BLACK, $object->getEndColor()->getARGB());
+        $this->assertInstanceOf(Color::class, $object->getStartColor());
+        $this->assertEquals(Color::COLOR_WHITE, $object->getEndColor()->getARGB());
+        $this->assertInstanceOf(Color::class, $object->getEndColor());
+        $this->assertEquals(Color::COLOR_BLACK, $object->getStartColor()->getARGB());
     }
 
     /**
@@ -49,10 +49,8 @@ class FillTest extends TestCase
     public function testSetGetEndColor(): void
     {
         $object = new Fill();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setEndColor());
-        $this->assertNull($object->getEndColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setEndColor(new Color(COLOR::COLOR_BLUE)));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getEndColor());
+        $this->assertInstanceOf(Fill::class, $object->setEndColor(new Color(COLOR::COLOR_BLUE)));
+        $this->assertInstanceOf(Color::class, $object->getEndColor());
         $this->assertEquals(COLOR::COLOR_BLUE, $object->getEndColor()->getARGB());
     }
 
@@ -62,9 +60,9 @@ class FillTest extends TestCase
     public function testSetGetFillType(): void
     {
         $object = new Fill();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setFillType());
+        $this->assertInstanceOf(Fill::class, $object->setFillType());
         $this->assertEquals(Fill::FILL_NONE, $object->getFillType());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setFillType(Fill::FILL_GRADIENT_LINEAR));
+        $this->assertInstanceOf(Fill::class, $object->setFillType(Fill::FILL_GRADIENT_LINEAR));
         $this->assertEquals(Fill::FILL_GRADIENT_LINEAR, $object->getFillType());
     }
 
@@ -74,10 +72,10 @@ class FillTest extends TestCase
     public function testSetGetRotation(): void
     {
         $object = new Fill();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setRotation());
+        $this->assertInstanceOf(Fill::class, $object->setRotation());
         $this->assertEquals(0, $object->getRotation());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setRotation($value));
+        $this->assertInstanceOf(Fill::class, $object->setRotation($value));
         $this->assertEquals($value, $object->getRotation());
     }
 
@@ -87,10 +85,8 @@ class FillTest extends TestCase
     public function testSetGetStartColor(): void
     {
         $object = new Fill();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setStartColor());
-        $this->assertNull($object->getStartColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setStartColor(new Color(COLOR::COLOR_BLUE)));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getStartColor());
+        $this->assertInstanceOf(Fill::class, $object->setStartColor(new Color(COLOR::COLOR_BLUE)));
+        $this->assertInstanceOf(Color::class, $object->getStartColor());
         $this->assertEquals(COLOR::COLOR_BLUE, $object->getStartColor()->getARGB());
     }
 

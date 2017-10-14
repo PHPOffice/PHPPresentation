@@ -9,6 +9,7 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Title;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeLine;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypePie;
@@ -18,6 +19,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Outline;
@@ -173,6 +175,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         }
         $this->xmlContent->writeAttributeIf($chartType instanceof Doughnut, 'chart:class', 'chart:ring');
         $this->xmlContent->writeAttributeIf($chartType instanceof Line, 'chart:class', 'chart:line');
+        $this->xmlContent->writeAttributeIf($chartType instanceof Radar, 'chart:class', 'chart:radar');
         $this->xmlContent->writeAttributeIf($chartType instanceof Scatter, 'chart:class', 'chart:scatter');
 
         $this->writeTitle($chart->getTitle());
@@ -273,7 +276,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $chartType = $chart->getPlotArea()->getType();
 
         // AxisX
-        $this->writeAxisMainStyle($chart->getPlotArea()->getAxisX(), 'styleAxisX', $chartType instanceof AbstractTypePie);
+        $this->writeAxisMainStyle($chart->getPlotArea()->getAxisX(), 'styleAxisX', $chartType);
 
         // AxisX Title
         $this->writeAxisTitleStyle($chart->getPlotArea()->getAxisX(), 'styleAxisXTitle');
@@ -285,7 +288,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->writeGridlineStyle($chart->getPlotArea()->getAxisX()->getMinorGridlines(), 'styleAxisXGridlinesMinor');
 
         // AxisY
-        $this->writeAxisMainStyle($chart->getPlotArea()->getAxisY(), 'styleAxisY', $chartType instanceof AbstractTypePie);
+        $this->writeAxisMainStyle($chart->getPlotArea()->getAxisY(), 'styleAxisY', $chartType);
 
         // AxisY Title
         $this->writeAxisTitleStyle($chart->getPlotArea()->getAxisY(), 'styleAxisYTitle');
@@ -297,7 +300,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMinorGridlines(), 'styleAxisYGridlinesMinor');
     }
 
-    private function writeAxisMainStyle(Chart\Axis $axis, string $styleName, bool $isPieChart): void
+    private function writeAxisMainStyle(Chart\Axis $axis, string $styleName, AbstractType $chartType): void
     {
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -308,7 +311,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
-        $this->xmlContent->writeAttributeIf($isPieChart, 'chart:reverse-direction', 'true');
+        $this->xmlContent->writeAttributeIf($chartType instanceof AbstractTypePie, 'chart:reverse-direction', 'true');
         $this->xmlContent->writeAttributeIf(null !== $axis->getMinBounds(), 'chart:minimum', $axis->getMinBounds());
         $this->xmlContent->writeAttributeIf(null !== $axis->getMaxBounds(), 'chart:maximum', $axis->getMaxBounds());
         $this->xmlContent->writeAttributeIf(null !== $axis->getMajorUnit(), 'chart:interval-major', $axis->getMajorUnit());
@@ -327,12 +330,13 @@ class ObjectsChart extends AbstractDecoratorWriter
                 $this->xmlContent->writeAttribute('chart:tick-mark-position', 'at-axis');
                 break;
         }
+        $this->xmlContent->writeAttributeIf($chartType instanceof Radar && $styleName == 'styleAxisX', 'chart:reverse-direction', 'true');
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
-        $this->xmlContent->writeAttribute('draw:stroke', 'solid');
-        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
-        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
+        $this->xmlContent->writeAttribute('draw:stroke', $axis->getOutline()->getFill()->getFillType());
+        $this->xmlContent->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($axis->getOutline()->getWidth()), 3, '.', '') . 'cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#' . $axis->getOutline()->getFill()->getStartColor()->getRGB());
         $this->xmlContent->endElement();
         // style:style > style:text-properties
         $this->xmlContent->startElement('style:text-properties');
@@ -619,19 +623,13 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->startElement('chart:series');
         $this->xmlContent->writeAttribute('chart:values-cell-range-address', 'table-local.$' . $this->rangeCol . '$2:.$' . $this->rangeCol . '$' . ($numRange + 1));
         $this->xmlContent->writeAttribute('chart:label-cell-address', 'table-local.$' . $this->rangeCol . '$1');
-        // if ($chartType instanceof Area) {
-        //     $this->xmlContent->writeAttribute('chart:class', 'chart:area');
-        // } elseif ($chartType instanceof AbstractTypeBar) {
-        //     $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
-        // } elseif ($chartType instanceof Line) {
-        //     $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        // } elseif ($chartType instanceof AbstractTypePie) {
-        //     $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
-        // } elseif ($chartType instanceof Scatter) {
-        //     $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
-        // }
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries' . $this->numSeries);
-        if ($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof Scatter) {
+        if ($chartType instanceof Area
+            || $chartType instanceof AbstractTypeBar
+            || $chartType instanceof Line
+            || $chartType instanceof Radar
+            || $chartType instanceof Scatter
+        ) {
             $dataPointFills = $series->getDataPointFills();
 
             $incRepeat = $numRange;
@@ -758,7 +756,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
-        if ($chartType instanceof Line || $chartType instanceof Scatter) {
+        if ($chartType instanceof Line || $chartType instanceof Radar || $chartType instanceof Scatter) {
             $outlineWidth = '';
             $outlineColor = '';
 

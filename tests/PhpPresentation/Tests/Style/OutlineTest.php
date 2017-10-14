@@ -35,8 +35,8 @@ class OutlineTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Outline();
-        $this->assertNull($object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        $this->assertEquals(1, $object->getWidth());
+        $this->assertInstanceOf(Fill::class, $object->getFill());
     }
 
     /**
@@ -45,9 +45,9 @@ class OutlineTest extends TestCase
     public function testSetGetFill(): void
     {
         $object = new Outline();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setFill(new Fill()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        $this->assertInstanceOf(Fill::class, $object->getFill());
+        $this->assertInstanceOf(Outline::class, $object->setFill(new Fill()));
+        $this->assertInstanceOf(Fill::class, $object->getFill());
     }
 
     /**
@@ -56,9 +56,9 @@ class OutlineTest extends TestCase
     public function testSetGetWidth(): void
     {
         $object = new Outline();
-        $this->assertNull($object->getWidth());
+        $this->assertEquals(1, $object->getWidth());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth($value));
+        $this->assertInstanceOf(Outline::class, $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());
     }
 }

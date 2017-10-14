@@ -53,26 +53,26 @@ class Fill implements ComparableInterface
      *
      * @var string
      */
-    private $fillType;
+    private $fillType = self::FILL_NONE;
 
     /**
      * Rotation.
      *
      * @var float
      */
-    private $rotation;
+    private $rotation = 0.0;
 
     /**
      * Start color.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Color
+     * @var Color
      */
     private $startColor;
 
     /**
      * End color.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Color
+     * @var Color
      */
     private $endColor;
 
@@ -88,11 +88,8 @@ class Fill implements ComparableInterface
      */
     public function __construct()
     {
-        // Initialise values
-        $this->fillType = self::FILL_NONE;
-        $this->rotation = (float) 0;
-        $this->startColor = new Color(Color::COLOR_WHITE);
-        $this->endColor = new Color(Color::COLOR_BLACK);
+        $this->startColor = new Color(Color::COLOR_BLACK);
+        $this->endColor = new Color(Color::COLOR_WHITE);
     }
 
     /**
@@ -100,7 +97,7 @@ class Fill implements ComparableInterface
      *
      * @return string
      */
-    public function getFillType()
+    public function getFillType(): string
     {
         return $this->fillType;
     }
@@ -108,11 +105,11 @@ class Fill implements ComparableInterface
     /**
      * Set Fill Type.
      *
-     * @param string $pValue \PhpOffice\PhpPresentation\Style\Fill fill type
+     * @param string $pValue Fill type
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return self
      */
-    public function setFillType($pValue = self::FILL_NONE)
+    public function setFillType(string $pValue = self::FILL_NONE): self
     {
         $this->fillType = $pValue;
 
@@ -124,7 +121,7 @@ class Fill implements ComparableInterface
      *
      * @return float
      */
-    public function getRotation()
+    public function getRotation(): float
     {
         return $this->rotation;
     }
@@ -132,13 +129,13 @@ class Fill implements ComparableInterface
     /**
      * Set Rotation.
      *
-     * @param float|int $pValue
+     * @param float $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return self
      */
-    public function setRotation($pValue = 0)
+    public function setRotation(float $pValue = 0): self
     {
-        $this->rotation = (float) $pValue;
+        $this->rotation = $pValue;
 
         return $this;
     }
@@ -146,9 +143,9 @@ class Fill implements ComparableInterface
     /**
      * Get Start Color.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Color
+     * @return Color
      */
-    public function getStartColor()
+    public function getStartColor(): Color
     {
         // It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
         // So bind as an assurance.
@@ -158,13 +155,13 @@ class Fill implements ComparableInterface
     /**
      * Set Start Color.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Color $pValue
+     * @param Color $pValue
      *
      * @throws \Exception
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return self
      */
-    public function setStartColor(Color $pValue = null)
+    public function setStartColor(Color $pValue): self
     {
         $this->startColor = $pValue;
 
@@ -174,9 +171,9 @@ class Fill implements ComparableInterface
     /**
      * Get End Color.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Color
+     * @return Color
      */
-    public function getEndColor()
+    public function getEndColor(): Color
     {
         // It's a get but it may lead to a modified color which we won't detect but in which case we must bind.
         // So bind as an assurance.
@@ -186,13 +183,11 @@ class Fill implements ComparableInterface
     /**
      * Set End Color.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Color $pValue
+     * @param Color $pValue
      *
-     * @throws \Exception
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return self
      */
-    public function setEndColor(Color $pValue = null)
+    public function setEndColor(Color $pValue): self
     {
         $this->endColor = $pValue;
 

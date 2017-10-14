@@ -40,39 +40,35 @@ class Shadow implements ComparableInterface
      *
      * @var bool
      */
-    private $visible;
+    private $visible = false;
 
     /**
      * Blur radius.
      *
-     * Defaults to 6
-     *
      * @var int
      */
-    private $blurRadius;
+    private $blurRadius = 6;
 
     /**
      * Shadow distance.
      *
-     * Defaults to 2
-     *
      * @var int
      */
-    private $distance;
+    private $distance = 2;
 
     /**
      * Shadow direction (in degrees).
      *
      * @var int
      */
-    private $direction;
+    private $direction = 0;
 
     /**
      * Shadow alignment.
      *
      * @var string
      */
-    private $alignment;
+    private $alignment = self::SHADOW_BOTTOM_RIGHT;
 
     /**
      * @var Color|null
@@ -82,7 +78,7 @@ class Shadow implements ComparableInterface
     /**
      * @var int
      */
-    private $alpha;
+    private $alpha = 50;
 
     /**
      * Hash index.
@@ -96,14 +92,7 @@ class Shadow implements ComparableInterface
      */
     public function __construct()
     {
-        // Initialise values
-        $this->visible = false;
-        $this->blurRadius = 6;
-        $this->distance = 2;
-        $this->direction = 0;
-        $this->alignment = self::SHADOW_BOTTOM_RIGHT;
         $this->color = new Color(Color::COLOR_BLACK);
-        $this->alpha = 50;
     }
 
     /**
