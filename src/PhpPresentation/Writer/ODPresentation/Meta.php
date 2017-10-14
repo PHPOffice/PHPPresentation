@@ -3,6 +3,7 @@
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\DocumentProperties;
 
 class Meta extends AbstractDecoratorWriter
 {
@@ -51,6 +52,38 @@ class Meta extends AbstractDecoratorWriter
         $objWriter->writeElement('meta:initial-creator', $this->getPresentation()->getDocumentProperties()->getCreator());
         // meta:keyword
         $objWriter->writeElement('meta:keyword', $this->getPresentation()->getDocumentProperties()->getKeywords());
+
+        // meta:user-defined
+        $oDocumentProperties = $this->oPresentation->getDocumentProperties();
+        foreach ($oDocumentProperties->getCustomProperties() as $customProperty) {
+            $propertyValue = $oDocumentProperties->getCustomPropertyValue($customProperty);
+            $propertyType = $oDocumentProperties->getCustomPropertyType($customProperty);
+
+            $objWriter->startElement('meta:user-defined');
+            $objWriter->writeAttribute('meta:name', $customProperty);
+            switch ($propertyType) {
+                case DocumentProperties::PROPERTY_TYPE_INTEGER:
+                case DocumentProperties::PROPERTY_TYPE_FLOAT:
+                    $objWriter->writeAttribute('meta:value-type', 'float');
+                    $objWriter->writeRaw($propertyValue);
+                    break;
+                case DocumentProperties::PROPERTY_TYPE_BOOLEAN:
+                    $objWriter->writeAttribute('meta:value-type', 'boolean');
+                    $objWriter->writeRaw($propertyValue ? 'true' : 'false');
+                    break;
+                case DocumentProperties::PROPERTY_TYPE_DATE:
+                    $objWriter->writeAttribute('meta:value-type', 'date');
+                    $objWriter->writeRaw(date(DATE_W3C, (int) $propertyValue));
+                    break;
+                case DocumentProperties::PROPERTY_TYPE_STRING:
+                case DocumentProperties::PROPERTY_TYPE_UNKNOWN:
+                default:
+                    $objWriter->writeAttribute('meta:value-type', 'string');
+                    $objWriter->writeRaw($propertyValue);
+                    break;
+            }
+            $objWriter->endElement();
+        }
 
         // @todo : Where these properties are written ?
         // $this->getPresentation()->getDocumentProperties()->getCategory()

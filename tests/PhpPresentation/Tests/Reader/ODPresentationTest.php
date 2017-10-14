@@ -96,6 +96,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Sample 02 Subject', $oPhpPresentation->getDocumentProperties()->getSubject());
         $this->assertEquals('Sample 02 Description', $oPhpPresentation->getDocumentProperties()->getDescription());
         $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
+        $this->assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
+        $this->assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
+
         // Presentation Properties
         $this->assertEquals(PresentationProperties::SLIDESHOW_TYPE_PRESENT, $oPhpPresentation->getPresentationProperties()->getSlideshowType());
 
@@ -559,6 +562,8 @@ class ODPresentationTest extends TestCase
         $object = new ODPresentation();
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        $this->assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
+        $this->assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
 
         $this->assertEquals('MaDiapo', $oPhpPresentation->getSlide(0)->getName());
     }
@@ -569,6 +574,8 @@ class ODPresentationTest extends TestCase
         $object = new ODPresentation();
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        $this->assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
+        $this->assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
 
         $this->assertCount(3, $oPhpPresentation->getAllSlides());
 

@@ -23,6 +23,13 @@ namespace PhpOffice\PhpPresentation;
  */
 class DocumentProperties
 {
+    public const PROPERTY_TYPE_BOOLEAN = 'b';
+    public const PROPERTY_TYPE_INTEGER = 'i';
+    public const PROPERTY_TYPE_FLOAT = 'f';
+    public const PROPERTY_TYPE_DATE = 'd';
+    public const PROPERTY_TYPE_STRING = 's';
+    public const PROPERTY_TYPE_UNKNOWN = 'u';
+
     /**
      * Creator.
      *
@@ -94,7 +101,14 @@ class DocumentProperties
     private $company;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\DocumentProperties.
+     * Custom Properties.
+     *
+     * @var array<string, array<string, mixed>>
+     */
+    private $customProperties = [];
+
+    /**
+     * Create a new \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function __construct()
     {
@@ -353,6 +367,101 @@ class DocumentProperties
     public function setCompany($pValue = '')
     {
         $this->company = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get a List of Custom Property Names.
+     *
+     * @return array<int, string>
+     */
+    public function getCustomProperties(): array
+    {
+        return array_keys($this->customProperties);
+    }
+
+    /**
+     * Check if a Custom Property is defined.
+     *
+     * @param string $propertyName
+     *
+     * @return bool
+     */
+    public function isCustomPropertySet(string $propertyName): bool
+    {
+        return isset($this->customProperties[$propertyName]);
+    }
+
+    /**
+     * Get a Custom Property Value.
+     *
+     * @param string $propertyName
+     *
+     * @return string|null
+     */
+    public function getCustomPropertyValue(string $propertyName): ?string
+    {
+        if ($this->isCustomPropertySet($propertyName)) {
+            return $this->customProperties[$propertyName]['value'];
+        }
+
+        return null;
+    }
+
+    /**
+     * Get a Custom Property Type.
+     *
+     * @param string $propertyName
+     *
+     * @return string|null
+     */
+    public function getCustomPropertyType(string $propertyName): ?string
+    {
+        if ($this->isCustomPropertySet($propertyName)) {
+            return $this->customProperties[$propertyName]['type'];
+        }
+
+        return null;
+    }
+
+    /**
+     * Set a Custom Property.
+     *
+     * @param string $propertyName
+     * @param mixed $propertyValue
+     * @param string|null $propertyType
+     *                                  'i' : Integer
+     *                                  'f' : Floating Point
+     *                                  's' : String
+     *                                  'd' : Date/Time
+     *                                  'b' : Boolean
+     *
+     * @return self
+     */
+    public function setCustomProperty(string $propertyName, $propertyValue = '', ?string $propertyType = null): self
+    {
+        if (!in_array($propertyType, [
+            self::PROPERTY_TYPE_INTEGER,
+            self::PROPERTY_TYPE_FLOAT,
+            self::PROPERTY_TYPE_STRING,
+            self::PROPERTY_TYPE_DATE,
+            self::PROPERTY_TYPE_BOOLEAN,
+        ])) {
+            if (is_float($propertyValue)) {
+                $propertyType = self::PROPERTY_TYPE_FLOAT;
+            } elseif (is_int($propertyValue)) {
+                $propertyType = self::PROPERTY_TYPE_INTEGER;
+            } elseif (is_bool($propertyValue)) {
+                $propertyType = self::PROPERTY_TYPE_BOOLEAN;
+            } else {
+                $propertyType = self::PROPERTY_TYPE_STRING;
+            }
+        }
+        $this->customProperties[$propertyName] = [
+            'value' => $propertyValue,
+            'type' => $propertyType,
+        ];
 
         return $this;
     }
