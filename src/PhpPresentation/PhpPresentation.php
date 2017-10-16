@@ -223,7 +223,7 @@ class PhpPresentation
     {
         if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Slide index is out of bounds.");
-        } 
+        }
         array_splice($this->slideCollection, $index, 1);
 
         return $this;

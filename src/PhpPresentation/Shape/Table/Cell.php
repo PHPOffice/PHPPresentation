@@ -175,7 +175,7 @@ class Cell implements ComparableInterface
             $this->getActiveParagraph()->setAlignment($alignment);
             $this->getActiveParagraph()->setFont($font);
             $this->getActiveParagraph()->setBulletStyle($bulletStyle);
-        } 
+        }
         return $this->getActiveParagraph();
     }
 
