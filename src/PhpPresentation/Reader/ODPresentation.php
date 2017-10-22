@@ -27,6 +27,7 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -247,6 +248,26 @@ class ODPresentation implements ReaderInterface
                     $oShadow->setDistance(CommonDrawing::centimetersToPixels($distance));
                 }
             }
+            // Read Fill
+            if ($nodeGraphicProps->hasAttribute('draw:fill')) {
+                $value = $nodeGraphicProps->getAttribute('draw:fill');
+
+                switch ($value) {
+                    case 'none':
+                        $oFill = new Fill();
+                        $oFill->setFillType(Fill::FILL_NONE);
+                        break;
+                    case 'solid':
+                        $oFill = new Fill();
+                        $oFill->setFillType(Fill::FILL_SOLID);
+                        if ($nodeGraphicProps->hasAttribute('draw:fill-color')) {
+                            $oColor = new Color();
+                            $oColor->setRGB(substr($nodeGraphicProps->getAttribute('draw:fill-color'), 1));
+                            $oFill->setStartColor($oColor);
+                        }
+                        break;
+                }
+            }
         }
         
         $nodeTextProperties = $this->oXMLReader->getElement('style:text-properties', $nodeStyle);
@@ -316,6 +337,7 @@ class ODPresentation implements ReaderInterface
         $this->arrayStyles[$keyStyle] = array(
             'alignment' => isset($oAlignment) ? $oAlignment : null,
             'background' => isset($oBackground) ? $oBackground : null,
+            'fill' => isset($oFill) ? $oFill : null,
             'font' => isset($oFont) ? $oFont : null,
             'shadow' => isset($oShadow) ? $oShadow : null,
             'listStyle' => isset($arrayListStyle) ? $arrayListStyle : null,
@@ -395,6 +417,7 @@ class ODPresentation implements ReaderInterface
             $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
             if (isset($this->arrayStyles[$keyStyle])) {
                 $oShape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
+                $oShape->setFill($this->arrayStyles[$keyStyle]['fill']);
             }
         }
         
