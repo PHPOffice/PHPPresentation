@@ -93,6 +93,7 @@ abstract class AbstractType implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
+     * @return $this
      */
     public function setHashIndex($value)
     {

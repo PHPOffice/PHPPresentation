@@ -814,9 +814,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('style:parent-style-name', 'standard');
         // style:graphic-properties
         $objWriter->startElement('style:graphic-properties');
-        if ($shape->getShadow()->isVisible()) {
-            $this->writeStylePartShadow($objWriter, $shape->getShadow());
-        }
+        $this->writeStylePartShadow($objWriter, $shape->getShadow());
         if (is_bool($shape->hasAutoShrinkVertical())) {
             $objWriter->writeAttribute('draw:auto-grow-height', var_export($shape->hasAutoShrinkVertical(), true));
         }
@@ -915,7 +913,7 @@ class Content extends AbstractDecoratorWriter
      * Write the default style information for an AbstractDrawingAdapter
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter
-     * @param \PhpOffice\PhpPresentation\Shape\AbstractDrawingAdapter $shape
+     * @param AbstractDrawingAdapter $shape
      */
     public function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawingAdapter $shape)
     {
@@ -928,10 +926,8 @@ class Content extends AbstractDecoratorWriter
         // style:graphic-properties
         $objWriter->startElement('style:graphic-properties');
         $objWriter->writeAttribute('draw:stroke', 'none');
-        $objWriter->writeAttribute('draw:fill', 'none');
-        if ($shape->getShadow()->isVisible()) {
-            $this->writeStylePartShadow($objWriter, $shape->getShadow());
-        }
+        $this->writeStylePartFill($objWriter, $shape->getFill());
+        $this->writeStylePartShadow($objWriter, $shape->getShadow());
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1307,11 +1303,34 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * @param XMLWriter $objWriter
+     * @param Fill $oFill
+     */
+    protected function writeStylePartFill(XMLWriter $objWriter, Fill $oFill)
+    {
+        switch ($oFill->getFillType()) {
+            case Fill::FILL_SOLID:
+                $objWriter->writeAttribute('draw:fill', 'solid');
+                $objWriter->writeAttribute('draw:fill-color', '#' . $oFill->getStartColor()->getRGB());
+                break;
+            case Fill::FILL_NONE:
+            default:
+                $objWriter->writeAttribute('draw:fill', 'none');
+                break;
+        }
+        $objWriter->writeAttribute('style:mirror', 'none');
+    }
+
+
+    /**
+     * @param XMLWriter $objWriter
      * @param Shadow $oShadow
      * @todo Improve for supporting any direction (https://sinepost.wordpress.com/2012/02/16/theyve-got-atan-you-want-atan2/)
      */
     protected function writeStylePartShadow(XMLWriter $objWriter, Shadow $oShadow)
     {
+        if (!$oShadow->isVisible()) {
+            return;
+        }
         $objWriter->writeAttribute('draw:shadow', 'visible');
         $objWriter->writeAttribute('draw:shadow-color', '#' . $oShadow->getColor()->getRGB());
 

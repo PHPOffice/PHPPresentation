@@ -353,6 +353,18 @@ class PowerPoint2007 implements ReaderInterface
                     $oSlide = $this->oPhpPresentation->getActiveSlide();
                     $oSlide->setBackground($oBackground);
                 }
+                $oElementColor = $xmlReader->getElement('a:solidFill/a:schemeClr', $oElement);
+                if ($oElementColor instanceof \DOMElement) {
+                    // Color
+                    $oColor = new SchemeColor();
+                    $oColor->setValue($oElementColor->hasAttribute('val') ? $oElementColor->getAttribute('val') : null);
+                    // Background
+                    $oBackground = new Slide\Background\SchemeColor();
+                    $oBackground->setSchemeColor($oColor);
+                    // Slide Background
+                    $oSlide = $this->oPhpPresentation->getActiveSlide();
+                    $oSlide->setBackground($oBackground);
+                }
                 $oElementImage = $xmlReader->getElement('a:blipFill/a:blip', $oElement);
                 if ($oElementImage instanceof \DOMElement) {
                     $relImg = $this->arrayRels['ppt/slides/_rels/' . $baseFile . '.rels'][$oElementImage->getAttribute('r:embed')];
@@ -731,6 +743,12 @@ class PowerPoint2007 implements ReaderInterface
                     $oShape->setImageResource(imagecreatefromstring($imageFile));
                 }
             }
+        }
+
+        $oElement = $document->getElement('p:spPr', $node);
+        if ($oElement instanceof \DOMElement) {
+            $oFill = $this->loadStyleFill($document, $oElement);
+            $oShape->setFill($oFill);
         }
 
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);

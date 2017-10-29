@@ -1213,12 +1213,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // a:avLst
         $objWriter->writeElement('a:avLst', null);
         $objWriter->endElement();
-        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
-            $this->writeBorder($objWriter, $shape->getBorder(), '');
-        }
-        if ($shape->getShadow()->isVisible()) {
-            $this->writeShadow($objWriter, $shape->getShadow());
-        }
+
+        $this->writeFill($objWriter, $shape->getFill());
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $this->writeShadow($objWriter, $shape->getShadow());
+
         $objWriter->endElement();
         $objWriter->endElement();
     }
