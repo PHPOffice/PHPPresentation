@@ -4,8 +4,9 @@ namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PHPUnit\Framework\TestCase;
 
-class PhpPresentationTestCase extends \PHPUnit_Framework_TestCase
+class PhpPresentationTestCase extends TestCase
 {
     /**
      * @var PhpPresentation

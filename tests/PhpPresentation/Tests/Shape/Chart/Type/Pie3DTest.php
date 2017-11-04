@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Pie3D element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D
  */
-class Pie3DTest extends \PHPUnit_Framework_TestCase
+class Pie3DTest extends TestCase
 {
     public function testData()
     {
@@ -56,7 +57,7 @@ class Pie3DTest extends \PHPUnit_Framework_TestCase
     public function testExplosion()
     {
         $value = rand(0, 100);
-        
+
         $object = new Pie3D();
 
         $this->assertEquals(0, $object->getExplosion());

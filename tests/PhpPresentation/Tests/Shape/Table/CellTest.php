@@ -22,13 +22,14 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Style\Borders;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Cell element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Cell
  */
-class CellTest extends \PHPUnit_Framework_TestCase
+class CellTest extends TestCase
 {
     /**
      * Test can read

@@ -22,13 +22,14 @@ use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Paragraph element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Paragraph
  */
-class ParagraphTest extends \PHPUnit_Framework_TestCase
+class ParagraphTest extends TestCase
 {
     /**
      * Test can read

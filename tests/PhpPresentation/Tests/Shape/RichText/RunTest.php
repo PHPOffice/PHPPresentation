@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
 
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Style\Font;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Run element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Run
  */
-class RunTest extends \PHPUnit_Framework_TestCase
+class RunTest extends TestCase
 {
     /**
      * Test can read

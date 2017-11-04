@@ -21,13 +21,14 @@ use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class PhpPresentationTest extends \PHPUnit_Framework_TestCase
+class PhpPresentationTest extends TestCase
 {
     /**
      * Test create new instance

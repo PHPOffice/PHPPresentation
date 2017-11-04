@@ -21,13 +21,14 @@ use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\PlotArea;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PlotArea element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\PlotArea
  */
-class PlotAreaTest extends \PHPUnit_Framework_TestCase
+class PlotAreaTest extends TestCase
 {
     public function testConstruct()
     {

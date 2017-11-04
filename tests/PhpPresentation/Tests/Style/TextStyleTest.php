@@ -20,8 +20,9 @@ namespace PhpOffice\PhpPresentation\Tests\Style;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\TextStyle;
+use PHPUnit\Framework\TestCase;
 
-class TextStyleTest extends \PHPUnit_Framework_TestCase
+class TextStyleTest extends TestCase
 {
     public function testConstructDefaultTrue()
     {

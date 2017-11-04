@@ -20,46 +20,47 @@ namespace PhpOffice\PhpPresentation\Tests;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class SlideTest extends \PHPUnit_Framework_TestCase
+class SlideTest extends TestCase
 {
     public function testExtents()
     {
         $object = new Slide();
         $this->assertNotNull($object->getExtentX());
-        
+
         $object = new Slide();
         $this->assertNotNull($object->getExtentY());
     }
-    
+
     public function testOffset()
     {
         $object = new Slide();
         $this->assertNotNull($object->getOffsetX());
-        
+
         $object = new Slide();
         $this->assertNotNull($object->getOffsetY());
     }
-    
+
     public function testParent()
     {
         $object = new Slide();
         $this->assertNull($object->getParent());
-        
+
         $oPhpPresentation = new PhpPresentation();
         $object = new Slide($oPhpPresentation);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getParent());
     }
-    
+
     public function testSlideMasterId()
     {
         $value = rand(1, 100);
-        
+
         $object = new Slide();
         $this->assertEquals(1, $object->getSlideMasterId());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setSlideMasterId());

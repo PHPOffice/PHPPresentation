@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for DocumentLayout
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\DocumentLayout
  */
-class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
+class DocumentLayoutTest extends TestCase
 {
     /**
      * Test create new instance

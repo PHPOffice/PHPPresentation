@@ -20,13 +20,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Title;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Font;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Title element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Title
  */
-class TitleTest extends \PHPUnit_Framework_TestCase
+class TitleTest extends TestCase
 {
     public function testConstruct()
     {

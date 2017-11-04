@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Bar element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
  */
-class BarTest extends \PHPUnit_Framework_TestCase
+class BarTest extends TestCase
 {
     public function testData()
     {
@@ -52,7 +53,7 @@ class BarTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->addSeries(new Series()));
         $this->assertCount(1, $object->getSeries());
     }
-    
+
     public function testBarDirection()
     {
         $object = new Bar();

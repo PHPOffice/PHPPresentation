@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Outline;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Style\Outline
  */
-class OutlineTest extends \PHPUnit_Framework_TestCase
+class OutlineTest extends TestCase
 {
     /**
      * Test create new instance
