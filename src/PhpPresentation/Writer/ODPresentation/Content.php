@@ -1324,8 +1324,11 @@ class Content extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Fill $oFill
      */
-    protected function writeStylePartFill(XMLWriter $objWriter, Fill $oFill)
+    protected function writeStylePartFill(XMLWriter $objWriter, $oFill)
     {
+        if (!($oFill instanceof Fill)) {
+            return;
+        }
         switch ($oFill->getFillType()) {
             case Fill::FILL_SOLID:
                 $objWriter->writeAttribute('draw:fill', 'solid');
