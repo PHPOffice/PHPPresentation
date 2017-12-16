@@ -43,6 +43,10 @@ if (is_writable(__DIR__.DIRECTORY_SEPARATOR.'results'.DIRECTORY_SEPARATOR) === F
 {
 	throw new Exception ('The results folder is not writable!');
 }
+if (is_writable(__DIR__.DIRECTORY_SEPARATOR) === FALSE)
+{
+	throw new Exception ('The samples folder is not writable!');
+}
 
 // Set writers
 $writers = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
