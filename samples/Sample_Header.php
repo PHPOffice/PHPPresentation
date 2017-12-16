@@ -26,7 +26,10 @@ define('IS_INDEX', SCRIPT_FILENAME == 'index');
 require_once __DIR__ . '/../src/PhpPresentation/Autoloader.php';
 Autoloader::register();
 
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+if (is_file('/../../../../vendor/autoload.php'))
+{
+	require_once __DIR__ . '/../../../../vendor/autoload.php';
+}
 
 // Set writers
 $writers = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
@@ -490,4 +493,4 @@ class PhpPptTree {
         </div>
     </div>
 </div>
-<?php echo $pageHeading; ?>
+<?php echo $pageHeading;
