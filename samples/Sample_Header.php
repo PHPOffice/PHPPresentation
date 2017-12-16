@@ -34,6 +34,15 @@ else
 {
     throw new Exception ('Can not find the vendor folder!');
 }
+// do some checks to make sure the outputs are set correctly.
+if (is_dir(__DIR__.DIRECTORY_SEPARATOR.'results') === FALSE)
+{
+	throw new Exception ('The results folder is not present!');
+}
+if (is_writable(__DIR__.DIRECTORY_SEPARATOR.'results'.DIRECTORY_SEPARATOR) === FALSE)
+{
+	throw new Exception ('The results folder is not writable!');
+}
 
 // Set writers
 $writers = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
