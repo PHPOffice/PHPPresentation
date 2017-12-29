@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Style\Font;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Axis element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Axis
  */
-class AxisTest extends \PHPUnit_Framework_TestCase
+class AxisTest extends TestCase
 {
     public function testConstruct()
     {

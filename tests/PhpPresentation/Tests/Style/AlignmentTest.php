@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class AlignmentTest extends \PHPUnit_Framework_TestCase
+class AlignmentTest extends TestCase
 {
     /**
      * Test create new instance

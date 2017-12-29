@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PHPUnit\Framework\TestCase;
 
 require 'AbstractWriter.php';
 
@@ -26,7 +27,7 @@ require 'AbstractWriter.php';
  *
  * @coversDefaultClass AbstractWriter
  */
-class AbstractWriterTest extends \PHPUnit_Framework_TestCase
+class AbstractWriterTest extends TestCase
 {
     /**
      * Test create new instance

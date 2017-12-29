@@ -18,11 +18,12 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\Autoloader;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Autoloader
  */
-class AutoloaderTest extends \PHPUnit_Framework_TestCase
+class AutoloaderTest extends TestCase
 {
     /**
      * Register

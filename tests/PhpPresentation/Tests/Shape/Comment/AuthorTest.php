@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Comment;
 
 use PhpOffice\PhpPresentation\Shape\Comment\Author;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Author element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Comment\Author
  */
-class AuthorTest extends \PHPUnit_Framework_TestCase
+class AuthorTest extends TestCase
 {
     public function testConstruct()
     {

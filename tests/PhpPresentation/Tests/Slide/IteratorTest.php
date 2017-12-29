@@ -20,13 +20,14 @@ namespace PhpOffice\PhpPresentation\Tests\Slide;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Iterator;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for IOFactory
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\IOFactory
  */
-class IteratorTest extends \PHPUnit_Framework_TestCase
+class IteratorTest extends TestCase
 {
     /**
      */

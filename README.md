@@ -11,7 +11,7 @@
 Branch Master : [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation) [![Documentation Status](https://readthedocs.org/projects/phppresentation/badge/?version=master)](http://phppresentation.readthedocs.io/en/latest/?badge=master)  
 Branch Develop : [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=develop)](https://travis-ci.org/PHPOffice/PHPPresentation) [![Documentation Status](https://readthedocs.org/projects/phppresentation/badge/?version=develop)](http://phppresentation.readthedocs.io/en/latest/?badge=develop)
 
-PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF). 
+PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF).
 
 PHPPresentation is an open source project licensed under the terms of [LGPL version 3](https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER). PHPPresentation is aimed to be a high quality software product by incorporating [continuous integration](https://travis-ci.org/PHPOffice/PHPPresentation) and [unit testing](http://phpoffice.github.io/PHPPresentation/coverage/develop/). You can learn more about PHPPresentation by reading the [Developers' Documentation](http://phppresentation.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/develop/).
 
@@ -76,7 +76,7 @@ require_once 'path/to/PhpPresentation/src/PhpPresentation/Autoloader.php';
 ```
 
 You will also need to download the latest PHPOffice/Common release from its [releases page](https://github.com/PHPOffice/Common/releases).  
-And you will also have to register its autoloader, too. 
+And you will also have to register its autoloader, too.
 
 ```php
 require_once 'path/to/PhpOffice/Common/src/Common/Autoloader.php';
@@ -130,7 +130,7 @@ $textRun = $shape->createTextRun('Thank you for using PHPPresentation!');
 $textRun->getFont()->setBold(true)
                    ->setSize(60)
                    ->setColor( new Color( 'FFE06B20' ) );
-                   
+
 $oWriterPPTX = IOFactory::createWriter($objPHPPowerPoint, 'PowerPoint2007');
 $oWriterPPTX->save(__DIR__ . "/sample.pptx");
 $oWriterODP = IOFactory::createWriter($objPHPPowerPoint, 'ODPresentation');

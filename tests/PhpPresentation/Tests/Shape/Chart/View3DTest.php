@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\View3D;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for View3D element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\View3D
  */
-class View3DTest extends \PHPUnit_Framework_TestCase
+class View3DTest extends TestCase
 {
     public function testDepthPercent()
     {

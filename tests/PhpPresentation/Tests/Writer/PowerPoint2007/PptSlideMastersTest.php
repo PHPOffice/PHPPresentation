@@ -5,13 +5,14 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptSlideMasters;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PowerPoint2007
  *
  * @coversDefaultClass PowerPoint2007
  */
-class PptSlideMastersTest extends \PHPUnit_Framework_TestCase
+class PptSlideMastersTest extends TestCase
 {
     public function testWriteSlideMasterRelationships()
     {

@@ -20,13 +20,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for RichText element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText
  */
-class RichTextTest extends \PHPUnit_Framework_TestCase
+class RichTextTest extends TestCase
 {
     public function testConstruct()
     {
@@ -149,36 +150,36 @@ class RichTextTest extends \PHPUnit_Framework_TestCase
     public function testGetSetHAutoShrink()
     {
         $object = new RichText();
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal());
         $this->assertNull($object->hasAutoShrinkHorizontal());
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(2));
         $this->assertNull($object->hasAutoShrinkHorizontal());
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(true));
         $this->assertTrue($object->hasAutoShrinkHorizontal());
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(false));
         $this->assertFalse($object->hasAutoShrinkHorizontal());
     }
     public function testGetSetVAutoShrink()
     {
         $object = new RichText();
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical());
         $this->assertNull($object->hasAutoShrinkVertical());
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(2));
         $this->assertNull($object->hasAutoShrinkVertical());
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(true));
         $this->assertTrue($object->hasAutoShrinkVertical());
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(false));
         $this->assertFalse($object->hasAutoShrinkVertical());
     }
-    
+
     public function testGetSetHOverflow()
     {
         $object = new RichText();

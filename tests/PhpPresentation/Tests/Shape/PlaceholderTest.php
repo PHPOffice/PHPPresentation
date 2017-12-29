@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Placeholder;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Table element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Table
  */
-class PlaceholderTest extends \PHPUnit_Framework_TestCase
+class PlaceholderTest extends TestCase
 {
     public function testConstruct()
     {
