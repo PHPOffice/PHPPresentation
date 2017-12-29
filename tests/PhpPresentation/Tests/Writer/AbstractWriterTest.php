@@ -60,6 +60,6 @@ class AbstractWriterTest extends TestCase
         $writer->setPhpPresentation($presentation);
 
         $drawings = $writer->allDrawings();
-        $this->assertEquals(2, count($drawings), 'Number of drawings should equal two: one from normal slide and one from master slide');
+        $this->assertCount(2, $drawings, 'Number of drawings should equal two: one from normal slide and one from master slide');
     }
 }
