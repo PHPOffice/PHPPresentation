@@ -41,7 +41,7 @@ class PhpPresentationTest extends TestCase
         $this->assertEquals(new DocumentProperties(), $object->getDocumentProperties());
         $this->assertEquals(new DocumentLayout(), $object->getLayout());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getSlide());
-        $this->assertEquals(1, count($object->getAllSlides()));
+        $this->assertCount(1, $object->getAllSlides());
         $this->assertEquals(0, $object->getIndex($slide));
         $this->assertEquals(1, $object->getSlideCount());
         $this->assertEquals(0, $object->getActiveSlideIndex());

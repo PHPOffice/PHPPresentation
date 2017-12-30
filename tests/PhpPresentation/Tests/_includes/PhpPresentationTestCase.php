@@ -175,7 +175,7 @@ class PhpPresentationTestCase extends TestCase
     public function assertZipFileExists($filePath)
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
-        self::assertThat(is_file($this->workDirectory . $filePath), self::isTrue());
+        self::assertTrue(is_file($this->workDirectory . $filePath));
     }
 
     /**
@@ -184,7 +184,7 @@ class PhpPresentationTestCase extends TestCase
     public function assertZipFileNotExists($filePath)
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
-        self::assertThat(is_file($this->workDirectory . $filePath), self::isFalse());
+        self::assertFalse(is_file($this->workDirectory . $filePath));
     }
 
     /**
@@ -195,7 +195,7 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertThat(!($nodeList->length == 0), self::isTrue());
+        self::assertNotEquals(0, $nodeList->length);
     }
 
     /**
@@ -206,7 +206,7 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertThat(!($nodeList->length == 0), self::isFalse());
+        self::assertEquals(0, $nodeList->length);
     }
 
     /**
