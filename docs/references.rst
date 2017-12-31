@@ -32,7 +32,6 @@ OpenDocument
 -  `Oasis OpenDocument Standard Version
    1.2 <http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os.html>`__
 
-
 PowerPoint 97
 ---------------
 

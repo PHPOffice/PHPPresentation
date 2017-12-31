@@ -139,7 +139,6 @@ $oWriterODP->save(__DIR__ . "/sample.odp");
 
 More examples are provided in the [samples folder](samples/). You can also read the [Developers' Documentation](http://phppresentation.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/) for more detail.
 
-
 ## Contributing
 
 We welcome everyone to contribute to PHPPresentation. Below are some of the things that you can do to contribute:

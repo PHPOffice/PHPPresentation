@@ -249,7 +249,6 @@
 - PowerPoint2007 Writer: Scatter chart with numerical X values not working well  - @Progi1984 GH-3
 - Shape RichText: Support of Vertical Alignment in PowerPoint2007 - @Progi1984 GH-35
 
-
 ### Miscellaneous
 
 - Rename PHPPowerpoint.php to PHPPowerPoint.php - @maartenba CP-1165

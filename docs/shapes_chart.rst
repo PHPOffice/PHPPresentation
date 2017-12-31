@@ -229,7 +229,6 @@ You can stack multiples series in a same chart. After adding multiples series, y
    :width: 120px
    :alt: Bar::GROUPING_PERCENTSTACKED
 
-
 Line
 ^^^^
 

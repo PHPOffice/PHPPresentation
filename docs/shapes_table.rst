@@ -47,7 +47,6 @@ You can access cell object directly.
 	// Get the second cell
 	$cellA2 = $row->getCell(1);
 
-
 Define margins of a cell
 ~~~~~~~~~~~~~~~~~~~~~~~~
 Margins of cells are defined by margins of the first paragraph of cell.
@@ -66,7 +65,6 @@ For defining margins of cell, you can use the `setMargin*` method of a Alignment
 	    ->setMarginRight(60)
 	    ->setMarginTop(80);
 
-
 Define the text direction of a cell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 For defining the text direction of cell, you can use the `setTextDirection` method of the `getAlignment` method of a Cell object.
@@ -78,7 +76,6 @@ The width is in pixels.
 	$row = $tableShape->createRow();
 	$cellA1 = $row->nextCell();
 	$cellA1->getAlignment()->setTextDirection(\PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
-
 
 Define the width of a cell
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
