@@ -8,7 +8,7 @@
 [![BountySource](https://img.shields.io/bountysource/team/phpoffice/activity.svg)](https://www.bountysource.com/teams/phpoffice)
 [![Join the chat at https://gitter.im/PHPOffice/PHPPresentation](https://img.shields.io/badge/GITTER-join%20chat-green.svg)](https://gitter.im/PHPOffice/PHPPresentation)
 
-Branch Master : [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation) [![Documentation Status](https://readthedocs.org/projects/phppresentation/badge/?version=master)](http://phppresentation.readthedocs.io/en/latest/?badge=master)  
+Branch Master : [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=master)](https://travis-ci.org/PHPOffice/PHPPresentation) [![Documentation Status](https://readthedocs.org/projects/phppresentation/badge/?version=master)](http://phppresentation.readthedocs.io/en/latest/?badge=master)
 Branch Develop : [![Build Status](https://travis-ci.org/PHPOffice/PHPPresentation.svg?branch=develop)](https://travis-ci.org/PHPOffice/PHPPresentation) [![Documentation Status](https://readthedocs.org/projects/phppresentation/badge/?version=develop)](http://phppresentation.readthedocs.io/en/latest/?badge=develop)
 
 PHPPresentation is a library written in pure PHP that provides a set of classes to write to different presentation file formats, i.e. Microsoft [Office Open XML](http://en.wikipedia.org/wiki/Office_Open_XML) (OOXML or OpenXML) or OASIS [Open Document Format for Office Applications](http://en.wikipedia.org/wiki/OpenDocument) (OpenDocument or ODF).
@@ -66,8 +66,8 @@ the following lines to your ``composer.json``.
 
 #### Manual download method
 
-Alternatively, you can download the latest release from the [releases page](https://github.com/PHPOffice/PHPPresentation/releases).  
-In this case, you will have to register the autoloader.  
+Alternatively, you can download the latest release from the [releases page](https://github.com/PHPOffice/PHPPresentation/releases).
+In this case, you will have to register the autoloader.
 (Register autoloading is required only if you do not use composer in your project.)
 
 ```php
@@ -75,7 +75,7 @@ require_once 'path/to/PhpPresentation/src/PhpPresentation/Autoloader.php';
 \PhpOffice\PhpPresentation\Autoloader::register();
 ```
 
-You will also need to download the latest PHPOffice/Common release from its [releases page](https://github.com/PHPOffice/Common/releases).  
+You will also need to download the latest PHPOffice/Common release from its [releases page](https://github.com/PHPOffice/Common/releases).
 And you will also have to register its autoloader, too.
 
 ```php
@@ -138,7 +138,6 @@ $oWriterODP->save(__DIR__ . "/sample.odp");
 ```
 
 More examples are provided in the [samples folder](samples/). You can also read the [Developers' Documentation](http://phppresentation.readthedocs.org/) and the [API Documentation](http://phpoffice.github.io/PHPPresentation/docs/master/) for more detail.
-
 
 ## Contributing
 

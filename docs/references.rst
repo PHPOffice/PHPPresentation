@@ -8,7 +8,7 @@ OpenXML
 
 Known as "ISO/IEC 29500, Third edition, 2012-09-01"
 
-ISO : 
+ISO :
 
 -  `Part 1: Fundamentals and Markup Language Reference
    <http://standards.iso.org/ittf/PubliclyAvailableStandards/c061750_ISO_IEC_29500-1_2012.zip>`__
@@ -32,7 +32,6 @@ OpenDocument
 -  `Oasis OpenDocument Standard Version
    1.2 <http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os.html>`__
 
-   
 PowerPoint 97
 ---------------
 
