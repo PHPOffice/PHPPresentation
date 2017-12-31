@@ -100,7 +100,7 @@ You can define visibility for each axis (X & Y).
 Title
 ^^^^^
 
-By default, the title of a chart is displayed. 
+By default, the title of a chart is displayed.
 For hiding it, you define its visibility to false.
 
 .. code-block:: php
