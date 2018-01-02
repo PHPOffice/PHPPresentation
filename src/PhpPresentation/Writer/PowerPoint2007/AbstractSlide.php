@@ -300,11 +300,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         $objWriter->writeAttribute('rot',CommonDrawing::pixelsToEmu($shape->getRotation()));
 
-
-        print_r(CommonDrawing::pixelsToEmu($shape->getOffsetX()));
-        print_r('<br>');
-        print_r(CommonDrawing::pixelsToEmu($shape->getWidth()));
-
         if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
             // a:off
             $objWriter->startElement('a:off');
