@@ -20,12 +20,16 @@ use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\ArrowPointer;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\Rectangle;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RoundRectangle;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Shape\Triangle;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 
@@ -249,6 +253,74 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     public function createLineShape($fromX, $fromY, $toX, $toY)
     {
         $shape = new Line($fromX, $fromY, $toX, $toY);
+        $this->addShape($shape);
+        return $shape;
+    }
+
+    /**
+     * Create a Triangle.
+     *
+     * @param  int $fromX Starting point x offset
+     * @param  int $fromY Starting point y offset
+     * @param  int $toX Ending point x offset
+     * @param  int $toY Ending point y offset
+     * @param  int $rotation Used for the rotation clockwise or anti-clockwise
+     * @return \PhpOffice\PhpPresentation\Shape\Triangle
+     */
+    public function createTriangle($fromX, $fromY, $toX, $toY, $rotation)
+    {
+        $shape = new Triangle($fromX, $fromY, $toX, $toY, $rotation);
+        $this->addShape($shape);
+        return $shape;
+    }
+
+    /**
+     * Create a Rectangle.
+     *
+     * @param  int $fromX Starting point x offset
+     * @param  int $fromY Starting point y offset
+     * @param  int $toX Ending point x offset
+     * @param  int $toY Ending point y offset
+     * @param  int $rotation Used for the rotation clockwise or anti-clockwise
+     * @return \PhpOffice\PhpPresentation\Shape\Rectangle
+     */
+    public function createRectangle($fromX, $fromY, $toX, $toY, $rotation)
+    {
+        $shape = new Rectangle($fromX, $fromY, $toX, $toY, $rotation);
+        $this->addShape($shape);
+        return $shape;
+    }
+
+
+    /**
+     * Create a Round Rectangle.
+     *
+     * @param  int $fromX Starting point x offset
+     * @param  int $fromY Starting point y offset
+     * @param  int $toX Ending point x offset
+     * @param  int $toY Ending point y offset
+     * @param  int $rotation Used for the rotation clockwise or anti-clockwise
+     * @return \PhpOffice\PhpPresentation\Shape\RoundRectangle
+     */
+    public function createRoundRect($fromX, $fromY, $toX, $toY, $rotation)
+    {
+        $shape = new RoundRectangle($fromX, $fromY, $toX, $toY, $rotation);
+        $this->addShape($shape);
+        return $shape;
+    }
+
+    /**
+     * Create an arrow pointer
+     *
+     * @param  int $fromX Starting point x offset
+     * @param  int $fromY Starting point y offset
+     * @param  int $toX Ending point x offset
+     * @param  int $toY Ending point y offset
+     * @return \PhpOffice\PhpPresentation\Shape\ArrowPointer
+     */
+    public function createArrowPointer($fromX, $fromY, $toX, $toY)
+    {
+        $shape = new ArrowPointer($fromX, $fromY, $toX, $toY);
         $this->addShape($shape);
         return $shape;
     }
