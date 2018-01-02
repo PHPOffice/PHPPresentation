@@ -20,6 +20,7 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
+use PhpOffice\PhpPresentation\Shape\ArrowPointer;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
@@ -28,11 +29,14 @@ use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
+use PhpOffice\PhpPresentation\Shape\Rectangle;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PhpOffice\PhpPresentation\Shape\RoundRectangle;
 use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
+use PhpOffice\PhpPresentation\Shape\Triangle;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -41,6 +45,7 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
+use PhpOffice\PhpPresentation\Style\Fill;
 
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
@@ -139,11 +144,415 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeShapePic($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
-            } elseif ($shape instanceof Comment) {
+            }
+            elseif ($shape instanceof RoundRectangle) {
+                $this->writeShapeRoundRect($objWriter, $shape, $shapeId);
+            }
+            elseif ($shape instanceof Triangle) {
+                $this->writeShapeTriangle($objWriter, $shape, $shapeId);
+            }
+            elseif ($shape instanceof Rectangle) {
+                $this->writeShapeRectangle($objWriter, $shape, $shapeId);
+            }
+            elseif ($shape instanceof ArrowPointer) {
+                $this->writeShapeArrowPointer($objWriter, $shape, $shapeId);
+            }
+            elseif ($shape instanceof Comment) {
             } else {
                 throw new \Exception("Unknown Shape type: {get_class($shape)}");
             }
         }
+    }
+
+
+    /**
+     * Writing a Triangle shape to help develop more dynamic and useful slides with php presentation.
+     *
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPresentation\Shape\Triangle $shape
+     * @param  int $shapeId
+     * @throws \Exception
+     */
+    protected function writeShapeTriangle(XMLWriter $objWriter, Triangle $shape, $shapeId)
+    {
+        //p:sp
+        $objWriter->startElement('p:sp');
+        //p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+        //p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id',$shapeId);
+        $objWriter->writeAttribute('name','Triangle');
+        $objWriter->endElement();
+        //p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+        $objWriter->endElement();
+        //p:nvPr
+        $objWriter->startElement('p:nvPr');
+        $objWriter->endElement();
+        $objWriter->endElement();
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        $objWriter->writeAttribute('rot',CommonDrawing::pixelsToEmu($shape->getRotation()));
+
+        if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getHeight() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        }
+
+        $objWriter->endElement();
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'triangle');
+
+        // a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst');
+        $objWriter->endElement();
+        $this->writeSolidFill($objWriter, $shape->getFill());
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $objWriter->endElement();
+        $objWriter->endElement();
+
+    }
+
+    /**
+     * Writing a Rectangle shape to help develop more dynamic and useful slides with php presentation.
+     *
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPresentation\Shape\Rectangle $shape
+     * @param  int $shapeId
+     * @throws \Exception
+     */
+    protected function writeShapeRectangle(XMLWriter $objWriter, Rectangle $shape, $shapeId)
+    {
+        //p:sp
+        $objWriter->startElement('p:sp');
+        //p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+        //p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id',$shapeId);
+        $objWriter->writeAttribute('name','Rectangle');
+        $objWriter->endElement();
+        //p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+        $objWriter->endElement();
+        //p:nvPr
+        $objWriter->startElement('p:nvPr');
+        $objWriter->endElement();
+        $objWriter->endElement();
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        $objWriter->writeAttribute('rot',CommonDrawing::pixelsToEmu($shape->getRotation()));
+
+        if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getHeight() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        }
+
+        $objWriter->endElement();
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'rect');
+
+        // a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst');
+        $objWriter->endElement();
+        $this->writeSolidFill($objWriter, $shape->getFill());
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $objWriter->endElement();
+        $objWriter->endElement();
+
+    }
+
+    /**
+     * Writing an arrow pointer shape to help develop more dynamic and useful slides with php presentation.
+     *
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPresentation\Shape\ArrowPointer $shape
+     * @param  int $shapeId
+     * @throws \Exception
+     */
+    protected function writeShapeArrowPointer(XMLWriter $objWriter, ArrowPointer $shape, $shapeId)
+    {
+        // p:sp
+        $objWriter->startElement('p:cxnSp');
+        // p:nvSpPr
+        $objWriter->startElement('p:nvCxnSpPr');
+        // p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', $shapeId);
+        $objWriter->writeAttribute('name', 'Arrow Pointer');
+        $objWriter->endElement();
+        // p:cNvCxnSpPr
+        $objWriter->writeElement('p:cNvCxnSpPr', null);
+        // p:nvPr
+        $objWriter->startElement('p:nvPr');
+        if ($shape->isPlaceholder()) {
+            $objWriter->startElement('p:ph');
+            $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
+            $objWriter->endElement();
+        }
+        $objWriter->endElement();
+        $objWriter->endElement();
+        // p:spPr
+        $objWriter->startElement('p:spPr');
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+        if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getHeight() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        }
+        $objWriter->endElement();
+        // a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'straightConnector1');
+
+        // a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst');
+        $objWriter->endElement();
+
+        $this->writeArrowTailEnd($objWriter, $shape->getBorder(), '');
+
+        $objWriter->endElement();
+
+        $objWriter->endElement();
+
+    }
+
+
+    /**
+     * Writing a round rectangle shape to help develop more dynamic and useful slides with php presentation.
+     *
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPresentation\Shape\RoundRectangle $shape
+     * @param  int $shapeId
+     * @throws \Exception
+     */
+    protected function writeShapeRoundRect(XMLWriter $objWriter, RoundRectangle $shape, $shapeId)
+    {
+        //p:sp
+        $objWriter->startElement('p:sp');
+        //p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+        //p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id',$shapeId);
+        $objWriter->writeAttribute('name','Round Rectangle');
+        $objWriter->endElement();
+        //p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+        $objWriter->endElement();
+        //p:nvPr
+        $objWriter->startElement('p:nvPr');
+        $objWriter->endElement();
+        $objWriter->endElement();
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+//        $objWriter->writeAttribute('rot',CommonDrawing::pixelsToEmu($shape->getRotation()));
+
+        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+
+        if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getHeight() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        }
+
+        $objWriter->endElement();
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'roundRect');
+
+        // a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst');
+        $objWriter->endElement();
+        $this->writeSolidFill($objWriter, $shape->getFill());
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $objWriter->endElement();
+        $objWriter->endElement();
+
+
     }
 
     /**
@@ -716,6 +1125,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement();
         $this->writeBorder($objWriter, $shape->getBorder(), '');
         $objWriter->endElement();
+
         $objWriter->endElement();
     }
 
@@ -1213,11 +1623,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // a:avLst
         $objWriter->writeElement('a:avLst', null);
         $objWriter->endElement();
-
-        $this->writeFill($objWriter, $shape->getFill());
-        $this->writeBorder($objWriter, $shape->getBorder(), '');
-        $this->writeShadow($objWriter, $shape->getShadow());
-
+        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
+            $this->writeBorder($objWriter, $shape->getBorder(), '');
+        }
+        if ($shape->getShadow()->isVisible()) {
+            $this->writeShadow($objWriter, $shape->getShadow());
+        }
         $objWriter->endElement();
         $objWriter->endElement();
     }
