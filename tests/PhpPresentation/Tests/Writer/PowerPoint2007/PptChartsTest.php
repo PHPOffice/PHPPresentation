@@ -4,6 +4,7 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use \Exception;
 use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
@@ -70,7 +71,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
         $this->assertTrue($oShape->getTitle()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
     }
 
     public function testTitleVisibilityFalse()
@@ -86,7 +87,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
         $this->assertFalse($oShape->getTitle()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 1);
     }
 
     public function testAxisFont()
