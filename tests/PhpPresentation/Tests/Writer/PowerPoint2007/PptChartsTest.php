@@ -53,6 +53,9 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
+    
+    public function testTypeDoughnut(){
+    }
 
     public function testTitleVisibilityTrue()
     {
