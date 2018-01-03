@@ -48,6 +48,10 @@ class PptCharts extends AbstractDecoratorWriter
         }
         return $this->getZip();
     }
+    
+    public function testTypeDoughnut(){
+        
+    }
 
 
     /**
