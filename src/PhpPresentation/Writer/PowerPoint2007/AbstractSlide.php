@@ -164,6 +164,103 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     }
 
     /**
+     * Writing a Triangle shape to help develop more dynamic and useful slides with php presentation.
+     *
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPresentation\Shape\Triangle $shape
+     * @param  int $shapeId
+     * @throws \Exception
+     */
+    protected function writeShapeTriangle(XMLWriter $objWriter, Triangle $shape, $shapeId)
+    {
+        print_r("triangle");
+        //p:sp
+        $objWriter->startElement('p:sp');
+        //p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+        //p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id',$shapeId);
+        $objWriter->writeAttribute('name','Triangle');
+        $objWriter->endElement();
+        //p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+        $objWriter->endElement();
+        //p:nvPr
+        $objWriter->startElement('p:nvPr');
+        $objWriter->endElement();
+        $objWriter->endElement();
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        $objWriter->writeAttribute('rot',CommonDrawing::pixelsToEmu($shape->getRotation()));
+
+        if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getHeight() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        }
+
+        $objWriter->endElement();
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', 'triangle');
+
+        // a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst');
+        $objWriter->endElement();
+        $this->writeSolidFill($objWriter, $shape->getFill());
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $objWriter->endElement();
+        $objWriter->endElement();
+
+    }
+
+    /**
      * Writing a Ellipse shape to help develop more dynamic and useful slides with php presentation.
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
