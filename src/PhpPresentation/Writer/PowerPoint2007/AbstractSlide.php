@@ -163,6 +163,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         }
     }
 
+    
     /**
      * Writing a Triangle shape to help develop more dynamic and useful slides with php presentation.
      *
@@ -649,7 +650,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
 
     }
-
 
     /**
      * Write txt
