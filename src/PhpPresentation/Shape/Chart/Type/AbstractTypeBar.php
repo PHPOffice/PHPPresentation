@@ -163,7 +163,7 @@ class AbstractTypeBar extends AbstractType
      */
     public function setShowCategories($value)
     {
-        $this->isVisible = (bool)$value;
+        $this->showCategoryLabels = (bool)$value;
         return $this;
     }
 }
