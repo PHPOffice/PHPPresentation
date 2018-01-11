@@ -23,6 +23,7 @@ use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
+use PhpOffice\PhpPresentation\Shape\GenericShape;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Rectangle;
@@ -45,6 +46,7 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
+
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
     /**
@@ -130,6 +132,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             if ($shape instanceof RichText) {
                 $this->writeShapeText($objWriter, $shape, $shapeId);
             }
+            else if($shape instanceof GenericShape){
+                $this->writeShapeGeneric($objWriter, $shape, $shapeId);
+            }
             elseif ($shape instanceof Ellipse) {
                 $this->writeShapeEllipse($objWriter, $shape, $shapeId);
             }
@@ -163,7 +168,103 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         }
     }
 
-    
+    /**
+     * Writing a dynamic shape to help develop more dynamic and useful slides with php presentation.
+     *
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPresentation\Shape\GenericShape $shape
+     * @param  int $shapeId
+     * @throws \Exception
+     */
+    protected function writeShapeGeneric(XMLWriter $objWriter, GenericShape $shape, $shapeId)
+    {
+        //p:sp
+        $objWriter->startElement('p:sp');
+        //p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+        //p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id',$shapeId);
+        $objWriter->writeAttribute('name','Generic Shape');
+        $objWriter->endElement();
+        //p:cNvSpPr
+        $objWriter->startElement('p:cNvSpPr');
+        $objWriter->endElement();
+        //p:nvPr
+        $objWriter->startElement('p:nvPr');
+        $objWriter->endElement();
+        $objWriter->endElement();
+        //p:spPr
+        $objWriter->startElement('p:spPr');
+        // a:xfrm
+        $objWriter->startElement('a:xfrm');
+
+        $objWriter->writeAttribute('rot',CommonDrawing::pixelsToEmu($shape->getRotation()));
+
+        if ($shape->getWidth() >= 0 && $shape->getHeight() >= 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0 && $shape->getHeight() < 0) {
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getHeight() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY() + $shape->getHeight()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu(-$shape->getHeight()));
+            $objWriter->endElement();
+        } elseif ($shape->getWidth() < 0) {
+            $objWriter->writeAttribute('flipV', 1);
+            // a:off
+            $objWriter->startElement('a:off');
+            $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX() + $shape->getWidth()));
+            $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+            $objWriter->endElement();
+            // a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu(-$shape->getWidth()));
+            $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+            $objWriter->endElement();
+        }
+
+        $objWriter->endElement();
+        //a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', $shape->getGenericShape());
+
+        // a:prstGeom/a:avLst
+        $objWriter->writeElement('a:avLst');
+        $objWriter->endElement();
+        $this->writeSolidFill($objWriter, $shape->getFill());
+        $this->writeBorder($objWriter, $shape->getBorder(), '');
+        $objWriter->endElement();
+        $objWriter->endElement();
+
+    }
+
+
     /**
      * Writing a Triangle shape to help develop more dynamic and useful slides with php presentation.
      *
@@ -174,7 +275,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      */
     protected function writeShapeTriangle(XMLWriter $objWriter, Triangle $shape, $shapeId)
     {
-        print_r("triangle");
         //p:sp
         $objWriter->startElement('p:sp');
         //p:nvSpPr
@@ -345,7 +445,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement();
         //a:prstGeom
         $objWriter->startElement('a:prstGeom');
-        $objWriter->writeAttribute('prst', 'ellipse');
+        $objWriter->writeAttribute('prst', 'leftCircularArrow');
 
         // a:prstGeom/a:avLst
         $objWriter->writeElement('a:avLst');
