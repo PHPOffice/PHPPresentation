@@ -55,6 +55,12 @@ class AbstractTypeBar extends AbstractType
      */
     protected $gapWidthPercent = 150;
 
+    /**
+     * @var  boolean
+     */
+    protected $showCategoryLabels = true;
+
+
 
     /**
      * Set bar orientation
@@ -123,7 +129,7 @@ class AbstractTypeBar extends AbstractType
         $this->gapWidthPercent = $gapWidthPercent;
         return $this;
     }
-    
+
     /**
      * Get hash code
      *
@@ -136,5 +142,28 @@ class AbstractTypeBar extends AbstractType
             $hash .= $series->getHashCode();
         }
         return $hash;
+    }
+
+    /**
+     * Display category names along the axis?
+     * Currently, this will only work for bar charts in PowerPoint2007 downloads
+     *
+     * @return boolean
+     */
+    public function hasShowCategories()
+    {
+        return $this->showCategoryLabels;
+    }
+
+    /**
+     * Hide category labels
+     *
+     * @param boolean $value delete
+     * @return $this
+     */
+    public function setShowCategories($value)
+    {
+        $this->showCategoryLabels = (bool)$value;
+        return $this;
     }
 }

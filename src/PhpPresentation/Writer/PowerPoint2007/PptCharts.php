@@ -38,7 +38,7 @@ class PptCharts extends AbstractDecoratorWriter
                     $this->getZip()->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $this->writeChartRelationships($shape));
                     $pFilename = tempnam(sys_get_temp_dir(), 'PHPExcel');
                     $this->getZip()->addFromString('ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', $this->writeSpreadsheet($this->getPresentation(), $shape, $pFilename . '.xlsx'));
-                    
+
                     // remove temp file
                     if (@unlink($pFilename) === false) {
                         throw new \Exception('The file ' . $pFilename . ' could not removed.');
@@ -105,7 +105,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:hPercent
         $hPercent = $chart->getView3D()->getHeightPercent();
-        $objWriter->writeElementIf($hPercent != null, 'c:hPercent', 'val', $hPercent . '%');
+        $objWriter->writeElementIf($hPercent != null, 'c:hPercent', 'val', $hPercent);
 
         // c:rotY
         $objWriter->startElement('c:rotY');
@@ -792,7 +792,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param  boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, $includeSheet = false)
+    protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, $includeSheet = false, $showAxisCategories = false)
     {
         // c:bar3DChart
         $objWriter->startElement('c:barChart');
@@ -951,9 +951,11 @@ class PptCharts extends AbstractDecoratorWriter
             $axisXData = array_keys($series->getValues());
 
             // c:cat
-            $objWriter->startElement('c:cat');
-            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
-            $objWriter->endElement();
+            if($subject->hasShowCategories()) {
+                $objWriter->startElement('c:cat');
+                $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+                $objWriter->endElement();
+            }
 
             // Write Y axis data
             $axisYData = array_values($series->getValues());
@@ -2322,7 +2324,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:lblOffset
             $objWriter->startElement('c:lblOffset');
-            $objWriter->writeAttribute('val', '100%');
+            $objWriter->writeAttribute('val', '100');
             $objWriter->endElement();
         }
 
