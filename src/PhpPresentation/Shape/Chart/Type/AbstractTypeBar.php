@@ -55,6 +55,12 @@ class AbstractTypeBar extends AbstractType
      */
     protected $gapWidthPercent = 150;
 
+    /**
+     * @var  boolean
+     */
+    protected $showCategoryLabels = true;
+
+
 
     /**
      * Set bar orientation
@@ -123,7 +129,7 @@ class AbstractTypeBar extends AbstractType
         $this->gapWidthPercent = $gapWidthPercent;
         return $this;
     }
-    
+
     /**
      * Get hash code
      *

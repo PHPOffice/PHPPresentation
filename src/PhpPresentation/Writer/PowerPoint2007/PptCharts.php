@@ -792,7 +792,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param  boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, $includeSheet = false)
+    protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, $includeSheet = false, $showAxisCategories = false)
     {
         // c:bar3DChart
         $objWriter->startElement('c:barChart');
@@ -951,9 +951,11 @@ class PptCharts extends AbstractDecoratorWriter
             $axisXData = array_keys($series->getValues());
 
             // c:cat
-            $objWriter->startElement('c:cat');
-            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
-            $objWriter->endElement();
+            if($subject->) {
+                $objWriter->startElement('c:cat');
+                $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+                $objWriter->endElement();
+            }
 
             // Write Y axis data
             $axisYData = array_values($series->getValues());
@@ -2370,5 +2372,28 @@ class PptCharts extends AbstractDecoratorWriter
 
         // ##c:spPr
         $objWriter->endElement();
+    }
+
+    /**
+     * Display category names along the axis?
+     * Currently, this will only work for bar charts in PowerPoint2007 downloads
+     *
+     * @return boolean
+     */
+    public function hasShowCategories()
+    {
+        return $this->showCategoryLabels;
+    }
+
+    /**
+     * Hide category labels
+     *
+     * @param boolean $value delete
+     * @return $this
+     */
+    public function setShowCategories($value)
+    {
+        $this->isVisible = (bool)$value;
+        return $this;
     }
 }
