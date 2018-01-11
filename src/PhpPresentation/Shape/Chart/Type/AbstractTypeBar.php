@@ -143,4 +143,27 @@ class AbstractTypeBar extends AbstractType
         }
         return $hash;
     }
+
+    /**
+     * Display category names along the axis?
+     * Currently, this will only work for bar charts in PowerPoint2007 downloads
+     *
+     * @return boolean
+     */
+    public function hasShowCategories()
+    {
+        return $this->showCategoryLabels;
+    }
+
+    /**
+     * Hide category labels
+     *
+     * @param boolean $value delete
+     * @return $this
+     */
+    public function setShowCategories($value)
+    {
+        $this->isVisible = (bool)$value;
+        return $this;
+    }
 }
