@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\Shape\ArrowPointer;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 use PhpOffice\PhpPresentation\Shape\Ellipse;
+use PhpOffice\PhpPresentation\Shape\GenericShape;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Rectangle;
@@ -271,6 +272,24 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     public function createTriangle($fromX, $fromY, $toX, $toY, $rotation)
     {
         $shape = new Triangle($fromX, $fromY, $toX, $toY, $rotation);
+        $this->addShape($shape);
+        return $shape;
+    }
+
+    /**
+     * Create Generic Shape.
+     *
+     * @param  int $fromX Starting point x offset
+     * @param  int $fromY Starting point y offset
+     * @param  int $toX Ending point x offset
+     * @param  int $toY Ending point y offset
+     * @param  int $rotation Used for the rotation clockwise or anti-clockwise
+     * @param  string $shape Used for giving a dynamic shape option are in this link "http://officeopenxml.com/drwSp-prstGeom.php"
+     * @return \PhpOffice\PhpPresentation\Shape\GenericShape
+     */
+    public function createGenricShape($fromX, $fromY, $toX, $toY, $rotation,$shape)
+    {
+        $shape = new GenericShape($fromX, $fromY, $toX, $toY, $rotation,$shape);
         $this->addShape($shape);
         return $shape;
     }
