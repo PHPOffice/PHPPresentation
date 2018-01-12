@@ -23,6 +23,7 @@ namespace PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 use PhpOffice\PhpPresentation\Shape\Group;
@@ -220,6 +221,17 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     public function createLineShape(int $fromX, int $fromY, int $toX, int $toY): Line
     {
         $shape = new Line($fromX, $fromY, $toX, $toY);
+        $this->addShape($shape);
+
+        return $shape;
+    }
+
+    /**
+     * Create geometric shape.
+     */
+    public function createAutoShape(): AutoShape
+    {
+        $shape = new AutoShape();
         $this->addShape($shape);
 
         return $shape;

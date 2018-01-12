@@ -14,6 +14,14 @@ $shape = new AutoShape();
 $slide->addShape($shape)
 ```
 
+Or we can use `createAutoShape` method of slide.
+
+Example:
+
+```php
+$slide->createAutoShape();
+```
+
 ## Text
 
 You can define text of the geometric form with `setText` method.
