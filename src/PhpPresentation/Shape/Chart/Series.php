@@ -416,7 +416,7 @@ class Series implements ComparableInterface
      */
     public function hasShowSeparator()
     {
-        return is_null($this->separator) ? false : true;
+        return !is_null($this->separator);
     }
 
     /**
