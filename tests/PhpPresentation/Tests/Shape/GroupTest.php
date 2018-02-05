@@ -56,25 +56,25 @@ class GroupTest extends TestCase
     public function testExtentX()
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 40);
+        $line1  = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        $this->assertEquals(30, $object->getExtentX());
+        $this->assertEquals(20, $object->getExtentX());
     }
 
     public function testExtentY()
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 40);
+        $line1  = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        $this->assertEquals(40, $object->getExtentY());
+        $this->assertEquals(30, $object->getExtentY());
     }
 
     public function testOffsetX()
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 40);
+        $line1  = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(10, $object->getOffsetX());
@@ -86,7 +86,7 @@ class GroupTest extends TestCase
     public function testOffsetY()
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 40);
+        $line1  = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(20, $object->getOffsetY());
@@ -102,11 +102,13 @@ class GroupTest extends TestCase
         // from the extents to produce a raw width and height.
         $offsetX = 100;
         $offsetY = 100;
-        $extentX = 1000;
-        $extentY = 450;
+        $endX = 1000;
+        $endY = 450;
+        $extentX = $endX - $offsetX;
+        $extentY = $endY - $offsetY;
 
         $object = new Group();
-        $line1  = new Line($offsetX, $offsetY, $extentX, $extentY);
+        $line1  = new Line($offsetX, $offsetY, $endX, $endY);
         $object->addShape($line1);
 
         $this->assertEquals($offsetX, $object->getOffsetX());
@@ -123,16 +125,18 @@ class GroupTest extends TestCase
         // combined with the above.
         $offsetX = 100;
         $offsetY = 100;
-        $extentX = 1000;
-        $extentY = 450;
+        $endX = 1000;
+        $endY = 450;
         $increase = 50;
+        $extentX = ($endX - $offsetX) + $increase;
+        $extentY = ($endY - $offsetY) + $increase;
 
-        $line1  = new Line($offsetX, $offsetY, $extentX, $extentY);
+        $line1  = new Line($offsetX, $offsetY, $endX, $endY);
         $line2 = new Line(
             $offsetX+$increase,
             $offsetY+$increase,
-            $extentX+$increase,
-            $extentY+$increase
+            $endX+$increase,
+            $endY+$increase
         );
 
         $object = new Group();
@@ -142,7 +146,7 @@ class GroupTest extends TestCase
 
         $this->assertEquals($offsetX, $object->getOffsetX());
         $this->assertEquals($offsetY, $object->getOffsetY());
-        $this->assertEquals($extentX+$increase, $object->getExtentX());
-        $this->assertEquals($extentY+$increase, $object->getExtentY());
+        $this->assertEquals($extentX, $object->getExtentX());
+        $this->assertEquals($extentY, $object->getExtentY());
     }
 }
