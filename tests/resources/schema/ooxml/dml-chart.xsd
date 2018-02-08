@@ -194,7 +194,7 @@
     <xsd:attribute name="val" type="ST_RotX" default="0"/>
   </xsd:complexType>
   <xsd:simpleType name="ST_HPercent">
-    <xsd:union memberTypes="ST_HPercentWithSymbol"/>
+    <xsd:union memberTypes="ST_HPercentWithSymbol xsd:unsignedShort"/>
   </xsd:simpleType>
   <xsd:simpleType name="ST_HPercentWithSymbol">
     <xsd:restriction base="xsd:string">
@@ -202,7 +202,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:complexType name="CT_HPercent">
-    <xsd:attribute name="val" type="ST_HPercent" default="100%"/>
+    <xsd:attribute name="val" type="ST_HPercent" default="100"/>
   </xsd:complexType>
   <xsd:simpleType name="ST_RotY">
     <xsd:restriction base="xsd:unsignedShort">
@@ -1164,7 +1164,7 @@
     </xsd:sequence>
   </xsd:complexType>
   <xsd:simpleType name="ST_LblOffset">
-    <xsd:union memberTypes="ST_LblOffsetPercent"/>
+    <xsd:union memberTypes="ST_LblOffsetPercent xsd:unsignedShort"/>
   </xsd:simpleType>
   <xsd:simpleType name="ST_LblOffsetPercent">
     <xsd:restriction base="xsd:string">
@@ -1172,7 +1172,7 @@
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:complexType name="CT_LblOffset">
-    <xsd:attribute name="val" type="ST_LblOffset" default="100%"/>
+    <xsd:attribute name="val" type="ST_LblOffset" default="100"/>
   </xsd:complexType>
   <xsd:group name="EG_AxShared">
     <xsd:sequence>
