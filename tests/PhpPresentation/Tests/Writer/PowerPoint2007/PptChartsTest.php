@@ -988,7 +988,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100');
 
         $oShape->getView3D()->setHeightPercent(null);
         $this->resetPresentationFile();
