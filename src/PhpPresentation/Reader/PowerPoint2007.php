@@ -141,6 +141,7 @@ class PowerPoint2007 implements ReaderInterface
 
         $this->oZip = new ZipArchive();
         $this->oZip->open($this->filename);
+        $this->oZip->extractTo('/Volumes/workspace/testZip/'.basename($pFilename));
         $docPropsCore = $this->oZip->getFromName('docProps/core.xml');
         if ($docPropsCore !== false) {
             $this->loadDocumentProperties($docPropsCore);
@@ -768,6 +769,8 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
 
+
+
         $oElement = $document->getElement('p:spPr/a:xfrm/a:ext', $node);
         if ($oElement instanceof \DOMElement) {
             if ($oElement->hasAttribute('cx')) {
@@ -826,9 +829,11 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected function loadShapeRichText(XMLReader $document, \DOMElement $node, $oSlide)
     {
-        if (!$document->elementExists('p:txBody/a:p/a:r', $node)) {
-            return;
-        }
+
+//        if (!$document->elementExists('p:txBody/a:p/a:r', $node)) {
+//            return;
+//        }
+
         // Core
         $oShape = $oSlide->createRichTextShape();
         $oShape->setParagraphs(array());
@@ -878,6 +883,13 @@ class PowerPoint2007 implements ReaderInterface
         if (count($oShape->getParagraphs()) > 0) {
             $oShape->setActiveParagraph(0);
         }
+
+        $oElement = $document->getElement('p:spPr', $node);
+        if ($oElement instanceof \DOMElement) {
+            $oFill = $this->loadStyleFill($document, $oElement);
+            $oShape->setFill($oFill);
+        }
+
     }
 
     /**
@@ -1018,6 +1030,48 @@ class PowerPoint2007 implements ReaderInterface
                     $oCell->setBorders($oBorders);
                 }
             }
+        }
+    }
+
+    protected function loadShapeLine(XMLReader $document, \DOMElement $node, AbstractSlide $oSlide)
+    {
+        $oElement = $document->getElement('p:spPr/a:xfrm/a:off', $node);
+        if ($oElement instanceof \DOMElement) {
+            if ($oElement->hasAttribute('x')) {
+                $offsetX  = CommonDrawing::emuToPixels($oElement->getAttribute('x'));
+            }
+            if ($oElement->hasAttribute('y')) {
+                $offsetY = CommonDrawing::emuToPixels($oElement->getAttribute('y'));
+            }
+        }
+
+        $oElement = $document->getElement('p:spPr/a:xfrm/a:ext', $node);
+        if ($oElement instanceof \DOMElement) {
+            if ($oElement->hasAttribute('cx')) {
+                $width = CommonDrawing::emuToPixels($oElement->getAttribute('cx'));
+            }
+            if ($oElement->hasAttribute('cy')) {
+                $height = CommonDrawing::emuToPixels($oElement->getAttribute('cy'));
+            }
+        }
+
+        $lineShape = $oSlide->createLineShape($offsetX, $offsetY,  $width + $offsetX, $height + $offsetY);
+
+        $oElement = $document->getElement('p:nvCxnSpPr', $node);
+        if ($oElement instanceof \DOMElement) {
+            if ($oElement->hasAttribute('name')) {
+                $lineShape->setName($oElement->getAttribute('name'));
+            }
+            if ($oElement->hasAttribute('descr')) {
+                $lineShape->setDescription($oElement->getAttribute('descr'));
+            }
+        }
+
+        $oElement = $document->getElement('p:spPr/a:ln', $node);
+        if ($oElement instanceof \DOMElement) {
+
+            $oFill = $this->loadStyleFill($document, $oElement);
+            $lineShape->setFill($oFill);
         }
     }
 
@@ -1280,8 +1334,11 @@ class PowerPoint2007 implements ReaderInterface
                 case 'p:sp':
                     $this->loadShapeRichText($xmlReader, $oNode, $oSlide);
                     break;
+                case 'p:cxnSp':
+                    $this->loadShapeLine($xmlReader, $oNode, $oSlide);
+                    break;
                 default:
-                    //var_export($oNode->tagName);
+                    var_export($oNode->tagName);
             }
         }
     }

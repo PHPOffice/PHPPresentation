@@ -7,6 +7,7 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Style\ColorMap;
+use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 
 class PptSlideLayouts extends AbstractSlide
 {
@@ -17,7 +18,13 @@ class PptSlideLayouts extends AbstractSlide
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
             foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
-                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideMaster->getRelsIndex()));
+                foreach($oSlideLayout->getShapeCollection() as $shape) {
+                    if ($shape instanceof Gd) {
+                        $imageName = $shape->getImageIndex().'.'.$shape->getExtension();
+                        $this->oZip->addFromString('ppt/media/image'.$imageName, $shape->getContents());
+                    }
+                }
+                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideMaster->getRelsIndex(), $oSlideLayout));
                 $this->oZip->addFromString('ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', $this->writeSlideLayout($oSlideLayout));
             }
         }
@@ -33,7 +40,7 @@ class PptSlideLayouts extends AbstractSlide
      * @return string    XML Output
      * @throws \Exception
      */
-    public function writeSlideLayoutRelationships($masterId = 1)
+    public function writeSlideLayoutRelationships($masterId = 1, SlideLayout $oSlideLayout)
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -47,6 +54,14 @@ class PptSlideLayouts extends AbstractSlide
 
         // Write slideMaster relationship
         $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
+        $relId = 1;
+        foreach($oSlideLayout->getShapeCollection() as $shape) {
+            if ($shape instanceof Gd) {
+                $imageName = $shape->getImageIndex().'.'.$shape->getExtension();
+                $this->writeRelationship($objWriter, ++$relId, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/image", '../media/image'. $imageName );
+                $shape->relationId = 'rId' . $relId;
+            }
+        }
 
         $objWriter->endElement();
 
@@ -78,6 +93,7 @@ class PptSlideLayouts extends AbstractSlide
         $objWriter->writeAttributeIf($pSlideLayout->getLayoutName() != '', 'name', $pSlideLayout->getLayoutName());
         // Background
         $this->writeSlideBackground($pSlideLayout, $objWriter);
+
         // p:sldLayout\p:cSld\p:spTree
         $objWriter->startElement('p:spTree');
         // p:sldLayout\p:cSld\p:spTree\p:nvGrpSpPr
@@ -124,6 +140,7 @@ class PptSlideLayouts extends AbstractSlide
 
         // Loop shapes
         $this->writeShapeCollection($objWriter, $pSlideLayout->getShapeCollection());
+
         // p:sldLayout\p:cSld\p:spTree\
         $objWriter->endElement();
         // p:sldLayout\p:cSld\

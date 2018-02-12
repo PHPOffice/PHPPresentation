@@ -705,6 +705,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
             $objWriter->endElement();
         }
+        // Color - a:solidFill
+        $objWriter->startElement('a:solidFill');
+        $this->writeColor($objWriter, $shape->getFill()->getStartColor());
+        $objWriter->endElement();
+
         $objWriter->endElement();
         // a:prstGeom
         $objWriter->startElement('a:prstGeom');

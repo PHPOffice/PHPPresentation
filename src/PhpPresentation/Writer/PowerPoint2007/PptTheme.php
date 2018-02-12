@@ -114,7 +114,8 @@ class PptTheme extends AbstractDecoratorWriter
 
         // a:theme/a:themeElements/a:fontScheme/a:majorFont/a:latin
         $objWriter->startElement('a:latin');
-        $objWriter->writeAttribute('typeface', 'Calibri');
+        $objWriter->writeAttribute('typeface', 'Calibri Light');
+        $objWriter->writeAttribute('panose', '020F0302020204030204');
         $objWriter->endElement();
 
         // a:theme/a:themeElements/a:fontScheme/a:majorFont/a:ea
