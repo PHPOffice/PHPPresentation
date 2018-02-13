@@ -28,6 +28,7 @@ use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Borders;
@@ -871,9 +872,46 @@ class PowerPoint2007 implements ReaderInterface
         if ($oElement instanceof \DOMElement) {
             if ($oElement->hasAttribute('type')) {
                 $placeholder = new Placeholder($oElement->getAttribute('type'));
+                $placeholder->setIdx($oElement->getAttribute('idx'));
                 $oShape->setPlaceHolder($placeholder);
             }
         }
+
+        $oElement = $document->getElement('p:txBody/a:bodyPr', $node);
+        if ($oElement instanceof \DOMElement) {
+            if ($oElement->hasAttribute('lIns')) {
+                $oShape->setInsetLeft($oElement->getAttribute('lIns'));
+            }
+
+            if ($oElement->hasAttribute('tIns')) {
+                $oShape->setInsetTop($oElement->getAttribute('tIns'));
+            }
+
+            if ($oElement->hasAttribute('rIns')) {
+                $oShape->setInsetRight($oElement->getAttribute('rIns'));
+            }
+
+            if ($oElement->hasAttribute('bIns')) {
+                $oShape->setInsetBottom($oElement->getAttribute('bIns'));
+            }
+
+//            if ($oElement->hasAttribute('anchor')) {
+//                $alignment = new Alignment();
+//                $alignment->setVertical($oElement->getAttribute('anchor'));
+//                $oShape->getActiveParagraph()->setAlignment($alignment);
+//            }
+
+            if ($oElement->hasAttribute('wrap')) {
+                $oShape->setWrap($oElement->getAttribute('wrap'));
+            }
+
+        }
+
+        $oElement = $document->getElement('p:txBody/a:lstStyle', $node);
+        if ($oElement instanceof \DOMElement) {
+            $oShape->setListStyle($oElement);
+        }
+
 
         $arrayElements = $document->getElements('p:txBody/a:p', $node);
         foreach ($arrayElements as $oElement) {
@@ -1067,11 +1105,11 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
 
-        $oElement = $document->getElement('p:spPr/a:ln', $node);
+        $oElement = $document->getElement('p:spPr/a:ln/a:solidFill/a:srgbClr', $node);
         if ($oElement instanceof \DOMElement) {
-
-            $oFill = $this->loadStyleFill($document, $oElement);
-            $lineShape->setFill($oFill);
+            $oColor = new Color();
+            $oColor->setRGB($oElement->getAttribute('val'));
+            $lineShape->getBorder()->setColor($oColor);
         }
     }
 
@@ -1173,6 +1211,15 @@ class PowerPoint2007 implements ReaderInterface
                     if ($oElementrPr->hasAttribute('u')) {
                         $oText->getFont()->setUnderline($oElementrPr->getAttribute('u'));
                     }
+                    if ($oElementrPr->hasAttribute('dirty')) {
+                        $oText->setDirty($oElementrPr->getAttribute('dirty'));
+                    }
+                    
+                    $fontType = $document->getElement('a:latin', $oElementrPr);
+                    if (is_object($fontType) && $fontType->hasAttribute('typeface')) {
+                        $oText->getFont()->setName($fontType->getAttribute('typeface'));
+                    }
+                    
                     // Color
                     $oElementSrgbClr = $document->getElement('a:solidFill/a:srgbClr', $oElementrPr);
                     if (is_object($oElementSrgbClr) && $oElementSrgbClr->hasAttribute('val')) {
@@ -1180,6 +1227,7 @@ class PowerPoint2007 implements ReaderInterface
                         $oColor->setRGB($oElementSrgbClr->getAttribute('val'));
                         $oText->getFont()->setColor($oColor);
                     }
+
                     // Hyperlink
                     $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElementrPr);
                     if (is_object($oElementHlinkClick)) {
@@ -1338,7 +1386,7 @@ class PowerPoint2007 implements ReaderInterface
                     $this->loadShapeLine($xmlReader, $oNode, $oSlide);
                     break;
                 default:
-                    var_export($oNode->tagName);
+                    //var_export($oNode->tagName);
             }
         }
     }

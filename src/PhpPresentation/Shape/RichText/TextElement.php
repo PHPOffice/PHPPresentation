@@ -43,6 +43,8 @@ class TextElement implements TextElementInterface
      */
     protected $hyperlink;
 
+    protected $dirty;
+
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\RichText\TextElement instance
      *
@@ -143,6 +145,17 @@ class TextElement implements TextElementInterface
     {
         $this->language = $language;
         return $this;
+    }
+
+    public function setDirty($value)
+    {
+        $this->dirty = $value;
+        return $this;
+    }
+
+    public function isDirty()
+    {
+        return (int) $this->dirty;
     }
 
     /**
