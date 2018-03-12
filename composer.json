@@ -34,7 +34,7 @@
         "codeclimate/php-test-reporter": "dev-master"
     },
     "suggest": {
-        "ext-gd2": "Required to add images"
+        "ext-gd": "Required to add images"
     },
     "autoload": {
         "psr-4": {
