@@ -145,8 +145,8 @@ class Group extends AbstractShape implements ShapeContainerInterface
     {
         if ($this->extentX === null) {
             $extents = GeometryCalculator::calculateExtents($this);
-            $this->extentX = $extents[GeometryCalculator::X];
-            $this->extentY = $extents[GeometryCalculator::Y];
+            $this->extentX = $extents[GeometryCalculator::X] - $this->getOffsetX();
+            $this->extentY = $extents[GeometryCalculator::Y] - $this->getOffsetY();
         }
 
         return $this->extentX;
@@ -161,8 +161,8 @@ class Group extends AbstractShape implements ShapeContainerInterface
     {
         if ($this->extentY === null) {
             $extents = GeometryCalculator::calculateExtents($this);
-            $this->extentX = $extents[GeometryCalculator::X];
-            $this->extentY = $extents[GeometryCalculator::Y];
+            $this->extentX = $extents[GeometryCalculator::X] - $this->getOffsetX();
+            $this->extentY = $extents[GeometryCalculator::Y] - $this->getOffsetY();
         }
 
         return $this->extentY;
