@@ -2441,7 +2441,6 @@ class PowerPoint97 implements ReaderInterface
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd904856(v=office.12).aspx
      * @return array
-     * @return array
      */
     private function readRecordPerSlideHeadersFootersContainer($stream, $pos)
     {
@@ -2465,7 +2464,6 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd923930(v=office.12).aspx
-     * @return array
      * @return array
      */
     private function readRecordPlaceholderAtom($stream, $pos)
@@ -2491,7 +2489,6 @@ class PowerPoint97 implements ReaderInterface
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd904899(v=office.12).aspx
      * @return array
-     * @return array
      */
     private function readRecordRecolorInfoAtom($stream, $pos)
     {
@@ -2515,7 +2512,6 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd910800(v=office.12).aspx
-     * @return array
      * @return array
      */
     private function readRecordRoundTripHFPlaceholder12Atom($stream, $pos)
@@ -2541,7 +2537,6 @@ class PowerPoint97 implements ReaderInterface
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd772926(v=office.12).aspx
      * @return array
-     * @return array
      */
     private function readRecordRoundTripShapeId12Atom($stream, $pos)
     {
@@ -2566,7 +2561,6 @@ class PowerPoint97 implements ReaderInterface
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd923801(v=office.12).aspx
      * @return array
-     * @return array
      */
     private function readRecordRoundTripSlideSyncInfo12Container($stream, $pos)
     {
@@ -2590,7 +2584,6 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd908949(v=office.12).aspx
-     * @return array
      * @return array
      */
     private function readRecordShapeFlags10Atom($stream, $pos)
@@ -3100,7 +3093,7 @@ class PowerPoint97 implements ReaderInterface
      * A structure that specifies the paragraph-level formatting of a run of text.
      * @param string $stream
      * @param integer $pos
-     * @param $strLenRT
+     * @param integer $strLenRT
      * @return array
      * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd923535(v=office.12).aspx

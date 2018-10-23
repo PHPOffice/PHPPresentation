@@ -87,7 +87,7 @@ class Image extends AbstractBackground
     /**
      * Get indexed filename (using image index)
      *
-     * @param $numSlide
+     * @param integer $numSlide
      * @return string
      */
     public function getIndexedFilename($numSlide)
