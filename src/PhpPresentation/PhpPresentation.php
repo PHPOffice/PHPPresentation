@@ -406,11 +406,11 @@ class PhpPresentation
 
     /**
      * Set the zoom of the document (in percentage)
-     * @param int $zoom
+     * @param float $zoom
      * @return PresentationProperties
      * @deprecated for getPresentationProperties()->setZoom()
      */
-    public function setZoom($zoom = 1)
+    public function setZoom($zoom = 1.0)
     {
         return $this->getPresentationProperties()->setZoom($zoom);
     }

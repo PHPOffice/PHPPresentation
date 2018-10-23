@@ -139,10 +139,10 @@ class PresentationProperties
 
     /**
      * Set the zoom of the document (in percentage)
-     * @param int $zoom
+     * @param float $zoom
      * @return PresentationProperties
      */
-    public function setZoom($zoom = 1)
+    public function setZoom($zoom = 1.0)
     {
         if (is_numeric($zoom)) {
             $this->zoom = (float)$zoom;
