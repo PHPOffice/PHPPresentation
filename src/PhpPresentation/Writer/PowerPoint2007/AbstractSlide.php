@@ -48,6 +48,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param AbstractSlideAlias $pSlideMaster
      * @param $objWriter
      * @param $relId
+     * @return mixed
      * @throws \Exception
      */
     protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, $objWriter, $relId)
@@ -631,6 +632,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Line $shape
      * @param  int $shapeId
+     * @throws \Exception
      */
     protected function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
     {
@@ -757,6 +759,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\AbstractShape|\PhpOffice\PhpPresentation\Shape\RichText\TextElement $shape
+     * @throws \Exception
      */
     protected function writeHyperlink(XMLWriter $objWriter, $shape)
     {
@@ -1228,6 +1231,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Group $group
      * @param  int $shapeId
+     * @throws \Exception
      */
     protected function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
     {

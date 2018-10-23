@@ -190,6 +190,7 @@ class PhpPresentation
      * Create slide and add it to this presentation
      *
      * @return \PhpOffice\PhpPresentation\Slide
+     * @throws \Exception
      */
     public function createSlide()
     {
@@ -340,6 +341,7 @@ class PhpPresentation
      * Create a masterslide and add it to this presentation
      *
      * @return \PhpOffice\PhpPresentation\Slide\SlideMaster
+     * @throws \Exception
      */
     public function createMasterSlide()
     {
@@ -366,6 +368,7 @@ class PhpPresentation
      * Copy presentation (!= clone!)
      *
      * @return PhpPresentation
+     * @throws \Exception
      */
     public function copy()
     {
@@ -383,7 +386,7 @@ class PhpPresentation
     /**
      * Mark a document as final
      * @param bool $state
-     * @return PhpPresentation
+     * @return PresentationProperties
      * @deprecated for getPresentationProperties()->markAsFinal()
      */
     public function markAsFinal($state = true)
@@ -403,8 +406,8 @@ class PhpPresentation
 
     /**
      * Set the zoom of the document (in percentage)
-     * @param float $zoom
-     * @return PhpPresentation
+     * @param int $zoom
+     * @return PresentationProperties
      * @deprecated for getPresentationProperties()->setZoom()
      */
     public function setZoom($zoom = 1)

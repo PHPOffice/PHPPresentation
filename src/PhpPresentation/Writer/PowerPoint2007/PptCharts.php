@@ -2116,6 +2116,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param Chart\Axis $oAxis
      * @param $typeAxis
      * @param Chart\Type\AbstractType $typeChart
+     * @throws \Exception
      */
     protected function writeAxis(XMLWriter $objWriter, Chart\Axis $oAxis, $typeAxis, Chart\Type\AbstractType $typeChart)
     {
@@ -2359,6 +2360,7 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * @param XMLWriter $objWriter
      * @param Gridlines $oGridlines
+     * @throws \Exception
      */
     protected function writeAxisGridlines(XMLWriter $objWriter, Gridlines $oGridlines)
     {

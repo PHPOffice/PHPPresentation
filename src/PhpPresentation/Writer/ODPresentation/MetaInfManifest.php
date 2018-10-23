@@ -12,6 +12,7 @@ class MetaInfManifest extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
+     * @throws \Exception
      */
     public function render()
     {

@@ -11,6 +11,7 @@ class CommentAuthors extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
+     * @throws \Exception
      */
     public function render()
     {
