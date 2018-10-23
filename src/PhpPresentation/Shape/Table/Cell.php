@@ -160,6 +160,7 @@ class Cell implements ComparableInterface
      * Create paragraph
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @throws \Exception
      */
     public function createParagraph()
     {
@@ -184,7 +185,7 @@ class Cell implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface $pText Rich text element
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function addText(TextElementInterface $pText = null)
     {
@@ -272,7 +273,7 @@ class Cell implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] $paragraphs Array of paragraphs
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setParagraphs($paragraphs = null)
     {
@@ -298,7 +299,7 @@ class Cell implements ComparableInterface
      * Set fill
      *
      * @param  \PhpOffice\PhpPresentation\Style\Fill     $fill
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setFill(Fill $fill)
     {
@@ -321,7 +322,7 @@ class Cell implements ComparableInterface
      * Set borders
      *
      * @param  \PhpOffice\PhpPresentation\Style\Borders  $borders
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setBorders(Borders $borders)
     {
@@ -344,7 +345,7 @@ class Cell implements ComparableInterface
      * Set width
      *
      * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setWidth($value = 0)
     {
@@ -367,7 +368,7 @@ class Cell implements ComparableInterface
      * Set colSpan
      *
      * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setColSpan($value = 0)
     {
@@ -390,7 +391,7 @@ class Cell implements ComparableInterface
      * Set rowSpan
      *
      * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setRowSpan($value = 0)
     {

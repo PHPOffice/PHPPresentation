@@ -25,7 +25,7 @@ class File extends AbstractDrawingAdapter
      * @param  string                      $pValue      File path
      * @param  boolean                     $pVerifyFile Verify file
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing
+     * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
      */
     public function setPath($pValue = '', $pVerifyFile = true)
     {

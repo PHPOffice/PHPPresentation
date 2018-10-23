@@ -118,8 +118,9 @@ class ODPresentation implements ReaderInterface
     /**
      * Load PhpPresentation Serialized file
      *
-     * @param  string        $pFilename
+     * @param  string $pFilename
      * @return \PhpOffice\PhpPresentation\PhpPresentation
+     * @throws \Exception
      */
     protected function loadFile($pFilename)
     {
@@ -191,10 +192,12 @@ class ODPresentation implements ReaderInterface
             }
         }
     }
-    
+
     /**
      * Extract style
      * @param \DOMElement $nodeStyle
+     * @return bool
+     * @throws \Exception
      */
     protected function loadStyle(\DOMElement $nodeStyle)
     {
@@ -350,6 +353,8 @@ class ODPresentation implements ReaderInterface
      * Read Slide
      *
      * @param \DOMElement $nodeSlide
+     * @return bool
+     * @throws \Exception
      */
     protected function loadSlide(\DOMElement $nodeSlide)
     {
@@ -377,11 +382,12 @@ class ODPresentation implements ReaderInterface
         }
         return true;
     }
-    
+
     /**
      * Read Shape Drawing
      *
      * @param \DOMElement $oNodeFrame
+     * @throws \Exception
      */
     protected function loadShapeDrawing(\DOMElement $oNodeFrame)
     {
@@ -428,6 +434,7 @@ class ODPresentation implements ReaderInterface
      * Read Shape RichText
      *
      * @param \DOMElement $oNodeFrame
+     * @throws \Exception
      */
     protected function loadShapeRichText(\DOMElement $oNodeFrame)
     {
@@ -456,11 +463,12 @@ class ODPresentation implements ReaderInterface
     }
     
     protected $levelParagraph = 0;
-    
+
     /**
      * Read Paragraph
      * @param RichText $oShape
      * @param \DOMElement $oNodeParent
+     * @throws \Exception
      */
     protected function readParagraph(RichText $oShape, \DOMElement $oNodeParent)
     {
@@ -477,11 +485,12 @@ class ODPresentation implements ReaderInterface
             $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
         }
     }
-    
+
     /**
      * Read Paragraph Item
      * @param Paragraph $oParagraph
      * @param \DOMElement $oNodeParent
+     * @throws \Exception
      */
     protected function readParagraphItem(Paragraph $oParagraph, \DOMElement $oNodeParent)
     {
@@ -512,6 +521,7 @@ class ODPresentation implements ReaderInterface
      *
      * @param RichText $oShape
      * @param \DOMElement $oNodeParent
+     * @throws \Exception
      */
     protected function readList(RichText $oShape, \DOMElement $oNodeParent)
     {
@@ -526,12 +536,13 @@ class ODPresentation implements ReaderInterface
             }
         }
     }
-    
+
     /**
      * Read List Item
      * @param RichText $oShape
      * @param \DOMElement $oNodeParent
      * @param \DOMElement $oNodeParagraph
+     * @throws \Exception
      */
     protected function readListItem(RichText $oShape, \DOMElement $oNodeParent, \DOMElement $oNodeParagraph)
     {
