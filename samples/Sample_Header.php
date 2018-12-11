@@ -26,21 +26,28 @@ define('IS_INDEX', SCRIPT_FILENAME == 'index');
 require_once __DIR__ . '/../src/PhpPresentation/Autoloader.php';
 Autoloader::register();
 
-if (is_file(__DIR__. '/../../../../vendor/autoload.php')) {
-    require_once __DIR__ . '/../../../../vendor/autoload.php';
-} else {
-    throw new Exception ('Can not find the vendor folder!');
-}
-// do some checks to make sure the outputs are set correctly.
-if (is_dir(__DIR__.DIRECTORY_SEPARATOR.'results') === FALSE) {
-    throw new Exception ('The results folder is not present!');
-}
-if (is_writable(__DIR__.DIRECTORY_SEPARATOR.'results'.DIRECTORY_SEPARATOR) === FALSE) {
-    throw new Exception ('The results folder is not writable!');
-}
-if (is_writable(__DIR__.DIRECTORY_SEPARATOR) === FALSE) {
-    throw new Exception ('The samples folder is not writable!');
-}
+// if (is_file(__DIR__. '/../../../../vendor/autoload.php')) {
+//     require_once __DIR__ . '/../../../../vendor/autoload.php';
+// } else {
+//     throw new Exception ('Can not find the vendor folder!');
+// }
+// // do some checks to make sure the outputs are set correctly.
+// if (is_dir(__DIR__.DIRECTORY_SEPARATOR.'results') === FALSE) {
+//     throw new Exception ('The results folder is not present!');
+// }
+// if (is_writable(__DIR__.DIRECTORY_SEPARATOR.'results'.DIRECTORY_SEPARATOR) === FALSE) {
+//     throw new Exception ('The results folder is not writable!');
+// }
+// if (is_writable(__DIR__.DIRECTORY_SEPARATOR) === FALSE) {
+//     throw new Exception ('The samples folder is not writable!');
+// }
+
+set_include_path ( get_include_path () . PATH_SEPARATOR . '../src/PhpPresentation/' );
+include_once 'IOFactory.php';
+
+require_once '../../Common/src/Common/Autoloader.php';
+\PhpOffice\Common\Autoloader::register ();
+
 
 // Set writers
 $writers = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
