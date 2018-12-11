@@ -77,7 +77,6 @@ class Base64 extends AbstractDrawingAdapter
 
     /**
      * @return string
-     * @throws \Exception
      */
     public function getIndexedFilename()
     {

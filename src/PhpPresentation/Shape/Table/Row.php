@@ -160,7 +160,7 @@ class Row implements ComparableInterface
      * Set height
      *
      * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setHeight($value = 0)
     {

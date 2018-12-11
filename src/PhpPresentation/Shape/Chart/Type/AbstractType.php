@@ -93,7 +93,6 @@ abstract class AbstractType implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
-     * @return AbstractType
      */
     public function setHashIndex($value)
     {
@@ -149,8 +148,6 @@ abstract class AbstractType implements ComparableInterface
      * Set Data
      *
      * @deprecated setSeries
-     * @param array $value
-     * @return AbstractType
      */
     public function setData($value = array())
     {
@@ -158,6 +155,7 @@ abstract class AbstractType implements ComparableInterface
     }
 
     /**
+     * @return mixed
      * @link http://php.net/manual/en/language.oop5.cloning.php
      */
     public function __clone()

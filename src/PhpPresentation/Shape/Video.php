@@ -21,9 +21,41 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 /**
- * Media element
+ * Video element
  */
-abstract class Media extends File implements ComparableInterface
+class Video extends Media
 {
-
- }
+	
+	
+	public function __construct() {
+		parent::__construct();
+		
+		// settings
+		$this->setName('Video')
+		->setDescription('Video')
+		->setResizeProportional(false);
+	}
+	
+	
+	/**
+	 * @return string
+	 */
+	public function getMimeType()
+	{
+		switch (strtolower($this->getExtension())) {
+			case 'mp4':
+				$mimetype = 'video/mp4';
+				break;
+			case 'ogv':
+				$mimetype = 'video/ogg';
+				break;
+			case 'wmv':
+				$mimetype = 'video/x-ms-wmv';
+				break;
+			default:
+				$mimetype = 'application/octet-stream';
+		}
+		return $mimetype;
+	}
+	
+}

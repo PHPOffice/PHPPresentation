@@ -229,7 +229,6 @@ class RichText extends AbstractShape implements ComparableInterface
      * Create paragraph
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
-     * @throws \Exception
      */
     public function createParagraph()
     {
@@ -652,7 +651,6 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set horizontal auto shrink
      * @param bool $value
-     * @return RichText
      */
     public function setAutoShrinkHorizontal($value = null)
     {
@@ -670,11 +668,10 @@ class RichText extends AbstractShape implements ComparableInterface
     {
         return $this->autoShrinkHorizontal;
     }
-
+    
     /**
      * Set vertical auto shrink
      * @param bool $value
-     * @return RichText
      */
     public function setAutoShrinkVertical($value = null)
     {

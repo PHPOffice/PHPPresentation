@@ -28,8 +28,7 @@ class Styles extends AbstractDecoratorWriter
     protected $arrayStrokeDash = array();
 
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     * @throws \Exception
+     * @return ZipInterface
      */
     public function render()
     {
@@ -312,7 +311,6 @@ class Styles extends AbstractDecoratorWriter
      * Write the background image style
      * @param XMLWriter $objWriter
      * @param Image $oBkgImage
-     * @param $numSlide
      */
     protected function writeBackgroundStyle(XMLWriter $objWriter, Image $oBkgImage, $numSlide)
     {

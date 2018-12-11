@@ -8,7 +8,6 @@ class DocPropsApp extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     * @throws \Exception
      */
     public function render()
     {

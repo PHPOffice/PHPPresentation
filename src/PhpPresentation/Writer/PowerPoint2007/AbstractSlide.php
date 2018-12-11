@@ -26,7 +26,8 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
-use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\Video;
+use PhpOffice\PhpPresentation\Shape\Audio;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
@@ -48,7 +49,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param AbstractSlideAlias $pSlideMaster
      * @param $objWriter
      * @param $relId
-     * @return mixed
      * @throws \Exception
      */
     protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, $objWriter, $relId)
@@ -632,7 +632,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Line $shape
      * @param  int $shapeId
-     * @throws \Exception
      */
     protected function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
     {
@@ -759,7 +758,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\AbstractShape|\PhpOffice\PhpPresentation\Shape\RichText\TextElement $shape
-     * @throws \Exception
      */
     protected function writeHyperlink(XMLWriter $objWriter, $shape)
     {
@@ -1139,7 +1137,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:nvPicPr');
         // p:cNvPr
         $objWriter->startElement('p:cNvPr');
-        $objWriter->writeAttribute('id', $shapeId);
+        // there is already an id=1, so add 1 to shapeId to start with 2
+        $objWriter->writeAttribute('id', $shapeId + 1);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
         // a:hlinkClick
@@ -1159,7 +1158,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         /**
          * @link : https://github.com/stefslon/exportToPPTX/blob/master/exportToPPTX.m#L2128
          */
-        if ($shape instanceof Media) {
+        if ($shape instanceof Video) {
             // p:nvPr > a:videoFile
             $objWriter->startElement('a:videoFile');
             $objWriter->writeAttribute('r:link', $shape->relationId);
@@ -1171,7 +1170,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
             // p:nvPr > p:extLst > p:ext > p14:media
             $objWriter->startElement('p14:media');
-            $objWriter->writeAttribute('r:embed', $shape->relationId);
+            
+            // bug fixed 
+            $objWriter->writeAttribute('r:embed', $this->newRId($shape->relationId,1));
+            //$objWriter->writeAttribute('r:embed', $shape->relationId);
+                      
             $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
             // p:nvPr > p:extLst > p:ext > ##p14:media
             $objWriter->endElement();
@@ -1179,6 +1182,30 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->endElement();
             // p:nvPr > ##p:extLst
             $objWriter->endElement();
+        } elseif ($shape instanceof Audio) {
+        	// p:nvPr > a:videoFile
+        	$objWriter->startElement('a:audioFile');
+        	$objWriter->writeAttribute('r:link', $shape->relationId);
+        	$objWriter->endElement();
+        	// p:nvPr > p:extLst
+        	$objWriter->startElement('p:extLst');
+        	// p:nvPr > p:extLst > p:ext
+        	$objWriter->startElement('p:ext');
+        	$objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
+        	// p:nvPr > p:extLst > p:ext > p14:media
+        	$objWriter->startElement('p14:media');
+        	
+        	// bug fixed
+        	$objWriter->writeAttribute('r:embed', $this->newRId($shape->relationId,1));
+        	//$objWriter->writeAttribute('r:embed', $shape->relationId);
+        	
+        	$objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
+        	// p:nvPr > p:extLst > p:ext > ##p14:media
+        	$objWriter->endElement();
+        	// p:nvPr > p:extLst > ##p:ext
+        	$objWriter->endElement();
+        	// p:nvPr > ##p:extLst
+        	$objWriter->endElement();
         }
         // ##p:nvPr
         $objWriter->endElement();
@@ -1187,7 +1214,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:blipFill');
         // a:blip
         $objWriter->startElement('a:blip');
-        $objWriter->writeAttribute('r:embed', $shape->relationId);
+        if ($shape instanceof Video || $shape instanceof Audio) {
+        	$objWriter->writeAttribute('r:embed', $this->newRId($shape->relationId,2));
+        } else {
+        	$objWriter->writeAttribute('r:embed', $shape->relationId);
+        }
         $objWriter->endElement();
         // a:stretch
         $objWriter->startElement('a:stretch');
@@ -1226,12 +1257,23 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     }
 
     /**
+     * Increase the relationId.
+     * @param string $currentRId
+     * @return string new $currentRId
+     */
+     private function newRId($currentRId, $increase) {
+    	$prefix = "rId";
+    	$nextnumber = substr($currentRId, strpos($currentRId, $prefix)+strlen($prefix));
+    	$nextnumber += $increase;
+    	return $prefix . $nextnumber;
+    }
+
+    /**
      * Write group
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Group $group
      * @param  int $shapeId
-     * @throws \Exception
      */
     protected function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
     {

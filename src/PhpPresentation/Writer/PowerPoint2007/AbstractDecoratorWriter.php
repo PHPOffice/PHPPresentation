@@ -256,7 +256,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * Write Outline
      * @param XMLWriter $objWriter
      * @param Outline $oOutline
-     * @throws \Exception
      */
     protected function writeOutline(XMLWriter $objWriter, $oOutline)
     {

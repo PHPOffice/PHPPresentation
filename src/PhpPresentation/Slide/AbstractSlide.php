@@ -109,7 +109,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     /**
      * Get collection of shapes
      *
-     * @param array $shapeCollection
      * @return AbstractSlide
      */
     public function setShapeCollection($shapeCollection = array())
@@ -123,7 +122,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      *
      * @param  \PhpOffice\PhpPresentation\AbstractShape $shape
      * @return \PhpOffice\PhpPresentation\AbstractShape
-     * @throws \Exception
      */
     public function addShape(AbstractShape $shape)
     {
@@ -231,7 +229,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * Create rich text shape
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText
-     * @throws \Exception
      */
     public function createRichTextShape()
     {
@@ -248,7 +245,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * @param  int $toX Ending point x offset
      * @param  int $toY Ending point y offset
      * @return \PhpOffice\PhpPresentation\Shape\Line
-     * @throws \Exception
      */
     public function createLineShape($fromX, $fromY, $toX, $toY)
     {
@@ -261,7 +257,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * Create chart shape
      *
      * @return \PhpOffice\PhpPresentation\Shape\Chart
-     * @throws \Exception
      */
     public function createChartShape()
     {
@@ -274,7 +269,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * Create drawing shape
      *
      * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
-     * @throws \Exception
      */
     public function createDrawingShape()
     {
@@ -288,7 +282,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      *
      * @param  int $columns Number of columns
      * @return \PhpOffice\PhpPresentation\Shape\Table
-     * @throws \Exception
      */
     public function createTableShape($columns = 1)
     {
@@ -301,7 +294,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * Creates a group within this slide
      *
      * @return \PhpOffice\PhpPresentation\Shape\Group
-     * @throws \Exception
      */
     public function createGroup()
     {
@@ -324,8 +316,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * Re-bind parent
      *
      * @param  \PhpOffice\PhpPresentation\PhpPresentation $parent
-     * @return \PhpOffice\PhpPresentation\Slide\AbstractSlide
-     * @throws \Exception
+     * @return \PhpOffice\PhpPresentation\Slide
      */
     public function rebindParent(PhpPresentation $parent)
     {
@@ -344,7 +335,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      * @param AbstractBackground $background
-     * @return \PhpOffice\PhpPresentation\Slide\AbstractSlide
+     * @return Slide
      */
     public function setBackground(AbstractBackground $background = null)
     {
@@ -364,7 +355,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     /**
      *
      * @param \PhpOffice\PhpPresentation\Slide\Transition $transition
-     * @return \PhpOffice\PhpPresentation\Slide\AbstractSlide
+     * @return \PhpOffice\PhpPresentation\Slide
      */
     public function setTransition(Transition $transition = null)
     {

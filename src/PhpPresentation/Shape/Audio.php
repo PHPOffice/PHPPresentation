@@ -17,13 +17,44 @@
 
 namespace PhpOffice\PhpPresentation\Shape;
 
-use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 /**
- * Media element
+ * Audio element
  */
-abstract class Media extends File implements ComparableInterface
+class Audio extends Media
 {
-
- }
+	
+	public function __construct() {
+		parent::__construct();
+		
+		// settings
+		$this->setName('Audio')
+		->setDescription('Audio')
+		->setResizeProportional(false)
+		->setHeight(60)
+		->setWidth(60);
+	}
+	
+	
+	
+	
+	/**
+	 * @return string
+	 */
+	public function getMimeType()
+	{
+		switch (strtolower($this->getExtension())) {
+			case 'mp3':
+				$mimetype = 'audio/mpeg';
+				break;
+			case 'wav':
+				$mimetype = 'audio/vnd.wav';
+				break;
+			default:
+				$mimetype = 'application/octet-stream';
+		}
+		return $mimetype;
+	}
+	
+}
