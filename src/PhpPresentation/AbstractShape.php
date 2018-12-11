@@ -143,7 +143,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Get Container, Slide or Group
      *
-     * @return \PhpOffice\PhpPresentation\ShapeContainerInterface
+     * @return \PhpOffice\PhpPresentation\Container
      */
     public function getContainer()
     {
@@ -385,7 +385,6 @@ abstract class AbstractShape implements ComparableInterface
      * Get Hyperlink
      *
      * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
-     * @throws \Exception
      */
     public function getHyperlink()
     {

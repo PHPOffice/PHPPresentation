@@ -12,7 +12,6 @@ class PptSlideLayouts extends AbstractSlide
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     * @throws \Exception
      */
     public function render()
     {

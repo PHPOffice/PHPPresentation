@@ -118,7 +118,7 @@ class PresentationProperties
     /**
      * Mark a document as final
      * @param bool $state
-     * @return PresentationProperties
+     * @return PhpPresentation
      */
     public function markAsFinal($state = true)
     {
@@ -140,9 +140,9 @@ class PresentationProperties
     /**
      * Set the zoom of the document (in percentage)
      * @param float $zoom
-     * @return PresentationProperties
+     * @return PhpPresentation
      */
-    public function setZoom($zoom = 1.0)
+    public function setZoom($zoom = 1)
     {
         if (is_numeric($zoom)) {
             $this->zoom = (float)$zoom;

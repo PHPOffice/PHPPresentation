@@ -31,7 +31,6 @@ class Serialized extends AbstractWriter implements WriterInterface
      * Create a new \PhpOffice\PhpPresentation\Writer\Serialized
      *
      * @param \PhpOffice\PhpPresentation\PhpPresentation $pPhpPresentation
-     * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
     {

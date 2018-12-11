@@ -1,0 +1,14 @@
+Versie 0.10.0
+
+Dit is een develop versie van PHPpresentation.
+
+Gebaseerd op versie 0.9.0.
+Met enkele bugfixes en extra features.
+
+Daarnaast zelf feautures ingebouwd :
+Audio en Video ondersteuning (voor Powerpoint 2010)
+!!
+
+
+LA aug 2018
+
