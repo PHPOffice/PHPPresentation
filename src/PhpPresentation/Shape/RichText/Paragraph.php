@@ -58,7 +58,9 @@ class Paragraph implements ComparableInterface
     /**
      * @var integer
      */
-    private $lineSpacing = 100;
+    private $lineSpacing = 1;
+	
+	private $dqSpacing=0;
 
     /**
      * Hash index
@@ -322,6 +324,24 @@ class Paragraph implements ComparableInterface
     public function setLineSpacing($lineSpacing)
     {
         $this->lineSpacing = $lineSpacing;
+        return $this;
+    }
+	
+	/**
+     * @return int
+     */
+    public function getDqSpacing()
+    {
+        return $this->dqSpacing;
+    }
+
+    /**
+     * @param int $lineSpacing
+     * @return Paragraph
+     */
+    public function setDqSpacing($lineSpacing)
+    {
+        $this->dqSpacing = $lineSpacing;
         return $this;
     }
 }
