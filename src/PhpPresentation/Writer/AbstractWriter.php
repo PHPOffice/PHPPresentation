@@ -97,9 +97,17 @@ abstract class AbstractWriter
         $aDrawings  = array();
 
         // Loop through PhpPresentation
-        foreach (array_merge($this->getPhpPresentation()->getAllSlides(), $this->getPhpPresentation()->getAllMasterSlides()) as $oSlide) {
+        foreach ($this->getPhpPresentation()->getAllSlides() as $oSlide) {
             $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
             $aDrawings = array_merge($aDrawings, $arrayReturn);
+        }
+        foreach ($this->getPhpPresentation()->getAllMasterSlides() as $oSlide) {
+            $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
+            $aDrawings = array_merge($aDrawings, $arrayReturn);
+            foreach($oSlide->getAllSlideLayouts() as $slide){
+                $arrayReturn = $this->iterateCollection($slide->getShapeCollection()->getIterator());
+                $aDrawings = array_merge($aDrawings, $arrayReturn);
+            }
         }
 
         return $aDrawings;
