@@ -38,6 +38,8 @@ Read more about PHPPresentation:
 - Set transitions between slides
 - Output to different file formats: PowerPoint 2007 (.pptx), OpenDocument Presentation (.odp), Serialized Presentation)
 - ## Special in this version: Add Audio and video files without having to repair the PPTX (2010)
+## See the samples 21, 22 and 23 !
+
 - ... and lots of other things!
 
 ### Requirements
