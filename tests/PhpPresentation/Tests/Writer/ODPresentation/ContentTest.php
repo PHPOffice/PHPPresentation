@@ -15,6 +15,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
+use PhpOffice\Common\Drawing;
 
 /**
  * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
