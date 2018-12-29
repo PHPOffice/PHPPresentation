@@ -59,6 +59,7 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * @return ZipInterface
+     * @throws \Exception
      */
     public function render()
     {
@@ -370,7 +371,8 @@ class Content extends AbstractDecoratorWriter
      * Write picture
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter
-     * @param \PhpOffice\PhpPresentation\Shape\AbstractDrawingAdapter $shape
+     * @param AbstractDrawingAdapter $shape
+     * @throws \Exception
      */
     public function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape)
     {
@@ -418,6 +420,7 @@ class Content extends AbstractDecoratorWriter
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter
      * @param \PhpOffice\PhpPresentation\Shape\RichText $shape
+     * @throws \Exception
      */
     public function writeShapeTxt(XMLWriter $objWriter, RichText $shape)
     {
@@ -616,6 +619,7 @@ class Content extends AbstractDecoratorWriter
      * Write table Shape
      * @param XMLWriter $objWriter
      * @param Table $shape
+     * @throws \Exception
      */
     public function writeShapeTable(XMLWriter $objWriter, Table $shape)
     {
@@ -736,6 +740,7 @@ class Content extends AbstractDecoratorWriter
      *
      * @param XMLWriter $objWriter
      * @param Group $group
+     * @throws \Exception
      */
     public function writeShapeGroup(XMLWriter $objWriter, Group $group)
     {
@@ -1077,6 +1082,7 @@ class Content extends AbstractDecoratorWriter
      * Write the slide note
      * @param XMLWriter $objWriter
      * @param \PhpOffice\PhpPresentation\Slide\Note $note
+     * @throws \Exception
      */
     public function writeSlideNote(XMLWriter $objWriter, Note $note)
     {

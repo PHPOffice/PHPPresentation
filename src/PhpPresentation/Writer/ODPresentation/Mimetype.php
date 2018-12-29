@@ -5,7 +5,8 @@ namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 class Mimetype extends AbstractDecoratorWriter
 {
     /**
-     * @return ZipInterface
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @throws \Exception
      */
     public function render()
     {

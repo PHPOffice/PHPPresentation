@@ -58,7 +58,7 @@ abstract class AbstractWriter
      *
      * @param  PhpPresentation                       $pPhpPresentation PhpPresentation object
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
+     * @return \PhpOffice\PhpPresentation\Writer\AbstractWriter
      */
     public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
     {
