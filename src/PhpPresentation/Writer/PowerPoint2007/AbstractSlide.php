@@ -119,7 +119,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param int $shapeId
      * @throws \Exception
      */
-    protected function writeShapeCollection(XMLWriter $objWriter, $shapes = array(), &$shapeId = 0)
+    protected function writeShapeCollection(XMLWriter $objWriter, $shapes = array(), &$shapeId = 1)
     {
         if (count($shapes) == 0) {
             return;
