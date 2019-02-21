@@ -21,6 +21,7 @@ class Base64 extends AbstractDrawingAdapter
      */
     protected $arrayMimeExtension = array(
         'image/jpeg' => 'jpg',
+        'image/png'  => 'png',
     );
 
     /**
