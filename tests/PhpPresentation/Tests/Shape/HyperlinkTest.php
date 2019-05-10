@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for hyperlink element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Hyperlink
  */
-class HyperlinkTest extends \PHPUnit_Framework_TestCase
+class HyperlinkTest extends TestCase
 {
     /**
      * Test can read

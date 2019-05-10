@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Legend element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Marker
  */
-class MarkerTest extends \PHPUnit_Framework_TestCase
+class MarkerTest extends TestCase
 {
     public function testConstruct()
     {

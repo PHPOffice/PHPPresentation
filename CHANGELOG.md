@@ -7,7 +7,7 @@
 
 ### Changes
 - PHP 7.1 is now supported - @Progi1984 GH-355
-- PhpOffice\PhpPresentation\Style\Color : Define only the transparency - @Progi1984 GH-370 
+- PhpOffice\PhpPresentation\Style\Color : Define only the transparency - @Progi1984 GH-370
 - PowerPoint2007 Reader : Background Color based on SchemeColor - @Progi1984 GH-397
 
 ### Features
@@ -29,7 +29,7 @@
 
 ### Features
 - PowerPoint2007 Writer : Implemented XSD validation test case according to the ECMA/ISO standard - @k42b3 GH-307
-- PowerPoint2007 Writer : Implement visibility for axis - @kw-pr @Progi1984 GH-356 
+- PowerPoint2007 Writer : Implement visibility for axis - @kw-pr @Progi1984 GH-356
 - PowerPoint2007 Writer : Implement gap width in Bar(3D) Charts - @Progi1984 GH-358
 
 ## 0.8.0 - 2017-04-03
@@ -90,16 +90,16 @@
 - ODPresentation & PowerPoint2007 Writer : Add Font Support For Chart Axis - @jrking4 GH-186
 - ODPresentation & PowerPoint2007 Writer : Support for video - @Progi1984 GH-123
 - ODPresentation & PowerPoint2007 Writer : Support for Visibility for slides - @Progi1984
-- PowerPoint2007 Reader : Layout Management - @vincentKool @Progi1984 GH-161 
-- PowerPoint2007 Reader : Slide size - @loverslcn @Progi1984 GH-246 
-- PowerPoint2007 Reader : Bullet Color - @Progi1984 GH-257 
-- PowerPoint2007 Reader : Line Spacing - @Progi1984 GH-257 
+- PowerPoint2007 Reader : Layout Management - @vincentKool @Progi1984 GH-161
+- PowerPoint2007 Reader : Slide size - @loverslcn @Progi1984 GH-246
+- PowerPoint2007 Reader : Bullet Color - @Progi1984 GH-257
+- PowerPoint2007 Reader : Line Spacing - @Progi1984 GH-257
 - PowerPoint2007 Writer : Presentation with predefined View Type - @Progi1984 GH-120
 - PowerPoint2007 Writer : Implement alpha channel to Fills - @Dayjo GH-203 / @Progi1984 GH-215
 - PowerPoint2007 Writer : Implement Animations - @JewrassicPark GH-214 / @Progi1984 GH-217
 - PowerPoint2007 Writer : Layout Management - @vincentKool @Progi1984 GH-161
-- PowerPoint2007 Writer : Bullet Color - @piotrbelina GH-249 
-- PowerPoint2007 Writer : Line Spacing - @piotrbelina GH-249 
+- PowerPoint2007 Writer : Bullet Color - @piotrbelina GH-249
+- PowerPoint2007 Writer : Line Spacing - @piotrbelina GH-249
 
 ## 0.6.0 - 2016-01-24
 
@@ -175,7 +175,7 @@
 - PowerPoint2007 Writer : Hyperlink in table doesn't work - @Progi1984 GH-70
 - PowerPoint2007 Writer : AutoFitNormal works with options (fontScale & lineSpacingReduction) - @Progi1984 @desigennaro GH-71
 - PowerPoint2007 Writer : Shadow don't work for RichTextShapes - @Progi1984 GH-81
-- PowerPoint2007 Writer : Visibility of the Title doesn't work - @Progi1984 GH-107 
+- PowerPoint2007 Writer : Visibility of the Title doesn't work - @Progi1984 GH-107
 - Refactor findLayoutIndex to findLayoutId where it assumes the slideLayout order was sorted. IMPROVED: unit tests - @kenliau GH-95
 
 ### Miscellaneous
@@ -249,7 +249,6 @@
 - PowerPoint2007 Writer: Scatter chart with numerical X values not working well  - @Progi1984 GH-3
 - Shape RichText: Support of Vertical Alignment in PowerPoint2007 - @Progi1984 GH-35
 
-
 ### Miscellaneous
 
 - Rename PHPPowerpoint.php to PHPPowerPoint.php - @maartenba CP-1165
@@ -257,7 +256,7 @@
 - QA: Prepare `.travis.yml` and `phpcs.xml` for Travis build passing - @Progi1984 @ivanlanin
 - QA: Initiate unit tests - @Progi1984 @ivanlanin
 - QA: Cleanup source code for PSR dan PHPDoc compatibility - @ivanlanin
-- QA: Unit Tests - @Progi1984 & @ivanlanin 
+- QA: Unit Tests - @Progi1984 & @ivanlanin
 - Doc: Initiate documentation - @ivanlanin
 - Doc: Move to [Read The Docs](http://phppowerpoint.readthedocs.org) - @Progi1984
 - Refactor: Change PHPPowerPoint_Shape_Shadow to PHPPowerPoint_Style_Shadow because it's a style, not a shape - @ivanlanin

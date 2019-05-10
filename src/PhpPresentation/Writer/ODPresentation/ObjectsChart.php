@@ -49,6 +49,7 @@ class ObjectsChart extends AbstractDecoratorWriter
 
     /**
      * @return ZipInterface
+     * @throws \Exception
      */
     public function render()
     {
@@ -194,6 +195,7 @@ class ObjectsChart extends AbstractDecoratorWriter
 
     /**
      * @param Chart $chart
+     * @throws \Exception
      */
     private function writeAxis(Chart $chart)
     {
@@ -251,6 +253,7 @@ class ObjectsChart extends AbstractDecoratorWriter
 
     /**
      * @param Chart $chart
+     * @throws \Exception
      * @todo Set function in \PhpPresentation\Shape\Chart\Axis for defining width and color of the axis
      */
     protected function writeAxisStyle(Chart $chart)
@@ -475,6 +478,7 @@ class ObjectsChart extends AbstractDecoratorWriter
 
     /**
      * @param Chart $chart
+     * @throws \Exception
      */
     private function writePlotArea(Chart $chart)
     {
@@ -530,6 +534,7 @@ class ObjectsChart extends AbstractDecoratorWriter
 
     /**
      * @param Chart $chart
+     * @throws \Exception
      * @link : http://books.evc-cit.info/odbook/ch08.html#chart-plot-area-section
      */
     private function writePlotAreaStyle(Chart $chart)
@@ -658,6 +663,7 @@ class ObjectsChart extends AbstractDecoratorWriter
     /**
      * @param Chart $chart
      * @param Chart\Series $series
+     * @throws \Exception
      */
     private function writeSeriesStyle(Chart $chart, Chart\Series $series)
     {
@@ -945,6 +951,7 @@ class ObjectsChart extends AbstractDecoratorWriter
 
     /**
      * @param Chart $chart
+     * @throws \Exception
      */
     private function writeWallStyle(Chart $chart)
     {

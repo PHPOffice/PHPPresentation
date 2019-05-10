@@ -22,13 +22,14 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Legend element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Legend
  */
-class LegendTest extends \PHPUnit_Framework_TestCase
+class LegendTest extends TestCase
 {
     public function testConstruct()
     {

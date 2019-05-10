@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\Slide\Transition;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Slide\Transition
  */
-class TransitionTest extends \PHPUnit_Framework_TestCase
+class TransitionTest extends TestCase
 {
     public function testSpeed()
     {

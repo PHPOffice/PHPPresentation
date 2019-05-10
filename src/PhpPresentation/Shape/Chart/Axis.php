@@ -155,7 +155,7 @@ class Axis implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
      */
     public function setFont(Font $pFont = null)
     {

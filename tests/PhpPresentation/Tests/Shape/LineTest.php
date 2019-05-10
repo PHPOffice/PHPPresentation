@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Style\Border;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for memory drawing element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Line
  */
-class LineTest extends \PHPUnit_Framework_TestCase
+class LineTest extends TestCase
 {
     /**
      * Test can read

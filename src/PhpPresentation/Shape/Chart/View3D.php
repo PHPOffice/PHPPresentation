@@ -248,6 +248,7 @@ class View3D implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
+     * @return View3D
      */
     public function setHashIndex($value)
     {

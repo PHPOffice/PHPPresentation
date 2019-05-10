@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Color;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class ColorTest extends \PHPUnit_Framework_TestCase
+class ColorTest extends TestCase
 {
     /**
      * Test create new instance

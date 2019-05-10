@@ -24,11 +24,12 @@ use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Autoloader
  */
-class AbstractShapeTest extends \PHPUnit_Framework_TestCase
+class AbstractShapeTest extends TestCase
 {
     /**
      * Register

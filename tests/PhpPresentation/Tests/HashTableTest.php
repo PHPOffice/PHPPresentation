@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\Slide;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for HashTable
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\HashTable
  */
-class HashTableTest extends \PHPUnit_Framework_TestCase
+class HashTableTest extends TestCase
 {
     /**
      */

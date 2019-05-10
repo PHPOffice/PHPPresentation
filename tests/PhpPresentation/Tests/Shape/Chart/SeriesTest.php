@@ -22,13 +22,14 @@ use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Series element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Series
  */
-class SeriesTest extends \PHPUnit_Framework_TestCase
+class SeriesTest extends TestCase
 {
     public function testConstruct()
     {
@@ -45,21 +46,21 @@ class SeriesTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($object->getOutline());
         $this->assertFalse($object->hasShowLegendKey());
     }
-    
+
     public function testDataLabelNumFormat()
     {
         $object = new Series();
-        
+
         $this->assertEmpty($object->getDlblNumFormat());
         $this->assertFalse($object->hasDlblNumFormat());
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setDlblNumFormat('#%'));
-        
+
         $this->assertEquals('#%', $object->getDlblNumFormat());
         $this->assertTrue($object->hasDlblNumFormat());
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setDlblNumFormat());
-        
+
         $this->assertEmpty($object->getDlblNumFormat());
         $this->assertFalse($object->hasDlblNumFormat());
     }

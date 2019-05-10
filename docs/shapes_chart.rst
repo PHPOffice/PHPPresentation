@@ -100,7 +100,7 @@ You can define visibility for each axis (X & Y).
 Title
 ^^^^^
 
-By default, the title of a chart is displayed. 
+By default, the title of a chart is displayed.
 For hiding it, you define its visibility to false.
 
 .. code-block:: php
@@ -228,7 +228,6 @@ You can stack multiples series in a same chart. After adding multiples series, y
 .. image:: images/chart_columnpercent_52x60.png
    :width: 120px
    :alt: Bar::GROUPING_PERCENTSTACKED
-
 
 Line
 ^^^^

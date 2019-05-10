@@ -22,13 +22,14 @@ use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Paragraph element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Paragraph
  */
-class ParagraphTest extends \PHPUnit_Framework_TestCase
+class ParagraphTest extends TestCase
 {
     /**
      * Test can read
@@ -146,17 +147,17 @@ class ParagraphTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->addText(new TextElement()));
-        $this->assertcount(1, $object->getRichTextElements());
+        $this->assertCount(1, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText());
-        $this->assertcount(2, $object->getRichTextElements());
+        $this->assertCount(2, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText('AAA'));
-        $this->assertcount(3, $object->getRichTextElements());
+        $this->assertCount(3, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->createBreak());
-        $this->assertcount(4, $object->getRichTextElements());
+        $this->assertCount(4, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun());
-        $this->assertcount(5, $object->getRichTextElements());
+        $this->assertCount(5, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BBB'));
-        $this->assertcount(6, $object->getRichTextElements());
+        $this->assertCount(6, $object->getRichTextElements());
         $this->assertEquals('AAA'."\r\n".'BBB', $object->getPlainText());
         $this->assertEquals('AAA'."\r\n".'BBB', (string) $object);
     }

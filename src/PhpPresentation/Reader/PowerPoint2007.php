@@ -131,6 +131,7 @@ class PowerPoint2007 implements ReaderInterface
      *
      * @param  string $pFilename
      * @return \PhpOffice\PhpPresentation\PhpPresentation
+     * @throws \Exception
      */
     protected function loadFile($pFilename)
     {
@@ -265,6 +266,8 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Extract all slides
+     * @param $sPart
+     * @throws \Exception
      */
     protected function loadSlides($sPart)
     {
@@ -302,6 +305,7 @@ class PowerPoint2007 implements ReaderInterface
      * Extract all MasterSlides
      * @param XMLReader $xmlReader
      * @param string $fileRels
+     * @throws \Exception
      */
     protected function loadMasterSlides(XMLReader $xmlReader, $fileRels)
     {
@@ -328,6 +332,7 @@ class PowerPoint2007 implements ReaderInterface
      * Extract data from slide
      * @param string $sPart
      * @param string $baseFile
+     * @throws \Exception
      */
     protected function loadSlide($sPart, $baseFile)
     {
@@ -416,6 +421,7 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * @param string $sPart
      * @param string $baseFile
+     * @throws \Exception
      */
     protected function loadMasterSlide($sPart, $baseFile)
     {
@@ -559,6 +565,7 @@ class PowerPoint2007 implements ReaderInterface
      * @param string $baseFile
      * @param SlideMaster $oSlideMaster
      * @return SlideLayout|null
+     * @throws \Exception
      */
     protected function loadLayoutSlide($sPart, $baseFile, SlideMaster $oSlideMaster)
     {
@@ -632,6 +639,7 @@ class PowerPoint2007 implements ReaderInterface
      * @param XMLReader $xmlReader
      * @param \DOMElement $oElement
      * @param AbstractSlide $oSlide
+     * @throws \Exception
      */
     protected function loadSlideBackground(XMLReader $xmlReader, \DOMElement $oElement, AbstractSlide $oSlide)
     {
@@ -692,6 +700,7 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * @param string $baseFile
      * @param Slide $oSlide
+     * @throws \Exception
      */
     protected function loadSlideNote($baseFile, Slide $oSlide)
     {
@@ -711,6 +720,7 @@ class PowerPoint2007 implements ReaderInterface
      * @param XMLReader $document
      * @param \DOMElement $node
      * @param AbstractSlide $oSlide
+     * @throws \Exception
      */
     protected function loadShapeDrawing(XMLReader $document, \DOMElement $node, AbstractSlide $oSlide)
     {
@@ -1150,6 +1160,7 @@ class PowerPoint2007 implements ReaderInterface
      * @param XMLReader $xmlReader
      * @param \DOMElement $oElement
      * @param Border $oBorder
+     * @throws \Exception
      */
     protected function loadStyleBorder(XMLReader $xmlReader, \DOMElement $oElement, Border $oBorder)
     {
@@ -1197,6 +1208,7 @@ class PowerPoint2007 implements ReaderInterface
      * @param XMLReader $xmlReader
      * @param \DOMElement $oElement
      * @return null|Fill
+     * @throws \Exception
      */
     protected function loadStyleFill(XMLReader $xmlReader, \DOMElement $oElement)
     {
@@ -1240,7 +1252,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * @param string $fileRels
-     * @return string
      */
     protected function loadRels($fileRels)
     {
@@ -1265,6 +1276,7 @@ class PowerPoint2007 implements ReaderInterface
      * @param $oSlide
      * @param \DOMNodeList $oElements
      * @param XMLReader $xmlReader
+     * @throws \Exception
      * @internal param $baseFile
      */
     protected function loadSlideShapes($oSlide, $oElements, $xmlReader)
