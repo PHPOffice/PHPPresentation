@@ -265,10 +265,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->startElement('a:' . $shape->getAutoFit());
             if ($shape->getAutoFit() == RichText::AUTOFIT_NORMAL) {
                 if (!is_null($shape->getFontScale())) {
-                    $objWriter->writeAttribute('fontScale', $shape->getFontScale() . '%');
+                    $objWriter->writeAttribute('fontScale', $shape->getFontScale() * 1000);
                 }
                 if (!is_null($shape->getLineSpaceReduction())) {
-                    $objWriter->writeAttribute('lnSpcReduction', $shape->getLineSpaceReduction() . '%');
+                    $objWriter->writeAttribute('lnSpcReduction', $shape->getLineSpaceReduction() * 1000);
                 }
             }
             $objWriter->endElement();
@@ -524,7 +524,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
                 $objWriter->startElement('a:lnSpc');
                 $objWriter->startElement('a:spcPct');
-                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() . "%");
+                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
                 $objWriter->endElement();
                 $objWriter->endElement();
 
@@ -579,23 +579,14 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
                         // Lang
                         $objWriter->writeAttribute('lang', ($element->getLanguage() ? $element->getLanguage() : 'en-US'));
-
                         $objWriter->writeAttributeIf($element->getFont()->isBold(), 'b', '1');
                         $objWriter->writeAttributeIf($element->getFont()->isItalic(), 'i', '1');
                         $objWriter->writeAttributeIf($element->getFont()->isStrikethrough(), 'strike', 'sngStrike');
-
-                        // Size
                         $objWriter->writeAttribute('sz', ($element->getFont()->getSize() * 100));
-
-                        // Character spacing
                         $objWriter->writeAttribute('spc', $element->getFont()->getCharacterSpacing());
-
-                        // Underline
                         $objWriter->writeAttribute('u', $element->getFont()->getUnderline());
-
-                        // Superscript / subscript
-                        $objWriter->writeAttributeIf($element->getFont()->isSuperScript(), 'baseline', '300%');
-                        $objWriter->writeAttributeIf($element->getFont()->isSubScript(), 'baseline', '-250%');
+                        $objWriter->writeAttributeIf($element->getFont()->isSuperScript(), 'baseline', '300000');
+                        $objWriter->writeAttributeIf($element->getFont()->isSubScript(), 'baseline', '-250000');
 
                         // Color - a:solidFill
                         $objWriter->startElement('a:solidFill');

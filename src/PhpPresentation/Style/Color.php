@@ -99,7 +99,7 @@ class Color implements ComparableInterface
             $dec = hexdec(substr($this->argb, 0, 2));
             $alpha = number_format(($dec/255) * 100, 2);
         }
-        return $alpha;
+        return round($alpha);
     }
 
     /**

@@ -130,7 +130,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         // a:alpha
         $objWriter->startElement('a:alpha');
-        $objWriter->writeAttribute('val', $alpha . '%');
+        $objWriter->writeAttribute('val', $alpha * 1000);
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -202,13 +202,13 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->startElement('a:gsLst');
         // a:gs
         $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '0%');
+        $objWriter->writeAttribute('pos', '0');
         $this->writeColor($objWriter, $pFill->getStartColor());
         $objWriter->endElement();
 
         // a:gs
         $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '100%');
+        $objWriter->writeAttribute('pos', '100000');
         $this->writeColor($objWriter, $pFill->getEndColor());
         $objWriter->endElement();
 
