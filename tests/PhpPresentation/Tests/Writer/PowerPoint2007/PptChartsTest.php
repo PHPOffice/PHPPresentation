@@ -411,7 +411,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:gapWidth';
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent.'%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -444,7 +444,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:gapWidth';
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent . '%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -462,7 +462,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250000');
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -479,7 +479,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
         $this->assertIsSchemaOOXMLValid();
     }
 
@@ -743,7 +743,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250000');
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -761,7 +761,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -869,7 +869,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250000');
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -887,7 +887,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -1053,7 +1053,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250000');
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -1071,7 +1071,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
 
         $this->assertIsSchemaOOXMLValid();
     }
@@ -1086,7 +1086,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100%');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100');
         $this->assertIsSchemaOOXMLValid();
 
         $oShape->getView3D()->setHeightPercent(null);
