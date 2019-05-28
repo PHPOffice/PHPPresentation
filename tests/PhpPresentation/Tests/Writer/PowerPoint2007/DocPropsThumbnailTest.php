@@ -15,7 +15,7 @@ class DocPropsThumbnailTest extends PhpPresentationTestCase
     public function testRender()
     {
         $this->assertZipFileNotExists('docProps/thumbnail.jpeg');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testFeatureThumbnail()
@@ -24,6 +24,6 @@ class DocPropsThumbnailTest extends PhpPresentationTestCase
 
         $this->oPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
         $this->assertZipFileExists('docProps/thumbnail.jpeg');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 }

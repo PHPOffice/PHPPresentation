@@ -55,6 +55,11 @@ class PhpPresentationTestCase extends TestCase
     private $xmlInternalErrors;
 
     /**
+     * @var boolean
+     */
+    private $xmlDisableEntityLoader;
+
+    /**
      * @var array
      */
     private $arrayOpenDocumentRNG = array(
@@ -75,8 +80,9 @@ class PhpPresentationTestCase extends TestCase
     /**
      * Executed before each method of the class
      */
-    public function setUp()
+    protected function setUp()
     {
+        $this->xmlDisableEntityLoader = libxml_disable_entity_loader(false);
         $this->workDirectory = sys_get_temp_dir() . '/PhpPresentation_Unit_Test/';
         $this->oPresentation = new PhpPresentation();
         $this->filePath = tempnam(sys_get_temp_dir(), 'PhpPresentation');
@@ -92,8 +98,9 @@ class PhpPresentationTestCase extends TestCase
     /**
      * Executed after each method of the class
      */
-    public function tearDown()
+    protected function tearDown()
     {
+        libxml_disable_entity_loader($this->xmlDisableEntityLoader);
         libxml_use_internal_errors($this->xmlInternalErrors);
         $this->oPresentation = null;
         $this->resetPresentationFile();
@@ -338,6 +345,33 @@ class PhpPresentationTestCase extends TestCase
         self::assertFalse($nodeList->item(0)->hasAttribute($attribute));
     }
 
+    public function assertIsSchemaECMA376Valid()
+    {
+        // validate all XML files
+        $path = realpath($this->workDirectory . '/ppt');
+        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+
+        foreach ($iterator as $file) {
+            /** @var \SplFileInfo $file */
+            if ($file->getExtension() !== 'xml') {
+                continue;
+            }
+
+            $fileName = str_replace('\\', '/', substr($file->getRealPath(), strlen($path) + 1));
+            $dom = $this->getXmlDom('ppt/' . $fileName);
+            $xmlSource = $dom->saveXML();
+
+            $dom->loadXML($xmlSource);
+            $dom->schemaValidate(__DIR__ . '/../../../resources/schema/ecma-376/pml.xsd');
+
+            $error = libxml_get_last_error();
+            if ($error instanceof \LibXMLError) {
+                $this->failXmlError($error, $fileName, $xmlSource);
+            }
+        }
+        unset($iterator);
+    }
+
     public function assertIsSchemaOOXMLValid()
     {
         // validate all XML files
@@ -346,7 +380,7 @@ class PhpPresentationTestCase extends TestCase
 
         foreach ($iterator as $file) {
             /** @var \SplFileInfo $file */
-            if ($file->getExtension() !== "xml") {
+            if ($file->getExtension() !== 'xml') {
                 continue;
             }
 
@@ -357,7 +391,7 @@ class PhpPresentationTestCase extends TestCase
             // http://schemas.openxmlformats.org/ to http://purl.oclc.org/ooxml/
             // We need to use the http://purl.oclc.org/ooxml/ namespace to validate
             // the xml against the current schema
-            /*$xmlSource = str_replace(array(
+            $xmlSource = str_replace(array(
                 "http://schemas.openxmlformats.org/drawingml/2006/main",
                 "http://schemas.openxmlformats.org/drawingml/2006/chart",
                 "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
@@ -367,10 +401,10 @@ class PhpPresentationTestCase extends TestCase
                 "http://purl.oclc.org/ooxml/drawingml/chart",
                 "http://purl.oclc.org/ooxml/officeDocument/relationships",
                 "http://purl.oclc.org/ooxml/presentationml/main",
-            ), $xmlSource);*/
+            ), $xmlSource);
 
             $dom->loadXML($xmlSource);
-            $dom->schemaValidate(__DIR__ . '/../../../resources/schema/ecma-376/pml.xsd');
+            $dom->schemaValidate(__DIR__ . '/../../../resources/schema/ooxml/pml.xsd');
 
             $error = libxml_get_last_error();
             if ($error instanceof \LibXMLError) {
@@ -399,14 +433,14 @@ class PhpPresentationTestCase extends TestCase
         $isValid = true;
         foreach ($iterator as $file) {
             /** @var \SplFileInfo $file */
-            if ($file->getExtension() !== "xml") {
+            if ($file->getExtension() !== 'xml') {
                 continue;
             }
 
             $fileName = str_replace('\\', '/', substr($file->getRealPath(), strlen($path) + 1));
             $dom = $this->getXmlDom($fileName);
             $xmlSource = $dom->saveXML();
-
+            
             $dom->loadXML($xmlSource);
             $pathRNG = __DIR__ . '/../../../resources/schema/opendocument/'.$version.'/';
             if (isset($this->arrayOpenDocumentRNG[$version][$fileName])) {
@@ -461,9 +495,15 @@ class PhpPresentationTestCase extends TestCase
         $errorLine = (int)$error->line;
         $contents = explode("\n", $source);
         $lines = array();
-        $lines[] = '>> ' . $contents[$errorLine - 2];
-        $lines[] = '>>> ' . $contents[$errorLine - 1];
-        $lines[] = '>> ' . $contents[$errorLine];
+        if (isset($contents[$errorLine - 2])) {
+            $lines[] = '>> ' . $contents[$errorLine - 2];
+        }
+        if (isset($contents[$errorLine - 1])) {
+            $lines[] = '>>> ' . $contents[$errorLine - 1];
+        }
+        if (isset($contents[$errorLine])) {
+            $lines[] = '>> ' . $contents[$errorLine];
+        }
         $paramStr = '';
         if (!empty($params)) {
             $paramStr .= "\n" . ' - Parameters :'."\n";

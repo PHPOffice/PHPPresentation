@@ -37,7 +37,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'anchor');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -53,7 +53,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'anchor');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -69,7 +69,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'anchor', Alignment::VERTICAL_BOTTOM);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -85,7 +85,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'anchor', Alignment::VERTICAL_CENTER);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -101,7 +101,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'anchor', Alignment::VERTICAL_TOP);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testAnimation()
@@ -120,7 +120,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testCommentRelationship()
@@ -130,7 +130,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments"]';
         $this->assertZipXmlElementExists('ppt/slides/_rels/slide1.xml.rels', $element);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testCommentInGroupRelationship()
@@ -142,7 +142,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/comments"]';
         $this->assertZipXmlElementExists('ppt/slides/_rels/slide1.xml.rels', $element);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testDrawingWithHyperlink()
@@ -155,7 +155,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId3');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testDrawingShapeBorder()
@@ -168,7 +168,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:ln';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cmpd', Border::LINE_DOUBLE);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testDrawingShapeFill()
@@ -187,7 +187,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:solidFill/a:srgbClr/a:alpha';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', (string)($oColor->getAlpha() * 1000));
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testDrawingShapeShadow()
@@ -199,7 +199,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:effectLst/a:outerShdw';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testFillGradientLinearTable()
@@ -222,7 +222,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -245,7 +245,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testFillGradientPathTable()
@@ -268,7 +268,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -291,7 +291,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:gradFill/a:gsLst/a:gs[@pos="100000"]/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testFillPatternTable()
@@ -314,7 +314,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:pattFill/a:bgClr/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected2);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testFillSolidTable()
@@ -333,7 +333,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:tcPr/a:solidFill/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -352,7 +352,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:solidFill/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expected);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testHyperlink()
@@ -364,7 +364,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testHyperlinkInternal()
@@ -377,7 +377,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'action', 'ppaction://hlinksldjump');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testListBullet()
@@ -407,7 +407,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/a:buClr/a:srgbClr', 'val', $oExpectedColor);
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:buClr/a:srgbClr/a:alpha');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/a:buClr/a:srgbClr/a:alpha', 'val', $oExpectedAlpha);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testListNumeric()
@@ -431,7 +431,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:buAutoNum');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/a:buAutoNum', 'type', $oExpectedChar);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element . '/a:buAutoNum', 'startAt', $oExpectedStart);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testLine()
@@ -458,7 +458,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:cxnSp/p:spPr/a:xfrm[@flipV="1"]/a:off[@x="' . $valEmu10 . '"][@y="' . $valEmu10 . '"]';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
 
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testMedia()
@@ -491,7 +491,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
 
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testNote()
@@ -540,7 +540,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:notes/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:t';
         $this->assertZipXmlElementExists('ppt/notesSlides/notesSlide1.xml', $element);
 
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testRichTextAutoFitNormal()
@@ -557,7 +557,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'fontScale', $expectedFontScale * 1000);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'lnSpcReduction', $expectedLnSpcReduction * 1000);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testRichTextBreak()
@@ -568,7 +568,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:br';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testRichTextHyperlink()
@@ -579,7 +579,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp//a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testRichTextLineSpacing()
@@ -594,7 +594,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:lnSpc/a:spcPct';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedLineSpacing * 1000);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testRichTextRunLanguage()
@@ -607,7 +607,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $expectedElement, 'lang');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'lang', 'en-US');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
 
         $oRun->setLanguage('de_DE');
         $this->resetPresentationFile();
@@ -616,7 +616,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $expectedElement, 'lang');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'lang', 'de_DE');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testRichTextShadow()
@@ -628,7 +628,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:effectLst/a:outerShdw';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testRichTextUpright()
@@ -641,7 +641,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'upright', '1');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testRichTextVertical()
@@ -654,13 +654,13 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'vert', 'vert');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testSlideLayoutExists()
     {
         $this->assertZipFileExists('ppt/slideLayouts/slideLayout1.xml');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testStyleCharacterSpacing()
@@ -674,14 +674,14 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spc', '0');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
         
         $oRun->getFont()->setCharacterSpacing(42);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spc', '4200');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testStyleSubScript()
@@ -694,7 +694,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '-250000');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testStyleSuperScript()
@@ -707,7 +707,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'baseline', '300000');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTableWithAlignment()
@@ -723,7 +723,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'anchor');
         $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'vert');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
 
         $oCell->getActiveParagraph()->getAlignment()->setVertical(Alignment::VERTICAL_BOTTOM);
         $oCell->getActiveParagraph()->getAlignment()->setTextDirection(Alignment::TEXT_DIRECTION_STACKED);
@@ -732,7 +732,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'anchor', Alignment::VERTICAL_BOTTOM);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'vert', Alignment::TEXT_DIRECTION_STACKED);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTableWithBorder()
@@ -771,7 +771,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:lnT[@cmpd="' . Border::LINE_SINGLE . '"]/a:prstDash[@val="' . Border::DASH_DASHDOT . '"]');
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:lnB[@cmpd="' . Border::LINE_SINGLE . '"]');
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/a:lnB[@cmpd="' . Border::LINE_SINGLE . '"]/a:prstDash[@val="' . Border::DASH_SOLID . '"]');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTableWithCellMargin()
@@ -794,7 +794,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marL', Drawing::pixelsToEmu(20));
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marR', Drawing::pixelsToEmu(30));
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'marT', Drawing::pixelsToEmu(40));
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTableWithColspan()
@@ -810,7 +810,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'gridSpan', 2);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTableWithRowspan()
@@ -830,7 +830,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '[@rowSpan="2"]');
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '[@vMerge="1"]');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -850,7 +850,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tr/a:tc/a:txBody/a:p/a:r/a:rPr/a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId2');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTransition()
@@ -869,22 +869,22 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $element, 'advTm');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'advTm', $value);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'advClick', '0');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
 
         $oTransition->setSpeed(Transition::SPEED_FAST);
         $this->resetPresentationFile();
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spd', 'fast');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
 
         $oTransition->setSpeed(Transition::SPEED_MEDIUM);
         $this->resetPresentationFile();
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spd', 'med');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
 
         $oTransition->setSpeed(Transition::SPEED_SLOW);
         $this->resetPresentationFile();
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spd', 'slow');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
 
         $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
@@ -1039,14 +1039,14 @@ class PptSlideTest extends PhpPresentationTestCase
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:zoom[@dir=\'out\']');
                     break;
             }
-            $this->assertIsSchemaOOXMLValid();
+            $this->assertIsSchemaECMA376Valid();
         }
 
         $oTransition->setManualTrigger(true);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'advClick', '1');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testVisibility()
@@ -1055,7 +1055,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $expectedElement);
         $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $expectedElement, 'show');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
 
         $this->oPresentation->getActiveSlide()->setIsVisible(false);
         $this->resetPresentationFile();
@@ -1063,6 +1063,6 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $expectedElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $expectedElement, 'show');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $expectedElement, 'show', 0);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 }

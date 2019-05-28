@@ -14,6 +14,6 @@ class PptTablePropsTest extends PhpPresentationTestCase
         $element = '/a:tblStyleLst';
         $this->assertZipXmlElementExists('ppt/tableStyles.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/tableStyles.xml', $element, 'def', '{5C22544A-7EE6-4342-B048-85BDC9FD1C3A}');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 }

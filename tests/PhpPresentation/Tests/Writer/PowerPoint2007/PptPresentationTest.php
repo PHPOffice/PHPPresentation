@@ -11,6 +11,6 @@ class PptPresentationTest extends PhpPresentationTestCase
     public function testRender()
     {
         $this->assertZipFileExists('ppt/presentation.xml');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 }

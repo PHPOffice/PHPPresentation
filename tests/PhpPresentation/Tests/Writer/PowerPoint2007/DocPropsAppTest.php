@@ -17,7 +17,7 @@ class DocPropsAppTest extends PhpPresentationTestCase
     public function testRender()
     {
         $this->assertZipFileExists('docProps/app.xml');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testCompany()
@@ -29,6 +29,6 @@ class DocPropsAppTest extends PhpPresentationTestCase
         $this->assertZipFileExists('docProps/app.xml');
         $this->assertZipXmlElementExists('docProps/app.xml', '/Properties/Company');
         $this->assertZipXmlElementEquals('docProps/app.xml', '/Properties/Company', $expected);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 }
