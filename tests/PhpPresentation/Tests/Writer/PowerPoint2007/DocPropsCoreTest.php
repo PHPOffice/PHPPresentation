@@ -12,7 +12,7 @@ class DocPropsCoreTest extends PhpPresentationTestCase
     {
         $this->assertZipFileExists('docProps/core.xml');
         $this->assertZipXmlElementNotExists('docProps/core.xml', '/cp:coreProperties/cp:contentStatus');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testDocumentProperties()
@@ -40,7 +40,7 @@ class DocPropsCoreTest extends PhpPresentationTestCase
         $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/cp:keywords', $expected);
         $this->assertZipXmlElementExists('docProps/core.xml', '/cp:coreProperties/cp:category');
         $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/cp:category', $expected);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testMarkAsFinalTrue()
@@ -49,7 +49,7 @@ class DocPropsCoreTest extends PhpPresentationTestCase
 
         $this->assertZipXmlElementExists('docProps/core.xml', '/cp:coreProperties/cp:contentStatus');
         $this->assertZipXmlElementEquals('docProps/core.xml', '/cp:coreProperties/cp:contentStatus', 'Final');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testMarkAsFinalFalse()
@@ -57,6 +57,6 @@ class DocPropsCoreTest extends PhpPresentationTestCase
         $this->oPresentation->getPresentationProperties()->markAsFinal(false);
 
         $this->assertZipXmlElementNotExists('docProps/core.xml', '/cp:coreProperties/cp:contentStatus');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 }

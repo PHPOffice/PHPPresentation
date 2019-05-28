@@ -27,13 +27,13 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'id', 0);
         $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'name', $expectedName);
         $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'initials', $expectedInitials);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testWithoutComment()
     {
         $this->assertZipFileNotExists('ppt/commentAuthors.xml');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testWithoutCommentAuthor()
@@ -42,7 +42,7 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
         $this->assertZipFileNotExists('ppt/commentAuthors.xml');
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testWithSameAuthor()
@@ -61,6 +61,6 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/commentAuthors.xml');
         $this->assertZipXmlElementExists('ppt/commentAuthors.xml', $expectedElement);
         $this->assertZipXmlElementCount('ppt/commentAuthors.xml', $expectedElement, 1);
-        $this->assertIsSchemaOOXMLValid();
+        $this->assertIsSchemaECMA376Valid();
     }
 }

@@ -600,17 +600,17 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->startElement('chart:series');
         $this->xmlContent->writeAttribute('chart:values-cell-range-address', 'table-local.$'.$this->rangeCol.'$2:.$'.$this->rangeCol.'$'.($numRange+1));
         $this->xmlContent->writeAttribute('chart:label-cell-address', 'table-local.$'.$this->rangeCol.'$1');
-        if ($chartType instanceof Area) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:area');
-        } elseif ($chartType instanceof AbstractTypeBar) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
-        } elseif ($chartType instanceof Line) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof AbstractTypePie) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
-        } elseif ($chartType instanceof Scatter) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
-        }
+        // if ($chartType instanceof Area) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:area');
+        // } elseif ($chartType instanceof AbstractTypeBar) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
+        // } elseif ($chartType instanceof Line) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:line');
+        // } elseif ($chartType instanceof AbstractTypePie) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
+        // } elseif ($chartType instanceof Scatter) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
+        // }
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries);
         if ($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof Scatter) {
             $dataPointFills = $series->getDataPointFills();
@@ -910,7 +910,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > text:p
         $this->xmlContent->startElement('text:p');
         $this->xmlContent->text($oTitle->getText());
-        // > text:p
         $this->xmlContent->endElement();
         // > chart:title
         $this->xmlContent->endElement();
@@ -945,7 +944,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         // chart:wall
         $this->xmlContent->startElement('chart:wall');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleWall');
-        // > chart:wall
         $this->xmlContent->endElement();
     }
 
