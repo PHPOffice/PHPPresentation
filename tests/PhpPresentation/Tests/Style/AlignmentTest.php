@@ -93,7 +93,7 @@ class AlignmentTest extends TestCase
         }
         if (method_exists($this, 'expectException')) {
             $this->expectException('\Exception', 'Invalid value should be more than 0.');
-        }        
+        }
         $object->setLevel(-1);
     }
 
