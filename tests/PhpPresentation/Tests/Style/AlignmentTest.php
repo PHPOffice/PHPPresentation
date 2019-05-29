@@ -88,7 +88,12 @@ class AlignmentTest extends TestCase
     public function testSetGetLevelExceptionMin()
     {
         $object = new Alignment();
-        $this->setExpectedException('\Exception', 'Invalid value should be more than 0.');
+        if (method_exists($this, 'setExpectedException')) {
+            $this->setExpectedException('\Exception', 'Invalid value should be more than 0.');
+        }
+        if (method_exists($this, 'expectException')) {
+            $this->expectException('\Exception', 'Invalid value should be more than 0.');
+        }        
         $object->setLevel(-1);
     }
 
