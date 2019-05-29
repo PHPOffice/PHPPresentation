@@ -46,11 +46,11 @@ script:
   ## PHPLOC
   - ./vendor/bin/phploc src/
   ## PHPDocumentor
-  - ./vendor/bin/phpdoc -q -d ./src -t ./build/docs --template="responsive-twig"
+  # - ./vendor/bin/phpdoc -q -d ./src -t ./build/docs --template="responsive-twig"
 
 after_script:
   ## PHPDocumentor
-  - bash .travis_shell_after_success.sh
+  # - bash .travis_shell_after_success.sh
   ## Scrutinizer
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
