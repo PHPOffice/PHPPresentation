@@ -640,7 +640,7 @@ class Content extends AbstractDecoratorWriter
             $arrayCells = $firstRow->getCells();
             // table:table
             $objWriter->startElement('table:table');
-            while (each($arrayCells)) {
+            foreach ($arrayCells as $shapeCell) {
                 $objWriter->startElement('table:table-column');
                 $objWriter->endElement();
             }
