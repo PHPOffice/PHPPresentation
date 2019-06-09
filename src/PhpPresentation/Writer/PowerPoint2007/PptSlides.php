@@ -22,6 +22,7 @@ class PptSlides extends AbstractSlide
     /**
      * Add slides (drawings, ...) and slide relationships (drawings, ...)
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @throws \Exception
      */
     public function render()
     {
@@ -831,7 +832,7 @@ class PptSlides extends AbstractSlide
 
         // a:stretch
         $objWriter->startElement('a:stretch');
-        $objWriter->writeElement('a:fillRect', null);
+        $objWriter->writeElement('a:fillRect');
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -859,15 +860,10 @@ class PptSlides extends AbstractSlide
         // a:prstGeom
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
-
-        // a:avLst
+        // // a:prstGeom/a:avLst
         $objWriter->writeElement('a:avLst', null);
-
+        // ##a:prstGeom
         $objWriter->endElement();
-
-        $this->writeBorder($objWriter, $shape->getBorder(), '');
-
-        $this->writeShadow($objWriter, $shape->getShadow());
 
         $objWriter->endElement();
 

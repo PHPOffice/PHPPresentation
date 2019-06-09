@@ -421,8 +421,9 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Load PhpPresentation Serialized file
      *
-     * @param  string        $pFilename
+     * @param  string $pFilename
      * @return \PhpOffice\PhpPresentation\PhpPresentation
+     * @throws \Exception
      */
     private function loadFile($pFilename)
     {
@@ -444,6 +445,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Read OLE Part
      * @param string $pFilename
+     * @throws \Exception
      */
     private function loadOLE($pFilename)
     {
@@ -699,6 +701,8 @@ class PowerPoint97 implements ReaderInterface
      * A container record that specifies the animation and sound information for a shape.
      * @param string $stream
      * @param integer $pos
+     * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd772900(v=office.12).aspx
      */
     private function readRecordAnimationInfoContainer($stream, $pos)
@@ -723,6 +727,7 @@ class PowerPoint97 implements ReaderInterface
      * A container record that specifies information about the document.
      * @param string $stream
      * @param integer $pos
+     * @throws \Exception
      * @link http://msdn.microsoft.com/en-us/library/dd947357(v=office.12).aspx
      */
     private function readRecordDocumentContainer($stream, $pos)
@@ -1009,6 +1014,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd923801(v=office.12).aspx
      */
     private function readRecordDrawingContainer($stream, $pos)
@@ -1313,6 +1319,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd910958(v=office.12).aspx
      */
     private function readRecordOfficeArtClientTextbox($stream, $pos)
@@ -1460,6 +1467,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd943794(v=office.12).aspx
      */
     private function readRecordOfficeArtSpContainer($stream, $pos)
@@ -1722,6 +1730,7 @@ class PowerPoint97 implements ReaderInterface
      * @param integer $pos
      * @param boolean $bInGroup
      * @return array
+     * @throws \Exception
      * @link : https://msdn.microsoft.com/en-us/library/dd910416(v=office.12).aspx
      */
     private function readRecordOfficeArtSpgrContainer($stream, $pos, $bInGroup = false)
@@ -1794,6 +1803,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd950206(v=office.12).aspx
      */
     private function readRecordOfficeArtTertiaryFOPT($stream, $pos)
@@ -1858,6 +1868,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @return array
+     * @throws \Exception
      * @link : https://msdn.microsoft.com/en-us/library/dd924455(v=office.12).aspx
      */
     private function readRecordOfficeArtDgContainer($stream, $pos)
@@ -2312,6 +2323,8 @@ class PowerPoint97 implements ReaderInterface
      * A container record that specifies information about a shape.
      * @param string $stream
      * @param integer $pos
+     * @return array
+     * @throws \Exception
      * @link : https://msdn.microsoft.com/en-us/library/dd950927(v=office.12).aspx
      */
     private function readRecordOfficeArtClientData($stream, $pos)
@@ -2427,6 +2440,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd904856(v=office.12).aspx
+     * @return array
      */
     private function readRecordPerSlideHeadersFootersContainer($stream, $pos)
     {
@@ -2450,6 +2464,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd923930(v=office.12).aspx
+     * @return array
      */
     private function readRecordPlaceholderAtom($stream, $pos)
     {
@@ -2473,6 +2488,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd904899(v=office.12).aspx
+     * @return array
      */
     private function readRecordRecolorInfoAtom($stream, $pos)
     {
@@ -2496,6 +2512,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd910800(v=office.12).aspx
+     * @return array
      */
     private function readRecordRoundTripHFPlaceholder12Atom($stream, $pos)
     {
@@ -2519,6 +2536,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd772926(v=office.12).aspx
+     * @return array
      */
     private function readRecordRoundTripShapeId12Atom($stream, $pos)
     {
@@ -2542,6 +2560,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd923801(v=office.12).aspx
+     * @return array
      */
     private function readRecordRoundTripSlideSyncInfo12Container($stream, $pos)
     {
@@ -2565,6 +2584,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd908949(v=office.12).aspx
+     * @return array
      */
     private function readRecordShapeFlags10Atom($stream, $pos)
     {
@@ -2588,6 +2608,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd925824(v=office.12).aspx
+     * @return array
      */
     private function readRecordShapeFlagsAtom($stream, $pos)
     {
@@ -2611,6 +2632,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd911033(v=office.12).aspx
+     * @return array
      */
     private function readRecordShapeProgBinaryTagContainer($stream, $pos)
     {
@@ -2633,6 +2655,8 @@ class PowerPoint97 implements ReaderInterface
      * A container record that specifies programmable tags with additional shape data.
      * @param string $stream
      * @param integer $pos
+     * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd911266(v=office.12).aspx
      */
     private function readRecordShapeProgTagsContainer($stream, $pos)
@@ -2709,6 +2733,7 @@ class PowerPoint97 implements ReaderInterface
      * A container record that specifies a presentation slide or title master slide.
      * @param string $stream
      * @param int $pos
+     * @throws \Exception
      * @link http://msdn.microsoft.com/en-us/library/dd946323(v=office.12).aspx
      */
     private function readRecordSlideContainer($stream, $pos)
@@ -2763,6 +2788,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd906297(v=office.12).aspx
+     * @return array
      */
     private function readRecordSlideNameAtom($stream, $pos)
     {
@@ -2792,6 +2818,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd945703(v=office.12).aspx
+     * @return array
      */
     private function readRecordSlideNumberMCAtom($stream, $pos)
     {
@@ -2815,6 +2842,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd951946(v=office.12).aspx
+     * @return array
      */
     private function readRecordSlideProgTagsContainer($stream, $pos)
     {
@@ -2838,6 +2866,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd949420(v=office.12).aspx
+     * @return array
      */
     private function readRecordSlideSchemeColorSchemeAtom($stream, $pos)
     {
@@ -2869,6 +2898,7 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param integer $pos
      * @link https://msdn.microsoft.com/en-us/library/dd943408(v=office.12).aspx
+     * @return array
      */
     private function readRecordSlideShowSlideInfoAtom($stream, $pos)
     {
@@ -2947,6 +2977,8 @@ class PowerPoint97 implements ReaderInterface
      * @param string $stream
      * @param int $pos
      * @param int $strLenRT
+     * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd945870(v=office.12).aspx
      */
     private function readStructureTextCFRun($stream, $pos, $strLenRT)
@@ -3061,6 +3093,9 @@ class PowerPoint97 implements ReaderInterface
      * A structure that specifies the paragraph-level formatting of a run of text.
      * @param string $stream
      * @param integer $pos
+     * @param integer $strLenRT
+     * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd923535(v=office.12).aspx
      */
     private function readStructureTextPFRun($stream, $pos, $strLenRT)
@@ -3227,6 +3262,7 @@ class PowerPoint97 implements ReaderInterface
      * @param integer $pos
      * @param string $strLenRT
      * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd909603(v=office.12).aspx
      */
     private function readStructureTextSIRun($stream, $pos, $strLenRT)
@@ -3286,6 +3322,8 @@ class PowerPoint97 implements ReaderInterface
      * A structure that specifies tabbing, margins, and indentation for text.
      * @param string $stream
      * @param integer $pos
+     * @return array
+     * @throws \Exception
      * @link https://msdn.microsoft.com/en-us/library/dd922749(v=office.12).aspx
      */
     private function readStructureTextRuler($stream, $pos)

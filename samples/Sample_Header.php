@@ -3,13 +3,13 @@
  * Header file
 */
 use PhpOffice\PhpPresentation\Autoloader;
-use PhpOffice\PhpPresentation\Settings;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\Shape\Drawing;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
@@ -26,7 +26,21 @@ define('IS_INDEX', SCRIPT_FILENAME == 'index');
 require_once __DIR__ . '/../src/PhpPresentation/Autoloader.php';
 Autoloader::register();
 
-require_once __DIR__ . '/../vendor/autoload.php';
+if (is_file(__DIR__. '/../../../../vendor/autoload.php')) {
+    require_once __DIR__ . '/../../../../vendor/autoload.php';
+} else {
+    throw new Exception ('Can not find the vendor folder!');
+}
+// do some checks to make sure the outputs are set correctly.
+if (is_dir(__DIR__.DIRECTORY_SEPARATOR.'results') === FALSE) {
+    throw new Exception ('The results folder is not present!');
+}
+if (is_writable(__DIR__.DIRECTORY_SEPARATOR.'results'.DIRECTORY_SEPARATOR) === FALSE) {
+    throw new Exception ('The results folder is not writable!');
+}
+if (is_writable(__DIR__.DIRECTORY_SEPARATOR) === FALSE) {
+    throw new Exception ('The samples folder is not writable!');
+}
 
 // Set writers
 $writers = array('PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp');
@@ -69,12 +83,16 @@ $textRun->getFont()->setBold(true)
 
 
 // Populate samples
-$files = '';
+$files = array();
 if ($handle = opendir('.')) {
     while (false !== ($file = readdir($handle))) {
         if (preg_match('/^Sample_\d+_/', $file)) {
             $name = str_replace('_', ' ', preg_replace('/(Sample_|\.php)/', '', $file));
-            $files .= "<li><a href='{$file}'>{$name}</a></li>";
+            $group = substr($name, 0, 1);
+            if (!isset($files[$group])) {
+                $files[$group] = '';
+            }
+            $files[$group] .= "<li><a href='{$file}'>{$name}</a></li>";
         }
     }
     closedir($handle);
@@ -248,7 +266,7 @@ class PhpPptTree {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\File"</span></li>');
         } elseif($shape instanceof Drawing\Base64) {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Base64"</span></li>');
-        } elseif($shape instanceof Drawing\Zip) {
+        } elseif($shape instanceof Drawing\ZipFile) {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Zip"</span></li>');
         } elseif($shape instanceof RichText) {
             $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "RichText"</span></li>');
@@ -334,7 +352,22 @@ class PhpPptTree {
         $this->append('<dt>Width</dt><dd>'.$oShape->getWidth().'</dd>');
         $this->append('<dt>Rotation</dt><dd>'.$oShape->getRotation().'°</dd>');
         $this->append('<dt>Hyperlink</dt><dd>'.ucfirst(var_export($oShape->hasHyperlink(), true)).'</dd>');
-        $this->append('<dt>Fill</dt><dd>@Todo</dd>');
+        $this->append('<dt>Fill</dt>');
+        if (is_null($oShape->getFill())) {
+            $this->append('<dd>None</dd>');
+        } else {
+            switch($oShape->getFill()->getFillType()) {
+                case \PhpOffice\PhpPresentation\Style\Fill::FILL_NONE:
+                    $this->append('<dd>None</dd>');
+                    break;
+                case \PhpOffice\PhpPresentation\Style\Fill::FILL_SOLID:
+                    $this->append('<dd>Solid (');
+                    $this->append('Color : #'.$oShape->getFill()->getStartColor()->getRGB());
+                    $this->append(' - Alpha : '.$oShape->getFill()->getStartColor()->getAlpha().'%');
+                    $this->append(')</dd>');
+                    break;
+            }
+        }
         $this->append('<dt>Border</dt><dd>@Todo</dd>');
         $this->append('<dt>IsPlaceholder</dt><dd>' . ($oShape->isPlaceholder() ? 'true' : 'false') . '</dd>');
         if($oShape instanceof Drawing\Gd) {
@@ -346,7 +379,7 @@ class PhpPptTree {
             ob_end_clean();
             $this->append('<dt>Mime-Type</dt><dd>'.$oShape->getMimeType().'</dd>');
             $this->append('<dt>Image</dt><dd><img src="data:'.$oShape->getMimeType().';base64,'.base64_encode($sShapeImgContents).'"></dd>');
-        } elseif($oShape instanceof Drawing) {
+        } elseif($oShape instanceof Drawing\AbstractDrawingAdapter) {
             $this->append('<dt>Name</dt><dd>'.$oShape->getName().'</dd>');
             $this->append('<dt>Description</dt><dd>'.$oShape->getDescription().'</dd>');
         } elseif($oShape instanceof RichText) {
@@ -456,10 +489,12 @@ class PhpPptTree {
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
+                <?php foreach ($files as $key => $fileStr)  :?>
                 <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples<strong class="caret"></strong></a>
-                    <ul class="dropdown-menu"><?php echo $files; ?></ul>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key?>x<strong class="caret"></strong></a>
+                    <ul class="dropdown-menu"><?php echo $fileStr; ?></ul>
                 </li>
+                <?php endforeach; ?>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="https://github.com/PHPOffice/PHPPresentation"><i class="fa fa-github fa-lg" title="GitHub"></i>&nbsp;</a></li>
@@ -469,4 +504,4 @@ class PhpPptTree {
         </div>
     </div>
 </div>
-<?php echo $pageHeading; ?>
+<?php echo $pageHeading;

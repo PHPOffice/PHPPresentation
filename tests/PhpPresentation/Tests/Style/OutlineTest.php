@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Outline;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Style\Outline
  */
-class OutlineTest extends \PHPUnit_Framework_TestCase
+class OutlineTest extends TestCase
 {
     /**
      * Test create new instance
@@ -55,7 +56,7 @@ class OutlineTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Outline();
         $this->assertNull($object->getWidth());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth(1.5));

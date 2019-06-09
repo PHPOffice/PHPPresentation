@@ -2,17 +2,17 @@ sudo: false
 language: php
 
 php:
-  - 5.3
   - 5.4
   - 5.5
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
+  - 7.3
   - hhvm
 
 matrix:
   allow_failures:
-    - php: 7.1
     - php: hhvm
 
 env:
@@ -46,11 +46,11 @@ script:
   ## PHPLOC
   - ./vendor/bin/phploc src/
   ## PHPDocumentor
-  - ./vendor/bin/phpdoc -q -d ./src -t ./build/docs --template="responsive-twig"
+  # - ./vendor/bin/phpdoc -q -d ./src -t ./build/docs --template="responsive-twig"
 
 after_script:
   ## PHPDocumentor
-  - bash .travis_shell_after_success.sh
+  # - bash .travis_shell_after_success.sh
   ## Scrutinizer
   - wget https://scrutinizer-ci.com/ocular.phar
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
