@@ -103,7 +103,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     * Ignores setting the X Offset, preserving the default behavior.
     *
     * @param  int                 $pValue
-    * @return self
+    * @return $this
     */
     public function setOffsetX($pValue = 0)
     {
@@ -130,7 +130,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     * Ignores setting the Y Offset, preserving the default behavior.
     *
     * @param  int                 $pValue
-    * @return self
+    * @return $this
     */
     public function setOffsetY($pValue = 0)
     {
@@ -173,7 +173,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     * Ignores setting the width, preserving the default behavior.
     *
     * @param  int                 $pValue
-    * @return self
+    * @return $this
     */
     public function setWidth($pValue = 0)
     {
@@ -184,7 +184,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     * Ignores setting the height, preserving the default behavior.
     *
     * @param  int                 $pValue
-    * @return self
+    * @return $this
     */
     public function setHeight($pValue = 0)
     {

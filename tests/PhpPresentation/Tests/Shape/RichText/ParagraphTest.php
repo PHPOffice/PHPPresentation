@@ -93,7 +93,7 @@ class ParagraphTest extends TestCase
     public function testHashIndex()
     {
         $object = new Paragraph();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -104,7 +104,7 @@ class ParagraphTest extends TestCase
     public function testLineSpacing()
     {
         $object = new Paragraph();
-        $valueExpected = rand(1, 100);
+        $valueExpected = mt_rand(1, 100);
         $this->assertEquals(100, $object->getLineSpacing());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setLineSpacing($valueExpected));
         $this->assertEquals($valueExpected, $object->getLineSpacing());

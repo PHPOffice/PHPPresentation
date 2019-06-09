@@ -82,7 +82,7 @@ class NoteTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Note();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertNull($object->getHashIndex());
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());

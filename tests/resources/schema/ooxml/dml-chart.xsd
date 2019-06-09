@@ -214,17 +214,11 @@
     <xsd:attribute name="val" type="ST_RotY" default="0"/>
   </xsd:complexType>
   <xsd:simpleType name="ST_DepthPercent">
-    <xsd:union memberTypes="ST_DepthPercentWithSymbol ST_DepthPercentUShort"/>
+    <xsd:union memberTypes="ST_DepthPercentWithSymbol"/>
   </xsd:simpleType>
   <xsd:simpleType name="ST_DepthPercentWithSymbol">
     <xsd:restriction base="xsd:string">
       <xsd:pattern value="0*(([2-9][0-9])|([1-9][0-9][0-9])|(1[0-9][0-9][0-9])|2000)%"/>
-    </xsd:restriction>
-  </xsd:simpleType>
-  <xsd:simpleType name="ST_DepthPercentUShort">
-    <xsd:restriction base="xsd:unsignedShort">
-      <xsd:minInclusive value="20"/>
-      <xsd:maxInclusive value="2000"/>
     </xsd:restriction>
   </xsd:simpleType>
   <xsd:complexType name="CT_DepthPercent">

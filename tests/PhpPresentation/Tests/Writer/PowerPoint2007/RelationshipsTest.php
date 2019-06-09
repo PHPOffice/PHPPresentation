@@ -17,5 +17,6 @@ class RelationshipsTest extends PhpPresentationTestCase
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
         $this->assertZipXmlElementExists('ppt/_rels/presentation.xml.rels', '/Relationships/Relationship[@Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/commentAuthors"]');
+        $this->assertIsSchemaECMA376Valid();
     }
 }

@@ -123,7 +123,7 @@ class Shadow implements ComparableInterface
      * Set Visible
      *
      * @param  boolean                    $pValue
-     * @return self
+     * @return $this
      */
     public function setVisible($pValue = false)
     {
@@ -146,7 +146,7 @@ class Shadow implements ComparableInterface
      * Set Blur radius
      *
      * @param  int                        $pValue
-     * @return self
+     * @return $this
      */
     public function setBlurRadius($pValue = 6)
     {
@@ -169,7 +169,7 @@ class Shadow implements ComparableInterface
      * Set Shadow distance
      *
      * @param  int                        $pValue
-     * @return self
+     * @return $this
      */
     public function setDistance($pValue = 2)
     {
@@ -192,7 +192,7 @@ class Shadow implements ComparableInterface
      * Set Shadow direction (in degrees)
      *
      * @param  int                        $pValue
-     * @return self
+     * @return $this
      */
     public function setDirection($pValue = 0)
     {
@@ -215,7 +215,7 @@ class Shadow implements ComparableInterface
      * Set Shadow alignment
      *
      * @param  string                        $pValue
-     * @return self
+     * @return $this
      */
     public function setAlignment($pValue = self::SHADOW_BOTTOM_RIGHT)
     {
@@ -239,7 +239,7 @@ class Shadow implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Style\Color  $pValue
      * @throws \Exception
-     * @return self
+     * @return $this
      */
     public function setColor(Color $pValue = null)
     {
@@ -262,7 +262,7 @@ class Shadow implements ComparableInterface
      * Set Alpha
      *
      * @param  int                        $pValue
-     * @return self
+     * @return $this
      */
     public function setAlpha($pValue = 0)
     {

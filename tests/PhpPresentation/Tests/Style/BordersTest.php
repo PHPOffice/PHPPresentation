@@ -50,7 +50,7 @@ class BordersTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Borders();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
