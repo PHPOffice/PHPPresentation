@@ -15,9 +15,9 @@ $objPHPPresentation = new PhpPresentation();
 echo date('H:i:s') . ' Set properties'.EOL;
 $objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')
                                   ->setLastModifiedBy('PHPPresentation Team')
-                                  ->setTitle('Sample 03 Title')
-                                  ->setSubject('Sample 03 Subject')
-                                  ->setDescription('Sample 03 Description')
+	->setTitle('Sample 02 Title')
+	->setSubject('Sample 02 Subject')
+	->setDescription('Sample 02 Description')
                                   ->setKeywords('office 2007 openxml libreoffice odt php')
                                   ->setCategory('Sample Category');
 

@@ -253,7 +253,7 @@ class Title implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setFont(Font $pFont = null)
     {
@@ -315,6 +315,7 @@ class Title implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
+     * @return Title
      */
     public function setHashIndex($value)
     {

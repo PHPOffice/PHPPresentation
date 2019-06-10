@@ -53,6 +53,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param AbstractSlideAlias $pSlideMaster
      * @param $objWriter
      * @param $relId
+     * @return mixed
      * @throws \Exception
      */
     protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, $objWriter, $relId)
@@ -863,10 +864,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->startElement('a:' . $shape->getAutoFit());
             if ($shape->getAutoFit() == RichText::AUTOFIT_NORMAL) {
                 if (!is_null($shape->getFontScale())) {
-                    $objWriter->writeAttribute('fontScale', (int)($shape->getFontScale() * 1000));
+                    $objWriter->writeAttribute('fontScale', $shape->getFontScale() * 1000);
                 }
                 if (!is_null($shape->getLineSpaceReduction())) {
-                    $objWriter->writeAttribute('lnSpcReduction', (int)($shape->getLineSpaceReduction() * 1000));
+                    $objWriter->writeAttribute('lnSpcReduction', $shape->getLineSpaceReduction() * 1000);
                 }
             }
             $objWriter->endElement();
@@ -1236,6 +1237,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Line $shape
      * @param  int $shapeId
+     * @throws \Exception
      */
     protected function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
     {
@@ -1352,6 +1354,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\AbstractShape|\PhpOffice\PhpPresentation\Shape\RichText\TextElement $shape
+     * @throws \Exception
      */
     protected function writeHyperlink(XMLWriter $objWriter, $shape)
     {
@@ -1749,6 +1752,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Group $group
      * @param  int $shapeId
+     * @throws \Exception
      */
     protected function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
     {
@@ -1902,15 +1906,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
                 break;
-            case Slide\Transition::TRANSITION_CIRCLE_HORIZONTAL:
-                $objWriter->startElement('p:circle');
-                $objWriter->writeAttribute('dir', 'horz');
-                $objWriter->endElement();
-                break;
-            case Slide\Transition::TRANSITION_CIRCLE_VERTICAL:
-                $objWriter->startElement('p:circle');
-                $objWriter->writeAttribute('dir', 'vert');
-                $objWriter->endElement();
+            case Slide\Transition::TRANSITION_CIRCLE:
+                $objWriter->writeElement('p:circle');
                 break;
             case Slide\Transition::TRANSITION_COMB_HORIZONTAL:
                 $objWriter->startElement('p:comb');

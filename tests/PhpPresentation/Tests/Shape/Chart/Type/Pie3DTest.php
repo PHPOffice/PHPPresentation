@@ -56,8 +56,7 @@ class Pie3DTest extends TestCase
 
     public function testExplosion()
     {
-        $value = rand(0, 100);
-
+        $value = mt_rand(0, 100);
         $object = new Pie3D();
 
         $this->assertEquals(0, $object->getExplosion());

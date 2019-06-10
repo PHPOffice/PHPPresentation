@@ -37,6 +37,11 @@ class PptCharts extends AbstractDecoratorWriter
                     $this->getZip()->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $this->writeChartRelationships($shape));
                     $pFilename = tempnam(sys_get_temp_dir(), 'PHPExcel');
                     $this->getZip()->addFromString('ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', $this->writeSpreadsheet($this->getPresentation(), $shape, $pFilename . '.xlsx'));
+
+                    // remove temp file
+                    if (@unlink($pFilename) === false) {
+                        throw new \Exception('The file ' . $pFilename . ' could not removed.');
+                    }
                 }
             }
         }
@@ -430,14 +435,13 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('a:rPr');
         $objWriter->writeAttribute('lang', 'en-US');
         $objWriter->writeAttribute('dirty', '0');
-
         $objWriter->writeAttribute('b', ($subject->getFont()->isBold() ? 'true' : 'false'));
         $objWriter->writeAttribute('i', ($subject->getFont()->isItalic() ? 'true' : 'false'));
         $objWriter->writeAttribute('strike', ($subject->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
         $objWriter->writeAttribute('sz', ($subject->getFont()->getSize() * 100));
         $objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
-        $objWriter->writeAttributeIf($subject->getFont()->isSuperScript(), 'baseline', '30000');
-        $objWriter->writeAttributeIf($subject->getFont()->isSubScript(), 'baseline', '-25000');
+        $objWriter->writeAttributeIf($subject->getFont()->isSuperScript(), 'baseline', '300000');
+        $objWriter->writeAttributeIf($subject->getFont()->isSubScript(), 'baseline', '-250000');
 
         // Font - a:solidFill
         $objWriter->startElement('a:solidFill');
@@ -597,8 +601,8 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('strike', ($subject->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
         $objWriter->writeAttribute('sz', ($subject->getFont()->getSize() * 100));
         $objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
-        $objWriter->writeAttributeIf($subject->getFont()->isSuperScript(), 'baseline', '30000');
-        $objWriter->writeAttributeIf($subject->getFont()->isSubScript(), 'baseline', '-25000');
+        $objWriter->writeAttributeIf($subject->getFont()->isSuperScript(), 'baseline', '300000');
+        $objWriter->writeAttributeIf($subject->getFont()->isSubScript(), 'baseline', '-250000');
 
         // Font - a:solidFill
         $objWriter->startElement('a:solidFill');
@@ -798,7 +802,7 @@ class PptCharts extends AbstractDecoratorWriter
      */
     protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, $includeSheet = false)
     {
-        // c:bar3DChart
+        // c:barChart
         $objWriter->startElement('c:barChart');
 
         // c:barDir
@@ -870,10 +874,10 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('c:txPr');
 
             // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
+            $objWriter->writeElement('a:bodyPr');
 
             // a:lstStyle
-            $objWriter->writeElement('a:lstStyle', null);
+            $objWriter->writeElement('a:lstStyle');
 
             // a:p
             $objWriter->startElement('a:p');
@@ -889,23 +893,23 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '30000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-25000');
+            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
+            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
 
-            // Font - a:solidFill
+            // a:solidFill
             $objWriter->startElement('a:solidFill');
-
             $this->writeColor($objWriter, $series->getFont()->getColor());
-
+            // >a:solidFill
             $objWriter->endElement();
-
-            // Font - a:latin
+            // a:latin
             $objWriter->startElement('a:latin');
             $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+            // >a:latin
             $objWriter->endElement();
 
+            // >a:defRPr
             $objWriter->endElement();
-
+            // >a:pPr
             $objWriter->endElement();
 
             // a:endParaRPr
@@ -914,8 +918,9 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('dirty', '0');
             $objWriter->endElement();
 
+            // >a:p
             $objWriter->endElement();
-
+            // >a:lstStyle
             $objWriter->endElement();
 
             // c:dLblPos
@@ -933,11 +938,11 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showPercent
             $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
+            // c:separator
+            $objWriter->writeElement('c:separator', $series->hasShowSeparator() ? $series->getSeparator() : '');
+
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
 
             $objWriter->endElement();
 
@@ -973,23 +978,19 @@ class PptCharts extends AbstractDecoratorWriter
             ++$seriesIndex;
         }
 
-        // c:overlap
-        $objWriter->startElement('c:overlap');
-        if ($subject->getBarGrouping() == Bar::GROUPING_CLUSTERED) {
-            $objWriter->writeAttribute('val', '0');
-        } elseif ($subject->getBarGrouping() == Bar::GROUPING_STACKED || $subject->getBarGrouping() == Bar::GROUPING_PERCENTSTACKED) {
-            $objWriter->writeAttribute('val', '100');
-        }
-        $objWriter->endElement();
-
         // c:gapWidth
         $objWriter->startElement('c:gapWidth');
         $objWriter->writeAttribute('val', $subject->getGapWidthPercent());
         $objWriter->endElement();
 
-        // c:shape
-        $objWriter->startElement('c:shape');
-        $objWriter->writeAttribute('val', 'box');
+        // c:overlap
+        $barGrouping = $subject->getBarGrouping();
+        $objWriter->startElement('c:overlap');
+        if ($barGrouping === Bar::GROUPING_CLUSTERED) {
+            $objWriter->writeAttribute('val', '0');
+        } elseif ($barGrouping === Bar::GROUPING_STACKED || $barGrouping === Bar::GROUPING_PERCENTSTACKED) {
+            $objWriter->writeAttribute('val', '100000');
+        }
         $objWriter->endElement();
 
         // c:axId
@@ -1002,9 +1003,8 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', '52749440');
         $objWriter->endElement();
 
-        // c:axId
-        $objWriter->startElement('c:axId');
-        $objWriter->writeAttribute('val', '0');
+        // c:extLst
+        $objWriter->startElement('c:extLst');
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1103,8 +1103,8 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '30000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-25000');
+            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
+            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1147,9 +1147,6 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
-
             $objWriter->endElement();
 
             // c:spPr
@@ -1189,11 +1186,6 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', $subject->getGapWidthPercent());
         $objWriter->endElement();
 
-        // c:shape
-        $objWriter->startElement('c:shape');
-        $objWriter->writeAttribute('val', 'box');
-        $objWriter->endElement();
-
         // c:axId
         $objWriter->startElement('c:axId');
         $objWriter->writeAttribute('val', '52743552');
@@ -1208,6 +1200,164 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('c:axId');
         $objWriter->writeAttribute('val', '0');
         $objWriter->endElement();
+
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write Type Pie
+     *
+     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut $subject
+     * @param  boolean $includeSheet
+     * @throws \Exception
+     */
+    protected function writeTypeDoughnut(XMLWriter $objWriter, Doughnut $subject, $includeSheet = false)
+    {
+        // c:pieChart
+        $objWriter->startElement('c:doughnutChart');
+
+        // c:varyColors
+        $objWriter->startElement('c:varyColors');
+        $objWriter->writeAttribute('val', '1');
+        $objWriter->endElement();
+
+        // Write series
+        $seriesIndex = 0;
+        foreach ($subject->getSeries() as $series) {
+            // c:ser
+            $objWriter->startElement('c:ser');
+
+            // c:idx
+            $objWriter->startElement('c:idx');
+            $objWriter->writeAttribute('val', $seriesIndex);
+            $objWriter->endElement();
+
+            // c:order
+            $objWriter->startElement('c:order');
+            $objWriter->writeAttribute('val', $seriesIndex);
+            $objWriter->endElement();
+
+            // c:tx
+            $objWriter->startElement('c:tx');
+            $coords = ($includeSheet ? 'Sheet1!$' . \PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
+            $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
+            $objWriter->endElement();
+
+            // Fills for points?
+            $dataPointFills = $series->getDataPointFills();
+            foreach ($dataPointFills as $key => $value) {
+                // c:dPt
+                $objWriter->startElement('c:dPt');
+                $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
+                // c:dPt/c:spPr
+                $objWriter->startElement('c:spPr');
+                $this->writeFill($objWriter, $value);
+                // c:dPt/##c:spPr
+                $objWriter->endElement();
+                // ##c:dPt
+                $objWriter->endElement();
+            }
+
+            // Write X axis data
+            $axisXData = array_keys($series->getValues());
+
+            // c:cat
+            $objWriter->startElement('c:cat');
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+            $objWriter->endElement();
+
+            // Write Y axis data
+            $axisYData = array_values($series->getValues());
+
+            // c:val
+            $objWriter->startElement('c:val');
+            $coords = ($includeSheet ? 'Sheet1!$' . \PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . \PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
+            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+            ++$seriesIndex;
+        }
+
+        // c:dLbls
+        $objWriter->startElement('c:dLbls');
+
+        $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+        $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+        $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+        $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+        $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+        $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
+        $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+
+        if ($series->hasDlblNumFormat()) {
+            //c:numFmt
+            $objWriter->startElement('c:numFmt');
+            $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+            $objWriter->writeAttribute('sourceLinked', '0');
+            $objWriter->endElement();
+        }
+
+        // c:dLbls\c:txPr
+        $objWriter->startElement('c:txPr');
+        $objWriter->writeElement('a:bodyPr', null);
+        $objWriter->writeElement('a:lstStyle', null);
+
+        // c:dLbls\c:txPr\a:p
+        $objWriter->startElement('a:p');
+
+        // c:dLbls\c:txPr\a:p\a:pPr
+        $objWriter->startElement('a:pPr');
+
+        // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr
+        $objWriter->startElement('a:defRPr');
+        $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+        $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+        $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+        $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+        $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
+        $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+
+        // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:solidFill
+        $objWriter->startElement('a:solidFill');
+        $this->writeColor($objWriter, $series->getFont()->getColor());
+        $objWriter->endElement();
+
+        // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:latin
+        $objWriter->startElement('a:latin');
+        $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+        $objWriter->endElement();
+
+        // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\
+        $objWriter->endElement();
+        // c:dLbls\c:txPr\a:p\a:pPr\
+        $objWriter->endElement();
+
+        // c:dLbls\c:txPr\a:p\a:endParaRPr
+        $objWriter->startElement('a:endParaRPr');
+        $objWriter->writeAttribute('lang', 'en-US');
+        $objWriter->writeAttribute('dirty', '0');
+        $objWriter->endElement();
+
+        // c:dLbls\c:txPr\a:p\
+        $objWriter->endElement();
+        // c:dLbls\c:txPr\
+        $objWriter->endElement();
+
+        $separator = $series->getSeparator();
+        if (!empty($separator) && $separator != PHP_EOL) {
+            // c:dLbls\c:separator
+            $objWriter->writeElement('c:separator', $separator);
+        }
+
+        // c:dLbls\
+        $objWriter->endElement();
+
+        $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', '0');
+        $this->writeElementWithValAttribute($objWriter, 'c:holeSize', $subject->getHoleSize());
 
         $objWriter->endElement();
     }
@@ -1306,8 +1456,8 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '30000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-25000');
+            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
+            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1355,9 +1505,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
 
             $objWriter->endElement();
 
@@ -1477,8 +1624,8 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '30000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-25000');
+            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
+            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1523,9 +1670,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
 
             $objWriter->endElement();
 
@@ -1632,8 +1776,8 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '30000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-25000');
+            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
+            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1675,9 +1819,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
 
             // > c:dLbls
             $objWriter->endElement();
@@ -1774,9 +1915,49 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
+            // c:spPr
+            $objWriter->startElement('c:spPr');
+            // Write fill
+            $this->writeFill($objWriter, $series->getFill());
+            // Write outline
+            $this->writeOutline($objWriter, $series->getOutline());
+            // ## c:spPr
+            $objWriter->endElement();
+
             // Marker
             $this->writeSeriesMarker($objWriter, $series->getMarker());
 
+            // c:dLbls
+            $objWriter->startElement('c:dLbls');
+
+            // c:txPr
+            $objWriter->startElement('c:txPr');
+
+            // a:bodyPr
+            $objWriter->writeElement('a:bodyPr', null);
+
+            // a:lstStyle
+            $objWriter->writeElement('a:lstStyle', null);
+
+            // a:p
+            $objWriter->startElement('a:p');
+
+            // a:pPr
+            $objWriter->startElement('a:pPr');
+
+            // a:defRPr
+            $objWriter->startElement('a:defRPr');
+
+            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
+            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+
+            // Font - a:solidFill
+            $objWriter->startElement('a:solidFill');
 
 //            $objWriter->startElement('c:txPr');
 //
@@ -1847,13 +2028,15 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showPercent
             $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
 
+            // c:separator
+            $separator = $series->getSeparator();
+            if (!empty($separator) && $separator != PHP_EOL) {
+                // c:dLbls\c:separator
+                $objWriter->writeElement('c:separator', $separator);
+            }
+
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
-            // c:separator
-            $objWriter->writeElementIf($series->hasShowSeparator(), 'c:separator', 'val', $series->getSeparator());
-
-            $objWriter->endElement();
 
             // c:spPr
             $objWriter->startElement('c:spPr');
@@ -1979,6 +2162,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param Chart\Axis $oAxis
      * @param $typeAxis
      * @param Chart\Type\AbstractType $typeChart
+     * @throws \Exception
      */
     protected function writeAxis(XMLWriter $objWriter, Chart\Axis $oAxis, $typeAxis, Chart\Type\AbstractType $typeChart)
     {
@@ -2088,8 +2272,8 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('strike', ($oAxis->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
             $objWriter->writeAttribute('sz', ($oAxis->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $oAxis->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($oAxis->getFont()->isSuperScript(), 'baseline', '30000');
-            $objWriter->writeAttributeIf($oAxis->getFont()->isSubScript(), 'baseline', '-25000');
+            $objWriter->writeAttributeIf($oAxis->getFont()->isSuperScript(), 'baseline', '300000');
+            $objWriter->writeAttributeIf($oAxis->getFont()->isSubScript(), 'baseline', '-250000');
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -2240,6 +2424,7 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * @param XMLWriter $objWriter
      * @param Gridlines $oGridlines
+     * @throws \Exception
      */
     protected function writeAxisGridlines(XMLWriter $objWriter, Gridlines $oGridlines)
     {

@@ -36,7 +36,7 @@ class TableTest extends TestCase
 
     public function testNumColums()
     {
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object = new Table();
 
         $this->assertEquals(1, $object->getNumColumns());

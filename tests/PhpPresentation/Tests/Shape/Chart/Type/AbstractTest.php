@@ -39,7 +39,7 @@ class AbstractTest extends TestCase
     public function testHashIndex()
     {
         $object = new Scatter();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
 
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter', $object->setHashIndex($value));
