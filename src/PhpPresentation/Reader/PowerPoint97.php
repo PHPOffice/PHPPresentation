@@ -625,8 +625,10 @@ class PowerPoint97 implements ReaderInterface
                 case self::RT_SLIDE:
                     $this->readRecordSlideContainer($this->streamPowerpointDocument, $pos);
                     break;
+                case self::RT_MAINMASTER:
+                    break;
                 default:
-                    // throw new \Exception('Feature not implemented : l.'.__LINE__.'('.dechex($rh['recType']).')');
+                    throw new \Exception('Feature not implemented : l.' . __LINE__ . '(' . dechex($rh['recType']) . ')');
                     break;
             }
         }
@@ -1790,7 +1792,6 @@ class PowerPoint97 implements ReaderInterface
                                     break;
                             }
                         }
-
                         break;
                 }
             } while ($data['recLen'] > 0);
@@ -2020,36 +2021,40 @@ class PowerPoint97 implements ReaderInterface
                             // pib Complex
                         }
                         break;
-                    case 0x13F:
+                    case 0x0105:
+                        // Blip : pibName - specifies the comment, file name, or URL, as specified by the pibFlags property, for this BLIP.
+                        //@link : https://msdn.microsoft.com/en-us/library/dd945885(v=office.12).aspx
+                        break;
+                    case 0x013F:
                         // Blip Boolean Properties
                         //@link : https://msdn.microsoft.com/en-us/library/dd944215(v=office.12).aspx
                         break;
-                    case 0x140:
+                    case 0x0140:
                         // Geometry : geoLeft
                         //@link : http://msdn.microsoft.com/en-us/library/dd947489(v=office.12).aspx
                         // print_r('geoLeft : '.$opt['op'].EOL);
                         break;
-                    case 0x141:
+                    case 0x0141:
                         // Geometry : geoTop
                         //@link : http://msdn.microsoft.com/en-us/library/dd949459(v=office.12).aspx
                         // print_r('geoTop : '.$opt['op'].EOL);
                         break;
-                    case 0x142:
+                    case 0x0142:
                         // Geometry : geoRight
                         //@link : http://msdn.microsoft.com/en-us/library/dd947117(v=office.12).aspx
                         // print_r('geoRight : '.$opt['op'].EOL);
                         break;
-                    case 0x143:
+                    case 0x0143:
                         // Geometry : geoBottom
                         //@link : http://msdn.microsoft.com/en-us/library/dd948602(v=office.12).aspx
                         // print_r('geoBottom : '.$opt['op'].EOL);
                         break;
-                    case 0x144:
+                    case 0x0144:
                         // Geometry : shapePath
                         //@link : http://msdn.microsoft.com/en-us/library/dd945249(v=office.12).aspx
                         $arrayReturn['line'] = true;
                         break;
-                    case 0x145:
+                    case 0x0145:
                         // Geometry : pVertices
                         //@link : http://msdn.microsoft.com/en-us/library/dd949814(v=office.12).aspx
                         if ($opt['fComplex'] == 1) {
@@ -2057,7 +2062,7 @@ class PowerPoint97 implements ReaderInterface
                             $data['recLen'] -= $opt['op'];
                         }
                         break;
-                    case 0x146:
+                    case 0x0146:
                         // Geometry : pSegmentInfo
                         //@link : http://msdn.microsoft.com/en-us/library/dd905742(v=office.12).aspx
                         if ($opt['fComplex'] == 1) {
@@ -2065,7 +2070,7 @@ class PowerPoint97 implements ReaderInterface
                             $data['recLen'] -= $opt['op'];
                         }
                         break;
-                    case 0x155:
+                    case 0x0155:
                         // Geometry : pAdjustHandles
                         //@link : http://msdn.microsoft.com/en-us/library/dd905890(v=office.12).aspx
                         if ($opt['fComplex'] == 1) {
@@ -2073,7 +2078,7 @@ class PowerPoint97 implements ReaderInterface
                             $data['recLen'] -= $opt['op'];
                         }
                         break;
-                    case 0x156:
+                    case 0x0156:
                         // Geometry : pGuides
                         //@link : http://msdn.microsoft.com/en-us/library/dd910801(v=office.12).aspx
                         if ($opt['fComplex'] == 1) {
@@ -2081,7 +2086,7 @@ class PowerPoint97 implements ReaderInterface
                             $data['recLen'] -= $opt['op'];
                         }
                         break;
-                    case 0x157:
+                    case 0x0157:
                         // Geometry : pInscribe
                         //@link : http://msdn.microsoft.com/en-us/library/dd904889(v=office.12).aspx
                         if ($opt['fComplex'] == 1) {
@@ -2089,7 +2094,7 @@ class PowerPoint97 implements ReaderInterface
                             $data['recLen'] -= $opt['op'];
                         }
                         break;
-                    case 0x17F:
+                    case 0x017F:
                         // Geometry Boolean Properties
                         //@link : http://msdn.microsoft.com/en-us/library/dd944968(v=office.12).aspx
                         break;
@@ -2179,6 +2184,14 @@ class PowerPoint97 implements ReaderInterface
                         //@link : http://msdn.microsoft.com/en-us/library/dd907855(v=office.12).aspx
                         $arrayReturn['shadowOffsetY'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
                         break;
+                    case 0x0210:
+                        // Shadow Style : shadowOriginX
+                        //@link : https://msdn.microsoft.com/en-us/library/dd921662(v=office.12).aspx
+                        break;
+                    case 0x0211:
+                        // Shadow Style : shadowOriginY
+                        //@link : https://msdn.microsoft.com/en-us/library/dd945853(v=office.12).aspx
+                        break;
                     case 0x023F:
                         // Shadow Style : Shadow Style Boolean Properties
                         //@link : http://msdn.microsoft.com/en-us/library/dd947887(v=office.12).aspx
@@ -2199,12 +2212,20 @@ class PowerPoint97 implements ReaderInterface
                             $data['recLen'] -= $opt['op'];
                         }
                         break;
+                    case 0x0381:
+                        // Group Shape Property Set : wzDescription
+                        //@link : https://msdn.microsoft.com/en-us/library/dd945733(v=office.12).aspx
+                        if ($opt['fComplex'] == 1) {
+                            $arrayReturn['length'] += $opt['op'];
+                            $data['recLen'] -= $opt['op'];
+                        }
+                        break;
                     case 0x03BF:
                         // Group Shape Property Set : Group Shape Boolean Properties
                         //@link : http://msdn.microsoft.com/en-us/library/dd949807(v=office.12).aspx
                         break;
                     default:
-                        // throw new \Exception('Feature not implemented (l.'.__LINE__.' : 0x'.dechex($opt['opid']).')');
+                        throw new \Exception('Feature not implemented (l.' . __LINE__ . ' : 0x' . dechex($opt['opid']) . ')');
                 }
             }
             if ($data['recLen'] > 0) {
