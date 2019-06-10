@@ -32,13 +32,20 @@ $oShadow->setVisible(true)->setDirection(45)->setDistance(10);
 // Generate sample data for chart
 echo date('H:i:s') . ' Generate sample data for chart' . EOL;
 $seriesData = array(
-    'Monday' => 12,
-    'Tuesday' => 15,
-    'Wednesday' => 13,
-    'Thursday' => 17,
-    'Friday' => 14,
-    'Saturday' => 9,
-    'Sunday' => 7
+    'Monday 01' => 12,
+    'Tuesday 02' => 15,
+    'Wednesday 03' => 13,
+    'Thursday 04' => 17,
+    'Friday 05' => 14,
+    'Saturday 06' => 9,
+    'Sunday 07' => 7,
+    'Monday 08' => 8,
+    'Tuesday 09' => 8,
+    'Wednesday 10' => 15,
+    'Thursday 11' => 16,
+    'Friday 12' => 14,
+    'Saturday 13' => 14,
+    'Sunday 14' => 13,
 );
 
 // Create templated slide
@@ -67,6 +74,7 @@ $shape->getView3D()->setRotationX(30);
 $shape->getView3D()->setPerspective(30);
 $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getLegend()->getFont()->setItalic(true);
+$shape->getPlotArea()->getAxisX()->setMajorUnit(5);
 
 // Create templated slide
 echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
