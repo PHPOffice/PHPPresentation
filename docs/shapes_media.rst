@@ -28,7 +28,6 @@ Example:
     $oMedia->setName('Name of the Media');
     $oSlide->addShape($oMedia);
 
-
 Quirks
 ------
 

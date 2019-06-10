@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for IOFactory
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\IOFactory
  */
-class IOFactoryTest extends \PHPUnit_Framework_TestCase
+class IOFactoryTest extends TestCase
 {
     /**
      * Test create writer

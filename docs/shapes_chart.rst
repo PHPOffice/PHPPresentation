@@ -87,10 +87,20 @@ For resetting them, you pass null as parameter to these methods.
     $oShape->getPlotArea()->getAxisY()->setMinorUnit(null);
     $oShape->getPlotArea()->getAxisY()->setMajorUnit(0.05);
 
+You can define visibility for each axis (X & Y).
+
+.. code-block:: php
+
+    $oLine = new Line();
+
+    $oShape = $oSlide->createChartShape();
+    $oShape->getPlotArea()->setType($oLine);
+    $oShape->getPlotArea()->getAxisX()->setIsVisible(false);
+
 Title
 ^^^^^
 
-By default, the title of a chart is displayed. 
+By default, the title of a chart is displayed.
 For hiding it, you define its visibility to false.
 
 .. code-block:: php
@@ -176,6 +186,17 @@ TODO
 Bar & Bar3D
 ^^^^^^^^^^^
 
+Gap Width
+"""""""""
+
+You can define the gap width between bar or columns clusters. It is defined in percent.
+The default value is 150%. The value must be defined between 0 and 500.
+
+.. code-block:: php
+
+    $oBarChart = new Bar();
+    $oBarChart->setGapWidthPercent(250);
+
 Stacking
 """"""""
 
@@ -207,7 +228,6 @@ You can stack multiples series in a same chart. After adding multiples series, y
 .. image:: images/chart_columnpercent_52x60.png
    :width: 120px
    :alt: Bar::GROUPING_PERCENTSTACKED
-
 
 Line
 ^^^^

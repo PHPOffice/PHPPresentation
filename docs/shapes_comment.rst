@@ -27,7 +27,6 @@ Example:
     $oComment->setDate(time());
     $oSlide->addShape($oComment);
 
-
 Author
 ------
 

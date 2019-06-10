@@ -58,7 +58,7 @@ abstract class AbstractWriter
      *
      * @param  PhpPresentation                       $pPhpPresentation PhpPresentation object
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
+     * @return \PhpOffice\PhpPresentation\Writer\AbstractWriter
      */
     public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
     {
@@ -96,11 +96,12 @@ abstract class AbstractWriter
         // Get an array of all drawings
         $aDrawings  = array();
 
-        // Loop trough PhpPresentation
-        foreach ($this->getPhpPresentation()->getAllSlides() as $oSlide) {
+        // Loop through PhpPresentation
+        foreach (array_merge($this->getPhpPresentation()->getAllSlides(), $this->getPhpPresentation()->getAllMasterSlides()) as $oSlide) {
             $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
             $aDrawings = array_merge($aDrawings, $arrayReturn);
         }
+
         return $aDrawings;
     }
 

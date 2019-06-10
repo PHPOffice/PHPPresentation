@@ -61,10 +61,13 @@ $row->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)
                ->setRotation(90)
                ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFFFFFFF'));
-$row->nextCell()->createTextRun('R1C1')->getFont()->setBold(true);
-$row->getCell()->getActiveParagraph()->getAlignment()->setMarginLeft(20);
-$row->nextCell()->createTextRun('R1C2')->getFont()->setBold(true);
-$row->nextCell()->createTextRun('R1C3')->getFont()->setBold(true);
+$oCell = $row->nextCell();
+$oCell->createTextRun('R1C1')->getFont()->setBold(true);
+$oCell->getActiveParagraph()->getAlignment()->setMarginLeft(20);
+$oCell = $row->nextCell();
+$oCell->createTextRun('R1C2')->getFont()->setBold(true);
+$oCell = $row->nextCell();
+$oCell->createTextRun('R1C3')->getFont()->setBold(true);
 
 foreach ($row->getCells() as $cell) {
     $cell->getBorders()->getTop()->setLineWidth(4)
@@ -78,12 +81,20 @@ $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
 			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
-$row->nextCell()->createTextRun('R2C1');
-$row->getCell()->getActiveParagraph()->getAlignment()
+$oCell = $row->nextCell();
+$oCell->createTextRun('R2C1');
+$oCell->getActiveParagraph()->getAlignment()
 	->setMarginLeft(30)
 	->setTextDirection(\PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
-$row->nextCell()->createTextRun('R2C2');
-$row->nextCell()->createTextRun('R2C3');
+$oCell = $row->nextCell();
+$oCell->createTextRun('R2C2');
+$oCell->getActiveParagraph()->getAlignment()
+	->setMarginBottom(10)
+	->setMarginTop(20)
+	->setMarginRight(30)
+	->setMarginLeft(40);
+$oCell = $row->nextCell();
+$oCell->createTextRun('R2C3');
 
 // Add row
 echo date('H:i:s') . ' Add row'.EOL;
@@ -91,10 +102,13 @@ $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
 			   ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
-$row->nextCell()->createTextRun('R3C1');
-$row->getCell()->getActiveParagraph()->getAlignment()->setMarginLeft(40);
-$row->nextCell()->createTextRun('R3C2');
-$row->nextCell()->createTextRun('R3C3');
+$oCell = $row->nextCell();
+$oCell->createTextRun('R3C1');
+$oCell->getActiveParagraph()->getAlignment()->setMarginLeft(40);
+$oCell = $row->nextCell();
+$oCell->createTextRun('R3C2');
+$oCell = $row->nextCell();
+$oCell->createTextRun('R3C3');
 
 // Add row
 echo date('H:i:s') . ' Add row'.EOL;

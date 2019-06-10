@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Legend element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Marker
  */
-class MarkerTest extends \PHPUnit_Framework_TestCase
+class MarkerTest extends TestCase
 {
     public function testConstruct()
     {
@@ -47,7 +48,7 @@ class MarkerTest extends \PHPUnit_Framework_TestCase
     public function testSize()
     {
         $object = new Marker();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->setSize($value));
         $this->assertEquals($value, $object->getSize());

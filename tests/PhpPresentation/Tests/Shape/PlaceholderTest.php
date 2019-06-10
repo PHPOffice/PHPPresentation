@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Placeholder;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Table element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Table
  */
-class PlaceholderTest extends \PHPUnit_Framework_TestCase
+class PlaceholderTest extends TestCase
 {
     public function testConstruct()
     {
@@ -35,7 +36,7 @@ class PlaceholderTest extends \PHPUnit_Framework_TestCase
 
     public function testIdx()
     {
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $object = new Placeholder(Placeholder::PH_TYPE_BODY);
         $this->assertNull($object->getIdx());

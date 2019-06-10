@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\Slide\Transition;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Slide\Transition
  */
-class TransitionTest extends \PHPUnit_Framework_TestCase
+class TransitionTest extends TestCase
 {
     public function testSpeed()
     {
@@ -62,19 +63,19 @@ class TransitionTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Transition', $object->setTimeTrigger());
         $this->assertFalse($object->hasTimeTrigger());
         $this->assertNull($object->getAdvanceTimeTrigger());
-        $value = rand(1, 1000);
+        $value = mt_rand(1, 1000);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Transition', $object->setTimeTrigger(true, $value));
         $this->assertTrue($object->hasTimeTrigger());
         $this->assertEquals($value, $object->getAdvanceTimeTrigger());
-        $value = rand(1, 1000);
+        $value = mt_rand(1, 1000);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Transition', $object->setTimeTrigger(null, $value));
         $this->assertTrue($object->hasTimeTrigger());
         $this->assertEquals($value, $object->getAdvanceTimeTrigger());
-        $value = rand(1, 1000);
+        $value = mt_rand(1, 1000);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Transition', $object->setTimeTrigger(false, $value));
         $this->assertFalse($object->hasTimeTrigger());
         $this->assertNull($object->getAdvanceTimeTrigger());
-        $value = rand(1, 1000);
+        $value = mt_rand(1, 1000);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Transition', $object->setTimeTrigger(null, $value));
         $this->assertFalse($object->hasTimeTrigger());
         $this->assertNull($object->getAdvanceTimeTrigger());

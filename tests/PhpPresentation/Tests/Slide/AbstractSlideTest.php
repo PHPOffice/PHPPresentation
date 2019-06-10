@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Slide;
 
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Table element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\AbstractGraphic
  */
-class AbstractSlideTest extends \PHPUnit_Framework_TestCase
+class AbstractSlideTest extends TestCase
 {
     public function testCollection()
     {

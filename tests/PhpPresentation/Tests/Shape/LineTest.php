@@ -19,20 +19,21 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Style\Border;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for memory drawing element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Line
  */
-class LineTest extends \PHPUnit_Framework_TestCase
+class LineTest extends TestCase
 {
     /**
      * Test can read
      */
     public function testConstruct()
     {
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object = new Line($value, $value, $value, $value);
 
         $this->assertEquals(Border::LINE_SINGLE, $object->getBorder()->getLineStyle());

@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Bar element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
  */
-class BarTest extends \PHPUnit_Framework_TestCase
+class BarTest extends TestCase
 {
     public function testData()
     {
@@ -52,7 +53,7 @@ class BarTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->addSeries(new Series()));
         $this->assertCount(1, $object->getSeries());
     }
-    
+
     public function testBarDirection()
     {
         $object = new Bar();
@@ -73,6 +74,19 @@ class BarTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Bar::GROUPING_STACKED, $object->getBarGrouping());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setBarGrouping(Bar::GROUPING_PERCENTSTACKED));
         $this->assertEquals(Bar::GROUPING_PERCENTSTACKED, $object->getBarGrouping());
+    }
+
+    public function testGapWidthPercent()
+    {
+        $value = mt_rand(0, 500);
+        $object = new Bar();
+        $this->assertEquals(150, $object->getGapWidthPercent());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setGapWidthPercent($value));
+        $this->assertEquals($value, $object->getGapWidthPercent());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setGapWidthPercent(-1));
+        $this->assertEquals(0, $object->getGapWidthPercent());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setGapWidthPercent(501));
+        $this->assertEquals(500, $object->getGapWidthPercent());
     }
 
     public function testHashCode()

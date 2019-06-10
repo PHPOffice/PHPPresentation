@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Slide\SlideMaster
  */
-class SlideMasterTest extends \PHPUnit_Framework_TestCase
+class SlideMasterTest extends TestCase
 {
     public function testBase()
     {

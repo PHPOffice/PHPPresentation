@@ -101,6 +101,11 @@ class Axis implements ComparableInterface
     protected $outline;
 
     /**
+     * @var boolean
+     */
+    protected $isVisible = true;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
      *
      * @param string $title Title
@@ -150,7 +155,7 @@ class Axis implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
      */
     public function setFont(Font $pFont = null)
     {
@@ -337,7 +342,7 @@ class Axis implements ComparableInterface
      * @param Outline $outline
      * @return Axis
      */
-    public function setOutline($outline)
+    public function setOutline(Outline $outline)
     {
         $this->outline = $outline;
         return $this;
@@ -380,10 +385,32 @@ class Axis implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
+     * @return $this
      */
     public function setHashIndex($value)
     {
         $this->hashIndex = $value;
+        return $this;
+    }
+
+    /**
+     * Axis is hidden ?
+     * @return boolean
+     */
+    public function isVisible()
+    {
+        return $this->isVisible;
+    }
+
+    /**
+     * Hide an axis
+     *
+     * @param boolean $value delete
+     * @return $this
+     */
+    public function setIsVisible($value)
+    {
+        $this->isVisible = (bool)$value;
         return $this;
     }
 }

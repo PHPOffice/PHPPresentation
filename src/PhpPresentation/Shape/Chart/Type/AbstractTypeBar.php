@@ -49,10 +49,18 @@ class AbstractTypeBar extends AbstractType
 
 
     /**
+     * Space between bar or columns clusters
+     *
+     * @var int
+     */
+    protected $gapWidthPercent = 150;
+
+
+    /**
      * Set bar orientation
      *
      * @param string                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar
      */
     public function setBarDirection($value = self::DIRECTION_VERTICAL)
     {
@@ -74,7 +82,7 @@ class AbstractTypeBar extends AbstractType
      * Set bar grouping (stack or expanded style bar)
      *
      * @param string                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar
      */
     public function setBarGrouping($value = self::GROUPING_CLUSTERED)
     {
@@ -90,6 +98,30 @@ class AbstractTypeBar extends AbstractType
     public function getBarGrouping()
     {
         return $this->barGrouping;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGapWidthPercent()
+    {
+        return $this->gapWidthPercent;
+    }
+
+    /**
+     * @param int $gapWidthPercent
+     * @return $this
+     */
+    public function setGapWidthPercent($gapWidthPercent)
+    {
+        if ($gapWidthPercent < 0) {
+            $gapWidthPercent = 0;
+        }
+        if ($gapWidthPercent > 500) {
+            $gapWidthPercent = 500;
+        }
+        $this->gapWidthPercent = $gapWidthPercent;
+        return $this;
     }
     
     /**
