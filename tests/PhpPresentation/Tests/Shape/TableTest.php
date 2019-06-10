@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Table;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Table element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Table
  */
-class TableTest extends \PHPUnit_Framework_TestCase
+class TableTest extends TestCase
 {
     public function testConstruct()
     {
@@ -35,7 +36,7 @@ class TableTest extends \PHPUnit_Framework_TestCase
 
     public function testNumColums()
     {
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object = new Table();
 
         $this->assertEquals(1, $object->getNumColumns());

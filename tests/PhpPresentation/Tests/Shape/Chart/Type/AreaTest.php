@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Bar3D element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D
  */
-class AreaTest extends \PHPUnit_Framework_TestCase
+class AreaTest extends TestCase
 {
     public function testData()
     {

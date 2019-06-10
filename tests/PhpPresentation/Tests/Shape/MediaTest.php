@@ -3,8 +3,9 @@
 namespace PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Media;
+use PHPUnit\Framework\TestCase;
 
-class MediaTest extends \PHPUnit_Framework_TestCase
+class MediaTest extends TestCase
 {
     public function testInheritance()
     {

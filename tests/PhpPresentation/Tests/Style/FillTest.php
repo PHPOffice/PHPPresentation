@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class FillTest extends \PHPUnit_Framework_TestCase
+class FillTest extends TestCase
 {
     /**
      * Test create new instance
@@ -74,7 +75,7 @@ class FillTest extends \PHPUnit_Framework_TestCase
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setRotation());
         $this->assertEquals(0, $object->getRotation());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setRotation($value));
         $this->assertEquals($value, $object->getRotation());
     }
@@ -98,7 +99,7 @@ class FillTest extends \PHPUnit_Framework_TestCase
     public function testSetGetHashIndex()
     {
         $object = new Fill();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }

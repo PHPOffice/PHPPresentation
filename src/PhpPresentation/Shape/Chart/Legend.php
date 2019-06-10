@@ -152,7 +152,7 @@ class Legend implements ComparableInterface
      * Set Position
      *
      * @param  string                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setPosition($value = self::POSITION_RIGHT)
     {
@@ -263,7 +263,7 @@ class Legend implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setFont(Font $pFont = null)
     {
@@ -285,7 +285,7 @@ class Legend implements ComparableInterface
      * Set Border
      *
      * @param  \PhpOffice\PhpPresentation\Style\Border $border
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setBorder(Border $border)
     {
@@ -307,7 +307,7 @@ class Legend implements ComparableInterface
      * Set Fill
      *
      * @param  \PhpOffice\PhpPresentation\Style\Fill $fill
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setFill(Fill $fill)
     {
@@ -329,7 +329,7 @@ class Legend implements ComparableInterface
      * Set alignment
      *
      * @param  \PhpOffice\PhpPresentation\Style\Alignment          $alignment
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setAlignment(Alignment $alignment)
     {
@@ -374,6 +374,7 @@ class Legend implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
+     * @return Legend
      */
     public function setHashIndex($value)
     {

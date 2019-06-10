@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Pie element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Pie
  */
-class PieTest extends \PHPUnit_Framework_TestCase
+class PieTest extends TestCase
 {
     public function testData()
     {
