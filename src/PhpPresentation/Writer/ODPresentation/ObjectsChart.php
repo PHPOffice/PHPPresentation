@@ -139,33 +139,18 @@ class ObjectsChart extends AbstractDecoratorWriter
         // office:automatic-styles
         $this->xmlContent->startElement('office:automatic-styles');
 
-        // Chart
+        // Styles
         $this->writeChartStyle($chart);
-
-        // Axis
         $this->writeAxisStyle($chart);
-
-        // Series
         $this->numSeries = 0;
         foreach ($chartType->getSeries() as $series) {
             $this->writeSeriesStyle($chart, $series);
-
             $this->numSeries++;
         }
-
-        // Floor
         $this->writeFloorStyle();
-
-        // Legend
         $this->writeLegendStyle($chart);
-
-        // PlotArea
         $this->writePlotAreaStyle($chart);
-
-        // Title
         $this->writeTitleStyle($chart->getTitle());
-
-        // Wall
         $this->writeWallStyle($chart);
 
         // > office:automatic-styles
@@ -191,16 +176,9 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttributeIf($chartType instanceof Line, 'chart:class', 'chart:line');
         $this->xmlContent->writeAttributeIf($chartType instanceof Scatter, 'chart:class', 'chart:scatter');
 
-        //**** Title ****
         $this->writeTitle($chart->getTitle());
-
-        //**** Legend ****
         $this->writeLegend($chart);
-
-        //**** Plotarea ****
         $this->writePlotArea($chart);
-
-        //**** Table ****
         $this->writeTable();
 
         // > chart:chart
@@ -227,7 +205,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->startElement('chart:axis');
         $this->xmlContent->writeAttribute('chart:dimension', 'x');
         $this->xmlContent->writeAttribute('chart:name', 'primary-x');
-        $this->xmlContent->writeAttribute('chartooo:axis-type', 'text');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleAxisX');
         // chart:axis > chart:categories
         $this->xmlContent->startElement('chart:categories');
@@ -303,6 +280,12 @@ class ObjectsChart extends AbstractDecoratorWriter
             $this->xmlContent->writeAttribute('chart:maximum', $chart->getPlotArea()->getAxisX()->getMaxBounds());
         }
         $this->xmlContent->endElement();
+        // style:style > style:graphic-properties
+        $this->xmlContent->startElement('style:graphic-properties');
+        $this->xmlContent->writeAttribute('draw:stroke', 'solid');
+        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
+        $this->xmlContent->endElement();
         // style:style > style:text-properties
         $oFont = $chart->getPlotArea()->getAxisX()->getFont();
         $this->xmlContent->startElement('style:text-properties');
@@ -310,11 +293,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('fo:font-family', $oFont->getName());
         $this->xmlContent->writeAttribute('fo:font-size', $oFont->getSize().'pt');
         $this->xmlContent->writeAttribute('fo:font-style', $oFont->isItalic() ? 'italic' : 'normal');
-        $this->xmlContent->endElement();
-        // style:style > style:graphic-properties
-        $this->xmlContent->startElement('style:graphic-properties');
-        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
-        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
         $this->xmlContent->endElement();
         // ##style:style
         $this->xmlContent->endElement();
@@ -338,12 +316,18 @@ class ObjectsChart extends AbstractDecoratorWriter
         if ($chartType instanceof AbstractTypePie) {
             $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
         }
-        if ($chart->getPlotArea()->getAxisY()->getMinBounds() != null) {
+        if ($chart->getPlotArea()->getAxisY()->getMinBounds() !== null) {
             $this->xmlContent->writeAttribute('chart:minimum', $chart->getPlotArea()->getAxisY()->getMinBounds());
         }
-        if ($chart->getPlotArea()->getAxisY()->getMaxBounds() != null) {
+        if ($chart->getPlotArea()->getAxisY()->getMaxBounds() !== null) {
             $this->xmlContent->writeAttribute('chart:maximum', $chart->getPlotArea()->getAxisY()->getMaxBounds());
         }
+        $this->xmlContent->endElement();
+        // style:graphic-properties
+        $this->xmlContent->startElement('style:graphic-properties');
+        $this->xmlContent->writeAttribute('draw:stroke', 'solid');
+        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
+        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
         $this->xmlContent->endElement();
         // style:style > style:text-properties
         $oFont = $chart->getPlotArea()->getAxisY()->getFont();
@@ -352,11 +336,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('fo:font-family', $oFont->getName());
         $this->xmlContent->writeAttribute('fo:font-size', $oFont->getSize().'pt');
         $this->xmlContent->writeAttribute('fo:font-style', $oFont->isItalic() ? 'italic' : 'normal');
-        $this->xmlContent->endElement();
-        // style:graphic-properties
-        $this->xmlContent->startElement('style:graphic-properties');
-        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
-        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
         $this->xmlContent->endElement();
         // ## style:style
         $this->xmlContent->endElement();
@@ -621,17 +600,17 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->startElement('chart:series');
         $this->xmlContent->writeAttribute('chart:values-cell-range-address', 'table-local.$'.$this->rangeCol.'$2:.$'.$this->rangeCol.'$'.($numRange+1));
         $this->xmlContent->writeAttribute('chart:label-cell-address', 'table-local.$'.$this->rangeCol.'$1');
-        if ($chartType instanceof Area) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:area');
-        } elseif ($chartType instanceof AbstractTypeBar) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
-        } elseif ($chartType instanceof Line) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:line');
-        } elseif ($chartType instanceof AbstractTypePie) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
-        } elseif ($chartType instanceof Scatter) {
-            $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
-        }
+        // if ($chartType instanceof Area) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:area');
+        // } elseif ($chartType instanceof AbstractTypeBar) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:bar');
+        // } elseif ($chartType instanceof Line) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:line');
+        // } elseif ($chartType instanceof AbstractTypePie) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:circle');
+        // } elseif ($chartType instanceof Scatter) {
+        //     $this->xmlContent->writeAttribute('chart:class', 'chart:scatter');
+        // }
         $this->xmlContent->writeAttribute('chart:style-name', 'styleSeries'.$this->numSeries);
         if ($chartType instanceof Area || $chartType instanceof AbstractTypeBar || $chartType instanceof Line || $chartType instanceof Scatter) {
             $dataPointFills = $series->getDataPointFills();
@@ -639,16 +618,16 @@ class ObjectsChart extends AbstractDecoratorWriter
             $incRepeat = $numRange;
             if (!empty($dataPointFills)) {
                 $inc = 0;
-                $incRepeat = 0;
+                $incRepeat = 1;
                 $newFill = new Fill();
                 do {
-                    if ($series->getDataPointFill($inc)->getHashCode() != $newFill->getHashCode()) {
+                    if ($series->getDataPointFill($inc)->getHashCode() !== $newFill->getHashCode()) {
                         // chart:data-point
                         $this->xmlContent->startElement('chart:data-point');
                         $this->xmlContent->writeAttribute('chart:repeated', $incRepeat);
                         // > chart:data-point
                         $this->xmlContent->endElement();
-                        $incRepeat = 0;
+                        $incRepeat = 1;
 
                         // chart:data-point
                         $this->xmlContent->startElement('chart:data-point');
@@ -826,15 +805,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->startElement('table:table');
         $this->xmlContent->writeAttribute('table:name', 'table-local');
 
-        // table:table-header-columns
-        $this->xmlContent->startElement('table:table-header-columns');
-        // table:table-column
-        $this->xmlContent->startElement('table:table-column');
-        // > table:table-column
-        $this->xmlContent->endElement();
-        // > table:table-header-columns
-        $this->xmlContent->endElement();
-
         // table:table-columns
         $this->xmlContent->startElement('table:table-columns');
         // table:table-column
@@ -848,11 +818,55 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > table:table-columns
         $this->xmlContent->endElement();
 
+        // table:table-header-columns
+        $this->xmlContent->startElement('table:table-header-columns');
+        // table:table-column
+        $this->xmlContent->writeElement('table:table-column');
+        // > table:table-header-columns
+        $this->xmlContent->endElement();
+
+        // table:table-rows
+        $this->xmlContent->startElement('table:table-rows');
+        if (empty($this->arrayData)) {
+            $this->xmlContent->startElement('table:table-row');
+            $this->xmlContent->startElement('table:table-cell');
+            $this->xmlContent->endElement();
+            $this->xmlContent->endElement();
+        } else {
+            foreach ($this->arrayData as $row) {
+                // table:table-row
+                $this->xmlContent->startElement('table:table-row');
+                foreach ($row as $cell) {
+                    // table:table-cell
+                    $this->xmlContent->startElement('table:table-cell');
+
+                    $cellNumeric = is_numeric($cell);
+                    $this->xmlContent->writeAttributeIf(!$cellNumeric, 'office:value-type', 'string');
+                    $this->xmlContent->writeAttributeIf($cellNumeric, 'office:value-type', 'float');
+                    $this->xmlContent->writeAttributeIf($cellNumeric, 'office:value', $cell);
+                    // text:p
+                    $this->xmlContent->startElement('text:p');
+                    $this->xmlContent->text($cell);
+                    // > text:p
+                    $this->xmlContent->endElement();
+                    // > table:table-cell
+                    $this->xmlContent->endElement();
+                }
+                // > table:table-row
+                $this->xmlContent->endElement();
+            }
+        }
+        // > table:table-rows
+        $this->xmlContent->endElement();
+
         // table:table-header-rows
         $this->xmlContent->startElement('table:table-header-rows');
         // table:table-row
         $this->xmlContent->startElement('table:table-row');
-        if (!empty($this->arrayData)) {
+        if (empty($this->arrayData)) {
+            $this->xmlContent->startElement('table:table-cell');
+            $this->xmlContent->endElement();
+        } else {
             $rowFirst = reset($this->arrayData);
             foreach ($rowFirst as $key => $cell) {
                 // table:table-cell
@@ -876,34 +890,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > table:table-header-rows
         $this->xmlContent->endElement();
 
-        // table:table-rows
-        $this->xmlContent->startElement('table:table-rows');
-
-        foreach ($this->arrayData as $row) {
-            // table:table-row
-            $this->xmlContent->startElement('table:table-row');
-            foreach ($row as $cell) {
-                // table:table-cell
-                $this->xmlContent->startElement('table:table-cell');
-
-                $cellNumeric = is_numeric($cell);
-                $this->xmlContent->writeAttributeIf(!$cellNumeric, 'office:value-type', 'string');
-                $this->xmlContent->writeAttributeIf($cellNumeric, 'office:value-type', 'float');
-                $this->xmlContent->writeAttributeIf($cellNumeric, 'office:value', $cell);
-                // text:p
-                $this->xmlContent->startElement('text:p');
-                $this->xmlContent->text($cell);
-                // > text:p
-                $this->xmlContent->endElement();
-                // > table:table-cell
-                $this->xmlContent->endElement();
-            }
-            // > table:table-row
-            $this->xmlContent->endElement();
-        }
-
-        // > table:table-rows
-        $this->xmlContent->endElement();
         // > table:table
         $this->xmlContent->endElement();
     }
@@ -924,7 +910,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > text:p
         $this->xmlContent->startElement('text:p');
         $this->xmlContent->text($oTitle->getText());
-        // > text:p
         $this->xmlContent->endElement();
         // > chart:title
         $this->xmlContent->endElement();
@@ -959,7 +944,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         // chart:wall
         $this->xmlContent->startElement('chart:wall');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleWall');
-        // > chart:wall
         $this->xmlContent->endElement();
     }
 

@@ -78,7 +78,7 @@ class BarTest extends TestCase
 
     public function testGapWidthPercent()
     {
-        $value = rand(0, 500);
+        $value = mt_rand(0, 500);
         $object = new Bar();
         $this->assertEquals(150, $object->getGapWidthPercent());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setGapWidthPercent($value));

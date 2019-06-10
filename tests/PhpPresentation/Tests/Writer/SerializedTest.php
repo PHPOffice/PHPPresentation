@@ -70,11 +70,11 @@ class SerializedTest extends TestCase
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
         $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
-        $object = new Serialized($oPhpPresentation);
-
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
-
-        $this->assertFileExists($file, $object->save($file));
+        $object = new Serialized($oPhpPresentation);
+        $object->save($file);
+        
+        $this->assertFileExists($file);
     }
 
     /**
@@ -100,11 +100,13 @@ class SerializedTest extends TestCase
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
         $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
-        $object = new Serialized($oPhpPresentation);
-
+        
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
         file_put_contents($file, rand(1, 100));
 
-        $this->assertFileExists($file, $object->save($file));
+        $object = new Serialized($oPhpPresentation);
+        $object->save($file);
+            
+        $this->assertFileExists($file);
     }
 }

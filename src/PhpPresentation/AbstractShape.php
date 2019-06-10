@@ -156,7 +156,7 @@ abstract class AbstractShape implements ComparableInterface
      * @param  \PhpOffice\PhpPresentation\ShapeContainerInterface $pValue
      * @param  bool $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
      * @throws \Exception
-     * @return self
+     * @return $this
      */
     public function setContainer(ShapeContainerInterface $pValue = null, $pOverrideOld = false)
     {
@@ -204,7 +204,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set OffsetX
      *
      * @param  int $pValue
-     * @return self
+     * @return $this
      */
     public function setOffsetX($pValue = 0)
     {
@@ -227,7 +227,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set OffsetY
      *
      * @param  int $pValue
-     * @return self
+     * @return $this
      */
     public function setOffsetY($pValue = 0)
     {
@@ -250,7 +250,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set Width
      *
      * @param  int $pValue
-     * @return self
+     * @return $this
      */
     public function setWidth($pValue = 0)
     {
@@ -272,7 +272,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set Height
      *
      * @param  int $pValue
-     * @return self
+     * @return $this
      */
     public function setHeight($pValue = 0)
     {
@@ -286,7 +286,7 @@ abstract class AbstractShape implements ComparableInterface
      * @param  int $width
      * @param  int $height
      * @example $objDrawing->setWidthAndHeight(160,120);
-     * @return self
+     * @return $this
      */
     public function setWidthAndHeight($width = 0, $height = 0)
     {
@@ -309,7 +309,7 @@ abstract class AbstractShape implements ComparableInterface
      * Set Rotation
      *
      * @param  int $pValue
-     * @return self
+     * @return $this
      */
     public function setRotation($pValue = 0)
     {
@@ -363,7 +363,7 @@ abstract class AbstractShape implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Style\Shadow $pValue
      * @throws \Exception
-     * @return self
+     * @return $this
      */
     public function setShadow(Shadow $pValue = null)
     {
@@ -400,7 +400,7 @@ abstract class AbstractShape implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Shape\Hyperlink $pHyperlink
      * @throws \Exception
-     * @return self
+     * @return $this
      */
     public function setHyperlink(Hyperlink $pHyperlink = null)
     {

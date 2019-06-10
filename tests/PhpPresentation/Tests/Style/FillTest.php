@@ -75,7 +75,7 @@ class FillTest extends TestCase
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setRotation());
         $this->assertEquals(0, $object->getRotation());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setRotation($value));
         $this->assertEquals($value, $object->getRotation());
     }
@@ -99,7 +99,7 @@ class FillTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Fill();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }

@@ -60,7 +60,7 @@ class TitleTest extends TestCase
     public function testHashIndex()
     {
         $object = new Title();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
 
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setHashIndex($value));
@@ -70,7 +70,7 @@ class TitleTest extends TestCase
     public function testHeight()
     {
         $object = new Title();
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setHeight());
         $this->assertEquals(0, $object->getHeight());
@@ -81,7 +81,7 @@ class TitleTest extends TestCase
     public function testOffsetX()
     {
         $object = new Title();
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetX());
         $this->assertEquals(0.01, $object->getOffsetX());
@@ -92,7 +92,7 @@ class TitleTest extends TestCase
     public function testOffsetY()
     {
         $object = new Title();
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetY());
         $this->assertEquals(0.01, $object->getOffsetY());
@@ -125,7 +125,7 @@ class TitleTest extends TestCase
     public function testWidth()
     {
         $object = new Title();
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());

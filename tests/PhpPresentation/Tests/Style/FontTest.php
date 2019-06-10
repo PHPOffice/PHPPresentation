@@ -109,7 +109,7 @@ class FontTest extends TestCase
         $this->assertEquals(10, $object->getSize());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize(''));
         $this->assertEquals(10, $object->getSize());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize($value));
         $this->assertEquals($value, $object->getSize());
     }
@@ -240,7 +240,7 @@ class FontTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Font();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
