@@ -6,6 +6,7 @@
 - PowerPoint2007 : Text is subscripted when set superscript to false - @qmachard GH-360
 
 ### Changes
+- Dropped support for HHVM - @sunspikes GH-556
 - PHP 7.1 is now supported - @Progi1984 GH-355
 - PhpOffice\PhpPresentation\Style\Color : Define only the transparency - @Progi1984 GH-370
 - PowerPoint2007 Reader : Background Color based on SchemeColor - @Progi1984 GH-397
