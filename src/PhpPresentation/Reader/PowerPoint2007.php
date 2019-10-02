@@ -17,6 +17,9 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
+use PhpOffice\Common\XMLReader;
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\Microsoft\OLERead;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
@@ -35,14 +38,12 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
-use PhpOffice\Common\XMLReader;
-use PhpOffice\Common\Drawing as CommonDrawing;
 use ZipArchive;
 
 /**
  * Serialized format reader
  */
-class PowerPoint2007 implements ReaderInterface
+class PowerPoint2007 extends AbstractReader implements ReaderInterface
 {
     /**
      * Output Object
@@ -105,7 +106,15 @@ class PowerPoint2007 implements ReaderInterface
             if (is_array($oZip->statName('[Content_Types].xml')) && is_array($oZip->statName('ppt/presentation.xml'))) {
                 return true;
             }
+        } else {
+            $oOLE = new OLERead();
+            try {
+                $oOLE->read($pFilename);
+                return true;
+            } catch (\Exception $e) {
+            }
         }
+
         return false;
     }
 
@@ -141,7 +150,12 @@ class PowerPoint2007 implements ReaderInterface
         $this->filename = $pFilename;
 
         $this->oZip = new ZipArchive();
-        $this->oZip->open($this->filename);
+
+        if ($this->oZip->open($this->filename) == ZipArchive::ER_NOZIP) {
+            $this->loadEncryptedFile();
+            return $this->oPhpPresentation;
+        }
+
         $docPropsCore = $this->oZip->getFromName('docProps/core.xml');
         if ($docPropsCore !== false) {
             $this->loadDocumentProperties($docPropsCore);
@@ -1296,5 +1310,232 @@ class PowerPoint2007 implements ReaderInterface
                     //var_export($oNode->tagName);
             }
         }
+    }
+
+    protected function loadEncryptedFile()
+    {
+        //return false;
+        $oOLE = new OLERead();
+        $oOLE->read($this->filename);
+
+        $oStreamEncrypted = $oOLE->getStream($oOLE->encryptedPackage);
+        $pos = 0;
+        $size = self::getInt4d($oStreamEncrypted, $pos);
+        $pos += 8;
+        $data = '';
+        for ($inc = 0 ; $inc < $size ; $inc++) {
+            $data .= pack('v', self::getInt1d($oStreamEncrypted, $pos + $inc));
+        }
+
+        $oStream = $oOLE->getStream($oOLE->encryptionInfo);
+        $pos = 0;
+        // EncryptionVersionInfo
+        $vMajor = self::getInt2d($oStream, $pos);
+        $pos += 2;
+        $vMinor = self::getInt2d($oStream, $pos);
+        $pos += 2;
+        // EncryptionHeader.Flags
+        $pos += 4;
+        // EncryptionHeaderSize
+        $size = self::getInt4d($oStream, $pos);
+        $pos += 4;
+        echo 'EncryptionHeaderSize : ' . $size. '<br />'; //
+
+        // EncryptionHeader
+        // EncryptionHeader > Flags
+        $flags = self::getInt4d($oStream, $pos);
+        echo 'EncryptionHeader > Flags > fCryptoAPI : ' . (($flags >> 2) & bindec('1')). '<br />'; //
+        echo 'EncryptionHeader > Flags > fDocProps : ' . (($flags >> 3) & bindec('1')). '<br />'; //
+        echo 'EncryptionHeader > Flags > fExternal : ' . (($flags >> 4) & bindec('1')). '<br />'; //
+        echo 'EncryptionHeader > Flags > fAES : ' . (($flags >> 5) & bindec('1')). '<br />'; //
+        $pos += 4;
+        $size -= 4;
+        // EncryptionHeader > SizeExtra
+        $sizeExtra = self::getInt4d($oStream, $pos);
+        echo 'EncryptionHeader > SizeExtra : '.$sizeExtra. '<br />';
+        $pos += 4;
+        $size -= 4;
+        // EncryptionHeader > AlgID
+        $algID = self::getInt4d($oStream, $pos);
+        echo 'EncryptionHeader > AlgID :'.$algID.' ('.hexdec('0x00006801').' = 0x00006801 = RC4) -  (<strong>'.hexdec('0x0000660E').' = 0x0000660E = AES-128</strong>) - ('.hexdec('0x0000660F').' = 0x0000660F = AES-192) - ('.hexdec('0x00006610').' = 0x00006610 = AES-256)'. '<br />';
+        $pos += 4;
+        $size -= 4;
+        // EncryptionHeader > AlgIDHash
+        $algIDHash = self::getInt4d($oStream, $pos);
+        echo 'EncryptionHeader > AlgIDHash : '.$algIDHash. ' ('.hexdec('0x00008004').' = 0x00008004 = SHA1)'. '<br />';
+        $pos += 4;
+        $size -= 4;
+        // EncryptionHeader > KeySize
+        $keySize = self::getInt4d($oStream, $pos);
+        echo 'EncryptionHeader > KeySize : '.$keySize.  ' (<strong>'.hexdec('0x00000080').' = 0x00000080 = AES-128</strong>) - ('.hexdec('0x000000C0').' = 0x000000C0 = AES-192) - ('.hexdec('0x00000100').' = 0x00000100 = AES-256)'. '<br />';
+        $pos += 4;
+        $size -= 4;
+        // EncryptionHeader > ProviderType
+        $providerType = self::getInt4d($oStream, $pos);
+        echo 'EncryptionHeader > ProviderType : '.$providerType. ' ('.hexdec('0x00000018').' = 0x00000018)'. '<br />';
+        $pos += 4;
+        $size -= 4;
+        // EncryptionHeader > Reserved1
+        $pos += 4;
+        $size -= 4;
+        // EncryptionHeader > Reserved2
+        $pos += 4;
+        $size -= 4;
+        // EncryptionHeader > CSPName
+        $CSPName = '';
+        for ($inc = 0 ; $inc <= $size ; $inc += 2) {
+            $chr = self::getInt2d($oStream, $pos);
+            $pos += 2;
+            if ($chr === 0) {
+                break;
+            }
+            $CSPName .= chr($chr);
+        }
+        echo 'EncryptionHeader > CSPName : '.$CSPName. '<br />';
+        // EncryptionVerifier
+        // EncryptionVerifier > SaltSize
+        $saltSize = self::getInt4d($oStream, $pos);
+        echo 'EncryptionVerifier > SaltSize : '.$saltSize.' ('.hexdec('0x00000010').' = 0x00000010)';
+        hex_dump($saltSize);
+        $pos += 4;
+        // EncryptionVerifier > Salt
+        $salt = '';
+        for ($inc = 0 ; $inc < 16 ; $inc ++) {
+            $salt .= pack('v', self::getInt1d($oStream, $pos));
+            $pos += 1;
+        }
+        echo 'EncryptionVerifier > Salt : ';
+        hex_dump($salt);
+        // EncryptionVerifier > EncryptedVerifier
+        $encryptedVerifier = '';
+        for ($inc = 0 ; $inc < 16 ; $inc ++) {
+            $encryptedVerifier .= pack('v', self::getInt1d($oStream, $pos));
+            $pos += 1;
+        }
+        echo 'EncryptionVerifier > EncryptedVerifier : ';
+        hex_dump($encryptedVerifier);
+        // EncryptionVerifier > VerifierHashSize
+        $verifierHashSize = self::getInt4d($oStream, $pos);
+        echo 'EncryptionVerifier > VerifierHashSize ('.hexdec('0x00000010').' = 0x00000010) :';
+        hex_dump($verifierHashSize);
+        $pos += 4;
+        // EncryptionVerifier > EncryptedVerifierHash
+        // mon cas : AES donc 32
+        echo 'EncryptionVerifier > EncryptedVerifierHash :';
+        $encryptedVerifierHash = '';
+        for ($inc = 0 ; $inc < 32 ; $inc ++) {
+            $encryptedVerifierHash .= pack('v', self::getInt1d($oStream, $pos));
+            $pos += 1;
+        }
+        hex_dump($encryptedVerifierHash);
+
+        // https://github.com/doy/spreadsheet-parsexlsx/pull/37/files#diff-e61fbe6112ca2b7a3c08a4ea62d74ffeR1314
+
+        // https://msdn.microsoft.com/en-us/library/dd925430(v=office.12).aspx
+        // H0 = H(salt + password)
+        $hash = $salt . iconv("ISO-8859-1", "UTF-16LE", $this->getPassword());
+        echo 'Hash (length : '.strlen($hash).')';
+        hex_dump($hash);
+        for($inc = 0 ; $inc < 50000 ; $inc++) {
+            $hash = sha1(pack('L', $inc).$hash, true);
+        }
+        echo 'Hash (length : '.strlen($hash).')';
+        hex_dump($hash);
+        //  Hn = H(iterator + Hn-1)
+        $hash = sha1($hash . 0x00000000, true);
+        echo 'Hash (length : '.strlen($hash).')';
+        hex_dump($hash);
+
+        $keySize /=8;
+
+        $x36 = '';
+        for($inc = 0 ; $inc < 64 ; $inc++) {
+            $x36 .= pack('H*', 0x36);
+        }
+        echo 'x36 (length : '.strlen($x36).')';
+        hex_dump($x36);
+
+        $x1 = ($x36 ^ $hash);
+        echo 'Hash = $x36 xor $hash (length : '.strlen($x1).')';
+        hex_dump($x1);
+
+        if (strlen($x1) >= $keySize) {
+            $hash = substr($x1, 0, $keySize);
+        } else {
+            $x5C = '';
+            for($inc = 0 ; $inc < 64 ; $inc++) {
+                $x5C .= pack('H*', '5C');
+            }
+            echo '$x5C (length : '.strlen($x5C).')';
+            hex_dump($x5C);
+
+            $x2 = ($x5C ^ $hash);
+            echo '$x1 = $x5C xor $hash (length : '.strlen($x2).')';
+            hex_dump($x2);
+
+            $hash = substr($x1.$x2, 0, $keySize);
+        }
+
+        echo 'Final hash (length : '.strlen($hash).')';
+        hex_dump($hash);
+        // https://msdn.microsoft.com/en-us/library/dd926426(v=office.12).aspx
+        $verifier = openssl_decrypt($encryptedVerifier, 'AES-128-ECB', $hash, 0, '');
+        echo 'Verifier :';
+        hex_dump($verifier);
+        $verifierHash = openssl_decrypt($encryptedVerifierHash, 'AES-128-ECB', $hash, 0, '');
+        echo 'VerifierHash :';
+        hex_dump($verifierHash);
+
+        $verifierHash0 = sha1($verifier, true);
+        echo 'VerifierHash :';
+        hex_dump($verifierHash);
+        echo 'VerifierHash sha1($verifier, true):';
+        hex_dump($verifierHash0);
+    }
+
+    /**
+     * Read 8-bit unsigned integer
+     *
+     * @param string $data
+     * @param int $pos
+     * @return int
+     */
+    public static function getInt1d($data, $pos)
+    {
+        return ord($data[$pos]);
+    }
+
+    /**
+     * Read 16-bit unsigned integer
+     *
+     * @param string $data
+     * @param int $pos
+     * @return int
+     */
+    public static function getInt2d($data, $pos)
+    {
+        return ord($data[$pos]) | (ord($data[$pos+1]) << 8);
+    }
+
+    /**
+     * Read 32-bit signed integer
+     *
+     * @param string $data
+     * @param int $pos
+     * @return int
+     */
+    public static function getInt4d($data, $pos)
+    {
+        // FIX: represent numbers correctly on 64-bit system
+        // http://sourceforge.net/tracker/index.php?func=detail&aid=1487372&group_id=99160&atid=623334
+        // Hacked by Andreas Rehm 2006 to ensure correct result of the <<24 block on 32 and 64bit systems
+        $or24 = ord($data[$pos + 3]);
+        if ($or24 >= 128) {
+            // negative number
+            $ord24 = -abs((256 - $or24) << 24);
+        } else {
+            $ord24 = ($or24 & 127) << 24;
+        }
+        return ord($data[$pos]) | (ord($data[$pos+1]) << 8) | (ord($data[$pos+2]) << 16) | $ord24;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 /**
  * Header file
-*/
+ */
 use PhpOffice\PhpPresentation\Autoloader;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\Slide;
@@ -16,6 +16,34 @@ use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+
+function hex_dump($data, $newline = "\n")
+{
+    static $from = '';
+    static $to = '';
+
+    static $width = 16; # number of bytes per line
+
+    static $pad = '.'; # padding for non-visible characters
+
+    if ($from === '') {
+        for ($i = 0; $i <= 0xFF; $i++) {
+            $from .= chr($i);
+            $to .= ($i >= 0x20 && $i <= 0x7E) ? chr($i) : $pad;
+        }
+    }
+
+    $hex = str_split(bin2hex($data), $width * 2);
+    $chars = str_split(strtr($data, $from, $to), $width);
+
+    $offset = 0;
+    echo '<pre>';
+    foreach ($hex as $i => $line) {
+        echo sprintf('%6X', $offset) . ' : ' . implode(' ', str_split($line, 2)) . ' [' . $chars[$i] . ']' . $newline;
+        $offset += $width;
+    }
+    echo '</pre>';
+}
 
 error_reporting(E_ALL);
 define('CLI', (PHP_SAPI == 'cli') ? true : false);
@@ -74,12 +102,11 @@ $oShapeRichText->setHeight(300)
     ->setWidth(600)
     ->setOffsetX(170)
     ->setOffsetY(180);
-$oShapeRichText->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
+$oShapeRichText->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 $textRun = $oShapeRichText->createTextRun('Thank you for using PHPPresentation!');
 $textRun->getFont()->setBold(true)
     ->setSize(60)
-    ->setColor( new Color( 'FFE06B20' ) );
-
+    ->setColor(new Color('FFE06B20'));
 
 
 // Populate samples
@@ -109,7 +136,7 @@ if ($handle = opendir('.')) {
 function write($phpPresentation, $filename, $writers)
 {
     $result = '';
-    
+
     // Write documents
     foreach ($writers as $writer => $extension) {
         $result .= date('H:i:s') . " Write to {$writer} format";
@@ -177,7 +204,7 @@ function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPP
 {
     // Create slide
     $slide = $objPHPPresentation->createSlide();
-    
+
     // Add logo
     $shape = $slide->createDrawingShape();
     $shape->setName('PHPPresentation logo')
@@ -194,7 +221,8 @@ function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPP
     return $slide;
 }
 
-class PhpPptTree {
+class PhpPptTree
+{
     protected $oPhpPresentation;
     protected $htmlOutput;
 
@@ -236,9 +264,9 @@ class PhpPptTree {
         foreach ($oPHPPpt->getAllSlides() as $oSlide) {
             $this->append('<li><span><i class="fa fa-minus-square"></i> Slide</span>');
             $this->append('<ul>');
-            $this->append('<li><span class="shape" id="div'.$oSlide->getHashCode().'"><i class="fa fa-info-circle"></i> Info "Slide"</span></li>');
+            $this->append('<li><span class="shape" id="div' . $oSlide->getHashCode() . '"><i class="fa fa-info-circle"></i> Info "Slide"</span></li>');
             foreach ($oSlide->getShapeCollection() as $oShape) {
-                if($oShape instanceof Group) {
+                if ($oShape instanceof Group) {
                     $this->append('<li><span><i class="fa fa-minus-square"></i> Shape "Group"</span>');
                     $this->append('<ul>');
                     // $this->append('<li><span class="shape" id="div'.$oShape->getHashCode().'"><i class="fa fa-info-circle"></i> Info "Group"</span></li>');
@@ -260,16 +288,16 @@ class PhpPptTree {
 
     protected function displayShape(AbstractShape $shape)
     {
-        if($shape instanceof Drawing\Gd) {
-            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Gd"</span></li>');
-        } elseif($shape instanceof Drawing\File) {
-            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\File"</span></li>');
-        } elseif($shape instanceof Drawing\Base64) {
-            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Base64"</span></li>');
-        } elseif($shape instanceof Drawing\ZipFile) {
-            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "Drawing\Zip"</span></li>');
-        } elseif($shape instanceof RichText) {
-            $this->append('<li><span class="shape" id="div'.$shape->getHashCode().'">Shape "RichText"</span></li>');
+        if ($shape instanceof Drawing\Gd) {
+            $this->append('<li><span class="shape" id="div' . $shape->getHashCode() . '">Shape "Drawing\Gd"</span></li>');
+        } elseif ($shape instanceof Drawing\File) {
+            $this->append('<li><span class="shape" id="div' . $shape->getHashCode() . '">Shape "Drawing\File"</span></li>');
+        } elseif ($shape instanceof Drawing\Base64) {
+            $this->append('<li><span class="shape" id="div' . $shape->getHashCode() . '">Shape "Drawing\Base64"</span></li>');
+        } elseif ($shape instanceof Drawing\ZipFile) {
+            $this->append('<li><span class="shape" id="div' . $shape->getHashCode() . '">Shape "Drawing\Zip"</span></li>');
+        } elseif ($shape instanceof RichText) {
+            $this->append('<li><span class="shape" id="div' . $shape->getHashCode() . '">Shape "RichText"</span></li>');
         } else {
             var_dump($shape);
         }
@@ -297,23 +325,24 @@ class PhpPptTree {
         $this->append('</div>');
 
         foreach ($oPHPPpt->getAllSlides() as $oSlide) {
-            $this->append('<div class="infoBlk" id="div'.$oSlide->getHashCode().'Info">');
+            $this->append('<div class="infoBlk" id="div' . $oSlide->getHashCode() . 'Info">');
             $this->append('<dl>');
-            $this->append('<dt>HashCode</dt><dd>'.$oSlide->getHashCode().'</dd>');
-            $this->append('<dt>Slide Layout</dt><dd>Layout::'.$this->getConstantName('\PhpOffice\PhpPresentation\Slide\Layout', $oSlide->getSlideLayout()).'</dd>');
-            
-            $this->append('<dt>Offset X</dt><dd>'.$oSlide->getOffsetX().'</dd>');
-            $this->append('<dt>Offset Y</dt><dd>'.$oSlide->getOffsetY().'</dd>');
-            $this->append('<dt>Extent X</dt><dd>'.$oSlide->getExtentX().'</dd>');
-            $this->append('<dt>Extent Y</dt><dd>'.$oSlide->getExtentY().'</dd>');
+            $this->append('<dt>HashCode</dt><dd>' . $oSlide->getHashCode() . '</dd>');
+            $this->append('<dt>Slide Layout</dt><dd>Layout::' . $this->getConstantName('\PhpOffice\PhpPresentation\Slide\Layout',
+                    $oSlide->getSlideLayout()) . '</dd>');
+
+            $this->append('<dt>Offset X</dt><dd>' . $oSlide->getOffsetX() . '</dd>');
+            $this->append('<dt>Offset Y</dt><dd>' . $oSlide->getOffsetY() . '</dd>');
+            $this->append('<dt>Extent X</dt><dd>' . $oSlide->getExtentX() . '</dd>');
+            $this->append('<dt>Extent Y</dt><dd>' . $oSlide->getExtentY() . '</dd>');
             $oBkg = $oSlide->getBackground();
             if ($oBkg instanceof Slide\AbstractBackground) {
                 if ($oBkg instanceof Slide\Background\Color) {
-                    $this->append('<dt>Background Color</dt><dd>#'.$oBkg->getColor()->getRGB().'</dd>');
+                    $this->append('<dt>Background Color</dt><dd>#' . $oBkg->getColor()->getRGB() . '</dd>');
                 }
                 if ($oBkg instanceof Slide\Background\Image) {
                     $sBkgImgContents = file_get_contents($oBkg->getPath());
-                    $this->append('<dt>Background Image</dt><dd><img src="data:image/png;base64,'.base64_encode($sBkgImgContents).'"></dd>');
+                    $this->append('<dt>Background Image</dt><dd><img src="data:image/png;base64,' . base64_encode($sBkgImgContents) . '"></dd>');
                 }
             }
             $oNote = $oSlide->getNote();
@@ -330,7 +359,7 @@ class PhpPptTree {
             $this->append('</div>');
 
             foreach ($oSlide->getShapeCollection() as $oShape) {
-                if($oShape instanceof Group) {
+                if ($oShape instanceof Group) {
                     foreach ($oShape->getShapeCollection() as $oShapeChild) {
                         $this->displayShapeInfo($oShapeChild);
                     }
@@ -341,17 +370,33 @@ class PhpPptTree {
         }
     }
 
+    protected function getConstantName($class, $search, $startWith = '')
+    {
+        $fooClass = new ReflectionClass($class);
+        $constants = $fooClass->getConstants();
+        $constName = null;
+        foreach ($constants as $key => $value) {
+            if ($value == $search) {
+                if (empty($startWith) || (!empty($startWith) && strpos($key, $startWith) === 0)) {
+                    $constName = $key;
+                }
+                break;
+            }
+        }
+        return $constName;
+    }
+
     protected function displayShapeInfo(AbstractShape $oShape)
     {
-        $this->append('<div class="infoBlk" id="div'.$oShape->getHashCode().'Info">');
+        $this->append('<div class="infoBlk" id="div' . $oShape->getHashCode() . 'Info">');
         $this->append('<dl>');
-        $this->append('<dt>HashCode</dt><dd>'.$oShape->getHashCode().'</dd>');
-        $this->append('<dt>Offset X</dt><dd>'.$oShape->getOffsetX().'</dd>');
-        $this->append('<dt>Offset Y</dt><dd>'.$oShape->getOffsetY().'</dd>');
-        $this->append('<dt>Height</dt><dd>'.$oShape->getHeight().'</dd>');
-        $this->append('<dt>Width</dt><dd>'.$oShape->getWidth().'</dd>');
-        $this->append('<dt>Rotation</dt><dd>'.$oShape->getRotation().'°</dd>');
-        $this->append('<dt>Hyperlink</dt><dd>'.ucfirst(var_export($oShape->hasHyperlink(), true)).'</dd>');
+        $this->append('<dt>HashCode</dt><dd>' . $oShape->getHashCode() . '</dd>');
+        $this->append('<dt>Offset X</dt><dd>' . $oShape->getOffsetX() . '</dd>');
+        $this->append('<dt>Offset Y</dt><dd>' . $oShape->getOffsetY() . '</dd>');
+        $this->append('<dt>Height</dt><dd>' . $oShape->getHeight() . '</dd>');
+        $this->append('<dt>Width</dt><dd>' . $oShape->getWidth() . '</dd>');
+        $this->append('<dt>Rotation</dt><dd>' . $oShape->getRotation() . '°</dd>');
+        $this->append('<dt>Hyperlink</dt><dd>' . ucfirst(var_export($oShape->hasHyperlink(), true)) . '</dd>');
         $this->append('<dt>Fill</dt>');
         if (is_null($oShape->getFill())) {
             $this->append('<dd>None</dd>');
@@ -377,14 +422,14 @@ class PhpPptTree {
             call_user_func($oShape->getRenderingFunction(), $oShape->getImageResource());
             $sShapeImgContents = ob_get_contents();
             ob_end_clean();
-            $this->append('<dt>Mime-Type</dt><dd>'.$oShape->getMimeType().'</dd>');
-            $this->append('<dt>Image</dt><dd><img src="data:'.$oShape->getMimeType().';base64,'.base64_encode($sShapeImgContents).'"></dd>');
-        } elseif($oShape instanceof Drawing\AbstractDrawingAdapter) {
-            $this->append('<dt>Name</dt><dd>'.$oShape->getName().'</dd>');
-            $this->append('<dt>Description</dt><dd>'.$oShape->getDescription().'</dd>');
-        } elseif($oShape instanceof RichText) {
-            $this->append('<dt># of paragraphs</dt><dd>'.count($oShape->getParagraphs()).'</dd>');
-            $this->append('<dt>Inset (T / R / B / L)</dt><dd>'.$oShape->getInsetTop().'px / '.$oShape->getInsetRight().'px / '.$oShape->getInsetBottom().'px / '.$oShape->getInsetLeft().'px</dd>');
+            $this->append('<dt>Mime-Type</dt><dd>' . $oShape->getMimeType() . '</dd>');
+            $this->append('<dt>Image</dt><dd><img src="data:' . $oShape->getMimeType() . ';base64,' . base64_encode($sShapeImgContents) . '"></dd>');
+        } elseif ($oShape instanceof Drawing\AbstractDrawingAdapter) {
+            $this->append('<dt>Name</dt><dd>' . $oShape->getName() . '</dd>');
+            $this->append('<dt>Description</dt><dd>' . $oShape->getDescription() . '</dd>');
+        } elseif ($oShape instanceof RichText) {
+            $this->append('<dt># of paragraphs</dt><dd>' . count($oShape->getParagraphs()) . '</dd>');
+            $this->append('<dt>Inset (T / R / B / L)</dt><dd>' . $oShape->getInsetTop() . 'px / ' . $oShape->getInsetRight() . 'px / ' . $oShape->getInsetBottom() . 'px / ' . $oShape->getInsetLeft() . 'px</dd>');
             $this->append('<dt>Text</dt>');
             $this->append('<dd>');
             foreach ($oShape->getParagraphs() as $oParagraph) {
@@ -400,40 +445,41 @@ class PhpPptTree {
                     $this->append('<dt>Bullet Color</dt><dd>' . $oParagraph->getBulletStyle()->getBulletColor()->getARGB() . '</dd>');
                 }
                 if ($oParagraph->getBulletStyle()->getBulletType() == Bullet::TYPE_BULLET) {
-                    $this->append('<dt>Bullet Char</dt><dd>'.$oParagraph->getBulletStyle()->getBulletChar().'</dd>');
+                    $this->append('<dt>Bullet Char</dt><dd>' . $oParagraph->getBulletStyle()->getBulletChar() . '</dd>');
                 }
                 if ($oParagraph->getBulletStyle()->getBulletType() == Bullet::TYPE_NUMERIC) {
-                    $this->append('<dt>Bullet Start At</dt><dd>'.$oParagraph->getBulletStyle()->getBulletNumericStartAt().'</dd>');
-                    $this->append('<dt>Bullet Style</dt><dd>'.$oParagraph->getBulletStyle()->getBulletNumericStyle().'</dd>');
+                    $this->append('<dt>Bullet Start At</dt><dd>' . $oParagraph->getBulletStyle()->getBulletNumericStartAt() . '</dd>');
+                    $this->append('<dt>Bullet Style</dt><dd>' . $oParagraph->getBulletStyle()->getBulletNumericStyle() . '</dd>');
                 }
                 $this->append('<dt>Line Spacing</dt><dd>'.$oParagraph->getLineSpacing().'</dd>');
                 $this->append('<dt>RichText</dt><dd><dl>');
                 foreach ($oParagraph->getRichTextElements() as $oRichText) {
-                    if($oRichText instanceof BreakElement) {
+                    if ($oRichText instanceof BreakElement) {
                         $this->append('<dt><i>Break</i></dt>');
                     } else {
                         if ($oRichText instanceof TextElement) {
-                           $this->append('<dt><i>TextElement</i></dt>');
+                            $this->append('<dt><i>TextElement</i></dt>');
                         } else {
-                           $this->append('<dt><i>Run</i></dt>');
+                            $this->append('<dt><i>Run</i></dt>');
                         }
-                        $this->append('<dd>'.$oRichText->getText());
+                        $this->append('<dd>' . $oRichText->getText());
                         $this->append('<dl>');
-                        $this->append('<dt>Font Name</dt><dd>'.$oRichText->getFont()->getName().'</dd>');
-                        $this->append('<dt>Font Size</dt><dd>'.$oRichText->getFont()->getSize().'</dd>');
-                        $this->append('<dt>Font Color</dt><dd>#'.$oRichText->getFont()->getColor()->getARGB().'</dd>');
+                        $this->append('<dt>Font Name</dt><dd>' . $oRichText->getFont()->getName() . '</dd>');
+                        $this->append('<dt>Font Size</dt><dd>' . $oRichText->getFont()->getSize() . '</dd>');
+                        $this->append('<dt>Font Color</dt><dd>#' . $oRichText->getFont()->getColor()->getARGB() . '</dd>');
                         $this->append('<dt>Font Transform</dt><dd>');
-                            $this->append('<abbr title="Bold">Bold</abbr> : '.($oRichText->getFont()->isBold() ? 'Y' : 'N').' - ');
-                            $this->append('<abbr title="Italic">Italic</abbr> : '.($oRichText->getFont()->isItalic() ? 'Y' : 'N').' - ');
-                            $this->append('<abbr title="Underline">Underline</abbr> : Underline::'.$this->getConstantName('\PhpOffice\PhpPresentation\Style\Font', $oRichText->getFont()->getUnderline()).' - ');
-                            $this->append('<abbr title="Strikethrough">Strikethrough</abbr> : '.($oRichText->getFont()->isStrikethrough() ? 'Y' : 'N').' - ');
-                            $this->append('<abbr title="SubScript">SubScript</abbr> : '.($oRichText->getFont()->isSubScript() ? 'Y' : 'N').' - ');
-                            $this->append('<abbr title="SuperScript">SuperScript</abbr> : '.($oRichText->getFont()->isSuperScript() ? 'Y' : 'N'));
+                        $this->append('<abbr title="Bold">Bold</abbr> : ' . ($oRichText->getFont()->isBold() ? 'Y' : 'N') . ' - ');
+                        $this->append('<abbr title="Italic">Italic</abbr> : ' . ($oRichText->getFont()->isItalic() ? 'Y' : 'N') . ' - ');
+                        $this->append('<abbr title="Underline">Underline</abbr> : Underline::' . $this->getConstantName('\PhpOffice\PhpPresentation\Style\Font',
+                                $oRichText->getFont()->getUnderline()) . ' - ');
+                        $this->append('<abbr title="Strikethrough">Strikethrough</abbr> : ' . ($oRichText->getFont()->isStrikethrough() ? 'Y' : 'N') . ' - ');
+                        $this->append('<abbr title="SubScript">SubScript</abbr> : ' . ($oRichText->getFont()->isSubScript() ? 'Y' : 'N') . ' - ');
+                        $this->append('<abbr title="SuperScript">SuperScript</abbr> : ' . ($oRichText->getFont()->isSuperScript() ? 'Y' : 'N'));
                         $this->append('</dd>');
                         if ($oRichText instanceof TextElement) {
                             if ($oRichText->hasHyperlink()) {
-                                $this->append('<dt>Hyperlink URL</dt><dd>'.$oRichText->getHyperlink()->getUrl().'</dd>');
-                                $this->append('<dt>Hyperlink Tooltip</dt><dd>'.$oRichText->getHyperlink()->getTooltip().'</dd>');
+                                $this->append('<dt>Hyperlink URL</dt><dd>' . $oRichText->getHyperlink()->getUrl() . '</dd>');
+                                $this->append('<dt>Hyperlink Tooltip</dt><dd>' . $oRichText->getHyperlink()->getTooltip() . '</dd>');
                             }
                         }
                         $this->append('</dl>');
@@ -449,58 +495,46 @@ class PhpPptTree {
         $this->append('</dl>');
         $this->append('</div>');
     }
-    
-    protected function getConstantName($class, $search, $startWith = '') {
-        $fooClass = new ReflectionClass($class);
-        $constants = $fooClass->getConstants();
-        $constName = null;
-        foreach ($constants as $key => $value ) {
-            if ($value == $search) {
-                if (empty($startWith) || (!empty($startWith) && strpos($key, $startWith) === 0)) {
-                    $constName = $key;
-                }
-                break;
-            }
-        }
-        return $constName;
-    }
 }
+
 ?>
-<title><?php echo $pageTitle; ?></title>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="stylesheet" href="bootstrap/css/bootstrap.min.css" />
-<link rel="stylesheet" href="bootstrap/css/font-awesome.min.css" />
-<link rel="stylesheet" href="bootstrap/css/phppresentation.css" />
-</head>
-<body>
+    <title><?php echo $pageTitle; ?></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="bootstrap/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="bootstrap/css/phppresentation.css"/>
+    </head>
+    <body>
 <div class="container">
-<div class="navbar navbar-default" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="./">PHPPresentation</a>
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <?php foreach ($files as $key => $fileStr)  :?>
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="./">PHPPresentation</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <?php foreach ($files as $key => $fileStr)  :?>
                 <li class="dropdown active">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key?>x<strong class="caret"></strong></a>
-                    <ul class="dropdown-menu"><?php echo $fileStr; ?></ul>
-                </li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key?>x<strong
+                                class="caret"></strong></a>
+                        <ul class="dropdown-menu"><?php echo $fileStr; ?></ul>
+                    </li>
                 <?php endforeach; ?>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="https://github.com/PHPOffice/PHPPresentation"><i class="fa fa-github fa-lg" title="GitHub"></i>&nbsp;</a></li>
-                <li><a href="http://phppresentation.readthedocs.org/en/develop/"><i class="fa fa-book fa-lg" title="Docs"></i>&nbsp;</a></li>
-                <li><a href="http://twitter.com/PHPOffice"><i class="fa fa-twitter fa-lg" title="Twitter"></i>&nbsp;</a></li>
-            </ul>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="https://github.com/PHPOffice/PHPPresentation"><i class="fa fa-github fa-lg" title="GitHub"></i>&nbsp;</a></li>
+                    <li><a href="http://phppresentation.readthedocs.org/en/develop/"><i class="fa fa-book fa-lg" title="Docs"></i>&nbsp;</a></li>
+                    <li><a href="http://twitter.com/PHPOffice"><i class="fa fa-twitter fa-lg" title="Twitter"></i>&nbsp;</a></li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
