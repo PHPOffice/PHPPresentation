@@ -734,6 +734,17 @@ class PowerPoint2007 implements ReaderInterface
         if ($oElement instanceof \DOMElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
+
+            // Hyperlink
+            $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElement);
+            if (is_object($oElementHlinkClick)) {
+                if ($oElementHlinkClick->hasAttribute('tooltip')) {
+                    $oShape->getHyperlink()->setTooltip($oElementHlinkClick->getAttribute('tooltip'));
+                }
+                if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target'])) {
+                    $oShape->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target']);
+                }
+            }
         }
 
         $oElement = $document->getElement('p:blipFill/a:blip', $node);
