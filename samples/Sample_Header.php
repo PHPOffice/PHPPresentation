@@ -109,7 +109,7 @@ if ($handle = opendir('.')) {
 function write($phpPresentation, $filename, $writers)
 {
     $result = '';
-    
+
     // Write documents
     foreach ($writers as $writer => $extension) {
         $result .= date('H:i:s') . " Write to {$writer} format";
@@ -177,7 +177,7 @@ function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPP
 {
     // Create slide
     $slide = $objPHPPresentation->createSlide();
-    
+
     // Add logo
     $shape = $slide->createDrawingShape();
     $shape->setName('PHPPresentation logo')
@@ -301,7 +301,7 @@ class PhpPptTree {
             $this->append('<dl>');
             $this->append('<dt>HashCode</dt><dd>'.$oSlide->getHashCode().'</dd>');
             $this->append('<dt>Slide Layout</dt><dd>Layout::'.$this->getConstantName('\PhpOffice\PhpPresentation\Slide\Layout', $oSlide->getSlideLayout()).'</dd>');
-            
+
             $this->append('<dt>Offset X</dt><dd>'.$oSlide->getOffsetX().'</dd>');
             $this->append('<dt>Offset Y</dt><dd>'.$oSlide->getOffsetY().'</dd>');
             $this->append('<dt>Extent X</dt><dd>'.$oSlide->getExtentX().'</dd>');
@@ -379,6 +379,10 @@ class PhpPptTree {
             ob_end_clean();
             $this->append('<dt>Mime-Type</dt><dd>'.$oShape->getMimeType().'</dd>');
             $this->append('<dt>Image</dt><dd><img src="data:'.$oShape->getMimeType().';base64,'.base64_encode($sShapeImgContents).'"></dd>');
+            if ($oShape->hasHyperlink()) {
+                $this->append('<dt>Hyperlink URL</dt><dd>'.$oShape->getHyperlink()->getUrl().'</dd>');
+                $this->append('<dt>Hyperlink Tooltip</dt><dd>'.$oShape->getHyperlink()->getTooltip().'</dd>');
+            }
         } elseif($oShape instanceof Drawing\AbstractDrawingAdapter) {
             $this->append('<dt>Name</dt><dd>'.$oShape->getName().'</dd>');
             $this->append('<dt>Description</dt><dd>'.$oShape->getDescription().'</dd>');
@@ -449,7 +453,7 @@ class PhpPptTree {
         $this->append('</dl>');
         $this->append('</div>');
     }
-    
+
     protected function getConstantName($class, $search, $startWith = '') {
         $fooClass = new ReflectionClass($class);
         $constants = $fooClass->getConstants();
