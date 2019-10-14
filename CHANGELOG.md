@@ -11,6 +11,7 @@
 - PhpOffice\PhpPresentation\Style\Color : Define only the transparency - @Progi1984 GH-370
 - PowerPoint2007 Reader : Background Color based on SchemeColor - @Progi1984 GH-397
 - PowerPoint2007 Reader : Support for hyperlinks under pictures - @ulziibuyan
+- PowerPoint2007 Reader : Load images in their initial format (and not by default in PNG) - @polidog GH-553
 
 ### Features
 - ODPresentation Writer : Support for the position of Legend - @Progi1984 GH-355
