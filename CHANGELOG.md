@@ -4,6 +4,7 @@
 
 ### Bugfix
 - PowerPoint2007 : Text is subscripted when set superscript to false - @qmachard GH-360
+- Core : Defining width & height of a shape don't return any error if width & height were equal to 0 - @surger GH-555
 
 ### Changes
 - Dropped support for HHVM - @sunspikes GH-556
