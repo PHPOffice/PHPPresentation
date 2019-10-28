@@ -2,9 +2,10 @@
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptSlideMasters;
-use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
+use PhpOffice\PhpPresentation\Slide\SlideLayout;
+use PhpOffice\PhpPresentation\Slide\SlideMaster;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptSlideMasters;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,6 +18,7 @@ class PptSlideMastersTest extends TestCase
     public function testWriteSlideMasterRelationships()
     {
         $writer = new PptSlideMasters();
+        /** @var \PHPUnit_Framework_MockObject_MockObject|SlideMaster $slideMaster */
         $slideMaster = $this->getMockBuilder('PhpOffice\\PhpPresentation\\Slide\\SlideMaster')
             ->setMethods(array('getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'))
             ->getMock();

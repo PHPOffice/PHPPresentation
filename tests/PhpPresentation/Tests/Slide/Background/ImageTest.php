@@ -12,7 +12,7 @@ class ImageTest extends TestCase
         $object = new Image();
 
         $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
-        $numSlide = rand(1, 100);
+        $numSlide = mt_rand(1, 100);
 
         $this->assertNull($object->getPath());
         $this->assertEmpty($object->getFilename());

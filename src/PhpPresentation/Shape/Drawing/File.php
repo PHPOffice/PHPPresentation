@@ -2,6 +2,8 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
+use PhpOffice\Common\File as CommonFile;
+
 class File extends AbstractDrawingAdapter
 {
     /**
@@ -25,7 +27,7 @@ class File extends AbstractDrawingAdapter
      * @param  string                      $pValue      File path
      * @param  boolean                     $pVerifyFile Verify file
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing
+     * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
      */
     public function setPath($pValue = '', $pVerifyFile = true)
     {
@@ -50,7 +52,7 @@ class File extends AbstractDrawingAdapter
      */
     public function getContents()
     {
-        return file_get_contents($this->getPath());
+        return CommonFile::fileGetContents($this->getPath());
     }
 
 
@@ -68,10 +70,10 @@ class File extends AbstractDrawingAdapter
      */
     public function getMimeType()
     {
-        if (!file_exists($this->getPath())) {
+        if (!CommonFile::fileExists($this->getPath())) {
             throw new \Exception('File '.$this->getPath().' does not exist');
         }
-        $image = getimagesize($this->getPath());
+        $image = getimagesizefromstring(CommonFile::fileGetContents($this->getPath()));
         return image_type_to_mime_type($image[2]);
     }
 

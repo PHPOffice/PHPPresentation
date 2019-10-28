@@ -74,7 +74,7 @@ class BorderTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Border();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -101,7 +101,7 @@ class BorderTest extends TestCase
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth());
         $this->assertEquals(1, $object->getLineWidth());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth($value));
         $this->assertEquals($value, $object->getLineWidth());
     }

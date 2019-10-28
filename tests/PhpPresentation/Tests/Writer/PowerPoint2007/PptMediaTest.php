@@ -21,6 +21,7 @@ class PptMediaTest extends PhpPresentationTestCase
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
 
         $this->assertZipFileExists('ppt/media/' . $oShape->getIndexedFilename());
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -47,6 +48,7 @@ class PptMediaTest extends PhpPresentationTestCase
         $oSlide->addShape($oDrawing);
 
         $this->assertZipFileExists('ppt/media/' . $oDrawing->getIndexedFilename());
+        $this->assertIsSchemaECMA376Valid();
     }
 
     /**
@@ -76,6 +78,7 @@ class PptMediaTest extends PhpPresentationTestCase
         $oSlide->addShape($oShape);
 
         $this->assertZipFileExists('ppt/media/' . $oShape->getIndexedFilename());
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testMemoryDrawing()
@@ -91,5 +94,6 @@ class PptMediaTest extends PhpPresentationTestCase
         $oSlide->addShape($oShape);
 
         $this->assertZipFileExists('ppt/media/' . $oShape->getIndexedFilename());
+        $this->assertIsSchemaECMA376Valid();
     }
 }

@@ -94,7 +94,7 @@ class BulletTest extends TestCase
         $object = new Bullet();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt());
         $this->assertEquals(1, $object->getBulletNumericStartAt());
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt($value));
         $this->assertEquals($value, $object->getBulletNumericStartAt());
     }
@@ -129,7 +129,7 @@ class BulletTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Bullet();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }

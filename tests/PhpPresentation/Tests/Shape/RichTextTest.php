@@ -42,12 +42,12 @@ class RichTextTest extends TestCase
         $this->assertEquals(0, $object->getActiveParagraphIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
         $this->assertCount(2, $object->getParagraphs());
-        $value = rand(0, 1);
+        $value = mt_rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setActiveParagraph($value));
         $this->assertEquals($value, $object->getActiveParagraphIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getActiveParagraph());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph());
-        $value = rand(0, 1);
+        $value = mt_rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
     }
 
@@ -75,7 +75,7 @@ class RichTextTest extends TestCase
     {
         $object = new RichText();
 
-        $value = rand(1, 16);
+        $value = mt_rand(1, 16);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setColumns($value));
         $this->assertEquals($value, $object->getColumns());
     }
@@ -206,7 +206,7 @@ class RichTextTest extends TestCase
         $this->assertEquals(4.8, $object->getInsetTop());
 
         // Value
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setInsetBottom($value));
         $this->assertEquals($value, $object->getInsetBottom());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setInsetLeft($value));

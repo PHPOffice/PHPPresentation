@@ -22,6 +22,7 @@ class PptSlides extends AbstractSlide
     /**
      * Add slides (drawings, ...) and slide relationships (drawings, ...)
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @throws \Exception
      */
     public function render()
     {

@@ -26,6 +26,11 @@ MSDN :
    MSDN <http://msdn.microsoft.com/en-us/library/documentformat.openxml.presentation(v=office.14).aspx>`__
 -  `Open XML SDK 2.5 with Validator <http://www.microsoft.com/en-gb/download/details.aspx?id=30425>`__
 
+Library of Congress :
+
+-  `OOXML Format Family -- ISO/IEC 29500 and ECMA 376 <https://www.loc.gov/preservation/digital/formats/fdd/fdd000395.shtml>`__
+-  `Schemas in W3C XML Schema language and in RELAX NG for the Strict variant of PPTX, etc. <http://standards.iso.org/ittf/PubliclyAvailableStandards/c071691_ISO_IEC_29500-1_2016_Electronic_inserts.zip>`__
+
 OpenDocument
 ---------------------
 

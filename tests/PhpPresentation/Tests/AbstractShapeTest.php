@@ -63,7 +63,7 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setHeight());
         $this->assertEquals(0, $object->getHeight());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setHeight($value));
@@ -88,7 +88,7 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setOffsetX());
         $this->assertEquals(0, $object->getOffsetX());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setOffsetX($value));
@@ -99,7 +99,7 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setOffsetY());
         $this->assertEquals(0, $object->getOffsetY());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setOffsetY($value));
@@ -110,7 +110,7 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setRotation());
         $this->assertEquals(0, $object->getRotation());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setRotation($value));
@@ -131,7 +131,7 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setWidth($value));
@@ -142,7 +142,7 @@ class AbstractShapeTest extends TestCase
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setWidthAndHeight());
         $this->assertEquals(0, $object->getWidth());
         $this->assertEquals(0, $object->getHeight());
