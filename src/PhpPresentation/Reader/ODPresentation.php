@@ -166,8 +166,7 @@ class ODPresentation implements ReaderInterface
             $oElement = $this->oXMLReader->getElement($path);
             if ($oElement instanceof \DOMElement) {
                 if (in_array($property, array('setCreated', 'setModified'))) {
-                    $oDateTime = new \DateTime();
-                    $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
+                    $oDateTime = \DateTime::createFromFormat(\DateTime::W3C, $oElement->nodeValue);
                     $oProperties->{$property}($oDateTime->getTimestamp());
                 } else {
                     $oProperties->{$property}($oElement->nodeValue);
