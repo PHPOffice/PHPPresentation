@@ -1551,15 +1551,11 @@ class PowerPoint97 implements ReaderInterface
                     }
                     $bIsGroup = true;
                     $this->bFirstShapeGroup = true;
-                } else {
-                    if ($childAnchor['length'] > 0) {
-                        $arrayDimensions = $childAnchor;
-                    }
+                } elseif ($childAnchor['length'] > 0) {
+                    $arrayDimensions = $childAnchor;
                 }
-            } else {
-                if ($clientAnchor['length'] > 0) {
-                    $arrayDimensions = $clientAnchor;
-                }
+            } elseif ($clientAnchor['length'] > 0) {
+                $arrayDimensions = $clientAnchor;
             }
             if (!$bIsGroup) {
                 // *** Shape ***
@@ -1711,12 +1707,10 @@ class PowerPoint97 implements ReaderInterface
                         }
                     }
                 }
-            } else {
-                // Rotation
-                if (isset($shpPrimaryOptions['rotation'])) {
-                    $rotation = $shpPrimaryOptions['rotation'];
-                    $this->oCurrentGroup->setRotation($rotation);
-                }
+            // Rotation
+            } elseif (isset($shpPrimaryOptions['rotation'])) {
+                $rotation = $shpPrimaryOptions['rotation'];
+                $this->oCurrentGroup->setRotation($rotation);
             }
         }
 

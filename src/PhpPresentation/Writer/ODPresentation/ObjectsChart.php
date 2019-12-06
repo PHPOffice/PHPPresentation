@@ -681,10 +681,8 @@ class ObjectsChart extends AbstractDecoratorWriter
             } else {
                 $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
             }
-        } else {
-            if ($series->hasShowPercentage()) {
-                $this->xmlContent->writeAttribute('chart:data-label-number', 'percentage');
-            }
+        } elseif ($series->hasShowPercentage()) {
+            $this->xmlContent->writeAttribute('chart:data-label-number', 'percentage');
         }
         if ($series->hasShowCategoryName()) {
             $this->xmlContent->writeAttribute('chart:data-label-text', 'true');
