@@ -505,7 +505,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param  bool $bIsPlaceholder
      * @throws \Exception
      */
-    protected function writeParagraphs(XMLWriter $objWriter, $paragraphs, $bIsPlaceholder = false)
+    protected function writeParagraphs(XMLWriter $objWriter, array $paragraphs, $bIsPlaceholder = false)
     {
         // Loop trough paragraphs
         foreach ($paragraphs as $paragraph) {
@@ -717,19 +717,15 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Shadow $oShadow
      */
-    protected function writeShadow(XMLWriter $objWriter, $oShadow)
+    protected function writeShadow(XMLWriter $objWriter, Shadow $oShadow)
     {
-        if (!($oShadow instanceof Shadow)) {
-            return;
-        }
-
         if (!$oShadow->isVisible()) {
             return;
         }
-
+        
         // a:effectLst
         $objWriter->startElement('a:effectLst');
-
+        
         // a:outerShdw
         $objWriter->startElement('a:outerShdw');
         $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
@@ -737,11 +733,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($oShadow->getDirection()));
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
-
+        
         $this->writeColor($objWriter, $oShadow->getColor(), $oShadow->getAlpha());
-
+        
         $objWriter->endElement();
-
+        
         $objWriter->endElement();
     }
 

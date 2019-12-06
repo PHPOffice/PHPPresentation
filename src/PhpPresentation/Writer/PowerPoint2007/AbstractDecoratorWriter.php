@@ -51,12 +51,8 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param  string                         $pElementName Element name
      * @throws \Exception
      */
-    protected function writeBorder(XMLWriter $objWriter, $pBorder, $pElementName = 'L')
+    protected function writeBorder(XMLWriter $objWriter, Border $pBorder, $pElementName = 'L')
     {
-        if (!($pBorder instanceof Border)) {
-            return;
-        }
-
         if ($pBorder->getLineStyle() == Border::LINE_NONE && $pElementName == '') {
             return;
         }
@@ -143,12 +139,8 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
-    protected function writeFill(XMLWriter $objWriter, $pFill)
+    protected function writeFill(XMLWriter $objWriter, Fill $pFill)
     {
-        if (! $pFill instanceof Fill) {
-            return;
-        }
-
         // Is it a fill?
         if ($pFill->getFillType() == Fill::FILL_NONE) {
             $objWriter->writeElement('a:noFill');
@@ -258,11 +250,8 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param Outline $oOutline
      * @throws \Exception
      */
-    protected function writeOutline(XMLWriter $objWriter, $oOutline)
+    protected function writeOutline(XMLWriter $objWriter, Outline $oOutline)
     {
-        if (!$oOutline instanceof Outline) {
-            return;
-        }
         // Width : pts
         $width = $oOutline->getWidth();
         // Width : pts => px
