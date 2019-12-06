@@ -737,7 +737,7 @@ class PptSlides extends AbstractSlide
             $objWriter->startElement('p:bldP');
             $objWriter->writeAttribute('spid', $id);
             $objWriter->writeAttribute('grpId', 0);
-            $objWriter->endELement();
+            $objWriter->endElement();
         }
 
         // p:timing\##p:bldLst

@@ -656,9 +656,9 @@ class Content extends AbstractDecoratorWriter
                         // table:table-cell
                         $objWriter->startElement('table:table-cell');
                         $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
-                        if ($shapeCell->getColspan() > 1) {
-                            $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
-                            $numColspan = $shapeCell->getColspan() - 1;
+                        if ($shapeCell->getColSpan() > 1) {
+                            $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColSpan());
+                            $numColspan = $shapeCell->getColSpan() - 1;
                         }
 
                         // text:p
