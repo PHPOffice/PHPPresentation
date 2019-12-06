@@ -94,7 +94,7 @@ class PowerPoint2007 implements ReaderInterface
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
         }
 
         $oZip = new ZipArchive();
@@ -120,7 +120,7 @@ class PowerPoint2007 implements ReaderInterface
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007: " . $pFilename . '.');
         }
 
         return $this->loadFile($pFilename);

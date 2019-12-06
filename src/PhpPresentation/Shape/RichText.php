@@ -201,7 +201,7 @@ class RichText extends AbstractShape implements ComparableInterface
     public function setActiveParagraph($index = 0)
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception("Invalid paragraph count.");
+            throw new \Exception('Invalid paragraph count.');
         }
 
         $this->activeParagraph = $index;
@@ -219,7 +219,7 @@ class RichText extends AbstractShape implements ComparableInterface
     public function getParagraph($index = 0)
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception("Invalid paragraph count.");
+            throw new \Exception('Invalid paragraph count.');
         }
 
         return $this->richTextParagraphs[$index];

@@ -48,7 +48,7 @@ abstract class AbstractWriter
     public function getPhpPresentation()
     {
         if (empty($this->oPresentation)) {
-            throw new \Exception("No PhpPresentation assigned.");
+            throw new \Exception('No PhpPresentation assigned.');
         }
         return $this->oPresentation;
     }

@@ -387,7 +387,7 @@ class PowerPoint97 implements ReaderInterface
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
         }
 
         try {
@@ -412,7 +412,7 @@ class PowerPoint97 implements ReaderInterface
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97: " . $pFilename . '.');
         }
 
         return $this->loadFile($pFilename);

@@ -24,7 +24,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     protected function writeRelationship(XMLWriter $objWriter, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
     {
         if ($pType == '' || $pTarget == '') {
-            throw new \Exception("Invalid parameters passed.");
+            throw new \Exception('Invalid parameters passed.');
         }
         if (strpos($pId, 'rId') === false) {
             $pId = 'rId' . $pId;

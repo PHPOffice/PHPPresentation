@@ -151,7 +151,7 @@ class ContentTypes extends AbstractDecoratorWriter
     private function writeDefaultContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
     {
         if ($pPartname == '' || $pContentType == '') {
-            throw new \Exception("Invalid parameters passed.");
+            throw new \Exception('Invalid parameters passed.');
         }
         // Write content type
         $objWriter->startElement('Default');
@@ -171,7 +171,7 @@ class ContentTypes extends AbstractDecoratorWriter
     private function writeOverrideContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
     {
         if ($pPartname == '' || $pContentType == '') {
-            throw new \Exception("Invalid parameters passed.");
+            throw new \Exception('Invalid parameters passed.');
         }
         // Write content type
         $objWriter->startElement('Override');

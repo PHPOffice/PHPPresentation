@@ -82,7 +82,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     public function save($pFilename)
     {
         if (empty($pFilename)) {
-            throw new \Exception("Filename is empty");
+            throw new \Exception('Filename is empty');
         }
         $oPresentation = $this->getPhpPresentation();
 

@@ -77,7 +77,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     public function save($pFilename)
     {
         if (empty($pFilename)) {
-            throw new \Exception("Filename is empty");
+            throw new \Exception('Filename is empty');
         }
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;

@@ -63,7 +63,7 @@ class CommentAuthors extends AbstractDecoratorWriter
             $objWriter->writeAttribute('id', $oAuthor->getIndex());
             $objWriter->writeAttribute('name', $oAuthor->getName());
             $objWriter->writeAttribute('initials', $oAuthor->getInitials());
-            $objWriter->writeAttribute('lastIdx', "2");
+            $objWriter->writeAttribute('lastIdx', '2');
             $objWriter->writeAttribute('clrIdx', 0);
             $objWriter->endElement();
         }

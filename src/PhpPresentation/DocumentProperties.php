@@ -102,7 +102,7 @@ class DocumentProperties
         $this->lastModifiedBy = $this->creator;
         $this->created        = time();
         $this->modified       = time();
-        $this->title          = "Untitled Presentation";
+        $this->title          = 'Untitled Presentation';
         $this->subject        = '';
         $this->description    = '';
         $this->keywords       = '';

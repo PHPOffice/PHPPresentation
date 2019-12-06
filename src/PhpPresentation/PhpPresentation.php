@@ -223,7 +223,7 @@ class PhpPresentation
     public function removeSlideByIndex($index = 0)
     {
         if ($index > count($this->slideCollection) - 1) {
-            throw new \Exception("Slide index is out of bounds.");
+            throw new \Exception('Slide index is out of bounds.');
         }
         array_splice($this->slideCollection, $index, 1);
 
@@ -240,7 +240,7 @@ class PhpPresentation
     public function getSlide($index = 0)
     {
         if ($index > count($this->slideCollection) - 1) {
-            throw new \Exception("Slide index is out of bounds.");
+            throw new \Exception('Slide index is out of bounds.');
         }
         return $this->slideCollection[$index];
     }
@@ -304,7 +304,7 @@ class PhpPresentation
     public function setActiveSlideIndex($index = 0)
     {
         if ($index > count($this->slideCollection) - 1) {
-            throw new \Exception("Active slide index is out of bounds.");
+            throw new \Exception('Active slide index is out of bounds.');
         }
         $this->activeSlideIndex = $index;
 
