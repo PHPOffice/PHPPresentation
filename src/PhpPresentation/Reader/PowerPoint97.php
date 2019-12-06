@@ -1680,7 +1680,7 @@ class PowerPoint97 implements ReaderInterface
                     if (isset($shpPrimaryOptions['shadowOffsetX']) && isset($shpPrimaryOptions['shadowOffsetY'])) {
                         $shadowOffsetX = $shpPrimaryOptions['shadowOffsetX'];
                         $shadowOffsetY = $shpPrimaryOptions['shadowOffsetY'];
-                        if ($shadowOffsetX != 0 && $shadowOffsetX != 0) {
+                        if ($shadowOffsetX != 0 && $shadowOffsetY != 0) {
                             $arrayReturn['shape']->getShadow()->setVisible(true);
                             if ($shadowOffsetX > 0 && $shadowOffsetX == $shadowOffsetY) {
                                 $arrayReturn['shape']->getShadow()->setDistance($shadowOffsetX)->setDirection(45);
