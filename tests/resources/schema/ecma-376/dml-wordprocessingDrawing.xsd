@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing">
-  <xsd:import schemaLocation="dml-graphicalObject.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
-  <xsd:import schemaLocation="dml-documentProperties.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
+  <xsd:import schemaLocation="dml-main.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
   <xsd:complexType name="CT_EffectExtent">
     <xsd:attribute name="l" type="a:ST_Coordinate" use="required">
       <xsd:annotation>
