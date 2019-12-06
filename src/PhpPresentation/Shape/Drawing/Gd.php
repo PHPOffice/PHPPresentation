@@ -66,7 +66,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Set image resource
      *
-     * @param $value resource
+     * @param resource $value
      * @return $this
      */
     public function setImageResource($value = null)

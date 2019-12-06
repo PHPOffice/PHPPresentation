@@ -374,7 +374,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set text wrapping
      *
-     * @param $value string
+     * @param string $value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setWrap($value = self::WRAP_SQUARE)
@@ -417,9 +417,9 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set autofit
      *
-     * @param $value string
-     * @param $fontScale float
-     * @param $lnSpcReduction float
+     * @param string $value
+     * @param float $fontScale
+     * @param float $lnSpcReduction
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setAutoFit($value = self::AUTOFIT_DEFAULT, $fontScale = null, $lnSpcReduction = null)
@@ -450,7 +450,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set horizontal overflow
      *
-     * @param $value string
+     * @param string $value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setHorizontalOverflow($value = self::OVERFLOW_OVERFLOW)
@@ -473,7 +473,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set vertical overflow
      *
-     * @param $value string
+     * @param string $value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setVerticalOverflow($value = self::OVERFLOW_OVERFLOW)
@@ -496,7 +496,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set vertical
      *
-     * @param $value boolean
+     * @param boolean $value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setUpright($value = false)
@@ -519,7 +519,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set vertical
      *
-     * @param $value boolean
+     * @param boolean $value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setVertical($value = false)
@@ -542,9 +542,9 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set columns
      *
-     * @param $value int
-     * @throws \Exception
+     * @param int $value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
+     *@throws \Exception
      */
     public function setColumns($value = 1)
     {
@@ -570,7 +570,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set bottom inset
      *
-     * @param $value float
+     * @param float$value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setInsetBottom($value = 4.8)
@@ -593,7 +593,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set left inset
      *
-     * @param $value float
+     * @param float$value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setInsetLeft($value = 9.6)
@@ -616,7 +616,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set left inset
      *
-     * @param $value float
+     * @param float$value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setInsetRight($value = 9.6)
@@ -639,7 +639,7 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set top inset
      *
-     * @param $value float
+     * @param float$value
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setInsetTop($value = 4.8)

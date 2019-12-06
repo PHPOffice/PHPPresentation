@@ -164,7 +164,7 @@ class PptSlideMasters extends AbstractSlide
         // p:sldMaster\p:sldLayoutIdLst
         $objWriter->startElement('p:sldLayoutIdLst');
         foreach ($pSlide->getAllSlideLayouts() as $layout) {
-            /* @var $layout Slide\SlideLayout */
+            /* @var Slide\SlideLayout $layout */
             $objWriter->startElement('p:sldLayoutId');
             $objWriter->writeAttribute('id', $layout->layoutId);
             $objWriter->writeAttribute('r:id', $layout->relationId);
