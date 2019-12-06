@@ -121,11 +121,11 @@ class FontTest extends TestCase
     {
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline());
-        $this->assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
+        $this->assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(''));
-        $this->assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(FONT::UNDERLINE_DASH));
-        $this->assertEquals(FONT::UNDERLINE_DASH, $object->getUnderline());
+        $this->assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(Font::UNDERLINE_DASH));
+        $this->assertEquals(Font::UNDERLINE_DASH, $object->getUnderline());
     }
 
     /**

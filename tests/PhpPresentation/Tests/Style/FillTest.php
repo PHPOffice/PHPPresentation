@@ -50,9 +50,9 @@ class FillTest extends TestCase
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setEndColor());
         $this->assertNull($object->getEndColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setEndColor(new Color(COLOR::COLOR_BLUE)));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setEndColor(new Color(Color::COLOR_BLUE)));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getEndColor());
-        $this->assertEquals(COLOR::COLOR_BLUE, $object->getEndColor()->getARGB());
+        $this->assertEquals(Color::COLOR_BLUE, $object->getEndColor()->getARGB());
     }
 
     /**
@@ -88,9 +88,9 @@ class FillTest extends TestCase
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setStartColor());
         $this->assertNull($object->getStartColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setStartColor(new Color(COLOR::COLOR_BLUE)));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setStartColor(new Color(Color::COLOR_BLUE)));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getStartColor());
-        $this->assertEquals(COLOR::COLOR_BLUE, $object->getStartColor()->getARGB());
+        $this->assertEquals(Color::COLOR_BLUE, $object->getStartColor()->getARGB());
     }
 
     /**

@@ -34,7 +34,7 @@ class ColorTest extends TestCase
     {
         $object = new Color();
         $this->assertEquals(Color::COLOR_BLACK, $object->getARGB());
-        $object = new Color(COLOR::COLOR_BLUE);
+        $object = new Color(Color::COLOR_BLUE);
         $this->assertEquals(Color::COLOR_BLUE, $object->getARGB());
     }
 

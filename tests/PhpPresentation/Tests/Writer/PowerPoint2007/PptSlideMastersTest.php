@@ -41,7 +41,7 @@ class PptSlideMastersTest extends TestCase
         $data = $writer->writeSlideMasterRelationships($slideMaster);
 
         $dom = new \DomDocument();
-        $dom->loadXml($data);
+        $dom->loadXML($data);
 
         $xpath = new \DomXpath($dom);
         $xpath->registerNamespace('r', 'http://schemas.openxmlformats.org/package/2006/relationships');

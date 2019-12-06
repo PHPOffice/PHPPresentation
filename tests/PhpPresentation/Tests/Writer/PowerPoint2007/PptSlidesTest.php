@@ -575,7 +575,7 @@ class PptSlideTest extends PhpPresentationTestCase
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
-        $oRichText->getHyperLink()->setUrl('http://www.google.fr');
+        $oRichText->getHyperlink()->setUrl('http://www.google.fr');
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp//a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);

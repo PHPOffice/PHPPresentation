@@ -49,7 +49,7 @@ class BorderTest extends TestCase
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setColor());
         $this->assertNull($object->getColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setColor(new Color(COLOR::COLOR_BLUE)));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setColor(new Color(Color::COLOR_BLUE)));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
         $this->assertEquals('FF0000FF', $object->getColor()->getARGB());
     }
@@ -64,7 +64,7 @@ class BorderTest extends TestCase
         $this->assertEquals(Border::DASH_SOLID, $object->getDashStyle());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle(''));
         $this->assertEquals(Border::DASH_SOLID, $object->getDashStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle(BORDER::DASH_DASH));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle(Border::DASH_DASH));
         $this->assertEquals(Border::DASH_DASH, $object->getDashStyle());
     }
 
@@ -89,7 +89,7 @@ class BorderTest extends TestCase
         $this->assertEquals(Border::LINE_SINGLE, $object->getLineStyle());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle(''));
         $this->assertEquals(Border::LINE_SINGLE, $object->getLineStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle(BORDER::LINE_DOUBLE));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle(Border::LINE_DOUBLE));
         $this->assertEquals(Border::LINE_DOUBLE, $object->getLineStyle());
     }
 
