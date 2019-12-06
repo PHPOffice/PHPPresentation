@@ -152,7 +152,7 @@ abstract class AbstractType implements ComparableInterface
      * @param array $value
      * @return AbstractType
      */
-    public function setData($value = array())
+    public function setData(array $value = array())
     {
         return $this->setSeries($value);
     }

@@ -164,7 +164,7 @@ class TemplateBased extends AbstractLayoutPack
      * @param array $secondSlide
      * @return int
      */
-    public static function cmpMaster($firstSlide, $secondSlide)
+    public static function cmpMaster(array $firstSlide, array $secondSlide)
     {
         if ($firstSlide['masterid'] == $secondSlide['masterid']) {
             return 0;

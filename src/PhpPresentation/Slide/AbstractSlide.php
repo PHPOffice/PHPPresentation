@@ -27,7 +27,6 @@ use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
-use PhpOffice\PhpPresentation\Slide;
 
 abstract class AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
@@ -112,7 +111,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * @param array $shapeCollection
      * @return AbstractSlide
      */
-    public function setShapeCollection($shapeCollection = array())
+    public function setShapeCollection(array $shapeCollection = array())
     {
         $this->shapeCollection = $shapeCollection;
         return $this;

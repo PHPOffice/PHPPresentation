@@ -144,7 +144,7 @@ class Series implements ComparableInterface
      * @param string $title  Title
      * @param array  $values Values
      */
-    public function __construct($title = 'Series Title', $values = array())
+    public function __construct($title = 'Series Title', array $values = array())
     {
         $this->fill = new Fill();
         $this->font = new Font();
