@@ -88,7 +88,7 @@ abstract class AbstractWriter
     /**
      * Get an array of all drawings
      *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
+     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic[] All drawings in PhpPresentation
      * @throws \Exception
      */
     protected function allDrawings()
