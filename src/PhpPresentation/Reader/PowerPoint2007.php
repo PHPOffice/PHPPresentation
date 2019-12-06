@@ -1292,7 +1292,7 @@ class PowerPoint2007 implements ReaderInterface
      * @throws \Exception
      * @internal param $baseFile
      */
-    protected function loadSlideShapes($oSlide, $oElements, $xmlReader)
+    protected function loadSlideShapes($oSlide, $oElements, XMLReader $xmlReader)
     {
         foreach ($oElements as $oNode) {
             switch ($oNode->tagName) {

@@ -56,7 +56,7 @@ class HashTable
      * @param  \PhpOffice\PhpPresentation\ComparableInterface[] $pSource Source array to create HashTable from
      * @throws \Exception
      */
-    public function addFromSource($pSource = null)
+    public function addFromSource(array $pSource = null)
     {
         // Check if an array was passed
         if ($pSource == null) {

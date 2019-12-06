@@ -98,7 +98,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         $arrayChart = array();
 
         $arrayFiles = array();
-        $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation');
+        $oDir = new DirectoryIterator(__DIR__ .DIRECTORY_SEPARATOR.'ODPresentation');
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;

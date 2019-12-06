@@ -108,7 +108,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     /**
      * Get collection of shapes
      *
-     * @param array $shapeCollection
+     * @param \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[] $shapeCollection
      * @return AbstractSlide
      */
     public function setShapeCollection(array $shapeCollection = array())

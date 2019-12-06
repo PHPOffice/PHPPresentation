@@ -207,7 +207,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @return string                    String output
      * @throws \Exception
      */
-    public function writeSpreadsheet(PhpPresentation $presentation, $chart, $tempName)
+    public function writeSpreadsheet(PhpPresentation $presentation, Chart $chart, $tempName)
     {
         // Need output?
         if (!$chart->hasIncludedSpreadsheet()) {
@@ -276,7 +276,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param string $elementName
      * @param string $value
      */
-    protected function writeElementWithValAttribute($objWriter, $elementName, $value)
+    protected function writeElementWithValAttribute(XMLWriter $objWriter, $elementName, $value)
     {
         $objWriter->startElement($elementName);
         $objWriter->writeAttribute('val', $value);
@@ -291,7 +291,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param mixed $value
      * @param string $reference
      */
-    protected function writeSingleValueOrReference($objWriter, $isReference, $value, $reference)
+    protected function writeSingleValueOrReference(XMLWriter $objWriter, $isReference, $value, $reference)
     {
         if (!$isReference) {
             // Value
@@ -323,7 +323,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param mixed $values
      * @param string $reference
      */
-    protected function writeMultipleValuesOrReference($objWriter, $isReference, $values, $reference)
+    protected function writeMultipleValuesOrReference(XMLWriter $objWriter, $isReference, $values, $reference)
     {
         // c:strLit / c:numLit
         // c:strRef / c:numRef

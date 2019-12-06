@@ -101,7 +101,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         $oZip = $this->getZipAdapter();
         $oZip->open($pFilename);
 
-        $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'PowerPoint2007');
+        $oDir = new DirectoryIterator(__DIR__ .DIRECTORY_SEPARATOR.'PowerPoint2007');
         $arrayFiles = array();
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {

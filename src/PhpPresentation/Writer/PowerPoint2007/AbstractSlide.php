@@ -46,12 +46,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 {
     /**
      * @param AbstractSlideAlias $pSlideMaster
-     * @param $objWriter
-     * @param $relId
+     * @param XMLWriter $objWriter
+     * @param int $relId
      * @return mixed
      * @throws \Exception
      */
-    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, $objWriter, $relId)
+    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, XMLWriter $objWriter, $relId)
     {
         if ($pSlideMaster->getShapeCollection()->count() > 0) {
             // Loop trough images and write relationships
@@ -1345,7 +1345,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Slide\Transition $transition
      */
-    protected function writeSlideTransition(XMLWriter $objWriter, $transition)
+    protected function writeSlideTransition(XMLWriter $objWriter, Slide\Transition $transition)
     {
         if (!$transition instanceof Slide\Transition) {
             return;

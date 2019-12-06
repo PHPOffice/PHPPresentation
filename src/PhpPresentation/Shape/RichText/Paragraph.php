@@ -257,7 +257,7 @@ class Paragraph implements ComparableInterface
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
      */
-    public function setRichTextElements($pElements = null)
+    public function setRichTextElements(array $pElements = null)
     {
         if (!is_array($pElements)) {
             throw new \Exception("Invalid \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface[] array passed.");

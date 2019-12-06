@@ -8,6 +8,7 @@ use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
@@ -227,6 +228,7 @@ class PptSlides extends AbstractSlide
                         // Hyperlink on shape
                         if ($iterator2->current()->hasHyperlink()) {
                             // Write relationship for hyperlink
+                            /** @var Hyperlink $hyperlink */
                             $hyperlink             = $iterator2->current()->getHyperlink();
                             $hyperlink->relationId = 'rId' . $relId;
 

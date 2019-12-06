@@ -1326,7 +1326,7 @@ class Content extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Fill $oFill
      */
-    protected function writeStylePartFill(XMLWriter $objWriter, $oFill)
+    protected function writeStylePartFill(XMLWriter $objWriter, Fill $oFill)
     {
         if (!($oFill instanceof Fill)) {
             return;

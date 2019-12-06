@@ -273,7 +273,7 @@ class Series implements ComparableInterface
      * @param  array                            $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
      */
-    public function setValues($value = array())
+    public function setValues(array $value = array())
     {
         $this->values = $value;
 

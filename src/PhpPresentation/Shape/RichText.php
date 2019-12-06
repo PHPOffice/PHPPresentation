@@ -350,7 +350,7 @@ class RichText extends AbstractShape implements ComparableInterface
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
-    public function setParagraphs($paragraphs = null)
+    public function setParagraphs(array $paragraphs = null)
     {
         if (!is_array($paragraphs)) {
             throw new \Exception("Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.");
