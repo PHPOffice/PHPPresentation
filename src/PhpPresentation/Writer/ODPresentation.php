@@ -17,12 +17,11 @@
 
 namespace PhpOffice\PhpPresentation\Writer;
 
+use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
-use PhpOffice\PhpPresentation\Shape\Table;
-use DirectoryIterator;
 
 /**
  * ODPresentation writer

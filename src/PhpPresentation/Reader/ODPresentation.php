@@ -17,20 +17,20 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
-use ZipArchive;
-use PhpOffice\Common\XMLReader;
 use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
+use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
-use PhpOffice\PhpPresentation\Style\Alignment;
+use ZipArchive;
 
 /**
  * Serialized format reader

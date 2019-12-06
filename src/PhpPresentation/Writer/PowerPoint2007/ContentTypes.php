@@ -17,11 +17,9 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
-use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
-use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\ContentTypes

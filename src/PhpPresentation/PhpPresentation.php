@@ -17,7 +17,6 @@
 
 namespace PhpOffice\PhpPresentation;
 
-use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Iterator;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 
