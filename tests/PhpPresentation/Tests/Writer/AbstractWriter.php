@@ -28,7 +28,7 @@ class AbstractWriter extends Writer\AbstractWriter
     /**
      * public wrapper for protected method
      *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
+     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic[] All drawings in PhpPresentation
      * @throws \Exception
      */
     public function allDrawings()
