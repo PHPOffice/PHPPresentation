@@ -24,7 +24,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
  *
  * Used to iterate slides in PhpPresentation
  */
-class Iterator extends \IteratorIterator
+class Iterator implements \Iterator
 {
     /**
      * Presentation to iterate
