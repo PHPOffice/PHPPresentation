@@ -15,13 +15,13 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * Write relationship
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter   XML Writer
-     * @param  int                            $pId         Relationship ID. rId will be prepended!
+     * @param  string                         $pId         Relationship ID. rId will be prepended!
      * @param  string                         $pType       Relationship type
      * @param  string                         $pTarget     Relationship target
      * @param  string                         $pTargetMode Relationship target mode
      * @throws \Exception
      */
-    protected function writeRelationship(XMLWriter $objWriter, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
+    protected function writeRelationship(XMLWriter $objWriter, $pId = '1', $pType = '', $pTarget = '', $pTargetMode = '')
     {
         if ($pType == '' || $pTarget == '') {
             throw new \Exception('Invalid parameters passed.');
