@@ -14,12 +14,12 @@ class SchemeColorTest extends TestCase
 
         $object = new SchemeColor();
 
-        $this->assertNull($object->getSchemeColor());
+        static::assertNull($object->getSchemeColor());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\SchemeColor', $object->setSchemeColor($oStyle));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\SchemeColor', $object->getSchemeColor());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\SchemeColor', $object->setSchemeColor($oStyle));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\SchemeColor', $object->getSchemeColor());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\SchemeColor', $object->setSchemeColor());
-        $this->assertNull($object->getSchemeColor());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\SchemeColor', $object->setSchemeColor());
+        static::assertNull($object->getSchemeColor());
     }
 }

@@ -137,7 +137,7 @@ class CellTest extends TestCase
     public function testParagraphsException()
     {
         $object = new Cell();
-        $object->setParagraphs(1000);
+        $object->setParagraphs(null);
     }
 
     public function testGetSetBorders()

@@ -14,22 +14,22 @@ class ImageTest extends TestCase
         $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
         $numSlide = mt_rand(1, 100);
 
-        $this->assertNull($object->getPath());
-        $this->assertEmpty($object->getFilename());
-        $this->assertEmpty($object->getExtension());
-        $this->assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
+        static::assertNull($object->getPath());
+        static::assertEmpty($object->getFilename());
+        static::assertEmpty($object->getExtension());
+        static::assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Image', $object->setPath($imagePath));
-        $this->assertEquals($imagePath, $object->getPath());
-        $this->assertEquals('PhpPresentationLogo.png', $object->getFilename());
-        $this->assertEquals('png', $object->getExtension());
-        $this->assertEquals('background_' . $numSlide . '.png', $object->getIndexedFilename($numSlide));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Image', $object->setPath($imagePath));
+        static::assertEquals($imagePath, $object->getPath());
+        static::assertEquals('PhpPresentationLogo.png', $object->getFilename());
+        static::assertEquals('png', $object->getExtension());
+        static::assertEquals('background_' . $numSlide . '.png', $object->getIndexedFilename($numSlide));
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Image', $object->setPath(null, false));
-        $this->assertNull($object->getPath());
-        $this->assertEmpty($object->getFilename());
-        $this->assertEmpty($object->getExtension());
-        $this->assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Image', $object->setPath(null, false));
+        static::assertNull($object->getPath());
+        static::assertEmpty($object->getFilename());
+        static::assertEmpty($object->getExtension());
+        static::assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
     }
 
     /**

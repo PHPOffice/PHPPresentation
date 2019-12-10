@@ -32,9 +32,9 @@ class SlideLayoutTest extends TestCase
         $mockSlideMaster = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\SlideMaster');
 
         $object = new SlideLayout($mockSlideMaster);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
-        $this->assertInstanceOf('\\ArrayObject', $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
+        static::assertInstanceOf('\\ArrayObject', $object->getShapeCollection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
     }
 
     public function testLayoutName()
@@ -47,9 +47,9 @@ class SlideLayoutTest extends TestCase
 
         $object = new SlideLayout($mockSlideMaster);
 
-        $this->assertNull($object->getLayoutName());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideLayout', $object->setLayoutName($expectedLayoutName));
-        $this->assertEquals($expectedLayoutName, $object->getLayoutName());
+        static::assertNull($object->getLayoutName());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideLayout', $object->setLayoutName($expectedLayoutName));
+        static::assertEquals($expectedLayoutName, $object->getLayoutName());
     }
 
     public function testSlideMaster()
@@ -59,6 +59,6 @@ class SlideLayoutTest extends TestCase
 
         $object = new SlideLayout($mockSlideMaster);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->getSlideMaster());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->getSlideMaster());
     }
 }

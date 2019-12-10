@@ -121,15 +121,4 @@ class HashTableTest extends TestCase
         $this->assertNull($object->remove($oSlide3));
         $this->assertCount(1, $object->toArray());
     }
-
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid array parameter passed.
-     */
-    public function testAddException()
-    {
-        $object = new HashTable();
-        $oSlide = new Slide();
-        $object->addFromSource($oSlide);
-    }
 }

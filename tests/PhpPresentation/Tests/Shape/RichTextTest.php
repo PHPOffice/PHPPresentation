@@ -112,7 +112,7 @@ class RichTextTest extends TestCase
     public function testParagraphsException()
     {
         $object = new RichText();
-        $object->setParagraphs(1000);
+        $object->setParagraphs(null);
     }
 
     public function testText()

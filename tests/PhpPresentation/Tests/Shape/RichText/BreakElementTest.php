@@ -33,25 +33,25 @@ class BreakElementTest extends TestCase
     public function testText()
     {
         $object = new BreakElement();
-        $this->assertEquals("\r\n", $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setText());
-        $this->assertEquals("\r\n", $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setText('AAA'));
-        $this->assertEquals("\r\n", $object->getText());
+        static::assertEquals("\r\n", $object->getText());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setText());
+        static::assertEquals("\r\n", $object->getText());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setText('AAA'));
+        static::assertEquals("\r\n", $object->getText());
     }
 
     public function testFont()
     {
         $object = new BreakElement();
-        $this->assertNull($object->getFont());
+        static::assertNull($object->getFont());
     }
 
     public function testLanguage()
     {
         $object = new BreakElement();
-        $this->assertNull($object->getLanguage());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setLanguage('en-US'));
-        $this->assertNull($object->getLanguage());
+        static::assertNull($object->getLanguage());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setLanguage('en-US'));
+        static::assertNull($object->getLanguage());
     }
 
     /**
@@ -60,6 +60,6 @@ class BreakElementTest extends TestCase
     public function testHashCode()
     {
         $object = new BreakElement();
-        $this->assertEquals(md5(get_class($object)), $object->getHashCode());
+        static::assertEquals(md5(get_class($object)), $object->getHashCode());
     }
 }

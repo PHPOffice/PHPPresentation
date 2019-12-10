@@ -383,22 +383,18 @@ class ContentTest extends PhpPresentationTestCase
             // X
             if ($inc == 90 || $inc == 270) {
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '0cm');
-            } else {
-                if ($inc > 90 && $inc < 270) {
+            } elseif ($inc > 90 && $inc < 270) {
                     $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
-                } else {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', Drawing::pixelsToCentimeters($randDistance) . 'cm');
-                }
+            } else {
+                $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', Drawing::pixelsToCentimeters($randDistance) . 'cm');
             }
             // Y
             if ($inc == 0 || $inc == 180 || $inc == 360) {
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '0cm');
-            } else {
-                if (($inc > 0 && $inc < 180) || $inc == 360) {
+            } elseif (($inc > 0 && $inc < 180) || $inc == 360) {
                     $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', Drawing::pixelsToCentimeters($randDistance) . 'cm');
-                } else {
+            } else {
                     $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
-                }
             }
             $this->assertIsSchemaOpenDocumentValid('1.2');
             $this->resetPresentationFile();

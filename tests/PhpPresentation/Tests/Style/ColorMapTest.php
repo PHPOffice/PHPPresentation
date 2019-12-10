@@ -25,28 +25,28 @@ class ColorMapTest extends TestCase
     public function testConstruct()
     {
         $object = new ColorMap();
-        $this->assertInternalType('array', $object->getMapping());
-        $this->assertEquals(ColorMap::$mappingDefault, $object->getMapping());
+        static::assertInternalType('array', $object->getMapping());
+        static::assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
     public function testMapping()
     {
         $object = new ColorMap();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping(array()));
-        $this->assertInternalType('array', $object->getMapping());
-        $this->assertCount(0, $object->getMapping());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping(array()));
+        static::assertInternalType('array', $object->getMapping());
+        static::assertCount(0, $object->getMapping());
         $array = ColorMap::$mappingDefault;
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping($array));
-        $this->assertInternalType('array', $object->getMapping());
-        $this->assertEquals(ColorMap::$mappingDefault, $object->getMapping());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping($array));
+        static::assertInternalType('array', $object->getMapping());
+        static::assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
     public function testModifier()
     {
         $object = new ColorMap();
         $key = array_rand(ColorMap::$mappingDefault);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->changeColor($key, 'AlphaBeta'));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->changeColor($key, 'AlphaBeta'));
         $array = $object->getMapping();
-        $this->assertEquals('AlphaBeta', $array[$key]);
+        static::assertEquals('AlphaBeta', $array[$key]);
     }
 }

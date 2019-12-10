@@ -34,17 +34,17 @@ class FontTest extends TestCase
     public function testConstruct()
     {
         $object = new Font();
-        $this->assertEquals('Calibri', $object->getName());
-        $this->assertEquals(10, $object->getSize());
-        $this->assertFalse($object->isBold());
-        $this->assertFalse($object->isItalic());
-        $this->assertFalse($object->isSuperScript());
-        $this->assertFalse($object->isSubScript());
-        $this->assertFalse($object->isStrikethrough());
-        $this->assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+        static::assertEquals('Calibri', $object->getName());
+        static::assertEquals(10, $object->getSize());
+        static::assertFalse($object->isBold());
+        static::assertFalse($object->isItalic());
+        static::assertFalse($object->isSuperScript());
+        static::assertFalse($object->isSubScript());
+        static::assertFalse($object->isStrikethrough());
+        static::assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
+        static::assertEquals(0, $object->getCharacterSpacing());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        static::assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
     }
 
     /**
@@ -55,7 +55,7 @@ class FontTest extends TestCase
     public function testSetGetColorException()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor());
     }
 
     /**
@@ -64,13 +64,13 @@ class FontTest extends TestCase
     public function testSetGetCharacterSpacing()
     {
         $object = new Font();
-        $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(0));
-        $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(10));
-        $this->assertEquals(1000, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing());
-        $this->assertEquals(0, $object->getCharacterSpacing());
+        static::assertEquals(0, $object->getCharacterSpacing());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(0));
+        static::assertEquals(0, $object->getCharacterSpacing());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(10));
+        static::assertEquals(1000, $object->getCharacterSpacing());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing());
+        static::assertEquals(0, $object->getCharacterSpacing());
     }
 
     /**
@@ -79,10 +79,10 @@ class FontTest extends TestCase
     public function testSetGetColor()
     {
         $object = new Font();
-        $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor(new Color(Color::COLOR_BLUE)));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
+        static::assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor(new Color(Color::COLOR_BLUE)));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        static::assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
     }
 
     /**
@@ -91,12 +91,12 @@ class FontTest extends TestCase
     public function testSetGetName()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName());
-        $this->assertEquals('Calibri', $object->getName());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName(''));
-        $this->assertEquals('Calibri', $object->getName());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName('Arial'));
-        $this->assertEquals('Arial', $object->getName());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName());
+        static::assertEquals('Calibri', $object->getName());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName(''));
+        static::assertEquals('Calibri', $object->getName());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName('Arial'));
+        static::assertEquals('Arial', $object->getName());
     }
 
     /**
@@ -105,13 +105,13 @@ class FontTest extends TestCase
     public function testSetGetSize()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize());
-        $this->assertEquals(10, $object->getSize());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize(''));
-        $this->assertEquals(10, $object->getSize());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize());
+        static::assertEquals(10, $object->getSize());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize(''));
+        static::assertEquals(10, $object->getSize());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize($value));
-        $this->assertEquals($value, $object->getSize());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize($value));
+        static::assertEquals($value, $object->getSize());
     }
 
     /**
@@ -120,12 +120,12 @@ class FontTest extends TestCase
     public function testSetGetUnderline()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline());
-        $this->assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(''));
-        $this->assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(Font::UNDERLINE_DASH));
-        $this->assertEquals(Font::UNDERLINE_DASH, $object->getUnderline());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline());
+        static::assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(''));
+        static::assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(Font::UNDERLINE_DASH));
+        static::assertEquals(Font::UNDERLINE_DASH, $object->getUnderline());
     }
 
     /**
@@ -134,14 +134,14 @@ class FontTest extends TestCase
     public function testSetIsBold()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold());
-        $this->assertFalse($object->isBold());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(''));
-        $this->assertFalse($object->isBold());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(false));
-        $this->assertFalse($object->isBold());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(true));
-        $this->assertTrue($object->isBold());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold());
+        static::assertFalse($object->isBold());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(''));
+        static::assertFalse($object->isBold());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(false));
+        static::assertFalse($object->isBold());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(true));
+        static::assertTrue($object->isBold());
     }
 
     /**
@@ -150,14 +150,14 @@ class FontTest extends TestCase
     public function testSetIsItalic()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic());
-        $this->assertFalse($object->isItalic());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(''));
-        $this->assertFalse($object->isItalic());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(false));
-        $this->assertFalse($object->isItalic());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(true));
-        $this->assertTrue($object->isItalic());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic());
+        static::assertFalse($object->isItalic());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(''));
+        static::assertFalse($object->isItalic());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(false));
+        static::assertFalse($object->isItalic());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(true));
+        static::assertTrue($object->isItalic());
     }
 
     /**
@@ -166,14 +166,14 @@ class FontTest extends TestCase
     public function testSetIsStriketrough()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough());
-        $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(''));
-        $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(false));
-        $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(true));
-        $this->assertTrue($object->isStrikethrough());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough());
+        static::assertFalse($object->isStrikethrough());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(''));
+        static::assertFalse($object->isStrikethrough());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(false));
+        static::assertFalse($object->isStrikethrough());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(true));
+        static::assertTrue($object->isStrikethrough());
     }
 
     /**
@@ -182,27 +182,27 @@ class FontTest extends TestCase
     public function testSetIsSubScript()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript());
-        $this->assertFalse($object->isSubScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(''));
-        $this->assertFalse($object->isSubScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
-        $this->assertFalse($object->isSubScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
-        $this->assertTrue($object->isSubScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript());
+        static::assertFalse($object->isSubScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(''));
+        static::assertFalse($object->isSubScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
+        static::assertFalse($object->isSubScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
+        static::assertTrue($object->isSubScript());
 
         // Test toggle of SubScript
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
-        $this->assertFalse($object->isSubScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
+        static::assertFalse($object->isSubScript());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
-        $this->assertFalse($object->isSubScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
+        static::assertFalse($object->isSubScript());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
-        $this->assertTrue($object->isSubScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
+        static::assertTrue($object->isSubScript());
     }
 
     /**
@@ -211,27 +211,27 @@ class FontTest extends TestCase
     public function testSetIsSuperScript()
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript());
-        $this->assertFalse($object->isSuperScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(''));
-        $this->assertFalse($object->isSuperScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
-        $this->assertFalse($object->isSuperScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
-        $this->assertTrue($object->isSuperScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript());
+        static::assertFalse($object->isSuperScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(''));
+        static::assertFalse($object->isSuperScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
+        static::assertFalse($object->isSuperScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
+        static::assertTrue($object->isSuperScript());
 
         // Test toggle of SubScript
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
-        $this->assertFalse($object->isSuperScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
+        static::assertFalse($object->isSuperScript());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
-        $this->assertFalse($object->isSuperScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
+        static::assertFalse($object->isSuperScript());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
-        $this->assertTrue($object->isSuperScript());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
+        static::assertTrue($object->isSuperScript());
     }
 
     /**
@@ -242,6 +242,6 @@ class FontTest extends TestCase
         $object = new Font();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        static::assertEquals($value, $object->getHashIndex());
     }
 }

@@ -318,7 +318,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Get Fill
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return \PhpOffice\PhpPresentation\Style\Fill|null
      */
     public function getFill()
     {
@@ -327,7 +327,7 @@ abstract class AbstractShape implements ComparableInterface
 
     /**
      * Set Fill
-     * @param \PhpOffice\PhpPresentation\Style\Fill $pValue
+     * @param \PhpOffice\PhpPresentation\Style\Fill|null $pValue
      * @return \PhpOffice\PhpPresentation\AbstractShape
      */
     public function setFill(Fill $pValue = null)
@@ -349,7 +349,7 @@ abstract class AbstractShape implements ComparableInterface
     /**
      * Get Shadow
      *
-     * @return \PhpOffice\PhpPresentation\Style\Shadow
+     * @return \PhpOffice\PhpPresentation\Style\Shadow|null
      */
     public function getShadow()
     {

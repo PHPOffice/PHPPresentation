@@ -33,16 +33,16 @@ class AnimationTest extends TestCase
 
         $object = new Animation();
 
-        $this->assertInternalType('array', $object->getShapeCollection());
-        $this->assertCount(0, $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->addShape($oStub));
-        $this->assertInternalType('array', $object->getShapeCollection());
-        $this->assertCount(1, $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection());
-        $this->assertInternalType('array', $object->getShapeCollection());
-        $this->assertCount(0, $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection(array($oStub)));
-        $this->assertInternalType('array', $object->getShapeCollection());
-        $this->assertCount(1, $object->getShapeCollection());
+        static::assertInternalType('array', $object->getShapeCollection());
+        static::assertCount(0, $object->getShapeCollection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->addShape($oStub));
+        static::assertInternalType('array', $object->getShapeCollection());
+        static::assertCount(1, $object->getShapeCollection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection());
+        static::assertInternalType('array', $object->getShapeCollection());
+        static::assertCount(0, $object->getShapeCollection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection(array($oStub)));
+        static::assertInternalType('array', $object->getShapeCollection());
+        static::assertCount(1, $object->getShapeCollection());
     }
 }

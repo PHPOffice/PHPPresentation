@@ -34,11 +34,11 @@ class BorderTest extends TestCase
     public function testConstruct()
     {
         $object = new Border();
-        $this->assertEquals(1, $object->getLineWidth());
-        $this->assertEquals(Border::LINE_SINGLE, $object->getLineStyle());
-        $this->assertEquals(Border::DASH_SOLID, $object->getDashStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertEquals('FF000000', $object->getColor()->getARGB());
+        static::assertEquals(1, $object->getLineWidth());
+        static::assertEquals(Border::LINE_SINGLE, $object->getLineStyle());
+        static::assertEquals(Border::DASH_SOLID, $object->getDashStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        static::assertEquals('FF000000', $object->getColor()->getARGB());
     }
 
     /**
@@ -47,11 +47,11 @@ class BorderTest extends TestCase
     public function testSetGetColor()
     {
         $object = new Border();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setColor());
-        $this->assertNull($object->getColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setColor(new Color(Color::COLOR_BLUE)));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertEquals('FF0000FF', $object->getColor()->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setColor());
+        static::assertNull($object->getColor());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setColor(new Color(Color::COLOR_BLUE)));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        static::assertEquals('FF0000FF', $object->getColor()->getARGB());
     }
 
     /**
@@ -60,12 +60,12 @@ class BorderTest extends TestCase
     public function testSetGetDashStyle()
     {
         $object = new Border();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle());
-        $this->assertEquals(Border::DASH_SOLID, $object->getDashStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle(''));
-        $this->assertEquals(Border::DASH_SOLID, $object->getDashStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle(Border::DASH_DASH));
-        $this->assertEquals(Border::DASH_DASH, $object->getDashStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle());
+        static::assertEquals(Border::DASH_SOLID, $object->getDashStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle(''));
+        static::assertEquals(Border::DASH_SOLID, $object->getDashStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle(Border::DASH_DASH));
+        static::assertEquals(Border::DASH_DASH, $object->getDashStyle());
     }
 
     /**
@@ -76,7 +76,7 @@ class BorderTest extends TestCase
         $object = new Border();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        static::assertEquals($value, $object->getHashIndex());
     }
 
     /**
@@ -85,12 +85,12 @@ class BorderTest extends TestCase
     public function testSetGetLineStyle()
     {
         $object = new Border();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle());
-        $this->assertEquals(Border::LINE_SINGLE, $object->getLineStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle(''));
-        $this->assertEquals(Border::LINE_SINGLE, $object->getLineStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle(Border::LINE_DOUBLE));
-        $this->assertEquals(Border::LINE_DOUBLE, $object->getLineStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle());
+        static::assertEquals(Border::LINE_SINGLE, $object->getLineStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle(''));
+        static::assertEquals(Border::LINE_SINGLE, $object->getLineStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle(Border::LINE_DOUBLE));
+        static::assertEquals(Border::LINE_DOUBLE, $object->getLineStyle());
     }
 
     /**
@@ -99,10 +99,10 @@ class BorderTest extends TestCase
     public function testSetGetLineWidth()
     {
         $object = new Border();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth());
-        $this->assertEquals(1, $object->getLineWidth());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth());
+        static::assertEquals(1, $object->getLineWidth());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth($value));
-        $this->assertEquals($value, $object->getLineWidth());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth($value));
+        static::assertEquals($value, $object->getLineWidth());
     }
 }

@@ -34,14 +34,14 @@ class BordersTest extends TestCase
     public function testConstruct()
     {
         $object = new Borders();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getBottom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getLeft());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getRight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getTop());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getDiagonalDown());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getDiagonalUp());
-        $this->assertEquals(Border::LINE_NONE, $object->getDiagonalDown()->getLineStyle());
-        $this->assertEquals(Border::LINE_NONE, $object->getDiagonalUp()->getLineStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getBottom());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getLeft());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getRight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getTop());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getDiagonalDown());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getDiagonalUp());
+        static::assertEquals(Border::LINE_NONE, $object->getDiagonalDown()->getLineStyle());
+        static::assertEquals(Border::LINE_NONE, $object->getDiagonalUp()->getLineStyle());
     }
 
     /**
@@ -52,7 +52,7 @@ class BordersTest extends TestCase
         $object = new Borders();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        static::assertEquals($value, $object->getHashIndex());
     }
 
     /**
@@ -61,7 +61,7 @@ class BordersTest extends TestCase
     public function testGetHashCode()
     {
         $object = new Borders();
-        $this->assertEquals(
+        static::assertEquals(
             md5(
                 $object->getLeft()->getHashCode() .
                 $object->getRight()->getHashCode() .

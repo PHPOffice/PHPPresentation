@@ -33,9 +33,9 @@ class ColorTest extends TestCase
     public function testConstruct()
     {
         $object = new Color();
-        $this->assertEquals(Color::COLOR_BLACK, $object->getARGB());
+        static::assertEquals(Color::COLOR_BLACK, $object->getARGB());
         $object = new Color(Color::COLOR_BLUE);
-        $this->assertEquals(Color::COLOR_BLUE, $object->getARGB());
+        static::assertEquals(Color::COLOR_BLUE, $object->getARGB());
     }
 
     /**
@@ -45,14 +45,14 @@ class ColorTest extends TestCase
     {
         $randAlpha = mt_rand(0, 100);
         $object = new Color();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
-        $this->assertEquals(100, $object->getAlpha());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB('AA0000FF'));
-        $this->assertEquals(66.67, $object->getAlpha());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
-        $this->assertEquals(100, $object->getAlpha());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setAlpha($randAlpha));
-        $this->assertEquals($randAlpha, round($object->getAlpha()));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
+        static::assertEquals(100, $object->getAlpha());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB('AA0000FF'));
+        static::assertEquals(66.67, $object->getAlpha());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
+        static::assertEquals(100, $object->getAlpha());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setAlpha($randAlpha));
+        static::assertEquals($randAlpha, round($object->getAlpha()));
     }
 
     /**
@@ -61,12 +61,12 @@ class ColorTest extends TestCase
     public function testSetGetARGB()
     {
         $object = new Color();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
-        $this->assertEquals(Color::COLOR_BLACK, $object->getARGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(''));
-        $this->assertEquals(Color::COLOR_BLACK, $object->getARGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
-        $this->assertEquals(Color::COLOR_BLUE, $object->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
+        static::assertEquals(Color::COLOR_BLACK, $object->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(''));
+        static::assertEquals(Color::COLOR_BLACK, $object->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
+        static::assertEquals(Color::COLOR_BLUE, $object->getARGB());
     }
 
     /**
@@ -75,18 +75,18 @@ class ColorTest extends TestCase
     public function testSetGetRGB()
     {
         $object = new Color();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB());
-        $this->assertEquals('000000', $object->getRGB());
-        $this->assertEquals('FF000000', $object->getARGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB(''));
-        $this->assertEquals('000000', $object->getRGB());
-        $this->assertEquals('FF000000', $object->getARGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB('555'));
-        $this->assertEquals('555', $object->getRGB());
-        $this->assertEquals('FF555', $object->getARGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB('6666'));
-        $this->assertEquals('FF6666', $object->getRGB());
-        $this->assertEquals('FF6666', $object->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB());
+        static::assertEquals('000000', $object->getRGB());
+        static::assertEquals('FF000000', $object->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB(''));
+        static::assertEquals('000000', $object->getRGB());
+        static::assertEquals('FF000000', $object->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB('555'));
+        static::assertEquals('555', $object->getRGB());
+        static::assertEquals('FF555', $object->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB('6666'));
+        static::assertEquals('FF6666', $object->getRGB());
+        static::assertEquals('FF6666', $object->getARGB());
     }
 
     /**
@@ -97,6 +97,6 @@ class ColorTest extends TestCase
         $object = new Color();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        static::assertEquals($value, $object->getHashIndex());
     }
 }

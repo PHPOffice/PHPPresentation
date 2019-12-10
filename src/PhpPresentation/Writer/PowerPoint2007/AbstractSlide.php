@@ -505,7 +505,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param  bool $bIsPlaceholder
      * @throws \Exception
      */
-    protected function writeParagraphs(XMLWriter $objWriter, array $paragraphs, $bIsPlaceholder = false)
+    protected function writeParagraphs(XMLWriter $objWriter, $paragraphs, $bIsPlaceholder = false)
     {
         // Loop trough paragraphs
         foreach ($paragraphs as $paragraph) {
@@ -715,10 +715,14 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write Shadow
      * @param XMLWriter $objWriter
-     * @param Shadow $oShadow
+     * @param Shadow|null $oShadow
      */
-    protected function writeShadow(XMLWriter $objWriter, Shadow $oShadow)
+    protected function writeShadow(XMLWriter $objWriter, $oShadow)
     {
+        if (!($oShadow instanceof Shadow)) {
+            return;
+        }
+
         if (!$oShadow->isVisible()) {
             return;
         }
@@ -1343,9 +1347,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write Transition Slide
      * @link http://officeopenxml.com/prSlide-transitions.php
      * @param XMLWriter $objWriter
-     * @param Slide\Transition $transition
+     * @param Slide\Transition|null $transition
      */
-    protected function writeSlideTransition(XMLWriter $objWriter, Slide\Transition $transition)
+    protected function writeSlideTransition(XMLWriter $objWriter, $transition)
     {
         if (!$transition instanceof Slide\Transition) {
             return;

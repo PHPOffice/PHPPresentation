@@ -111,7 +111,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * @param \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[] $shapeCollection
      * @return AbstractSlide
      */
-    public function setShapeCollection(array $shapeCollection = array())
+    public function setShapeCollection($shapeCollection = array())
     {
         $this->shapeCollection = $shapeCollection;
         return $this;
@@ -342,7 +342,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     }
 
     /**
-     * @param AbstractBackground $background
+     * @param AbstractBackground|null $background
      * @return \PhpOffice\PhpPresentation\Slide\AbstractSlide
      */
     public function setBackground(AbstractBackground $background = null)
@@ -353,7 +353,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      *
-     * @return \PhpOffice\PhpPresentation\Slide\Transition
+     * @return \PhpOffice\PhpPresentation\Slide\Transition|null
      */
     public function getTransition()
     {
@@ -362,7 +362,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      *
-     * @param \PhpOffice\PhpPresentation\Slide\Transition $transition
+     * @param \PhpOffice\PhpPresentation\Slide\Transition|null $transition
      * @return \PhpOffice\PhpPresentation\Slide\AbstractSlide
      */
     public function setTransition(Transition $transition = null)

@@ -129,7 +129,7 @@ abstract class AbstractType implements ComparableInterface
      * @param  \PhpOffice\PhpPresentation\Shape\Chart\Series[] $value
      * @return $this
      */
-    public function setSeries(array $value = array())
+    public function setSeries($value = array())
     {
         $this->data = $value;
         return $this;
@@ -152,7 +152,7 @@ abstract class AbstractType implements ComparableInterface
      * @param \PhpOffice\PhpPresentation\Shape\Chart\Series[] $value
      * @return AbstractType
      */
-    public function setData(array $value = array())
+    public function setData($value = array())
     {
         return $this->setSeries($value);
     }

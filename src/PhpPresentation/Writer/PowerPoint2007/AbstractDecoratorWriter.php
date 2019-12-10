@@ -47,11 +47,11 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * Write Border
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Border     $pBorder      Border
+     * @param  \PhpOffice\PhpPresentation\Style\Border|null     $pBorder      Border
      * @param  string                         $pElementName Element name
      * @throws \Exception
      */
-    protected function writeBorder(XMLWriter $objWriter, Border $pBorder, $pElementName = 'L')
+    protected function writeBorder(XMLWriter $objWriter, $pBorder, $pElementName = 'L')
     {
         if (!($pBorder instanceof Border)) {
             return;
@@ -143,7 +143,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
      * @throws \Exception
      */
-    protected function writeFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writeFill(XMLWriter $objWriter, $pFill)
     {
         if (! $pFill instanceof Fill) {
             return;
@@ -255,10 +255,10 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     /**
      * Write Outline
      * @param XMLWriter $objWriter
-     * @param Outline $oOutline
+     * @param Outline|null $oOutline
      * @throws \Exception
      */
-    protected function writeOutline(XMLWriter $objWriter, Outline $oOutline)
+    protected function writeOutline(XMLWriter $objWriter, $oOutline)
     {
         if (!$oOutline instanceof Outline) {
             return;

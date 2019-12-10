@@ -38,15 +38,15 @@ class IteratorTest extends TestCase
 
         $object = new Iterator($oPhpPresentation);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
-        $this->assertEquals(0, $object->key());
-        $this->assertNull($object->next());
-        $this->assertEquals(1, $object->key());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
-        $this->assertTrue($object->valid());
-        $this->assertNull($object->next());
-        $this->assertFalse($object->valid());
-        $this->assertNull($object->rewind());
-        $this->assertEquals(0, $object->key());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
+        static::assertEquals(0, $object->key());
+        static::assertNull($object->next());
+        static::assertEquals(1, $object->key());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
+        static::assertTrue($object->valid());
+        static::assertNull($object->next());
+        static::assertFalse($object->valid());
+        static::assertNull($object->rewind());
+        static::assertEquals(0, $object->key());
     }
 }

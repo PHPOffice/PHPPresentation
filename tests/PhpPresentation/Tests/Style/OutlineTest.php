@@ -34,8 +34,8 @@ class OutlineTest extends TestCase
     public function testConstruct()
     {
         $object = new Outline();
-        $this->assertNull($object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        static::assertNull($object->getWidth());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
     }
 
     /**
@@ -44,9 +44,9 @@ class OutlineTest extends TestCase
     public function testSetGetFill()
     {
         $object = new Outline();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setFill(new Fill()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setFill(new Fill()));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
     }
 
     /**
@@ -55,11 +55,11 @@ class OutlineTest extends TestCase
     public function testSetGetWidth()
     {
         $object = new Outline();
-        $this->assertNull($object->getWidth());
+        static::assertNull($object->getWidth());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth($value));
-        $this->assertEquals($value, $object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth(1.5));
-        $this->assertEquals(1, $object->getWidth());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth($value));
+        static::assertEquals($value, $object->getWidth());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth(1.5));
+        static::assertEquals(1, $object->getWidth());
     }
 }

@@ -240,11 +240,11 @@ class ObjectsChart extends AbstractDecoratorWriter
     }
 
     /**
-     * @param Chart\Gridlines $oGridlines
+     * @param Chart\Gridlines|null $oGridlines
      * @param string $styleName
      * @param string $chartClass
      */
-    protected function writeGridline(Chart\Gridlines $oGridlines, $styleName, $chartClass)
+    protected function writeGridline($oGridlines, $styleName, $chartClass)
     {
         if (!($oGridlines instanceof Chart\Gridlines)) {
             return ;
@@ -353,10 +353,10 @@ class ObjectsChart extends AbstractDecoratorWriter
     }
 
     /**
-     * @param Chart\Gridlines $oGridlines
+     * @param Chart\Gridlines|null $oGridlines
      * @param string $styleName
      */
-    protected function writeGridlineStyle(Chart\Gridlines $oGridlines, $styleName)
+    protected function writeGridlineStyle($oGridlines, $styleName)
     {
         if (!($oGridlines instanceof Chart\Gridlines)) {
             return;
