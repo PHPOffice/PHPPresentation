@@ -168,8 +168,7 @@ class ODPresentation implements ReaderInterface
                 if (in_array($property, array('setCreated', 'setModified'))) {
                     try {
                         $oDateTime = new \DateTime($oElement->nodeValue);
-                    } catch (\Exception $ex)
-                    {
+                    } catch (\Exception $ex) {
                         $oDateTime = new \DateTime();
                     }
                     $oProperties->{$property}($oDateTime->getTimestamp());

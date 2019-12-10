@@ -219,8 +219,7 @@ class PowerPoint2007 implements ReaderInterface
                     if ($oElement->hasAttribute('xsi:type') && $oElement->getAttribute('xsi:type') == 'dcterms:W3CDTF') {
                         try {
                             $oDateTime = new \DateTime($oElement->nodeValue);
-                        } catch (\Exception $ex)
-                        {
+                        } catch (\Exception $ex) {
                             $oDateTime = new \DateTime();
                         }
                         $oProperties->{$property}($oDateTime->getTimestamp());

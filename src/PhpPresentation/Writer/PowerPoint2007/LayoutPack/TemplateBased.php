@@ -106,8 +106,7 @@ class TemplateBased extends AbstractLayoutPack
                                 } else {
                                     $layoutXml = simplexml_load_string(utf8_encode($layout['body']));
                                 }
-                                $layoutXml->registerXPathNamespace('p',
-                                    'http://schemas.openxmlformats.org/presentationml/2006/main');
+                                $layoutXml->registerXPathNamespace('p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
                                 $slide                     = $layoutXml->xpath('/p:sldLayout/p:cSld');
                                 $layout['name']            = (string) $slide[0]['name'];
                                 $this->layouts[$layoutId] = $layout;

@@ -167,20 +167,20 @@ abstract class AbstractShape implements ComparableInterface
                 $this->container->getShapeCollection()->append($this);
             }
         } elseif ($pOverrideOld) {
-                // Remove drawing from old \PhpOffice\PhpPresentation\ShapeContainerInterface
-                $iterator = $this->container->getShapeCollection()->getIterator();
+            // Remove drawing from old \PhpOffice\PhpPresentation\ShapeContainerInterface
+            $iterator = $this->container->getShapeCollection()->getIterator();
 
-                while ($iterator->valid()) {
-                    if ($iterator->current()->getHashCode() == $this->getHashCode()) {
-                        $this->container->getShapeCollection()->offsetUnset($iterator->key());
-                        $this->container = null;
-                        break;
-                    }
-                    $iterator->next();
+            while ($iterator->valid()) {
+                if ($iterator->current()->getHashCode() == $this->getHashCode()) {
+                    $this->container->getShapeCollection()->offsetUnset($iterator->key());
+                    $this->container = null;
+                    break;
                 }
+                $iterator->next();
+            }
 
-                // Set new \PhpOffice\PhpPresentation\Slide
-                $this->setContainer($pValue);
+            // Set new \PhpOffice\PhpPresentation\Slide
+            $this->setContainer($pValue);
         } else {
             throw new \Exception("A \PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPresentation\ShapeContainerInterface.");
         }
