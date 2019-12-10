@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__.'/Sample_Header.php';
+include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
@@ -629,5 +629,5 @@ fnSlide_Scatter($objPHPPresentation);
 // Save file
 echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
-    include_once __DIR__.'/Sample_Footer.php';
+    include_once 'Sample_Footer.php';
 }
