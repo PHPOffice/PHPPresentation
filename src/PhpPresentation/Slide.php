@@ -80,7 +80,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
         // Shape collection
         $this->shapeCollection = new \ArrayObject();
         // Set identifier
-        $this->identifier = md5(rand(0, 9999) . time());
+        $this->identifier = md5(rand(0, 99999999) . time());
         // Set Slide Layout
         if ($this->parent instanceof PhpPresentation) {
             $arrayMasterSlides = $this->parent->getAllMasterSlides();
