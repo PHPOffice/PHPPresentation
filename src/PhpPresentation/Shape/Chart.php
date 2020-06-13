@@ -28,6 +28,11 @@ use PhpOffice\PhpPresentation\Shape\Chart\View3D;
  */
 class Chart extends AbstractGraphic implements ComparableInterface
 {
+    /* possible values for $this->>displayBlankAs (dispBlanksAs "display blank as") options */
+    const BLANKS_GAP = 'gap';
+    const BLANKS_ZERO = 'zero';
+    const BLANKS_SPAN = 'span';
+
     /**
      * Title
      *
@@ -62,6 +67,12 @@ class Chart extends AbstractGraphic implements ComparableInterface
      * @var bool
      */
     private $includeSpreadsheet = false;
+
+    /**
+     * How to display blank (missing) values? Not set by default.
+     * @var string
+     */
+    private $displayBlankAs;
 
     /**
      * Create a new Chart
@@ -139,6 +150,16 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
+     * How missing/blank values are displayed on chart (dispBlanksAs property)
+     *
+     * @return string
+     */
+    public function getDisplayBlankAs()
+    {
+        return $this->displayBlankAs;
+    }
+
+    /**
      * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation
      *
      * @param  boolean                   $value
@@ -148,6 +169,18 @@ class Chart extends AbstractGraphic implements ComparableInterface
     {
         $this->includeSpreadsheet = $value;
         return $this;
+    }
+
+    /**
+     * Define a way to display missing/blank values (dispBlanksAs property)
+     *
+     * @param string $value
+     * @return string
+     */
+    public function setDisplayBlankAs($value)
+    {
+        $this->displayBlankAs = $value;
+        return $this->displayBlankAs;
     }
 
     /**
