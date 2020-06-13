@@ -78,12 +78,11 @@ class ChartTest extends TestCase
 
     /**
      * @expectedException \Exception
-     * @expectedExceptionMessage Unknkown value:
+     * @expectedExceptionMessage Unknown value: no-such-value
      */
     public function testDisplayBlankAsException()
     {
         $object = new Chart();
         $object->setDisplayBlankAs('no-such-value');
     }
-
 }
