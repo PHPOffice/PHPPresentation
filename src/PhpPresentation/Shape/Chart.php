@@ -176,9 +176,14 @@ class Chart extends AbstractGraphic implements ComparableInterface
      *
      * @param string $value
      * @return string
+     * @throws \Exception
      */
     public function setDisplayBlankAs($value)
     {
+        $allowedValues = array(self::BLANKS_GAP, self::BLANKS_SPAN, self::BLANKS_ZERO);
+        if(!in_array($value, $allowedValues)) {
+            throw new \Exception("Unknown value");
+        }
         $this->displayBlankAs = $value;
         return $this->displayBlankAs;
     }

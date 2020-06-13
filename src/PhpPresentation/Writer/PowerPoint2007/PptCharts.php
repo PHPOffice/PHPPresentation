@@ -145,7 +145,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:dispBlanksAs
         $displayBlankAs = $chart->getDisplayBlankAs();
-        if(!empty($displayBlankAs)) {
+        if (!empty($displayBlankAs)) {
             $objWriter->startElement('c:dispBlanksAs');
             $objWriter->writeAttribute('val', $displayBlankAs);
             $objWriter->endElement();
