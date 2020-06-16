@@ -7,6 +7,7 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Style\ColorMap;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 
 class PptSlideLayouts extends AbstractSlide
 {
@@ -20,6 +21,12 @@ class PptSlideLayouts extends AbstractSlide
             foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
                 $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideLayout));
                 $this->oZip->addFromString('ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', $this->writeSlideLayout($oSlideLayout));
+
+                // Add background image slide
+                $oBkgImage = $oSlideLayout->getBackground();
+                if ($oBkgImage instanceof Image) {
+                    $this->oZip->addFromString('ppt/media/' . $oBkgImage->getIndexedFilename($oSlideLayout->getRelsIndex()), file_get_contents($oBkgImage->getPath()));
+                }
             }
         }
 
@@ -52,6 +59,15 @@ class PptSlideLayouts extends AbstractSlide
 
         // Write drawing relationships?
         $relId = $this->writeDrawingRelations($oSlideLayout, $objWriter, ++$relId);
+
+        // Write background relationships?
+        $oBackground = $oSlideLayout->getBackground();
+        if ($oBackground instanceof Image) {
+            $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oSlideLayout->getRelsIndex()));
+            $oBackground->relationId = 'rId' . $relId;
+
+            $relId++;
+        }
 
         $objWriter->endElement();
 
