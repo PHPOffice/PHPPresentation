@@ -527,6 +527,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
                 $objWriter->endElement();
                 $objWriter->endElement();
+                $objWriter->startElement('a:spcBef');
+                $objWriter->startElement('a:spcPts');
+                $objWriter->writeAttribute('val', $paragraph->getDqSpacing() * 100);
+                $objWriter->endElement();
+                $objWriter->endElement();
 
                 // Bullet type specified?
                 if ($paragraph->getBulletStyle()->getBulletType() != Bullet::TYPE_NONE) {
@@ -596,6 +601,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         // Font - a:latin
                         $objWriter->startElement('a:latin');
                         $objWriter->writeAttribute('typeface', $element->getFont()->getName());
+                        //$objWriter->writeAttribute('panose', '020B0503020204020204');
+						//$objWriter->writeAttribute('charset', '-122');
+                        $objWriter->endElement();
+						$objWriter->startElement('a:ea');
+                        $objWriter->writeAttribute('typeface', $element->getFont()->getName());
+                        //$objWriter->writeAttribute('panose', '020B0503020204020204');
+						//$objWriter->writeAttribute('charset', '-122');
                         $objWriter->endElement();
 
                         // a:hlinkClick
@@ -623,7 +635,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Line $shape
      * @param  int $shapeId
-     * @throws \Exception
      */
     protected function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
     {
@@ -750,7 +761,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      *
      * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\AbstractShape|\PhpOffice\PhpPresentation\Shape\RichText\TextElement $shape
-     * @throws \Exception
      */
     protected function writeHyperlink(XMLWriter $objWriter, $shape)
     {
@@ -1207,11 +1217,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // a:avLst
         $objWriter->writeElement('a:avLst', null);
         $objWriter->endElement();
-
-        $this->writeFill($objWriter, $shape->getFill());
-        $this->writeBorder($objWriter, $shape->getBorder(), '');
-        $this->writeShadow($objWriter, $shape->getShadow());
-
+        if ($shape->getBorder()->getLineStyle() != Border::LINE_NONE) {
+            $this->writeBorder($objWriter, $shape->getBorder(), '');
+        }
+        if ($shape->getShadow()->isVisible()) {
+            $this->writeShadow($objWriter, $shape->getShadow());
+        }
         $objWriter->endElement();
         $objWriter->endElement();
     }

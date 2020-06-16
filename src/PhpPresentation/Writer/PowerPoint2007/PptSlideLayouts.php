@@ -12,13 +12,13 @@ class PptSlideLayouts extends AbstractSlide
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     * @throws \Exception
+	 * @throws \Exception
      */
     public function render()
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
             foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
-                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideMaster->getRelsIndex()));
+                $this->oZip->addFromString('ppt/slideLayouts/_rels/slideLayout' . $oSlideLayout->layoutNr . '.xml.rels', $this->writeSlideLayoutRelationships($oSlideLayout,$oSlideMaster->getRelsIndex()));
                 $this->oZip->addFromString('ppt/slideLayouts/slideLayout' . $oSlideLayout->layoutNr . '.xml', $this->writeSlideLayout($oSlideLayout));
             }
         }
@@ -34,7 +34,7 @@ class PptSlideLayouts extends AbstractSlide
      * @return string    XML Output
      * @throws \Exception
      */
-    public function writeSlideLayoutRelationships($masterId = 1)
+    public function writeSlideLayoutRelationships($oSlideLayout,$masterId = 1)
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -45,10 +45,11 @@ class PptSlideLayouts extends AbstractSlide
         // Relationships
         $objWriter->startElement('Relationships');
         $objWriter->writeAttribute('xmlns', 'http://schemas.openxmlformats.org/package/2006/relationships');
-
+        $relId = 0;
+        // Write drawing relationships?
+        $relId = $this->writeDrawingRelations($oSlideLayout, $objWriter, ++$relId);
         // Write slideMaster relationship
-        $this->writeRelationship($objWriter, 1, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
-
+        $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster', '../slideMasters/slideMaster' . $masterId . '.xml');
         $objWriter->endElement();
 
         // Return
