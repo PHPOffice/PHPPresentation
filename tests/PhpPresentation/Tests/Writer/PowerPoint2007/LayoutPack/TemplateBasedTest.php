@@ -19,7 +19,6 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007\LayoutPack;
 
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for TemplateBased
@@ -27,7 +26,7 @@ use PHPUnit\Framework\TestCase;
  * @deprecated 0.7
  * @coversDefaultClass TemplateBased
  */
-class TemplateBasedTest extends TestCase
+class TemplateBasedTest extends \PHPUnit_Framework_TestCase
 {
     public function testFindLayout()
     {

@@ -18,14 +18,13 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Drawing element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Drawing
  */
-class Base64Test extends TestCase
+class Base64Test extends \PHPUnit_Framework_TestCase
 {
     public function setUp()
     {

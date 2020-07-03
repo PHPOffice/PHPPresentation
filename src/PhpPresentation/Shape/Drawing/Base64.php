@@ -21,8 +21,6 @@ class Base64 extends AbstractDrawingAdapter
      */
     protected $arrayMimeExtension = array(
         'image/jpeg' => 'jpg',
-        'image/png' => 'png',
-        'image/gif' => 'gif',
     );
 
     /**
@@ -79,7 +77,6 @@ class Base64 extends AbstractDrawingAdapter
 
     /**
      * @return string
-     * @throws \Exception
      */
     public function getIndexedFilename()
     {

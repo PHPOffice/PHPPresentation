@@ -19,14 +19,13 @@ namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class BulletTest extends TestCase
+class BulletTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test create new instance
@@ -94,7 +93,7 @@ class BulletTest extends TestCase
         $object = new Bullet();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt());
         $this->assertEquals(1, $object->getBulletNumericStartAt());
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt($value));
         $this->assertEquals($value, $object->getBulletNumericStartAt());
     }
@@ -129,7 +128,7 @@ class BulletTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Bullet();
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }

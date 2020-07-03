@@ -58,7 +58,7 @@ abstract class AbstractWriter
      *
      * @param  PhpPresentation                       $pPhpPresentation PhpPresentation object
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\AbstractWriter
+     * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
      */
     public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
     {
@@ -96,21 +96,8 @@ abstract class AbstractWriter
         // Get an array of all drawings
         $aDrawings  = array();
 
-        // Get an array of all master slides
-        $aSlideMasters = $this->getPhpPresentation()->getAllMasterSlides();
-
-        $aSlideMasterLayouts = array_map(function ($oSlideMaster) {
-            return $oSlideMaster->getAllSlideLayouts();
-        }, $aSlideMasters);
-
-        // Get an array of all slide layouts
-        $aSlideLayouts = array();
-        array_walk_recursive($aSlideMasterLayouts, function ($oSlideLayout) use (&$aSlideLayouts) {
-            $aSlideLayouts[] = $oSlideLayout;
-        });
-
         // Loop through PhpPresentation
-        foreach (array_merge($this->getPhpPresentation()->getAllSlides(), $aSlideMasters, $aSlideLayouts) as $oSlide) {
+        foreach (array_merge($this->getPhpPresentation()->getAllSlides(), $this->getPhpPresentation()->getAllMasterSlides()) as $oSlide) {
             $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
             $aDrawings = array_merge($aDrawings, $arrayReturn);
         }

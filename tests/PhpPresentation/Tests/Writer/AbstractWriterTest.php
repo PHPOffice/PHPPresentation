@@ -18,7 +18,6 @@
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PHPUnit\Framework\TestCase;
 
 require 'AbstractWriter.php';
 
@@ -27,7 +26,7 @@ require 'AbstractWriter.php';
  *
  * @coversDefaultClass AbstractWriter
  */
-class AbstractWriterTest extends TestCase
+class AbstractWriterTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test create new instance
@@ -60,6 +59,6 @@ class AbstractWriterTest extends TestCase
         $writer->setPhpPresentation($presentation);
 
         $drawings = $writer->allDrawings();
-        $this->assertCount(2, $drawings, 'Number of drawings should equal two: one from normal slide and one from master slide');
+        $this->assertEquals(2, count($drawings), 'Number of drawings should equal two: one from normal slide and one from master slide');
     }
 }

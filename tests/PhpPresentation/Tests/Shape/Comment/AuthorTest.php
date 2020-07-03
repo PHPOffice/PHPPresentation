@@ -18,14 +18,13 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Comment;
 
 use PhpOffice\PhpPresentation\Shape\Comment\Author;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Author element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Comment\Author
  */
-class AuthorTest extends TestCase
+class AuthorTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
@@ -38,7 +37,7 @@ class AuthorTest extends TestCase
 
     public function testGetSetIndex()
     {
-        $expectedVal = mt_rand(1, 100);
+        $expectedVal = rand(1, 100);
 
         $object = new Author();
         $this->assertNull($object->getIndex());

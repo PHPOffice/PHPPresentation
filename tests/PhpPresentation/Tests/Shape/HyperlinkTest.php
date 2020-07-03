@@ -18,14 +18,13 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for hyperlink element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Hyperlink
  */
-class HyperlinkTest extends TestCase
+class HyperlinkTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test can read
@@ -66,7 +65,7 @@ class HyperlinkTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Hyperlink();
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -79,7 +78,7 @@ class HyperlinkTest extends TestCase
         $this->assertEquals(1, $object->getSlideNumber());
         $this->assertEquals('ppaction://hlinksldjump', $object->getUrl());
 
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setSlideNumber($value));
         $this->assertEquals($value, $object->getSlideNumber());

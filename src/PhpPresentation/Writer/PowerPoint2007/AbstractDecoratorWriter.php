@@ -130,7 +130,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         // a:alpha
         $objWriter->startElement('a:alpha');
-        $objWriter->writeAttribute('val', $alpha * 1000);
+        $objWriter->writeAttribute('val', (int)$alpha . '');
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -208,7 +208,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         // a:gs
         $objWriter->startElement('a:gs');
-        $objWriter->writeAttribute('pos', '100000');
+        $objWriter->writeAttribute('pos', '100');
         $this->writeColor($objWriter, $pFill->getEndColor());
         $objWriter->endElement();
 
@@ -256,7 +256,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * Write Outline
      * @param XMLWriter $objWriter
      * @param Outline $oOutline
-     * @throws \Exception
      */
     protected function writeOutline(XMLWriter $objWriter, $oOutline)
     {

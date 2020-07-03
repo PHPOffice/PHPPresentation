@@ -72,7 +72,6 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
      * Create a new slideMaster
      *
      * @param PhpPresentation $pParent
-     * @throws \Exception
      */
     public function __construct(PhpPresentation $pParent = null)
     {
@@ -102,7 +101,6 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
      * Create a slideLayout and add it to this presentation
      *
      * @return \PhpOffice\PhpPresentation\Slide\SlideLayout
-     * @throws \Exception
      */
     public function createSlideLayout()
     {

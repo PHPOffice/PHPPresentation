@@ -22,14 +22,13 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Style\Borders;
 use PhpOffice\PhpPresentation\Style\Fill;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Cell element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Cell
  */
-class CellTest extends TestCase
+class CellTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test can read
@@ -49,12 +48,12 @@ class CellTest extends TestCase
         $this->assertEquals(0, $object->getActiveParagraphIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
         $this->assertCount(2, $object->getParagraphs());
-        $value = mt_rand(0, 1);
+        $value = rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setActiveParagraph($value));
         $this->assertEquals($value, $object->getActiveParagraphIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getActiveParagraph());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph());
-        $value = mt_rand(0, 1);
+        $value = rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs(array()));
@@ -89,7 +88,7 @@ class CellTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Cell();
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -155,7 +154,7 @@ class CellTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setColSpan());
         $this->assertEquals(0, $object->getColSpan());
 
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setColSpan($value));
         $this->assertEquals($value, $object->getColSpan());
     }
@@ -175,7 +174,7 @@ class CellTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setRowSpan());
         $this->assertEquals(0, $object->getRowSpan());
 
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setRowSpan($value));
         $this->assertEquals($value, $object->getRowSpan());
     }
@@ -187,7 +186,7 @@ class CellTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
 
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());
     }

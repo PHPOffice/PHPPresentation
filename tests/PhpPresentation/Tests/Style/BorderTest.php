@@ -19,14 +19,13 @@ namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class BorderTest extends TestCase
+class BorderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test create new instance
@@ -74,7 +73,7 @@ class BorderTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Border();
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -101,7 +100,7 @@ class BorderTest extends TestCase
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth());
         $this->assertEquals(1, $object->getLineWidth());
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth($value));
         $this->assertEquals($value, $object->getLineWidth());
     }

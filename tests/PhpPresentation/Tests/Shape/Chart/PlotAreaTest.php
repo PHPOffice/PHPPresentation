@@ -21,14 +21,13 @@ use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\PlotArea;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PlotArea element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\PlotArea
  */
-class PlotAreaTest extends TestCase
+class PlotAreaTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
@@ -41,7 +40,7 @@ class PlotAreaTest extends TestCase
     public function testHashIndex()
     {
         $object = new PlotArea();
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
 
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setHashIndex($value));
@@ -51,7 +50,7 @@ class PlotAreaTest extends TestCase
     public function testHeight()
     {
         $object = new PlotArea();
-        $value = mt_rand(0, 100);
+        $value = rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setHeight());
         $this->assertEquals(0, $object->getHeight());
@@ -62,7 +61,7 @@ class PlotAreaTest extends TestCase
     public function testOffsetX()
     {
         $object = new PlotArea();
-        $value = mt_rand(0, 100);
+        $value = rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setOffsetX());
         $this->assertEquals(0, $object->getOffsetX());
@@ -73,7 +72,7 @@ class PlotAreaTest extends TestCase
     public function testOffsetY()
     {
         $object = new PlotArea();
-        $value = mt_rand(0, 100);
+        $value = rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setOffsetY());
         $this->assertEquals(0, $object->getOffsetY());
@@ -102,7 +101,7 @@ class PlotAreaTest extends TestCase
     public function testWidth()
     {
         $object = new PlotArea();
-        $value = mt_rand(0, 100);
+        $value = rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setWidth());
         $this->assertEquals(0, $object->getWidth());

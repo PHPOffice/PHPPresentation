@@ -27,7 +27,6 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
-use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -118,9 +117,8 @@ class ODPresentation implements ReaderInterface
     /**
      * Load PhpPresentation Serialized file
      *
-     * @param  string $pFilename
+     * @param  string        $pFilename
      * @return \PhpOffice\PhpPresentation\PhpPresentation
-     * @throws \Exception
      */
     protected function loadFile($pFilename)
     {
@@ -192,12 +190,10 @@ class ODPresentation implements ReaderInterface
             }
         }
     }
-
+    
     /**
      * Extract style
      * @param \DOMElement $nodeStyle
-     * @return bool
-     * @throws \Exception
      */
     protected function loadStyle(\DOMElement $nodeStyle)
     {
@@ -249,26 +245,6 @@ class ODPresentation implements ReaderInterface
                     }
                     $oShadow->setDirection(rad2deg(atan2($offsetY, $offsetX)));
                     $oShadow->setDistance(CommonDrawing::centimetersToPixels($distance));
-                }
-            }
-            // Read Fill
-            if ($nodeGraphicProps->hasAttribute('draw:fill')) {
-                $value = $nodeGraphicProps->getAttribute('draw:fill');
-
-                switch ($value) {
-                    case 'none':
-                        $oFill = new Fill();
-                        $oFill->setFillType(Fill::FILL_NONE);
-                        break;
-                    case 'solid':
-                        $oFill = new Fill();
-                        $oFill->setFillType(Fill::FILL_SOLID);
-                        if ($nodeGraphicProps->hasAttribute('draw:fill-color')) {
-                            $oColor = new Color();
-                            $oColor->setRGB(substr($nodeGraphicProps->getAttribute('draw:fill-color'), 1));
-                            $oFill->setStartColor($oColor);
-                        }
-                        break;
                 }
             }
         }
@@ -340,7 +316,6 @@ class ODPresentation implements ReaderInterface
         $this->arrayStyles[$keyStyle] = array(
             'alignment' => isset($oAlignment) ? $oAlignment : null,
             'background' => isset($oBackground) ? $oBackground : null,
-            'fill' => isset($oFill) ? $oFill : null,
             'font' => isset($oFont) ? $oFont : null,
             'shadow' => isset($oShadow) ? $oShadow : null,
             'listStyle' => isset($arrayListStyle) ? $arrayListStyle : null,
@@ -353,8 +328,6 @@ class ODPresentation implements ReaderInterface
      * Read Slide
      *
      * @param \DOMElement $nodeSlide
-     * @return bool
-     * @throws \Exception
      */
     protected function loadSlide(\DOMElement $nodeSlide)
     {
@@ -382,12 +355,11 @@ class ODPresentation implements ReaderInterface
         }
         return true;
     }
-
+    
     /**
      * Read Shape Drawing
      *
      * @param \DOMElement $oNodeFrame
-     * @throws \Exception
      */
     protected function loadShapeDrawing(\DOMElement $oNodeFrame)
     {
@@ -423,7 +395,6 @@ class ODPresentation implements ReaderInterface
             $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
             if (isset($this->arrayStyles[$keyStyle])) {
                 $oShape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
-                $oShape->setFill($this->arrayStyles[$keyStyle]['fill']);
             }
         }
         
@@ -434,7 +405,6 @@ class ODPresentation implements ReaderInterface
      * Read Shape RichText
      *
      * @param \DOMElement $oNodeFrame
-     * @throws \Exception
      */
     protected function loadShapeRichText(\DOMElement $oNodeFrame)
     {
@@ -463,12 +433,11 @@ class ODPresentation implements ReaderInterface
     }
     
     protected $levelParagraph = 0;
-
+    
     /**
      * Read Paragraph
      * @param RichText $oShape
      * @param \DOMElement $oNodeParent
-     * @throws \Exception
      */
     protected function readParagraph(RichText $oShape, \DOMElement $oNodeParent)
     {
@@ -485,12 +454,11 @@ class ODPresentation implements ReaderInterface
             $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
         }
     }
-
+    
     /**
      * Read Paragraph Item
      * @param Paragraph $oParagraph
      * @param \DOMElement $oNodeParent
-     * @throws \Exception
      */
     protected function readParagraphItem(Paragraph $oParagraph, \DOMElement $oNodeParent)
     {
@@ -521,7 +489,6 @@ class ODPresentation implements ReaderInterface
      *
      * @param RichText $oShape
      * @param \DOMElement $oNodeParent
-     * @throws \Exception
      */
     protected function readList(RichText $oShape, \DOMElement $oNodeParent)
     {
@@ -536,13 +503,12 @@ class ODPresentation implements ReaderInterface
             }
         }
     }
-
+    
     /**
      * Read List Item
      * @param RichText $oShape
      * @param \DOMElement $oNodeParent
      * @param \DOMElement $oNodeParagraph
-     * @throws \Exception
      */
     protected function readListItem(RichText $oShape, \DOMElement $oNodeParent, \DOMElement $oNodeParagraph)
     {

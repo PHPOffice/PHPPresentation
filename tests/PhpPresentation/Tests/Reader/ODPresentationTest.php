@@ -20,14 +20,13 @@ namespace PhpOffice\PhpPresentation\Tests\Reader;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for ODPresentation reader
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Reader\ODPresentation
  */
-class ODPresentationTest extends TestCase
+class ODPresentationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test can read
@@ -35,20 +34,20 @@ class ODPresentationTest extends TestCase
     public function testCanRead()
     {
         $object = new ODPresentation();
-
+        
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
         $this->assertFalse($object->canRead($file));
-
+        
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
         $this->assertFalse($object->canRead($file));
-
+        
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.pptx';
         $this->assertFalse($object->canRead($file));
-
+        
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.odp';
         $this->assertTrue($object->canRead($file));
     }
-
+    
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Could not open  for reading! File does not exist.
@@ -58,7 +57,7 @@ class ODPresentationTest extends TestCase
         $object = new ODPresentation();
         $object->load('');
     }
-
+    
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPresentation\Reader\ODPresentation:
@@ -69,7 +68,7 @@ class ODPresentationTest extends TestCase
         $object = new ODPresentation();
         $object->load($file);
     }
-
+    
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Could not open  for reading! File does not exist.
@@ -79,7 +78,7 @@ class ODPresentationTest extends TestCase
         $object = new ODPresentation();
         $object->fileSupportsUnserializePhpPresentation('');
     }
-
+    
     public function testLoadFile01()
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.odp';
@@ -95,7 +94,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
         //
         $this->assertCount(4, $oPhpPresentation->getAllSlides());
-
+        
         // Slide 1
         $oSlide1 = $oPhpPresentation->getSlide(0);
         $arrayShape = $oSlide1->getShapeCollection();
@@ -141,7 +140,7 @@ class ODPresentationTest extends TestCase
         $this->assertTrue($oRichText->getFont()->isBold());
         $this->assertEquals(60, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
-
+        
         // Slide 2
         $oSlide2 = $oPhpPresentation->getSlide(1);
         $arrayShape = $oSlide2->getShapeCollection();
@@ -238,7 +237,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Supports writing to different file formats', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
-
+        
         // Slide 3
         $oSlide2 = $oPhpPresentation->getSlide(2);
         $arrayShape = $oSlide2->getShapeCollection();
@@ -395,7 +394,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('... (more to come) ...', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
-
+        
         // Slide 4
         $oSlide3 = $oPhpPresentation->getSlide(3);
         $arrayShape = $oSlide3->getShapeCollection();

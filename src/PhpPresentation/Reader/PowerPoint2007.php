@@ -131,7 +131,6 @@ class PowerPoint2007 implements ReaderInterface
      *
      * @param  string $pFilename
      * @return \PhpOffice\PhpPresentation\PhpPresentation
-     * @throws \Exception
      */
     protected function loadFile($pFilename)
     {
@@ -266,8 +265,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Extract all slides
-     * @param $sPart
-     * @throws \Exception
      */
     protected function loadSlides($sPart)
     {
@@ -305,7 +302,6 @@ class PowerPoint2007 implements ReaderInterface
      * Extract all MasterSlides
      * @param XMLReader $xmlReader
      * @param string $fileRels
-     * @throws \Exception
      */
     protected function loadMasterSlides(XMLReader $xmlReader, $fileRels)
     {
@@ -332,7 +328,6 @@ class PowerPoint2007 implements ReaderInterface
      * Extract data from slide
      * @param string $sPart
      * @param string $baseFile
-     * @throws \Exception
      */
     protected function loadSlide($sPart, $baseFile)
     {
@@ -354,18 +349,6 @@ class PowerPoint2007 implements ReaderInterface
                     // Background
                     $oBackground = new Slide\Background\Color();
                     $oBackground->setColor($oColor);
-                    // Slide Background
-                    $oSlide = $this->oPhpPresentation->getActiveSlide();
-                    $oSlide->setBackground($oBackground);
-                }
-                $oElementColor = $xmlReader->getElement('a:solidFill/a:schemeClr', $oElement);
-                if ($oElementColor instanceof \DOMElement) {
-                    // Color
-                    $oColor = new SchemeColor();
-                    $oColor->setValue($oElementColor->hasAttribute('val') ? $oElementColor->getAttribute('val') : null);
-                    // Background
-                    $oBackground = new Slide\Background\SchemeColor();
-                    $oBackground->setSchemeColor($oColor);
                     // Slide Background
                     $oSlide = $this->oPhpPresentation->getActiveSlide();
                     $oSlide->setBackground($oBackground);
@@ -421,7 +404,6 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * @param string $sPart
      * @param string $baseFile
-     * @throws \Exception
      */
     protected function loadMasterSlide($sPart, $baseFile)
     {
@@ -565,7 +547,6 @@ class PowerPoint2007 implements ReaderInterface
      * @param string $baseFile
      * @param SlideMaster $oSlideMaster
      * @return SlideLayout|null
-     * @throws \Exception
      */
     protected function loadLayoutSlide($sPart, $baseFile, SlideMaster $oSlideMaster)
     {
@@ -639,7 +620,6 @@ class PowerPoint2007 implements ReaderInterface
      * @param XMLReader $xmlReader
      * @param \DOMElement $oElement
      * @param AbstractSlide $oSlide
-     * @throws \Exception
      */
     protected function loadSlideBackground(XMLReader $xmlReader, \DOMElement $oElement, AbstractSlide $oSlide)
     {
@@ -700,7 +680,6 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * @param string $baseFile
      * @param Slide $oSlide
-     * @throws \Exception
      */
     protected function loadSlideNote($baseFile, Slide $oSlide)
     {
@@ -720,7 +699,6 @@ class PowerPoint2007 implements ReaderInterface
      * @param XMLReader $document
      * @param \DOMElement $node
      * @param AbstractSlide $oSlide
-     * @throws \Exception
      */
     protected function loadShapeDrawing(XMLReader $document, \DOMElement $node, AbstractSlide $oSlide)
     {
@@ -734,17 +712,6 @@ class PowerPoint2007 implements ReaderInterface
         if ($oElement instanceof \DOMElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
             $oShape->setDescription($oElement->hasAttribute('descr') ? $oElement->getAttribute('descr') : '');
-
-            // Hyperlink
-            $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElement);
-            if (is_object($oElementHlinkClick)) {
-                if ($oElementHlinkClick->hasAttribute('tooltip')) {
-                    $oShape->getHyperlink()->setTooltip($oElementHlinkClick->getAttribute('tooltip'));
-                }
-                if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target'])) {
-                    $oShape->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target']);
-                }
-            }
         }
 
         $oElement = $document->getElement('p:blipFill/a:blip', $node);
@@ -761,18 +728,9 @@ class PowerPoint2007 implements ReaderInterface
                 $pathImage = implode('/', $pathImage);
                 $imageFile = $this->oZip->getFromName($pathImage);
                 if (!empty($imageFile)) {
-                    $info = getimagesizefromstring($imageFile);
-                    $oShape->setMimeType($info['mime']);
-                    $oShape->setRenderingFunction(str_replace('/', '', $info['mime']));
                     $oShape->setImageResource(imagecreatefromstring($imageFile));
                 }
             }
-        }
-
-        $oElement = $document->getElement('p:spPr', $node);
-        if ($oElement instanceof \DOMElement) {
-            $oFill = $this->loadStyleFill($document, $oElement);
-            $oShape->setFill($oFill);
         }
 
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
@@ -1174,7 +1132,6 @@ class PowerPoint2007 implements ReaderInterface
      * @param XMLReader $xmlReader
      * @param \DOMElement $oElement
      * @param Border $oBorder
-     * @throws \Exception
      */
     protected function loadStyleBorder(XMLReader $xmlReader, \DOMElement $oElement, Border $oBorder)
     {
@@ -1222,7 +1179,6 @@ class PowerPoint2007 implements ReaderInterface
      * @param XMLReader $xmlReader
      * @param \DOMElement $oElement
      * @return null|Fill
-     * @throws \Exception
      */
     protected function loadStyleFill(XMLReader $xmlReader, \DOMElement $oElement)
     {
@@ -1266,6 +1222,7 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * @param string $fileRels
+     * @return string
      */
     protected function loadRels($fileRels)
     {
@@ -1290,7 +1247,6 @@ class PowerPoint2007 implements ReaderInterface
      * @param $oSlide
      * @param \DOMNodeList $oElements
      * @param XMLReader $xmlReader
-     * @throws \Exception
      * @internal param $baseFile
      */
     protected function loadSlideShapes($oSlide, $oElements, $xmlReader)

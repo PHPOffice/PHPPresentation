@@ -20,26 +20,25 @@ namespace PhpOffice\PhpPresentation\Tests;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Slide\Note;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class NoteTest extends TestCase
+class NoteTest extends \PHPUnit_Framework_TestCase
 {
     public function testParent()
     {
         $object = new Note();
         $this->assertNull($object->getParent());
-
+        
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->createSlide();
         $oSlide->setNote($object);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getParent());
     }
-
+    
     public function testExtent()
     {
         $object = new Note();
@@ -48,13 +47,13 @@ class NoteTest extends TestCase
         $object = new Note();
         $this->assertNotNull($object->getExtentY());
     }
-
+    
     public function testHashCode()
     {
         $object = new Note();
         $this->assertInternalType('string', $object->getHashCode());
     }
-
+    
     public function testOffset()
     {
         $object = new Note();
@@ -63,14 +62,14 @@ class NoteTest extends TestCase
         $object = new Note();
         $this->assertNotNull($object->getOffsetY());
     }
-
+    
     public function testShape()
     {
         $object = new Note();
         $this->assertEquals(0, $object->getShapeCollection()->count());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
         $this->assertEquals(1, $object->getShapeCollection()->count());
-
+        
         $oRichText = new RichText();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->addShape($oRichText));
         $this->assertEquals(2, $object->getShapeCollection()->count());
@@ -82,7 +81,7 @@ class NoteTest extends TestCase
     public function testSetGetHashIndex()
     {
         $object = new Note();
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $this->assertNull($object->getHashIndex());
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());

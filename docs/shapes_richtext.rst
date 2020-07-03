@@ -30,6 +30,7 @@ Properties that can be set for each paragraphs are as follow.
 - ``lineSpacing`` see *[LineSpacing](#linespacing)*
 - ``font`` see *[Font](#font)*
 
+
 Bullet
 ------
 
@@ -58,6 +59,7 @@ With the bullet style, you can define the char, the font, the color and the type
     $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
     $oParagraph->getBulletStyle()->setBulletColor(new Color(Color::COLOR_RED));
 
+
 LineSpacing
 -----------
 
@@ -72,6 +74,7 @@ Example:
     $oParagraph = new Paragraph();
     $oParagraph->setLineSpacing(200);
     $iLineSpacing = $oParagraph->getLineSpacing();
+
 
 Run
 ---

@@ -22,14 +22,13 @@ use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Paragraph element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Paragraph
  */
-class ParagraphTest extends TestCase
+class ParagraphTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test can read
@@ -93,7 +92,7 @@ class ParagraphTest extends TestCase
     public function testHashIndex()
     {
         $object = new Paragraph();
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -104,7 +103,7 @@ class ParagraphTest extends TestCase
     public function testLineSpacing()
     {
         $object = new Paragraph();
-        $valueExpected = mt_rand(1, 100);
+        $valueExpected = rand(1, 100);
         $this->assertEquals(100, $object->getLineSpacing());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setLineSpacing($valueExpected));
         $this->assertEquals($valueExpected, $object->getLineSpacing());
@@ -147,17 +146,17 @@ class ParagraphTest extends TestCase
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->addText(new TextElement()));
-        $this->assertCount(1, $object->getRichTextElements());
+        $this->assertcount(1, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText());
-        $this->assertCount(2, $object->getRichTextElements());
+        $this->assertcount(2, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText('AAA'));
-        $this->assertCount(3, $object->getRichTextElements());
+        $this->assertcount(3, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->createBreak());
-        $this->assertCount(4, $object->getRichTextElements());
+        $this->assertcount(4, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun());
-        $this->assertCount(5, $object->getRichTextElements());
+        $this->assertcount(5, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BBB'));
-        $this->assertCount(6, $object->getRichTextElements());
+        $this->assertcount(6, $object->getRichTextElements());
         $this->assertEquals('AAA'."\r\n".'BBB', $object->getPlainText());
         $this->assertEquals('AAA'."\r\n".'BBB', (string) $object);
     }

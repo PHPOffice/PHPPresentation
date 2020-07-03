@@ -160,23 +160,25 @@ class Cell implements ComparableInterface
      * Create paragraph
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
-     * @throws \Exception
      */
     public function createParagraph()
     {
         $this->richTextParagraphs[] = new Paragraph();
-        $totalRichTextParagraphs = count($this->richTextParagraphs);
-        $this->activeParagraph = $totalRichTextParagraphs - 1;
 
-        if ($totalRichTextParagraphs > 1) {
+        if (count($this->richTextParagraphs) > 1) {
             $alignment = clone $this->getActiveParagraph()->getAlignment();
             $font = clone $this->getActiveParagraph()->getFont();
             $bulletStyle = clone $this->getActiveParagraph()->getBulletStyle();
 
+            $this->activeParagraph = count($this->richTextParagraphs) - 1;
+
             $this->getActiveParagraph()->setAlignment($alignment);
             $this->getActiveParagraph()->setFont($font);
             $this->getActiveParagraph()->setBulletStyle($bulletStyle);
+        } else {
+            $this->activeParagraph = count($this->richTextParagraphs) - 1;
         }
+
         return $this->getActiveParagraph();
     }
 
@@ -185,7 +187,7 @@ class Cell implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface $pText Rich text element
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function addText(TextElementInterface $pText = null)
     {
@@ -273,15 +275,17 @@ class Cell implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] $paragraphs Array of paragraphs
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setParagraphs($paragraphs = null)
     {
-        if (!is_array($paragraphs)) {
+        if (is_array($paragraphs)) {
+            $this->richTextParagraphs = $paragraphs;
+            $this->activeParagraph    = count($this->richTextParagraphs) - 1;
+        } else {
             throw new \Exception("Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.");
         }
-        $this->richTextParagraphs = $paragraphs;
-        $this->activeParagraph    = count($this->richTextParagraphs) - 1;
+
         return $this;
     }
 
@@ -299,7 +303,7 @@ class Cell implements ComparableInterface
      * Set fill
      *
      * @param  \PhpOffice\PhpPresentation\Style\Fill     $fill
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setFill(Fill $fill)
     {
@@ -322,7 +326,7 @@ class Cell implements ComparableInterface
      * Set borders
      *
      * @param  \PhpOffice\PhpPresentation\Style\Borders  $borders
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setBorders(Borders $borders)
     {
@@ -345,7 +349,7 @@ class Cell implements ComparableInterface
      * Set width
      *
      * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setWidth($value = 0)
     {
@@ -368,7 +372,7 @@ class Cell implements ComparableInterface
      * Set colSpan
      *
      * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setColSpan($value = 0)
     {
@@ -391,7 +395,7 @@ class Cell implements ComparableInterface
      * Set rowSpan
      *
      * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setRowSpan($value = 0)
     {

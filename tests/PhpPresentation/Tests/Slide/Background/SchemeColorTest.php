@@ -4,9 +4,8 @@ namespace PhpOffice\PhpPresentation\Tests\Slide\Background;
 
 use PhpOffice\PhpPresentation\Slide\Background\SchemeColor;
 use PhpOffice\PhpPresentation\Style\SchemeColor as StyleSchemeColor;
-use PHPUnit\Framework\TestCase;
 
-class SchemeColorTest extends TestCase
+class SchemeColorTest extends \PHPUnit_Framework_TestCase
 {
     public function testBasic()
     {

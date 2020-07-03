@@ -18,14 +18,13 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\PresentationProperties;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for DocumentProperties
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PresentationProperties
  */
-class PresentationPropertiesTest extends TestCase
+class PresentationPropertiesTest extends \PHPUnit_Framework_TestCase
 {
     public function testCommentVisible()
     {

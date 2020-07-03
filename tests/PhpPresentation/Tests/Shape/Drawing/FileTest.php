@@ -18,14 +18,13 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Drawing element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Drawing
  */
-class FileTest extends TestCase
+class FileTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {

@@ -6,7 +6,8 @@
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false">
+         stopOnFailure="false"
+         syntaxCheck="false">
     <testsuites>
         <testsuite name="PHPPresentation Test Suite">
             <directory>./tests/PhpPresentation</directory>
@@ -18,7 +19,7 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-html" target="./build/coverage" />
+        <log type="coverage-html" target="./build/coverage" charset="UTF-8" highlight="true" />
         <log type="coverage-clover" target="./build/logs/clover.xml" />
     </logging>
 </phpunit>

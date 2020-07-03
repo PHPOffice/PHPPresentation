@@ -66,11 +66,12 @@ class Marker
 
     /**
      * @param string $symbol
-     * @return $this
+     * @return Marker
      */
     public function setSymbol($symbol = self::SYMBOL_NONE)
     {
         $this->symbol = $symbol;
+
         return $this;
     }
 
@@ -84,11 +85,12 @@ class Marker
 
     /**
      * @param int $size
-     * @return $this
+     * @return Marker
      */
     public function setSize($size = 5)
     {
         $this->size = $size;
+
         return $this;
     }
 }

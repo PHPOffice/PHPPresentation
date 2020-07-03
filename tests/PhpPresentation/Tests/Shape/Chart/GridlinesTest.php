@@ -3,9 +3,8 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
-use PHPUnit\Framework\TestCase;
 
-class GridlinesTest extends TestCase
+class GridlinesTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {

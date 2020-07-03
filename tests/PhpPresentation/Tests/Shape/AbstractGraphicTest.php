@@ -18,14 +18,13 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Table element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\AbstractGraphic
  */
-class AbstractGraphicTest extends TestCase
+class AbstractGraphicTest extends \PHPUnit_Framework_TestCase
 {
     public function testWidthAndHeight()
     {

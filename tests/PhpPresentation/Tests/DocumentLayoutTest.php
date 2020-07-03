@@ -18,14 +18,13 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for DocumentLayout
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\DocumentLayout
  */
-class DocumentLayoutTest extends TestCase
+class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test create new instance
@@ -57,7 +56,7 @@ class DocumentLayoutTest extends TestCase
 
     public function testCX()
     {
-        $value = mt_rand(1, 100000);
+        $value = rand(1, 100000);
         $object = new DocumentLayout();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentLayout', $object->setCX($value));
         $this->assertEquals($value, $object->getCX());
@@ -77,7 +76,7 @@ class DocumentLayoutTest extends TestCase
 
     public function testCY()
     {
-        $value = mt_rand(1, 100000);
+        $value = rand(1, 100000);
         $object = new DocumentLayout();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentLayout', $object->setCY($value));
         $this->assertEquals($value, $object->getCY());

@@ -19,14 +19,13 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Style\Font;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Axis element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Axis
  */
-class AxisTest extends TestCase
+class AxisTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
@@ -40,7 +39,7 @@ class AxisTest extends TestCase
 
     public function testBounds()
     {
-        $value = mt_rand(0, 100);
+        $value = rand(0, 100);
         $object = new Axis();
 
         $this->assertNull($object->getMinBounds());
@@ -90,7 +89,7 @@ class AxisTest extends TestCase
     public function testHashIndex()
     {
         $object = new Axis();
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
 
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setHashIndex($value));
@@ -107,14 +106,12 @@ class AxisTest extends TestCase
         $this->assertTrue($object->isVisible());
     }
 
-    public function testOutline()
+    public function testTitle()
     {
-        $oMock = $this->getMockBuilder('PhpOffice\PhpPresentation\Style\\Outline')->getMock();
-
         $object = new Axis();
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\\Outline', $object->getOutline());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setOutline($oMock));
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\\Outline', $object->getOutline());
+        $this->assertEquals('Axis Title', $object->getTitle());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setTitle('AAAA'));
+        $this->assertEquals('AAAA', $object->getTitle());
     }
 
     public function testTickMark()
@@ -135,17 +132,9 @@ class AxisTest extends TestCase
         $this->assertEquals(Axis::TICK_MARK_NONE, $object->getMajorTickMark());
     }
 
-    public function testTitle()
-    {
-        $object = new Axis();
-        $this->assertEquals('Axis Title', $object->getTitle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setTitle('AAAA'));
-        $this->assertEquals('AAAA', $object->getTitle());
-    }
-
     public function testUnit()
     {
-        $value = mt_rand(0, 100);
+        $value = rand(0, 100);
         $object = new Axis();
 
         $this->assertNull($object->getMinorUnit());

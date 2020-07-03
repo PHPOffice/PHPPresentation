@@ -11,7 +11,6 @@ class Relationships extends AbstractDecoratorWriter
     /**
      * Add relationships to ZIP file
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     * @throws \Exception
      */
     public function render()
     {

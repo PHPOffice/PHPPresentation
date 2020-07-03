@@ -20,14 +20,13 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for RichText element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText
  */
-class RichTextTest extends TestCase
+class RichTextTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {
@@ -42,12 +41,12 @@ class RichTextTest extends TestCase
         $this->assertEquals(0, $object->getActiveParagraphIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
         $this->assertCount(2, $object->getParagraphs());
-        $value = mt_rand(0, 1);
+        $value = rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setActiveParagraph($value));
         $this->assertEquals($value, $object->getActiveParagraphIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getActiveParagraph());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph());
-        $value = mt_rand(0, 1);
+        $value = rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
     }
 
@@ -75,7 +74,7 @@ class RichTextTest extends TestCase
     {
         $object = new RichText();
 
-        $value = mt_rand(1, 16);
+        $value = rand(1, 16);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setColumns($value));
         $this->assertEquals($value, $object->getColumns());
     }
@@ -150,36 +149,36 @@ class RichTextTest extends TestCase
     public function testGetSetHAutoShrink()
     {
         $object = new RichText();
-
+    
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal());
         $this->assertNull($object->hasAutoShrinkHorizontal());
-
+    
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(2));
         $this->assertNull($object->hasAutoShrinkHorizontal());
-
+    
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(true));
         $this->assertTrue($object->hasAutoShrinkHorizontal());
-
+    
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(false));
         $this->assertFalse($object->hasAutoShrinkHorizontal());
     }
     public function testGetSetVAutoShrink()
     {
         $object = new RichText();
-
+    
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical());
         $this->assertNull($object->hasAutoShrinkVertical());
-
+    
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(2));
         $this->assertNull($object->hasAutoShrinkVertical());
-
+    
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(true));
         $this->assertTrue($object->hasAutoShrinkVertical());
-
+    
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(false));
         $this->assertFalse($object->hasAutoShrinkVertical());
     }
-
+    
     public function testGetSetHOverflow()
     {
         $object = new RichText();
@@ -206,7 +205,7 @@ class RichTextTest extends TestCase
         $this->assertEquals(4.8, $object->getInsetTop());
 
         // Value
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setInsetBottom($value));
         $this->assertEquals($value, $object->getInsetBottom());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setInsetLeft($value));

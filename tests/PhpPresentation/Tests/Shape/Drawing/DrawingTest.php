@@ -30,10 +30,10 @@ function function_exists($function)
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
 // @codingStandardsIgnoreStart
-use PHPUnit\Framework\TestCase;
+use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 // @codingStandardsIgnoreEnd
-class DrawingTest extends TestCase
+class DrawingTest extends PhpPresentationTestCase
 {
     public static $getimagesizefromstringExists = true;
 

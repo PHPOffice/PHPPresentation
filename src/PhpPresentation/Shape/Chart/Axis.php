@@ -155,7 +155,7 @@ class Axis implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
      */
     public function setFont(Font $pFont = null)
     {
@@ -342,7 +342,7 @@ class Axis implements ComparableInterface
      * @param Outline $outline
      * @return Axis
      */
-    public function setOutline(Outline $outline)
+    public function setOutline($outline)
     {
         $this->outline = $outline;
         return $this;

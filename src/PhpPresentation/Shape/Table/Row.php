@@ -118,9 +118,11 @@ class Row implements ComparableInterface
         $this->activeCellIndex++;
         if (isset($this->cells[$this->activeCellIndex])) {
             $this->cells[$this->activeCellIndex]->setFill(clone $this->getFill());
+
             return $this->cells[$this->activeCellIndex];
+        } else {
+            throw new \Exception("Cell count out of bounds.");
         }
-        throw new \Exception("Cell count out of bounds.");
     }
 
     /**
@@ -160,7 +162,7 @@ class Row implements ComparableInterface
      * Set height
      *
      * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
      */
     public function setHeight($value = 0)
     {

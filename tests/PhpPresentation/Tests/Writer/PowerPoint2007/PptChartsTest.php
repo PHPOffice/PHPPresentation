@@ -4,15 +4,14 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use \Exception;
 use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
@@ -47,7 +46,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
-        /** @var AbstractType $stub */
         $stub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType');
         $oShape->getPlotArea()->setType($stub);
 
@@ -71,7 +69,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertTrue($oShape->getTitle()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTitleVisibilityFalse()
@@ -88,7 +85,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertFalse($oShape->getTitle()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testAxisFont()
@@ -128,8 +124,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'sz', 1600);
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'strike', 'noStrike');
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'u', Font::UNDERLINE_DASH);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testAxisOutline()
@@ -152,6 +146,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID);
         $oShape->getPlotArea()->getAxisY()->getOutline()->getFill()->getStartColor()->setRGB($expectedColorY);
 
+
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln';
@@ -168,8 +163,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorY);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testAxisVisibilityFalse()
@@ -186,8 +179,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertFalse($oShape->getPlotArea()->getAxisX()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testAxisVisibilityTrue()
@@ -204,8 +195,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertTrue($oShape->getPlotArea()->getAxisX()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeArea()
@@ -225,13 +214,11 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart/c:ser';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeAxisBounds()
     {
-        $value = mt_rand(0, 100);
+        $value = rand(0, 100);
 
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
@@ -246,16 +233,12 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
 
         $oShape->getPlotArea()->getAxisX()->setMinBounds(null);
         $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
@@ -265,8 +248,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
         $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
         $this->resetPresentationFile();
@@ -275,8 +256,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeAxisTickMark()
@@ -298,8 +277,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
         $this->resetPresentationFile();
 
@@ -307,8 +284,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
 
         $oShape->getPlotArea()->getAxisY()->setMinorTickMark();
         $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
@@ -319,8 +294,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
         $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
         $this->resetPresentationFile();
@@ -329,13 +302,11 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeAxisUnit()
     {
-        $value = mt_rand(0, 100);
+        $value = rand(0, 100);
 
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
@@ -350,16 +321,12 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oShape->getPlotArea()->getAxisY()->setMinorUnit($value);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
 
         $oShape->getPlotArea()->getAxisY()->setMinorUnit(null);
         $oShape->getPlotArea()->getAxisY()->setMajorUnit($value);
@@ -369,8 +336,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oShape->getPlotArea()->getAxisY()->setMinorUnit($value);
         $oShape->getPlotArea()->getAxisY()->setMajorUnit($value);
         $this->resetPresentationFile();
@@ -379,13 +344,11 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeBar()
     {
-        $valueGapWidthPercent = mt_rand(0, 500);
+        $valueGapWidthPercent = rand(0, 500);
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
@@ -412,13 +375,11 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:gapWidth';
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeBar3D()
     {
-        $valueGapWidthPercent = mt_rand(0, 500);
+        $valueGapWidthPercent = rand(0, 500);
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
@@ -445,8 +406,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:gapWidth';
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeBar3DSubScript()
@@ -462,8 +421,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250000');
-        $this->assertIsSchemaECMA376Valid();
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-25000');
     }
 
     public function testTypeBar3DSuperScript()
@@ -479,63 +437,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
-        $this->assertIsSchemaECMA376Valid();
-    }
-
-    public function testTypeDoughnut()
-    {
-        $randHoleSize = mt_rand(10, 90);
-        $randSeparator = chr(rand(ord('A'), ord('Z')));
-
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createChartShape();
-        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
-        $oDoughnut = new Doughnut();
-        $oSeries = new Series('Downloads', $this->seriesData);
-        $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
-        $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKBLUE));
-        $oSeries->getDataPointFill(2)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKGREEN));
-        $oSeries->getDataPointFill(3)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKRED));
-        $oSeries->getDataPointFill(4)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKYELLOW));
-        $oDoughnut->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oDoughnut);
-
-        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:ser';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:ser/c:dPt/c:spPr';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:ser/c:tx/c:v';
-        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:dLbls/c:separator';
-        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:dLbls/c:showBubbleSize';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:firstSliceAng';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:holeSize';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 50);
-
-        $oDoughnut->setHoleSize($randHoleSize);
-        $this->resetPresentationFile();
-
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:holeSize';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $randHoleSize);
-
-        $oSeries->setSeparator($randSeparator);
-        $this->resetPresentationFile();
-
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:doughnutChart/c:dLbls/c:separator';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $randSeparator);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
     }
 
     public function testTypeBar3DBarDirection()
@@ -552,8 +454,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:bar3DChart/c:barDir';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Bar3D::DIRECTION_HORIZONTAL);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeLine()
@@ -574,8 +474,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeLineGridlines()
@@ -608,7 +506,7 @@ class PptChartsTest extends PhpPresentationTestCase
         );
         $expectedColor = new Color(Color::COLOR_BLUE);
         foreach ($arrayTests as $arrayTest) {
-            $expectedSizePts = mt_rand(1, 100);
+            $expectedSizePts = rand(1, 100);
             $expectedSizeEmu = round(Drawing::pointsToPixels(Drawing::pixelsToEmu($expectedSizePts)));
 
             $this->oPresentation->removeSlideByIndex()->createSlide();
@@ -635,8 +533,6 @@ class PptChartsTest extends PhpPresentationTestCase
             $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $arrayTest['expectedElementColor'], 'val');
             $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $arrayTest['expectedElementColor'], 'val', $expectedColor->getRGB());
 
-            $this->assertIsSchemaECMA376Valid();
-
             $this->resetPresentationFile();
         }
     }
@@ -644,10 +540,9 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testTypeLineMarker()
     {
         do {
-            $expectedSymbolKey = array_rand(Marker::$arraySymbol);
-            $expectedSymbol = Marker::$arraySymbol[$expectedSymbolKey];
+            $expectedSymbol = array_rand(Marker::$arraySymbol);
         } while ($expectedSymbol == Marker::SYMBOL_NONE);
-        $expectedSize = mt_rand(2, 72);
+        $expectedSize = rand(2, 72);
         $expectedEltSymbol = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:symbol';
         $expectedElementSize = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:size';
 
@@ -664,16 +559,12 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol, 'val', $expectedSymbol);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', $expectedSize);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oSeries->getMarker()->setSize(1);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', 2);
-
-        $this->assertIsSchemaECMA376Valid();
 
         $oSeries->getMarker()->setSize(73);
         $oLine->setSeries(array($oSeries));
@@ -682,21 +573,17 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', 72);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oSeries->getMarker()->setSymbol(Marker::SYMBOL_NONE);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeLineSeriesOutline()
     {
-        $expectedWidth = mt_rand(1, 100);
+        $expectedWidth = rand(1, 100);
         $expectedWidthEmu = Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidth));
         $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:spPr/a:ln';
 
@@ -716,8 +603,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oSeries->setOutline($oOutline);
         $oLine->setSeries(array($oSeries));
         $this->resetPresentationFile();
@@ -726,8 +611,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement, 'w', $expectedWidthEmu);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement . '/a:solidFill');
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeLineSubScript()
@@ -743,9 +626,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250000');
-
-        $this->assertIsSchemaECMA376Valid();
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-25000');
     }
 
     public function testTypeLineSuperScript()
@@ -761,9 +642,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
-
-        $this->assertIsSchemaECMA376Valid();
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
     }
 
     public function testTypePie()
@@ -795,16 +674,34 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oSeries->setShowLegendKey(true);
         $this->resetPresentationFile();
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:showLegendKey';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 1);
+    }
 
-        $this->assertIsSchemaECMA376Valid();
+    public function testTypePieSeparator()
+    {
+        $value = ';';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oPie = new Pie();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oPie->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oPie);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+
+        $oSeries->setSeparator($value);
+        $this->resetPresentationFile();
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:pieChart/c:ser/c:dLbls/c:separator';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $value);
     }
 
     public function testTypePie3D()
@@ -832,13 +729,11 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:tx/c:v';
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypePie3DExplosion()
     {
-        $value = mt_rand(1, 100);
+        $value = rand(1, 100);
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
@@ -852,8 +747,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:explosion';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypePie3DSubScript()
@@ -869,9 +762,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250000');
-
-        $this->assertIsSchemaECMA376Valid();
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-25000');
     }
 
     public function testTypePie3DSuperScript()
@@ -887,9 +778,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:pie3DChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
-
-        $this->assertIsSchemaECMA376Valid();
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
     }
 
     public function testTypeScatter()
@@ -914,25 +803,20 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oSeries->setShowLegendKey(true);
         $this->resetPresentationFile();
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:showLegendKey';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 1);
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeScatterMarker()
     {
         do {
             $expectedSymbol = array_rand(Marker::$arraySymbol);
-            $expectedSymbol = Marker::$arraySymbol[$expectedSymbol];
         } while ($expectedSymbol == Marker::SYMBOL_NONE);
-        $expectedSize = mt_rand(2, 72);
+        $expectedSize = rand(2, 72);
         $expectedEltSymbol = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:symbol';
         $expectedElementSize = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:size';
 
@@ -949,16 +833,12 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol, 'val', $expectedSymbol);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', $expectedSize);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oSeries->getMarker()->setSize(1);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', 2);
-
-        $this->assertIsSchemaECMA376Valid();
 
         $oSeries->getMarker()->setSize(73);
         $oScatter->setSeries(array($oSeries));
@@ -967,44 +847,17 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize, 'val', 72);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oSeries->getMarker()->setSymbol(Marker::SYMBOL_NONE);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
-
-        $this->assertIsSchemaECMA376Valid();
-    }
-
-    public function testTypeScatterSeparator()
-    {
-        $expectedSeparator = ';';
-        $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:separator';
-
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createChartShape();
-        $oScatter = new Scatter();
-        $oSeries = new Series('Downloads', $this->seriesData);
-        $oScatter->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oScatter);
-
-        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
-        $this->assertIsSchemaECMA376Valid();
-
-        $oSeries->setSeparator($expectedSeparator);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
-        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement, $expectedSeparator);
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeScatterSeriesOutline()
     {
-        $expectedWidth = mt_rand(1, 100);
+        $expectedWidth = rand(1, 100);
         $expectedWidthEmu = Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidth));
         $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:spPr/a:ln';
 
@@ -1026,8 +879,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
 
-        $this->assertIsSchemaECMA376Valid();
-
         $oSeries->setOutline($oOutline);
         $oScatter->setSeries(array($oSeries));
         $this->resetPresentationFile();
@@ -1036,8 +887,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement, 'w', $expectedWidthEmu);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement . '/a:solidFill');
-
-        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testTypeScatterSubScript()
@@ -1053,9 +902,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-250000');
-
-        $this->assertIsSchemaECMA376Valid();
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '-25000');
     }
 
     public function testTypeScatterSuperScript()
@@ -1071,9 +918,7 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
-
-        $this->assertIsSchemaECMA376Valid();
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '30000');
     }
 
     public function testView3D()
@@ -1086,13 +931,11 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/c:chartSpace/c:chart/c:view3D/c:hPercent';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100');
-        $this->assertIsSchemaECMA376Valid();
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '100%');
 
         $oShape->getView3D()->setHeightPercent(null);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertIsSchemaECMA376Valid();
     }
 }

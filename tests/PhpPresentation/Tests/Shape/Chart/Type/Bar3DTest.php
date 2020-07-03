@@ -19,14 +19,13 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Bar3D element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D
  */
-class Bar3DTest extends TestCase
+class Bar3DTest extends \PHPUnit_Framework_TestCase
 {
     public function testData()
     {
@@ -53,7 +52,7 @@ class Bar3DTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar3D', $object->addSeries(new Series()));
         $this->assertCount(1, $object->getSeries());
     }
-
+    
     public function testBarDirection()
     {
         $object = new Bar3D();
@@ -78,7 +77,7 @@ class Bar3DTest extends TestCase
 
     public function testGapWidthPercent()
     {
-        $value = mt_rand(0, 500);
+        $value = rand(0, 500);
         $object = new Bar3D();
         $this->assertEquals(150, $object->getGapWidthPercent());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar3D', $object->setGapWidthPercent($value));

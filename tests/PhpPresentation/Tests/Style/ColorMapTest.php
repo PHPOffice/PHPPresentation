@@ -18,9 +18,8 @@
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\ColorMap;
-use PHPUnit\Framework\TestCase;
 
-class ColorMapTest extends TestCase
+class ColorMapTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {

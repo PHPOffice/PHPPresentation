@@ -19,14 +19,13 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Bar element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
  */
-class BarTest extends TestCase
+class BarTest extends \PHPUnit_Framework_TestCase
 {
     public function testData()
     {
@@ -53,7 +52,7 @@ class BarTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->addSeries(new Series()));
         $this->assertCount(1, $object->getSeries());
     }
-
+    
     public function testBarDirection()
     {
         $object = new Bar();
@@ -78,7 +77,7 @@ class BarTest extends TestCase
 
     public function testGapWidthPercent()
     {
-        $value = mt_rand(0, 500);
+        $value = rand(0, 500);
         $object = new Bar();
         $this->assertEquals(150, $object->getGapWidthPercent());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setGapWidthPercent($value));

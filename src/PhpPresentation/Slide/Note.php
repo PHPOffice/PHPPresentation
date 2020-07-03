@@ -117,7 +117,6 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @param  \PhpOffice\PhpPresentation\AbstractShape $shape
      * @return \PhpOffice\PhpPresentation\AbstractShape
-     * @throws \Exception
      */
     public function addShape(AbstractShape $shape)
     {
@@ -130,7 +129,6 @@ class Note implements ComparableInterface, ShapeContainerInterface
      * Create rich text shape
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText
-     * @throws \Exception
      */
     public function createRichTextShape()
     {

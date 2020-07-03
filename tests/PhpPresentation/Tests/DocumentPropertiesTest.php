@@ -18,14 +18,13 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentProperties;
-use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for DocumentProperties
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\DocumentProperties
  */
-class DocumentPropertiesTest extends TestCase
+class DocumentPropertiesTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * Test get set value
