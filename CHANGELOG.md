@@ -22,6 +22,7 @@
 - PowerPoint2007 Reader : Support for fill for image - @Progi1984 GH-370
 - ODPresentation Writer : Support for fill for transparent image - @Progi1984 GH-370
 - PowerPoint2007 Writer : Support for fill for transparent image - @JewrassicPark GH-370
+- PowerPoint2007 Writer : Support for RadarChart - @Progi1984 GH-253
 
 ## 0.9.0 - 2017-07-05
 
