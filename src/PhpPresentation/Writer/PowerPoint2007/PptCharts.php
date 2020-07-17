@@ -1786,6 +1786,9 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->endElement();
 
+            // c:dLblPos
+            $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
+            
             // c:showVal
             $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
