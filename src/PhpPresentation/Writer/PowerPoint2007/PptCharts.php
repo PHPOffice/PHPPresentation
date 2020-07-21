@@ -1750,7 +1750,7 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('a:pPr');
 
             // a:defRPr
-            $objWriter->startElement('a:defRPr');
+            $objWriter->startElement('a:defRPr');            
 
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
@@ -1788,7 +1788,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:dLblPos
             $this->writeElementWithValAttribute($objWriter, 'c:dLblPos', $series->getLabelPosition());
-            
+
             // c:showVal
             $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
 
@@ -2280,7 +2280,8 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:tickLblPos
         $objWriter->startElement('c:tickLblPos');
-        $objWriter->writeAttribute('val', 'nextTo');
+        $objWriter->writeAttribute('val', $oAxis->getTickLabelPos());
+        //$objWriter->writeAttribute('val', 'nextTo');
         $objWriter->endElement();
 
         // c:spPr

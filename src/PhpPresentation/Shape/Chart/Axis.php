@@ -34,6 +34,11 @@ class Axis implements ComparableInterface
     const TICK_MARK_INSIDE = 'in';
     const TICK_MARK_OUTSIDE = 'out';
 
+    const TICK_LABEL_POS_NEXT_TO = 'nextTo';
+    const TICK_LABEL_POS_HIGH = 'high';
+    const TICK_LABEL_POS_LOW = 'low';
+    const TICK_LABEL_POS_NONE = 'none';
+
     /**
      * Title
      *
@@ -104,6 +109,11 @@ class Axis implements ComparableInterface
      * @var boolean
      */
     protected $isVisible = true;
+
+    /**
+     * @var string
+     */
+    protected $tickLabelPos = self::TICK_LABEL_POS_NEXT_TO;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
@@ -348,6 +358,14 @@ class Axis implements ComparableInterface
         return $this;
     }
 
+    public function getTickLabelPos(){
+        return $this->tickLabelPos;
+    }
+
+    public function setTickLabelPos($pos = self::TICK_LABEL_POS_NEXT_TO){
+        $this->tickLabelPos = $pos;
+        return $this;
+    }
     /**
      * Get hash code
      *
