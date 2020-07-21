@@ -860,6 +860,14 @@ class PptCharts extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('sourceLinked', '0');
                 $objWriter->endElement();
             }
+            if($series->getLabelColor() != "noFill"){
+                $objWriter->startElement('c:spPr');
+                $objWriter->startElement('a:solidFill');
+                $this->writeColor($objWriter, $series->getLabelColor());
+                $objWriter->endElement();
+                $objWriter->endElement();
+            }
+            
 
             // c:txPr
             $objWriter->startElement('c:txPr');
