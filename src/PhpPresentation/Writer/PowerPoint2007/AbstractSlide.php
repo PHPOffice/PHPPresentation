@@ -197,7 +197,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:sp\p:spPr
         $objWriter->startElement('p:spPr');
 
-        if (!$shape->isPlaceholder()) {
+        //if (!$shape->isPlaceholder()) {   //for placeholder position, without a:xfrm, placeholder will always in position 0,0
             // p:sp\p:spPr\a:xfrm
             $objWriter->startElement('a:xfrm');
             $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
@@ -221,7 +221,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeElement('a:avLst');
 
             $objWriter->endElement();
-        }
+        //}
         $this->writeFill($objWriter, $shape->getFill());
         $this->writeBorder($objWriter, $shape->getBorder(), '');
         $this->writeShadow($objWriter, $shape->getShadow());
@@ -233,7 +233,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // a:bodyPr
         //@link :http://msdn.microsoft.com/en-us/library/documentformat.openxml.drawing.bodyproperties%28v=office.14%29.aspx
         $objWriter->startElement('a:bodyPr');
-        if (!$shape->isPlaceholder()) {
+        //if (!$shape->isPlaceholder()) {   //we need anchor to set placeholder text at middle or bottom, without anchor, placeholder text always at richtext area top
             $verticalAlign = $shape->getActiveParagraph()->getAlignment()->getVertical();
             if ($verticalAlign != Alignment::VERTICAL_BASE && $verticalAlign != Alignment::VERTICAL_AUTO) {
                 $objWriter->writeAttribute('anchor', $verticalAlign);
@@ -272,7 +272,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 }
             }
             $objWriter->endElement();
-        }
+        //}
         $objWriter->endElement();
         // a:lstStyle
         $objWriter->writeElement('a:lstStyle', null);
@@ -281,10 +281,56 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $shape->getPlaceholder()->getType() == Placeholder::PH_TYPE_DATETIME)
         ) {
             $objWriter->startElement('a:p');
+
+            //1 to set placeholder align,margin,indent and so on
+            $paragraph =$shape->getActiveParagraph()->getAlignment();
+            //a:pPr
+            $objWriter->startElement('a:pPr');
+            $objWriter->writeAttribute('algn', $paragraph->getHorizontal());
+            $objWriter->writeAttribute('fontAlgn', $paragraph->getVertical());
+            $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($paragraph->getMarginLeft()));
+            $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($paragraph->getMarginRight()));
+            $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($paragraph->getIndent()));
+            $objWriter->writeAttribute('lvl', $paragraph->getLevel());
+
+            $objWriter->startElement('a:lnSpc');
+            $objWriter->startElement('a:spcPct');
+            $objWriter->writeAttribute('val', $shape->getActiveParagraph()->getLineSpacing() . "%");
+            $objWriter->endElement();
+            $objWriter->endElement();
+            $objWriter->endElement();
+            //1 END to set placeholder align,margin,indent and so on
+
             $objWriter->startElement('a:fld');
             $objWriter->writeAttribute('id', $this->getGUID());
             $objWriter->writeAttribute('type', (
             $shape->getPlaceholder()->getType() == Placeholder::PH_TYPE_SLIDENUM ? 'slidenum' : 'datetime'));
+
+            //2 to set text font info
+            $font = $shape->getActiveParagraph()->getFont();
+            // a:rPr
+            $objWriter->startElement('a:rPr');
+            $objWriter->writeAttributeIf($font->isBold(), 'b', '1');
+            $objWriter->writeAttributeIf($font->isItalic(), 'i', '1');
+            $objWriter->writeAttributeIf($font->isStrikethrough(), 'strike', 'sngStrike');
+            // Size
+            $objWriter->writeAttribute('sz', ($font->getSize() * 100));
+            // Character spacing
+            $objWriter->writeAttribute('spc', $font->getCharacterSpacing());
+            // Underline
+            $objWriter->writeAttribute('u', $font->getUnderline());
+            // Color - a:solidFill
+            $objWriter->startElement('a:solidFill');
+            $this->writeColor($objWriter, $font->getColor());
+            $objWriter->endElement();
+            // Font - a:latin
+            $objWriter->startElement('a:latin');
+            $objWriter->writeAttribute('typeface', $font->getName());
+            $objWriter->endElement();
+            // a:rPr
+            $objWriter->endElement();
+            //2 end to set text font info
+
             $objWriter->writeElement('a:t', (
             $shape->getPlaceholder()->getType() == Placeholder::PH_TYPE_SLIDENUM ? '<nr.>' : '03-04-05'));
             $objWriter->endElement();
