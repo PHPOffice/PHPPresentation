@@ -22,6 +22,14 @@ namespace PhpOffice\PhpPresentation;
  */
 class DocumentProperties
 {
+    /** Constants */
+    const PROPERTY_TYPE_BOOLEAN = 'b';
+    const PROPERTY_TYPE_INTEGER = 'i';
+    const PROPERTY_TYPE_FLOAT = 'f';
+    const PROPERTY_TYPE_DATE = 'd';
+    const PROPERTY_TYPE_STRING = 's';
+    const PROPERTY_TYPE_UNKNOWN = 'u';
+
     /**
      * Creator
      *
@@ -91,6 +99,13 @@ class DocumentProperties
      * @var string
      */
     private $company;
+
+    /**
+     * Custom Properties.
+     *
+     * @var string[]
+     */
+    private $customProperties = array();
 
     /**
      * Create a new \PhpOffice\PhpPresentation\DocumentProperties
@@ -343,6 +358,101 @@ class DocumentProperties
     {
         $this->company = $pValue;
 
+        return $this;
+    }
+
+    /**
+     * Get a List of Custom Property Names.
+     *
+     * @return array of string
+     */
+    public function getCustomProperties()
+    {
+        return array_keys($this->customProperties);
+    }
+
+    /**
+     * Check if a Custom Property is defined.
+     *
+     * @param string $propertyName
+     *
+     * @return bool
+     */
+    public function isCustomPropertySet($propertyName)
+    {
+        return isset($this->customProperties[$propertyName]);
+    }
+
+    /**
+     * Get a Custom Property Value.
+     *
+     * @param string $propertyName
+     *
+     * @return string
+     */
+    public function getCustomPropertyValue($propertyName)
+    {
+        if (isset($this->customProperties[$propertyName])) {
+            return $this->customProperties[$propertyName]['value'];
+        }
+        return null;
+    }
+
+    /**
+     * Get a Custom Property Type.
+     *
+     * @param string $propertyName
+     *
+     * @return string
+     */
+    public function getCustomPropertyType($propertyName)
+    {
+        if (isset($this->customProperties[$propertyName])) {
+            return $this->customProperties[$propertyName]['type'];
+        }
+        return null;
+    }
+
+    /**
+     * Set a Custom Property.
+     *
+     * @param string $propertyName
+     * @param mixed $propertyValue
+     * @param string $propertyType
+     *   'i' : Integer
+     *   'f' : Floating Point
+     *   's' : String
+     *   'd' : Date/Time
+     *   'b' : Boolean
+     *
+     * @return $this
+     */
+    public function setCustomProperty($propertyName, $propertyValue = '', $propertyType = null)
+    {
+        if (($propertyType === null)
+            || (!in_array($propertyType, array(
+                self::PROPERTY_TYPE_INTEGER,
+                self::PROPERTY_TYPE_FLOAT,
+                self::PROPERTY_TYPE_STRING,
+                self::PROPERTY_TYPE_DATE,
+                self::PROPERTY_TYPE_BOOLEAN,
+        )))) {
+            if ($propertyValue === null) {
+                $propertyType = self::PROPERTY_TYPE_STRING;
+            } elseif (is_float($propertyValue)) {
+                $propertyType = self::PROPERTY_TYPE_FLOAT;
+            } elseif (is_int($propertyValue)) {
+                $propertyType = self::PROPERTY_TYPE_INTEGER;
+            } elseif (is_bool($propertyValue)) {
+                $propertyType = self::PROPERTY_TYPE_BOOLEAN;
+            } else {
+                $propertyType = self::PROPERTY_TYPE_STRING;
+            }
+        }
+        $this->customProperties[$propertyName] = [
+            'value' => $propertyValue,
+            'type' => $propertyType,
+        ];
         return $this;
     }
 }
