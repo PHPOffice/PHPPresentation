@@ -42,6 +42,11 @@ class Axis implements ComparableInterface
     private $title = 'Axis Title';
 
     /**
+     * @var int
+     */
+    private $labelRotation = 0;
+
+    /**
      * Format code
      *
      * @var string
@@ -131,7 +136,7 @@ class Axis implements ComparableInterface
      * Set Title
      *
      * @param  string                         $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @return $this
      */
     public function setTitle($value = 'Axis Title')
     {
@@ -177,7 +182,7 @@ class Axis implements ComparableInterface
      * Set Format Code
      *
      * @param  string                         $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @return $this
      */
     public function setFormatCode($value = '')
     {
@@ -340,11 +345,35 @@ class Axis implements ComparableInterface
 
     /**
      * @param Outline $outline
-     * @return Axis
+     * @return $this
      */
     public function setOutline(Outline $outline)
     {
         $this->outline = $outline;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLabelRotation()
+    {
+        return $this->labelRotation;
+    }
+
+    /**
+     * @param int $labelRotation
+     * @return $this
+     */
+    public function setLabelRotation($labelRotation)
+    {
+        if ($labelRotation < 0) {
+            $labelRotation = 0;
+        }
+        if ($labelRotation > 360) {
+            $labelRotation = 360;
+        }
+        $this->labelRotation = $labelRotation;
         return $this;
     }
 

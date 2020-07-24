@@ -57,7 +57,7 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testTitleVisibilityTrue()
     {
         $element = '/c:chartSpace/c:chart/c:autoTitleDeleted';
-        
+
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oLine = new Line();
@@ -170,6 +170,31 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorY);
 
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testAxisLabelRotation()
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oBar = new Bar();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oBar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oBar);
+
+        $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:bodyPr';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeNotExists($pathShape, $element, 'rot');
+
+        $this->resetPresentationFile();
+        $value = rand(0, 360);
+        $oShape->getPlotArea()->getAxisX()->setLabelRotation($value);
+
+        $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:bodyPr';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeExists($pathShape, $element, 'rot');
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'rot', Drawing::degreesToAngle($value));
     }
 
     public function testAxisVisibilityFalse()

@@ -117,6 +117,19 @@ class AxisTest extends TestCase
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\\Outline', $object->getOutline());
     }
 
+    public function testLabelRotation()
+    {
+        $value = rand(0, 360);
+        $object = new Axis();
+        $this->assertEquals(0, $object->getLabelRotation());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setLabelRotation(-1));
+        $this->assertEquals(0, $object->getLabelRotation());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setLabelRotation(361));
+        $this->assertEquals(360, $object->getLabelRotation());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setLabelRotation($value));
+        $this->assertEquals($value, $object->getLabelRotation());
+    }
+
     public function testTickMark()
     {
         $value = Axis::TICK_MARK_INSIDE;

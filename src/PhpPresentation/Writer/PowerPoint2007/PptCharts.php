@@ -2188,7 +2188,9 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('c:rich');
 
             // a:bodyPr
-            $objWriter->writeElement('a:bodyPr', null);
+            $objWriter->startElement('a:bodyPr');
+            $objWriter->writeAttributeIf($oAxis->getLabelRotation() != 0, 'rot', CommonDrawing::degreesToAngle($oAxis->getLabelRotation()));
+            $objWriter->endElement();
 
             // a:lstStyle
             $objWriter->writeElement('a:lstStyle', null);
