@@ -359,6 +359,18 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:stroke-dash', $oRichText1->getBorder()->getDashStyle());
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
+
+    public function testRichTextRotation()
+    {
+        $expectedValue = rand(1, 360);
+        $oRichText1 = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRichText1->setRotation($expectedValue);
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'draw:transform');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:transform', 'rotate ('.deg2rad(360 - $expectedValue).')');
+    }
     
     public function testRichTextShadow()
     {

@@ -430,6 +430,10 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        if ($shape->getRotation() != 0) {
+            $rotRad = deg2rad($shape->getRotation());
+            $objWriter->writeAttribute('draw:transform', 'rotate ('.$rotRad.')');
+        }
         // draw:text-box
         $objWriter->startElement('draw:text-box');
 
