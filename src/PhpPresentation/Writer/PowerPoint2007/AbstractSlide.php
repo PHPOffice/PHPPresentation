@@ -126,7 +126,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         }
         foreach ($shapes as $shape) {
             // Increment $shapeId
-            ++$shapeId;
+            $shapeId++;
             // Check type
             if ($shape instanceof RichText) {
                 $this->writeShapeText($objWriter, $shape, $shapeId);
