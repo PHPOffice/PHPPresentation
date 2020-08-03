@@ -41,6 +41,16 @@ class PresentationProperties
         self::VIEW_SLIDE_THUMBNAIL,
     );
 
+    const SHOW_TYPE_PRESENT = 'present';
+    const SHOW_TYPE_BROWSE = 'browse';
+    const SHOW_TYPE_KIOSK = 'kiosk';
+
+    protected $arrayShowTypes = array(
+        self::SHOW_TYPE_PRESENT,
+        self::SHOW_TYPE_BROWSE,
+        self::SHOW_TYPE_KIOSK,
+    );
+
     /*
      * @var boolean
      */
@@ -72,6 +82,11 @@ class PresentationProperties
      * @var boolean
      */
     protected $isCommentVisible = false;
+    
+    /*
+     * @var string
+     */
+    protected $showType = self::SHOW_TYPE_PRESENT;
     
     /**
      * @return bool
@@ -197,5 +212,25 @@ class PresentationProperties
     public function isCommentVisible()
     {
         return $this->isCommentVisible;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShowType()
+    {
+        return $this->showType;
+    }
+    
+    /**
+     * @param string $value
+     * @return \PhpOffice\PhpPresentation\PresentationProperties
+     */
+    public function setShowType($value = self::SHOW_TYPE_PRESENT)
+    {
+        if (in_array($value, $this->arrayShowTypes)) {
+            $this->showType = $value;
+        }
+        return $this;
     }
 }

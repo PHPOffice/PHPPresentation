@@ -77,7 +77,6 @@ class PhpPresentation
 
         // Initialise slide collection and add one slide
         $this->createSlide();
-        $this->setActiveSlideIndex();
 
         // Set initial document properties & layout
         $this->setDocumentProperties(new DocumentProperties());
@@ -209,6 +208,7 @@ class PhpPresentation
     public function addSlide(Slide $slide = null)
     {
         $this->slideCollection[] = $slide;
+        $this->setActiveSlideIndex(count($this->slideCollection) - 1);
 
         return $slide;
     }
