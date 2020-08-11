@@ -136,7 +136,7 @@ class Series implements ComparableInterface
      * Label color
      * @var string
      */
-    private $labelColor = "noFill";
+    private $labelColor = 'noFill';
     /**
      * Hash index
      * @var string
@@ -517,7 +517,7 @@ class Series implements ComparableInterface
     public function getLabelColor(){
         return $this->labelColor;
     }
-    public function setLabelColor($labelColor){
+    public function setLabelColor($labelColor = 'noFill'){
         $this->labelColor = $labelColor;
         return $this;
     }
