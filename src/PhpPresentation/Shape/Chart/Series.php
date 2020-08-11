@@ -21,7 +21,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
-
+use PhpOffice\PhpPresentation\Style\Color as StyleColor;
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Series
  */
@@ -134,9 +134,9 @@ class Series implements ComparableInterface
 
     /**
      * Label color
-     * @var string
+     * @var StyleColor
      */
-    private $labelColor = 'noFill';
+    private $labelColor = null;
     /**
      * Hash index
      * @var string
@@ -517,7 +517,7 @@ class Series implements ComparableInterface
     public function getLabelColor(){
         return $this->labelColor;
     }
-    public function setLabelColor($labelColor = 'noFill'){
+    public function setLabelColor($labelColor = null){
         $this->labelColor = $labelColor;
         return $this;
     }
