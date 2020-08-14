@@ -100,7 +100,14 @@ class DocumentProperties
      * @var string
      */
     private $company;
-
+    
+    /**
+     * revision
+     *
+     * @var string
+     */
+    private $revision;
+    
     /**
      * Custom Properties.
      *
@@ -124,6 +131,7 @@ class DocumentProperties
         $this->keywords = '';
         $this->category = '';
         $this->company = 'Microsoft Corporation';
+        $this->revision = '';
     }
 
     /**
@@ -450,6 +458,24 @@ class DocumentProperties
             'value' => $propertyValue,
             'type' => $propertyType,
         ];
+
+        return $this;
+    }
+
+    /*
+     * Get Revision.
+     */
+    public function getRevision(): string
+    {
+        return $this->revision;
+    }
+
+    /**
+     * Set Revision
+     */
+    public function setRevision(string $pValue = ''): self
+    {
+        $this->revision = $pValue;
 
         return $this;
     }
