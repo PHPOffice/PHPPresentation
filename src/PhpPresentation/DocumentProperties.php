@@ -91,7 +91,14 @@ class DocumentProperties
      * @var string
      */
     private $company;
-
+    
+    /**
+     * revision
+     *
+     * @var string
+     */
+    private $revision;
+    
     /**
      * Create a new \PhpOffice\PhpPresentation\DocumentProperties
      */
@@ -108,6 +115,7 @@ class DocumentProperties
         $this->keywords       = '';
         $this->category       = '';
         $this->company        = 'Microsoft Corporation';
+        $this->revision       = '';
     }
 
     /**
@@ -345,4 +353,28 @@ class DocumentProperties
 
         return $this;
     }
+
+    /**
+     * Get Revision
+     *
+     * @return string
+     */
+    public function getRevision()
+    {
+        return $this->revision;
+    }
+
+    /**
+     * Set Revision
+     *
+     * @param  string                           $pValue
+     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     */
+    public function setRevision($pValue = '')
+    {
+        $this->revision = $pValue;
+
+        return $this;
+    }
+
 }
