@@ -64,9 +64,21 @@ class Relationships extends AbstractDecoratorWriter
 
         $idxRelation = 5;
         // Thumbnail
-        if ($this->getPresentation()->getPresentationProperties()->getThumbnailPath()) {
-            $pathThumbnail = file_get_contents($this->getPresentation()->getPresentationProperties()->getThumbnailPath());
+        $path = $this->getPresentation()->getPresentationProperties()->getThumbnailPath();
+        $type = $this->getPresentation()->getPresentationProperties()->getThumbnailType();
+        // From local file
+        if ($path && $type == \PhpOffice\PhpPresentation\PresentationProperties::THUMBNAIL_FILE) {
+            $pathThumbnail = file_get_contents($path);
             $gdImage = imagecreatefromstring($pathThumbnail);
+            if ($gdImage) {
+                imagedestroy($gdImage);
+                // Relationship docProps/thumbnail.jpeg
+                $this->writeRelationship($objWriter, $idxRelation, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
+            }
+        }
+        // From ZIP original file
+        if ($path && $type == \PhpOffice\PhpPresentation\PresentationProperties::THUMBNAIL_ZIP) {
+            $gdImage = imagecreatefromstring($this->getPresentation()->getPresentationProperties()->getThumbnail());
             if ($gdImage) {
                 imagedestroy($gdImage);
                 // Relationship docProps/thumbnail.jpeg
