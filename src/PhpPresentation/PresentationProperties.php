@@ -29,6 +29,8 @@ class PresentationProperties
     const VIEW_SLIDE_MASTER = 'sldMasterView';
     const VIEW_SLIDE_SORTER = 'sldSorterView';
     const VIEW_SLIDE_THUMBNAIL = 'sldThumbnailView';
+    const THUMBNAIL_FILE = 'file'; // Thumbnail path is out of PPT
+    const THUMBNAIL_ZIP = 'zip'; // Thumbnail path point to an image store into file loaded
 
     protected $arrayView = array(
         self::VIEW_HANDOUT,
@@ -53,9 +55,19 @@ class PresentationProperties
     protected $markAsFinal = false;
 
     /*
-     * @var string
+     * @var string Define the thumbnail content (if content into zip file)
      */
-    protected $thumbnail;
+    protected $thumbnail = null;
+
+    /*
+     * @var string Define the thumbnail place
+     */
+    protected $thumbnailPath = '';
+
+    /*
+     * @var string Define if thumbnail is out of PPT or previouly store into PPT
+     */
+    protected $thumbnailType = self::THUMBNAIL_FILE;
 
     /**
      * Zoom
@@ -99,7 +111,27 @@ class PresentationProperties
      */
     public function getThumbnailPath()
     {
+        return $this->thumbnailPath;
+    }
+    
+    /**
+     * Return the content of thumbnail
+     *
+     * @return binary Content of image
+     */
+    public function getThumbnail()
+    {
+      // Return content of local file
+      if ($this->getThumbnailType() == self::THUMBNAIL_FILE) {
+        if (file_exists($this->getThumbnailPath()))
+          return file_get_contents($this->getThumbnailPath());
+      }
+      // Return content of image stored into zip file
+      if ($this->getThumbnailType() == self::THUMBNAIL_ZIP) {
         return $this->thumbnail;
+      }
+      // Return null if no thumbnail
+      return null;
     }
     
     /**
@@ -107,14 +139,29 @@ class PresentationProperties
      * @param string $path
      * @return \PhpOffice\PhpPresentation\PresentationProperties
      */
-    public function setThumbnailPath($path = '')
+    public function setThumbnailPath($path = '', $type = self::THUMBNAIL_FILE, $content = null)
     {
-        if (file_exists($path)) {
-            $this->thumbnail = $path;
+        if (file_exists($path) && ($type == self::THUMBNAIL_FILE)) {
+            $this->thumbnailPath = $path;
+            $this->thumbnailType = $type;
+        }
+        if (($path != '') && ($type == self::THUMBNAIL_ZIP)) {
+            $this->thumbnailPath = $path;
+            $this->thumbnailType = $type;
+            $this->thumbnail = $content;
         }
         return $this;
     }
 
+    /**
+     * Return the thumbnail type
+     * @return string
+     */
+    public function getThumbnailType()
+    {
+        return $this->thumbnailType;
+    }
+    
     /**
      * Mark a document as final
      * @param bool $state

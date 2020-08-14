@@ -147,6 +147,11 @@ class PowerPoint2007 implements ReaderInterface
             $this->loadDocumentProperties($docPropsCore);
         }
 
+        $docThumbnail = $this->oZip->getFromName('_rels/.rels');
+        if ($docThumbnail !== false) {
+            $this->loadThumbnailProperties($docThumbnail);
+        }
+
         $docPropsCustom = $this->oZip->getFromName('docProps/custom.xml');
         if ($docPropsCustom !== false) {
             $this->loadCustomProperties($docPropsCustom);
@@ -226,6 +231,26 @@ class PowerPoint2007 implements ReaderInterface
                     }
                 }
             }
+        }
+    }
+
+    /**
+     * Read information of the document thumbnail
+     * @param string $sPart Content of XML file for retrieving data
+     */
+    protected function loadThumbnailProperties($sPart)
+    {
+        $xmlReader = new XMLReader();
+        if ($xmlReader->getDomFromString($sPart)) {
+          $oElement = $xmlReader->getElement('*[@Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail"]');
+          if ($oElement instanceof \DOMElement) {
+            $path = $oElement->getAttribute('Target');
+            $this->oPhpPresentation
+                 ->getPresentationProperties()
+                 ->setThumbnailPath($path
+                 , \PhpOffice\PhpPresentation\PresentationProperties::THUMBNAIL_ZIP
+                 , $this->oZip->getFromName($path));
+          }
         }
     }
 
