@@ -889,6 +889,10 @@ class PowerPoint2007 implements ReaderInterface
             $this->fileRels = $oSlide->getRelsIndex();
         }
 
+        $oElement = $document->getElement('p:nvSpPr/p:cNvPr', $node);
+        if ($oElement instanceof \DOMElement)
+            $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
+
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
         if ($oElement instanceof \DOMElement && $oElement->hasAttribute('rot')) {
             $oShape->setRotation(CommonDrawing::angleToDegrees($oElement->getAttribute('rot')));

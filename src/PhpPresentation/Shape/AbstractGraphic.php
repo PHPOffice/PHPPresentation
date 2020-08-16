@@ -40,13 +40,6 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     private $imageIndex = 0;
 
     /**
-     * Name
-     *
-     * @var string
-     */
-    protected $name;
-
-    /**
      * Description
      *
      * @var string
@@ -101,28 +94,6 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     public function getImageIndex()
     {
         return $this->imageIndex;
-    }
-
-    /**
-     * Get Name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-    /**
-     * Set Name
-     *
-     * @param  string $pValue
-     * @return $this
-     */
-    public function setName($pValue = '')
-    {
-        $this->name = $pValue;
-        return $this;
     }
 
     /**
