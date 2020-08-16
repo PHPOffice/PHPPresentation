@@ -110,7 +110,14 @@ abstract class AbstractShape implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new self.
+     * Name
+     *
+     * @var string
+     */
+    protected $name = '';
+    
+    /**
+     * Create a new self
      */
     public function __construct()
     {
@@ -118,6 +125,7 @@ abstract class AbstractShape implements ComparableInterface
         $this->fill = new Fill();
         $this->shadow = new Shadow();
         $this->border = new Border();
+
         $this->border->setLineStyle(Style\Border::LINE_NONE);
     }
 
@@ -181,7 +189,31 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get OffsetX.
+     * Get Name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set Name
+     *
+     * @param  string                          $pValue
+     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     */
+    public function setName($pValue = '')
+    {
+        $this->name = $pValue;
+        return $this;
+    }
+
+    /**
+     * Get OffsetX
+     *
+     * @return int
      */
     public function getOffsetX(): int
     {
