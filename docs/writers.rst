@@ -11,7 +11,7 @@ The name of the writer is ``ODPresentation``.
 
 .. code-block:: php
 
-    $oWriter = IOFactory::createWriter($oPhpPresentation, 'PowerPoint2007');
+    $oWriter = IOFactory::createWriter($oPhpPresentation, 'ODPresentation');
     $oWriter->save(__DIR__ . '/sample.pptx');
 
 PowerPoint2007
