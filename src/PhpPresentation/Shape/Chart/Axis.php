@@ -358,11 +358,13 @@ class Axis implements ComparableInterface
         return $this;
     }
 
-    public function getTickLabelPos(){
+    public function getTickLabelPos()
+    {
         return $this->tickLabelPos;
     }
 
-    public function setTickLabelPos($pos = self::TICK_LABEL_POS_NEXT_TO){
+    public function setTickLabelPos($pos = self::TICK_LABEL_POS_NEXT_TO)
+    {
         $this->tickLabelPos = $pos;
         return $this;
     }

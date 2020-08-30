@@ -22,6 +22,7 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Style\Color as StyleColor;
+
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Series
  */
@@ -514,10 +515,12 @@ class Series implements ComparableInterface
         return $this;
     }
 
-    public function getLabelColor(){
+    public function getLabelColor()
+    {
         return $this->labelColor;
     }
-    public function setLabelColor($labelColor = null){
+    public function setLabelColor($labelColor = null)
+    {
         $this->labelColor = $labelColor;
         return $this;
     }
