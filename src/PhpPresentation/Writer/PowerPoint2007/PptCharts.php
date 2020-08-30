@@ -1758,7 +1758,7 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('a:pPr');
 
             // a:defRPr
-            $objWriter->startElement('a:defRPr');            
+            $objWriter->startElement('a:defRPr');           
 
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
