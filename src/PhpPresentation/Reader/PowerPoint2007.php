@@ -974,6 +974,12 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
 
+        $oElement = $document->getElement('p:spPr', $node);
+        if ($oElement instanceof \DOMElement) {
+            $oFill = $this->loadStyleFill($document, $oElement);
+            $oShape->setFill($oFill);
+        }
+
         if (count($oShape->getParagraphs()) > 0) {
             $oShape->setActiveParagraph(0);
         }
