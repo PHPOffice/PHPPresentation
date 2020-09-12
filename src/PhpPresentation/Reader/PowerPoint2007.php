@@ -1246,6 +1246,9 @@ class PowerPoint2007 implements ReaderInterface
                     if ($oElementrPr->hasAttribute('cap')) {
                         $oText->getFont()->setCapitalization($oElementrPr->getAttribute('cap'));
                     }
+                    if ($oElementrPr->hasAttribute('lang')) {
+                        $oText->setLanguage($oElementrPr->getAttribute('lang'));
+                    }
                     // Color
                     $oElementSrgbClr = $document->getElement('a:solidFill/a:srgbClr', $oElementrPr);
                     if (is_object($oElementSrgbClr) && $oElementSrgbClr->hasAttribute('val')) {
