@@ -878,9 +878,6 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected function loadShapeRichText(XMLReader $document, \DOMElement $node, $oSlide)
     {
-        if (!$document->elementExists('p:txBody/a:p/a:r', $node)) {
-            return;
-        }
         // Core
         $oShape = $oSlide->createRichTextShape();
         $oShape->setParagraphs(array());
