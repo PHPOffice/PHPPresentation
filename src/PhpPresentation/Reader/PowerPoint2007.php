@@ -1198,7 +1198,14 @@ class PowerPoint2007 implements ReaderInterface
                             $oText->getHyperlink()->setUrl($this->arrayRels[$this->fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target']);
                         }
                     }
-                    //} else {
+                    // Font definition
+                    $oElementFont = $document->getElement('a:latin', $oElementrPr);
+                    if (is_object($oElementFont)) {
+                        if ($oElementFont->hasAttribute('typeface')) {
+                            $oText->getFont()->setName($oElementFont->getAttribute('typeface'));
+                        }
+                    }
+                     //} else {
                     // $oText = $oParagraph->createText();
 
                     $oSubSubElement = $document->getElement('a:t', $oSubElement);
