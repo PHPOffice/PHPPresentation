@@ -48,6 +48,10 @@ class Font implements ComparableInterface
     const STRIKE_NONE = 'noStrike';
     const STRIKE_SINGLE = 'sngStrike';
     const STRIKE_DOUBLE = 'dblStrike';
+    
+    /* Script sub and super values */
+    const SCRIPT_SUPER = 30000;
+    const SCRIPT_SUB = -25000;
 
     /**
      * Name
@@ -137,8 +141,8 @@ class Font implements ComparableInterface
         $this->characterSpacing = 0;
         $this->bold             = false;
         $this->italic           = false;
-        $this->superScript      = false;
-        $this->subScript        = false;
+        $this->superScript      = 0;
+        $this->subScript        = 0;
         $this->underline        = self::UNDERLINE_NONE;
         $this->strikethrough    = self::STRIKE_NONE;
         $this->color            = new Color(Color::COLOR_BLACK);
@@ -277,7 +281,7 @@ class Font implements ComparableInterface
     /**
      * Get SuperScript
      *
-     * @return boolean
+     * @return integer
      */
     public function isSuperScript()
     {
@@ -287,20 +291,20 @@ class Font implements ComparableInterface
     /**
      * Set SuperScript
      *
-     * @param  boolean                  $pValue
+     * @param  integer               $pValue
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setSuperScript($pValue = false)
+    public function setSuperScript($pValue = 0)
     {
         if ($pValue == '') {
-            $pValue = false;
+            $pValue = 0;
         }
 
         $this->superScript = $pValue;
 
         // Set SubScript at false only if SuperScript is true
-        if ($pValue === true) {
-            $this->subScript = false;
+        if ($pValue != 0) {
+            $this->subScript = 0;
         }
 
         return $this;
@@ -309,7 +313,7 @@ class Font implements ComparableInterface
     /**
      * Get SubScript
      *
-     * @return boolean
+     * @return integer
      */
     public function isSubScript()
     {
@@ -319,20 +323,20 @@ class Font implements ComparableInterface
     /**
      * Set SubScript
      *
-     * @param  boolean                  $pValue
+     * @param  integer                 $pValue
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setSubScript($pValue = false)
+    public function setSubScript($pValue = 0)
     {
         if ($pValue == '') {
-            $pValue = false;
+            $pValue = 0;
         }
 
         $this->subScript = $pValue;
 
         // Set SuperScript at false only if SubScript is true
-        if ($pValue === true) {
-            $this->superScript = false;
+        if ($pValue != 0) {
+            $this->superScript = 0;
         }
 
         return $this;
