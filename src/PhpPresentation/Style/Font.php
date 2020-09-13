@@ -46,6 +46,11 @@ class Font implements ComparableInterface
     public const UNDERLINE_WAVYDOUBLE = 'wavyDbl';
     public const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
     public const UNDERLINE_WORDS = 'words';
+  
+    /* Strike types */
+    public const STRIKE_NONE = 'noStrike';
+    public const STRIKE_SINGLE = 'sngStrike';
+    public const STRIKE_DOUBLE = 'dblStrike';
 
     public const FORMAT_LATIN = 'latin';
     public const FORMAT_EAST_ASIAN = 'ea';
@@ -149,7 +154,7 @@ class Font implements ComparableInterface
     public function __construct()
     {
         $this->color = new Color(Color::COLOR_BLACK);
-        $this->strikethrough    = 'noStrike';
+        $this->strikethrough    = self::STRIKE_NONE;
     }
 
     /**
@@ -345,10 +350,10 @@ class Font implements ComparableInterface
     /**
      * Set Strikethrough.
      */
-    public function setStrikethrough($pValue = 'noStrike')
+    public function setStrikethrough($pValue = self::STRIKE_NONE)
     {
         if ($pValue == '') {
-            $pValue = 'noStrike';
+            $pValue = self::STRIKE_NONE;
         }
         $this->strikethrough = $pValue;
 
