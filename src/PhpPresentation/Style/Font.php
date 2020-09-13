@@ -43,6 +43,11 @@ class Font implements ComparableInterface
     const UNDERLINE_WAVYDOUBLE = 'wavyDbl';
     const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
     const UNDERLINE_WORDS = 'words';
+    
+    /* Strike types */
+    const STRIKE_NONE = 'noStrike';
+    const STRIKE_SINGLE = 'sngStrike';
+    const STRIKE_DOUBLE = 'dblStrike';
 
     /**
      * Name
@@ -135,7 +140,7 @@ class Font implements ComparableInterface
         $this->superScript      = false;
         $this->subScript        = false;
         $this->underline        = self::UNDERLINE_NONE;
-        $this->strikethrough    = 'noStrike';
+        $this->strikethrough    = self::STRIKE_NONE;
         $this->color            = new Color(Color::COLOR_BLACK);
     }
 
@@ -375,10 +380,10 @@ class Font implements ComparableInterface
      * @param  boolean                  $pValue
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setStrikethrough($pValue = 'noStrike')
+    public function setStrikethrough($pValue = self::STRIKE_NONE)
     {
         if ($pValue == '') {
-            $pValue = 'noStrike';
+            $pValue = self::STRIKE_NONE;
         }
         $this->strikethrough = $pValue;
 
