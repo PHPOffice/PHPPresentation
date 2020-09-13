@@ -52,6 +52,11 @@ class Font implements ComparableInterface
     /* Script sub and super values */
     const SCRIPT_SUPER = 30000;
     const SCRIPT_SUB = -25000;
+    
+    /* Capitalize types */
+    const CAPS_NONE = '';
+    const CAPS_SMALL = 'small';
+    const CAPS_ALL = 'all';
 
     /**
      * Name
@@ -131,6 +136,13 @@ class Font implements ComparableInterface
     private $hashIndex;
 
     /**
+     * Capitalize type
+     * 
+     * @var string
+     */
+    private $capitalize;
+    
+    /**
      * Create a new \PhpOffice\PhpPresentation\Style\Font
      */
     public function __construct()
@@ -146,6 +158,7 @@ class Font implements ComparableInterface
         $this->underline        = self::UNDERLINE_NONE;
         $this->strikethrough    = self::STRIKE_NONE;
         $this->color            = new Color(Color::COLOR_BLACK);
+        $this->capitalize       = self::CAPS_NONE;
     }
 
     /**
@@ -456,4 +469,28 @@ class Font implements ComparableInterface
     {
         $this->hashIndex = $value;
     }
+    
+    /**
+     * Set Capitalize
+     *
+     * @param  string $pValue
+     * @return \PhpOffice\PhpPresentation\Style\Font
+     */
+    public function setCapitalize($value = self::CAPS_NONE)
+    {
+        $this->capitalize = $value;
+        return $this;
+    }
+    /**
+     * Get Capitalize
+     *
+     * @return string
+     */
+    public function getCapitalize()
+    {
+        return $this->capitalize;
+    }
+    
+    
+    
 }
