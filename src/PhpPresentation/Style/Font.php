@@ -135,7 +135,7 @@ class Font implements ComparableInterface
         $this->superScript      = false;
         $this->subScript        = false;
         $this->underline        = self::UNDERLINE_NONE;
-        $this->strikethrough    = false;
+        $this->strikethrough    = 'noStrike';
         $this->color            = new Color(Color::COLOR_BLACK);
     }
 
@@ -375,10 +375,10 @@ class Font implements ComparableInterface
      * @param  boolean                  $pValue
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setStrikethrough($pValue = false)
+    public function setStrikethrough($pValue = 'noStrike')
     {
         if ($pValue == '') {
-            $pValue = false;
+            $pValue = 'noStrike';
         }
         $this->strikethrough = $pValue;
 

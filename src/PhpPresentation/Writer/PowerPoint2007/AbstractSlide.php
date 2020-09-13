@@ -581,7 +581,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('lang', ($element->getLanguage() ? $element->getLanguage() : 'en-US'));
                         $objWriter->writeAttributeIf($element->getFont()->isBold(), 'b', '1');
                         $objWriter->writeAttributeIf($element->getFont()->isItalic(), 'i', '1');
-                        $objWriter->writeAttributeIf($element->getFont()->isStrikethrough(), 'strike', 'sngStrike');
+                        $objWriter->writeAttributeIf($element->getFont()->isStrikethrough(), 'strike', $element->getFont()->isStrikethrough());
                         $objWriter->writeAttribute('sz', ($element->getFont()->getSize() * 100));
                         $objWriter->writeAttribute('spc', $element->getFont()->getCharacterSpacing());
                         $objWriter->writeAttribute('u', $element->getFont()->getUnderline());

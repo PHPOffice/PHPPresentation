@@ -1170,7 +1170,7 @@ class PowerPoint2007 implements ReaderInterface
                         $oText->getFont()->setItalic($att == 'true' || $att == '1' ? true : false);
                     }
                     if ($oElementrPr->hasAttribute('strike')) {
-                        $oText->getFont()->setStrikethrough($oElementrPr->getAttribute('strike') == 'noStrike' ? false : true);
+                        $oText->getFont()->setStrikethrough($oElementrPr->getAttribute('strike'));
                     }
                     if ($oElementrPr->hasAttribute('sz')) {
                         $oText->getFont()->setSize((int)($oElementrPr->getAttribute('sz') / 100));
