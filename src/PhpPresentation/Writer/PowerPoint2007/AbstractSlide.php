@@ -649,7 +649,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         $objWriter->writeAttributeIf($element->getFont()->isBold(), 'b', '1');
         $objWriter->writeAttributeIf($element->getFont()->isItalic(), 'i', '1');
-        $objWriter->writeAttributeIf($element->getFont()->isStrikethrough(), 'strike', 'sngStrike');
+        $objWriter->writeAttributeIf($element->getFont()->isStrikethrough(), 'strike', $element->getFont()->isStrikethrough());
 
         // Size
         $objWriter->writeAttribute('sz', ($element->getFont()->getSize() * 100));

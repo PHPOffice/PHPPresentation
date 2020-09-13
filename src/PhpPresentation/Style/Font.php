@@ -149,6 +149,7 @@ class Font implements ComparableInterface
     public function __construct()
     {
         $this->color = new Color(Color::COLOR_BLACK);
+        $this->strikethrough    = 'noStrike';
     }
 
     /**
@@ -344,8 +345,11 @@ class Font implements ComparableInterface
     /**
      * Set Strikethrough.
      */
-    public function setStrikethrough(bool $pValue = false): self
+    public function setStrikethrough($pValue = 'noStrike')
     {
+        if ($pValue == '') {
+            $pValue = 'noStrike';
+        }
         $this->strikethrough = $pValue;
 
         return $this;
