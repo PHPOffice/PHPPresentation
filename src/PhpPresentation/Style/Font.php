@@ -59,6 +59,10 @@ class Font implements ComparableInterface
     public const CAPITALIZATION_NONE = 'none';
     public const CAPITALIZATION_SMALL = 'small';
     public const CAPITALIZATION_ALL = 'all';
+    
+    /* Script sub and super values */
+    const SCRIPT_SUPER = 30000;
+    const SCRIPT_SUB = -25000;
 
     /**
      * Name.
@@ -154,6 +158,8 @@ class Font implements ComparableInterface
     public function __construct()
     {
         $this->color = new Color(Color::COLOR_BLACK);
+        $this->superScript      = 0;
+        $this->subScript        = 0;
         $this->strikethrough    = self::STRIKE_NONE;
     }
 
@@ -254,38 +260,60 @@ class Font implements ComparableInterface
     /**
      * Get SuperScript.
      */
-    public function isSuperScript(): bool
+    public function isSuperScript(): int
     {
         return $this->superScript;
     }
 
     /**
-     * Set SuperScript.
+     * Set SuperScript
+     *
+     * @param  integer               $pValue
+     * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setSuperScript(bool $pValue = false): self
+    public function setSuperScript($pValue = 0)
     {
+        if ($pValue == '') {
+            $pValue = 0;
+        }
+
         $this->superScript = $pValue;
 
         // Set SubScript at false only if SuperScript is true
-        if (true === $pValue) {
-            $this->subScript = false;
+        if ($pValue != 0) {
+            $this->subScript = 0;
         }
 
         return $this;
     }
 
-    public function isSubScript(): bool
+    /**
+     * Get SubScript
+     *
+     * @return integer
+     */
+    public function isSubScript()
     {
         return $this->subScript;
     }
 
-    public function setSubScript(bool $pValue = false): self
+    /**
+     * Set SubScript
+     *
+     * @param  integer                 $pValue
+     * @return \PhpOffice\PhpPresentation\Style\Font
+     */
+    public function setSubScript($pValue = 0)
     {
+        if ($pValue == '') {
+            $pValue = 0;
+        }
+
         $this->subScript = $pValue;
 
         // Set SuperScript at false only if SubScript is true
-        if (true === $pValue) {
-            $this->superScript = false;
+        if ($pValue != 0) {
+            $this->superScript = 0;
         }
 
         return $this;
