@@ -192,11 +192,28 @@ class PhpPresentation
      * @return \PhpOffice\PhpPresentation\Slide
      * @throws \Exception
      */
-    public function createSlide()
+    public function createSlide($prepend=false)
     {
         $newSlide = new Slide($this);
-        $this->addSlide($newSlide);
+        if ($prepend) {
+            $this->prependSlide($newSlide);
+        } else {
+            $this->addSlide($newSlide);
+        }
         return $newSlide;
+    }
+    
+    /**
+     * Add slide
+     *
+     * @param  \PhpOffice\PhpPresentation\Slide $slide
+     * @throws \Exception
+     * @return \PhpOffice\PhpPresentation\Slide
+     */
+    public function prependSlide(Slide $slide = null)
+    {
+        array_unshift($this->slideCollection, $slide);
+        return $slide;
     }
 
     /**
