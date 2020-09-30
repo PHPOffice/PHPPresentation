@@ -19,18 +19,19 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Group element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Group
  */
-class GroupTest extends \PHPUnit_Framework_TestCase
+class GroupTest extends TestCase
 {
     public function testConstruct()
     {
         $object = new Group();
-        
+
         $this->assertEquals(0, $object->getOffsetX());
         $this->assertEquals(0, $object->getOffsetY());
         $this->assertEquals(0, $object->getExtentX());
@@ -39,11 +40,11 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setWidth(rand(1, 100)));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setHeight(rand(1, 100)));
     }
-    
+
     public function testAdd()
     {
         $object = new Group();
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $object->createChartShape());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->createDrawingShape());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Line', $object->createLineShape(10, 10, 10, 10));
@@ -51,49 +52,49 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->createTableShape());
         $this->assertEquals(5, $object->getShapeCollection()->count());
     }
-    
+
     public function testExtentX()
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 40);
+        $line1  = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        $this->assertEquals(30, $object->getExtentX());
+        $this->assertEquals(20, $object->getExtentX());
     }
-    
+
     public function testExtentY()
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 40);
+        $line1  = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
-        $this->assertEquals(40, $object->getExtentY());
+        $this->assertEquals(30, $object->getExtentY());
     }
-    
+
     public function testOffsetX()
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 40);
+        $line1  = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(10, $object->getOffsetX());
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setOffsetX(rand(1, 100)));
         $this->assertEquals(10, $object->getOffsetX());
     }
-    
+
     public function testOffsetY()
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 40);
+        $line1  = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(20, $object->getOffsetY());
-        
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setOffsetY(rand(1, 100)));
         $this->assertEquals(20, $object->getOffsetY());
     }
-    
+
     public function testExtentsAndOffsetsForOneShape()
     {
         // We record initial values here because
@@ -101,13 +102,15 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         // from the extents to produce a raw width and height.
         $offsetX = 100;
         $offsetY = 100;
-        $extentX = 1000;
-        $extentY = 450;
+        $endX = 1000;
+        $endY = 450;
+        $extentX = $endX - $offsetX;
+        $extentY = $endY - $offsetY;
 
         $object = new Group();
-        $line1  = new Line($offsetX, $offsetY, $extentX, $extentY);
+        $line1  = new Line($offsetX, $offsetY, $endX, $endY);
         $object->addShape($line1);
-        
+
         $this->assertEquals($offsetX, $object->getOffsetX());
         $this->assertEquals($offsetY, $object->getOffsetY());
         $this->assertEquals($extentX, $object->getExtentX());
@@ -122,26 +125,28 @@ class GroupTest extends \PHPUnit_Framework_TestCase
         // combined with the above.
         $offsetX = 100;
         $offsetY = 100;
-        $extentX = 1000;
-        $extentY = 450;
+        $endX = 1000;
+        $endY = 450;
         $increase = 50;
+        $extentX = ($endX - $offsetX) + $increase;
+        $extentY = ($endY - $offsetY) + $increase;
 
-        $line1  = new Line($offsetX, $offsetY, $extentX, $extentY);
+        $line1  = new Line($offsetX, $offsetY, $endX, $endY);
         $line2 = new Line(
             $offsetX+$increase,
             $offsetY+$increase,
-            $extentX+$increase,
-            $extentY+$increase
+            $endX+$increase,
+            $endY+$increase
         );
 
         $object = new Group();
-        
+
         $object->addShape($line1);
         $object->addShape($line2);
-        
+
         $this->assertEquals($offsetX, $object->getOffsetX());
         $this->assertEquals($offsetY, $object->getOffsetY());
-        $this->assertEquals($extentX+$increase, $object->getExtentX());
-        $this->assertEquals($extentY+$increase, $object->getExtentY());
+        $this->assertEquals($extentX, $object->getExtentX());
+        $this->assertEquals($extentY, $object->getExtentY());
     }
 }

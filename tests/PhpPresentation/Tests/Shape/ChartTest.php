@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Chart element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart
  */
-class ChartTest extends \PHPUnit_Framework_TestCase
+class ChartTest extends TestCase
 {
     public function testConstruct()
     {
@@ -35,14 +36,14 @@ class ChartTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->getPlotArea());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->getView3D());
     }
-    
+
 
     public function testClone()
     {
         $object = new Chart();
-        
+
         $oClone = clone $object;
-    
+
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $oClone);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $oClone->getTitle());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $oClone->getLegend());

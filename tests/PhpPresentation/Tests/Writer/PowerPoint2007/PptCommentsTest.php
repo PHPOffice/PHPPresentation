@@ -21,9 +21,11 @@ class PptCommentsTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/comments/comment1.xml');
         $this->assertZipXmlElementExists('ppt/comments/comment1.xml', $expectedElement);
         $this->assertZipXmlAttributeEquals('ppt/comments/comment1.xml', $expectedElement, 'authorId', 0);
+        $this->assertIsSchemaECMA376Valid();
     }
     public function testWithoutComment()
     {
         $this->assertZipFileNotExists('ppt/comments/comment1.xml');
+        $this->assertIsSchemaECMA376Valid();
     }
 }

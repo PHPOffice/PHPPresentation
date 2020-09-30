@@ -26,6 +26,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeStartsWith('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/PhpPresentationLogo');
         $this->assertZipXmlAttributeEndsWith('META-INF/manifest.xml', $element, 'manifest:full-path', '.png');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     /**
@@ -55,6 +56,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     /**
@@ -71,6 +73,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     /**
@@ -99,6 +102,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
     public function testSlideBackground()
@@ -110,5 +114,6 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename(0)));
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 }

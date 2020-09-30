@@ -10,6 +10,7 @@ class Pictures extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
+     * @throws \Exception
      */
 
     public function render()

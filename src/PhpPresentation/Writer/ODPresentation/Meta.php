@@ -7,7 +7,8 @@ use PhpOffice\Common\XMLWriter;
 class Meta extends AbstractDecoratorWriter
 {
     /**
-     * @return ZipInterface
+     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @throws \Exception
      */
     public function render()
     {

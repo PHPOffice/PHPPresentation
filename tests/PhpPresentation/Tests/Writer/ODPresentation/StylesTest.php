@@ -28,6 +28,7 @@ class StylesTest extends PhpPresentationTestCase
 
         $this->assertZipXmlElementExists('styles.xml', $element);
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:print-orientation', 'landscape');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
         
         $oDocumentLayout->setDocumentLayout(DocumentLayout::LAYOUT_A4, false);
         $this->oPresentation->setLayout($oDocumentLayout);
@@ -35,6 +36,7 @@ class StylesTest extends PhpPresentationTestCase
 
         $this->assertZipXmlElementExists('styles.xml', $element);
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:print-orientation', 'portrait');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
     
     public function testCustomDocumentLayout()
@@ -50,6 +52,8 @@ class StylesTest extends PhpPresentationTestCase
         $element = "/office:document-styles/office:master-styles/style:master-page";
         $this->assertZipXmlElementExists('styles.xml', $element);
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:page-layout-name', 'sPL0');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
     
     public function testGradientTable()
@@ -62,6 +66,8 @@ class StylesTest extends PhpPresentationTestCase
 
         $element = "/office:document-styles/office:styles/draw:gradient";
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:name', 'gradient_' . $oCell->getFill()->getHashCode());
+
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
     
     public function testStrokeDash()
@@ -113,6 +119,7 @@ class StylesTest extends PhpPresentationTestCase
                     $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2-length');
                     break;
             }
+            $this->assertIsSchemaOpenDocumentValid('1.2');
             $this->resetPresentationFile();
         }
     }

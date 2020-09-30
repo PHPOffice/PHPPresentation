@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Comment;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Chart element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Comment
  */
-class CommentTest extends \PHPUnit_Framework_TestCase
+class CommentTest extends TestCase
 {
     public function testConstruct()
     {

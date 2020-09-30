@@ -17,6 +17,7 @@ class PptViewPropsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/viewProps.xml', $expectedElement);
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', $expectedElement, 'showComments', 0);
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', $expectedElement, 'lastView', PresentationProperties::VIEW_SLIDE);
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testCommentVisible()
@@ -28,6 +29,7 @@ class PptViewPropsTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/viewProps.xml');
         $this->assertZipXmlElementExists('ppt/viewProps.xml', $expectedElement);
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', $expectedElement, 'showComments', 1);
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testLastView()
@@ -40,5 +42,6 @@ class PptViewPropsTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/viewProps.xml');
         $this->assertZipXmlElementExists('ppt/viewProps.xml', $expectedElement);
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', $expectedElement, 'lastView', $expectedLastView);
+        $this->assertIsSchemaECMA376Valid();
     }
 }

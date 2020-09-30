@@ -12,6 +12,7 @@ class DocPropsCustomTest extends PhpPresentationTestCase
     {
         $this->assertZipFileExists('docProps/custom.xml');
         $this->assertZipXmlElementNotExists('docProps/custom.xml', '/Properties/property[@name="_MarkAsFinal"]');
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testMarkAsFinalTrue()
@@ -22,6 +23,7 @@ class DocPropsCustomTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('docProps/custom.xml', '/Properties/property');
         $this->assertZipXmlElementExists('docProps/custom.xml', '/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]');
         $this->assertZipXmlElementExists('docProps/custom.xml', '/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool');
+        $this->assertIsSchemaECMA376Valid();
     }
 
     public function testMarkAsFinalFalse()
@@ -29,5 +31,6 @@ class DocPropsCustomTest extends PhpPresentationTestCase
         $this->oPresentation->getPresentationProperties()->markAsFinal(false);
 
         $this->assertZipXmlElementNotExists('docProps/custom.xml', '/Properties/property[@name="_MarkAsFinal"]');
+        $this->assertIsSchemaECMA376Valid();
     }
 }

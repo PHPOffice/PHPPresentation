@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
 
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for TextElement element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\TextElement
  */
-class TextElementTest extends \PHPUnit_Framework_TestCase
+class TextElementTest extends TestCase
 {
     /**
      * Test can read

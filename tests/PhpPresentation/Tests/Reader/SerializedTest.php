@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
 use PhpOffice\PhpPresentation\Reader\Serialized;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for serialized reader
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Reader\Serialized
  */
-class SerializedTest extends \PHPUnit_Framework_TestCase
+class SerializedTest extends TestCase
 {
     /**
      * Test can read
@@ -36,7 +37,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($object->canRead($file));
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Could not open  for reading! File does not exist.
@@ -46,7 +47,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $object = new Serialized();
         $object->load('');
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized:
@@ -57,7 +58,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $object = new Serialized();
         $object->load($file);
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Could not open  for reading! File does not exist.
@@ -67,7 +68,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $object = new Serialized();
         $object->fileSupportsUnserializePhpPresentation('');
     }
-    
+
     public function testLoadSerializedFileNotExists()
     {
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
@@ -75,7 +76,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $oArchive->open($file, \ZipArchive::CREATE);
         $oArchive->addFromString('PhpPresentation.xml', '');
         $oArchive->close();
-        
+
         $object = new Serialized();
         $this->assertNull($object->load($file));
     }

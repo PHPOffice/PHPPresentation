@@ -35,6 +35,7 @@ class IOFactory
      * @param PhpPresentation $phpPresentation
      * @param string $name
      * @return \PhpOffice\PhpPresentation\Writer\WriterInterface
+     * @throws \Exception
      */
     public static function createWriter(PhpPresentation $phpPresentation, $name = 'PowerPoint2007')
     {
@@ -47,6 +48,7 @@ class IOFactory
      *
      * @param  string $name
      * @return \PhpOffice\PhpPresentation\Reader\ReaderInterface
+     * @throws \Exception
      */
     public static function createReader($name = '')
     {
@@ -81,8 +83,8 @@ class IOFactory
      * @param string $name
      * @param string $type
      * @param \PhpOffice\PhpPresentation\PhpPresentation $phpPresentation
-     * @throws \Exception
-     * @return
+     * @return mixed
+     * @throws \ReflectionException
      */
     private static function loadClass($class, $name, $type, PhpPresentation $phpPresentation = null)
     {
@@ -102,6 +104,7 @@ class IOFactory
      *
      * @param string $class
      * @return bool
+     * @throws \ReflectionException
      */
     private static function isConcreteClass($class)
     {

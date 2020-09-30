@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\Slide\Animation;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Animation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Slide\Animation
  */
-class AnimationTest extends \PHPUnit_Framework_TestCase
+class AnimationTest extends TestCase
 {
     public function testShape()
     {

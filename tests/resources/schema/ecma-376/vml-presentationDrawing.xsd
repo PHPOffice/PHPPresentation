@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="urn:schemas-microsoft-com:office:powerpoint" xmlns="urn:schemas-microsoft-com:office:powerpoint" xmlns:xsd="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xsd:element name="iscomment" type="CT_Empty">
+    <xsd:annotation>
+      <xsd:documentation>Ink Annotation Flag</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:element name="textdata" type="CT_Rel">
+    <xsd:annotation>
+      <xsd:documentation>VML Diagram Text</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CT_Empty" />
+  <xsd:complexType name="CT_Rel">
+    <xsd:attribute name="id" type="xsd:string">
+      <xsd:annotation>
+        <xsd:documentation>Text Reference</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+</xsd:schema>

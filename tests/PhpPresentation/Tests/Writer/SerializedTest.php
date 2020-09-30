@@ -19,20 +19,21 @@ namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\Writer\Serialized;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for serialized reader
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Reader\Serialized
  */
-class SerializedTest extends \PHPUnit_Framework_TestCase
+class SerializedTest extends TestCase
 {
     public function testConstruct()
     {
         $object = new Serialized(new PhpPresentation());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage No PhpPresentation assigned.
@@ -42,7 +43,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $object = new Serialized();
         $object->getPhpPresentation();
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Filename is empty.
@@ -52,7 +53,7 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $object = new Serialized(new PhpPresentation());
         $object->save('');
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage No PhpPresentation assigned.
@@ -62,20 +63,20 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $object = new Serialized();
         $object->save('file.phpppt');
     }
-    
+
     public function testSave()
     {
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
         $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
-        $object = new Serialized($oPhpPresentation);
-        
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
+        $object = new Serialized($oPhpPresentation);
+        $object->save($file);
         
-        $this->assertFileExists($file, $object->save($file));
+        $this->assertFileExists($file);
     }
-    
+
     /**
      * @expectedException \Exception
      * @expectedExceptionMessage Could not open
@@ -87,23 +88,25 @@ class SerializedTest extends \PHPUnit_Framework_TestCase
         $oImage = $oSlide->createDrawingShape();
         $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
         $object = new Serialized($oPhpPresentation);
-        
+
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
-        
+
         $this->assertFileExists($file, $object->save($file.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'test'));
     }
-    
+
     public function testSaveOverwriting()
     {
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
         $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
-        $object = new Serialized($oPhpPresentation);
         
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
         file_put_contents($file, rand(1, 100));
-        
-        $this->assertFileExists($file, $object->save($file));
+
+        $object = new Serialized($oPhpPresentation);
+        $object->save($file);
+            
+        $this->assertFileExists($file);
     }
 }

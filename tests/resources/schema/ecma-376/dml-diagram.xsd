@@ -1,0 +1,3635 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created by Progi1984 -->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.openxmlformats.org/drawingml/2006/diagram" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:s="http://schemas.openxmlformats.org/officeDocument/2006/sharedTypes" targetNamespace="http://schemas.openxmlformats.org/drawingml/2006/diagram" elementFormDefault="qualified" attributeFormDefault="unqualified">
+  <xsd:import namespace="http://schemas.openxmlformats.org/officeDocument/2006/relationships" schemaLocation="shared-relationshipReference.xsd"/>
+  <xsd:import namespace="http://schemas.openxmlformats.org/drawingml/2006/main" schemaLocation="dml-main.xsd"/>
+  <xsd:import id="s" namespace="http://schemas.openxmlformats.org/officeDocument/2006/sharedTypes" schemaLocation="shared-commonSimpleTypes.xsd"/>
+  <!-- dml-diagramColorTransform.xsd -->
+  <!-- <xsd:import schemaLocation="shared-relationshipReference.xsd" namespace="http://schemas.openxmlformats.org/officeDocument/2006/relationships" /> -->
+  <!-- <xsd:import schemaLocation="dml-baseTypes.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <xsd:complexType name="CT_CTName">
+    <xsd:attribute name="lang" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Language</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Description Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_CTDescription">
+    <xsd:attribute name="lang" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Language</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Description Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_CTCategory">
+    <xsd:attribute name="type" type="xsd:anyURI" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Category Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="pri" type="xsd:unsignedInt" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Priority</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_CTCategories">
+    <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="cat" type="CT_CTCategory" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Color Transform Category</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="ST_ClrAppMethod">
+    <xsd:annotation>
+      <xsd:documentation>Color Application Method Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="span">
+        <xsd:annotation>
+          <xsd:documentation>Span</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="cycle">
+        <xsd:annotation>
+          <xsd:documentation>Cycle</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="repeat">
+        <xsd:annotation>
+          <xsd:documentation>Repeat</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_HueDir">
+    <xsd:annotation>
+      <xsd:documentation>Hue Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="cw">
+        <xsd:annotation>
+          <xsd:documentation>Clockwise Hue Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ccw">
+        <xsd:annotation>
+          <xsd:documentation>Counterclockwise Hue Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CT_Colors">
+    <xsd:sequence>
+      <xsd:group ref="a:EG_ColorChoice" minOccurs="0" maxOccurs="unbounded" />
+    </xsd:sequence>
+    <xsd:attribute name="meth" type="ST_ClrAppMethod" use="optional" default="span">
+      <xsd:annotation>
+        <xsd:documentation>Color Application Method Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="hueDir" type="ST_HueDir" use="optional" default="cw">
+      <xsd:annotation>
+        <xsd:documentation>Hue Direction</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_CTStyleLabel">
+    <xsd:sequence>
+      <xsd:element name="fillClrLst" type="CT_Colors" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Fill Color List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="linClrLst" type="CT_Colors" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Line Color List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="effectClrLst" type="CT_Colors" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Effect Color List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="txLinClrLst" type="CT_Colors" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Text Line Color List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="txFillClrLst" type="CT_Colors" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Text Fill Color List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="txEffectClrLst" type="CT_Colors" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Text Effect Color List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_ColorTransform">
+    <xsd:sequence>
+      <xsd:element name="title" type="CT_CTName" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Title</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="desc" type="CT_CTDescription" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Description</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="catLst" type="CT_CTCategories" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Color Transform Category List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="styleLbl" type="CT_CTStyleLabel" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Style Label</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="uniqueId" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Unique ID</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="minVer" type="xsd:string" use="optional" default="http://schemas.openxmlformats.org/drawingml/2006/diagram">
+      <xsd:annotation>
+        <xsd:documentation>Minimum Version</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="colorsDef" type="CT_ColorTransform">
+    <xsd:annotation>
+      <xsd:documentation>Color Transform Definitions</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CT_ColorTransformHeader">
+    <xsd:sequence>
+      <xsd:element name="title" type="CT_CTName" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Title</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="desc" type="CT_CTDescription" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Description</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="catLst" type="CT_CTCategories" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Color Transform Category List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="uniqueId" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Unique ID</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="minVer" type="xsd:string" use="optional" default="http://schemas.openxmlformats.org/drawingml/2006/diagram">
+      <xsd:annotation>
+        <xsd:documentation>Minimum Version</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="resId" type="xsd:int" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Resource ID</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="colorsDefHdr" type="CT_ColorTransformHeader">
+    <xsd:annotation>
+      <xsd:documentation>Color Transform Header</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CT_ColorTransformHeaderLst">
+    <xsd:sequence>
+      <xsd:element name="colorsDefHdr" type="CT_ColorTransformHeader" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Color Transform Definition Header</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="colorsDefHdrLst" type="CT_ColorTransformHeaderLst">
+    <xsd:annotation>
+      <xsd:documentation>Color Transform Header List</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <!-- dml-diagramDataModel.xsd -->
+  <!--<xsd:import schemaLocation="shared-relationshipReference.xsd" namespace="http://schemas.openxmlformats.org/officeDocument/2006/relationships" />-->
+  <!-- <xsd:include schemaLocation="dml-diagramLayoutVariables.xsd" /> -->
+  <!-- <xsd:include schemaLocation="dml-diagramElementPropertySet.xsd" /> -->
+  <!-- <xsd:import schemaLocation="dml-graphicalObjectFormat.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="dml-text.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <xsd:simpleType name="ST_PtType">
+    <xsd:annotation>
+      <xsd:documentation>Point Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="node">
+        <xsd:annotation>
+          <xsd:documentation>Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="asst">
+        <xsd:annotation>
+          <xsd:documentation>Assistant Element</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="doc">
+        <xsd:annotation>
+          <xsd:documentation>Document</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pres">
+        <xsd:annotation>
+          <xsd:documentation>Presentation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="parTrans">
+        <xsd:annotation>
+          <xsd:documentation>Parent Transition</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="sibTrans">
+        <xsd:annotation>
+          <xsd:documentation>Sibling Transition</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CT_Pt">
+    <xsd:sequence>
+      <xsd:element name="prSet" type="CT_ElemPropSet" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Property Set</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="spPr" type="a:CT_ShapeProperties" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape Properties</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="t" type="a:CT_TextBody" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Text Body</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="modelId" type="ST_ModelId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Model Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="type" type="ST_PtType" use="optional" default="node">
+      <xsd:annotation>
+        <xsd:documentation>Point Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="cxnId" type="ST_ModelId" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Connection Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_PtList">
+    <xsd:sequence>
+      <xsd:element name="pt" type="CT_Pt" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Point</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:simpleType name="ST_CxnType">
+    <xsd:annotation>
+      <xsd:documentation>Connection Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="parOf">
+        <xsd:annotation>
+          <xsd:documentation>Parent Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="presOf">
+        <xsd:annotation>
+          <xsd:documentation>Presentation Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="presParOf">
+        <xsd:annotation>
+          <xsd:documentation>Presentation Parent Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="unknownRelationship">
+        <xsd:annotation>
+          <xsd:documentation>Unknown Relationship</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CT_Cxn">
+    <xsd:sequence>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="modelId" type="ST_ModelId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Model Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="type" type="ST_CxnType" use="optional" default="parOf">
+      <xsd:annotation>
+        <xsd:documentation>Point Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="srcId" type="ST_ModelId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Source Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="destId" type="ST_ModelId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Destination Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="srcOrd" type="xsd:unsignedInt" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Source Position</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="destOrd" type="xsd:unsignedInt" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Destination Position</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="parTransId" type="ST_ModelId" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Parent Transition Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="sibTransId" type="ST_ModelId" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Sibling Transition Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="presId" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Presentation Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_CxnList">
+    <xsd:sequence>
+      <xsd:element name="cxn" type="CT_Cxn" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Connection</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_DataModel">
+    <xsd:sequence>
+      <xsd:element name="ptLst" type="CT_PtList">
+        <xsd:annotation>
+          <xsd:documentation>Point List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="cxnLst" type="CT_CxnList" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Connection List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="bg" type="a:CT_BackgroundFormatting" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Background Formatting</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="whole" type="a:CT_WholeE2oFormatting" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Whole E2O Formatting</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="dataModel" type="CT_DataModel">
+    <xsd:annotation>
+      <xsd:documentation>Data Model</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <!-- dml-diagramDefinition.xsd -->
+  <!-- <xsd:include schemaLocation="dml-diagramTypes.xsd" /> -->
+  <!-- <xsd:include schemaLocation="dml-diagramLayoutVariables.xsd" /> -->
+  <!-- <xsd:include schemaLocation="dml-diagramDataModel.xsd" />-->
+  <!-- <xsd:import schemaLocation="dml-shapeGeometry.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="shared-relationshipReference.xsd" namespace="http://schemas.openxmlformats.org/officeDocument/2006/relationships" /> -->
+  <xsd:attributeGroup name="AG_IteratorAttributes">
+    <xsd:attribute name="axis" type="ST_AxisTypes" use="optional" default="none">
+      <xsd:annotation>
+        <xsd:documentation>Axis</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="ptType" type="ST_ElementTypes" use="optional" default="all">
+      <xsd:annotation>
+        <xsd:documentation>Data Point Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="hideLastTrans" type="ST_Booleans" use="optional" default="true">
+      <xsd:annotation>
+        <xsd:documentation>Hide Last Transition</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="st" type="ST_Ints" use="optional" default="1">
+      <xsd:annotation>
+        <xsd:documentation>Start</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="cnt" type="ST_UnsignedInts" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Count</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="step" type="ST_Ints" use="optional" default="1">
+      <xsd:annotation>
+        <xsd:documentation>Step</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:attributeGroup>
+  <xsd:attributeGroup name="AG_ConstraintAttributes">
+    <xsd:attribute name="type" type="ST_ConstraintType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Constraint Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="for" type="ST_ConstraintRelationship" use="optional" default="self">
+      <xsd:annotation>
+        <xsd:documentation>For</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="forName" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>For Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="ptType" type="ST_ElementType" use="optional" default="all">
+      <xsd:annotation>
+        <xsd:documentation>Data Point Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:attributeGroup>
+  <xsd:attributeGroup name="AG_ConstraintRefAttributes">
+    <xsd:attribute name="refType" type="ST_ConstraintType" use="optional" default="none">
+      <xsd:annotation>
+        <xsd:documentation>Reference Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="refFor" type="ST_ConstraintRelationship" use="optional" default="self">
+      <xsd:annotation>
+        <xsd:documentation>Reference For</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="refForName" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Reference For Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="refPtType" type="ST_ElementType" use="optional" default="all">
+      <xsd:annotation>
+        <xsd:documentation>Reference Point Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:attributeGroup>
+  <xsd:complexType name="CT_Constraint">
+    <xsd:sequence>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attributeGroup ref="AG_ConstraintAttributes" />
+    <xsd:attributeGroup ref="AG_ConstraintRefAttributes" />
+    <xsd:attribute name="op" type="ST_BoolOperator" use="optional" default="none">
+      <xsd:annotation>
+        <xsd:documentation>Operator</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="xsd:double" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="fact" type="xsd:double" use="optional" default="1">
+      <xsd:annotation>
+        <xsd:documentation>Factor</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Constraints">
+    <xsd:sequence>
+      <xsd:element name="constr" type="CT_Constraint" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Constraint</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_NumericRule">
+    <xsd:sequence>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attributeGroup ref="AG_ConstraintAttributes" />
+    <xsd:attribute name="val" type="xsd:double" use="optional" default="NaN">
+      <xsd:annotation>
+        <xsd:documentation>Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="fact" type="xsd:double" use="optional" default="NaN">
+      <xsd:annotation>
+        <xsd:documentation>Factor</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="max" type="xsd:double" use="optional" default="NaN">
+      <xsd:annotation>
+        <xsd:documentation>Max Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Rules">
+    <xsd:sequence>
+      <xsd:element name="rule" type="CT_NumericRule" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Rule</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_PresentationOf">
+    <xsd:sequence>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attributeGroup ref="AG_IteratorAttributes" />
+  </xsd:complexType>
+  <xsd:simpleType name="ST_LayoutShapeType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Layout Shape Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union memberTypes="a:ST_ShapeType ST_OutputShapeType" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_Index1">
+    <xsd:annotation>
+      <xsd:documentation>1-Based Index</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:unsignedInt">
+      <xsd:minInclusive value="1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CT_Adj">
+    <xsd:attribute name="idx" type="ST_Index1" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Adjust Handle Index</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="xsd:double" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_AdjLst">
+    <xsd:sequence>
+      <xsd:element name="adj" type="CT_Adj" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Shape Adjust</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Shape">
+    <xsd:sequence>
+      <xsd:element name="adjLst" type="CT_AdjLst" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape Adjust List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="rot" type="xsd:double" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Rotation</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="type" type="ST_LayoutShapeType" use="optional" default="none">
+      <xsd:annotation>
+        <xsd:documentation>Shape Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute ref="r:blip" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Relationship to Image Part</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="zOrderOff" type="xsd:int" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Z-Order Offset</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="hideGeom" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation>Hide Geometry</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="lkTxEntry" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation>Prevent Text Editing</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="blipPhldr" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation>Image Placeholder</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Parameter">
+    <xsd:attribute name="type" type="ST_ParameterId" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Parameter Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="ST_ParameterVal" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Algorithm">
+    <xsd:sequence>
+      <xsd:element name="param" type="CT_Parameter" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Parameter</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="type" type="ST_AlgorithmType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Algorithm Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="rev" type="xsd:unsignedInt" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Revision Number</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_LayoutNode">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="alg" type="CT_Algorithm" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="shape" type="CT_Shape" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="presOf" type="CT_PresentationOf" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Presentation Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="constrLst" type="CT_Constraints" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Constraint List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ruleLst" type="CT_Rules" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Rule List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="varLst" type="CT_LayoutVariablePropertySet" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Variable List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="forEach" type="CT_ForEach">
+        <xsd:annotation>
+          <xsd:documentation>For Each</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layoutNode" type="CT_LayoutNode">
+        <xsd:annotation>
+          <xsd:documentation>Layout Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="choose" type="CT_Choose">
+        <xsd:annotation>
+          <xsd:documentation>Choose Element</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:choice>
+    <xsd:attribute name="name" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="styleLbl" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Style Label</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="chOrder" type="ST_ChildOrderType" use="optional" default="b">
+      <xsd:annotation>
+        <xsd:documentation>Child Order</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="moveWith" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Move With</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_ForEach">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="alg" type="CT_Algorithm" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="shape" type="CT_Shape" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="presOf" type="CT_PresentationOf" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Presentation Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="constrLst" type="CT_Constraints" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Constraint List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ruleLst" type="CT_Rules" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Rule List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="forEach" type="CT_ForEach">
+        <xsd:annotation>
+          <xsd:documentation>For Each</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layoutNode" type="CT_LayoutNode">
+        <xsd:annotation>
+          <xsd:documentation>Layout Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="choose" type="CT_Choose">
+        <xsd:annotation>
+          <xsd:documentation>Choose Element</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:choice>
+    <xsd:attribute name="name" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="ref" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Reference</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attributeGroup ref="AG_IteratorAttributes" />
+  </xsd:complexType>
+  <xsd:complexType name="CT_When">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="alg" type="CT_Algorithm" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="shape" type="CT_Shape" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="presOf" type="CT_PresentationOf" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Presentation Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="constrLst" type="CT_Constraints" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Constraint List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ruleLst" type="CT_Rules" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Rule List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="forEach" type="CT_ForEach">
+        <xsd:annotation>
+          <xsd:documentation>For Each</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layoutNode" type="CT_LayoutNode">
+        <xsd:annotation>
+          <xsd:documentation>Layout Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="choose" type="CT_Choose">
+        <xsd:annotation>
+          <xsd:documentation>Choose Element</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:choice>
+    <xsd:attribute name="name" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attributeGroup ref="AG_IteratorAttributes" />
+    <xsd:attribute name="func" type="ST_FunctionType" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Function</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="arg" type="ST_FunctionArgument" use="optional" default="none">
+      <xsd:annotation>
+        <xsd:documentation>Argument</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="op" type="ST_FunctionOperator" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Operator</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="ST_FunctionValue" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Otherwise">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="alg" type="CT_Algorithm" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="shape" type="CT_Shape" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="presOf" type="CT_PresentationOf" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Presentation Of</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="constrLst" type="CT_Constraints" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Constraint List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="ruleLst" type="CT_Rules" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Rule List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="forEach" type="CT_ForEach">
+        <xsd:annotation>
+          <xsd:documentation>For Each</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layoutNode" type="CT_LayoutNode">
+        <xsd:annotation>
+          <xsd:documentation>Layout Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="choose" type="CT_Choose">
+        <xsd:annotation>
+          <xsd:documentation>Choose Element</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Extension List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:choice>
+    <xsd:attribute name="name" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Choose">
+    <xsd:sequence>
+      <xsd:element name="if" type="CT_When" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>If</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="else" type="CT_Otherwise" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Else</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_SampleData">
+    <xsd:sequence>
+      <xsd:element name="dataModel" type="CT_DataModel" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Data Model</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="useDef" type="xsd:boolean" use="optional" default="false">
+      <xsd:annotation>
+        <xsd:documentation>Use Default</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Category">
+    <xsd:attribute name="type" type="xsd:anyURI" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Category Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="pri" type="xsd:unsignedInt" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Priority</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Categories">
+    <xsd:sequence>
+      <xsd:element name="cat" type="CT_Category" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Category</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Name">
+    <xsd:attribute name="lang" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Language</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Description">
+    <xsd:attribute name="lang" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Language</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_DiagramDefinition">
+    <xsd:sequence>
+      <xsd:element name="title" type="CT_Name" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Title</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="desc" type="CT_Description" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Description</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="catLst" type="CT_Categories" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Category List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sampData" type="CT_SampleData" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Sample Data</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="styleData" type="CT_SampleData" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Style Data</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="clrData" type="CT_SampleData" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Color Transform Sample Data</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="layoutNode" type="CT_LayoutNode">
+        <xsd:annotation>
+          <xsd:documentation>Layout Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="uniqueId" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Unique Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="minVer" type="xsd:string" use="optional" default="http://schemas.openxmlformats.org/drawingml/2006/diagram">
+      <xsd:annotation>
+        <xsd:documentation>Minimum Version</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="defStyle" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Default Style</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="layoutDef" type="CT_DiagramDefinition">
+    <xsd:annotation>
+      <xsd:documentation>Layout Definition</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CT_DiagramDefinitionHeader">
+    <xsd:sequence>
+      <xsd:element name="title" type="CT_Name" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Title</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="desc" type="CT_Description" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Description</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="catLst" type="CT_Categories" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Category List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="uniqueId" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Unique Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="minVer" type="xsd:string" use="optional" default="http://schemas.openxmlformats.org/drawingml/2006/diagram">
+      <xsd:annotation>
+        <xsd:documentation>Minimum Version</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="defStyle" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Default Style</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="resId" type="xsd:int" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Resource Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="layoutDefHdr" type="CT_DiagramDefinitionHeader">
+    <xsd:annotation>
+      <xsd:documentation>Layout Definition Header</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CT_DiagramDefinitionHeaderLst">
+    <xsd:sequence>
+      <xsd:element name="layoutDefHdr" type="CT_DiagramDefinitionHeader" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Layout Definition Header</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="layoutDefHdrLst" type="CT_DiagramDefinitionHeaderLst">
+    <xsd:annotation>
+      <xsd:documentation>Diagram Layout Header List</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CT_RelIds">
+    <xsd:attribute ref="r:dm" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Explicit Relationship to Diagram Data Part</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute ref="r:lo" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Explicit Relationship to Diagram Layout Definition Part</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute ref="r:qs" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Explicit Relationship to Style Definition Part</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute ref="r:cs" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Explicit Relationship to Diagram Colors Part</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="relIds" type="CT_RelIds">
+    <xsd:annotation>
+      <xsd:documentation>Explicit Relationships to Diagram Parts</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:simpleType name="ST_ParameterVal">
+    <xsd:annotation>
+      <xsd:documentation>Parameter Values</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union memberTypes="ST_HorizontalAlignment ST_VerticalAlignment ST_ChildDirection ST_ChildAlignment ST_SecondaryChildAlignment ST_LinearDirection ST_SecondaryLinearDirection ST_StartingElement ST_BendPoint ST_ConnectorRouting ST_ArrowheadStyle ST_ConnectorDimension ST_RotationPath ST_CenterShapeMapping ST_NodeHorizontalAlignment ST_NodeVerticalAlignment ST_FallbackDimension ST_TextDirection ST_PyramidAccentPosition ST_PyramidAccentTextMargin ST_TextBlockDirection ST_TextAnchorHorizontal ST_TextAnchorVertical ST_TextAlignment ST_AutoTextRotation ST_GrowDirection ST_FlowDirection ST_ContinueDirection ST_Breakpoint ST_Offset ST_HierarchyAlignment xsd:int xsd:double xsd:boolean xsd:string ST_ConnectorPoint" />
+  </xsd:simpleType>
+
+  <!-- dml-diagramElementPropertySet.xsd -->
+  <!-- <xsd:import namespace="http://schemas.openxmlformats.org/drawingml/2006/main" schemaLocation="dml-baseTypes.xsd" /> -->
+  <!-- <xsd:include schemaLocation="dml-diagramLayoutVariables.xsd" /> -->
+  <!-- <xsd:import namespace="http://schemas.openxmlformats.org/drawingml/2006/main" schemaLocation="dml-shapeStyle.xsd" /> -->
+  <xsd:simpleType name="ST_ModelId">
+    <xsd:annotation>
+      <xsd:documentation>Model Identifier</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union memberTypes="xsd:int a:ST_Guid" />
+  </xsd:simpleType>
+  <xsd:complexType name="CT_ElemPropSet">
+    <xsd:sequence>
+      <xsd:element name="presLayoutVars" type="CT_LayoutVariablePropertySet" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Presentation Layout Variables</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="style" type="a:CT_ShapeStyle" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape Style</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="presAssocID" type="ST_ModelId" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Presentation Element Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="presName" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Presentation Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="presStyleLbl" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Presentation Style Label</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="presStyleIdx" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Presentation Style Index</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="presStyleCnt" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Presentation Style Count</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="loTypeId" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Current Diagram Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="loCatId" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Current Diagram Category</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="qsTypeId" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Current Style Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="qsCatId" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Current Style Category</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="csTypeId" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Color Transform Type Identifier</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="csCatId" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Color Transform Category</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="coherent3DOff" type="xsd:boolean" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Coherent 3D Behavior</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="phldrT" type="xsd:string" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Placeholder Text</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="phldr" type="xsd:boolean" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Placeholder</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custAng" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Custom Rotation</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custFlipVert" type="xsd:boolean" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Custom Vertical Flip</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custFlipHor" type="xsd:boolean" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Custom Horizontal Flip</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custSzX" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Fixed Width Override</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custSzY" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Fixed Height Override</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custScaleX" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Width Scale</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custScaleY" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Height Scale</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custT" type="xsd:boolean" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Text Changed</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custLinFactX" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Custom Factor Width</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custLinFactY" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Custom Factor Height</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custLinFactNeighborX" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Neighbor Offset Width</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custLinFactNeighborY" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Neighbor Offset Height</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custRadScaleRad" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Radius Scale</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="custRadScaleInc" type="xsd:int" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Include Angle Scale</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <!-- dml-diagramLayoutVariables.xsd -->
+  <xsd:simpleType name="ST_Direction" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Diagram Direction Definition</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="norm">
+        <xsd:annotation>
+          <xsd:documentation>Normal Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rev">
+        <xsd:annotation>
+          <xsd:documentation>Reversed Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_HierBranchStyle" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Hierarchy Branch Style Definition</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="l">
+        <xsd:annotation>
+          <xsd:documentation>Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="r">
+        <xsd:annotation>
+          <xsd:documentation>Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="hang">
+        <xsd:annotation>
+          <xsd:documentation>Hanging</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="std">
+        <xsd:annotation>
+          <xsd:documentation>Standard</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="init">
+        <xsd:annotation>
+          <xsd:documentation>Initial</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_AnimOneStr" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>One by One Animation Value Definition</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>Disable One-by-One</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="one">
+        <xsd:annotation>
+          <xsd:documentation>One By One</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="branch">
+        <xsd:annotation>
+          <xsd:documentation>By Branch One By One</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_AnimLvlStr" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Animation Level String Definition</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>Disable Level At Once</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lvl">
+        <xsd:annotation>
+          <xsd:documentation>By Level Animation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctr">
+        <xsd:annotation>
+          <xsd:documentation>From Center Animation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CT_OrgChart">
+    <xsd:attribute name="val" type="xsd:boolean" default="false" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Show Organization Chart User Interface Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:simpleType name="ST_NodeCount">
+    <xsd:annotation>
+      <xsd:documentation>Number of Nodes Definition</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:int">
+      <xsd:minInclusive value="-1" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CT_ChildMax">
+    <xsd:attribute name="val" type="ST_NodeCount" default="-1" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Maximum Children Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_ChildPref">
+    <xsd:attribute name="val" type="ST_NodeCount" default="-1" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Preferred Number of CHildren Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_BulletEnabled">
+    <xsd:attribute name="val" type="xsd:boolean" default="false" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Show Insert Bullet Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_Direction">
+    <xsd:attribute name="val" type="ST_Direction" default="norm" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Diagram Direction Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_HierBranchStyle">
+    <xsd:attribute name="val" type="ST_HierBranchStyle" default="std" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Organization Chart Branch Style Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_AnimOne">
+    <xsd:attribute name="val" type="ST_AnimOneStr" default="one" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>One By One Animation Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_AnimLvl">
+    <xsd:attribute name="val" type="ST_AnimLvlStr" default="none" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Level Animation Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:simpleType name="ST_ResizeHandlesStr" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Resize Handle</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="exact">
+        <xsd:annotation>
+          <xsd:documentation>Exact</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rel">
+        <xsd:annotation>
+          <xsd:documentation>Relative</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CT_ResizeHandles">
+    <xsd:attribute name="val" type="ST_ResizeHandlesStr" default="rel" use="optional">
+      <xsd:annotation>
+        <xsd:documentation>Shape Resize Style Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_LayoutVariablePropertySet">
+    <xsd:sequence>
+      <xsd:element name="orgChart" type="CT_OrgChart" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Show Organization Chart User Interface</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="chMax" type="CT_ChildMax" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Maximum Children</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="chPref" type="CT_ChildPref" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Preferred Number of Children</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="bulletEnabled" type="CT_BulletEnabled" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Show Insert Bullet</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="dir" type="CT_Direction" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Diagram Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="hierBranch" type="CT_HierBranchStyle" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Organization Chart Branch Style</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="animOne" type="CT_AnimOne" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>One by One Animation String</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="animLvl" type="CT_AnimLvl" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Level Animation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="resizeHandles" type="CT_ResizeHandles" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape Resize Style</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  
+  <!-- dml-diagramStyleDefinition.xsd -->
+  <!-- <xsd:import schemaLocation="shared-relationshipReference.xsd" namespace="http://schemas.openxmlformats.org/officeDocument/2006/relationships" /> -->
+  <!-- <xsd:import schemaLocation="dml-baseTypes.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="dml-shapeGeometry.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="dml-shapeLineProperties.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="dml-shapeMiscellaneous.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="dml-shape3DStyles.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="dml-shape3DScene.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="dml-shapeStyle.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <!-- <xsd:import schemaLocation="dml-text.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" /> -->
+  <xsd:complexType name="CT_SDName">
+    <xsd:attribute name="lang" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Natural Language</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Description Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_SDDescription">
+    <xsd:attribute name="lang" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Natural Language</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="val" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Description Value</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_SDCategory">
+    <xsd:attribute name="type" type="xsd:anyURI" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Category Type</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="pri" type="xsd:unsignedInt" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Priority</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_SDCategories">
+    <xsd:sequence minOccurs="0" maxOccurs="unbounded">
+      <xsd:element name="cat" type="CT_SDCategory" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Category</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_TextProps">
+    <xsd:sequence>
+      <xsd:group ref="a:EG_Text3D" minOccurs="0" maxOccurs="1"></xsd:group>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_StyleLabel">
+    <xsd:sequence>
+      <xsd:element name="scene3d" type="a:CT_Scene3D" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>3-D Scene</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="sp3d" type="a:CT_Shape3D" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>3-D Shape Properties</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="txPr" type="CT_TextProps" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Text Properties</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="style" type="a:CT_ShapeStyle" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>Shape Style</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1"></xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="name" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Style Name</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_StyleDefinition">
+    <xsd:sequence>
+      <xsd:element name="title" type="CT_SDName" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Title</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="desc" type="CT_SDDescription" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Style Label Description</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="catLst" type="CT_SDCategories" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Category List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="scene3d" type="a:CT_Scene3D" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation>3-D Scene</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="styleLbl" type="CT_StyleLabel" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Style Label</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="uniqueId" type="xsd:string" use="optional" default="">
+      <xsd:annotation>
+        <xsd:documentation>Unique Style ID</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="minVer" type="xsd:string" use="optional" default="http://schemas.openxmlformats.org/drawingml/2006/diagram">
+      <xsd:annotation>
+        <xsd:documentation>Minimum Version</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="styleDef" type="CT_StyleDefinition">
+    <xsd:annotation>
+      <xsd:documentation>Style Definition</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CT_StyleDefinitionHeader">
+    <xsd:sequence>
+      <xsd:element name="title" type="CT_SDName" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Title</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="desc" type="CT_SDDescription" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Style Label Description</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="catLst" type="CT_SDCategories" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Category List</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="extLst" type="a:CT_OfficeArtExtensionList" minOccurs="0" maxOccurs="1" />
+    </xsd:sequence>
+    <xsd:attribute name="uniqueId" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Unique Style ID</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="minVer" type="xsd:string" use="optional" default="http://schemas.openxmlformats.org/drawingml/2006/diagram">
+      <xsd:annotation>
+        <xsd:documentation>Minimum Version</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="resId" type="xsd:int" use="optional" default="0">
+      <xsd:annotation>
+        <xsd:documentation>Resource ID</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="styleDefHdr" type="CT_StyleDefinitionHeader">
+    <xsd:annotation>
+      <xsd:documentation>Style Definition Header</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+  <xsd:complexType name="CT_StyleDefinitionHeaderLst">
+    <xsd:sequence>
+      <xsd:element name="styleDefHdr" type="CT_StyleDefinitionHeader" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Style Definition Header</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:element name="styleDefHdrLst" type="CT_StyleDefinitionHeaderLst">
+    <xsd:annotation>
+      <xsd:documentation>List of Style Definition Headers</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+
+  <!-- dml-diagramTypes.xsd -->
+  <!-- <xsd:include schemaLocation="dml-diagramLayoutVariables.xsd" /> -->
+  <xsd:simpleType name="ST_AlgorithmType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Algorithm Types</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="composite">
+        <xsd:annotation>
+          <xsd:documentation>Composite</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="conn">
+        <xsd:annotation>
+          <xsd:documentation>Connector Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="cycle">
+        <xsd:annotation>
+          <xsd:documentation>Cycle Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="hierChild">
+        <xsd:annotation>
+          <xsd:documentation>Hierarchy Child Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="hierRoot">
+        <xsd:annotation>
+          <xsd:documentation>Hierarchy Root Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pyra">
+        <xsd:annotation>
+          <xsd:documentation>Pyramid Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lin">
+        <xsd:annotation>
+          <xsd:documentation>Linear Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="sp">
+        <xsd:annotation>
+          <xsd:documentation>Space Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tx">
+        <xsd:annotation>
+          <xsd:documentation>Text Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="snake">
+        <xsd:annotation>
+          <xsd:documentation>Snake Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_AxisType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Axis Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="self">
+        <xsd:annotation>
+          <xsd:documentation>Self</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ch">
+        <xsd:annotation>
+          <xsd:documentation>Child</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="des">
+        <xsd:annotation>
+          <xsd:documentation>Descendant</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="desOrSelf">
+        <xsd:annotation>
+          <xsd:documentation>Descendant or Self</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="par">
+        <xsd:annotation>
+          <xsd:documentation>Parent</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ancst">
+        <xsd:annotation>
+          <xsd:documentation>Ancestor</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ancstOrSelf">
+        <xsd:annotation>
+          <xsd:documentation>Ancestor or Self</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="followSib">
+        <xsd:annotation>
+          <xsd:documentation>Follow Sibling</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="precedSib">
+        <xsd:annotation>
+          <xsd:documentation>Preceding Sibling</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="follow">
+        <xsd:annotation>
+          <xsd:documentation>Follow</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="preced">
+        <xsd:annotation>
+          <xsd:documentation>Preceding</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="root">
+        <xsd:annotation>
+          <xsd:documentation>Root</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_AxisTypes">
+    <xsd:annotation>
+      <xsd:documentation>Axis Type List</xsd:documentation>
+    </xsd:annotation>
+    <xsd:list itemType="ST_AxisType" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_BoolOperator" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Boolean Constraint</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="equ">
+        <xsd:annotation>
+          <xsd:documentation>Equal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="gte">
+        <xsd:annotation>
+          <xsd:documentation>Greater Than or Equal to</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lte">
+        <xsd:annotation>
+          <xsd:documentation>Less Than or Equal to</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ChildOrderType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Child Order</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="b">
+        <xsd:annotation>
+          <xsd:documentation>Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="t">
+        <xsd:annotation>
+          <xsd:documentation>Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ConstraintType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Constraint Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>Unknown</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="alignOff">
+        <xsd:annotation>
+          <xsd:documentation>Alignment Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="begMarg">
+        <xsd:annotation>
+          <xsd:documentation>Beginning Margin</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bendDist">
+        <xsd:annotation>
+          <xsd:documentation>Bending Distance</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="begPad">
+        <xsd:annotation>
+          <xsd:documentation>Beginning Padding</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="b">
+        <xsd:annotation>
+          <xsd:documentation>Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bMarg">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Margin</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bOff">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctrX">
+        <xsd:annotation>
+          <xsd:documentation>Center Height</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctrXOff">
+        <xsd:annotation>
+          <xsd:documentation>Center X Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctrY">
+        <xsd:annotation>
+          <xsd:documentation>Center Width</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctrYOff">
+        <xsd:annotation>
+          <xsd:documentation>Center Y Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="connDist">
+        <xsd:annotation>
+          <xsd:documentation>Connection Distance</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="diam">
+        <xsd:annotation>
+          <xsd:documentation>Diameter</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="endMarg">
+        <xsd:annotation>
+          <xsd:documentation>End Margin</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="endPad">
+        <xsd:annotation>
+          <xsd:documentation>End Padding</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="h">
+        <xsd:annotation>
+          <xsd:documentation>Height</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="hArH">
+        <xsd:annotation>
+          <xsd:documentation>Arrowhead Height</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="hOff">
+        <xsd:annotation>
+          <xsd:documentation>Height Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="l">
+        <xsd:annotation>
+          <xsd:documentation>Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lMarg">
+        <xsd:annotation>
+          <xsd:documentation>Left Margin</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lOff">
+        <xsd:annotation>
+          <xsd:documentation>Left Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="r">
+        <xsd:annotation>
+          <xsd:documentation>Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rMarg">
+        <xsd:annotation>
+          <xsd:documentation>Right Margin</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rOff">
+        <xsd:annotation>
+          <xsd:documentation>Right Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="primFontSz">
+        <xsd:annotation>
+          <xsd:documentation>Primary Font Size</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pyraAcctRatio">
+        <xsd:annotation>
+          <xsd:documentation>Pyramid Accent Ratio</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="secFontSz">
+        <xsd:annotation>
+          <xsd:documentation>Secondary Font Size</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="sibSp">
+        <xsd:annotation>
+          <xsd:documentation>Sibling Spacing</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="secSibSp">
+        <xsd:annotation>
+          <xsd:documentation>Secondary Sibling Spacing</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="sp">
+        <xsd:annotation>
+          <xsd:documentation>Spacing</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="stemThick">
+        <xsd:annotation>
+          <xsd:documentation>Stem Thickness</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="t">
+        <xsd:annotation>
+          <xsd:documentation>Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tMarg">
+        <xsd:annotation>
+          <xsd:documentation>Top Margin</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tOff">
+        <xsd:annotation>
+          <xsd:documentation>Top Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userA">
+        <xsd:annotation>
+          <xsd:documentation>User Defined A</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userB">
+        <xsd:annotation>
+          <xsd:documentation>User Defined B</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userC">
+        <xsd:annotation>
+          <xsd:documentation>User Defined C</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userD">
+        <xsd:annotation>
+          <xsd:documentation>User Defined D</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userE">
+        <xsd:annotation>
+          <xsd:documentation>User Defined E</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userF">
+        <xsd:annotation>
+          <xsd:documentation>User Defined F</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userG">
+        <xsd:annotation>
+          <xsd:documentation>User Defined G</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userH">
+        <xsd:annotation>
+          <xsd:documentation>User Defined H</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userI">
+        <xsd:annotation>
+          <xsd:documentation>User Defined I</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userJ">
+        <xsd:annotation>
+          <xsd:documentation>User Defined J</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userK">
+        <xsd:annotation>
+          <xsd:documentation>User Defined K</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userL">
+        <xsd:annotation>
+          <xsd:documentation>User Defined L</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userM">
+        <xsd:annotation>
+          <xsd:documentation>User Defined M</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userN">
+        <xsd:annotation>
+          <xsd:documentation>User Defined N</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userO">
+        <xsd:annotation>
+          <xsd:documentation>User Defined O</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userP">
+        <xsd:annotation>
+          <xsd:documentation>User Defined P</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userQ">
+        <xsd:annotation>
+          <xsd:documentation>User Defined Q</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userR">
+        <xsd:annotation>
+          <xsd:documentation>User Defined R</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userS">
+        <xsd:annotation>
+          <xsd:documentation>User Defined S</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userT">
+        <xsd:annotation>
+          <xsd:documentation>User Defined T</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userU">
+        <xsd:annotation>
+          <xsd:documentation>User Defined U</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userV">
+        <xsd:annotation>
+          <xsd:documentation>User Defined V</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userW">
+        <xsd:annotation>
+          <xsd:documentation>User Defined W</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userX">
+        <xsd:annotation>
+          <xsd:documentation>User Defined X</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userY">
+        <xsd:annotation>
+          <xsd:documentation>User Defined Y</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="userZ">
+        <xsd:annotation>
+          <xsd:documentation>User Defined Z</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="w">
+        <xsd:annotation>
+          <xsd:documentation>Width</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="wArH">
+        <xsd:annotation>
+          <xsd:documentation>Arrowhead Width</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="wOff">
+        <xsd:annotation>
+          <xsd:documentation>Width Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ConstraintRelationship" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Constraint Relationship</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="self">
+        <xsd:annotation>
+          <xsd:documentation>Self</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ch">
+        <xsd:annotation>
+          <xsd:documentation>Child</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="des">
+        <xsd:annotation>
+          <xsd:documentation>Descendant</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ElementType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Element Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="all">
+        <xsd:annotation>
+          <xsd:documentation>All</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="doc">
+        <xsd:annotation>
+          <xsd:documentation>Document</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="node">
+        <xsd:annotation>
+          <xsd:documentation>Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="norm">
+        <xsd:annotation>
+          <xsd:documentation>Normal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="nonNorm">
+        <xsd:annotation>
+          <xsd:documentation>Non Normal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="asst">
+        <xsd:annotation>
+          <xsd:documentation>Assistant</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="nonAsst">
+        <xsd:annotation>
+          <xsd:documentation>Non Assistant</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="parTrans">
+        <xsd:annotation>
+          <xsd:documentation>Parent Transition</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pres">
+        <xsd:annotation>
+          <xsd:documentation>Presentation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="sibTrans">
+        <xsd:annotation>
+          <xsd:documentation>Sibling Transition</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ElementTypes">
+    <xsd:annotation>
+      <xsd:documentation>Element Type List</xsd:documentation>
+    </xsd:annotation>
+    <xsd:list itemType="ST_ElementType" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ParameterId" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Parameter Identifier</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="horzAlign">
+        <xsd:annotation>
+          <xsd:documentation>Horizontal Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="vertAlign">
+        <xsd:annotation>
+          <xsd:documentation>Vertical Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="chDir">
+        <xsd:annotation>
+          <xsd:documentation>Child Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="chAlign">
+        <xsd:annotation>
+          <xsd:documentation>Child Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="secChAlign">
+        <xsd:annotation>
+          <xsd:documentation>Secondary Child Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="linDir">
+        <xsd:annotation>
+          <xsd:documentation>Linear Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="secLinDir">
+        <xsd:annotation>
+          <xsd:documentation>Secondary Linear Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="stElem">
+        <xsd:annotation>
+          <xsd:documentation>Start Element</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bendPt">
+        <xsd:annotation>
+          <xsd:documentation>Bend Point</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="connRout">
+        <xsd:annotation>
+          <xsd:documentation>Connection Route</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="begSty">
+        <xsd:annotation>
+          <xsd:documentation>Beginning Arrowhead Style</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="endSty">
+        <xsd:annotation>
+          <xsd:documentation>End Style</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="dim">
+        <xsd:annotation>
+          <xsd:documentation>Connector Dimension</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rotPath">
+        <xsd:annotation>
+          <xsd:documentation>Rotation Path</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctrShpMap">
+        <xsd:annotation>
+          <xsd:documentation>Center Shape Mapping</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="nodeHorzAlign">
+        <xsd:annotation>
+          <xsd:documentation>Node Horizontal Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="nodeVertAlign">
+        <xsd:annotation>
+          <xsd:documentation>Node Vertical Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fallback">
+        <xsd:annotation>
+          <xsd:documentation>Fallback Scale</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="txDir">
+        <xsd:annotation>
+          <xsd:documentation>Text Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pyraAcctPos">
+        <xsd:annotation>
+          <xsd:documentation>Pyramid Accent Position</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pyraAcctTxMar">
+        <xsd:annotation>
+          <xsd:documentation>Pyramid Accent Text Margin</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="txBlDir">
+        <xsd:annotation>
+          <xsd:documentation>Text Block Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="txAnchorHorz">
+        <xsd:annotation>
+          <xsd:documentation>Text Anchor Horizontal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="txAnchorVert">
+        <xsd:annotation>
+          <xsd:documentation>Text Anchor Vertical</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="txAnchorHorzCh">
+        <xsd:annotation>
+          <xsd:documentation>Text Anchor Horizontal With Children</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="txAnchorVertCh">
+        <xsd:annotation>
+          <xsd:documentation>Text Anchor Vertical With Children</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="parTxLTRAlign">
+        <xsd:annotation>
+          <xsd:documentation>Parent Text Left-to-Right Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="parTxRTLAlign">
+        <xsd:annotation>
+          <xsd:documentation>Parent Text Right-to-Left Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="shpTxLTRAlignCh">
+        <xsd:annotation>
+          <xsd:documentation>Shape Text Left-to-Right Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="shpTxRTLAlignCh">
+        <xsd:annotation>
+          <xsd:documentation>Shape Text Right-to-Left Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="autoTxRot">
+        <xsd:annotation>
+          <xsd:documentation>Auto Text Rotation</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="grDir">
+        <xsd:annotation>
+          <xsd:documentation>Grow Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="flowDir">
+        <xsd:annotation>
+          <xsd:documentation>Flow Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="contDir">
+        <xsd:annotation>
+          <xsd:documentation>Continue Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bkpt">
+        <xsd:annotation>
+          <xsd:documentation>Breakpoint</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="off">
+        <xsd:annotation>
+          <xsd:documentation>Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="hierAlign">
+        <xsd:annotation>
+          <xsd:documentation>Hierarchy Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bkPtFixedVal">
+        <xsd:annotation>
+          <xsd:documentation>Breakpoint Fixed Value</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="stBulletLvl">
+        <xsd:annotation>
+          <xsd:documentation>Start Bullets At Level</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="stAng">
+        <xsd:annotation>
+          <xsd:documentation>Start Angle</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="spanAng">
+        <xsd:annotation>
+          <xsd:documentation>Span Angle</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ar">
+        <xsd:annotation>
+          <xsd:documentation>Aspect Ratio</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lnSpPar">
+        <xsd:annotation>
+          <xsd:documentation>Line Spacing Parent</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lnSpAfParP">
+        <xsd:annotation>
+          <xsd:documentation>Line Spacing After Parent Paragraph</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lnSpCh">
+        <xsd:annotation>
+          <xsd:documentation>Line Spacing Children</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lnSpAfChP">
+        <xsd:annotation>
+          <xsd:documentation>Line Spacing After Children Paragraph</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rtShortDist">
+        <xsd:annotation>
+          <xsd:documentation>Route Shortest Distance</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="alignTx">
+        <xsd:annotation>
+          <xsd:documentation>Text Alignment</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pyraLvlNode">
+        <xsd:annotation>
+          <xsd:documentation>Pyramid Level Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pyraAcctBkgdNode">
+        <xsd:annotation>
+          <xsd:documentation>Pyramid Accent Background Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pyraAcctTxNode">
+        <xsd:annotation>
+          <xsd:documentation>Pyramid Accent Text Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="srcNode">
+        <xsd:annotation>
+          <xsd:documentation>Source Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="dstNode">
+        <xsd:annotation>
+          <xsd:documentation>Destination Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="begPts">
+        <xsd:annotation>
+          <xsd:documentation>Beginning Points</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="endPts">
+        <xsd:annotation>
+          <xsd:documentation>End Points</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_Ints">
+    <xsd:annotation>
+      <xsd:documentation>Integer List</xsd:documentation>
+    </xsd:annotation>
+    <xsd:list itemType="xsd:int" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_UnsignedInts">
+    <xsd:annotation>
+      <xsd:documentation>Unsigned Integer List</xsd:documentation>
+    </xsd:annotation>
+    <xsd:list itemType="xsd:unsignedInt" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_Booleans">
+    <xsd:annotation>
+      <xsd:documentation>Boolean List.</xsd:documentation>
+    </xsd:annotation>
+    <xsd:list itemType="xsd:boolean" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_FunctionType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Function Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="cnt">
+        <xsd:annotation>
+          <xsd:documentation>Count</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="pos">
+        <xsd:annotation>
+          <xsd:documentation>Position</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="revPos">
+        <xsd:annotation>
+          <xsd:documentation>Reverse Position</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="posEven">
+        <xsd:annotation>
+          <xsd:documentation>Position Even</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="posOdd">
+        <xsd:annotation>
+          <xsd:documentation>Position Odd</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="var">
+        <xsd:annotation>
+          <xsd:documentation>Variable</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="depth">
+        <xsd:annotation>
+          <xsd:documentation>Depth</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="maxDepth">
+        <xsd:annotation>
+          <xsd:documentation>Max Depth</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_FunctionOperator" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Function Operator</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="equ">
+        <xsd:annotation>
+          <xsd:documentation>Equal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="neq">
+        <xsd:annotation>
+          <xsd:documentation>Not Equal To</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="gt">
+        <xsd:annotation>
+          <xsd:documentation>Greater Than</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lt">
+        <xsd:annotation>
+          <xsd:documentation>Less Than</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="gte">
+        <xsd:annotation>
+          <xsd:documentation>Greater Than or Equal to</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lte">
+        <xsd:annotation>
+          <xsd:documentation>Less Than or Equal to</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_HorizontalAlignment" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Horizontal Alignment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="l">
+        <xsd:annotation>
+          <xsd:documentation>Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctr">
+        <xsd:annotation>
+          <xsd:documentation>Center</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="r">
+        <xsd:annotation>
+          <xsd:documentation>Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_VerticalAlignment" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Vertical Alignment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="t">
+        <xsd:annotation>
+          <xsd:documentation>Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="mid">
+        <xsd:annotation>
+          <xsd:documentation>Middle</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="b">
+        <xsd:annotation>
+          <xsd:documentation>Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ChildDirection" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Child Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="horz">
+        <xsd:annotation>
+          <xsd:documentation>Horizontal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="vert">
+        <xsd:annotation>
+          <xsd:documentation>Vertical</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ChildAlignment" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Child Alignment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="t">
+        <xsd:annotation>
+          <xsd:documentation>Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="b">
+        <xsd:annotation>
+          <xsd:documentation>Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="l">
+        <xsd:annotation>
+          <xsd:documentation>Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="r">
+        <xsd:annotation>
+          <xsd:documentation>Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_SecondaryChildAlignment" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Secondary Child Alignment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="t">
+        <xsd:annotation>
+          <xsd:documentation>Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="b">
+        <xsd:annotation>
+          <xsd:documentation>Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="l">
+        <xsd:annotation>
+          <xsd:documentation>Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="r">
+        <xsd:annotation>
+          <xsd:documentation>Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_LinearDirection" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Linear Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="fromL">
+        <xsd:annotation>
+          <xsd:documentation>From Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fromR">
+        <xsd:annotation>
+          <xsd:documentation>From Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fromT">
+        <xsd:annotation>
+          <xsd:documentation>From Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fromB">
+        <xsd:annotation>
+          <xsd:documentation>From Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_SecondaryLinearDirection" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Secondary Linear Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fromL">
+        <xsd:annotation>
+          <xsd:documentation>From Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fromR">
+        <xsd:annotation>
+          <xsd:documentation>From Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fromT">
+        <xsd:annotation>
+          <xsd:documentation>From Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fromB">
+        <xsd:annotation>
+          <xsd:documentation>From Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_StartingElement" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Starting Element</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="node">
+        <xsd:annotation>
+          <xsd:documentation>Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="trans">
+        <xsd:annotation>
+          <xsd:documentation>Transition</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_RotationPath" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Rotation Path</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="alongPath">
+        <xsd:annotation>
+          <xsd:documentation>Along Path</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_CenterShapeMapping" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Center Shape Mapping</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fNode">
+        <xsd:annotation>
+          <xsd:documentation>First Node</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_BendPoint" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Bend Point</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="beg">
+        <xsd:annotation>
+          <xsd:documentation>Beginning</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="def">
+        <xsd:annotation>
+          <xsd:documentation>Default</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="end">
+        <xsd:annotation>
+          <xsd:documentation>End</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ConnectorRouting" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Connector Routing</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="stra">
+        <xsd:annotation>
+          <xsd:documentation>Straight</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bend">
+        <xsd:annotation>
+          <xsd:documentation>Bending</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="curve">
+        <xsd:annotation>
+          <xsd:documentation>Curve</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="longCurve">
+        <xsd:annotation>
+          <xsd:documentation>Long Curve</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ArrowheadStyle" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Arrowhead Styles</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="auto">
+        <xsd:annotation>
+          <xsd:documentation>Auto</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="arr">
+        <xsd:annotation>
+          <xsd:documentation>Arrowhead Present</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="noArr">
+        <xsd:annotation>
+          <xsd:documentation>No Arrowhead</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ConnectorDimension" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Connector Dimension</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="1D">
+        <xsd:annotation>
+          <xsd:documentation>1 Dimension</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="2D">
+        <xsd:annotation>
+          <xsd:documentation>2 Dimensions</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="cust">
+        <xsd:annotation>
+          <xsd:documentation>Custom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ConnectorPoint" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Connector Point</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="auto">
+        <xsd:annotation>
+          <xsd:documentation>Auto</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bCtr">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Center</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctr">
+        <xsd:annotation>
+          <xsd:documentation>Center</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="midL">
+        <xsd:annotation>
+          <xsd:documentation>Middle Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="midR">
+        <xsd:annotation>
+          <xsd:documentation>Middle Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tCtr">
+        <xsd:annotation>
+          <xsd:documentation>Top Center</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bL">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bR">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tL">
+        <xsd:annotation>
+          <xsd:documentation>Top Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tR">
+        <xsd:annotation>
+          <xsd:documentation>Top Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="radial">
+        <xsd:annotation>
+          <xsd:documentation>Radial</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_NodeHorizontalAlignment" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Node Horizontal Alignment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="l">
+        <xsd:annotation>
+          <xsd:documentation>Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctr">
+        <xsd:annotation>
+          <xsd:documentation>Center</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="r">
+        <xsd:annotation>
+          <xsd:documentation>Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_NodeVerticalAlignment" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Node Vertical Alignment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="t">
+        <xsd:annotation>
+          <xsd:documentation>Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="mid">
+        <xsd:annotation>
+          <xsd:documentation>Middle</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="b">
+        <xsd:annotation>
+          <xsd:documentation>Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_FallbackDimension" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Fallback Dimension</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="1D">
+        <xsd:annotation>
+          <xsd:documentation>1 Dimension</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="2D">
+        <xsd:annotation>
+          <xsd:documentation>2 Dimensions</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_TextDirection" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Text Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="fromT">
+        <xsd:annotation>
+          <xsd:documentation>From Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fromB">
+        <xsd:annotation>
+          <xsd:documentation>From Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_PyramidAccentPosition" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Pyramid Accent Position</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="bef">
+        <xsd:annotation>
+          <xsd:documentation>Before</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="aft">
+        <xsd:annotation>
+          <xsd:documentation>Pyramid Accent After</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_PyramidAccentTextMargin" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Pyramid Accent Text Margin</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="step">
+        <xsd:annotation>
+          <xsd:documentation>Step</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="stack">
+        <xsd:annotation>
+          <xsd:documentation>Stack</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_TextBlockDirection" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Text Block Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="horz">
+        <xsd:annotation>
+          <xsd:documentation>Horizontal</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="vert">
+        <xsd:annotation>
+          <xsd:documentation>Vertical Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_TextAnchorHorizontal" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Text Anchor Horizontal</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctr">
+        <xsd:annotation>
+          <xsd:documentation>Center</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_TextAnchorVertical" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Text Anchor Vertical</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="t">
+        <xsd:annotation>
+          <xsd:documentation>Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="mid">
+        <xsd:annotation>
+          <xsd:documentation>Middle</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="b">
+        <xsd:annotation>
+          <xsd:documentation>Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_TextAlignment" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Text Alignment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="l">
+        <xsd:annotation>
+          <xsd:documentation>Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="ctr">
+        <xsd:annotation>
+          <xsd:documentation>Center</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="r">
+        <xsd:annotation>
+          <xsd:documentation>Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_AutoTextRotation" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Auto Text Rotation</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="upr">
+        <xsd:annotation>
+          <xsd:documentation>Upright</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="grav">
+        <xsd:annotation>
+          <xsd:documentation>Gravity</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_GrowDirection" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Grow Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="tL">
+        <xsd:annotation>
+          <xsd:documentation>Top Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tR">
+        <xsd:annotation>
+          <xsd:documentation>Top Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bL">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bR">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_FlowDirection" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Flow Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="row">
+        <xsd:annotation>
+          <xsd:documentation>Row</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="col">
+        <xsd:annotation>
+          <xsd:documentation>Column</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_ContinueDirection" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Continue Direction</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="revDir">
+        <xsd:annotation>
+          <xsd:documentation>Reverse Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="sameDir">
+        <xsd:annotation>
+          <xsd:documentation>Same Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_Breakpoint" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Breakpoint</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="endCnv">
+        <xsd:annotation>
+          <xsd:documentation>End of Canvas</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bal">
+        <xsd:annotation>
+          <xsd:documentation>Balanced</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="fixed">
+        <xsd:annotation>
+          <xsd:documentation>Fixed</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_Offset" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Offset</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="ctr">
+        <xsd:annotation>
+          <xsd:documentation>Center</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="off">
+        <xsd:annotation>
+          <xsd:documentation>Offset</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_HierarchyAlignment" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Hierarchy Alignment</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="tL">
+        <xsd:annotation>
+          <xsd:documentation>Top Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tR">
+        <xsd:annotation>
+          <xsd:documentation>Top Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tCtrCh">
+        <xsd:annotation>
+          <xsd:documentation>Top Center Children</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="tCtrDes">
+        <xsd:annotation>
+          <xsd:documentation>Top Center Descendants</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bL">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Left</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bR">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Right</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bCtrCh">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Center Child</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bCtrDes">
+        <xsd:annotation>
+          <xsd:documentation>Bottom Center Descendant</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lT">
+        <xsd:annotation>
+          <xsd:documentation>Left Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lB">
+        <xsd:annotation>
+          <xsd:documentation>Left Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lCtrCh">
+        <xsd:annotation>
+          <xsd:documentation>Left Center Child</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="lCtrDes">
+        <xsd:annotation>
+          <xsd:documentation>Left Center Descendant</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rT">
+        <xsd:annotation>
+          <xsd:documentation>Right Top</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rB">
+        <xsd:annotation>
+          <xsd:documentation>Right Bottom</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rCtrCh">
+        <xsd:annotation>
+          <xsd:documentation>Right Center Children</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="rCtrDes">
+        <xsd:annotation>
+          <xsd:documentation>Right Center Descendants</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_FunctionValue" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Function Value</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union memberTypes="xsd:int xsd:boolean ST_Direction ST_HierBranchStyle ST_AnimOneStr ST_AnimLvlStr ST_ResizeHandlesStr" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_VariableType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Variable Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>Unknown</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="orgChart">
+        <xsd:annotation>
+          <xsd:documentation>Organizational Chart Algorithm</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="chMax">
+        <xsd:annotation>
+          <xsd:documentation>Child Max</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="chPref">
+        <xsd:annotation>
+          <xsd:documentation>Child Preference</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="bulEnabled">
+        <xsd:annotation>
+          <xsd:documentation>Bullets Enabled</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="dir">
+        <xsd:annotation>
+          <xsd:documentation>Direction</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="hierBranch">
+        <xsd:annotation>
+          <xsd:documentation>Hierarchy Branch</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="animOne">
+        <xsd:annotation>
+          <xsd:documentation>Animate One</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="animLvl">
+        <xsd:annotation>
+          <xsd:documentation>Animation Level</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="resizeHandles">
+        <xsd:annotation>
+          <xsd:documentation>Resize Handles</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_FunctionArgument" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Function Argument</xsd:documentation>
+    </xsd:annotation>
+    <xsd:union memberTypes="ST_VariableType" />
+  </xsd:simpleType>
+  <xsd:simpleType name="ST_OutputShapeType" final="restriction">
+    <xsd:annotation>
+      <xsd:documentation>Output Shape Type</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:enumeration value="none">
+        <xsd:annotation>
+          <xsd:documentation>None</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+      <xsd:enumeration value="conn">
+        <xsd:annotation>
+          <xsd:documentation>Connection</xsd:documentation>
+        </xsd:annotation>
+      </xsd:enumeration>
+    </xsd:restriction>
+  </xsd:simpleType>
+</xsd:schema>

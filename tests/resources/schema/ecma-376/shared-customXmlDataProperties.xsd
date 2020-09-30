@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.openxmlformats.org/officeDocument/2006/customXml" targetNamespace="http://schemas.openxmlformats.org/officeDocument/2006/customXml" elementFormDefault="qualified" attributeFormDefault="qualified" blockDefault="#all">
+  <xsd:simpleType name="ST_Guid">
+    <xsd:annotation>
+      <xsd:documentation>128-Bit GUID Value</xsd:documentation>
+    </xsd:annotation>
+    <xsd:restriction base="xsd:token">
+      <xsd:pattern value="\{[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}\}" />
+    </xsd:restriction>
+  </xsd:simpleType>
+  <xsd:complexType name="CT_DatastoreSchemaRef">
+    <xsd:attribute name="uri" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Target Namespace of Associated XML Schema</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:complexType name="CT_DatastoreSchemaRefs">
+    <xsd:sequence>
+      <xsd:element name="schemaRef" type="CT_DatastoreSchemaRef" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation>Associated XML Schema</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+  <xsd:complexType name="CT_DatastoreItem">
+    <xsd:sequence>
+      <xsd:element name="schemaRefs" type="CT_DatastoreSchemaRefs" minOccurs="0">
+        <xsd:annotation>
+          <xsd:documentation>Set of Associated XML Schemas</xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+    <xsd:attribute name="itemID" type="ST_Guid" use="required">
+      <xsd:annotation>
+        <xsd:documentation>Custom XML Data ID</xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+  </xsd:complexType>
+  <xsd:element name="datastoreItem" type="CT_DatastoreItem">
+    <xsd:annotation>
+      <xsd:documentation>Custom XML Data Properties</xsd:documentation>
+    </xsd:annotation>
+  </xsd:element>
+</xsd:schema>

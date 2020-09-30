@@ -115,7 +115,7 @@ class Comment extends AbstractShape implements ComparableInterface
      * Set Height
      *
      * @param  int $pValue
-     * @return self
+     * @return $this
      */
     public function setHeight($pValue = 0)
     {
@@ -136,7 +136,7 @@ class Comment extends AbstractShape implements ComparableInterface
      * Set Width
      *
      * @param  int $pValue
-     * @return self
+     * @return $this
      */
     public function setWidth($pValue = 0)
     {

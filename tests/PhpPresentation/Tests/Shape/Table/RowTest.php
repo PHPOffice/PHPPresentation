@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Table;
 
 use PhpOffice\PhpPresentation\Shape\Table\Row;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Row element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Row
  */
-class RowTest extends \PHPUnit_Framework_TestCase
+class RowTest extends TestCase
 {
     /**
      * Test can read
@@ -36,7 +37,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $object->getCells());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object = new Row($value);
         $this->assertCount($value, $object->getCells());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
@@ -84,7 +85,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
     public function testSetGetHashIndex()
     {
         $object = new Row();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }
@@ -104,7 +105,7 @@ class RowTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setHeight());
         $this->assertEquals(0, $object->getHeight());
 
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setHeight($value));
         $this->assertEquals($value, $object->getHeight());
     }

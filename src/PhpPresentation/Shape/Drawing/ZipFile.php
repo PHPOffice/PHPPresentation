@@ -25,7 +25,7 @@ class ZipFile extends AbstractDrawingAdapter
      * Set Path
      *
      * @param  string                      $pValue      File path
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing
+     * @return \PhpOffice\PhpPresentation\Shape\Drawing\ZipFile
      */
     public function setPath($pValue = '')
     {
@@ -35,6 +35,7 @@ class ZipFile extends AbstractDrawingAdapter
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function getContents()
     {
@@ -61,6 +62,7 @@ class ZipFile extends AbstractDrawingAdapter
 
     /**
      * @return string
+     * @throws \Exception
      */
     public function getMimeType()
     {

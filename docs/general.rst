@@ -69,7 +69,6 @@ name. Use the following functions :
     $properties->setSubject('My subject');
     $properties->setKeywords('my, key, word');
 
-
 Presentation Properties
 -----------------------
 

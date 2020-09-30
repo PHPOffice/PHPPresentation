@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
 use PhpOffice\PhpPresentation\Shape\Drawing\ZipFile;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Drawing element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Drawing
  */
-class ZipFileTest extends \PHPUnit_Framework_TestCase
+class ZipFileTest extends TestCase
 {
     protected $fileOk;
     protected $fileKoZip;

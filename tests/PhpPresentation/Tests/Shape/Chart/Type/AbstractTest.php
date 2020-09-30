@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Scatter element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
  */
-class AbstractTest extends \PHPUnit_Framework_TestCase
+class AbstractTest extends TestCase
 {
     public function testAxis()
     {
@@ -38,7 +39,7 @@ class AbstractTest extends \PHPUnit_Framework_TestCase
     public function testHashIndex()
     {
         $object = new Scatter();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
 
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter', $object->setHashIndex($value));

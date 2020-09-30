@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class AlignmentTest extends \PHPUnit_Framework_TestCase
+class AlignmentTest extends TestCase
 {
     /**
      * Test create new instance
@@ -87,7 +88,12 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
     public function testSetGetLevelExceptionMin()
     {
         $object = new Alignment();
-        $this->setExpectedException('\Exception', 'Invalid value should be more than 0.');
+        if (method_exists($this, 'setExpectedException')) {
+            $this->setExpectedException('\Exception', 'Invalid value should be more than 0.');
+        }
+        if (method_exists($this, 'expectException')) {
+            $this->expectException('\Exception', 'Invalid value should be more than 0.');
+        }
         $object->setLevel(-1);
     }
 
@@ -97,7 +103,7 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
     public function testSetGetLevel()
     {
         $object = new Alignment();
-        $value = rand(1, 8);
+        $value = mt_rand(1, 8);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setLevel($value));
         $this->assertEquals($value, $object->getLevel());
     }
@@ -110,18 +116,18 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $object = new Alignment();
         // != Alignment::HORIZONTAL_GENERAL
         $object->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setIndent($value));
         $this->assertEquals(0, $object->getIndent());
-        $value = rand(-100, 0);
+        $value = mt_rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setIndent($value));
         $this->assertEquals($value, $object->getIndent());
 
         $object->setHorizontal(Alignment::HORIZONTAL_GENERAL);
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setIndent($value));
         $this->assertEquals($value, $object->getIndent());
-        $value = rand(-100, 0);
+        $value = mt_rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setIndent($value));
         $this->assertEquals($value, $object->getIndent());
     }
@@ -132,7 +138,7 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
     public function testSetGetMarginBottom()
     {
         $object = new Alignment();
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginBottom($value));
         $this->assertEquals($value, $object->getMarginBottom());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginBottom());
@@ -147,18 +153,18 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $object = new Alignment();
         // != Alignment::HORIZONTAL_GENERAL
         $object->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginLeft($value));
         $this->assertEquals(0, $object->getMarginLeft());
-        $value = rand(-100, 0);
+        $value = mt_rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginLeft($value));
         $this->assertEquals($value, $object->getMarginLeft());
 
         $object->setHorizontal(Alignment::HORIZONTAL_GENERAL);
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginLeft($value));
         $this->assertEquals($value, $object->getMarginLeft());
-        $value = rand(-100, 0);
+        $value = mt_rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginLeft($value));
         $this->assertEquals($value, $object->getMarginLeft());
     }
@@ -171,18 +177,18 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
         $object = new Alignment();
         // != Alignment::HORIZONTAL_GENERAL
         $object->setHorizontal(Alignment::HORIZONTAL_CENTER);
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginRight($value));
         $this->assertEquals(0, $object->getMarginRight());
-        $value = rand(-100, 0);
+        $value = mt_rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginRight($value));
         $this->assertEquals($value, $object->getMarginRight());
 
         $object->setHorizontal(Alignment::HORIZONTAL_GENERAL);
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginRight($value));
         $this->assertEquals($value, $object->getMarginRight());
-        $value = rand(-100, 0);
+        $value = mt_rand(-100, 0);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginRight($value));
         $this->assertEquals($value, $object->getMarginRight());
     }
@@ -193,7 +199,7 @@ class AlignmentTest extends \PHPUnit_Framework_TestCase
     public function testSetGetMarginTop()
     {
         $object = new Alignment();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginTop($value));
         $this->assertEquals($value, $object->getMarginTop());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setMarginTop());

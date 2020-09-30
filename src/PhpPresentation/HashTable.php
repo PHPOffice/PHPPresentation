@@ -79,13 +79,12 @@ class HashTable
     {
         // Determine hashcode
         $hashIndex = $pSource->getHashIndex();
-
+        $hashCode = $pSource->getHashCode();
+        
         if (is_null($hashIndex)) {
             $hashCode = $pSource->getHashCode();
         } elseif (isset($this->keyMap[$hashIndex])) {
             $hashCode = $this->keyMap[$hashIndex];
-        } else {
-            $hashCode = $pSource->getHashCode();
         }
 
         // Add value

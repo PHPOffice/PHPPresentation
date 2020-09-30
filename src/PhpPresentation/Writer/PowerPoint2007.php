@@ -54,6 +54,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
      * Create a new PowerPoint2007 file
      *
      * @param PhpPresentation $pPhpPresentation
+     * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
     {

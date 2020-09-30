@@ -39,7 +39,7 @@ PHPPresentation is a library written in pure PHP that provides a set of classes 
 .. toctree::
    :maxdepth: 2
    :caption: Shapes
-   
+
    shapes_chart
    shapes_comment
    shapes_drawing

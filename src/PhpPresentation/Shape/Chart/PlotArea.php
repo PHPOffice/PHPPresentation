@@ -152,7 +152,7 @@ class PlotArea implements ComparableInterface
      * Set OffsetX (as a fraction of the chart)
      *
      * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     public function setOffsetX($value = 0)
     {
@@ -175,7 +175,7 @@ class PlotArea implements ComparableInterface
      * Set OffsetY (as a fraction of the chart)
      *
      * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     public function setOffsetY($value = 0)
     {
@@ -198,7 +198,7 @@ class PlotArea implements ComparableInterface
      * Set Width (as a fraction of the chart)
      *
      * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     public function setWidth($value = 0)
     {
@@ -221,7 +221,7 @@ class PlotArea implements ComparableInterface
      * Set Height (as a fraction of the chart)
      *
      * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     public function setHeight($value = 0)
     {
@@ -267,6 +267,7 @@ class PlotArea implements ComparableInterface
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param string $value Hash index
+     * @return PlotArea
      */
     public function setHashIndex($value)
     {

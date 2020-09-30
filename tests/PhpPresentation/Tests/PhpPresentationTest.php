@@ -21,13 +21,14 @@ use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for PhpPresentation
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
  */
-class PhpPresentationTest extends \PHPUnit_Framework_TestCase
+class PhpPresentationTest extends TestCase
 {
     /**
      * Test create new instance
@@ -40,7 +41,7 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new DocumentProperties(), $object->getDocumentProperties());
         $this->assertEquals(new DocumentLayout(), $object->getLayout());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getSlide());
-        $this->assertEquals(1, count($object->getAllSlides()));
+        $this->assertCount(1, $object->getAllSlides());
         $this->assertEquals(0, $object->getIndex($slide));
         $this->assertEquals(1, $object->getSlideCount());
         $this->assertEquals(0, $object->getActiveSlideIndex());

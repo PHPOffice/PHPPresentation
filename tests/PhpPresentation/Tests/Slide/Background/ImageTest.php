@@ -3,15 +3,16 @@
 namespace PhpOffice\PhpPresentation\Tests\Slide\Background;
 
 use PhpOffice\PhpPresentation\Slide\Background\Image;
+use PHPUnit\Framework\TestCase;
 
-class ImageTest extends \PHPUnit_Framework_TestCase
+class ImageTest extends TestCase
 {
     public function testColor()
     {
         $object = new Image();
 
         $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
-        $numSlide = rand(1, 100);
+        $numSlide = mt_rand(1, 100);
 
         $this->assertNull($object->getPath());
         $this->assertEmpty($object->getFilename());

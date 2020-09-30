@@ -33,8 +33,7 @@ class Transition
     const TRANSITION_BLINDS_VERTICAL = 'blinds_vert';
     const TRANSITION_CHECKER_HORIZONTAL = 'checker_horz';
     const TRANSITION_CHECKER_VERTICAL = 'checker_vert';
-    const TRANSITION_CIRCLE_HORIZONTAL = 'circle_horz';
-    const TRANSITION_CIRCLE_VERTICAL = 'circle_vert';
+    const TRANSITION_CIRCLE = 'circle';
     const TRANSITION_COMB_HORIZONTAL = 'comb_horz';
     const TRANSITION_COMB_VERTICAL = 'comb_vert';
     const TRANSITION_COVER_DOWN = 'cover_d';

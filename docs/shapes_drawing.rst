@@ -46,7 +46,6 @@ GD
         ->setMimeType(Drawing\Gd::MIMETYPE_DEFAULT);
     $oSlide->addShape($oShape);
 
-
 Base64
 ------
 

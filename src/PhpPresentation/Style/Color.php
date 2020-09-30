@@ -103,6 +103,26 @@ class Color implements ComparableInterface
     }
 
     /**
+     * Set the alpha % of the ARGB
+     * @param int $alpha
+     * @return $this
+     */
+    public function setAlpha($alpha = 100)
+    {
+        if ($alpha < 0) {
+            $alpha = 0;
+        }
+        if ($alpha > 100) {
+            $alpha = 100;
+        }
+        $alpha = round(($alpha / 100) * 255);
+        $alpha = dechex($alpha);
+        $alpha = str_pad($alpha, 2, '0', STR_PAD_LEFT);
+        $this->argb = $alpha . substr($this->argb, 2);
+        return $this;
+    }
+
+    /**
      * Get RGB
      *
      * @return string

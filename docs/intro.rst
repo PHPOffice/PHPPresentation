@@ -3,11 +3,11 @@
 Introduction
 ============
 
-PHPPresentation is a library written in pure PHP that provides a set of 
-classes to write to different presentation file formats, i.e. Microsoft 
-`Office Open XML <http://en.wikipedia.org/wiki/Office_Open_XML>` 
-(.pptx) and OASIS `Open Document Format for Office Applications 
-<http://en.wikipedia.org/wiki/OpenDocument>`__ (.odp). 
+PHPPresentation is a library written in pure PHP that provides a set of
+classes to write to different presentation file formats, i.e. Microsoft
+`Office Open XML <http://en.wikipedia.org/wiki/Office_Open_XML>`
+(.pptx) and OASIS `Open Document Format for Office Applications
+<http://en.wikipedia.org/wiki/OpenDocument>`__ (.odp).
 
 PHPPresentation is an open source project licensed under the terms of `LGPL
 version 3 <https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER>`__.

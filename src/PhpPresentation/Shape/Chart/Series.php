@@ -416,7 +416,7 @@ class Series implements ComparableInterface
      */
     public function hasShowSeparator()
     {
-        return is_null($this->separator) ? false : true;
+        return !is_null($this->separator);
     }
 
     /**
@@ -477,7 +477,7 @@ class Series implements ComparableInterface
      *
      * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
      */
     public function setFont(Font $pFont = null)
     {
@@ -583,8 +583,8 @@ class Series implements ComparableInterface
         return $this;
     }
 
+
     /**
-     * @return mixed
      * @link http://php.net/manual/en/language.oop5.cloning.php
      */
     public function __clone()

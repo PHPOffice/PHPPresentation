@@ -71,6 +71,7 @@ class Iterator extends \IteratorIterator
      * Current \PhpOffice\PhpPresentation\Slide
      *
      * @return \PhpOffice\PhpPresentation\Slide
+     * @throws \Exception
      */
     public function current()
     {

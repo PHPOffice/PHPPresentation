@@ -97,7 +97,8 @@ class Serialized implements ReaderInterface
                 for ($i = 0; $i < $file->getSlideCount(); ++$i) {
                     for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
                         if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                            $file->getSlide($i)->getShapeCollection()->offsetGet($j)->setPath('zip://' . $pFilename . '#media/' . $file->getSlide($i)->getShapeCollection()->offsetGet($j)->getIndexedFilename(), false);
+                            $imgTemp = $file->getSlide($i)->getShapeCollection()->offsetGet($j);
+                            $imgTemp->setPath('zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME), false);
                         }
                     }
                 }

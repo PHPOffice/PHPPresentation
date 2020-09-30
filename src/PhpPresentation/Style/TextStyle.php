@@ -40,6 +40,7 @@ class TextStyle
     /**
      * TextStyle constructor.
      * @param bool $default
+     * @throws \Exception
      */
     public function __construct($default = true)
     {

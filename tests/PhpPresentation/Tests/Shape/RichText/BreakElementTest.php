@@ -18,13 +18,14 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
 
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for BreakElement element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\BreakElement
  */
-class BreakElementTest extends \PHPUnit_Framework_TestCase
+class BreakElementTest extends TestCase
 {
     /**
      * Test can read
@@ -52,7 +53,7 @@ class BreakElementTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setLanguage('en-US'));
         $this->assertNull($object->getLanguage());
     }
-    
+
     /**
      * Test get/set hash index
      */

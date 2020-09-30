@@ -19,13 +19,14 @@ namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Test class for Scatter element
  *
  * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
  */
-class ScatterTest extends \PHPUnit_Framework_TestCase
+class ScatterTest extends TestCase
 {
     public function testData()
     {
