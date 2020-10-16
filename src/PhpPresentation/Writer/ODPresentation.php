@@ -81,7 +81,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
         if ('php://output' == strtolower($pFilename) || 'php://stdout' == strtolower($pFilename)) {
-            $pFilename = @tempnam('./', 'phppttmp');
+            $pFilename = @tempnam($this->diskCachingDirectory, 'phppttmp');
             if ('' == $pFilename) {
                 $pFilename = $originalFilename;
             }
