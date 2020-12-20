@@ -24,5 +24,4 @@ vendor
 /samples/Sample_00_Test.php
 /samples/#*
 /samples/Github_*.*
-/samples/results
 /composer.lock

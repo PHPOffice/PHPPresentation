@@ -29,7 +29,12 @@ Autoloader::register();
 if (is_file(__DIR__. '/../../../../vendor/autoload.php')) {
     require_once __DIR__ . '/../../../../vendor/autoload.php';
 } else {
-    throw new Exception ('Can not find the vendor folder!');
+    if (is_file(__DIR__. '/../../Common/src/Common/Autoloader.php')) {
+        include_once __DIR__ . '/../../Common/src/Common/Autoloader.php';
+        \PhpOffice\Common\Autoloader::register();
+    } else {
+        throw new Exception ('Can not find the vendor or the common folder!');
+    }
 }
 // do some checks to make sure the outputs are set correctly.
 if (is_dir(__DIR__.DIRECTORY_SEPARATOR.'results') === FALSE) {
