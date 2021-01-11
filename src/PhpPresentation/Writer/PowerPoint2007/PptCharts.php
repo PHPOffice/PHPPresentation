@@ -20,6 +20,8 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class PptCharts extends AbstractDecoratorWriter
 {
@@ -36,7 +38,7 @@ class PptCharts extends AbstractDecoratorWriter
 
                 if ($shape->hasIncludedSpreadsheet()) {
                     $this->getZip()->addFromString('ppt/charts/_rels/' . $shape->getIndexedFilename() . '.rels', $this->writeChartRelationships($shape));
-                    $pFilename = tempnam(sys_get_temp_dir(), 'PHPExcel');
+                    $pFilename = tempnam(sys_get_temp_dir(), 'PhpSpreadsheet');
                     $this->getZip()->addFromString('ppt/embeddings/' . $shape->getIndexedFilename() . '.xlsx', $this->writeSpreadsheet($this->getPresentation(), $shape, $pFilename . '.xlsx'));
 
                     // remove temp file
@@ -214,13 +216,13 @@ class PptCharts extends AbstractDecoratorWriter
             throw new \Exception('No spreadsheet output is required for the given chart.');
         }
 
-        // Verify PHPExcel
-        if (!class_exists('PHPExcel')) {
-            throw new \Exception('PHPExcel has not been loaded. Include PHPExcel.php in your script, e.g. require_once \'PHPExcel.php\'.');
+        // Verify PhpSpreadsheet
+        if (!class_exists(Spreadsheet::class')) {
+            throw new \Exception('PhpSpreadsheet has not been loaded. Include PhpSpreadsheet in your script, e.g. composer require phpoffice/phpspreadsheet');
         }
 
         // Create new spreadsheet
-        $workbook = new \PHPExcel();
+        $workbook = new Spreadsheet();
 
         // Set properties
         $title = $chart->getTitle()->getText();
@@ -257,7 +259,7 @@ class PptCharts extends AbstractDecoratorWriter
         }
 
         // Save to string
-        $writer = \PHPExcel_IOFactory::createWriter($workbook, 'Excel2007');
+        $writer = IOFactory::createWriter($workbook, 'Xlsx');
         $writer->save($tempName);
 
         // Load file in memory
