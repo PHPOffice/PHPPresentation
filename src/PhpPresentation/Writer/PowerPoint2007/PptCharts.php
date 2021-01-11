@@ -217,7 +217,7 @@ class PptCharts extends AbstractDecoratorWriter
         }
 
         // Verify PhpSpreadsheet
-        if (!class_exists(Spreadsheet::class')) {
+        if (!class_exists(Spreadsheet::class)) {
             throw new \Exception('PhpSpreadsheet has not been loaded. Include PhpSpreadsheet in your script, e.g. composer require phpoffice/phpspreadsheet');
         }
 
