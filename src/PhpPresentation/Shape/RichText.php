@@ -105,6 +105,13 @@ class RichText extends AbstractShape implements ComparableInterface
     private $columns = 1;
 
     /**
+     * The spacing between columns
+     *
+     * @var float
+     */
+    private $columnSpacing = 0;
+
+    /**
      * Bottom inset (in pixels)
      *
      * @var float
@@ -558,6 +565,34 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
+     * Get spacing between columns
+     *
+     * @return int
+     */
+    public function getColumnSpacing()
+    {
+        return $this->columnSpacing;
+    }
+
+    /**
+     * Set spacing between columns
+     *
+     * @param $value float
+     * @throws \Exception
+     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     */
+    public function setColumnSpacing($value = 0)
+    {
+        if ($value < 0) {
+            throw new \Exception('Column spacing should be a non-negative number');
+        }
+
+        $this->columnSpacing = $value;
+
+        return $this;
+    }
+
+    /**
      * Get bottom inset
      *
      * @return float
@@ -705,6 +740,6 @@ class RichText extends AbstractShape implements ComparableInterface
             $hashElements .= $element->getHashCode();
         }
 
-        return md5($hashElements . $this->wrap . $this->autoFit . $this->horizontalOverflow . $this->verticalOverflow . ($this->upright ? '1' : '0') . ($this->vertical ? '1' : '0') . $this->columns . $this->bottomInset . $this->leftInset . $this->rightInset . $this->topInset . parent::getHashCode() . __CLASS__);
+        return md5($hashElements . $this->wrap . $this->autoFit . $this->horizontalOverflow . $this->verticalOverflow . ($this->upright ? '1' : '0') . ($this->vertical ? '1' : '0') . $this->columns . $this->columnSpacing . $this->bottomInset . $this->leftInset . $this->rightInset . $this->topInset . parent::getHashCode() . __CLASS__);
     }
 }

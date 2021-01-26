@@ -260,6 +260,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('tIns', CommonDrawing::pixelsToEmu($shape->getInsetTop()));
             if ($shape->getColumns() <> 1) {
                 $objWriter->writeAttribute('numCol', $shape->getColumns());
+                $objWriter->writeAttribute('spcCol', CommonDrawing::pixelsToEmu($shape->getColumnSpacing()));
             }
             // a:spAutoFit
             $objWriter->startElement('a:' . $shape->getAutoFit());
