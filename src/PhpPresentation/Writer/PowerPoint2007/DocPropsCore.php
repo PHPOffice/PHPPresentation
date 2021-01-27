@@ -59,6 +59,9 @@ class DocPropsCore extends AbstractDecoratorWriter
         // cp:revision
         $objWriter->writeElement('cp:revision', $this->oPresentation->getDocumentProperties()->getRevision());
 
+        // cp:contentStatus
+        $objWriter->writeElement('cp:contentStatus', $this->oPresentation->getDocumentProperties()->getStatus());
+
         // cp:category
         $objWriter->writeElement('cp:category', $this->oPresentation->getDocumentProperties()->getCategory());
 
