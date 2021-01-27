@@ -61,6 +61,11 @@ class Paragraph implements ComparableInterface
     private $lineSpacing = 100;
 
     /**
+     * @var boolean
+     */
+    private $lineSpacingModeExact = false;
+
+    /**
      * @var float
      */
     private $spacingBefore = 0;
@@ -332,6 +337,24 @@ class Paragraph implements ComparableInterface
     public function setLineSpacing($lineSpacing)
     {
         $this->lineSpacing = $lineSpacing;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getLineSpacingModeExact()
+    {
+        return $this->lineSpacingModeExact;
+    }
+
+    /**
+     * @param boolean $lineSpacingModeExact
+     * @return Paragraph
+     */
+    public function setLineSpacingModeExact($lineSpacingModeExact)
+    {
+        $this->lineSpacingModeExact = $lineSpacingModeExact;
         return $this;
     }
 
