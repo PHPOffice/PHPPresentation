@@ -116,7 +116,14 @@ class DocumentProperties
     private $customProperties = [];
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\DocumentProperties.
+     * status
+     *
+     * @var string
+     */
+    private $status;
+
+    /**
+     * Create a new \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function __construct()
     {
@@ -132,6 +139,7 @@ class DocumentProperties
         $this->category = '';
         $this->company = 'Microsoft Corporation';
         $this->revision = '';
+        $this->status         = '';
     }
 
     /**
@@ -476,6 +484,29 @@ class DocumentProperties
     public function setRevision(string $pValue = ''): self
     {
         $this->revision = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get Status
+     *
+     * @return string
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set Status
+     *
+     * @param  string                           $pValue
+     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     */
+    public function setStatus($pValue = '')
+    {
+        $this->status = $pValue;
 
         return $this;
     }
