@@ -260,6 +260,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('tIns', CommonDrawing::pixelsToEmu($shape->getInsetTop()));
             if ($shape->getColumns() <> 1) {
                 $objWriter->writeAttribute('numCol', $shape->getColumns());
+                $objWriter->writeAttribute('spcCol', CommonDrawing::pixelsToEmu($shape->getColumnSpacing()));
             }
             // a:spAutoFit
             $objWriter->startElement('a:' . $shape->getAutoFit());
@@ -523,8 +524,25 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
                 $objWriter->startElement('a:lnSpc');
-                $objWriter->startElement('a:spcPct');
-                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+                if($paragraph->getLineSpacingModeExact()) {
+                    $objWriter->startElement('a:spcPts');
+                    $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 100);
+                } else {
+                    $objWriter->startElement('a:spcPct');
+                    $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+                }
+                $objWriter->endElement();
+                $objWriter->endElement();
+
+                $objWriter->startElement('a:spcBef');
+                $objWriter->startElement('a:spcPts');
+                $objWriter->writeAttribute('val', $paragraph->getSpacingBefore() * 100);
+                $objWriter->endElement();
+                $objWriter->endElement();
+
+                $objWriter->startElement('a:spcAft');
+                $objWriter->startElement('a:spcPts');
+                $objWriter->writeAttribute('val', $paragraph->getSpacingAfter() * 100);
                 $objWriter->endElement();
                 $objWriter->endElement();
 
