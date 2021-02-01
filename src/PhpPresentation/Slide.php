@@ -132,6 +132,29 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
         return $this;
     }
 
+
+    public function __clone()
+    {
+      // Set parent
+      $this->parent = clone $this->parent;
+      // Shape collection
+      if (isset($this->shapeCollection)) {
+        $this->shapeCollection = clone $this->shapeCollection;
+        foreach ($this->shapeCollection as &$shape) {
+          $shape = clone $shape;
+        }
+      }
+      // Transition object
+      if (isset($this->slideTransition)) {
+        $this->slideTransition = clone $this->slideTransition;
+      }
+      // Note object
+      if (isset($this->slideNote)) {
+        $this->slideNote = clone $this->slideNote;
+      }
+      
+    }
+
     /**
      * Copy slide (!= clone!).
      *

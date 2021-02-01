@@ -185,7 +185,23 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get active paragraph index.
+     * Magic Method : clone
+     */
+    public function __clone()
+    {
+        // Call perent clonage for heritage
+        parent::__clone();
+        // Clone each paragraph
+        if (isset($this->richTextParagraphs)) {
+          foreach ($this->richTextParagraphs as &$paragraph) {
+            $paragraph = clone $paragraph;
+        }}
+    }
+
+    /**
+     * Get active paragraph index
+     *
+     * @return int
      */
     public function getActiveParagraphIndex(): int
     {
