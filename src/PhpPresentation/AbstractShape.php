@@ -143,9 +143,22 @@ abstract class AbstractShape implements ComparableInterface
     public function __clone()
     {
         $this->container = null;
-        $this->fill = clone $this->fill;
-        $this->border = clone $this->border;
-        $this->shadow = clone $this->shadow;
+        $this->name = $this->name;
+        if (isset($this->fill)) {
+          $this->fill = clone $this->fill;
+        }
+        if (isset($this->border)) {
+          $this->border = clone $this->border;
+        }
+        if (isset($this->shadow)) {
+          $this->shadow = clone $this->shadow;
+        }
+        if (isset($this->placeholder)) {
+          $this->placeholder = clone $this->placeholder;
+        }
+        if (isset($this->hyperlink)) {
+          $this->hyperlink = clone $this->hyperlink;
+        }
     }
 
     /**
