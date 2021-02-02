@@ -40,6 +40,15 @@ class RichText extends AbstractShape implements ComparableInterface
     /** Overflow */
     const OVERFLOW_CLIP = 'clip';
     const OVERFLOW_OVERFLOW = 'overflow';
+    
+    /** Vertical alignment */
+    const VALIGN_TOP = 't';
+    const VALIGN_MIDDLE = 'ctr';
+    const VALIGN_BOTTOM = 'b';
+    
+    /** Vertical alignment center */
+    const VALIGN_CENTER = 1;
+    const VALIGN_NOTCENTER = 0;
 
     /**
      * Rich text paragraphs
@@ -155,6 +164,17 @@ class RichText extends AbstractShape implements ComparableInterface
      * @var float
      */
     private $lnSpcReduction;
+    
+    /**
+     * Define vertical text position into shape (top,center,bottom)
+     * @var string
+     */
+    private $verticalAlign = self::VALIGN_TOP;
+    /**
+     * Define vertical text center position into shape (center,not center)
+     * @var int
+     */
+    private $verticalAlignCenter = self::VALIGN_NOTCENTER;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\RichText instance
@@ -541,6 +561,59 @@ class RichText extends AbstractShape implements ComparableInterface
         $this->vertical = $value;
 
         return $this;
+    }
+    
+    /**
+     * Define the vertical alignment
+     * 
+     * @param string|null $value top,center,bottom
+     * @return $this
+     * @see self::VALIGN_TOP, self::VALIGN_MIDLE, self::VALIGN_BOTTOM
+     */
+    public function setVerticalAlignment(?string $value)
+    {
+      if (isset($value)) {
+        $this->verticalAlign = $value;
+      } else {
+        $this->verticalAlign = self::VALIGN_TOP;
+      }
+      return $this;
+    }
+    
+    /**
+     * Get the vertical alignment
+     * 
+     * @return string
+     * @see self::VALIGN_TOP, self::VALIGN_MIDLE, self::VALIGN_BOTTOM
+     */
+    public function getVerticalAlignment():string
+    {
+      return $this->verticalAlign;
+    }
+
+    /**
+     * Define the vertical alignment if centered or not
+     * @param int|null $value 1=center 0=not center
+     * @return $this
+     * @see self::VALIGN_CENTER, self::VALIGN_NOTCENTER
+     */
+    public function setVerticalAlignCenter(?int $value)
+    {
+      if (isset($value)) {
+        $this->verticalAlignCenter = $value;
+      } else {
+        $this->verticalAlignCenter = self::VALIGN_NOTCENTER;
+      }
+      return $this;
+    }
+
+    /**
+     * Get the vertical alignment center
+     * @return int
+     */
+    public function getVerticalAlignCenter():int
+    {
+      return $this->verticalAlignCenter;
     }
 
     /**
