@@ -981,6 +981,12 @@ class PowerPoint2007 implements ReaderInterface
         if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('bIns')) {
             $oShape->setInsetBottom((int)$bodyPr->getAttribute('bIns'));
         }
+        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('anchor')) {
+            $oShape->setVerticalAlignment($bodyPr->getAttribute('anchor'));
+        }
+        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('anchorCtr')) {
+            $oShape->setVerticalAlignCenter((int)$bodyPr->getAttribute('anchorCtr'));
+        }
 
         $arrayElements = $document->getElements('p:txBody/a:p', $node);
         foreach ($arrayElements as $oElement) {
