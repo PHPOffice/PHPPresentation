@@ -224,7 +224,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         }
         $this->writeFill($objWriter, $shape->getFill());
         $this->writeBorder($objWriter, $shape->getBorder(), '');
-        $this->writeShadow($objWriter, $shape->getShadow());
+        $this->writeEffect($objWriter, $shape->getEffectCollection());
 
         // > p:sp\p:spPr
         $objWriter->endElement();
@@ -597,7 +597,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         $objWriter->startElement('a:solidFill');
                         $this->writeColor($objWriter, $element->getFont()->getColor());
                         $objWriter->endElement();
-
+                        // Write Effects
+                        $this->writeEffect($objWriter, $element->getEffectCollection(), 'srgbClr');
+                        
                         // Font - a:latin
                         $objWriter->startElement('a:latin');
                         $objWriter->writeAttribute('typeface', $element->getFont()->getName());
@@ -747,6 +749,54 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         $objWriter->endElement();
 
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write Effect
+     * @param XMLWriter $objWriter
+     * @param array \PhpOffice\PhpPresentation\Style\Effect[]
+     * @param Shadow $oShadow
+     */
+    protected function writeEffect(XMLWriter $objWriter, ?array $aEffect, ?string $tagClr=null)
+    {
+        // NO Effect => return
+        if (!isset($aEffect) && !is_array($aEffect)) {
+            return;
+        }
+        if (!isset($tagClr)) {
+          $tagClr = 'prstClr';
+        }
+
+        // a:effectLst
+        $objWriter->startElement('a:effectLst');
+        // Write each effect
+        foreach($aEffect as $effect) {
+          // a:<effectType>
+          if (   $effect->getEffectType() == 'outerShdw'
+              || $effect->getEffectType() == 'innerShdw') {
+// @TODO              || $effect->getEffectType() == 'reflection') {
+
+            $objWriter->startElement('a:'.$effect->getEffectType());
+            $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($effect->getBlurRadius()));
+            $objWriter->writeAttribute('dist', CommonDrawing::pixelsToEmu($effect->getDistance()));
+            $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($effect->getDirection()));
+            $objWriter->writeAttribute('algn', $effect->getAlignment());
+            $objWriter->writeAttribute('rotWithShape', '0');
+            
+            // a:prstClr
+            $objWriter->startElement('a:'.$tagClr);
+            $objWriter->writeAttribute('val', $effect->getColor()->getRGB());
+            // a:alpha
+            $objWriter->startElement('a:alpha');
+            $objWriter->writeAttribute('val', $effect->getAlpha() * 1000);
+            $objWriter->endElement();
+            $objWriter->endElement();
+            
+            $objWriter->endElement();
+          }
+        }
+        
         $objWriter->endElement();
     }
 
@@ -1215,7 +1265,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         $this->writeFill($objWriter, $shape->getFill());
         $this->writeBorder($objWriter, $shape->getBorder(), '');
-        $this->writeShadow($objWriter, $shape->getShadow());
+        $this->writeEffect($objWriter, $shape->getEffectCollection());
 
         $objWriter->endElement();
         $objWriter->endElement();
