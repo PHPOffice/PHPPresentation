@@ -968,6 +968,20 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
 
+        $bodyPr = $document->getElement('p:txBody/a:bodyPr', $node);
+        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('lIns')) {
+            $oShape->setInsetLeft((int)$bodyPr->getAttribute('lIns'));
+        }
+        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('tIns')) {
+            $oShape->setInsetTop((int)$bodyPr->getAttribute('tIns'));
+        }
+        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('rIns')) {
+            $oShape->setInsetRight((int)$bodyPr->getAttribute('rIns'));
+        }
+        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('bIns')) {
+            $oShape->setInsetBottom((int)$bodyPr->getAttribute('bIns'));
+        }
+
         $arrayElements = $document->getElements('p:txBody/a:p', $node);
         foreach ($arrayElements as $oElement) {
             if ($oElement instanceof DOMElement) {
