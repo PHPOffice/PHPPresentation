@@ -66,6 +66,14 @@ class Paragraph implements ComparableInterface
     private $lineSpacing = 100;
 
     /**
+     * List of effect apply to paragraph
+     * @var array \PhpOffice\PhpPresentation\Style\Effect[]
+     */
+    protected ?array $effectCollection = null;
+
+    /**
+     * Hash index
+     *
      * @var string
      */
     private $lineSpacingMode = self::LINE_SPACING_MODE_PERCENT;
@@ -95,6 +103,7 @@ class Paragraph implements ComparableInterface
         $this->alignment = new Alignment();
         $this->font = new Font();
         $this->bulletStyle = new Bullet();
+        $this->effectCollection = null;
     }
 
     /**
@@ -255,7 +264,47 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Get hash code.
+     * Add an effect to the shpae
+     * 
+     * @param \PhpOffice\PhpPresentation\Style\Effect $effect
+     * @return $this
+     */
+    public function addEffect(Shape\Effect $effect)
+    {
+      if (!isset($this->effectCollection)) {
+        $this->effectCollection = array();
+      }
+      $this->effectCollection[] = $effect;
+      return $this;
+    }
+    
+    /**
+     * Get the effect collection
+     * 
+     * @return array \PhpOffice\PhpPresentation\Style\Effect[]
+     */
+    public function getEffectCollection():?array
+    {
+      return $this->effectCollection;
+    }
+    
+    /**
+     * Set the effect collection
+     * 
+     * @param array \PhpOffice\PhpPresentation\Style\Effect $effectCollection
+     * @return $this
+     */
+    public function setEffectCollection(array $effectCollection)
+    {
+      if (   isset($effectCollection)
+          && is_array($effectCollection)) {
+        $this->effectCollection = $effectCollection;
+      }
+      return $this;
+    }
+
+    /**
+     * Get hash code
      *
      * @return string Hash code
      */

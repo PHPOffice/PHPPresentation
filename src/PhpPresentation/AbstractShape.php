@@ -103,7 +103,13 @@ abstract class AbstractShape implements ComparableInterface
     protected $placeholder;
 
     /**
-     * Hash index.
+     * List of effect apply to shape
+     * @var array \PhpOffice\PhpPresentation\Style\Effect[]
+     */
+    protected ?array $effectCollection = null;
+
+    /**
+     * Hash index
      *
      * @var int
      */
@@ -125,6 +131,7 @@ abstract class AbstractShape implements ComparableInterface
         $this->fill = new Fill();
         $this->shadow = new Shadow();
         $this->border = new Border();
+        $this->effectCollection = null;
 
         $this->border->setLineStyle(Style\Border::LINE_NONE);
     }
@@ -410,6 +417,46 @@ abstract class AbstractShape implements ComparableInterface
         $this->hyperlink = $pHyperlink;
 
         return $this;
+    }
+    
+    /**
+     * Add an effect to the shpae
+     * 
+     * @param \PhpOffice\PhpPresentation\Style\Effect $effect
+     * @return $this
+     */
+    public function addEffect(Shape\Effect $effect)
+    {
+      if (!isset($this->effectCollection)) {
+        $this->effectCollection = array();
+      }
+      $this->effectCollection[] = $effect;
+      return $this;
+    }
+    
+    /**
+     * Get the effect collection
+     * 
+     * @return array \PhpOffice\PhpPresentation\Style\Effect[]
+     */
+    public function getEffectCollection():?array
+    {
+      return $this->effectCollection;
+    }
+    
+    /**
+     * Set the effect collection
+     * 
+     * @param array \PhpOffice\PhpPresentation\Style\Effect $effectCollection
+     * @return $this
+     */
+    public function setEffectCollection(array $effectCollection)
+    {
+      if (   isset($effectCollection)
+          && is_array($effectCollection)) {
+        $this->effectCollection = $effectCollection;
+      }
+      return $this;
     }
 
     /**
