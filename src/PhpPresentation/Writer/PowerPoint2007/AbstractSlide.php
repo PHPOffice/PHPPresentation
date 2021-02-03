@@ -606,6 +606,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         // Font - a:latin
                         $objWriter->startElement('a:latin');
                         $objWriter->writeAttribute('typeface', $element->getFont()->getName());
+                        if ($element->getFont()->getPanose()!="")
+                          $objWriter->writeAttribute('panose', $element->getFont()->getPanose());
+                        if ($element->getFont()->getPitchFamily()!="")
+                          $objWriter->writeAttribute('pitchFamily', $element->getFont()->getPitchFamily());
+                        if ($element->getFont()->getCharset()!="")
+                          $objWriter->writeAttribute('charset', $element->getFont()->getCharset());
                         $objWriter->endElement();
 
                         // a:hlinkClick

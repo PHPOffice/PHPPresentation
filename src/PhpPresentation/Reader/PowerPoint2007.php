@@ -1276,10 +1276,17 @@ class PowerPoint2007 implements ReaderInterface
                     }
                     // Font definition
                     $oElementFont = $document->getElement('a:latin', $oElementrPr);
-                    if (is_object($oElementFont)) {
-                        if ($oElementFont->hasAttribute('typeface')) {
-                            $oText->getFont()->setName($oElementFont->getAttribute('typeface'));
-                        }
+                    if (is_object($oElementFont) && $oElementFont->hasAttribute('typeface')) {
+                        $oText->getFont()->setName($oElementFont->getAttribute('typeface'));
+                    }
+                    if (($oElementFont instanceof \DOMElement) && $oElementFont->hasAttribute('panose')) {
+                        $oText->getFont()->setPanose($oElementFont->getAttribute('panose'));
+                    }
+                    if (($oElementFont instanceof \DOMElement) && $oElementFont->hasAttribute('pitchFamily')) {
+                        $oText->getFont()->setPitchFamily($oElementFont->getAttribute('pitchFamily'));
+                    }
+                    if (($oElementFont instanceof \DOMElement) && $oElementFont->hasAttribute('charset')) {
+                        $oText->getFont()->setCharset($oElementFont->getAttribute('charset'));
                     }
                     // Load shape effects
                     $oEffect = $document->getElement('a:effectLst', $oElementrPr);
