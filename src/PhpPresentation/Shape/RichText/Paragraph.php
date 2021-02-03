@@ -87,6 +87,23 @@ class Paragraph implements ComparableInterface
     }
 
     /**
+     * Magic Method : clone
+     */
+    public function __clone()
+    {
+      // Clone each text
+      if (isset($this->richTextElements)) {
+        foreach ($this->richTextElements as &$txtElt) {
+          $txtElt = clone $txtElt;
+      }}
+      // Clone each effect
+      if (isset($this->effectCollection)) {
+        foreach ($this->effectCollection as &$effect) {
+          $effect = clone $effect;
+      }}
+    }
+
+    /**
      * Get alignment
      *
      * @return \PhpOffice\PhpPresentation\Style\Alignment
