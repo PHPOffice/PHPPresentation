@@ -678,12 +678,21 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $this->writeColor($objWriter, $element->getFont()->getColor());
         $objWriter->endElement();
 
+        // Write Effects
+        $this->writeEffect($objWriter, $element->getEffectCollection(), 'srgbClr');
+
         // Font
         // - a:latin
         // - a:ea
         // - a:cs
         $objWriter->startElement('a:' . $element->getFont()->getFormat());
         $objWriter->writeAttribute('typeface', $element->getFont()->getName());
+        if ($element->getFont()->getPanose()!="")
+          $objWriter->writeAttribute('panose', $element->getFont()->getPanose());
+        if ($element->getFont()->getPitchFamily()!="")
+          $objWriter->writeAttribute('pitchFamily', $element->getFont()->getPitchFamily());
+        if ($element->getFont()->getCharset()!="")
+          $objWriter->writeAttribute('charset', $element->getFont()->getCharset());
         $objWriter->endElement();
 
         // a:hlinkClick
