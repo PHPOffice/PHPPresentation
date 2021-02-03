@@ -158,6 +158,11 @@ abstract class AbstractShape implements ComparableInterface
         if (isset($this->hyperlink)) {
           $this->hyperlink = clone $this->hyperlink;
         }
+        // Clone each effect
+        if (isset($this->effectCollection)) {
+          foreach ($this->effectCollection as &$effect) {
+            $effect = clone $effect;
+        }}
     }
 
     /**
