@@ -254,6 +254,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             if ($shape->isVertical()) {
                 $objWriter->writeAttribute('vert', 'vert');
             }
+            else {
+                $objWriter->writeAttribute('vert', 'horz');
+            }
             $objWriter->writeAttribute('bIns', CommonDrawing::pixelsToEmu($shape->getInsetBottom()));
             $objWriter->writeAttribute('lIns', CommonDrawing::pixelsToEmu($shape->getInsetLeft()));
             $objWriter->writeAttribute('rIns', CommonDrawing::pixelsToEmu($shape->getInsetRight()));
