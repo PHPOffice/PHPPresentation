@@ -118,9 +118,25 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     }
 
     /**
-     * Get collection of shapes.
+     * Search into collection of shapes for a name (eventually filtered by type ex: RichText)
      *
-     * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapeCollection
+     * @param string $name The name to find into the shape collection
+     * @param PhpOffice\PhpPresentation\Shape\RichText | PhpOffice\PhpPresentation\Shape\... $type Type of the class
+     * @return \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[]
+     */
+    public function searchShapeByName(string $name, ?string $type=null)
+    {
+      if (isset($this->shapeCollection)) {
+        foreach ($this->shapeCollection as $shape) {
+          if ($shape->getName() == $name) {
+            if (!isset($type) || get_class($shape) == $type) {
+              return $shape;
+      }}}}
+      return null;
+    }
+
+    /**
+     * Get collection of shapes
      *
      * @return AbstractSlide
      */
