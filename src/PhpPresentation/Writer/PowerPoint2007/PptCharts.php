@@ -980,7 +980,7 @@ class PptCharts extends AbstractDecoratorWriter
         if ($barGrouping === Bar::GROUPING_CLUSTERED) {
             $objWriter->writeAttribute('val', '0');
         } elseif ($barGrouping === Bar::GROUPING_STACKED || $barGrouping === Bar::GROUPING_PERCENTSTACKED) {
-            $objWriter->writeAttribute('val', '100000');
+            $objWriter->writeAttribute('val', '100');
         }
         $objWriter->endElement();
 
