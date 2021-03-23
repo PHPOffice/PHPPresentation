@@ -22,7 +22,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Type\Line
  */
-class Line extends AbstractType implements ComparableInterface
+class Line extends AbstractTypeLine implements ComparableInterface
 {
     /**
      * Get hash code

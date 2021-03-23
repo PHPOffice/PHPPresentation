@@ -22,8 +22,9 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
  */
-class Scatter extends AbstractType implements ComparableInterface
+class Scatter extends AbstractTypeLine implements ComparableInterface
 {
+	
     /**
      * Get hash code
      *

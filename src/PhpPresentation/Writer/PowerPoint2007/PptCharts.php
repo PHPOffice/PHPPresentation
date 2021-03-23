@@ -980,7 +980,7 @@ class PptCharts extends AbstractDecoratorWriter
         if ($barGrouping === Bar::GROUPING_CLUSTERED) {
             $objWriter->writeAttribute('val', '0');
         } elseif ($barGrouping === Bar::GROUPING_STACKED || $barGrouping === Bar::GROUPING_PERCENTSTACKED) {
-            $objWriter->writeAttribute('val', '100000');
+            $objWriter->writeAttribute('val', '100');
         }
         $objWriter->endElement();
 
@@ -1820,6 +1820,11 @@ class PptCharts extends AbstractDecoratorWriter
             $coords = ($includeSheet ? 'Sheet1!$' . \PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$2:$' . \PHPExcel_Cell::stringFromColumnIndex($seriesIndex + 1) . '$' . (1 + count($axisYData)) : '');
             $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
             $objWriter->endElement();
+			
+			// c:smooth
+			$objWriter->startElement('c:smooth');
+			$objWriter->writeAttribute('val', $subject->getIsSmooth() ? '1' : '0');
+			$objWriter->endElement();
 
             $objWriter->endElement();
 
@@ -1830,12 +1835,7 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('c:marker');
         $objWriter->writeAttribute('val', '1');
         $objWriter->endElement();
-
-        // c:smooth
-        $objWriter->startElement('c:smooth');
-        $objWriter->writeAttribute('val', '0');
-        $objWriter->endElement();
-
+		
         // c:axId
         $objWriter->startElement('c:axId');
         $objWriter->writeAttribute('val', '52743552');
@@ -1845,7 +1845,8 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('c:axId');
         $objWriter->writeAttribute('val', '52749440');
         $objWriter->endElement();
-
+		
+		
         $objWriter->endElement();
     }
 
@@ -2007,7 +2008,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:smooth
             $objWriter->startElement('c:smooth');
-            $objWriter->writeAttribute('val', '0');
+            $objWriter->writeAttribute('val', $subject->getIsSmooth() ? '1' : '0');
             $objWriter->endElement();
 
             $objWriter->endElement();
