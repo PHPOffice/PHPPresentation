@@ -17,6 +17,9 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
+use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Border;
+
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Axis
  */
@@ -55,6 +58,22 @@ class Marker
      * @var int
      */
     protected $size = 5;
+	
+	 /**
+     * @var PhpOffice\PhpPresentation\Style\Fill
+     */
+    protected $fill;
+	
+	 /**
+     * @var PhpOffice\PhpPresentation\Style\Border
+     */
+    protected $border;
+	
+	public function __construct(){
+		$this->fill = new Fill();
+		$this->border = new Border();
+		
+	}
 
     /**
      * @return string
@@ -89,6 +108,42 @@ class Marker
     public function setSize($size = 5)
     {
         $this->size = $size;
+        return $this;
+    }
+	
+	/**
+     * @return PhpOffice\PhpPresentation\Style\Fill
+     */
+    public function getFill()
+    {
+        return $this->fill;
+    }
+
+    /**
+     * @param PhpOffice\PhpPresentation\Style\Fill
+     * @return $this
+     */
+    public function setFill(Fill $fill)
+    {
+        $this->fill = $fill;
+        return $this;
+    }
+	
+	/**
+     * @return PhpOffice\PhpPresentation\Style\Border
+     */
+    public function getBorder()
+    {
+        return $this->border;
+    }
+
+    /**
+     * @param PhpOffice\PhpPresentation\Style\Border
+     * @return $this
+     */
+    public function setBorder(Border $border)
+    {
+        $this->border = $border;
         return $this;
     }
 }
