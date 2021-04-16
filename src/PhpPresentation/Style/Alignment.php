@@ -51,6 +51,12 @@ class Alignment implements ComparableInterface
         self::HORIZONTAL_RIGHT,
     );
 
+	/**
+	 * RTL Direction Support
+	 * @var boolean
+	 */
+	private $RTL;
+
     /**
      * Horizontal
      * @var string
@@ -119,7 +125,34 @@ class Alignment implements ComparableInterface
         // Initialise values
         $this->horizontal          = self::HORIZONTAL_LEFT;
         $this->vertical            = self::VERTICAL_BASE;
+        $this->RTL                 = false;
     }
+
+	/**
+	 * Get RTL
+	 *
+	 * @return boolean
+	 */
+	public function isRTL()
+	{
+		return $this->RTL;
+	}
+
+	/**
+	 * Set RTL
+	 *
+	 * @param  boolean                  $pValue
+	 * @return \PhpOffice\PhpPresentation\Style\Alignment
+	 */
+	public function setRTL($pValue = false)
+	{
+		if ($pValue == '') {
+			$pValue = false;
+		}
+		$this->RTL = $pValue;
+
+		return $this;
+	}
 
     /**
      * Get Horizontal
@@ -357,6 +390,7 @@ class Alignment implements ComparableInterface
     {
         return md5(
             $this->horizontal
+            . ($this->RTL ? 't' : 'f')
             . $this->vertical
             . $this->level
             . $this->indent

@@ -4,6 +4,7 @@ include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Color;
 
 // Create new PHPPresentation object
@@ -45,11 +46,13 @@ $shape = $currentSlide->createRichTextShape()
     ->setWidth(600)
     ->setOffsetX(170)
     ->setOffsetY(180);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
-$textRun = $shape->createTextRun('Thank you for using PHPPresentation!');
+$shape->getActiveParagraph()->getAlignment()->setRTL(true) //add RTL Direction to Paragraph
+	->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+$textRun = $shape->createTextRun('تست فونت فارسی و دایرکشن راست چین');
 $textRun->getFont()->setBold(true)
+	->setFormat(Font::FONT_FORMAT_COMPLEX_SCRIPT) // add cs for Complex Script Fonts
     ->setSize(60)
-    ->setColor(new Color('FFE06B20'));
+    ->setColor(new Color('FFE06B20'))->setName('B Nazanin');
 
 // Save file
 echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);

@@ -44,12 +44,23 @@ class Font implements ComparableInterface
     const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
     const UNDERLINE_WORDS = 'words';
 
+    const FONT_FORMAT_LATIN = 'latin';
+    const FONT_FORMAT_EAST_ASIAN = 'ea';
+    const FONT_FORMAT_COMPLEX_SCRIPT = 'cs';
+
     /**
      * Name
      *
      * @var string
      */
     private $name;
+
+	/**
+	 * Format
+	 *
+	 * @var string
+	 */
+	private $format;
     
     /**
      * Font Size
@@ -128,6 +139,7 @@ class Font implements ComparableInterface
     {
         // Initialise values
         $this->name             = 'Calibri';
+        $this->format             = self::FONT_FORMAT_LATIN;
         $this->size             = 10;
         $this->characterSpacing = 0;
         $this->bold             = false;
@@ -164,6 +176,33 @@ class Font implements ComparableInterface
 
         return $this;
     }
+
+
+	/**
+	 * Get Font Format
+	 *
+	 * @return string
+	 */
+	public function getFormat()
+	{
+		return $this->format;
+	}
+
+	/**
+	 * Set Font Format
+	 *
+	 * @param  string                   $pValue
+	 * @return \PhpOffice\PhpPresentation\Style\Font
+	 */
+	public function setFormat($pValue = self::FONT_FORMAT_LATIN)
+	{
+		if ($pValue == '') {
+			$pValue = self::FONT_FORMAT_LATIN;
+		}
+		$this->format = $pValue;
+
+		return $this;
+	}
     
     /**
      * Get Character Spacing
@@ -419,7 +458,7 @@ class Font implements ComparableInterface
      */
     public function getHashCode()
     {
-        return md5($this->name . $this->size . ($this->bold ? 't' : 'f') . ($this->italic ? 't' : 'f') . ($this->superScript ? 't' : 'f') . ($this->subScript ? 't' : 'f') . $this->underline . ($this->strikethrough ? 't' : 'f') . $this->color->getHashCode() . __CLASS__);
+        return md5($this->name . $this->format . $this->size . ($this->bold ? 't' : 'f') . ($this->italic ? 't' : 'f') . ($this->superScript ? 't' : 'f') . ($this->subScript ? 't' : 'f') . $this->underline . ($this->strikethrough ? 't' : 'f') . $this->color->getHashCode() . __CLASS__);
     }
 
     /**
