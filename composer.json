@@ -28,7 +28,7 @@
         "phpunit/phpunit": "4.*|5.*|6.*|7.*",
         "phpdocumentor/phpdocumentor":"2.*",
         "phpmd/phpmd": "2.*",
-        "sebastian/phpcpd": "2.*",
+        "sebastian/phpcpd": "2.* || 4.*",
         "phploc/phploc": "2.*",
         "squizlabs/php_codesniffer": "2.*",
         "codeclimate/php-test-reporter": "dev-master"
