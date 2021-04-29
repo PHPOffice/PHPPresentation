@@ -39,6 +39,7 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
 
@@ -516,6 +517,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             if (!$bIsPlaceholder) {
                 $objWriter->startElement('a:pPr');
                 $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
+	            $objWriter->writeAttributeIf($paragraph->getAlignment()->isRTL(), 'rtl', '1');
                 $objWriter->writeAttribute('fontAlgn', $paragraph->getAlignment()->getVertical());
                 $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
                 $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
@@ -594,7 +596,17 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         $objWriter->endElement();
 
                         // Font - a:latin
-                        $objWriter->startElement('a:latin');
+                        //$objWriter->startElement('a:latin');
+	                    $fontFormat = 'latin';
+	                    $elementFontFormat = $element->getFont()->getFormat();
+	                    if($elementFontFormat == Font::FONT_FORMAT_LATIN){
+		                    $fontFormat = Font::FONT_FORMAT_LATIN;
+	                    }elseif($elementFontFormat == Font::FONT_FORMAT_EAST_ASIAN){
+		                    $fontFormat = Font::FONT_FORMAT_EAST_ASIAN;
+	                    }elseif($elementFontFormat == Font::FONT_FORMAT_COMPLEX_SCRIPT){
+		                    $fontFormat = Font::FONT_FORMAT_COMPLEX_SCRIPT;
+	                    }
+                        $objWriter->startElement('a:'.$fontFormat);
                         $objWriter->writeAttribute('typeface', $element->getFont()->getName());
                         $objWriter->endElement();
 
