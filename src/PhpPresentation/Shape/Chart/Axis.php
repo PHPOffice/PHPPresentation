@@ -105,6 +105,9 @@ class Axis implements ComparableInterface
      */
     protected $isVisible = true;
 
+
+    protected $crossesAt=0;
+
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
      *
@@ -149,6 +152,32 @@ class Axis implements ComparableInterface
     {
         return $this->font;
     }
+
+
+
+    /**
+     * Set crossesAt
+     *
+     * @param  int                         $value
+     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     */
+    public function setCrossesAt($value = null)
+    {
+        $this->crossesAt = is_null($value) ? null : (int)$value;
+        return $this;
+    }
+
+    /**
+     * Get font
+     *
+     * @return int
+     */
+    public function getCrossesAt()
+    {
+        return $this->crossesAt;
+    }
+
+
 
     /**
      * Set font

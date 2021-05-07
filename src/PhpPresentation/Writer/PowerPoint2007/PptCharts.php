@@ -13,7 +13,6 @@ use PhpOffice\PhpPresentation\Shape\Chart\Title;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
@@ -142,6 +141,15 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('c:plotVisOnly');
         $objWriter->writeAttribute('val', '1');
         $objWriter->endElement();
+
+        $objWriter->startElement('c:dispBlanksAs');
+        $objWriter->writeAttribute('val', 'gap');
+        $objWriter->endElement();
+
+        $objWriter->startElement('c:showDLblsOverMax');
+        $objWriter->writeAttribute('val', '0');
+        $objWriter->endElement();
+
 
         $objWriter->endElement();
 
@@ -339,6 +347,8 @@ class PptCharts extends AbstractDecoratorWriter
             // Value
 
             // c:ptCount
+            // c:ptCount
+            //$objWriter->writeElement('c:formatCode',"General");
             $objWriter->startElement('c:ptCount');
             $objWriter->writeAttribute('val', count($values));
             $objWriter->endElement();
@@ -357,6 +367,7 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('c:' . $dataType . 'Cache');
 
             // c:ptCount
+            //$objWriter->writeElement('c:formatCode',"General");
             $objWriter->startElement('c:ptCount');
             $objWriter->writeAttribute('val', count($values));
             $objWriter->endElement();
@@ -498,8 +509,6 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeTypeBar($objWriter, $chartType, $chart->hasIncludedSpreadsheet());
         } elseif ($chartType instanceof Bar3D) {
             $this->writeTypeBar3D($objWriter, $chartType, $chart->hasIncludedSpreadsheet());
-        } elseif ($chartType instanceof Doughnut) {
-            $this->writeTypeDoughnut($objWriter, $chartType, $chart->hasIncludedSpreadsheet());
         } elseif ($chartType instanceof Pie) {
             $this->writeTypePie($objWriter, $chartType, $chart->hasIncludedSpreadsheet());
         } elseif ($chartType instanceof Pie3D) {
@@ -1398,13 +1407,18 @@ class PptCharts extends AbstractDecoratorWriter
             foreach ($dataPointFills as $key => $value) {
                 // c:dPt
                 $objWriter->startElement('c:dPt');
+
+                // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
-                // c:dPt/c:spPr
+
+                // c:spPr
                 $objWriter->startElement('c:spPr');
+
+                // Write fill
                 $this->writeFill($objWriter, $value);
-                // c:dPt/##c:spPr
+
                 $objWriter->endElement();
-                // ##c:dPt
+
                 $objWriter->endElement();
             }
 
@@ -1569,13 +1583,18 @@ class PptCharts extends AbstractDecoratorWriter
             foreach ($dataPointFills as $key => $value) {
                 // c:dPt
                 $objWriter->startElement('c:dPt');
+
+                // c:idx
                 $this->writeElementWithValAttribute($objWriter, 'c:idx', $key);
-                // c:dPt/c:spPr
+
+                // c:spPr
                 $objWriter->startElement('c:spPr');
+
+                // Write fill
                 $this->writeFill($objWriter, $value);
-                // c:dPt/##c:spPr
+
                 $objWriter->endElement();
-                // ##c:dPt
+
                 $objWriter->endElement();
             }
 
@@ -1859,10 +1878,12 @@ class PptCharts extends AbstractDecoratorWriter
      */
     protected function writeTypeScatter(XMLWriter $objWriter, Scatter $subject, $includeSheet = false)
     {
+
         // c:scatterChart
         $objWriter->startElement('c:scatterChart');
 
         // c:scatterStyle
+
         $objWriter->startElement('c:scatterStyle');
         $objWriter->writeAttribute('val', 'lineMarker');
         $objWriter->endElement();
@@ -1938,28 +1959,59 @@ class PptCharts extends AbstractDecoratorWriter
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
 
-            $this->writeColor($objWriter, $series->getFont()->getColor());
+//            $objWriter->startElement('c:txPr');
+//
+//            // a:bodyPr
+//            $objWriter->writeElement('a:bodyPr', null);
+//
+//            // a:lstStyle
+//            $objWriter->writeElement('a:lstStyle', null);
+//
+//            // a:p
+//            $objWriter->startElement('a:p');
+//
+//            // a:pPr
+//            $objWriter->startElement('a:pPr');
+//
+//            // a:defRPr
+//            $objWriter->startElement('a:defRPr');
+//
+//            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+//            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+//            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+//            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+//            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+//            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '30000');
+//            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-25000');
+//
+//            // Font - a:solidFill
+//            $objWriter->startElement('a:solidFill');
+//
+//            $this->writeColor($objWriter, $series->getFont()->getColor());
+//
+//            $objWriter->endElement();
+//
+//            // Font - a:latin
+//            $objWriter->startElement('a:latin');
+//            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+//            $objWriter->endElement();
+//
+//            $objWriter->endElement();
+//
+//            $objWriter->endElement();
+//
+//            // a:endParaRPr
+//            $objWriter->startElement('a:endParaRPr');
+//            $objWriter->writeAttribute('lang', 'en-US');
+//            $objWriter->writeAttribute('dirty', '0');
+//            $objWriter->endElement();
+//
+//            $objWriter->endElement();
+//
+//            $objWriter->endElement();
 
-            $objWriter->endElement();
-
-            // Font - a:latin
-            $objWriter->startElement('a:latin');
-            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            // a:endParaRPr
-            $objWriter->startElement('a:endParaRPr');
-            $objWriter->writeAttribute('lang', 'en-US');
-            $objWriter->writeAttribute('dirty', '0');
-            $objWriter->endElement();
-
-            $objWriter->endElement();
-
-            $objWriter->endElement();
+            // c:dLbls
+            $objWriter->startElement('c:dLbls');
 
             // c:showLegendKey
             $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
@@ -1986,6 +2038,18 @@ class PptCharts extends AbstractDecoratorWriter
             // c:showLeaderLines
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
+            // c:spPr
+            $objWriter->startElement('c:spPr');
+
+            $objWriter->startElement('a:ln');
+            $objWriter->writeAttribute("w", "28575");
+
+            // Write fill
+            $this->writeFill($objWriter, $series->getFill());
+            // Write outline
+            $this->writeOutline($objWriter, $series->getOutline());
+            // ## c:spPr
+            $objWriter->endElement();
             $objWriter->endElement();
 
             // Write X axis data
@@ -1993,7 +2057,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:xVal
             $objWriter->startElement('c:xVal');
-            $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
+            $this->writeMultipleValuesOrReference($objWriter,$includeSheet, $axisXData, 'Sheet1!$A$2:$A$' . (1 + count($axisXData)));
             $objWriter->endElement();
 
             // Write Y axis data
@@ -2106,8 +2170,9 @@ class PptCharts extends AbstractDecoratorWriter
             return;
         }
 
+        //Changes here to get my desired Axes
         if ($typeAxis == Chart\Axis::AXIS_X) {
-            $mainElement = 'c:catAx';
+            $mainElement = 'c:valAx';
             $axIdVal = '52743552';
             $axPosVal = 'b';
             $crossAxVal = '52749440';
@@ -2261,7 +2326,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:numFmt
         $objWriter->startElement('c:numFmt');
-        $objWriter->writeAttribute('formatCode', $oAxis->getFormatCode());
+        $objWriter->writeAttribute('formatCode', "General");
         $objWriter->writeAttribute('sourceLinked', '1');
         $objWriter->endElement();
 
@@ -2292,10 +2357,26 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', $crossAxVal);
         $objWriter->endElement();
 
-        // c:crosses
-        $objWriter->startElement('c:crosses');
-        $objWriter->writeAttribute('val', 'autoZero');
-        $objWriter->endElement();
+        //getting crossesAt value
+
+        // c:crossesAt
+        if($typeChart instanceof scatter){
+            $objWriter->startElement('c:crossesAt');
+            $objWriter->writeAttribute('val', $oAxis->getCrossesAt());
+            $objWriter->endElement();
+        }
+        else {
+            $objWriter->startElement('c:crosses');
+            $objWriter->writeAttribute('val', 'autoZero');
+            $objWriter->endElement();
+        }
+
+
+//        // c:crossesAt
+//        $objWriter->startElement('c:crossesAt');
+//        $objWriter->writeAttribute('val', $oAxis->getCrossesAt());
+//        $objWriter->endElement();
+
 
         if ($typeAxis == Chart\Axis::AXIS_X) {
             // c:lblAlgn
@@ -2314,6 +2395,7 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('c:crossBetween');
             // midCat : Position Axis On Tick Marks
             // between : Between Tick Marks
+
             if ($typeChart instanceof Area) {
                 $objWriter->writeAttribute('val', 'midCat');
             } else {

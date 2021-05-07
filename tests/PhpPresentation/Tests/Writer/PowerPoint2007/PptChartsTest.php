@@ -4,6 +4,7 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use \Exception;
 use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
@@ -537,7 +538,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $randSeparator);
     }
-
+  
     public function testTypeBar3DBarDirection()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
