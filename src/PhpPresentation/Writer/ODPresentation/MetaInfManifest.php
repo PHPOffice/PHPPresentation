@@ -6,7 +6,6 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
-use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 class MetaInfManifest extends AbstractDecoratorWriter
 {

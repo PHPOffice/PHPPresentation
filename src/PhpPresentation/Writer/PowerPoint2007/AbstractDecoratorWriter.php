@@ -15,16 +15,16 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * Write relationship
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter   XML Writer
-     * @param  int                            $pId         Relationship ID. rId will be prepended!
+     * @param  string                         $pId         Relationship ID. rId will be prepended!
      * @param  string                         $pType       Relationship type
      * @param  string                         $pTarget     Relationship target
      * @param  string                         $pTargetMode Relationship target mode
      * @throws \Exception
      */
-    protected function writeRelationship(XMLWriter $objWriter, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
+    protected function writeRelationship(XMLWriter $objWriter, $pId = '1', $pType = '', $pTarget = '', $pTargetMode = '')
     {
         if ($pType == '' || $pTarget == '') {
-            throw new \Exception("Invalid parameters passed.");
+            throw new \Exception('Invalid parameters passed.');
         }
         if (strpos($pId, 'rId') === false) {
             $pId = 'rId' . $pId;
@@ -47,7 +47,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * Write Border
      *
      * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Border     $pBorder      Border
+     * @param  \PhpOffice\PhpPresentation\Style\Border|null     $pBorder      Border
      * @param  string                         $pElementName Element name
      * @throws \Exception
      */
@@ -255,7 +255,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     /**
      * Write Outline
      * @param XMLWriter $objWriter
-     * @param Outline $oOutline
+     * @param Outline|null $oOutline
      * @throws \Exception
      */
     protected function writeOutline(XMLWriter $objWriter, $oOutline)

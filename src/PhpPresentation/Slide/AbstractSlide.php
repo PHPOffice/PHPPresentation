@@ -27,7 +27,6 @@ use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
-use PhpOffice\PhpPresentation\Slide;
 
 abstract class AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
@@ -109,7 +108,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     /**
      * Get collection of shapes
      *
-     * @param array $shapeCollection
+     * @param \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[] $shapeCollection
      * @return AbstractSlide
      */
     public function setShapeCollection($shapeCollection = array())
@@ -343,7 +342,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     }
 
     /**
-     * @param AbstractBackground $background
+     * @param AbstractBackground|null $background
      * @return \PhpOffice\PhpPresentation\Slide\AbstractSlide
      */
     public function setBackground(AbstractBackground $background = null)
@@ -354,7 +353,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      *
-     * @return \PhpOffice\PhpPresentation\Slide\Transition
+     * @return \PhpOffice\PhpPresentation\Slide\Transition|null
      */
     public function getTransition()
     {
@@ -363,7 +362,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      *
-     * @param \PhpOffice\PhpPresentation\Slide\Transition $transition
+     * @param \PhpOffice\PhpPresentation\Slide\Transition|null $transition
      * @return \PhpOffice\PhpPresentation\Slide\AbstractSlide
      */
     public function setTransition(Transition $transition = null)

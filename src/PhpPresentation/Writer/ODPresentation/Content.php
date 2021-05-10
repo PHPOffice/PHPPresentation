@@ -6,19 +6,19 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Shape\Comment;
-use PhpOffice\PhpPresentation\Shape\Media;
-use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
-use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -656,9 +656,9 @@ class Content extends AbstractDecoratorWriter
                         // table:table-cell
                         $objWriter->startElement('table:table-cell');
                         $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
-                        if ($shapeCell->getColspan() > 1) {
-                            $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
-                            $numColspan = $shapeCell->getColspan() - 1;
+                        if ($shapeCell->getColSpan() > 1) {
+                            $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColSpan());
+                            $numColspan = $shapeCell->getColSpan() - 1;
                         }
 
                         // text:p
@@ -1324,7 +1324,7 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * @param XMLWriter $objWriter
-     * @param Fill $oFill
+     * @param Fill|null $oFill
      */
     protected function writeStylePartFill(XMLWriter $objWriter, $oFill)
     {

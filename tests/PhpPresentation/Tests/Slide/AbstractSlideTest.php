@@ -34,17 +34,17 @@ class AbstractSlideTest extends TestCase
         $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide');
 
         $array = array();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
-        $this->assertInternalType('array', $stub->getShapeCollection());
-        $this->assertCount(count($array), $stub->getShapeCollection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
+        static::assertInternalType('array', $stub->getShapeCollection());
+        static::assertCount(count($array), $stub->getShapeCollection());
 
         $array = array(
             new RichText(),
             new RichText(),
             new RichText(),
         );
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
-        $this->assertInternalType('array', $stub->getShapeCollection());
-        $this->assertCount(count($array), $stub->getShapeCollection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
+        static::assertInternalType('array', $stub->getShapeCollection());
+        static::assertCount(count($array), $stub->getShapeCollection());
     }
 }

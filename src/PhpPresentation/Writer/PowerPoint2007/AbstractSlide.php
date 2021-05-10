@@ -22,8 +22,8 @@ use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
-use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
+use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\Media;
@@ -34,24 +34,24 @@ use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
 use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Style\Alignment;
-use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Shadow;
-use PhpOffice\PhpPresentation\Slide\AbstractSlide as AbstractSlideAlias;
 
 abstract class AbstractSlide extends AbstractDecoratorWriter
 {
     /**
      * @param AbstractSlideAlias $pSlideMaster
-     * @param $objWriter
-     * @param $relId
+     * @param XMLWriter $objWriter
+     * @param int $relId
      * @return mixed
      * @throws \Exception
      */
-    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, $objWriter, $relId)
+    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, XMLWriter $objWriter, $relId)
     {
         if ($pSlideMaster->getShapeCollection()->count() > 0) {
             // Loop trough images and write relationships
@@ -715,7 +715,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write Shadow
      * @param XMLWriter $objWriter
-     * @param Shadow $oShadow
+     * @param Shadow|null $oShadow
      */
     protected function writeShadow(XMLWriter $objWriter, $oShadow)
     {
@@ -726,10 +726,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         if (!$oShadow->isVisible()) {
             return;
         }
-
+        
         // a:effectLst
         $objWriter->startElement('a:effectLst');
-
+        
         // a:outerShdw
         $objWriter->startElement('a:outerShdw');
         $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
@@ -737,11 +737,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($oShadow->getDirection()));
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
-
+        
         $this->writeColor($objWriter, $oShadow->getColor(), $oShadow->getAlpha());
-
+        
         $objWriter->endElement();
-
+        
         $objWriter->endElement();
     }
 
@@ -1347,7 +1347,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write Transition Slide
      * @link http://officeopenxml.com/prSlide-transitions.php
      * @param XMLWriter $objWriter
-     * @param Slide\Transition $transition
+     * @param Slide\Transition|null $transition
      */
     protected function writeSlideTransition(XMLWriter $objWriter, $transition)
     {

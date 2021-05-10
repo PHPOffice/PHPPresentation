@@ -30,13 +30,13 @@ class SlideMasterTest extends TestCase
     public function testBase()
     {
         $object = new SlideMaster();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
-        $this->assertNull($object->getParent());
-        $this->assertInstanceOf('\\ArrayObject', $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Color', $object->getBackground());
-        $this->assertEquals('FFFFFF', $object->getBackground()->getColor()->getRGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
+        static::assertNull($object->getParent());
+        static::assertInstanceOf('\\ArrayObject', $object->getShapeCollection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Color', $object->getBackground());
+        static::assertEquals('FFFFFF', $object->getBackground()->getColor()->getRGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
     }
 
     public function testLayout()
@@ -46,10 +46,10 @@ class SlideMasterTest extends TestCase
         // Mock Post
         $mockSlideLayout = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\SlideLayout', array($object));
 
-        $this->assertEmpty($object->getAllSlideLayouts());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideLayout', $object->createSlideLayout());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideLayout', $object->addSlideLayout($mockSlideLayout));
-        $this->assertCount(2, $object->getAllSlideLayouts());
+        static::assertEmpty($object->getAllSlideLayouts());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideLayout', $object->createSlideLayout());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideLayout', $object->addSlideLayout($mockSlideLayout));
+        static::assertCount(2, $object->getAllSlideLayouts());
     }
 
     public function testSchemeColors()
@@ -64,14 +64,14 @@ class SlideMasterTest extends TestCase
 
         $object = new SlideMaster();
 
-        $this->assertInternalType('array', $object->getAllSchemeColors());
-        $this->assertCount(12, $object->getAllSchemeColors());
+        static::assertInternalType('array', $object->getAllSchemeColors());
+        static::assertCount(12, $object->getAllSchemeColors());
         // Add idem value
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorAccent1));
-        $this->assertCount(12, $object->getAllSchemeColors());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorAccent1));
+        static::assertCount(12, $object->getAllSchemeColors());
         // Add new value
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorNew));
-        $this->assertCount(13, $object->getAllSchemeColors());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorNew));
+        static::assertCount(13, $object->getAllSchemeColors());
     }
 
     public function testTextStyles()
@@ -81,8 +81,8 @@ class SlideMasterTest extends TestCase
 
         $object = new SlideMaster();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->setTextStyles($mockTextStyle));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->setTextStyles($mockTextStyle));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->getTextStyles());
     }
 }

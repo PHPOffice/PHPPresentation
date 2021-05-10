@@ -17,9 +17,6 @@
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use PhpOffice\PhpPresentation\Slide;
-use PhpOffice\PhpPresentation\Shape\RichText;
-
 /**
  * Transition class
  */

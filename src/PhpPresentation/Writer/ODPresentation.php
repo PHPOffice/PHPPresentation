@@ -17,12 +17,10 @@
 
 namespace PhpOffice\PhpPresentation\Writer;
 
+use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
-use PhpOffice\PhpPresentation\Shape\Table;
-use DirectoryIterator;
 
 /**
  * ODPresentation writer
@@ -77,7 +75,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     public function save($pFilename)
     {
         if (empty($pFilename)) {
-            throw new \Exception("Filename is empty");
+            throw new \Exception('Filename is empty');
         }
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
@@ -100,7 +98,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         $arrayChart = array();
 
         $arrayFiles = array();
-        $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation');
+        $oDir = new DirectoryIterator(__DIR__ .DIRECTORY_SEPARATOR.'ODPresentation');
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;

@@ -132,7 +132,7 @@ class Cell implements ComparableInterface
     public function setActiveParagraph($index = 0)
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception("Invalid paragraph count.");
+            throw new \Exception('Invalid paragraph count.');
         }
 
         $this->activeParagraph = $index;
@@ -150,7 +150,7 @@ class Cell implements ComparableInterface
     public function getParagraph($index = 0)
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception("Invalid paragraph count.");
+            throw new \Exception('Invalid paragraph count.');
         }
 
         return $this->richTextParagraphs[$index];
@@ -275,7 +275,7 @@ class Cell implements ComparableInterface
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
-    public function setParagraphs($paragraphs = null)
+    public function setParagraphs(array $paragraphs = null)
     {
         if (!is_array($paragraphs)) {
             throw new \Exception("Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.");

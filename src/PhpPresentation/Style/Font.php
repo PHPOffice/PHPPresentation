@@ -402,7 +402,7 @@ class Font implements ComparableInterface
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setColor($pValue = null)
+    public function setColor(Color $pValue = null)
     {
         if (!$pValue instanceof Color) {
             throw new \Exception('$pValue must be an instance of \PhpOffice\PhpPresentation\Style\Color');

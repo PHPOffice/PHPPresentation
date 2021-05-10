@@ -239,6 +239,11 @@ class ObjectsChart extends AbstractDecoratorWriter
         }
     }
 
+    /**
+     * @param Chart\Gridlines|null $oGridlines
+     * @param string $styleName
+     * @param string $chartClass
+     */
     protected function writeGridline($oGridlines, $styleName, $chartClass)
     {
         if (!($oGridlines instanceof Chart\Gridlines)) {
@@ -348,7 +353,7 @@ class ObjectsChart extends AbstractDecoratorWriter
     }
 
     /**
-     * @param Chart\Gridlines $oGridlines
+     * @param Chart\Gridlines|null $oGridlines
      * @param string $styleName
      */
     protected function writeGridlineStyle($oGridlines, $styleName)
@@ -681,10 +686,8 @@ class ObjectsChart extends AbstractDecoratorWriter
             } else {
                 $this->xmlContent->writeAttribute('chart:data-label-number', 'value');
             }
-        } else {
-            if ($series->hasShowPercentage()) {
-                $this->xmlContent->writeAttribute('chart:data-label-number', 'percentage');
-            }
+        } elseif ($series->hasShowPercentage()) {
+            $this->xmlContent->writeAttribute('chart:data-label-number', 'percentage');
         }
         if ($series->hasShowCategoryName()) {
             $this->xmlContent->writeAttribute('chart:data-label-text', 'true');

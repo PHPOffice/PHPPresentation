@@ -32,48 +32,48 @@ class NoteTest extends TestCase
     public function testParent()
     {
         $object = new Note();
-        $this->assertNull($object->getParent());
+        static::assertNull($object->getParent());
 
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->createSlide();
         $oSlide->setNote($object);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getParent());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getParent());
     }
 
     public function testExtent()
     {
         $object = new Note();
-        $this->assertNotNull($object->getExtentX());
+        static::assertNotNull($object->getExtentX());
 
         $object = new Note();
-        $this->assertNotNull($object->getExtentY());
+        static::assertNotNull($object->getExtentY());
     }
 
     public function testHashCode()
     {
         $object = new Note();
-        $this->assertInternalType('string', $object->getHashCode());
+        static::assertInternalType('string', $object->getHashCode());
     }
 
     public function testOffset()
     {
         $object = new Note();
-        $this->assertNotNull($object->getOffsetX());
+        static::assertNotNull($object->getOffsetX());
 
         $object = new Note();
-        $this->assertNotNull($object->getOffsetY());
+        static::assertNotNull($object->getOffsetY());
     }
 
     public function testShape()
     {
         $object = new Note();
-        $this->assertEquals(0, $object->getShapeCollection()->count());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
-        $this->assertEquals(1, $object->getShapeCollection()->count());
+        static::assertEquals(0, $object->getShapeCollection()->count());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->createRichTextShape());
+        static::assertEquals(1, $object->getShapeCollection()->count());
 
         $oRichText = new RichText();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->addShape($oRichText));
-        $this->assertEquals(2, $object->getShapeCollection()->count());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->addShape($oRichText));
+        static::assertEquals(2, $object->getShapeCollection()->count());
     }
 
     /**
@@ -83,8 +83,8 @@ class NoteTest extends TestCase
     {
         $object = new Note();
         $value = mt_rand(1, 100);
-        $this->assertNull($object->getHashIndex());
+        static::assertNull($object->getHashIndex());
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        static::assertEquals($value, $object->getHashIndex());
     }
 }

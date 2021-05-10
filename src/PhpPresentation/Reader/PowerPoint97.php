@@ -19,17 +19,16 @@ namespace PhpOffice\PhpPresentation\Reader;
 
 use PhpOffice\Common\Microsoft\OLERead;
 use PhpOffice\Common\Text;
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\AbstractShape;
-use PhpOffice\PhpPresentation\Shape;
+use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Alignment;
-use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Style\Color;
 
 /**
  * Serialized format reader
@@ -387,7 +386,7 @@ class PowerPoint97 implements ReaderInterface
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
         }
 
         try {
@@ -412,7 +411,7 @@ class PowerPoint97 implements ReaderInterface
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97: " . $pFilename . '.');
         }
 
         return $this->loadFile($pFilename);
@@ -1552,15 +1551,11 @@ class PowerPoint97 implements ReaderInterface
                     }
                     $bIsGroup = true;
                     $this->bFirstShapeGroup = true;
-                } else {
-                    if ($childAnchor['length'] > 0) {
-                        $arrayDimensions = $childAnchor;
-                    }
+                } elseif ($childAnchor['length'] > 0) {
+                    $arrayDimensions = $childAnchor;
                 }
-            } else {
-                if ($clientAnchor['length'] > 0) {
-                    $arrayDimensions = $clientAnchor;
-                }
+            } elseif ($clientAnchor['length'] > 0) {
+                $arrayDimensions = $clientAnchor;
             }
             if (!$bIsGroup) {
                 // *** Shape ***
@@ -1680,7 +1675,7 @@ class PowerPoint97 implements ReaderInterface
                     if (isset($shpPrimaryOptions['shadowOffsetX']) && isset($shpPrimaryOptions['shadowOffsetY'])) {
                         $shadowOffsetX = $shpPrimaryOptions['shadowOffsetX'];
                         $shadowOffsetY = $shpPrimaryOptions['shadowOffsetY'];
-                        if ($shadowOffsetX != 0 && $shadowOffsetX != 0) {
+                        if ($shadowOffsetX != 0 && $shadowOffsetY != 0) {
                             $arrayReturn['shape']->getShadow()->setVisible(true);
                             if ($shadowOffsetX > 0 && $shadowOffsetX == $shadowOffsetY) {
                                 $arrayReturn['shape']->getShadow()->setDistance($shadowOffsetX)->setDirection(45);
@@ -1712,12 +1707,10 @@ class PowerPoint97 implements ReaderInterface
                         }
                     }
                 }
-            } else {
-                // Rotation
-                if (isset($shpPrimaryOptions['rotation'])) {
-                    $rotation = $shpPrimaryOptions['rotation'];
-                    $this->oCurrentGroup->setRotation($rotation);
-                }
+            // Rotation
+            } elseif (isset($shpPrimaryOptions['rotation'])) {
+                $rotation = $shpPrimaryOptions['rotation'];
+                $this->oCurrentGroup->setRotation($rotation);
             }
         }
 

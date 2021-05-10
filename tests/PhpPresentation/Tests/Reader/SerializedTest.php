@@ -35,7 +35,7 @@ class SerializedTest extends TestCase
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
         $object = new Serialized();
 
-        $this->assertTrue($object->canRead($file));
+        static::assertTrue($object->canRead($file));
     }
 
     /**
@@ -78,6 +78,6 @@ class SerializedTest extends TestCase
         $oArchive->close();
 
         $object = new Serialized();
-        $this->assertNull($object->load($file));
+        static::assertNull($object->load($file));
     }
 }

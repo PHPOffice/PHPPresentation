@@ -17,20 +17,20 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
-use ZipArchive;
-use PhpOffice\Common\XMLReader;
 use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
+use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
-use PhpOffice\PhpPresentation\Style\Alignment;
+use ZipArchive;
 
 /**
  * Serialized format reader
@@ -83,7 +83,7 @@ class ODPresentation implements ReaderInterface
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
         }
         
         $oZip = new ZipArchive();
@@ -109,7 +109,7 @@ class ODPresentation implements ReaderInterface
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\ODPresentation: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\ODPresentation: " . $pFilename . '.');
         }
 
         return $this->loadFile($pFilename);
@@ -166,8 +166,11 @@ class ODPresentation implements ReaderInterface
             $oElement = $this->oXMLReader->getElement($path);
             if ($oElement instanceof \DOMElement) {
                 if (in_array($property, array('setCreated', 'setModified'))) {
-                    $oDateTime = new \DateTime();
-                    $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
+                    try {
+                        $oDateTime = new \DateTime($oElement->nodeValue);
+                    } catch (\Exception $ex) {
+                        $oDateTime = new \DateTime();
+                    }
                     $oProperties->{$property}($oDateTime->getTimestamp());
                 } else {
                     $oProperties->{$property}($oElement->nodeValue);

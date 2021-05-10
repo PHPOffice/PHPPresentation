@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <xsd:schema targetNamespace="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing" elementFormDefault="qualified" xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.openxmlformats.org/drawingml/2006/spreadsheetDrawing">
-  <xsd:import schemaLocation="dml-shapeStyle.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
-  <xsd:import schemaLocation="dml-shapeProperties.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
-  <xsd:import schemaLocation="dml-documentProperties.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
-  <xsd:import schemaLocation="dml-graphicalObject.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
-  <xsd:import schemaLocation="dml-text.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
+  <xsd:import schemaLocation="dml-main.xsd" namespace="http://schemas.openxmlformats.org/drawingml/2006/main" />
   <xsd:complexType name="CT_AnchorClientData">
     <xsd:attribute name="fLocksWithSheet" type="xsd:boolean" use="optional" default="true">
       <xsd:annotation>

@@ -21,7 +21,7 @@ class Animation
     }
 
     /**
-     * @return array
+     * @return \PhpOffice\PhpPresentation\AbstractShape[]
      */
     public function getShapeCollection()
     {
@@ -29,7 +29,7 @@ class Animation
     }
 
     /**
-     * @param array $array
+     * @param \PhpOffice\PhpPresentation\AbstractShape[] $array
      * @return Animation
      */
     public function setShapeCollection(array $array = array())

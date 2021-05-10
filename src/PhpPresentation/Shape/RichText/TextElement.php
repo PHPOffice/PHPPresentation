@@ -67,7 +67,7 @@ class TextElement implements TextElementInterface
     /**
      * Set text
      *
-     * @param                                            $pText string   Text
+     * @param string $pText Text
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */
     public function setText($pText = '')

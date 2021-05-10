@@ -34,14 +34,14 @@ class ShadowTest extends TestCase
     public function testConstruct()
     {
         $object = new Shadow();
-        $this->assertFalse($object->isVisible());
-        $this->assertEquals(6, $object->getBlurRadius());
-        $this->assertEquals(2, $object->getDistance());
-        $this->assertEquals(0, $object->getDirection());
-        $this->assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
-        $this->assertEquals(50, $object->getAlpha());
+        static::assertFalse($object->isVisible());
+        static::assertEquals(6, $object->getBlurRadius());
+        static::assertEquals(2, $object->getDistance());
+        static::assertEquals(0, $object->getDirection());
+        static::assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        static::assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+        static::assertEquals(50, $object->getAlpha());
     }
 
     /**
@@ -50,10 +50,10 @@ class ShadowTest extends TestCase
     public function testSetGetAlignment()
     {
         $object = new Shadow();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlignment());
-        $this->assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlignment(Shadow::SHADOW_CENTER));
-        $this->assertEquals(Shadow::SHADOW_CENTER, $object->getAlignment());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlignment());
+        static::assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlignment(Shadow::SHADOW_CENTER));
+        static::assertEquals(Shadow::SHADOW_CENTER, $object->getAlignment());
     }
 
     /**
@@ -62,11 +62,11 @@ class ShadowTest extends TestCase
     public function testSetGetAlpha()
     {
         $object = new Shadow();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlpha());
-        $this->assertEquals(0, $object->getAlpha());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlpha());
+        static::assertEquals(0, $object->getAlpha());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlpha($value));
-        $this->assertEquals($value, $object->getAlpha());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setAlpha($value));
+        static::assertEquals($value, $object->getAlpha());
     }
 
     /**
@@ -75,11 +75,11 @@ class ShadowTest extends TestCase
     public function testSetGetBlurRadius()
     {
         $object = new Shadow();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setBlurRadius());
-        $this->assertEquals(6, $object->getBlurRadius());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setBlurRadius());
+        static::assertEquals(6, $object->getBlurRadius());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setBlurRadius($value));
-        $this->assertEquals($value, $object->getBlurRadius());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setBlurRadius($value));
+        static::assertEquals($value, $object->getBlurRadius());
     }
 
     /**
@@ -88,11 +88,11 @@ class ShadowTest extends TestCase
     public function testSetGetColor()
     {
         $object = new Shadow();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setColor());
-        $this->assertNull($object->getColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setColor(new Color(Color::COLOR_BLUE)));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setColor());
+        static::assertNull($object->getColor());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setColor(new Color(Color::COLOR_BLUE)));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        static::assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
     }
 
     /**
@@ -101,11 +101,11 @@ class ShadowTest extends TestCase
     public function testSetGetDirection()
     {
         $object = new Shadow();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDirection());
-        $this->assertEquals(0, $object->getDirection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDirection());
+        static::assertEquals(0, $object->getDirection());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDirection($value));
-        $this->assertEquals($value, $object->getDirection());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDirection($value));
+        static::assertEquals($value, $object->getDirection());
     }
 
     /**
@@ -114,11 +114,11 @@ class ShadowTest extends TestCase
     public function testSetGetDistance()
     {
         $object = new Shadow();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDistance());
-        $this->assertEquals(2, $object->getDistance());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDistance());
+        static::assertEquals(2, $object->getDistance());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDistance($value));
-        $this->assertEquals($value, $object->getDistance());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setDistance($value));
+        static::assertEquals($value, $object->getDistance());
     }
 
     /**
@@ -129,7 +129,7 @@ class ShadowTest extends TestCase
         $object = new Shadow();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        static::assertEquals($value, $object->getHashIndex());
     }
 
     /**
@@ -138,11 +138,11 @@ class ShadowTest extends TestCase
     public function testSetIsVisible()
     {
         $object = new Shadow();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setVisible());
-        $this->assertFalse($object->isVisible());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setVisible(false));
-        $this->assertFalse($object->isVisible());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setVisible(true));
-        $this->assertTrue($object->isVisible());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setVisible());
+        static::assertFalse($object->isVisible());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setVisible(false));
+        static::assertFalse($object->isVisible());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->setVisible(true));
+        static::assertTrue($object->isVisible());
     }
 }

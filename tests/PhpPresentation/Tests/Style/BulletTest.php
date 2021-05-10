@@ -34,11 +34,11 @@ class BulletTest extends TestCase
     public function testConstruct()
     {
         $object = new Bullet();
-        $this->assertEquals(Bullet::TYPE_NONE, $object->getBulletType());
-        $this->assertEquals('Calibri', $object->getBulletFont());
-        $this->assertEquals('-', $object->getBulletChar());
-        $this->assertEquals(Bullet::NUMERIC_DEFAULT, $object->getBulletNumericStyle());
-        $this->assertEquals(1, $object->getBulletNumericStartAt());
+        static::assertEquals(Bullet::TYPE_NONE, $object->getBulletType());
+        static::assertEquals('Calibri', $object->getBulletFont());
+        static::assertEquals('-', $object->getBulletChar());
+        static::assertEquals(Bullet::NUMERIC_DEFAULT, $object->getBulletNumericStyle());
+        static::assertEquals(1, $object->getBulletNumericStartAt());
     }
 
     /**
@@ -47,10 +47,10 @@ class BulletTest extends TestCase
     public function testSetGetBulletChar()
     {
         $object = new Bullet();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletChar());
-        $this->assertEquals('-', $object->getBulletChar());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletChar('a'));
-        $this->assertEquals('a', $object->getBulletChar());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletChar());
+        static::assertEquals('-', $object->getBulletChar());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletChar('a'));
+        static::assertEquals('a', $object->getBulletChar());
     }
 
     /**
@@ -63,13 +63,13 @@ class BulletTest extends TestCase
         $expectedARGB = '01234567';
 
         // default
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
-        $this->assertEquals(Color::COLOR_BLACK, $object->getBulletColor()->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
+        static::assertEquals(Color::COLOR_BLACK, $object->getBulletColor()->getARGB());
 
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletColor(new Color($expectedARGB)));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
-        $this->assertEquals($expectedARGB, $object->getBulletColor()->getARGB());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletColor(new Color($expectedARGB)));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
+        static::assertEquals($expectedARGB, $object->getBulletColor()->getARGB());
     }
 
     /**
@@ -78,12 +78,12 @@ class BulletTest extends TestCase
     public function testSetGetBulletFont()
     {
         $object = new Bullet();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont());
-        $this->assertEquals('Calibri', $object->getBulletFont());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont(''));
-        $this->assertEquals('Calibri', $object->getBulletFont());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont('Arial'));
-        $this->assertEquals('Arial', $object->getBulletFont());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont());
+        static::assertEquals('Calibri', $object->getBulletFont());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont(''));
+        static::assertEquals('Calibri', $object->getBulletFont());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont('Arial'));
+        static::assertEquals('Arial', $object->getBulletFont());
     }
 
     /**
@@ -92,11 +92,11 @@ class BulletTest extends TestCase
     public function testSetGetBulletNumericStartAt()
     {
         $object = new Bullet();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt());
-        $this->assertEquals(1, $object->getBulletNumericStartAt());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt());
+        static::assertEquals(1, $object->getBulletNumericStartAt());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt($value));
-        $this->assertEquals($value, $object->getBulletNumericStartAt());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt($value));
+        static::assertEquals($value, $object->getBulletNumericStartAt());
     }
 
     /**
@@ -105,10 +105,10 @@ class BulletTest extends TestCase
     public function testSetGetBulletNumericStyle()
     {
         $object = new Bullet();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStyle());
-        $this->assertEquals(Bullet::NUMERIC_DEFAULT, $object->getBulletNumericStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStyle(Bullet::NUMERIC_ALPHALCPARENBOTH));
-        $this->assertEquals(Bullet::NUMERIC_ALPHALCPARENBOTH, $object->getBulletNumericStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStyle());
+        static::assertEquals(Bullet::NUMERIC_DEFAULT, $object->getBulletNumericStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStyle(Bullet::NUMERIC_ALPHALCPARENBOTH));
+        static::assertEquals(Bullet::NUMERIC_ALPHALCPARENBOTH, $object->getBulletNumericStyle());
     }
 
     /**
@@ -117,10 +117,10 @@ class BulletTest extends TestCase
     public function testSetGetBulletType()
     {
         $object = new Bullet();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletType());
-        $this->assertEquals(Bullet::TYPE_NONE, $object->getBulletType());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletType(Bullet::TYPE_BULLET));
-        $this->assertEquals(Bullet::TYPE_BULLET, $object->getBulletType());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletType());
+        static::assertEquals(Bullet::TYPE_NONE, $object->getBulletType());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletType(Bullet::TYPE_BULLET));
+        static::assertEquals(Bullet::TYPE_BULLET, $object->getBulletType());
     }
 
     /**
@@ -131,6 +131,6 @@ class BulletTest extends TestCase
         $object = new Bullet();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        static::assertEquals($value, $object->getHashIndex());
     }
 }

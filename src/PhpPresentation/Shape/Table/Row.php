@@ -120,7 +120,7 @@ class Row implements ComparableInterface
             $this->cells[$this->activeCellIndex]->setFill(clone $this->getFill());
             return $this->cells[$this->activeCellIndex];
         }
-        throw new \Exception("Cell count out of bounds.");
+        throw new \Exception('Cell count out of bounds.');
     }
 
     /**

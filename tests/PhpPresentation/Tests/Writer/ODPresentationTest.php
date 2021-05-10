@@ -20,7 +20,6 @@ class ODPresentationTest extends PhpPresentationTestCase
      */
     public function testConstruct()
     {
-        ;
         $this->oPresentation->getActiveSlide()->createDrawingShape();
         $object = new ODPresentation($this->oPresentation);
 

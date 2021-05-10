@@ -37,17 +37,17 @@ class ParagraphTest extends TestCase
     public function testConstruct()
     {
         $object = new Paragraph();
-        $this->assertEmpty($object->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
+        static::assertEmpty($object->getRichTextElements());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
     }
 
     public function testAlignment()
     {
         $object = new Paragraph();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setAlignment(new Alignment()));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setAlignment(new Alignment()));
     }
 
     /**
@@ -56,11 +56,11 @@ class ParagraphTest extends TestCase
     public function testBulletStyle()
     {
         $object = new Paragraph();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setBulletStyle());
-        $this->assertNull($object->getBulletStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setBulletStyle(new Bullet()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setBulletStyle());
+        static::assertNull($object->getBulletStyle());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setBulletStyle(new Bullet()));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
     }
 
     /**
@@ -69,11 +69,11 @@ class ParagraphTest extends TestCase
     public function testFont()
     {
         $object = new Paragraph();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setFont());
-        $this->assertNull($object->getFont());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setFont(new Font()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setFont());
+        static::assertNull($object->getFont());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setFont(new Font()));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
     /**
@@ -84,7 +84,7 @@ class ParagraphTest extends TestCase
         $object = new Paragraph();
         $oElement = new TextElement();
         $object->addText($oElement);
-        $this->assertEquals(md5($oElement->getHashCode().$object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
+        static::assertEquals(md5($oElement->getHashCode().$object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
     }
 
     /**
@@ -95,7 +95,7 @@ class ParagraphTest extends TestCase
         $object = new Paragraph();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        static::assertEquals($value, $object->getHashIndex());
     }
 
     /**
@@ -105,9 +105,9 @@ class ParagraphTest extends TestCase
     {
         $object = new Paragraph();
         $valueExpected = mt_rand(1, 100);
-        $this->assertEquals(100, $object->getLineSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setLineSpacing($valueExpected));
-        $this->assertEquals($valueExpected, $object->getLineSpacing());
+        static::assertEquals(100, $object->getLineSpacing());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setLineSpacing($valueExpected));
+        static::assertEquals($valueExpected, $object->getLineSpacing());
     }
 
     /**
@@ -116,18 +116,18 @@ class ParagraphTest extends TestCase
     public function testRichTextElements()
     {
         $object = new Paragraph();
-        $this->assertInternalType('array', $object->getRichTextElements());
-        $this->assertEmpty($object->getRichTextElements());
+        static::assertInternalType('array', $object->getRichTextElements());
+        static::assertEmpty($object->getRichTextElements());
         $object->createBreak();
-        $this->assertCount(1, $object->getRichTextElements());
+        static::assertCount(1, $object->getRichTextElements());
 
         $array = array(
             new TextElement(),
             new TextElement(),
             new TextElement(),
         );
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setRichTextElements($array));
-        $this->assertCount(3, $object->getRichTextElements());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setRichTextElements($array));
+        static::assertCount(3, $object->getRichTextElements());
     }
 
     /**
@@ -137,7 +137,7 @@ class ParagraphTest extends TestCase
     public function testRichTextElementsException()
     {
         $object = new Paragraph();
-        $object->setRichTextElements(1);
+        $object->setRichTextElements(null);
     }
 
     /**
@@ -146,19 +146,19 @@ class ParagraphTest extends TestCase
     public function testText()
     {
         $object = new Paragraph();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->addText(new TextElement()));
-        $this->assertCount(1, $object->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText());
-        $this->assertCount(2, $object->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText('AAA'));
-        $this->assertCount(3, $object->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->createBreak());
-        $this->assertCount(4, $object->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun());
-        $this->assertCount(5, $object->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BBB'));
-        $this->assertCount(6, $object->getRichTextElements());
-        $this->assertEquals('AAA'."\r\n".'BBB', $object->getPlainText());
-        $this->assertEquals('AAA'."\r\n".'BBB', (string) $object);
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->addText(new TextElement()));
+        static::assertCount(1, $object->getRichTextElements());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText());
+        static::assertCount(2, $object->getRichTextElements());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText('AAA'));
+        static::assertCount(3, $object->getRichTextElements());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->createBreak());
+        static::assertCount(4, $object->getRichTextElements());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun());
+        static::assertCount(5, $object->getRichTextElements());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BBB'));
+        static::assertCount(6, $object->getRichTextElements());
+        static::assertEquals('AAA'."\r\n".'BBB', $object->getPlainText());
+        static::assertEquals('AAA'."\r\n".'BBB', (string) $object);
     }
 }

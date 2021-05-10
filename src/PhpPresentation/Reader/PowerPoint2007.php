@@ -17,8 +17,11 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
+use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -27,16 +30,13 @@ use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
-use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
-use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Borders;
+use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
-use PhpOffice\Common\XMLReader;
-use PhpOffice\Common\Drawing as CommonDrawing;
 use ZipArchive;
 
 /**
@@ -94,7 +94,7 @@ class PowerPoint2007 implements ReaderInterface
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
         }
 
         $oZip = new ZipArchive();
@@ -120,7 +120,7 @@ class PowerPoint2007 implements ReaderInterface
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007: " . $pFilename . '.');
         }
 
         return $this->loadFile($pFilename);
@@ -217,8 +217,11 @@ class PowerPoint2007 implements ReaderInterface
                 $oElement = $xmlReader->getElement($path);
                 if ($oElement instanceof \DOMElement) {
                     if ($oElement->hasAttribute('xsi:type') && $oElement->getAttribute('xsi:type') == 'dcterms:W3CDTF') {
-                        $oDateTime = new \DateTime();
-                        $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
+                        try {
+                            $oDateTime = new \DateTime($oElement->nodeValue);
+                        } catch (\Exception $ex) {
+                            $oDateTime = new \DateTime();
+                        }
                         $oProperties->{$property}($oDateTime->getTimestamp());
                     } else {
                         $oProperties->{$property}($oElement->nodeValue);
@@ -1293,7 +1296,7 @@ class PowerPoint2007 implements ReaderInterface
      * @throws \Exception
      * @internal param $baseFile
      */
-    protected function loadSlideShapes($oSlide, $oElements, $xmlReader)
+    protected function loadSlideShapes($oSlide, $oElements, XMLReader $xmlReader)
     {
         foreach ($oElements as $oNode) {
             switch ($oNode->tagName) {

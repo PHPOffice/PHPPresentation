@@ -207,7 +207,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @return string                    String output
      * @throws \Exception
      */
-    public function writeSpreadsheet(PhpPresentation $presentation, $chart, $tempName)
+    public function writeSpreadsheet(PhpPresentation $presentation, Chart $chart, $tempName)
     {
         // Need output?
         if (!$chart->hasIncludedSpreadsheet()) {
@@ -276,7 +276,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param string $elementName
      * @param string $value
      */
-    protected function writeElementWithValAttribute($objWriter, $elementName, $value)
+    protected function writeElementWithValAttribute(XMLWriter $objWriter, $elementName, $value)
     {
         $objWriter->startElement($elementName);
         $objWriter->writeAttribute('val', $value);
@@ -291,7 +291,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param mixed $value
      * @param string $reference
      */
-    protected function writeSingleValueOrReference($objWriter, $isReference, $value, $reference)
+    protected function writeSingleValueOrReference(XMLWriter $objWriter, $isReference, $value, $reference)
     {
         if (!$isReference) {
             // Value
@@ -323,7 +323,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param mixed $values
      * @param string $reference
      */
-    protected function writeMultipleValuesOrReference($objWriter, $isReference, $values, $reference)
+    protected function writeMultipleValuesOrReference(XMLWriter $objWriter, $isReference, $values, $reference)
     {
         // c:strLit / c:numLit
         // c:strRef / c:numRef
@@ -828,6 +828,16 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
+            // c:spPr
+            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $series->getFill());
+                // ## c:spPr
+                $objWriter->endElement();
+            }
+
             // Fills for points?
             $dataPointFills = $series->getDataPointFills();
             foreach ($dataPointFills as $key => $value) {
@@ -937,16 +947,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->endElement();
 
-            // c:spPr
-            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-                // Write fill
-                $this->writeFill($objWriter, $series->getFill());
-                // ## c:spPr
-                $objWriter->endElement();
-            }
-
             // Write X axis data
             $axisXData = array_keys($series->getValues());
 
@@ -980,7 +980,7 @@ class PptCharts extends AbstractDecoratorWriter
         if ($barGrouping === Bar::GROUPING_CLUSTERED) {
             $objWriter->writeAttribute('val', '0');
         } elseif ($barGrouping === Bar::GROUPING_STACKED || $barGrouping === Bar::GROUPING_PERCENTSTACKED) {
-            $objWriter->writeAttribute('val', '100000');
+            $objWriter->writeAttribute('val', '100');
         }
         $objWriter->endElement();
 
@@ -1045,6 +1045,16 @@ class PptCharts extends AbstractDecoratorWriter
             $coords = ($includeSheet ? 'Sheet1!$' . \PHPExcel_Cell::stringFromColumnIndex(1 + $seriesIndex) . '$1' : '');
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
+
+            // c:spPr
+            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
+                // c:spPr
+                $objWriter->startElement('c:spPr');
+                // Write fill
+                $this->writeFill($objWriter, $series->getFill());
+                // ## c:spPr
+                $objWriter->endElement();
+            }
 
             // Fills for points?
             $dataPointFills = $series->getDataPointFills();
@@ -1139,16 +1149,6 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             $objWriter->endElement();
-
-            // c:spPr
-            if ($series->getFill()->getFillType() != Fill::FILL_NONE) {
-                // c:spPr
-                $objWriter->startElement('c:spPr');
-                // Write fill
-                $this->writeFill($objWriter, $series->getFill());
-                // ## c:spPr
-                $objWriter->endElement();
-            }
 
             // Write X axis data
             $axisXData = array_keys($series->getValues());

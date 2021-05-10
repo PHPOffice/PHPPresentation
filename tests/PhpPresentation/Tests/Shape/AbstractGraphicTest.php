@@ -33,31 +33,31 @@ class AbstractGraphicTest extends TestCase
         $max = 20;
         /** @var AbstractGraphic $stub */
         $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic');
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(false));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($min));
-        $this->assertEquals($min, $stub->getWidth());
-        $this->assertEquals(0, $stub->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($max));
-        $this->assertEquals($min, $stub->getWidth());
-        $this->assertEquals($max, $stub->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
-        $this->assertEquals($min, $stub->getWidth());
-        $this->assertEquals($max, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(false));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($min));
+        static::assertEquals($min, $stub->getWidth());
+        static::assertEquals(0, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($max));
+        static::assertEquals($min, $stub->getWidth());
+        static::assertEquals($max, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
+        static::assertEquals($min, $stub->getWidth());
+        static::assertEquals($max, $stub->getHeight());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(true));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
-        $this->assertEquals($max, $stub->getWidth());
-        $this->assertEquals($max * ($max / $min), $stub->getHeight());
-        $this->assertEquals($max, $stub->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
-        $this->assertEquals($min * ($max / ($max * ($max / $min))), $stub->getWidth());
-        $this->assertEquals($min, $stub->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
-        $this->assertEquals($min, $stub->getWidth());
-        $this->assertEquals($max, $stub->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($max, $min));
-        $this->assertEquals($min * ($min / $max), $stub->getWidth());
-        $this->assertEquals($min, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(true));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
+        static::assertEquals($max, $stub->getWidth());
+        static::assertEquals($max * ($max / $min), $stub->getHeight());
+        static::assertEquals($max, $stub->getWidth());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
+        static::assertEquals($min * ($max / ($max * ($max / $min))), $stub->getWidth());
+        static::assertEquals($min, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
+        static::assertEquals($min, $stub->getWidth());
+        static::assertEquals($max, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($max, $min));
+        static::assertEquals($min * ($min / $max), $stub->getWidth());
+        static::assertEquals($min, $stub->getHeight());
     }
 
     public function testWidthAndHeight2()
@@ -66,24 +66,24 @@ class AbstractGraphicTest extends TestCase
         $max = 20;
         /** @var AbstractGraphic $stub */
         $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic');
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(false));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
-        $this->assertEquals($max, $stub->getWidth());
-        $this->assertEquals(0, $stub->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
-        $this->assertEquals($max, $stub->getWidth());
-        $this->assertEquals($min, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(false));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
+        static::assertEquals($max, $stub->getWidth());
+        static::assertEquals(0, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
+        static::assertEquals($max, $stub->getWidth());
+        static::assertEquals($min, $stub->getHeight());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(true));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
-        $this->assertEquals($max, $stub->getWidth());
-        $this->assertEquals($max * ($min / $max), $stub->getHeight());
-        $this->assertEquals($max, $stub->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
-        $this->assertEquals($max * ($min / ($max * ($min / $max))), $stub->getWidth());
-        $this->assertEquals($min, $stub->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
-        $this->assertEquals($min, $stub->getWidth());
-        $this->assertEquals($min * ($min / ($max * ($min / ($max * ($min / $max))))), $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setResizeProportional(true));
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidth($max));
+        static::assertEquals($max, $stub->getWidth());
+        static::assertEquals($max * ($min / $max), $stub->getHeight());
+        static::assertEquals($max, $stub->getWidth());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setHeight($min));
+        static::assertEquals($max * ($min / ($max * ($min / $max))), $stub->getWidth());
+        static::assertEquals($min, $stub->getHeight());
+        static::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\AbstractGraphic', $stub->setWidthAndHeight($min, $max));
+        static::assertEquals($min, $stub->getWidth());
+        static::assertEquals($min * ($min / ($max * ($min / ($max * ($min / $max))))), $stub->getHeight());
     }
 }

@@ -3,15 +3,11 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
-use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
-use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\RichText;
-use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
 use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
-use PhpOffice\PhpPresentation\Slide\Background\Image;
 
 class PptSlideMasters extends AbstractSlide
 {
@@ -167,7 +163,7 @@ class PptSlideMasters extends AbstractSlide
         // p:sldMaster\p:sldLayoutIdLst
         $objWriter->startElement('p:sldLayoutIdLst');
         foreach ($pSlide->getAllSlideLayouts() as $layout) {
-            /* @var $layout Slide\SlideLayout */
+            /* @var Slide\SlideLayout $layout */
             $objWriter->startElement('p:sldLayoutId');
             $objWriter->writeAttribute('id', $layout->layoutId);
             $objWriter->writeAttribute('r:id', $layout->relationId);

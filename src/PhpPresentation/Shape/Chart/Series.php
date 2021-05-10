@@ -213,7 +213,7 @@ class Series implements ComparableInterface
     /**
      * Get Fill
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return \PhpOffice\PhpPresentation\Style\Fill|null
      */
     public function getFill()
     {
@@ -223,7 +223,7 @@ class Series implements ComparableInterface
     /**
      * Set Fill
      *
-     * @param \PhpOffice\PhpPresentation\Style\Fill $fill
+     * @param \PhpOffice\PhpPresentation\Style\Fill|null $fill
      * @return Series
      */
     public function setFill(Fill $fill = null)
@@ -465,7 +465,7 @@ class Series implements ComparableInterface
     /**
      * Get font
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return \PhpOffice\PhpPresentation\Style\Font|null
      */
     public function getFont()
     {
@@ -475,7 +475,7 @@ class Series implements ComparableInterface
     /**
      * Set font
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
+     * @param  \PhpOffice\PhpPresentation\Style\Font|null               $pFont Font
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
      */

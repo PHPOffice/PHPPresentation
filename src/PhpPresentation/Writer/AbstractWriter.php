@@ -48,7 +48,7 @@ abstract class AbstractWriter
     public function getPhpPresentation()
     {
         if (empty($this->oPresentation)) {
-            throw new \Exception("No PhpPresentation assigned.");
+            throw new \Exception('No PhpPresentation assigned.');
         }
         return $this->oPresentation;
     }
@@ -88,7 +88,7 @@ abstract class AbstractWriter
     /**
      * Get an array of all drawings
      *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
+     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic[] All drawings in PhpPresentation
      * @throws \Exception
      */
     protected function allDrawings()

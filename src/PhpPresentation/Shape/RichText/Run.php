@@ -38,8 +38,7 @@ class Run extends TextElement implements TextElementInterface
      */
     public function __construct($pText = '')
     {
-        // Initialise variables
-        $this->setText($pText);
+        parent::__construct($pText);
         $this->font = new Font();
     }
 
