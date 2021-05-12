@@ -20,6 +20,7 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
@@ -138,6 +139,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof AbstractGraphic) {
                 $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof AutoShape) {
+                $this->writeShapeAutoShape($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Comment) {
@@ -1052,6 +1055,98 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // Return
         return $objWriter->getData();
+    }
+
+    /**
+     * Write AutoShape
+     *
+     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\PhpPresentation\Shape\AutoShape $shape
+     * @param  int $shapeId
+     */
+    protected function writeShapeAutoShape(XMLWriter $objWriter, AutoShape $shape, $shapeId)
+    {
+        // p:sp
+        $objWriter->startElement('p:sp');
+
+        // p:sp\p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+        // p:sp\p:nvSpPr\p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', $shapeId);
+        $objWriter->writeAttribute('name', '');
+        $objWriter->writeAttribute('descr', '');
+        // p:sp\p:nvSpPr\p:cNvPr\
+        $objWriter->endElement();
+        // p:sp\p:nvSpPr\p:cNvSpPr
+        $objWriter->writeElement('p:cNvSpPr');
+        // p:sp\p:nvSpPr\p:nvPr
+        $objWriter->writeElement('p:nvPr');
+        // p:sp\p:nvSpPr\
+        $objWriter->endElement();
+
+        // p:sp\p:spPr
+        $objWriter->startElement('p:spPr');
+
+        // p:sp\p:spPr\a:xfrm
+        $objWriter->startElement('a:xfrm');
+        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        // p:sp\p:spPr\a:xfrm\a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->endElement();
+        // p:sp\p:spPr\a:xfrm\a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->endElement();
+        // p:sp\p:spPr\a:xfrm\
+        $objWriter->endElement();
+
+        // p:sp\p:spPr\a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', $shape->getType());
+        // p:sp\p:spPr\a:prstGeom\a:avLst
+        $objWriter->writeElement('a:avLst');
+        // p:sp\p:spPr\a:prstGeom\
+        $objWriter->endElement();
+        // Border
+        // $this->writeBorder($objWriter, $shape->getBorder(), '');
+        // Shadow
+        //$this->writeShadow($objWriter, $shape->getShadow());
+
+        // p:sp\p:spPr\
+        $objWriter->endElement();
+
+        $objWriter->writeRaw('<p:style>
+            <a:lnRef idx="2">
+                <a:schemeClr val="accent1">
+                    <a:shade val="50000"/>
+                </a:schemeClr>
+            </a:lnRef>
+            <a:fillRef idx="1">
+                <a:schemeClr val="accent1"/>
+            </a:fillRef>
+            <a:effectRef idx="0">
+                <a:schemeClr val="accent1"/>
+            </a:effectRef>
+            <a:fontRef idx="minor">
+                <a:schemeClr val="lt1"/>
+            </a:fontRef>
+        </p:style>');
+
+        $objWriter->writeRaw('<p:txBody>
+            <a:bodyPr vertOverflow="clip" rtlCol="0" anchor="ctr"/>
+            <a:lstStyle/>
+            <a:p>
+                <a:pPr algn="ctr"/>
+                <a:endParaRPr lang="en-US" sz="1100"/>
+            </a:p>
+        </p:txBody>');
+
+        // p:sp\
+        $objWriter->endElement();
     }
 
     /**
