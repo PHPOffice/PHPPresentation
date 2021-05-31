@@ -18,6 +18,7 @@ matrix:
 env:
     global:
         - secure: "LtlUOzC8FtqgbqUTmU7EU281NSCb58UFdvnz8lelNIDltBdP4eayN/TsgNIePB4jXg2d2R56ZA6j/grhE/md6jdUkulV355H3GrH/hIZmmQ+F9+87agnwLzb9+MJbqXoiE7VvjY3zGIO09G897SUfsfu6JWEcscYFlsH6KcXM6M="
+        - XDEBUG_MODE=coverage
 
 addons:
   apt:
