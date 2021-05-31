@@ -6,10 +6,16 @@
     xsi:noNamespaceSchemaLocation="http://pmd.sf.net/ruleset_xml_schema.xsd">
     <rule ref="rulesets/naming.xml">
         <exclude name="LongVariable" />
+        <exclude name="ShortClassName" />
     </rule>
     <rule ref="rulesets/naming.xml/LongVariable">
         <properties>
             <property name="maximum" value="32" />
+        </properties>
+    </rule>
+    <rule ref="rulesets/naming.xml/ShortClassName">
+        <properties>
+            <property name="minimum" value="2" />
         </properties>
     </rule>
     <rule ref="rulesets/design.xml/ExitExpression" />

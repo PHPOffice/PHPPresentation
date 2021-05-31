@@ -107,12 +107,12 @@ class ODPresentation extends AbstractWriter implements WriterInterface
             }
 
             $class = __NAMESPACE__ . '\\ODPresentation\\' . $oFile->getBasename('.php');
-            $o = new \ReflectionClass($class);
+            $class = new \ReflectionClass($class);
 
-            if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
+            if ($class->isAbstract() || !$class->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
                 continue;
             }
-            $arrayFiles[$oFile->getBasename('.php')] = $o;
+            $arrayFiles[$oFile->getBasename('.php')] = $class;
         }
 
         ksort($arrayFiles);
