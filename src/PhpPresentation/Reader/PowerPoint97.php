@@ -568,13 +568,13 @@ class PowerPoint97 implements ReaderInterface
         $pos += 2;
 
         // ansiUserName
-        $ansiUserName = '';
+        // $ansiUserName = '';
         do {
             $char = self::getInt1d($this->streamCurrentUser, $pos);
             if (($char >= 0x00 && $char <= 0x1F) || ($char >= 0x7F && $char <= 0x9F)) {
                 $char = false;
             } else {
-                $ansiUserName .= chr($char);
+                // $ansiUserName .= chr($char);
                 $pos += 1;
             }
         } while ($char !== false);
@@ -587,13 +587,13 @@ class PowerPoint97 implements ReaderInterface
         }
 
         // unicodeUserName
-        $unicodeUserName = '';
+        // $unicodeUserName = '';
         for ($inc = 0; $inc < $lenUserName; $inc++) {
             $char = self::getInt2d($this->streamCurrentUser, $pos);
             if (($char >= 0x00 && $char <= 0x1F) || ($char >= 0x7F && $char <= 0x9F)) {
                 break;
             }
-            $unicodeUserName .= chr($char);
+            // $unicodeUserName .= chr($char);
             $pos += 2;
         }
     }
@@ -611,11 +611,11 @@ class PowerPoint97 implements ReaderInterface
         foreach ($this->rgPersistDirEntry as $offsetDir) {
             $pos = $offsetDir;
 
-            $rh = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
+            $rHeader = $this->loadRecordHeader($this->streamPowerpointDocument, $pos);
             $pos += 8;
-            $this->inMainType = $rh['recType'];
+            $this->inMainType = $rHeader['recType'];
             $this->currentNote = null;
-            switch ($rh['recType']) {
+            switch ($rHeader['recType']) {
                 case self::RT_DOCUMENT:
                     $this->readRecordDocumentContainer($this->streamPowerpointDocument, $pos);
                     break;
@@ -3168,19 +3168,19 @@ class PowerPoint97 implements ReaderInterface
             $arrayReturn['length'] += 2;
         }
         if ($masksData['bulletColor'] == 1) {
-            $red = self::getInt1d($stream, $pos + $arrayReturn['length']);
+            // $red = self::getInt1d($stream, $pos + $arrayReturn['length']);
             $arrayReturn['length'] += 1;
-            $green = self::getInt1d($stream, $pos + $arrayReturn['length']);
+            // $green = self::getInt1d($stream, $pos + $arrayReturn['length']);
             $arrayReturn['length'] += 1;
-            $blue = self::getInt1d($stream, $pos + $arrayReturn['length']);
+            // $blue = self::getInt1d($stream, $pos + $arrayReturn['length']);
             $arrayReturn['length'] += 1;
             $index = self::getInt1d($stream, $pos + $arrayReturn['length']);
             $arrayReturn['length'] += 1;
 
             if ($index == 0xFE) {
-                $strColor = str_pad(dechex($red), 2, STR_PAD_LEFT, '0');
-                $strColor .= str_pad(dechex($green), 2, STR_PAD_LEFT, '0');
-                $strColor .= str_pad(dechex($blue), 2, STR_PAD_LEFT, '0');
+                // $strColor = str_pad(dechex($red), 2, STR_PAD_LEFT, '0');
+                // $strColor .= str_pad(dechex($green), 2, STR_PAD_LEFT, '0');
+                // $strColor .= str_pad(dechex($blue), 2, STR_PAD_LEFT, '0');
             }
         }
         if ($masksData['align'] == 1) {

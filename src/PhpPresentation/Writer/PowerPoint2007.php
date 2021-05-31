@@ -109,12 +109,12 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
             }
 
             $class = __NAMESPACE__ . '\\PowerPoint2007\\' . $oFile->getBasename('.php');
-            $o = new \ReflectionClass($class);
+            $class = new \ReflectionClass($class);
 
-            if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')) {
+            if ($class->isAbstract() || !$class->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')) {
                 continue;
             }
-            $arrayFiles[$oFile->getBasename('.php')] = $o;
+            $arrayFiles[$oFile->getBasename('.php')] = $class;
         }
 
         ksort($arrayFiles);
