@@ -29,12 +29,11 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage does not exist
-     */
     public function testDrawingException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('does not exist');
+        
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/filedoesntexist.png', false);
@@ -59,9 +58,6 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testDrawingZip()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -76,13 +72,11 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage does not exist
-     * @requires PHP 5.4
-     */
     public function testDrawingZipException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('does not exist');
+        
         $oShape = new Drawing\ZipFile();
         $oShape->setPath('zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'filedoesntexist.zip', false);
         $this->oPresentation->getActiveSlide()->addShape($oShape);
@@ -90,9 +84,6 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->writePresentationFile($this->oPresentation, 'ODPresentation');
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testDrawingBase64()
     {
         $oShape = new Drawing\Base64();

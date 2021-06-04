@@ -6,16 +6,10 @@
 Thumbs.db
 Desktop.ini
 
-### IDE Jetbrains PhpStorm
-.idea
-### IDE Eclipse
-*.settings
-*.project
-*.buildpath
-
 ### Continuous Integration
 build/
 phpunit.xml
+.phpunit.result.cache
 composer.phar
 vendor
 /batch_CI.bat

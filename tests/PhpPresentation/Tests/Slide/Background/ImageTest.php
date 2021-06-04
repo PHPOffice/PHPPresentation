@@ -32,12 +32,11 @@ class ImageTest extends TestCase
         $this->assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage File not found :
-     */
     public function testPathException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('File not found :');
+        
         $object = new Image();
         $object->setPath('pathDoesntExist', true);
     }

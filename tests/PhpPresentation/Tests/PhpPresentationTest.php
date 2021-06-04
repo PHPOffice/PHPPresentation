@@ -93,36 +93,36 @@ class PhpPresentationTest extends TestCase
 
     /**
      * Test remove slide by index exception
-     *
-     * @expectedException Exception
-     * @expectedExceptionMessage Slide index is out of bounds.
      */
     public function testRemoveSlideByIndexException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Slide index is out of bounds.');
+
         $object = new PhpPresentation();
         $object->removeSlideByIndex(1);
     }
 
     /**
      * Test get slide exception
-     *
-     * @expectedException Exception
-     * @expectedExceptionMessage Slide index is out of bounds.
      */
     public function testGetSlideException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Slide index is out of bounds.');
+
         $object = new PhpPresentation();
         $object->getSlide(1);
     }
 
     /**
      * Test set active slide index exception
-     *
-     * @expectedException Exception
-     * @expectedExceptionMessage Active slide index is out of bounds.
      */
     public function testSetActiveSlideIndexException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Active slide index is out of bounds.');
+        
         $object = new PhpPresentation();
         $object->setActiveSlideIndex(1);
     }

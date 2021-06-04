@@ -32,7 +32,7 @@ class TextStyleTest extends TestCase
         $object = new TextStyle();
 
         $arrayBodyStyle = $object->getBodyStyle();
-        $this->assertInternalType('array', $arrayBodyStyle);
+        $this->assertIsArray($arrayBodyStyle);
         $this->assertCount(1, $arrayBodyStyle);
         $this->assertArrayHasKey(1, $arrayBodyStyle);
         $this->assertNull($object->getBodyStyleAtLvl(0));
@@ -47,7 +47,7 @@ class TextStyleTest extends TestCase
         $this->assertEquals('tx1', $oParagraph->getFont()->getColor()->getValue());
 
         $arrayOtherStyle = $object->getOtherStyle();
-        $this->assertInternalType('array', $arrayOtherStyle);
+        $this->assertIsArray($arrayOtherStyle);
         $this->assertCount(1, $arrayOtherStyle);
         $this->assertArrayHasKey(0, $arrayOtherStyle);
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\RichText\Paragraph', $object->getOtherStyleAtLvl(0));
@@ -60,7 +60,7 @@ class TextStyleTest extends TestCase
         $this->assertEquals('tx1', $oParagraph->getFont()->getColor()->getValue());
 
         $arrayTitleStyle = $object->getTitleStyle();
-        $this->assertInternalType('array', $arrayTitleStyle);
+        $this->assertIsArray($arrayTitleStyle);
         $this->assertCount(1, $arrayTitleStyle);
         $this->assertArrayHasKey(1, $arrayTitleStyle);
         $this->assertNull($object->getTitleStyleAtLvl(0));
@@ -77,11 +77,11 @@ class TextStyleTest extends TestCase
     {
         $object = new TextStyle(false);
 
-        $this->assertInternalType('array', $object->getBodyStyle());
+        $this->assertIsArray($object->getBodyStyle());
         $this->assertCount(0, $object->getBodyStyle());
-        $this->assertInternalType('array', $object->getOtherStyle());
+        $this->assertIsArray($object->getOtherStyle());
         $this->assertCount(0, $object->getOtherStyle());
-        $this->assertInternalType('array', $object->getTitleStyle());
+        $this->assertIsArray($object->getTitleStyle());
         $this->assertCount(0, $object->getTitleStyle());
     }
 

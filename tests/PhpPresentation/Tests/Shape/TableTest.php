@@ -55,12 +55,11 @@ class TableTest extends TestCase
         $this->assertNull($object->getRow(1, true));
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Row number out of bounds.
-     */
     public function testGetRowException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Row number out of bounds.');
+        
         $object = new Table();
         $object->getRow();
     }

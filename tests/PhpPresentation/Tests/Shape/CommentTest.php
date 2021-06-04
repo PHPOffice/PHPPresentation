@@ -33,7 +33,7 @@ class CommentTest extends TestCase
 
         $this->assertNull($object->getAuthor());
         $this->assertNull($object->getText());
-        $this->assertInternalType('int', $object->getDate());
+        $this->assertIsInt($object->getDate());
         $this->assertNull($object->getHeight());
         $this->assertNull($object->getWidth());
     }
@@ -54,10 +54,10 @@ class CommentTest extends TestCase
         $expectedDate = time();
 
         $object = new Comment();
-        $this->assertInternalType('int', $object->getDate());
+        $this->assertIsInt($object->getDate());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment', $object->setDate($expectedDate));
         $this->assertEquals($expectedDate, $object->getDate());
-        $this->assertInternalType('int', $object->getDate());
+        $this->assertIsInt($object->getDate());
     }
 
     public function testGetSetText()

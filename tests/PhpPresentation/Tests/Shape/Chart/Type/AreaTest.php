@@ -32,7 +32,7 @@ class AreaTest extends TestCase
     {
         $object = new Area();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
         $array = array(

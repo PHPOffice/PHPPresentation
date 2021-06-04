@@ -53,6 +53,9 @@ class Serialized extends AbstractWriter implements WriterInterface
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty.");
         }
+        if (!is_dir(dirname($pFilename))) {
+            throw new \Exception(sprintf("Could not open %s for writing.", $pFilename));
+        }
         $oPresentation = $this->getPhpPresentation();
 
         // Create new ZIP file and open it for writing

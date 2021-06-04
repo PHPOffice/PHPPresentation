@@ -80,7 +80,7 @@ class PhpPresentationTestCase extends TestCase
     /**
      * Executed before each method of the class
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->xmlDisableEntityLoader = libxml_disable_entity_loader(false);
         $this->workDirectory = sys_get_temp_dir() . '/PhpPresentation_Unit_Test/';
@@ -98,7 +98,7 @@ class PhpPresentationTestCase extends TestCase
     /**
      * Executed after each method of the class
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         libxml_disable_entity_loader($this->xmlDisableEntityLoader);
         libxml_use_internal_errors($this->xmlInternalErrors);
@@ -111,7 +111,7 @@ class PhpPresentationTestCase extends TestCase
      *
      * @param string $dir
      */
-    private function deleteDir($dir)
+    private function deleteDir(string $dir): void
     {
         foreach (scandir($dir) as $file) {
             if ($file === '.' || $file === '..') {
@@ -126,7 +126,7 @@ class PhpPresentationTestCase extends TestCase
         rmdir($dir);
     }
 
-    protected function getXmlDom($file)
+    protected function getXmlDom(string $file): \DOMDocument
     {
         $baseFile = $file;
         if (null !== $this->xmlDom && $file === $this->xmlFile) {
@@ -172,7 +172,7 @@ class PhpPresentationTestCase extends TestCase
      * @param PhpPresentation $oPhpPresentation
      * @param string $writerName
      */
-    protected function writePresentationFile(PhpPresentation $oPhpPresentation, $writerName)
+    protected function writePresentationFile(PhpPresentation $oPhpPresentation, $writerName): void
     {
         if (is_file($this->filePath)) {
             return;
@@ -189,7 +189,7 @@ class PhpPresentationTestCase extends TestCase
         }
     }
 
-    protected function resetPresentationFile()
+    protected function resetPresentationFile(): void
     {
         $this->xmlFile = null;
         $this->xmlDom = null;
@@ -208,7 +208,7 @@ class PhpPresentationTestCase extends TestCase
     /**
      * @param string $filePath
      */
-    public function assertZipFileExists($filePath)
+    public function assertZipFileExists($filePath): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         self::assertTrue(is_file($this->workDirectory . $filePath));
@@ -217,7 +217,7 @@ class PhpPresentationTestCase extends TestCase
     /**
      * @param string $filePath
      */
-    public function assertZipFileNotExists($filePath)
+    public function assertZipFileNotExists($filePath): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         self::assertFalse(is_file($this->workDirectory . $filePath));
@@ -227,7 +227,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $filePath
      * @param string $xPath
      */
-    public function assertZipXmlElementExists($filePath, $xPath)
+    public function assertZipXmlElementExists($filePath, $xPath): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -238,7 +238,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $filePath
      * @param string $xPath
      */
-    public function assertZipXmlElementNotExists($filePath, $xPath)
+    public function assertZipXmlElementNotExists($filePath, $xPath): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -250,7 +250,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param mixed $value
      */
-    public function assertZipXmlElementEquals($filePath, $xPath, $value)
+    public function assertZipXmlElementEquals($filePath, $xPath, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -262,7 +262,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param int $num
      */
-    public function assertZipXmlElementCount($filePath, $xPath, $num)
+    public function assertZipXmlElementCount($filePath, $xPath, $num): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -275,7 +275,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeEquals($filePath, $xPath, $attribute, $value)
+    public function assertZipXmlAttributeEquals($filePath, $xPath, $attribute, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -288,7 +288,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeStartsWith($filePath, $xPath, $attribute, $value)
+    public function assertZipXmlAttributeStartsWith($filePath, $xPath, $attribute, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -301,7 +301,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeEndsWith($filePath, $xPath, $attribute, $value)
+    public function assertZipXmlAttributeEndsWith($filePath, $xPath, $attribute, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -314,11 +314,11 @@ class PhpPresentationTestCase extends TestCase
      * @param string $attribute
      * @param mixed $value
      */
-    public function assertZipXmlAttributeContains($filePath, $xPath, $attribute, $value)
+    public function assertZipXmlAttributeContains($filePath, $xPath, $attribute, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertContains($value, $nodeList->item(0)->getAttribute($attribute));
+        self::assertStringContainsString($value, $nodeList->item(0)->getAttribute($attribute));
     }
 
     /**
@@ -326,7 +326,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param string $attribute
      */
-    public function assertZipXmlAttributeExists($filePath, $xPath, $attribute)
+    public function assertZipXmlAttributeExists($filePath, $xPath, $attribute): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -338,14 +338,14 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param string $attribute
      */
-    public function assertZipXmlAttributeNotExists($filePath, $xPath, $attribute)
+    public function assertZipXmlAttributeNotExists($filePath, $xPath, $attribute): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertFalse($nodeList->item(0)->hasAttribute($attribute));
     }
 
-    public function assertIsSchemaECMA376Valid()
+    public function assertIsSchemaECMA376Valid(): void
     {
         // validate all XML files
         $path = realpath($this->workDirectory . '/ppt');
@@ -372,7 +372,7 @@ class PhpPresentationTestCase extends TestCase
         unset($iterator);
     }
 
-    public function assertIsSchemaOOXMLValid()
+    public function assertIsSchemaOOXMLValid(): void
     {
         // validate all XML files
         $path = realpath($this->workDirectory . '/ppt');
@@ -419,11 +419,11 @@ class PhpPresentationTestCase extends TestCase
      * @param boolean $triggerError
      * @return boolean
      */
-    public function assertIsSchemaOpenDocumentValid($version = '1.0', $triggerError = true)
+    public function assertIsSchemaOpenDocumentValid($version = '1.0', $triggerError = true): bool
     {
         if (!array_key_exists($version, $this->arrayOpenDocumentRNG)) {
             self::fail('assertIsSchemaOpenDocumentValid > Use a valid version');
-            return;
+            return false;
         }
 
         // validate all XML files
@@ -462,7 +462,7 @@ class PhpPresentationTestCase extends TestCase
         return $isValid;
     }
 
-    public function assertIsSchemaOpenDocumentNotValid($version = '1.0')
+    public function assertIsSchemaOpenDocumentNotValid($version = '1.0'): void
     {
         $isValid = $this->assertIsSchemaOpenDocumentValid($version, false);
         if ($isValid) {
@@ -476,7 +476,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $source
      * @param array $params
      */
-    protected function failXmlError(\LibXMLError $error, $fileName, $source, array $params = array())
+    protected function failXmlError(\LibXMLError $error, $fileName, $source, array $params = array()): void
     {
         switch ($error->level) {
             case LIBXML_ERR_WARNING:

@@ -32,7 +32,7 @@ class ScatterTest extends TestCase
     {
         $object = new Scatter();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
         $array = array(

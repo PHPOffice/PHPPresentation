@@ -41,6 +41,6 @@ class LineTest extends TestCase
         $this->assertEquals($value, $object->getOffsetY());
         $this->assertEquals(0, $object->getWidth());
         $this->assertEquals(0, $object->getHeight());
-        $this->assertInternalType('string', $object->getHashCode());
+        $this->assertIsString($object->getHashCode());
     }
 }

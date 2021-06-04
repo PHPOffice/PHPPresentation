@@ -35,7 +35,7 @@ class AbstractSlideTest extends TestCase
 
         $array = array();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
-        $this->assertInternalType('array', $stub->getShapeCollection());
+        $this->assertIsArray($stub->getShapeCollection());
         $this->assertCount(count($array), $stub->getShapeCollection());
 
         $array = array(
@@ -44,7 +44,7 @@ class AbstractSlideTest extends TestCase
             new RichText(),
         );
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
-        $this->assertInternalType('array', $stub->getShapeCollection());
+        $this->assertIsArray($stub->getShapeCollection());
         $this->assertCount(count($array), $stub->getShapeCollection());
     }
 }

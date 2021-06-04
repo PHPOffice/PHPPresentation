@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 class Base64Test extends TestCase
 {
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -52,12 +52,11 @@ class Base64Test extends TestCase
         $this->assertEquals('jpg', $oDrawing->getExtension());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Type Mime not found : "fake/fake"
-     */
     public function testExtensionException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Type Mime not found : "fake/fake"');
+        
         $imgData = str_replace('image/jpeg', 'fake/fake', $this->imageData);
 
         $oDrawing = new Base64();
@@ -65,9 +64,6 @@ class Base64Test extends TestCase
         $oDrawing->getExtension();
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testMimeType()
     {
         $oDrawing = new Base64();
@@ -75,9 +71,6 @@ class Base64Test extends TestCase
         $this->assertEquals('image/jpeg', $oDrawing->getMimeType());
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testMimeTypeFunctionNotExists()
     {
         DrawingTest::$getimagesizefromstringExists = false;

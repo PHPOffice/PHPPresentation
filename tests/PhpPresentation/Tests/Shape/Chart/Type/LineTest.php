@@ -32,7 +32,7 @@ class LineTest extends TestCase
     {
         $object = new Line();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
         $array = array(

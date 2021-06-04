@@ -51,22 +51,20 @@ class RichTextTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid paragraph count.
-     */
     public function testActiveParagraphException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid paragraph count.');
+
         $object = new RichText();
         $object->setActiveParagraph(1000);
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid paragraph count.
-     */
     public function testGetParagraphException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid paragraph count.');
+
         $object = new RichText();
         $object->getParagraph(1000);
     }
@@ -80,12 +78,11 @@ class RichTextTest extends TestCase
         $this->assertEquals($value, $object->getColumns());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Number of columns should be 1-16
-     */
     public function testColumnsException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Number of columns should be 1-16');
+        
         $object = new RichText();
         $object->setColumns(1000);
     }
@@ -105,12 +102,11 @@ class RichTextTest extends TestCase
         $this->assertEquals(2, $object->getActiveParagraphIndex());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.
-     */
     public function testParagraphsException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.');
+        
         $object = new RichText();
         $object->setParagraphs(1000);
     }

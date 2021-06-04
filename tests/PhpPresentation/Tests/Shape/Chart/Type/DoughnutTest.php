@@ -32,7 +32,7 @@ class DoughnutTest extends TestCase
     {
         $object = new Doughnut();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
         $array = array(

@@ -32,7 +32,7 @@ class Pie3DTest extends TestCase
     {
         $object = new Pie3D();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
         $array = array(

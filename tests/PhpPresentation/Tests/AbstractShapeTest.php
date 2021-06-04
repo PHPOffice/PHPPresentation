@@ -192,11 +192,7 @@ class AbstractShapeTest extends TestCase
         $this->assertNull($object->getContainer());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A \PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPresentation\ShapeContainerInterface.
-     */
-    public function testContainerException()
+    public function testContainerException(): void
     {
         $object = new RichText();
         $oSlide = new Slide();
@@ -204,6 +200,8 @@ class AbstractShapeTest extends TestCase
         $this->assertNull($object->getContainer());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer($oSlide));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getContainer());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer(null));
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('A \PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPresentation\ShapeContainerInterface.');
+        $object->setContainer(null);
     }
 }

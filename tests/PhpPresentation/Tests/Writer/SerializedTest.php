@@ -34,32 +34,29 @@ class SerializedTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
-     */
     public function testEmptyConstruct()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+        
         $object = new Serialized();
         $object->getPhpPresentation();
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Filename is empty.
-     */
     public function testSaveEmpty()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Filename is empty.');
+        
         $object = new Serialized(new PhpPresentation());
         $object->save('');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
-     */
     public function testSaveNoObject()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+        
         $object = new Serialized();
         $object->save('file.phpppt');
     }
@@ -77,12 +74,11 @@ class SerializedTest extends TestCase
         $this->assertFileExists($file);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open
-     */
     public function testSaveNotExistingDir()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open');
+        
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
@@ -91,7 +87,7 @@ class SerializedTest extends TestCase
 
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
 
-        $this->assertFileExists($file, $object->save($file.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'test'));
+        $object->save($file.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'test');
     }
 
     public function testSaveOverwriting()

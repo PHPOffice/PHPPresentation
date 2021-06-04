@@ -116,7 +116,7 @@ class ParagraphTest extends TestCase
     public function testRichTextElements()
     {
         $object = new Paragraph();
-        $this->assertInternalType('array', $object->getRichTextElements());
+        $this->assertIsArray($object->getRichTextElements());
         $this->assertEmpty($object->getRichTextElements());
         $object->createBreak();
         $this->assertCount(1, $object->getRichTextElements());
@@ -130,12 +130,11 @@ class ParagraphTest extends TestCase
         $this->assertCount(3, $object->getRichTextElements());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface[] array passed.
-     */
     public function testRichTextElementsException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface[] array passed.');
+        
         $object = new Paragraph();
         $object->setRichTextElements(1);
     }

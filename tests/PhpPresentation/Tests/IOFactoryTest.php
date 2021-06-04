@@ -50,12 +50,11 @@ class IOFactoryTest extends TestCase
 
     /**
      * Test load class exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage is not a valid reader
      */
     public function testLoadClassException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('"" is not a valid reader');
         IOFactory::createReader();
     }
 
@@ -66,12 +65,11 @@ class IOFactoryTest extends TestCase
 
     /**
      * Test load class exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.
      */
     public function testLoadException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.');
         IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
     }
 }

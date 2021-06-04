@@ -89,12 +89,11 @@ class PlotAreaTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType', $object->getType());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Chart type has not been set.
-     */
     public function testTypeException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Chart type has not been set.');
+        
         $object = new PlotArea();
         $object->getType();
     }

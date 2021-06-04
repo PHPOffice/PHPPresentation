@@ -64,7 +64,7 @@ class SlideMasterTest extends TestCase
 
         $object = new SlideMaster();
 
-        $this->assertInternalType('array', $object->getAllSchemeColors());
+        $this->assertIsArray($object->getAllSchemeColors());
         $this->assertCount(12, $object->getAllSchemeColors());
         // Add idem value
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->addSchemeColor($mockSchemeColorAccent1));
