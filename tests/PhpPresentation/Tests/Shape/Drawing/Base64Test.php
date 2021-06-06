@@ -56,7 +56,7 @@ class Base64Test extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Type Mime not found : "fake/fake"');
-        
+
         $imgData = str_replace('image/jpeg', 'fake/fake', $this->imageData);
 
         $oDrawing = new Base64();

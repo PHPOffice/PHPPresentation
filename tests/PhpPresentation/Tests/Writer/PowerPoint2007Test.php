@@ -50,7 +50,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Filename is empty');
-        
+
         $object = new PowerPoint2007($this->oPresentation);
         $object->save('');
     }
@@ -62,7 +62,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
-        
+
         $object = new PowerPoint2007();
         $object->save('filename.pptx');
     }
@@ -74,7 +74,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
-        
+
         $object = new PowerPoint2007();
         $object->getPhpPresentation();
     }
@@ -103,7 +103,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Directory does not exist: foo');
-        
+
         $object = new PowerPoint2007($this->oPresentation);
         $object->setUseDiskCaching(true, 'foo');
     }

@@ -28,18 +28,18 @@ use PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface;
 class RichText extends AbstractShape implements ComparableInterface
 {
     /** Wrapping */
-    const WRAP_NONE = 'none';
-    const WRAP_SQUARE = 'square';
+    public const WRAP_NONE = 'none';
+    public const WRAP_SQUARE = 'square';
 
     /** Autofit */
-    const AUTOFIT_DEFAULT = 'spAutoFit';
-    const AUTOFIT_SHAPE = 'spAutoFit';
-    const AUTOFIT_NOAUTOFIT = 'noAutofit';
-    const AUTOFIT_NORMAL = 'normAutofit';
+    public const AUTOFIT_DEFAULT = 'spAutoFit';
+    public const AUTOFIT_SHAPE = 'spAutoFit';
+    public const AUTOFIT_NOAUTOFIT = 'noAutofit';
+    public const AUTOFIT_NORMAL = 'normAutofit';
 
     /** Overflow */
-    const OVERFLOW_CLIP = 'clip';
-    const OVERFLOW_OVERFLOW = 'overflow';
+    public const OVERFLOW_CLIP = 'clip';
+    public const OVERFLOW_OVERFLOW = 'overflow';
 
     /**
      * Rich text paragraphs
@@ -143,13 +143,13 @@ class RichText extends AbstractShape implements ComparableInterface
      * @var boolean
      */
     private $autoShrinkVertical;
-    
+
     /**
      * The percentage of the original font size to which the text is scaled
      * @var float
      */
     private $fontScale;
-    
+
     /**
      * The percentage of the reduction of the line spacing
      * @var float
@@ -425,11 +425,11 @@ class RichText extends AbstractShape implements ComparableInterface
     public function setAutoFit($value = self::AUTOFIT_DEFAULT, $fontScale = null, $lnSpcReduction = null)
     {
         $this->autoFit = $value;
-        
+
         if (!is_null($fontScale)) {
             $this->fontScale = $fontScale;
         }
-        
+
         if (!is_null($lnSpcReduction)) {
             $this->lnSpcReduction = $lnSpcReduction;
         }
@@ -661,7 +661,7 @@ class RichText extends AbstractShape implements ComparableInterface
         }
         return $this;
     }
-    
+
     /**
      * Get horizontal auto shrink
      * @return bool
@@ -683,7 +683,7 @@ class RichText extends AbstractShape implements ComparableInterface
         }
         return $this;
     }
-    
+
     /**
      * Set vertical auto shrink
      * @return bool
@@ -692,7 +692,7 @@ class RichText extends AbstractShape implements ComparableInterface
     {
         return $this->autoShrinkVertical;
     }
-    
+
     /**
      * Get hash code
      *

@@ -23,13 +23,13 @@ namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 class AbstractTypeBar extends AbstractType
 {
     /** Orientation of bars */
-    const DIRECTION_VERTICAL = 'col';
-    const DIRECTION_HORIZONTAL = 'bar';
+    public const DIRECTION_VERTICAL = 'col';
+    public const DIRECTION_HORIZONTAL = 'bar';
 
     /** Grouping of bars */
-    const GROUPING_CLUSTERED = 'clustered'; //Chart series are drawn next to each other along the category axis.
-    const GROUPING_STACKED = 'stacked'; //Chart series are drawn next to each other on the value axis.
-    const GROUPING_PERCENTSTACKED = 'percentStacked'; //Chart series are drawn next to each other along the value axis and scaled to total 100%
+    public const GROUPING_CLUSTERED = 'clustered'; //Chart series are drawn next to each other along the category axis.
+    public const GROUPING_STACKED = 'stacked'; //Chart series are drawn next to each other on the value axis.
+    public const GROUPING_PERCENTSTACKED = 'percentStacked'; //Chart series are drawn next to each other along the value axis and scaled to total 100%
 
 
     /**
@@ -123,7 +123,7 @@ class AbstractTypeBar extends AbstractType
         $this->gapWidthPercent = $gapWidthPercent;
         return $this;
     }
-    
+
     /**
      * Get hash code
      *

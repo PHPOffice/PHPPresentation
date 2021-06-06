@@ -2,7 +2,7 @@
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use \Exception;
+use Exception;
 use PhpOffice\Common\Drawing;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
@@ -42,7 +42,7 @@ class PptChartsTest extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('The chart type provided could not be rendered');
-        
+
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
@@ -56,7 +56,7 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testTitleVisibilityTrue()
     {
         $element = '/c:chartSpace/c:chart/c:autoTitleDeleted';
-        
+
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oLine = new Line();

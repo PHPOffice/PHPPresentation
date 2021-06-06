@@ -67,7 +67,7 @@ class CellTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid paragraph count.');
-        
+
         $object = new Cell();
         $object->setActiveParagraph(1000);
     }
@@ -76,7 +76,7 @@ class CellTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid paragraph count.');
-        
+
         $object = new Cell();
         $object->getParagraph(1000);
     }
@@ -132,7 +132,7 @@ class CellTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.');
-        
+
         $object = new Cell();
         $object->setParagraphs(1000);
     }

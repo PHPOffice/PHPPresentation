@@ -210,7 +210,7 @@ class Title implements ComparableInterface
      */
     public function setWidth($value = 0)
     {
-        $this->width = (double)$value;
+        $this->width = (float)$value;
 
         return $this;
     }
@@ -233,7 +233,7 @@ class Title implements ComparableInterface
      */
     public function setHeight($value = 0)
     {
-        $this->height = (double)$value;
+        $this->height = (float)$value;
 
         return $this;
     }

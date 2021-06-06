@@ -38,7 +38,7 @@ class SerializedTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
-        
+
         $object = new Serialized();
         $object->getPhpPresentation();
     }
@@ -47,7 +47,7 @@ class SerializedTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Filename is empty.');
-        
+
         $object = new Serialized(new PhpPresentation());
         $object->save('');
     }
@@ -56,7 +56,7 @@ class SerializedTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
-        
+
         $object = new Serialized();
         $object->save('file.phpppt');
     }
@@ -70,7 +70,7 @@ class SerializedTest extends TestCase
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
         $object = new Serialized($oPhpPresentation);
         $object->save($file);
-        
+
         $this->assertFileExists($file);
     }
 
@@ -78,7 +78,7 @@ class SerializedTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not open');
-        
+
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
@@ -96,13 +96,13 @@ class SerializedTest extends TestCase
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
         $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
-        
+
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
         file_put_contents($file, rand(1, 100));
 
         $object = new Serialized($oPhpPresentation);
         $object->save($file);
-            
+
         $this->assertFileExists($file);
     }
 }

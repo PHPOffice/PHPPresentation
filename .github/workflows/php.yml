@@ -4,7 +4,6 @@ jobs:
   php-cs-fixer:
     name: PHP CS Fixer
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -17,10 +16,13 @@ jobs:
           run: composer validate --strict
 
       -   name: Composer Install
-          run: composer install --ansi --prefer-dist --no-interaction --no-progress
+          run: composer global require friendsofphp/php-cs-fixer
 
-      #-   name: Run PHPCSFixer
-      #    run: ./vendor/bin/php-cs-fixer fix --dry-run --diff
+      -   name: Add environment path
+          run: export PATH="$PATH:$HOME/.composer/vendor/bin"
+
+      -   name: Run PHPCSFixer
+          run: php-cs-fixer fix --dry-run --diff
 
   phpmd:
     name: PHP Mess Detector

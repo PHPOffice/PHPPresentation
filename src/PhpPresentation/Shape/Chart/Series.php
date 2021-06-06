@@ -28,15 +28,15 @@ use PhpOffice\PhpPresentation\Style\Outline;
 class Series implements ComparableInterface
 {
     /* Label positions */
-    const LABEL_BESTFIT = 'bestFit';
-    const LABEL_BOTTOM = 'b';
-    const LABEL_CENTER = 'ctr';
-    const LABEL_INSIDEBASE = 'inBase';
-    const LABEL_INSIDEEND = 'inEnd';
-    const LABEL_LEFT = 'i';
-    const LABEL_OUTSIDEEND = 'outEnd';
-    const LABEL_RIGHT = 'r';
-    const LABEL_TOP = 't';
+    public const LABEL_BESTFIT = 'bestFit';
+    public const LABEL_BOTTOM = 'b';
+    public const LABEL_CENTER = 'ctr';
+    public const LABEL_INSIDEBASE = 'inBase';
+    public const LABEL_INSIDEEND = 'inEnd';
+    public const LABEL_LEFT = 'i';
+    public const LABEL_OUTSIDEEND = 'outEnd';
+    public const LABEL_RIGHT = 'r';
+    public const LABEL_TOP = 't';
 
     /**
      * DataPointFills (key/value)

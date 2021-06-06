@@ -84,11 +84,11 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
         // Initialize parent
         parent::__construct();
     }
-    
+
     public function __clone()
     {
         parent::__clone();
-        
+
         self::$imageCounter++;
         $this->imageIndex = self::$imageCounter;
     }

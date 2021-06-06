@@ -45,7 +45,7 @@ abstract class AbstractType implements ComparableInterface
      * @var string
      */
     private $hashIndex;
-    
+
     /**
      * Data
      *

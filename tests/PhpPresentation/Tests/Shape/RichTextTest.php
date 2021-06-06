@@ -82,7 +82,7 @@ class RichTextTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Number of columns should be 1-16');
-        
+
         $object = new RichText();
         $object->setColumns(1000);
     }
@@ -106,7 +106,7 @@ class RichTextTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.');
-        
+
         $object = new RichText();
         $object->setParagraphs(1000);
     }

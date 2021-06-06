@@ -28,7 +28,7 @@ class PptMediaTest extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('does not exist');
-        
+
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/filedoesntexist.png', false);
@@ -51,7 +51,7 @@ class PptMediaTest extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('does not exist');
-        
+
         $oDrawing = new Drawing\ZipFile();
         $oDrawing->setPath('zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'filedoesntexist.zip#secondpath', false);
 

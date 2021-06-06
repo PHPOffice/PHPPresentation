@@ -51,7 +51,7 @@ $cell->getBorders()->getBottom()->setLineWidth(4)
                                 ->setLineStyle(Border::LINE_SINGLE)
                                 ->setDashStyle(Border::DASH_DASH);
 $cell->getActiveParagraph()->getAlignment()
-	->setMarginLeft(10);
+    ->setMarginLeft(10);
 
 // Add row
 echo date('H:i:s') . ' Add row'.EOL;
@@ -79,20 +79,20 @@ foreach ($row->getCells() as $cell) {
 echo date('H:i:s') . ' Add row'.EOL;
 $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
-			   ->setStartColor(new Color('FFE06B20'))
+               ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
 $oCell = $row->nextCell();
 $oCell->createTextRun('R2C1');
 $oCell->getActiveParagraph()->getAlignment()
-	->setMarginLeft(30)
-	->setTextDirection(\PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
+    ->setMarginLeft(30)
+    ->setTextDirection(\PhpOffice\PhpPresentation\Style\Alignment::TEXT_DIRECTION_VERTICAL_270);
 $oCell = $row->nextCell();
 $oCell->createTextRun('R2C2');
 $oCell->getActiveParagraph()->getAlignment()
-	->setMarginBottom(10)
-	->setMarginTop(20)
-	->setMarginRight(30)
-	->setMarginLeft(40);
+    ->setMarginBottom(10)
+    ->setMarginTop(20)
+    ->setMarginRight(30)
+    ->setMarginLeft(40);
 $oCell = $row->nextCell();
 $oCell->createTextRun('R2C3');
 
@@ -100,7 +100,7 @@ $oCell->createTextRun('R2C3');
 echo date('H:i:s') . ' Add row'.EOL;
 $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
-			   ->setStartColor(new Color('FFE06B20'))
+               ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
 $oCell = $row->nextCell();
 $oCell->createTextRun('R3C1');
@@ -114,7 +114,7 @@ $oCell->createTextRun('R3C3');
 echo date('H:i:s') . ' Add row'.EOL;
 $row = $shape->createRow();
 $row->getFill()->setFillType(Fill::FILL_SOLID)
-			   ->setStartColor(new Color('FFE06B20'))
+               ->setStartColor(new Color('FFE06B20'))
                ->setEndColor(new Color('FFE06B20'));
 $cellC1 = $row->nextCell();
 $textRunC1 = $cellC1->createTextRun('Link');
@@ -140,5 +140,5 @@ $textRunC3->getHyperlink()->setUrl('https://google.com')->setTooltip('Google');
 // Save file
 echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
-	include_once 'Sample_Footer.php';
+    include_once 'Sample_Footer.php';
 }

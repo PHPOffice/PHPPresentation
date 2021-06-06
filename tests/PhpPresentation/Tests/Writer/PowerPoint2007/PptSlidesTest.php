@@ -675,7 +675,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spc', '0');
         $this->assertIsSchemaECMA376Valid();
-        
+
         $oRun->getFont()->setCharacterSpacing(42);
         $this->resetPresentationFile();
 

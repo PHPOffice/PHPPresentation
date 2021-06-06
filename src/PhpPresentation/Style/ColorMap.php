@@ -22,18 +22,18 @@ namespace PhpOffice\PhpPresentation\Style;
  */
 class ColorMap
 {
-    const COLOR_BG1 = 'bg1';
-    const COLOR_BG2 = 'bg2';
-    const COLOR_TX1 = 'tx1';
-    const COLOR_TX2 = 'tx2';
-    const COLOR_ACCENT1 = 'accent1';
-    const COLOR_ACCENT2 = 'accent2';
-    const COLOR_ACCENT3 = 'accent3';
-    const COLOR_ACCENT4 = 'accent4';
-    const COLOR_ACCENT5 = 'accent5';
-    const COLOR_ACCENT6 = 'accent6';
-    const COLOR_HLINK = 'hlink';
-    const COLOR_FOLHLINK = 'folHlink';
+    public const COLOR_BG1 = 'bg1';
+    public const COLOR_BG2 = 'bg2';
+    public const COLOR_TX1 = 'tx1';
+    public const COLOR_TX2 = 'tx2';
+    public const COLOR_ACCENT1 = 'accent1';
+    public const COLOR_ACCENT2 = 'accent2';
+    public const COLOR_ACCENT3 = 'accent3';
+    public const COLOR_ACCENT4 = 'accent4';
+    public const COLOR_ACCENT5 = 'accent5';
+    public const COLOR_ACCENT6 = 'accent6';
+    public const COLOR_HLINK = 'hlink';
+    public const COLOR_FOLHLINK = 'folHlink';
 
     /**
      * Mapping - Stores the mapping betweenSlide and theme

@@ -134,7 +134,7 @@ class ParagraphTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface[] array passed.');
-        
+
         $object = new Paragraph();
         $object->setRichTextElements(1);
     }

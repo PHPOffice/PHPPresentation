@@ -14,6 +14,7 @@
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpPresentation;
 
 /**
@@ -21,14 +22,14 @@ namespace PhpOffice\PhpPresentation;
  */
 class PresentationProperties
 {
-    const VIEW_HANDOUT = 'handoutView';
-    const VIEW_NOTES = 'notesView';
-    const VIEW_NOTES_MASTER = 'notesMasterView';
-    const VIEW_OUTLINE = 'outlineView';
-    const VIEW_SLIDE = 'sldView';
-    const VIEW_SLIDE_MASTER = 'sldMasterView';
-    const VIEW_SLIDE_SORTER = 'sldSorterView';
-    const VIEW_SLIDE_THUMBNAIL = 'sldThumbnailView';
+    public const VIEW_HANDOUT = 'handoutView';
+    public const VIEW_NOTES = 'notesView';
+    public const VIEW_NOTES_MASTER = 'notesMasterView';
+    public const VIEW_OUTLINE = 'outlineView';
+    public const VIEW_SLIDE = 'sldView';
+    public const VIEW_SLIDE_MASTER = 'sldMasterView';
+    public const VIEW_SLIDE_SORTER = 'sldSorterView';
+    public const VIEW_SLIDE_THUMBNAIL = 'sldThumbnailView';
 
     protected $arrayView = array(
         self::VIEW_HANDOUT,
@@ -72,7 +73,7 @@ class PresentationProperties
      * @var boolean
      */
     protected $isCommentVisible = false;
-    
+
     /**
      * @return bool
      */
@@ -80,7 +81,7 @@ class PresentationProperties
     {
         return $this->isLoopUntilEsc;
     }
-    
+
     /**
      * @param bool $value
      * @return \PhpOffice\PhpPresentation\PresentationProperties
@@ -92,7 +93,7 @@ class PresentationProperties
         }
         return $this;
     }
-    
+
     /**
      * Return the thumbnail file path
      * @return string
@@ -101,7 +102,7 @@ class PresentationProperties
     {
         return $this->thumbnail;
     }
-    
+
     /**
      * Define the path for the thumbnail file / preview picture
      * @param string $path

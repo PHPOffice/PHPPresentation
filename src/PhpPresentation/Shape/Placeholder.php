@@ -20,13 +20,13 @@ namespace PhpOffice\PhpPresentation\Shape;
 class Placeholder
 {
     /** Placeholder Type constants */
-    const PH_TYPE_BODY = 'body';
-    const PH_TYPE_CHART = 'chart';
-    const PH_TYPE_SUBTITLE = 'subTitle';
-    const PH_TYPE_TITLE = 'title';
-    const PH_TYPE_FOOTER = 'ftr';
-    const PH_TYPE_DATETIME = 'dt';
-    const PH_TYPE_SLIDENUM = 'sldNum';
+    public const PH_TYPE_BODY = 'body';
+    public const PH_TYPE_CHART = 'chart';
+    public const PH_TYPE_SUBTITLE = 'subTitle';
+    public const PH_TYPE_TITLE = 'title';
+    public const PH_TYPE_FOOTER = 'ftr';
+    public const PH_TYPE_DATETIME = 'dt';
+    public const PH_TYPE_SLIDENUM = 'sldNum';
     /**
      * hasCustomPrompt
      * Indicates whether the placeholder should have a customer prompt.

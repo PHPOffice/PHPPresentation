@@ -36,7 +36,7 @@ class ImageTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('File not found :');
-        
+
         $object = new Image();
         $object->setPath('pathDoesntExist', true);
     }

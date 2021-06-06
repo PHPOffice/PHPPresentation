@@ -15,9 +15,9 @@ $objPHPPresentation = new PhpPresentation();
 echo date('H:i:s') . ' Set properties'.EOL;
 $objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')
                                   ->setLastModifiedBy('PHPPresentation Team')
-	->setTitle('Sample 02 Title')
-	->setSubject('Sample 02 Subject')
-	->setDescription('Sample 02 Description')
+    ->setTitle('Sample 02 Title')
+    ->setSubject('Sample 02 Subject')
+    ->setDescription('Sample 02 Description')
                                   ->setKeywords('office 2007 openxml libreoffice odt php')
                                   ->setCategory('Sample Category');
 
@@ -45,11 +45,11 @@ $shape = $currentSlide->createRichTextShape()
       ->setWidth(600)
       ->setOffsetX(170)
       ->setOffsetY(180);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 $textRun = $shape->createTextRun('Thank you for using PHPPresentation!');
 $textRun->getFont()->setBold(true)
                    ->setSize(60)
-                   ->setColor( new Color( 'FFE06B20' ) );
+                   ->setColor(new Color('FFE06B20'));
 
 // Save serialized file
 $basename = basename(__FILE__, '.php');
@@ -64,5 +64,5 @@ $objPHPPresentationLoaded = IOFactory::load('results/'.basename(__FILE__, '.php'
 // Save file
 echo write($objPHPPresentationLoaded, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
-	include_once 'Sample_Footer.php';
+    include_once 'Sample_Footer.php';
 }

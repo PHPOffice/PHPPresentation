@@ -490,7 +490,7 @@ class Content extends AbstractDecoratorWriter
                     }
                 }
                 $objWriter->endElement();
-                //===============================================
+            //===============================================
                 // Bullet list
                 //===============================================
             } elseif ($paragraph->getBulletStyle()->getBulletType() == 'bullet') {
