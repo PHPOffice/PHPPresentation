@@ -37,7 +37,7 @@ class HashTableTest extends TestCase
         $this->assertEquals(0, $object->count());
         $this->assertNull($object->getByIndex());
         $this->assertNull($object->getByHashCode());
-        $this->assertInternalType('array', $object->toArray());
+        $this->assertIsArray($object->toArray());
         $this->assertEmpty($object->toArray());
     }
 
@@ -51,7 +51,7 @@ class HashTableTest extends TestCase
         ));
 
         $this->assertEquals(2, $object->count());
-        $this->assertInternalType('array', $object->toArray());
+        $this->assertIsArray($object->toArray());
         $this->assertCount(2, $object->toArray());
     }
 
@@ -66,7 +66,7 @@ class HashTableTest extends TestCase
         $this->assertNull($object->addFromSource());
         // Add From Source : Array
         $this->assertNull($object->addFromSource(array($oSlide)));
-        $this->assertInternalType('array', $object->toArray());
+        $this->assertIsArray($object->toArray());
         $this->assertCount(1, $object->toArray());
         // Clear
         $this->assertNull($object->clear());
@@ -122,14 +122,12 @@ class HashTableTest extends TestCase
         $this->assertCount(1, $object->toArray());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid array parameter passed.
-     */
-    public function testAddException()
+    public function testAddException(): void
     {
         $object = new HashTable();
         $oSlide = new Slide();
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid array parameter passed.');
         $object->addFromSource($oSlide);
     }
 }

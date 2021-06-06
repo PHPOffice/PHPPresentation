@@ -45,36 +45,36 @@ class PowerPoint2007Test extends PhpPresentationTestCase
 
     /**
      * Test save with empty filename
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Filename is empty
      */
     public function testSaveEmptyException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Filename is empty');
+        
         $object = new PowerPoint2007($this->oPresentation);
         $object->save('');
     }
 
     /**
      * Test save with empty assignation
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
      */
     public function testSaveUnassignedException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+        
         $object = new PowerPoint2007();
         $object->save('filename.pptx');
     }
 
     /**
      * Test get PhpPresentation exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
      */
     public function testGetPhpPresentationException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+        
         $object = new PowerPoint2007();
         $object->getPhpPresentation();
     }
@@ -98,12 +98,12 @@ class PowerPoint2007Test extends PhpPresentationTestCase
 
     /**
      * Test set/get disk caching exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Directory does not exist: foo
      */
     public function testCachingException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Directory does not exist: foo');
+        
         $object = new PowerPoint2007($this->oPresentation);
         $object->setUseDiskCaching(true, 'foo');
     }

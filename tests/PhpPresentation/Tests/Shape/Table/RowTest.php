@@ -51,12 +51,11 @@ class RowTest extends TestCase
         $this->assertNull($object->getCell(1000, true));
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Cell number out of bounds.
-     */
     public function testGetCellException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cell number out of bounds.');
+        
         $object = new Row();
         $object->getCell(1);
     }
@@ -68,12 +67,11 @@ class RowTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->nextCell());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Cell count out of bounds.
-     */
     public function testNextCellException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Cell count out of bounds.');
+        
         $object = new Row();
         $object->nextCell();
         $object->nextCell();

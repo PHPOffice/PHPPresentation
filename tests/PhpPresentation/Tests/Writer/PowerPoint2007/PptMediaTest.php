@@ -24,12 +24,11 @@ class PptMediaTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage does not exist
-     */
     public function testDrawingException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('does not exist');
+        
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/filedoesntexist.png', false);
@@ -37,9 +36,6 @@ class PptMediaTest extends PhpPresentationTestCase
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testDrawingZip()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -51,13 +47,11 @@ class PptMediaTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage does not exist
-     * @requires PHP 5.4
-     */
     public function testDrawingZipException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('does not exist');
+        
         $oDrawing = new Drawing\ZipFile();
         $oDrawing->setPath('zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'filedoesntexist.zip#secondpath', false);
 
@@ -67,9 +61,6 @@ class PptMediaTest extends PhpPresentationTestCase
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testDrawingBase64()
     {
         $oSlide = $this->oPresentation->getActiveSlide();

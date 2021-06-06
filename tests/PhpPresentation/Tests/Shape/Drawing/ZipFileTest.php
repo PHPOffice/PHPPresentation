@@ -31,7 +31,7 @@ class ZipFileTest extends TestCase
     protected $fileKoZip;
     protected $fileKoFile;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -42,12 +42,11 @@ class ZipFileTest extends TestCase
         $this->fileKoFile = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/filenotexists.gif';
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage fileNotExist.pptx does not exist
-     */
     public function testContentsException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('fileNotExist.pptx does not exist');
+        
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileKoZip);
         $oDrawing->getContents();
@@ -60,9 +59,6 @@ class ZipFileTest extends TestCase
         $this->assertEquals('gif', $oDrawing->getExtension());
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testMimeType()
     {
         $oDrawing = new ZipFile();
@@ -70,9 +66,6 @@ class ZipFileTest extends TestCase
         $this->assertEquals('image/gif', $oDrawing->getMimeType());
     }
 
-    /**
-     * @requires PHP 5.4
-     */
     public function testMimeTypeFunctionNotExists()
     {
         DrawingTest::$getimagesizefromstringExists = false;

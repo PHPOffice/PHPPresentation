@@ -73,16 +73,16 @@ class SlideTest extends TestCase
         $oStub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\Animation');
 
         $object = new Slide();
-        $this->assertInternalType('array', $object->getAnimations());
+        $this->assertIsArray($object->getAnimations());
         $this->assertCount(0, $object->getAnimations());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->addAnimation($oStub));
-        $this->assertInternalType('array', $object->getAnimations());
+        $this->assertIsArray($object->getAnimations());
         $this->assertCount(1, $object->getAnimations());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setAnimations());
-        $this->assertInternalType('array', $object->getAnimations());
+        $this->assertIsArray($object->getAnimations());
         $this->assertCount(0, $object->getAnimations());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->setAnimations(array($oStub)));
-        $this->assertInternalType('array', $object->getAnimations());
+        $this->assertIsArray($object->getAnimations());
         $this->assertCount(1, $object->getAnimations());
     }
 

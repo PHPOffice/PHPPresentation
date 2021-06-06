@@ -13,17 +13,6 @@ jobs:
           extensions: mbstring, intl, gd, xml, dom, json, fileinfo, curl, zip, iconv
       - uses: actions/checkout@v2
 
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: |
-              echo "::set-output name=dir::$(composer config cache-files-dir)"
-      - name: Cache Composer Directory
-        uses: actions/cache@v2
-        with:
-              path: ${{ steps.composer-cache.outputs.dir }}
-              key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-              restore-keys: |
-                  ${{ runner.os }}-composer-
       -   name: Validate composer config
           run: composer validate --strict
 
@@ -44,17 +33,6 @@ jobs:
                 extensions: gd, xml, zip
         -   uses: actions/checkout@v2
 
-        -   name: Get Composer Cache Directory
-            id: composer-cache
-            run: |
-                echo "::set-output name=dir::$(composer config cache-files-dir)"
-        -   name: Cache Composer Directory
-            uses: actions/cache@v2
-            with:
-                path: ${{ steps.composer-cache.outputs.dir }}
-                key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-                restore-keys: |
-                    ${{ runner.os }}-composer-
         -   name: Composer Install
             run: composer install --ansi --prefer-dist --no-interaction --no-progress
 
@@ -73,17 +51,6 @@ jobs:
                 extensions: gd, xml, zip
         -   uses: actions/checkout@v2
 
-        -   name: Get Composer Cache Directory
-            id: composer-cache
-            run: |
-                echo "::set-output name=dir::$(composer config cache-files-dir)"
-        -   name: Cache Composer Directory
-            uses: actions/cache@v2
-            with:
-                path: ${{ steps.composer-cache.outputs.dir }}
-                key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-                restore-keys: |
-                    ${{ runner.os }}-composer-
         -   name: Composer Install
             run: composer install --ansi --prefer-dist --no-interaction --no-progress
 
@@ -94,9 +61,9 @@ jobs:
     name: PHPUnit
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
-        php: ['5.6', '7.0', '7.1', '7.2', '7.3']
-            ## , '7.4', '8.0', '8.1'
+        php: ['7.1', '7.2', '7.3', '7.4', '8.0'] #, '8.1'
     steps:
       -   name: Setup PHP
           uses: shivammathur/setup-php@v2
@@ -107,17 +74,6 @@ jobs:
 
       -   uses: actions/checkout@v2
 
-      -   name: Get Composer Cache Directory
-          id: composer-cache
-          run: |
-              echo "::set-output name=dir::$(composer config cache-files-dir)"
-      -   name: Cache Composer Directory
-          uses: actions/cache@v2
-          with:
-              path: ${{ steps.composer-cache.outputs.dir }}
-              key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-              restore-keys: |
-                  ${{ runner.os }}-composer-
       -   name: Composer Install
           run: composer install --ansi --prefer-dist --no-interaction --no-progress
 
@@ -125,7 +81,7 @@ jobs:
           run: ./vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/clover.xml
 
       -   name: Upload coverage results to Coveralls
-          if: matrix.php-versions == '7.3'
+          if: matrix.php == '7.3'
           env:
             COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |

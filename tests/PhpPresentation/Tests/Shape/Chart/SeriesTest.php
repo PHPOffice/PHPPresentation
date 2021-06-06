@@ -40,7 +40,7 @@ class SeriesTest extends TestCase
         $this->assertEquals('Calibri', $object->getFont()->getName());
         $this->assertEquals(9, $object->getFont()->getSize());
         $this->assertEquals('Series Title', $object->getTitle());
-        $this->assertInternalType('array', $object->getValues());
+        $this->assertIsArray($object->getValues());
         $this->assertEmpty($object->getValues());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->getMarker());
         $this->assertNull($object->getOutline());
@@ -69,7 +69,7 @@ class SeriesTest extends TestCase
     {
         $object = new Series();
 
-        $this->assertInternalType('array', $object->getDataPointFills());
+        $this->assertIsArray($object->getDataPointFills());
         $this->assertEmpty($object->getDataPointFills());
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getDataPointFill(0));
@@ -236,7 +236,7 @@ class SeriesTest extends TestCase
             '3' => 'd',
         );
 
-        $this->assertInternalType('array', $object->getValues());
+        $this->assertIsArray($object->getValues());
         $this->assertEmpty($object->getValues());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Series', $object->setValues());
         $this->assertEmpty($object->getValues());

@@ -63,22 +63,20 @@ class CellTest extends TestCase
         $this->assertCount(1, $object->getParagraphs());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid paragraph count.
-     */
     public function testActiveParagraphException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid paragraph count.');
+        
         $object = new Cell();
         $object->setActiveParagraph(1000);
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid paragraph count.
-     */
     public function testGetParagraphException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid paragraph count.');
+        
         $object = new Cell();
         $object->getParagraph(1000);
     }
@@ -130,12 +128,11 @@ class CellTest extends TestCase
         $this->assertEquals(2, $object->getActiveParagraphIndex());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.
-     */
     public function testParagraphsException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.');
+        
         $object = new Cell();
         $object->setParagraphs(1000);
     }

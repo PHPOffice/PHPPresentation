@@ -41,11 +41,10 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testFindLayoutException()
     {
+        $this->expectException(\Exception::class);
+        
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
         $templateBased = new TemplateBased($file);
         $name = 'Invalid';
@@ -64,11 +63,10 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testFindLayoutIdException()
     {
+        $this->expectException(\Exception::class);
+        
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
         $templateBased = new TemplateBased($file);
         $name = 'Invalid';
@@ -84,11 +82,10 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testFindLayoutNameException()
     {
+        $this->expectException(\Exception::class);
+        
         $oLayout = new PackDefault();
         $oLayout->findLayoutName(1000);
     }

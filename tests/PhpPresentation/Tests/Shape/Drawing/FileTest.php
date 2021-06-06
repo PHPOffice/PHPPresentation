@@ -33,12 +33,11 @@ class FileTest extends TestCase
         $this->assertEmpty($object->getPath());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage File  not found!
-     */
     public function testPathBasic()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('File  not found!');
+        
         $object = new File();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->setPath());
     }

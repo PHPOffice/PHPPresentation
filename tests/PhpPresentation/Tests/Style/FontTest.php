@@ -49,11 +49,12 @@ class FontTest extends TestCase
 
     /**
      * Test get/set color
-     * @expectedException \Exception
-     * @expectedExceptionMessage $pValue must be an instance of \PhpOffice\PhpPresentation\Style\Color
      */
     public function testSetGetColorException()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('$pValue must be an instance of \PhpOffice\PhpPresentation\Style\Color');
+        
         $object = new Font();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor());
     }

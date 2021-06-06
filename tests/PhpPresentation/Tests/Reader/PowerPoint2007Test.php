@@ -47,33 +47,30 @@ class PowerPoint2007Test extends TestCase
         $this->assertTrue($object->canRead($file));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
     public function testLoadFileNotExists()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+
         $object = new PowerPoint2007();
         $object->load('');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007:
-     */
     public function testLoadFileBadFormat()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007:');
+
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
         $object = new PowerPoint2007();
         $object->load($file);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
     public function testFileSupportsNotExists()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+
         $object = new PowerPoint2007();
         $object->fileSupportsUnserializePhpPresentation('');
     }
@@ -102,7 +99,7 @@ class PowerPoint2007Test extends TestCase
 
         // Slide 1
         $oSlide1 = $oPhpPresentation->getSlide(0);
-        $arrayShape = $oSlide1->getShapeCollection();
+        $arrayShape = (array) $oSlide1->getShapeCollection();
         $this->assertCount(2, $arrayShape);
         // Slide 1 : Shape 1
         $oShape = $arrayShape[0];
@@ -148,7 +145,7 @@ class PowerPoint2007Test extends TestCase
 
         // Slide 2
         $oSlide2 = $oPhpPresentation->getSlide(1);
-        $arrayShape = $oSlide2->getShapeCollection();
+        $arrayShape = (array) $oSlide2->getShapeCollection();
         $this->assertCount(3, $arrayShape);
         // Slide 2 : Shape 1
         $oShape = $arrayShape[0];
@@ -245,7 +242,7 @@ class PowerPoint2007Test extends TestCase
 
         // Slide 3
         $oSlide2 = $oPhpPresentation->getSlide(2);
-        $arrayShape = $oSlide2->getShapeCollection();
+        $arrayShape = (array) $oSlide2->getShapeCollection();
         $this->assertCount(3, $arrayShape);
         // Slide 3 : Shape 1
         $oShape = $arrayShape[0];
@@ -402,7 +399,7 @@ class PowerPoint2007Test extends TestCase
 
         // Slide 4
         $oSlide3 = $oPhpPresentation->getSlide(3);
-        $arrayShape = $oSlide3->getShapeCollection();
+        $arrayShape = (array) $oSlide3->getShapeCollection();
         $this->assertCount(3, $arrayShape);
         // Slide 4 : Shape 1
         $oShape = $arrayShape[0];

@@ -38,33 +38,30 @@ class SerializedTest extends TestCase
         $this->assertTrue($object->canRead($file));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
     public function testLoadFileNotExists()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+
         $object = new Serialized();
         $object->load('');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized:
-     */
     public function testLoadFileBadFormat()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized:');
+
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_01_Simple.pptx';
         $object = new Serialized();
         $object->load($file);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
     public function testFileSupportsNotExists()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+
         $object = new Serialized();
         $object->fileSupportsUnserializePhpPresentation('');
     }

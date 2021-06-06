@@ -38,12 +38,11 @@ class PptChartsTest extends PhpPresentationTestCase
         'E' => 2,
     );
 
-    /**
-     * @expectedException Exception
-     * @expectedExceptionMessage The chart type provided could not be rendered
-     */
     public function testPlotAreaBadType()
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('The chart type provided could not be rendered');
+        
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);

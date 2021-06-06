@@ -52,7 +52,7 @@ class NoteTest extends TestCase
     public function testHashCode()
     {
         $object = new Note();
-        $this->assertInternalType('string', $object->getHashCode());
+        $this->assertIsString($object->getHashCode());
     }
 
     public function testOffset()

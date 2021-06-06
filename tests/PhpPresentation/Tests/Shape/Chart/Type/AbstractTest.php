@@ -50,14 +50,14 @@ class AbstractTest extends TestCase
     {
         $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType');
         $this->assertEmpty($stub->getData());
-        $this->assertInternalType('array', $stub->getData());
+        $this->assertIsArray($stub->getData());
 
         $arraySeries = array(
             new Series(),
             new Series()
         );
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType', $stub->setData($arraySeries));
-        $this->assertInternalType('array', $stub->getData());
+        $this->assertIsArray($stub->getData());
         $this->assertCount(count($arraySeries), $stub->getData());
     }
 
@@ -75,7 +75,7 @@ class AbstractTest extends TestCase
         $clone = clone $stub;
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType', $clone);
-        $this->assertInternalType('array', $stub->getData());
+        $this->assertIsArray($stub->getData());
         $this->assertCount(count($arraySeries), $stub->getData());
     }
 }
