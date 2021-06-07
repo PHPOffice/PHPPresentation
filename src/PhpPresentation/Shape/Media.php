@@ -25,7 +25,6 @@ use PhpOffice\PhpPresentation\Shape\Drawing\File;
  */
 class Media extends File implements ComparableInterface
 {
-
     /**
      * @return string
      */

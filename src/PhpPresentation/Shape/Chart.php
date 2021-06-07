@@ -77,11 +77,11 @@ class Chart extends AbstractGraphic implements ComparableInterface
         // Initialize parent
         parent::__construct();
     }
-    
+
     public function __clone()
     {
         parent::__clone();
-        
+
         $this->title     = clone $this->title;
         $this->legend    = clone $this->legend;
         $this->plotArea  = clone $this->plotArea;

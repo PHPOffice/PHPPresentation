@@ -59,7 +59,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Filename is empty');
-        
+
         $object = new ODPresentation();
         $object->save('');
     }
@@ -71,7 +71,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
-        
+
         $object = new ODPresentation();
         $object->getPhpPresentation();
     }
@@ -95,7 +95,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     public function testSetUseDiskCachingException()
     {
         $this->expectException(\Exception::class);
-        
+
         $object = new ODPresentation($this->oPresentation);
         $object->setUseDiskCaching(true, 'foo');
     }

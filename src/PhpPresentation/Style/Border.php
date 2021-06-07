@@ -25,25 +25,25 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 class Border implements ComparableInterface
 {
     /* Line style */
-    const LINE_NONE             = 'none';
-    const LINE_SINGLE           = 'sng';
-    const LINE_DOUBLE           = 'dbl';
-    const LINE_THICKTHIN        = 'thickThin';
-    const LINE_THINTHICK        = 'thinThick';
-    const LINE_TRI              = 'tri';
+    public const LINE_NONE             = 'none';
+    public const LINE_SINGLE           = 'sng';
+    public const LINE_DOUBLE           = 'dbl';
+    public const LINE_THICKTHIN        = 'thickThin';
+    public const LINE_THINTHICK        = 'thinThick';
+    public const LINE_TRI              = 'tri';
 
     /* Dash style */
-    const DASH_DASH             = 'dash';
-    const DASH_DASHDOT          = 'dashDot';
-    const DASH_DOT              = 'dot';
-    const DASH_LARGEDASH        = 'lgDash';
-    const DASH_LARGEDASHDOT     = 'lgDashDot';
-    const DASH_LARGEDASHDOTDOT  = 'lgDashDotDot';
-    const DASH_SOLID            = 'solid';
-    const DASH_SYSDASH          = 'sysDash';
-    const DASH_SYSDASHDOT       = 'sysDashDot';
-    const DASH_SYSDASHDOTDOT    = 'sysDashDotDot';
-    const DASH_SYSDOT           = 'sysDot';
+    public const DASH_DASH             = 'dash';
+    public const DASH_DASHDOT          = 'dashDot';
+    public const DASH_DOT              = 'dot';
+    public const DASH_LARGEDASH        = 'lgDash';
+    public const DASH_LARGEDASHDOT     = 'lgDashDot';
+    public const DASH_LARGEDASHDOTDOT  = 'lgDashDotDot';
+    public const DASH_SOLID            = 'solid';
+    public const DASH_SYSDASH          = 'sysDash';
+    public const DASH_SYSDASHDOT       = 'sysDashDot';
+    public const DASH_SYSDASHDOTDOT    = 'sysDashDotDot';
+    public const DASH_SYSDOT           = 'sysDot';
 
     /**
      * Line width

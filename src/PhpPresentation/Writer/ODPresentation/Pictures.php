@@ -32,7 +32,7 @@ class Pictures extends AbstractDecoratorWriter
                 $this->getZip()->addFromString('Pictures/'.$oBkgImage->getIndexedFilename($keySlide), file_get_contents($oBkgImage->getPath()));
             }
         }
-        
+
         return $this->getZip();
     }
 }

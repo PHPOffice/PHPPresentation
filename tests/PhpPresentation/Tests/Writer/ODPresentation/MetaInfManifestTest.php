@@ -33,19 +33,19 @@ class MetaInfManifestTest extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('does not exist');
-        
+
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/filedoesntexist.png', false);
 
         $this->writePresentationFile($this->oPresentation, 'ODPresentation');
     }
-    
+
     public function testMemoryDrawing()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = new Drawing\Gd();
-        
+
         $gdImage = @imagecreatetruecolor(140, 20);
         $textColor = imagecolorallocate($gdImage, 255, 255, 255);
         imagestring($gdImage, 1, 5, 5, 'Created with PhpPresentation', $textColor);
@@ -76,7 +76,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('does not exist');
-        
+
         $oShape = new Drawing\ZipFile();
         $oShape->setPath('zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'filedoesntexist.zip', false);
         $this->oPresentation->getActiveSlide()->addShape($oShape);

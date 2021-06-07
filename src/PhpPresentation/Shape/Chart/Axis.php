@@ -26,13 +26,13 @@ use PhpOffice\PhpPresentation\Style\Outline;
  */
 class Axis implements ComparableInterface
 {
-    const AXIS_X = 'x';
-    const AXIS_Y = 'y';
+    public const AXIS_X = 'x';
+    public const AXIS_Y = 'y';
 
-    const TICK_MARK_NONE = 'none';
-    const TICK_MARK_CROSS = 'cross';
-    const TICK_MARK_INSIDE = 'in';
-    const TICK_MARK_OUTSIDE = 'out';
+    public const TICK_MARK_NONE = 'none';
+    public const TICK_MARK_CROSS = 'cross';
+    public const TICK_MARK_INSIDE = 'in';
+    public const TICK_MARK_OUTSIDE = 'out';
 
     /**
      * Title

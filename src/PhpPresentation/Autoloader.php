@@ -23,7 +23,7 @@ namespace PhpOffice\PhpPresentation;
 class Autoloader
 {
     /** @const string */
-    const NAMESPACE_PREFIX = 'PhpOffice\\PhpPresentation\\';
+    public const NAMESPACE_PREFIX = 'PhpOffice\\PhpPresentation\\';
 
     /**
      * Register
@@ -32,7 +32,7 @@ class Autoloader
      */
     public static function register()
     {
-        spl_autoload_register(array(new self, 'autoload'));
+        spl_autoload_register(array(new self(), 'autoload'));
     }
 
     /**

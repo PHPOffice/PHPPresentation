@@ -5,7 +5,7 @@ include_once 'Sample_Header.php';
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Slide\Background\Color;
 use PhpOffice\PhpPresentation\Style\Color as StyleColor;
-use \PhpOffice\PhpPresentation\Slide\Background\Image;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 
 // Create new PHPPresentation object
 echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;

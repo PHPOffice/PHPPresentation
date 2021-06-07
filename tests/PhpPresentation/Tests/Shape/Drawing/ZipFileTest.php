@@ -46,7 +46,7 @@ class ZipFileTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('fileNotExist.pptx does not exist');
-        
+
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileKoZip);
         $oDrawing->getContents();

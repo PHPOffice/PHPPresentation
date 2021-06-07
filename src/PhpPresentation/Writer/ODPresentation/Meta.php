@@ -58,7 +58,7 @@ class Meta extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         $objWriter->endElement();
-        
+
         $this->getZip()->addFromString('meta.xml', $objWriter->getData());
         return $this->getZip();
     }

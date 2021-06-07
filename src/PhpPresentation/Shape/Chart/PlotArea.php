@@ -83,7 +83,7 @@ class PlotArea implements ComparableInterface
         $this->axisX = new Axis();
         $this->axisY = new Axis();
     }
-    
+
     public function __clone()
     {
         $this->axisX     = clone $this->axisX;
@@ -156,7 +156,7 @@ class PlotArea implements ComparableInterface
      */
     public function setOffsetX($value = 0)
     {
-        $this->offsetX = (double)$value;
+        $this->offsetX = (float)$value;
 
         return $this;
     }
@@ -179,7 +179,7 @@ class PlotArea implements ComparableInterface
      */
     public function setOffsetY($value = 0)
     {
-        $this->offsetY = (double)$value;
+        $this->offsetY = (float)$value;
 
         return $this;
     }
@@ -202,7 +202,7 @@ class PlotArea implements ComparableInterface
      */
     public function setWidth($value = 0)
     {
-        $this->width = (double)$value;
+        $this->width = (float)$value;
 
         return $this;
     }
@@ -225,7 +225,7 @@ class PlotArea implements ComparableInterface
      */
     public function setHeight($value = 0)
     {
-        $this->height = (double)$value;
+        $this->height = (float)$value;
 
         return $this;
     }

@@ -181,7 +181,7 @@ class PhpPresentationTestCase extends TestCase
         $xmlWriter = IOFactory::createWriter($oPhpPresentation, $writerName);
         $xmlWriter->save($this->filePath);
 
-        $zip = new \ZipArchive;
+        $zip = new \ZipArchive();
         $res = $zip->open($this->filePath);
         if ($res === true) {
             $zip->extractTo($this->workDirectory);
@@ -440,7 +440,7 @@ class PhpPresentationTestCase extends TestCase
             $fileName = str_replace('\\', '/', substr($file->getRealPath(), strlen($path) + 1));
             $dom = $this->getXmlDom($fileName);
             $xmlSource = $dom->saveXML();
-            
+
             $dom->loadXML($xmlSource);
             $pathRNG = __DIR__ . '/../../../resources/schema/opendocument/'.$version.'/';
             if (isset($this->arrayOpenDocumentRNG[$version][$fileName])) {

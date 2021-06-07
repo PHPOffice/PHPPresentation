@@ -22,8 +22,8 @@ namespace PhpOffice\PhpPresentation;
  */
 class GeometryCalculator
 {
-    const X = 'X';
-    const Y = 'Y';
+    public const X = 'X';
+    public const Y = 'Y';
 
     /**
     * Calculate X and Y offsets for a set of shapes within a container such as a slide or group.

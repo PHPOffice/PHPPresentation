@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpOffice\PhpPresentation\Slide;
 
 use PhpOffice\PhpPresentation\AbstractShape;

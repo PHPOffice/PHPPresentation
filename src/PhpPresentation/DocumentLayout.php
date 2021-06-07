@@ -24,25 +24,25 @@ use PhpOffice\Common\Drawing;
  */
 class DocumentLayout
 {
-    const LAYOUT_CUSTOM = '';
-    const LAYOUT_SCREEN_4X3 = 'screen4x3';
-    const LAYOUT_SCREEN_16X10 = 'screen16x10';
-    const LAYOUT_SCREEN_16X9 = 'screen16x9';
-    const LAYOUT_35MM = '35mm';
-    const LAYOUT_A3 = 'A3';
-    const LAYOUT_A4 = 'A4';
-    const LAYOUT_B4ISO = 'B4ISO';
-    const LAYOUT_B5ISO = 'B5ISO';
-    const LAYOUT_BANNER = 'banner';
-    const LAYOUT_LETTER = 'letter';
-    const LAYOUT_OVERHEAD = 'overhead';
+    public const LAYOUT_CUSTOM = '';
+    public const LAYOUT_SCREEN_4X3 = 'screen4x3';
+    public const LAYOUT_SCREEN_16X10 = 'screen16x10';
+    public const LAYOUT_SCREEN_16X9 = 'screen16x9';
+    public const LAYOUT_35MM = '35mm';
+    public const LAYOUT_A3 = 'A3';
+    public const LAYOUT_A4 = 'A4';
+    public const LAYOUT_B4ISO = 'B4ISO';
+    public const LAYOUT_B5ISO = 'B5ISO';
+    public const LAYOUT_BANNER = 'banner';
+    public const LAYOUT_LETTER = 'letter';
+    public const LAYOUT_OVERHEAD = 'overhead';
 
-    const UNIT_EMU = 'emu';
-    const UNIT_CENTIMETER = 'cm';
-    const UNIT_INCH = 'in';
-    const UNIT_MILLIMETER = 'mm';
-    const UNIT_PIXEL = 'px';
-    const UNIT_POINT = 'pt';
+    public const UNIT_EMU = 'emu';
+    public const UNIT_CENTIMETER = 'cm';
+    public const UNIT_INCH = 'in';
+    public const UNIT_MILLIMETER = 'mm';
+    public const UNIT_PIXEL = 'px';
+    public const UNIT_POINT = 'pt';
 
     /**
      * Dimension types

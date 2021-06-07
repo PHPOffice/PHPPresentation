@@ -93,7 +93,7 @@ class PlotAreaTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Chart type has not been set.');
-        
+
         $object = new PlotArea();
         $object->getType();
     }

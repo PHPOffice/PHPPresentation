@@ -161,7 +161,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
         $this->parent = $parent;
         return $this;
     }
-    
+
 
     /**
      * Get X Offset
@@ -177,7 +177,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
         }
         return $this->offsetX;
     }
-    
+
     /**
      * Get Y Offset
      *
@@ -192,7 +192,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
         }
         return $this->offsetY;
     }
-    
+
     /**
      * Get X Extent
      *
@@ -207,7 +207,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
         }
         return $this->extentX;
     }
-    
+
     /**
      * Get Y Extent
      *

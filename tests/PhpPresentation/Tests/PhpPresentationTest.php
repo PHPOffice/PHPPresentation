@@ -122,7 +122,7 @@ class PhpPresentationTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Active slide index is out of bounds.');
-        
+
         $object = new PhpPresentation();
         $object->setActiveSlideIndex(1);
     }

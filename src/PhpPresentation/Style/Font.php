@@ -25,24 +25,24 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 class Font implements ComparableInterface
 {
     /* Underline types */
-    const UNDERLINE_NONE = 'none';
-    const UNDERLINE_DASH = 'dash';
-    const UNDERLINE_DASHHEAVY = 'dashHeavy';
-    const UNDERLINE_DASHLONG = 'dashLong';
-    const UNDERLINE_DASHLONGHEAVY = 'dashLongHeavy';
-    const UNDERLINE_DOUBLE = 'dbl';
-    const UNDERLINE_DOTHASH = 'dotDash';
-    const UNDERLINE_DOTHASHHEAVY = 'dotDashHeavy';
-    const UNDERLINE_DOTDOTDASH = 'dotDotDash';
-    const UNDERLINE_DOTDOTDASHHEAVY = 'dotDotDashHeavy';
-    const UNDERLINE_DOTTED = 'dotted';
-    const UNDERLINE_DOTTEDHEAVY = 'dottedHeavy';
-    const UNDERLINE_HEAVY = 'heavy';
-    const UNDERLINE_SINGLE = 'sng';
-    const UNDERLINE_WAVY = 'wavy';
-    const UNDERLINE_WAVYDOUBLE = 'wavyDbl';
-    const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
-    const UNDERLINE_WORDS = 'words';
+    public const UNDERLINE_NONE = 'none';
+    public const UNDERLINE_DASH = 'dash';
+    public const UNDERLINE_DASHHEAVY = 'dashHeavy';
+    public const UNDERLINE_DASHLONG = 'dashLong';
+    public const UNDERLINE_DASHLONGHEAVY = 'dashLongHeavy';
+    public const UNDERLINE_DOUBLE = 'dbl';
+    public const UNDERLINE_DOTHASH = 'dotDash';
+    public const UNDERLINE_DOTHASHHEAVY = 'dotDashHeavy';
+    public const UNDERLINE_DOTDOTDASH = 'dotDotDash';
+    public const UNDERLINE_DOTDOTDASHHEAVY = 'dotDotDashHeavy';
+    public const UNDERLINE_DOTTED = 'dotted';
+    public const UNDERLINE_DOTTEDHEAVY = 'dottedHeavy';
+    public const UNDERLINE_HEAVY = 'heavy';
+    public const UNDERLINE_SINGLE = 'sng';
+    public const UNDERLINE_WAVY = 'wavy';
+    public const UNDERLINE_WAVYDOUBLE = 'wavyDbl';
+    public const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
+    public const UNDERLINE_WORDS = 'words';
 
     /**
      * Name
@@ -50,14 +50,14 @@ class Font implements ComparableInterface
      * @var string
      */
     private $name;
-    
+
     /**
      * Font Size
      *
      * @var float|int
      */
     private $size;
-    
+
     /**
      * Bold
      *
@@ -164,7 +164,7 @@ class Font implements ComparableInterface
 
         return $this;
     }
-    
+
     /**
      * Get Character Spacing
      *
@@ -174,7 +174,7 @@ class Font implements ComparableInterface
     {
         return $this->characterSpacing;
     }
-    
+
     /**
      * Set Character Spacing
      * Value in pt
@@ -187,7 +187,7 @@ class Font implements ComparableInterface
             $pValue = 0;
         }
         $this->characterSpacing = $pValue * 100;
-    
+
         return $this;
     }
 

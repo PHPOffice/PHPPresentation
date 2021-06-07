@@ -22,16 +22,16 @@ namespace PhpOffice\PhpPresentation\Shape\Chart;
  */
 class Marker
 {
-    const SYMBOL_CIRCLE = 'circle';
-    const SYMBOL_DASH = 'dash';
-    const SYMBOL_DIAMOND = 'diamond';
-    const SYMBOL_DOT = 'dot';
-    const SYMBOL_NONE = 'none';
-    const SYMBOL_PLUS = 'plus';
-    const SYMBOL_SQUARE = 'square';
-    const SYMBOL_STAR = 'star';
-    const SYMBOL_TRIANGLE = 'triangle';
-    const SYMBOL_X = 'x';
+    public const SYMBOL_CIRCLE = 'circle';
+    public const SYMBOL_DASH = 'dash';
+    public const SYMBOL_DIAMOND = 'diamond';
+    public const SYMBOL_DOT = 'dot';
+    public const SYMBOL_NONE = 'none';
+    public const SYMBOL_PLUS = 'plus';
+    public const SYMBOL_SQUARE = 'square';
+    public const SYMBOL_STAR = 'star';
+    public const SYMBOL_TRIANGLE = 'triangle';
+    public const SYMBOL_X = 'x';
 
     public static $arraySymbol = array(
         self::SYMBOL_CIRCLE,

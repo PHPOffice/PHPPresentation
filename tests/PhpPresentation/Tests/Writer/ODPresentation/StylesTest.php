@@ -29,7 +29,7 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('styles.xml', $element);
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:print-orientation', 'landscape');
         $this->assertIsSchemaOpenDocumentValid('1.2');
-        
+
         $oDocumentLayout->setDocumentLayout(DocumentLayout::LAYOUT_A4, false);
         $this->oPresentation->setLayout($oDocumentLayout);
         $this->resetPresentationFile();
@@ -38,24 +38,24 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:print-orientation', 'portrait');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
+
     public function testCustomDocumentLayout()
     {
         $oDocumentLayout = new DocumentLayout();
         $oDocumentLayout->setDocumentLayout(array('cx' => rand(1, 100),'cy' => rand(1, 100),));
         $this->oPresentation->setLayout($oDocumentLayout);
-        
+
         $element = "/office:document-styles/office:automatic-styles/style:page-layout";
         $this->assertZipXmlElementExists('styles.xml', $element);
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:name', 'sPL0');
-        
+
         $element = "/office:document-styles/office:master-styles/style:master-page";
         $this->assertZipXmlElementExists('styles.xml', $element);
         $this->assertZipXmlAttributeEquals('styles.xml', $element, 'style:page-layout-name', 'sPL0');
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
+
     public function testGradientTable()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -69,7 +69,7 @@ class StylesTest extends PhpPresentationTestCase
 
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
-    
+
     public function testStrokeDash()
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -87,7 +87,7 @@ class StylesTest extends PhpPresentationTestCase
             Border::DASH_SYSDASHDOTDOT,
             Border::DASH_SYSDOT,
         );
-        
+
         foreach ($arrayDashStyle as $style) {
             $oRichText1->getBorder()->setDashStyle($style);
 
@@ -95,7 +95,7 @@ class StylesTest extends PhpPresentationTestCase
             $this->assertZipXmlElementExists('styles.xml', $element);
             $this->assertZipXmlAttributeEquals('styles.xml', $element, 'draw:style', 'rect');
             $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:distance');
-            
+
             switch ($style) {
                 case Border::DASH_DOT:
                 case Border::DASH_SYSDOT:

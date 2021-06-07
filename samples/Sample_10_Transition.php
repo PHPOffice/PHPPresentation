@@ -46,11 +46,11 @@ $shapeRichText = $slide0->createRichTextShape()
       ->setWidth(600)
       ->setOffsetX(170)
       ->setOffsetY(180);
-$shapeRichText->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_CENTER );
+$shapeRichText->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_CENTER);
 $textRun = $shapeRichText->createTextRun('Thank you for using PHPPresentation!');
 $textRun->getFont()->setBold(true)
                    ->setSize(60)
-                   ->setColor( new Color( 'FFE06B20' ) );
+                   ->setColor(new Color('FFE06B20'));
 
 $oTransition = new Transition();
 $oTransition->setManualTrigger(false);
@@ -67,5 +67,5 @@ $slide1->addShape(clone $shapeRichText);
 // Save file
 echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
-	include_once 'Sample_Footer.php';
+    include_once 'Sample_Footer.php';
 }

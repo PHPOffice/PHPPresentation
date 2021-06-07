@@ -55,7 +55,7 @@ class RowTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Cell number out of bounds.');
-        
+
         $object = new Row();
         $object->getCell(1);
     }
@@ -71,7 +71,7 @@ class RowTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Cell count out of bounds.');
-        
+
         $object = new Row();
         $object->nextCell();
         $object->nextCell();

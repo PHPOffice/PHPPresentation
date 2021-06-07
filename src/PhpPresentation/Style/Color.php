@@ -25,16 +25,16 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 class Color implements ComparableInterface
 {
     /* Colors */
-    const COLOR_BLACK                       = 'FF000000';
-    const COLOR_WHITE                       = 'FFFFFFFF';
-    const COLOR_RED                         = 'FFFF0000';
-    const COLOR_DARKRED                     = 'FF800000';
-    const COLOR_BLUE                        = 'FF0000FF';
-    const COLOR_DARKBLUE                    = 'FF000080';
-    const COLOR_GREEN                       = 'FF00FF00';
-    const COLOR_DARKGREEN                   = 'FF008000';
-    const COLOR_YELLOW                      = 'FFFFFF00';
-    const COLOR_DARKYELLOW                  = 'FF808000';
+    public const COLOR_BLACK                       = 'FF000000';
+    public const COLOR_WHITE                       = 'FFFFFFFF';
+    public const COLOR_RED                         = 'FFFF0000';
+    public const COLOR_DARKRED                     = 'FF800000';
+    public const COLOR_BLUE                        = 'FF0000FF';
+    public const COLOR_DARKBLUE                    = 'FF000080';
+    public const COLOR_GREEN                       = 'FF00FF00';
+    public const COLOR_DARKGREEN                   = 'FF008000';
+    public const COLOR_YELLOW                      = 'FFFFFF00';
+    public const COLOR_DARKYELLOW                  = 'FF808000';
 
     /**
      * ARGB - Alpha RGB

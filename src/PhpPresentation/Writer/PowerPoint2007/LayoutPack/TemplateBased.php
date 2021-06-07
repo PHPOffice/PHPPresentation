@@ -46,7 +46,7 @@ class TemplateBased extends AbstractLayoutPack
         $this->layoutRelations = array();
 
         // Open package
-        $package = new \ZipArchive;
+        $package = new \ZipArchive();
         $package->open($fileName);
 
         // Read relations and search for officeDocument

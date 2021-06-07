@@ -89,7 +89,7 @@ class AlignmentTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid value should be more than 0.');
-        
+
         $object = new Alignment();
         $object->setLevel(-1);
     }

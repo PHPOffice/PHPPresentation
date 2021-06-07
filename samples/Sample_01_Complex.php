@@ -7,7 +7,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 
 include_once 'Sample_Header.php';
 
-$colorBlack = new Color( 'FF000000' );
+$colorBlack = new Color('FF000000');
 
 // Create new PHPPresentation object
 echo date('H:i:s') . ' Create new PHPPresentation object'.EOL;
@@ -38,7 +38,7 @@ $shape->setHeight(200);
 $shape->setWidth(600);
 $shape->setOffsetX(10);
 $shape->setOffsetY(400);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
 $textRun = $shape->createTextRun('Introduction to');
 $textRun->getFont()->setBold(true);
@@ -102,7 +102,7 @@ $shape = $currentSlide->createRichTextShape()
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(50);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
 $textRun = $shape->createTextRun('What\'s the point?');
 $textRun->getFont()->setBold(true)
@@ -154,7 +154,7 @@ $shape->setHeight(100)
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(50);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
 $textRun = $shape->createTextRun('Need more info?');
 $textRun->getFont()->setBold(true)
@@ -168,7 +168,7 @@ $shape->setHeight(600)
       ->setWidth(930)
       ->setOffsetX(10)
       ->setOffsetY(130);
-$shape->getActiveParagraph()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_LEFT );
+$shape->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT);
 
 $textRun = $shape->createTextRun('Check the project site on GitHub:');
 $textRun->getFont()->setSize(36)
@@ -185,5 +185,5 @@ $textRun->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/'
 // Save file
 echo write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 if (!CLI) {
-	include_once 'Sample_Footer.php';
+    include_once 'Sample_Footer.php';
 }

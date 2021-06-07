@@ -59,7 +59,7 @@ class TableTest extends TestCase
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Row number out of bounds.');
-        
+
         $object = new Table();
         $object->getRow();
     }

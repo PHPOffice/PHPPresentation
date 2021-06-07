@@ -30,14 +30,14 @@ class AbstractTypePie extends AbstractType
         $this->hasAxisX = false;
         $this->hasAxisY = false;
     }
-    
+
     /**
      * Explosion of the Pie
      *
      * @var integer
      */
     protected $explosion = 0;
-    
+
     /**
      * Set explosion
      *
@@ -49,7 +49,7 @@ class AbstractTypePie extends AbstractType
         $this->explosion = $value;
         return $this;
     }
-    
+
     /**
      * Get orientation
      *
@@ -59,7 +59,7 @@ class AbstractTypePie extends AbstractType
     {
         return $this->explosion;
     }
-    
+
     /**
      * Get hash code
      *

@@ -25,25 +25,25 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 class Alignment implements ComparableInterface
 {
     /* Horizontal alignment */
-    const HORIZONTAL_GENERAL                = 'l';
-    const HORIZONTAL_LEFT                   = 'l';
-    const HORIZONTAL_RIGHT                  = 'r';
-    const HORIZONTAL_CENTER                 = 'ctr';
-    const HORIZONTAL_JUSTIFY                = 'just';
-    const HORIZONTAL_DISTRIBUTED            = 'dist';
+    public const HORIZONTAL_GENERAL                = 'l';
+    public const HORIZONTAL_LEFT                   = 'l';
+    public const HORIZONTAL_RIGHT                  = 'r';
+    public const HORIZONTAL_CENTER                 = 'ctr';
+    public const HORIZONTAL_JUSTIFY                = 'just';
+    public const HORIZONTAL_DISTRIBUTED            = 'dist';
 
     /* Vertical alignment */
-    const VERTICAL_BASE                     = 'base';
-    const VERTICAL_AUTO                     = 'auto';
-    const VERTICAL_BOTTOM                   = 'b';
-    const VERTICAL_TOP                      = 't';
-    const VERTICAL_CENTER                   = 'ctr';
+    public const VERTICAL_BASE                     = 'base';
+    public const VERTICAL_AUTO                     = 'auto';
+    public const VERTICAL_BOTTOM                   = 'b';
+    public const VERTICAL_TOP                      = 't';
+    public const VERTICAL_CENTER                   = 'ctr';
 
     /* Text direction */
-    const TEXT_DIRECTION_HORIZONTAL = 'horz';
-    const TEXT_DIRECTION_VERTICAL_90 = 'vert';
-    const TEXT_DIRECTION_VERTICAL_270 = 'vert270';
-    const TEXT_DIRECTION_STACKED = 'wordArtVert';
+    public const TEXT_DIRECTION_HORIZONTAL = 'horz';
+    public const TEXT_DIRECTION_VERTICAL_90 = 'vert';
+    public const TEXT_DIRECTION_VERTICAL_270 = 'vert270';
+    public const TEXT_DIRECTION_STACKED = 'wordArtVert';
 
     private $supportedStyles = array(
         self::HORIZONTAL_GENERAL,

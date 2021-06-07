@@ -14,6 +14,7 @@
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
@@ -284,9 +285,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->startElement('a:fld');
             $objWriter->writeAttribute('id', $this->getGUID());
             $objWriter->writeAttribute('type', (
-            $shape->getPlaceholder()->getType() == Placeholder::PH_TYPE_SLIDENUM ? 'slidenum' : 'datetime'));
+                $shape->getPlaceholder()->getType() == Placeholder::PH_TYPE_SLIDENUM ? 'slidenum' : 'datetime'
+            ));
             $objWriter->writeElement('a:t', (
-            $shape->getPlaceholder()->getType() == Placeholder::PH_TYPE_SLIDENUM ? '<nr.>' : '03-04-05'));
+                $shape->getPlaceholder()->getType() == Placeholder::PH_TYPE_SLIDENUM ? '<nr.>' : '03-04-05'
+            ));
             $objWriter->endElement();
             $objWriter->endElement();
         } else {
@@ -1595,7 +1598,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         if (function_exists('com_create_guid')) {
             return com_create_guid();
         } else {
-            mt_srand((double)microtime() * 10000);//optional for php 4.2.0 and up.
+            mt_srand((float)microtime() * 10000);//optional for php 4.2.0 and up.
             $charid = strtoupper(md5(uniqid(rand(), true)));
             $hyphen = chr(45);// "-"
             $uuid = chr(123)// "{"

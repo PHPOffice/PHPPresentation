@@ -17,7 +17,8 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
 
-function fnSlide_Area(PhpPresentation $objPHPPresentation) {
+function fnSlide_Area(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
 
@@ -66,7 +67,8 @@ function fnSlide_Area(PhpPresentation $objPHPPresentation) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar(PhpPresentation $objPHPPresentation) {
+function fnSlide_Bar(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
 
@@ -119,7 +121,8 @@ function fnSlide_Bar(PhpPresentation $objPHPPresentation) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation) {
+function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
 
@@ -154,77 +157,79 @@ function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_BarStacked(PhpPresentation $objPHPPresentation) {
+function fnSlide_BarStacked(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
 
     // Create templated slide
-    echo EOL . date( 'H:i:s' ) . ' Create templated slide' . EOL;
-    $currentSlide = createTemplatedSlide( $objPHPPresentation );
+    echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
 
     // Generate sample data for first chart
-    echo date( 'H:i:s' ) . ' Generate sample data for chart' . EOL;
+    echo date('H:i:s') . ' Generate sample data for chart' . EOL;
     $series1Data = array('Jan' => 133, 'Feb' => 99, 'Mar' => 191, 'Apr' => 205, 'May' => 167, 'Jun' => 201, 'Jul' => 240, 'Aug' => 226, 'Sep' => 255, 'Oct' => 264, 'Nov' => 283, 'Dec' => 293);
     $series2Data = array('Jan' => 266, 'Feb' => 198, 'Mar' => 271, 'Apr' => 305, 'May' => 267, 'Jun' => 301, 'Jul' => 340, 'Aug' => 326, 'Sep' => 344, 'Oct' => 364, 'Nov' => 383, 'Dec' => 379);
     $series3Data = array('Jan' => 233, 'Feb' => 146, 'Mar' => 238, 'Apr' => 175, 'May' => 108, 'Jun' => 257, 'Jul' => 199, 'Aug' => 201, 'Sep' => 88, 'Oct' => 147, 'Nov' => 287, 'Dec' => 105);
 
     // Create a bar chart (that should be inserted in a shape)
-    echo date( 'H:i:s' ) . ' Create a stacked bar chart (that should be inserted in a chart shape)' . EOL;
+    echo date('H:i:s') . ' Create a stacked bar chart (that should be inserted in a chart shape)' . EOL;
     $StackedBarChart = new Bar();
-    $series1 = new Series( '2009', $series1Data );
+    $series1 = new Series('2009', $series1Data);
     $series1->setShowSeriesName(false);
-    $series1->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF4F81BD' ) );
-    $series1->getFont()->getColor()->setRGB( '00FF00' );
+    $series1->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4F81BD'));
+    $series1->getFont()->getColor()->setRGB('00FF00');
     $series1->setShowValue(true);
     $series1->setShowPercentage(false);
-    $series2 = new Series( '2010', $series2Data );
+    $series2 = new Series('2010', $series2Data);
     $series2->setShowSeriesName(false);
-    $series2->getFont()->getColor()->setRGB( 'FF0000' );
-    $series2->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FFC0504D' ) );
+    $series2->getFont()->getColor()->setRGB('FF0000');
+    $series2->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFC0504D'));
     $series2->setShowValue(true);
     $series2->setShowPercentage(false);
-    $series3 = new Series( '2011', $series3Data );
+    $series3 = new Series('2011', $series3Data);
     $series3->setShowSeriesName(false);
-    $series3->getFont()->getColor()->setRGB( 'FF0000' );
-    $series3->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF804DC0' ) );
+    $series3->getFont()->getColor()->setRGB('FF0000');
+    $series3->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF804DC0'));
     $series3->setShowValue(true);
     $series3->setShowPercentage(false);
-    $StackedBarChart->addSeries( $series1 );
-    $StackedBarChart->addSeries( $series2 );
-    $StackedBarChart->addSeries( $series3 );
-    $StackedBarChart->setBarGrouping( Bar::GROUPING_STACKED );
+    $StackedBarChart->addSeries($series1);
+    $StackedBarChart->addSeries($series2);
+    $StackedBarChart->addSeries($series3);
+    $StackedBarChart->setBarGrouping(Bar::GROUPING_STACKED);
     // Create a shape (chart)
-    echo date( 'H:i:s' ) . ' Create a shape (chart)' . EOL;
+    echo date('H:i:s') . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName( 'PHPPresentation Monthly Downloads' )
+    $shape->setName('PHPPresentation Monthly Downloads')
         ->setResizeProportional(false)
-        ->setHeight( 550 )
-        ->setWidth( 700 )
-        ->setOffsetX( 120 )
-        ->setOffsetY( 80 );
-    $shape->setShadow( $oShadow );
-    $shape->setFill( $oFill );
-    $shape->getBorder()->setLineStyle( Border::LINE_SINGLE );
-    $shape->getTitle()->setText( 'PHPPresentation Monthly Downloads' );
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
+    $shape->setShadow($oShadow);
+    $shape->setFill($oFill);
+    $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
-    $shape->getTitle()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_RIGHT );
-    $shape->getPlotArea()->getAxisX()->setTitle( 'Month' );
-    $shape->getPlotArea()->getAxisY()->setTitle( 'Downloads' );
-    $shape->getPlotArea()->setType( $StackedBarChart );
-    $shape->getLegend()->getBorder()->setLineStyle( Border::LINE_SINGLE );
+    $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+    $shape->getPlotArea()->getAxisX()->setTitle('Month');
+    $shape->getPlotArea()->getAxisY()->setTitle('Downloads');
+    $shape->getPlotArea()->setType($StackedBarChart);
+    $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation) {
+function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
 
     // Create templated slide
-    echo EOL . date( 'H:i:s' ) . ' Create templated slide' . EOL;
-    $currentSlide = createTemplatedSlide( $objPHPPresentation );
+    echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+    $currentSlide = createTemplatedSlide($objPHPPresentation);
 
     // Generate sample data for first chart
-    echo date( 'H:i:s' ) . ' Generate sample data for chart' . EOL;
+    echo date('H:i:s') . ' Generate sample data for chart' . EOL;
     $series1Data = array('Jan' => 133, 'Feb' => 99, 'Mar' => 191, 'Apr' => 205, 'May' => 167, 'Jun' => 201, 'Jul' => 240, 'Aug' => 226, 'Sep' => 255, 'Oct' => 264, 'Nov' => 283, 'Dec' => 293);
     $Series1Sum = array_sum($series1Data);
     foreach ($series1Data as $CatName => $Value) {
@@ -236,64 +241,65 @@ function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation) {
         $series2Data[$CatName] = round($Value / $Series2Sum, 2);
     }
     $series3Data = array('Jan' => 233, 'Feb' => 146, 'Mar' => 238, 'Apr' => 175, 'May' => 108, 'Jun' => 257, 'Jul' => 199, 'Aug' => 201, 'Sep' => 88, 'Oct' => 147, 'Nov' => 287, 'Dec' => 105);
-    $Series3Sum = array_sum( $series3Data );
+    $Series3Sum = array_sum($series3Data);
     foreach ($series3Data as $CatName => $Value) {
-        $series3Data[$CatName] = round($Value / $Series3Sum,2);
+        $series3Data[$CatName] = round($Value / $Series3Sum, 2);
     }
 
     // Create a bar chart (that should be inserted in a shape)
-    echo date( 'H:i:s' ) . ' Create a percent stacked horizontal bar chart (that should be inserted in a chart shape)' . EOL;
+    echo date('H:i:s') . ' Create a percent stacked horizontal bar chart (that should be inserted in a chart shape)' . EOL;
     $PercentStackedBarChartHoriz = new Bar();
-    $series1 = new Series( '2009', $series1Data );
+    $series1 = new Series('2009', $series1Data);
     $series1->setShowSeriesName(false);
-    $series1->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF4F81BD' ) );
-    $series1->getFont()->getColor()->setRGB( '00FF00' );
+    $series1->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4F81BD'));
+    $series1->getFont()->getColor()->setRGB('00FF00');
     $series1->setShowValue(true);
     $series1->setShowPercentage(false);
     // Set Data Label Format For Chart To Display Percent
-    $series1->setDlblNumFormat( '#%' );
-    $series2 = new Series( '2010', $series2Data );
+    $series1->setDlblNumFormat('#%');
+    $series2 = new Series('2010', $series2Data);
     $series2->setShowSeriesName(false);
-    $series2->getFont()->getColor()->setRGB( 'FF0000' );
-    $series2->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FFC0504D' ) );
+    $series2->getFont()->getColor()->setRGB('FF0000');
+    $series2->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFC0504D'));
     $series2->setShowValue(true);
     $series2->setShowPercentage(false);
-    $series2->setDlblNumFormat( '#%' );
-    $series3 = new Series( '2011', $series3Data );
+    $series2->setDlblNumFormat('#%');
+    $series3 = new Series('2011', $series3Data);
     $series3->setShowSeriesName(false);
-    $series3->getFont()->getColor()->setRGB( 'FF0000' );
-    $series3->getFill()->setFillType( Fill::FILL_SOLID )->setStartColor( new Color( 'FF804DC0' ) );
+    $series3->getFont()->getColor()->setRGB('FF0000');
+    $series3->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF804DC0'));
     $series3->setShowValue(true);
     $series3->setShowPercentage(false);
-    $series3->setDlblNumFormat( '#%' );
-    $PercentStackedBarChartHoriz->addSeries( $series1 );
-    $PercentStackedBarChartHoriz->addSeries( $series2 );
-    $PercentStackedBarChartHoriz->addSeries( $series3 );
-    $PercentStackedBarChartHoriz->setBarGrouping( Bar::GROUPING_PERCENTSTACKED );
-    $PercentStackedBarChartHoriz->setBarDirection( Bar3D::DIRECTION_HORIZONTAL );
+    $series3->setDlblNumFormat('#%');
+    $PercentStackedBarChartHoriz->addSeries($series1);
+    $PercentStackedBarChartHoriz->addSeries($series2);
+    $PercentStackedBarChartHoriz->addSeries($series3);
+    $PercentStackedBarChartHoriz->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
+    $PercentStackedBarChartHoriz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
     // Create a shape (chart)
-    echo date( 'H:i:s' ) . ' Create a shape (chart)' . EOL;
+    echo date('H:i:s') . ' Create a shape (chart)' . EOL;
     $shape = $currentSlide->createChartShape();
-    $shape->setName( 'PHPPresentation Monthly Downloads' )
+    $shape->setName('PHPPresentation Monthly Downloads')
         ->setResizeProportional(false)
-        ->setHeight( 550 )
-        ->setWidth( 700 )
-        ->setOffsetX( 120 )
-        ->setOffsetY( 80 );
-    $shape->setShadow( $oShadow );
-    $shape->setFill( $oFill );
-    $shape->getBorder()->setLineStyle( Border::LINE_SINGLE );
-    $shape->getTitle()->setText( 'PHPPresentation Monthly Downloads' );
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
+    $shape->setShadow($oShadow);
+    $shape->setFill($oFill);
+    $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getTitle()->setText('PHPPresentation Monthly Downloads');
     $shape->getTitle()->getFont()->setItalic(true);
-    $shape->getTitle()->getAlignment()->setHorizontal( Alignment::HORIZONTAL_RIGHT );
-    $shape->getPlotArea()->getAxisX()->setTitle( 'Month' );
-    $shape->getPlotArea()->getAxisY()->setTitle( 'Downloads' );
-    $shape->getPlotArea()->setType( $PercentStackedBarChartHoriz );
-    $shape->getLegend()->getBorder()->setLineStyle( Border::LINE_SINGLE );
+    $shape->getTitle()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_RIGHT);
+    $shape->getPlotArea()->getAxisX()->setTitle('Month');
+    $shape->getPlotArea()->getAxisY()->setTitle('Downloads');
+    $shape->getPlotArea()->setType($PercentStackedBarChartHoriz);
+    $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar3D(PhpPresentation $objPHPPresentation) {
+function fnSlide_Bar3D(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
 
@@ -346,19 +352,20 @@ function fnSlide_Bar3D(PhpPresentation $objPHPPresentation) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation) {
+function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
-    
+
     // Create a bar chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a horizontal bar chart (that should be inserted in a chart shape) '.EOL;
     $bar3DChartHorz = clone $objPHPPresentation->getSlide(5)->getShapeCollection()->offsetGet(1)->getPlotArea()->getType();
     $bar3DChartHorz->setBarDirection(Bar3D::DIRECTION_HORIZONTAL);
-    
+
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
     $currentSlide = createTemplatedSlide($objPHPPresentation);
-    
+
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();
@@ -439,18 +446,19 @@ function fnSlide_Doughnut(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->setPosition(\PhpOffice\PhpPresentation\Shape\Chart\Legend::POSITION_LEFT);
 }
 
-function fnSlide_Pie3D(PhpPresentation $objPHPPresentation) {
+function fnSlide_Pie3D(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
-    
+
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
     $currentSlide = createTemplatedSlide($objPHPPresentation);
-    
+
     // Generate sample data for second chart
     echo date('H:i:s') . ' Generate sample data for chart'.EOL;
     $seriesData = array('Monday' => 12, 'Tuesday' => 15, 'Wednesday' => 13, 'Thursday' => 17, 'Friday' => 14, 'Saturday' => 9, 'Sunday' => 7);
-    
+
     // Create a pie chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a pie chart (that should be inserted in a chart shape)'.EOL;
     $pie3DChart = new Pie3D();
@@ -487,7 +495,8 @@ function fnSlide_Pie3D(PhpPresentation $objPHPPresentation) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Pie(PhpPresentation $objPHPPresentation) {
+function fnSlide_Pie(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
 
@@ -537,18 +546,19 @@ function fnSlide_Pie(PhpPresentation $objPHPPresentation) {
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Scatter(PhpPresentation $objPHPPresentation) {
+function fnSlide_Scatter(PhpPresentation $objPHPPresentation)
+{
     global $oFill;
     global $oShadow;
-    
+
     // Create templated slide
     echo EOL.date('H:i:s') . ' Create templated slide'.EOL;
     $currentSlide = createTemplatedSlide($objPHPPresentation); // local function
-    
+
     // Generate sample data for fourth chart
     echo date('H:i:s') . ' Generate sample data for chart'.EOL;
     $seriesData = array('Monday' => 0.1, 'Tuesday' => 0.33333, 'Wednesday' => 0.4444, 'Thursday' => 0.5, 'Friday' => 0.4666, 'Saturday' => 0.3666, 'Sunday' => 0.1666);
-    
+
     // Create a scatter chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a scatter chart (that should be inserted in a chart shape)'.EOL;
     $lineChart = new Scatter();
@@ -557,7 +567,7 @@ function fnSlide_Scatter(PhpPresentation $objPHPPresentation) {
     $series->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_DASH);
     $series->getMarker()->setSize(10);
     $lineChart->addSeries($series);
-    
+
     // Create a shape (chart)
     echo date('H:i:s') . ' Create a shape (chart)'.EOL;
     $shape = $currentSlide->createChartShape();

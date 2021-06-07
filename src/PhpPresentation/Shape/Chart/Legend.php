@@ -29,11 +29,11 @@ use PhpOffice\PhpPresentation\Style\Font;
 class Legend implements ComparableInterface
 {
     /** Legend positions */
-    const POSITION_BOTTOM = 'b';
-    const POSITION_LEFT = 'l';
-    const POSITION_RIGHT = 'r';
-    const POSITION_TOP = 't';
-    const POSITION_TOPRIGHT = 'tr';
+    public const POSITION_BOTTOM = 'b';
+    public const POSITION_LEFT = 'l';
+    public const POSITION_RIGHT = 'r';
+    public const POSITION_TOP = 't';
+    public const POSITION_TOPRIGHT = 'tr';
 
     /**
      * Visible
@@ -178,7 +178,7 @@ class Legend implements ComparableInterface
      */
     public function setOffsetX($value = 0)
     {
-        $this->offsetX = (double)$value;
+        $this->offsetX = (float)$value;
         return $this;
     }
 
@@ -200,7 +200,7 @@ class Legend implements ComparableInterface
      */
     public function setOffsetY($value = 0)
     {
-        $this->offsetY = (double)$value;
+        $this->offsetY = (float)$value;
         return $this;
     }
 
@@ -222,7 +222,7 @@ class Legend implements ComparableInterface
      */
     public function setWidth($value = 0)
     {
-        $this->width = (double)$value;
+        $this->width = (float)$value;
         return $this;
     }
 
@@ -244,7 +244,7 @@ class Legend implements ComparableInterface
      */
     public function setHeight($value = 0)
     {
-        $this->height = (double)$value;
+        $this->height = (float)$value;
         return $this;
     }
 

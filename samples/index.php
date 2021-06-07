@@ -9,7 +9,7 @@ $requirements = array(
     'xsl'   => array('PHP extension XSL (optional)', extension_loaded('xsl')),
 );
 if (!CLI) {
-?>
+    ?>
 <div class="jumbotron">
 <p>Welcome to PHPPresentation, a library written in pure PHP that provides a set of classes to write to and read from different document file formats, i.e. Office Open XML (.pptx) and Open Document Format (.odp).</p>
 <p>&nbsp;</p>
