@@ -16,7 +16,7 @@ class ZipFile extends AbstractDrawingAdapter
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -24,10 +24,10 @@ class ZipFile extends AbstractDrawingAdapter
     /**
      * Set Path
      *
-     * @param  string                      $pValue      File path
+     * @param string                      $pValue      File path
      * @return \PhpOffice\PhpPresentation\Shape\Drawing\ZipFile
      */
-    public function setPath($pValue = '')
+    public function setPath(string $pValue = ''): self
     {
         $this->path = $pValue;
         return $this;
@@ -37,7 +37,7 @@ class ZipFile extends AbstractDrawingAdapter
      * @return string
      * @throws \Exception
      */
-    public function getContents()
+    public function getContents(): string
     {
         if (!CommonFile::fileExists($this->getZipFileOut())) {
             throw new \Exception('File '.$this->getZipFileOut().' does not exist');
@@ -55,7 +55,7 @@ class ZipFile extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return pathinfo($this->getZipFileIn(), PATHINFO_EXTENSION);
     }
@@ -64,7 +64,7 @@ class ZipFile extends AbstractDrawingAdapter
      * @return string
      * @throws \Exception
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         if (!CommonFile::fileExists($this->getZipFileOut())) {
             throw new \Exception('File '.$this->getZipFileOut().' does not exist');
@@ -83,7 +83,7 @@ class ZipFile extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getIndexedFilename()
+    public function getIndexedFilename(): string
     {
         $output = pathinfo($this->getZipFileIn(), PATHINFO_FILENAME);
         $output = str_replace('.' . $this->getExtension(), '', $output);
@@ -93,14 +93,14 @@ class ZipFile extends AbstractDrawingAdapter
         return $output;
     }
 
-    protected function getZipFileOut()
+    protected function getZipFileOut(): string
     {
         $path = str_replace('zip://', '', $this->getPath());
         $path = explode('#', $path);
         return empty($path[0]) ? '' : $path[0];
     }
 
-    protected function getZipFileIn()
+    protected function getZipFileIn(): string
     {
         $path = str_replace('zip://', '', $this->getPath());
         $path = explode('#', $path);

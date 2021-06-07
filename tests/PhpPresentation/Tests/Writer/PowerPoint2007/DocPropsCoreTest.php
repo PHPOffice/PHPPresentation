@@ -8,14 +8,14 @@ class DocPropsCoreTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testRender()
+    public function testRender(): void
     {
         $this->assertZipFileExists('docProps/core.xml');
         $this->assertZipXmlElementNotExists('docProps/core.xml', '/cp:coreProperties/cp:contentStatus');
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testDocumentProperties()
+    public function testDocumentProperties(): void
     {
         $expected = 'aAbBcDeE';
 
@@ -43,7 +43,7 @@ class DocPropsCoreTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testMarkAsFinalTrue()
+    public function testMarkAsFinalTrue(): void
     {
         $this->oPresentation->getPresentationProperties()->markAsFinal(true);
 
@@ -52,7 +52,7 @@ class DocPropsCoreTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testMarkAsFinalFalse()
+    public function testMarkAsFinalFalse(): void
     {
         $this->oPresentation->getPresentationProperties()->markAsFinal(false);
 

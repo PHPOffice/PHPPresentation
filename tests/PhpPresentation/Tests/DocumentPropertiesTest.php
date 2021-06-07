@@ -30,7 +30,7 @@ class DocumentPropertiesTest extends TestCase
     /**
      * Test get set value
      */
-    public function testGetSet()
+    public function testGetSet(): void
     {
         $object = new DocumentProperties();
         $properties = array(
@@ -57,7 +57,7 @@ class DocumentPropertiesTest extends TestCase
     /**
      * Test get set with null value
      */
-    public function testGetSetNull()
+    public function testGetSetNull(): void
     {
         $object = new DocumentProperties();
         $properties = array(

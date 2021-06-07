@@ -60,12 +60,12 @@ class Table extends AbstractGraphic implements ComparableInterface
     /**
      * Get row
      *
-     * @param  int $row Row number
-     * @param  boolean $exceptionAsNull Return a null value instead of an exception?
+     * @param int $row Row number
+     * @param boolean $exceptionAsNull Return a null value instead of an exception?
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
+     * @return Row|null
      */
-    public function getRow($row = 0, $exceptionAsNull = false)
+    public function getRow($row = 0, $exceptionAsNull = false): ?Row
     {
         if (!isset($this->rows[$row])) {
             if ($exceptionAsNull) {
@@ -80,7 +80,7 @@ class Table extends AbstractGraphic implements ComparableInterface
     /**
      * Get rows
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row[]
+     * @return Row[]
      */
     public function getRows()
     {
@@ -123,7 +123,7 @@ class Table extends AbstractGraphic implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         $hashElements = '';
         foreach ($this->rows as $row) {

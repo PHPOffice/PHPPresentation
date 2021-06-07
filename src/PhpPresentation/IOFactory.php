@@ -17,6 +17,10 @@
 
 namespace PhpOffice\PhpPresentation;
 
+use PhpOffice\PhpPresentation\Reader\ReaderInterface;
+use PhpOffice\PhpPresentation\Writer\WriterInterface;
+use ReflectionClass;
+
 /**
  * IOFactory
  */
@@ -25,7 +29,7 @@ class IOFactory
     /**
      * Autoresolve classes
      *
-     * @var array
+     * @var array<int, string>
      */
     private static $autoResolveClasses = array('Serialized', 'ODPresentation', 'PowerPoint97', 'PowerPoint2007');
 
@@ -34,10 +38,10 @@ class IOFactory
      *
      * @param PhpPresentation $phpPresentation
      * @param string $name
-     * @return \PhpOffice\PhpPresentation\Writer\WriterInterface
+     * @return WriterInterface
      * @throws \Exception
      */
-    public static function createWriter(PhpPresentation $phpPresentation, $name = 'PowerPoint2007')
+    public static function createWriter(PhpPresentation $phpPresentation, string $name = 'PowerPoint2007'): WriterInterface
     {
         $class = 'PhpOffice\\PhpPresentation\\Writer\\' . $name;
         return self::loadClass($class, $name, 'writer', $phpPresentation);
@@ -46,11 +50,11 @@ class IOFactory
     /**
      * Create reader
      *
-     * @param  string $name
-     * @return \PhpOffice\PhpPresentation\Reader\ReaderInterface
+     * @param string $name
+     * @return ReaderInterface
      * @throws \Exception
      */
-    public static function createReader($name = '')
+    public static function createReader(string $name = ''): ReaderInterface
     {
         $class = 'PhpOffice\\PhpPresentation\\Reader\\' . $name;
         return self::loadClass($class, $name, 'reader');
@@ -59,11 +63,11 @@ class IOFactory
     /**
      * Loads PhpPresentation from file using automatic \PhpOffice\PhpPresentation\Reader\ReaderInterface resolution
      *
-     * @param  string        $pFilename
+     * @param string $pFilename
      * @return PhpPresentation
      * @throws \Exception
      */
-    public static function load($pFilename)
+    public static function load(string $pFilename): PhpPresentation
     {
         // Try loading using self::$autoResolveClasses
         foreach (self::$autoResolveClasses as $autoResolveClass) {
@@ -82,11 +86,11 @@ class IOFactory
      * @param string $class
      * @param string $name
      * @param string $type
-     * @param \PhpOffice\PhpPresentation\PhpPresentation $phpPresentation
+     * @param PhpPresentation|null $phpPresentation
      * @return mixed
      * @throws \ReflectionException
      */
-    private static function loadClass($class, $name, $type, PhpPresentation $phpPresentation = null)
+    private static function loadClass(string $class, string $name, string $type, PhpPresentation $phpPresentation = null)
     {
         if (class_exists($class) && self::isConcreteClass($class)) {
             if (is_null($phpPresentation)) {
@@ -106,9 +110,9 @@ class IOFactory
      * @return bool
      * @throws \ReflectionException
      */
-    private static function isConcreteClass($class)
+    private static function isConcreteClass(string $class): bool
     {
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
 
         return !$reflection->isAbstract() && !$reflection->isInterface();
     }

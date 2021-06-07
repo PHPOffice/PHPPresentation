@@ -34,7 +34,7 @@ class ParagraphTest extends TestCase
     /**
      * Test can read
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Paragraph();
         $this->assertEmpty($object->getRichTextElements());
@@ -43,7 +43,7 @@ class ParagraphTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
     }
 
-    public function testAlignment()
+    public function testAlignment(): void
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
@@ -53,7 +53,7 @@ class ParagraphTest extends TestCase
     /**
      * Test get/set bullet style
      */
-    public function testBulletStyle()
+    public function testBulletStyle(): void
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
@@ -66,7 +66,7 @@ class ParagraphTest extends TestCase
     /**
      * Test get/set font
      */
-    public function testFont()
+    public function testFont(): void
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
@@ -79,7 +79,7 @@ class ParagraphTest extends TestCase
     /**
      * Test get/set hashCode
      */
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Paragraph();
         $oElement = new TextElement();
@@ -90,7 +90,7 @@ class ParagraphTest extends TestCase
     /**
      * Test get/set hashIndex
      */
-    public function testHashIndex()
+    public function testHashIndex(): void
     {
         $object = new Paragraph();
         $value = mt_rand(1, 100);
@@ -101,7 +101,7 @@ class ParagraphTest extends TestCase
     /**
      * Test get/set linespacing
      */
-    public function testLineSpacing()
+    public function testLineSpacing(): void
     {
         $object = new Paragraph();
         $valueExpected = mt_rand(1, 100);
@@ -113,7 +113,7 @@ class ParagraphTest extends TestCase
     /**
      * Test get/set richTextElements
      */
-    public function testRichTextElements()
+    public function testRichTextElements(): void
     {
         $object = new Paragraph();
         $this->assertIsArray($object->getRichTextElements());
@@ -130,19 +130,10 @@ class ParagraphTest extends TestCase
         $this->assertCount(3, $object->getRichTextElements());
     }
 
-    public function testRichTextElementsException()
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface[] array passed.');
-
-        $object = new Paragraph();
-        $object->setRichTextElements(1);
-    }
-
     /**
      * Test text methods
      */
-    public function testText()
+    public function testText(): void
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->addText(new TextElement()));

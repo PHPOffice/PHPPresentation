@@ -41,12 +41,12 @@ class Image extends AbstractBackground
     /**
      * Set Path
      *
-     * @param  string                      $pValue      File path
-     * @param  boolean                     $pVerifyFile Verify file
+     * @param string                      $pValue      File path
+     * @param boolean                     $pVerifyFile Verify file
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Slide\Background\Image
      */
-    public function setPath($pValue = '', $pVerifyFile = true)
+    public function setPath(string $pValue = '', bool $pVerifyFile = true)
     {
         if ($pVerifyFile) {
             if (!file_exists($pValue)) {
@@ -87,7 +87,7 @@ class Image extends AbstractBackground
     /**
      * Get indexed filename (using image index)
      *
-     * @param integer $numSlide
+     * @param string $numSlide
      * @return string
      */
     public function getIndexedFilename($numSlide)

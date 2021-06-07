@@ -30,7 +30,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PlotAreaTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new PlotArea();
 
@@ -38,7 +38,7 @@ class PlotAreaTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->getAxisY());
     }
 
-    public function testHashIndex()
+    public function testHashIndex(): void
     {
         $object = new PlotArea();
         $value = mt_rand(1, 100);
@@ -48,7 +48,7 @@ class PlotAreaTest extends TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testHeight()
+    public function testHeight(): void
     {
         $object = new PlotArea();
         $value = mt_rand(0, 100);
@@ -59,7 +59,7 @@ class PlotAreaTest extends TestCase
         $this->assertEquals($value, $object->getHeight());
     }
 
-    public function testOffsetX()
+    public function testOffsetX(): void
     {
         $object = new PlotArea();
         $value = mt_rand(0, 100);
@@ -70,7 +70,7 @@ class PlotAreaTest extends TestCase
         $this->assertEquals($value, $object->getOffsetX());
     }
 
-    public function testOffsetY()
+    public function testOffsetY(): void
     {
         $object = new PlotArea();
         $value = mt_rand(0, 100);
@@ -81,7 +81,7 @@ class PlotAreaTest extends TestCase
         $this->assertEquals($value, $object->getOffsetY());
     }
 
-    public function testType()
+    public function testType(): void
     {
         $object = new PlotArea();
 
@@ -89,7 +89,7 @@ class PlotAreaTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType', $object->getType());
     }
 
-    public function testTypeException()
+    public function testTypeException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Chart type has not been set.');
@@ -98,7 +98,7 @@ class PlotAreaTest extends TestCase
         $object->getType();
     }
 
-    public function testWidth()
+    public function testWidth(): void
     {
         $object = new PlotArea();
         $value = mt_rand(0, 100);

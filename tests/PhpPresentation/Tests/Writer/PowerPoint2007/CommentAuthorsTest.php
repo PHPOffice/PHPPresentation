@@ -9,7 +9,7 @@ class CommentAuthorsTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testComments()
+    public function testComments(): void
     {
         $expectedElement = '/p:cmAuthorLst/p:cmAuthor';
         $expectedName = 'Name';
@@ -30,13 +30,13 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testWithoutComment()
+    public function testWithoutComment(): void
     {
         $this->assertZipFileNotExists('ppt/commentAuthors.xml');
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testWithoutCommentAuthor()
+    public function testWithoutCommentAuthor(): void
     {
         $oComment = new Comment();
         $this->oPresentation->getActiveSlide()->addShape($oComment);
@@ -45,7 +45,7 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testWithSameAuthor()
+    public function testWithSameAuthor(): void
     {
         $expectedElement = '/p:cmAuthorLst/p:cmAuthor';
 

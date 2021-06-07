@@ -19,21 +19,26 @@ namespace PhpOffice\PhpPresentation\Style;
 
 class SchemeColor extends Color
 {
+    /**
+     * @var string
+     */
     protected $value;
 
     /**
      * @return string
      */
-    public function getValue()
+    public function getValue(): string
     {
         return $this->value;
     }
 
     /**
      * @param string $value
+     * @return self
      */
-    public function setValue($value)
+    public function setValue(string $value): self
     {
         $this->value = $value;
+        return $this;
     }
 }

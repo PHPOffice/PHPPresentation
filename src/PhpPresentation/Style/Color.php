@@ -46,7 +46,7 @@ class Color implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -74,7 +74,7 @@ class Color implements ComparableInterface
     /**
      * Set ARGB
      *
-     * @param  string                    $pValue
+     * @param string                    $pValue
      * @return \PhpOffice\PhpPresentation\Style\Color
      */
     public function setARGB($pValue = self::COLOR_BLACK)
@@ -116,7 +116,7 @@ class Color implements ComparableInterface
             $alpha = 100;
         }
         $alpha = round(($alpha / 100) * 255);
-        $alpha = dechex($alpha);
+        $alpha = dechex((int) $alpha);
         $alpha = str_pad($alpha, 2, '0', STR_PAD_LEFT);
         $this->argb = $alpha . substr($this->argb, 2);
         return $this;
@@ -139,8 +139,8 @@ class Color implements ComparableInterface
     /**
      * Set RGB
      *
-     * @param  string $pValue
-     * @param  string $pAlpha
+     * @param string $pValue
+     * @param string $pAlpha
      * @return \PhpOffice\PhpPresentation\Style\Color
      */
     public function setRGB($pValue = '000000', $pAlpha = 'FF')
@@ -161,7 +161,7 @@ class Color implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(
             $this->argb
@@ -175,9 +175,9 @@ class Color implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -188,10 +188,12 @@ class Color implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

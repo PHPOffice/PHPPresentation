@@ -27,14 +27,14 @@ use PHPUnit\Framework\TestCase;
  */
 class PlaceholderTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Placeholder(Placeholder::PH_TYPE_BODY);
         $this->assertEquals(Placeholder::PH_TYPE_BODY, $object->getType());
         $this->assertNull($object->getIdx());
     }
 
-    public function testIdx()
+    public function testIdx(): void
     {
         $value = mt_rand(0, 100);
 
@@ -44,7 +44,7 @@ class PlaceholderTest extends TestCase
         $this->assertEquals($value, $object->getIdx());
     }
 
-    public function testType()
+    public function testType(): void
     {
         $rcPlaceholder = new \ReflectionClass('PhpOffice\PhpPresentation\Shape\Placeholder');
         $arrayConstants = $rcPlaceholder->getConstants();

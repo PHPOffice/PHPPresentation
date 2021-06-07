@@ -18,6 +18,8 @@
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
+use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PHPUnit\Framework\TestCase;
@@ -32,7 +34,7 @@ class ODPresentationTest extends TestCase
     /**
      * Test can read
      */
-    public function testCanRead()
+    public function testCanRead(): void
     {
         $object = new ODPresentation();
 
@@ -49,7 +51,7 @@ class ODPresentationTest extends TestCase
         $this->assertTrue($object->canRead($file));
     }
 
-    public function testLoadFileNotExists()
+    public function testLoadFileNotExists(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
@@ -58,7 +60,7 @@ class ODPresentationTest extends TestCase
         $object->load('');
     }
 
-    public function testLoadFileBadFormat()
+    public function testLoadFileBadFormat(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\ODPresentation:');
@@ -68,7 +70,7 @@ class ODPresentationTest extends TestCase
         $object->load($file);
     }
 
-    public function testFileSupportsNotExists()
+    public function testFileSupportsNotExists(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
@@ -77,7 +79,7 @@ class ODPresentationTest extends TestCase
         $object->fileSupportsUnserializePhpPresentation('');
     }
 
-    public function testLoadFile01()
+    public function testLoadFile01(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_12.odp';
         $object = new ODPresentation();
@@ -98,8 +100,9 @@ class ODPresentationTest extends TestCase
         $arrayShape = (array) $oSlide1->getShapeCollection();
         $this->assertCount(2, $arrayShape);
         // Slide 1 : Shape 1
+        /** @var Gd $oShape */
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
+        $this->assertInstanceOf(Gd::class, $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -109,8 +112,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(45, $oShape->getShadow()->getDirection());
         $this->assertEquals(10, $oShape->getShadow()->getDistance());
         // Slide 1 : Shape 2
+        /** @var RichText $oShape */
         $oShape = $arrayShape[1];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        $this->assertInstanceOf(RichText::class, $oShape);
         $this->assertEquals(200, $oShape->getHeight());
         $this->assertEquals(600, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
@@ -144,8 +148,9 @@ class ODPresentationTest extends TestCase
         $arrayShape = (array) $oSlide2->getShapeCollection();
         $this->assertCount(3, $arrayShape);
         // Slide 2 : Shape 1
+        /** @var Gd $oShape */
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
+        $this->assertInstanceOf(Gd::class, $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -155,8 +160,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(45, $oShape->getShadow()->getDirection());
         $this->assertEquals(10, $oShape->getShadow()->getDistance());
         // Slide 2 : Shape 2
+        /** @var RichText $oShape */
         $oShape = $arrayShape[1];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        $this->assertInstanceOf(RichText::class, $oShape);
         $this->assertEquals(100, $oShape->getHeight());
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
@@ -175,8 +181,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(48, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         // Slide 2 : Shape 3
+        /** @var RichText $oShape */
         $oShape = $arrayShape[2];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        $this->assertInstanceOf(RichText::class, $oShape);
         $this->assertEquals(600, $oShape->getHeight());
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
@@ -241,8 +248,9 @@ class ODPresentationTest extends TestCase
         $arrayShape = (array) $oSlide2->getShapeCollection();
         $this->assertCount(3, $arrayShape);
         // Slide 3 : Shape 1
+        /** @var Gd $oShape */
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
+        $this->assertInstanceOf(Gd::class, $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -252,8 +260,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(45, $oShape->getShadow()->getDirection());
         $this->assertEquals(10, $oShape->getShadow()->getDistance());
         // Slide 3 : Shape 2
+        /** @var RichText $oShape */
         $oShape = $arrayShape[1];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        $this->assertInstanceOf(RichText::class, $oShape);
         $this->assertEquals(100, $oShape->getHeight());
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
@@ -272,8 +281,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(48, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         // Slide 3 : Shape 2
+        /** @var RichText $oShape */
         $oShape = $arrayShape[2];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        $this->assertInstanceOf(RichText::class, $oShape);
         $this->assertEquals(600, $oShape->getHeight());
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
@@ -398,8 +408,9 @@ class ODPresentationTest extends TestCase
         $arrayShape = (array) $oSlide3->getShapeCollection();
         $this->assertCount(3, $arrayShape);
         // Slide 4 : Shape 1
+        /** @var Gd $oShape */
         $oShape = $arrayShape[0];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd', $oShape);
+        $this->assertInstanceOf(Gd::class, $oShape);
         $this->assertEquals('PHPPresentation logo', $oShape->getName());
         $this->assertEquals('PHPPresentation logo', $oShape->getDescription());
         $this->assertEquals(36, $oShape->getHeight());
@@ -409,8 +420,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(45, $oShape->getShadow()->getDirection());
         $this->assertEquals(10, $oShape->getShadow()->getDistance());
         // Slide 4 : Shape 2
+        /** @var RichText $oShape */
         $oShape = $arrayShape[1];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        $this->assertInstanceOf(RichText::class, $oShape);
         $this->assertEquals(100, $oShape->getHeight());
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
@@ -429,8 +441,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(48, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oShape->getActiveParagraph()->getFont()->getColor()->getARGB());
         // Slide 4 : Shape 3
+        /** @var RichText $oShape */
         $oShape = $arrayShape[2];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        $this->assertInstanceOf(RichText::class, $oShape);
         $this->assertEquals(600, $oShape->getHeight());
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
@@ -452,8 +465,9 @@ class ODPresentationTest extends TestCase
         $oRichText = $arrayRichText[1];
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $oRichText);
         // Slide 4 : Shape 3 : Paragraph 3
+        /** @var RichText\Run $oRichText */
         $oRichText = $arrayRichText[2];
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $oRichText);
+        $this->assertInstanceOf(RichText\Run::class, $oRichText);
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getText());
         $this->assertFalse($oRichText->getFont()->isBold());
         $this->assertEquals(32, $oRichText->getFont()->getSize());
@@ -463,7 +477,7 @@ class ODPresentationTest extends TestCase
         //$this->assertEquals('PHPPresentation', $oRichText->getHyperlink()->getTooltip());
     }
 
-    public function testSlideName()
+    public function testSlideName(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/ODP_Slide_Name.odp';
         $object = new ODPresentation();
@@ -473,7 +487,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('MaDiapo', $oPhpPresentation->getSlide(0)->getName());
     }
 
-    public function testIssue00141()
+    public function testIssue00141(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_00141.odp';
         $object = new ODPresentation();
@@ -487,8 +501,9 @@ class ODPresentationTest extends TestCase
         $arrayShape = (array) $oSlide->getShapeCollection();
         $this->assertCount(2, $arrayShape);
         // Slide 1 : Shape 1
+        /** @var RichText $oShape */
         $oShape = reset($arrayShape);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $oShape);
+        $this->assertInstanceOf(RichText::class, $oShape);
         // Slide 1 : Shape 1 : Paragraph 1
         $oParagraph = $oShape->getParagraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $oParagraph);

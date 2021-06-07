@@ -29,7 +29,7 @@ class Pictures extends AbstractDecoratorWriter
             // Add background image slide
             $oBkgImage = $oSlide->getBackground();
             if ($oBkgImage instanceof Image) {
-                $this->getZip()->addFromString('Pictures/'.$oBkgImage->getIndexedFilename($keySlide), file_get_contents($oBkgImage->getPath()));
+                $this->getZip()->addFromString('Pictures/'.$oBkgImage->getIndexedFilename((string) $keySlide), file_get_contents($oBkgImage->getPath()));
             }
         }
 

@@ -9,20 +9,31 @@ abstract class AbstractDrawingAdapter extends AbstractGraphic
     /**
      * @return string
      */
-    abstract public function getContents();
+    abstract public function getContents(): string;
 
     /**
      * @return string
      */
-    abstract public function getExtension();
+    abstract public function getExtension(): string;
 
     /**
      * @return string
      */
-    abstract public function getIndexedFilename();
+    abstract public function getIndexedFilename(): string;
 
     /**
      * @return string
      */
-    abstract public function getMimeType();
+    abstract public function getMimeType(): string;
+
+    /**
+     * @return string
+     */
+    abstract public function getPath(): string;
+
+    /**
+     * @param string $path
+     * @return self
+     */
+    abstract public function setPath(string $path);
 }

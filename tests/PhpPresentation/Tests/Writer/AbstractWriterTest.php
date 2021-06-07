@@ -17,7 +17,10 @@
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Tests\Writer\AbstractWriter as TestAbstractWriter;
+use PhpOffice\PhpPresentation\Writer\AbstractWriter;
 use PHPUnit\Framework\TestCase;
 
 require 'AbstractWriter.php';
@@ -32,20 +35,22 @@ class AbstractWriterTest extends TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
-        $oStubWriter = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Writer\AbstractWriter');
-        $oStubZip = $this->getMockForAbstractClass('PhpOffice\Common\Adapter\Zip\ZipInterface');
+        /** @var AbstractWriter $oStubWriter */
+        $oStubWriter = $this->getMockForAbstractClass(AbstractWriter::class);
+        /** @var ZipInterface $oStubZip */
+        $oStubZip = $this->getMockForAbstractClass(ZipInterface::class);
 
         $this->assertNull($oStubWriter->getZipAdapter());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Writer\\AbstractWriter', $oStubWriter->setZipAdapter($oStubZip));
-        $this->assertInstanceOf('PhpOffice\\Common\\Adapter\\Zip\\ZipInterface', $oStubWriter->getZipAdapter());
+        $this->assertInstanceOf(AbstractWriter::class, $oStubWriter->setZipAdapter($oStubZip));
+        $this->assertInstanceOf(ZipInterface::class, $oStubWriter->getZipAdapter());
     }
 
     /**
      * Test all drawings method
      */
-    public function testAllDrawingsIncludesMasterSlides()
+    public function testAllDrawingsIncludesMasterSlides(): void
     {
         $presentation = new PhpPresentation();
 
@@ -56,7 +61,8 @@ class AbstractWriterTest extends TestCase
         $masterSlide = $masterSlides[0];
         $masterSlide->createDrawingShape();
 
-        $writer = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Tests\\Writer\\AbstractWriter');
+        /** @var TestAbstractWriter $writer */
+        $writer = $this->getMockForAbstractClass(TestAbstractWriter::class);
         $writer->setPhpPresentation($presentation);
 
         $drawings = $writer->allDrawings();

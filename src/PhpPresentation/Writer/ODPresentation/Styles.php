@@ -2,6 +2,7 @@
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
@@ -17,21 +18,21 @@ class Styles extends AbstractDecoratorWriter
     /**
      * Stores font styles draw:gradient nodes
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $arrayGradient = array();
     /**
      * Stores font styles draw:stroke-dash nodes
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $arrayStrokeDash = array();
 
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @return ZipInterface
      * @throws \Exception
      */
-    public function render()
+    public function render(): ZipInterface
     {
         $this->getZip()->addFromString('styles.xml', $this->writePart());
         return $this->getZip();
@@ -40,10 +41,10 @@ class Styles extends AbstractDecoratorWriter
     /**
      * Write Meta file to XML format
      *
-     * @return string        XML Output
+     * @return string XML Output
      * @throws \Exception
      */
-    protected function writePart()
+    protected function writePart(): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -168,7 +169,7 @@ class Styles extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param RichText $shape
      */
-    protected function writeRichTextStyle(XMLWriter $objWriter, RichText $shape)
+    protected function writeRichTextStyle(XMLWriter $objWriter, RichText $shape): void
     {
         $oFill = $shape->getFill();
         if ($oFill->getFillType() == Fill::FILL_GRADIENT_LINEAR || $oFill->getFillType() == Fill::FILL_GRADIENT_PATH) {
@@ -256,7 +257,7 @@ class Styles extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Table $shape
      */
-    protected function writeTableStyle(XMLWriter $objWriter, Table $shape)
+    protected function writeTableStyle(XMLWriter $objWriter, Table $shape): void
     {
         foreach ($shape->getRows() as $row) {
             foreach ($row->getCells() as $cell) {
@@ -275,7 +276,7 @@ class Styles extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Group $group
      */
-    protected function writeGroupStyle(XMLWriter $objWriter, Group $group)
+    protected function writeGroupStyle(XMLWriter $objWriter, Group $group): void
     {
         $shapes = $group->getShapeCollection();
         foreach ($shapes as $shape) {
@@ -292,7 +293,7 @@ class Styles extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Fill $oFill
      */
-    protected function writeGradientFill(XMLWriter $objWriter, Fill $oFill)
+    protected function writeGradientFill(XMLWriter $objWriter, Fill $oFill): void
     {
         $objWriter->startElement('draw:gradient');
         $objWriter->writeAttribute('draw:name', 'gradient_'.$oFill->getHashCode());
@@ -312,13 +313,13 @@ class Styles extends AbstractDecoratorWriter
      * Write the background image style
      * @param XMLWriter $objWriter
      * @param Image $oBkgImage
-     * @param $numSlide
+     * @param int $numSlide
      */
-    protected function writeBackgroundStyle(XMLWriter $objWriter, Image $oBkgImage, $numSlide)
+    protected function writeBackgroundStyle(XMLWriter $objWriter, Image $oBkgImage, int $numSlide): void
     {
         $objWriter->startElement('draw:fill-image');
-        $objWriter->writeAttribute('draw:name', 'background_'.$numSlide);
-        $objWriter->writeAttribute('xlink:href', 'Pictures/'.str_replace(' ', '_', $oBkgImage->getIndexedFilename($numSlide)));
+        $objWriter->writeAttribute('draw:name', 'background_'. (string) $numSlide);
+        $objWriter->writeAttribute('xlink:href', 'Pictures/'  .str_replace(' ', '_', $oBkgImage->getIndexedFilename((string) $numSlide)));
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');

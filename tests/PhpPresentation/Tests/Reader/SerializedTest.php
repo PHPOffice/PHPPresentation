@@ -30,7 +30,7 @@ class SerializedTest extends TestCase
     /**
      * Test can read
      */
-    public function testCanRead()
+    public function testCanRead(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
         $object = new Serialized();
@@ -38,7 +38,7 @@ class SerializedTest extends TestCase
         $this->assertTrue($object->canRead($file));
     }
 
-    public function testLoadFileNotExists()
+    public function testLoadFileNotExists(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
@@ -47,7 +47,7 @@ class SerializedTest extends TestCase
         $object->load('');
     }
 
-    public function testLoadFileBadFormat()
+    public function testLoadFileBadFormat(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized:');
@@ -57,7 +57,7 @@ class SerializedTest extends TestCase
         $object->load($file);
     }
 
-    public function testFileSupportsNotExists()
+    public function testFileSupportsNotExists(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
@@ -66,15 +66,19 @@ class SerializedTest extends TestCase
         $object->fileSupportsUnserializePhpPresentation('');
     }
 
-    public function testLoadSerializedFileNotExists()
+    public function testLoadSerializedFileNotExists(): void
     {
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(sprintf('The file PhpPresentation.xml in the serialized file %s is malformed', $file));
+
         $oArchive = new \ZipArchive();
         $oArchive->open($file, \ZipArchive::CREATE);
         $oArchive->addFromString('PhpPresentation.xml', '');
         $oArchive->close();
 
         $object = new Serialized();
-        $this->assertNull($object->load($file));
+        $object->load($file);
     }
 }

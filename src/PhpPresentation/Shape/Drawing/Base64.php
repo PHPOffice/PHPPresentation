@@ -17,7 +17,7 @@ class Base64 extends AbstractDrawingAdapter
     protected $uniqueName;
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $arrayMimeExtension = array(
         'image/jpeg' => 'jpg',
@@ -26,27 +26,33 @@ class Base64 extends AbstractDrawingAdapter
     );
 
     /**
+     * @var string
+     */
+    protected $path;
+
+    /**
      * Base64 constructor.
      */
     public function __construct()
     {
         parent::__construct();
         $this->uniqueName = md5(rand(0, 9999) . time() . rand(0, 9999));
+        $this->data = '';
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getData()
+    public function getData(): string
     {
         return $this->data;
     }
 
     /**
-     * @param mixed $data
-     * @return Base64
+     * @param string $data
+     * @return self
      */
-    public function setData($data)
+    public function setData(string $data): self
     {
         $this->data = $data;
         return $this;
@@ -55,7 +61,7 @@ class Base64 extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getContents()
+    public function getContents(): string
     {
         list(, $imageContents) = explode(';', $this->getData());
         list(, $imageContents) = explode(',', $imageContents);
@@ -66,7 +72,7 @@ class Base64 extends AbstractDrawingAdapter
      * @return string
      * @throws \Exception
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         list($data, ) = explode(';', $this->getData());
         list(, $mime) = explode(':', $data);
@@ -81,7 +87,7 @@ class Base64 extends AbstractDrawingAdapter
      * @return string
      * @throws \Exception
      */
-    public function getIndexedFilename()
+    public function getIndexedFilename(): string
     {
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();
     }
@@ -89,7 +95,7 @@ class Base64 extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         $sImage = $this->getContents();
         if (!function_exists('getimagesizefromstring')) {
@@ -99,5 +105,22 @@ class Base64 extends AbstractDrawingAdapter
             $image = getimagesizefromstring($sImage);
         }
         return image_type_to_mime_type($image[2]);
+    }
+
+    /**
+     * Get Path
+     *
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
     }
 }

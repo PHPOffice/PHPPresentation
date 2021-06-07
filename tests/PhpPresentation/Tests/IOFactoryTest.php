@@ -31,7 +31,7 @@ class IOFactoryTest extends TestCase
     /**
      * Test create writer
      */
-    public function testCreateWriter()
+    public function testCreateWriter(): void
     {
         $class = 'PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007';
 
@@ -41,7 +41,7 @@ class IOFactoryTest extends TestCase
     /**
      * Test create reader
      */
-    public function testCreateReader()
+    public function testCreateReader(): void
     {
         $class = 'PhpOffice\\PhpPresentation\\Reader\\ReaderInterface';
 
@@ -51,14 +51,14 @@ class IOFactoryTest extends TestCase
     /**
      * Test load class exception
      */
-    public function testLoadClassException()
+    public function testLoadClassException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('"" is not a valid reader');
         IOFactory::createReader();
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'serialized.phppt'));
     }
@@ -66,7 +66,7 @@ class IOFactoryTest extends TestCase
     /**
      * Test load class exception
      */
-    public function testLoadException()
+    public function testLoadException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.');

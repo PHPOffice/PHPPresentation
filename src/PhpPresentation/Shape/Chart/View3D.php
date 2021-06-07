@@ -55,7 +55,7 @@ class View3D implements ComparableInterface
     /**
      * Height Percent
      *
-     * @var int
+     * @var int|null
      */
     private $heightPercent = 100;
 
@@ -69,7 +69,7 @@ class View3D implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -93,7 +93,7 @@ class View3D implements ComparableInterface
     /**
      * Set Rotation X (-90 to 90)
      *
-     * @param  int                              $pValue
+     * @param int                              $pValue
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     public function setRotationX($pValue = 0)
@@ -116,7 +116,7 @@ class View3D implements ComparableInterface
     /**
      * Set Rotation Y (-90 to 90)
      *
-     * @param  int                              $pValue
+     * @param int                              $pValue
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     public function setRotationY($pValue = 0)
@@ -139,7 +139,7 @@ class View3D implements ComparableInterface
     /**
      * Set RightAngleAxes
      *
-     * @param  boolean                          $value
+     * @param boolean                          $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     public function setRightAngleAxes($value = true)
@@ -162,7 +162,7 @@ class View3D implements ComparableInterface
     /**
      * Set Perspective (0 to 100)
      *
-     * @param  int                              $value
+     * @param int                              $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     public function setPerspective($value = 30)
@@ -185,10 +185,10 @@ class View3D implements ComparableInterface
     /**
      * Set HeightPercent (5 to 500)
      *
-     * @param  int  $value
-     * @return $this
+     * @param int|null $value
+     * @return self
      */
-    public function setHeightPercent($value = 100)
+    public function setHeightPercent(?int $value = 100): self
     {
         $this->heightPercent = $value;
 
@@ -198,9 +198,9 @@ class View3D implements ComparableInterface
     /**
      * Get DepthPercent
      *
-     * @return int
+     * @return int|null
      */
-    public function getDepthPercent()
+    public function getDepthPercent(): ?int
     {
         return $this->depthPercent;
     }
@@ -208,7 +208,7 @@ class View3D implements ComparableInterface
     /**
      * Set DepthPercent (20 to 2000)
      *
-     * @param  int  $value
+     * @param int  $value
      * @return $this
      */
     public function setDepthPercent($value = 100)
@@ -223,7 +223,7 @@ class View3D implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->rotationX . $this->rotationY . ($this->rightAngleAxes ? 't' : 'f') . $this->perspective . $this->heightPercent . $this->depthPercent . __CLASS__);
     }
@@ -234,9 +234,9 @@ class View3D implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -247,10 +247,10 @@ class View3D implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
      * @return View3D
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
         return $this;

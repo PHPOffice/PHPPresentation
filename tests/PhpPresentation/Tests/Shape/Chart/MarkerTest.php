@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 class MarkerTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Marker();
 
@@ -35,17 +35,17 @@ class MarkerTest extends TestCase
         $this->assertEquals(5, $object->getSize());
     }
 
-    public function testSymbol()
+    public function testSymbol(): void
     {
         $object = new Marker();
 
-        $expected = array_rand(Marker::$arraySymbol);
+        $expected = Marker::$arraySymbol[array_rand(Marker::$arraySymbol)];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->setSymbol($expected));
         $this->assertEquals($expected, $object->getSymbol());
     }
 
-    public function testSize()
+    public function testSize(): void
     {
         $object = new Marker();
         $value = mt_rand(1, 100);

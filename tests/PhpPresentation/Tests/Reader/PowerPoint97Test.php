@@ -30,7 +30,7 @@ class PowerPoint97Test extends TestCase
     /**
      * Test can read
      */
-    public function testCanRead()
+    public function testCanRead(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
         $object = new PowerPoint97();
@@ -42,7 +42,7 @@ class PowerPoint97Test extends TestCase
     /**
      * Test cant read
      */
-    public function testCantRead()
+    public function testCantRead(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
         $object = new PowerPoint97();
@@ -50,7 +50,7 @@ class PowerPoint97Test extends TestCase
         $this->assertFalse($object->canRead($file));
     }
 
-    public function testLoadFileNotExists()
+    public function testLoadFileNotExists(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
@@ -59,7 +59,7 @@ class PowerPoint97Test extends TestCase
         $object->load('');
     }
 
-    public function testLoadFileBadFormat()
+    public function testLoadFileBadFormat(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97:');
@@ -69,7 +69,7 @@ class PowerPoint97Test extends TestCase
         $object->load($file);
     }
 
-    public function testFileSupportsNotExists()
+    public function testFileSupportsNotExists(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
@@ -78,7 +78,7 @@ class PowerPoint97Test extends TestCase
         $object->fileSupportsUnserializePhpPresentation('');
     }
 
-    public function testLoadFile01()
+    public function testLoadFile01(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
         $object = new PowerPoint97();
@@ -90,7 +90,7 @@ class PowerPoint97Test extends TestCase
         $this->assertCount(2, $oSlide->getShapeCollection());
     }
 
-    public function testLoadFile02()
+    public function testLoadFile02(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_02.ppt';
         $object = new PowerPoint97();
@@ -111,7 +111,7 @@ class PowerPoint97Test extends TestCase
         $this->assertCount(3, $oSlide->getShapeCollection());
     }
 
-    public function testLoadFile03()
+    public function testLoadFile03(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_03.ppt';
         $object = new PowerPoint97();
@@ -123,7 +123,7 @@ class PowerPoint97Test extends TestCase
         $this->assertCount(1, $oSlide->getShapeCollection());
     }
 
-    public function testLoadFile04()
+    public function testLoadFile04(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_04.ppt';
         $object = new PowerPoint97();

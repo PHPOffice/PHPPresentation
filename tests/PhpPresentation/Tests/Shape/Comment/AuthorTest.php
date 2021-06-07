@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AuthorTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Author();
 
@@ -36,7 +36,7 @@ class AuthorTest extends TestCase
         $this->assertNull($object->getInitials());
     }
 
-    public function testGetSetIndex()
+    public function testGetSetIndex(): void
     {
         $expectedVal = mt_rand(1, 100);
 
@@ -46,7 +46,7 @@ class AuthorTest extends TestCase
         $this->assertEquals($expectedVal, $object->getIndex());
     }
 
-    public function testGetSetInitials()
+    public function testGetSetInitials(): void
     {
         $expectedVal = 'AABBCCDD';
 
@@ -56,7 +56,7 @@ class AuthorTest extends TestCase
         $this->assertEquals($expectedVal, $object->getInitials());
     }
 
-    public function testGetSetName()
+    public function testGetSetName(): void
     {
         $expectedVal = 'AABBCCDD';
 

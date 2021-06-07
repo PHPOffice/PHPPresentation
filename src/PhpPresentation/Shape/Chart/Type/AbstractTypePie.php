@@ -34,17 +34,17 @@ class AbstractTypePie extends AbstractType
     /**
      * Explosion of the Pie
      *
-     * @var integer
+     * @var int
      */
     protected $explosion = 0;
 
     /**
      * Set explosion
      *
-     * @param integer $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypePie
+     * @param int $value
+     * @return self
      */
-    public function setExplosion($value = 0)
+    public function setExplosion(int $value = 0): self
     {
         $this->explosion = $value;
         return $this;
@@ -53,9 +53,9 @@ class AbstractTypePie extends AbstractType
     /**
      * Get orientation
      *
-     * @return string
+     * @return int
      */
-    public function getExplosion()
+    public function getExplosion(): int
     {
         return $this->explosion;
     }
@@ -65,7 +65,7 @@ class AbstractTypePie extends AbstractType
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         $hash = '';
         foreach ($this->getSeries() as $series) {

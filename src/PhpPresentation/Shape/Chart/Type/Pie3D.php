@@ -29,7 +29,7 @@ class Pie3D extends AbstractTypePie implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(parent::getHashCode() . __CLASS__);
     }

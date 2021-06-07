@@ -30,7 +30,7 @@ class Autoloader
      *
      * @return void
      */
-    public static function register()
+    public static function register(): void
     {
         spl_autoload_register(array(new self(), 'autoload'));
     }
@@ -40,7 +40,7 @@ class Autoloader
      *
      * @param string $class
      */
-    public static function autoload($class)
+    public static function autoload(string $class): void
     {
         $prefixLength = strlen(self::NAMESPACE_PREFIX);
         if (0 === strncmp(self::NAMESPACE_PREFIX, $class, $prefixLength)) {

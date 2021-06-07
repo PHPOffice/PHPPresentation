@@ -2,7 +2,10 @@
 
 namespace PhpOffice\PhpPresentation\Writer;
 
+use ArrayIterator;
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
@@ -13,7 +16,7 @@ abstract class AbstractWriter
     /**
      * Private unique hash table
      *
-     * @var \PhpOffice\PhpPresentation\HashTable
+     * @var HashTable
      */
     protected $oDrawingHashTable;
 
@@ -25,16 +28,16 @@ abstract class AbstractWriter
     protected $oPresentation;
 
     /**
-     * @var ZipInterface
+     * @var ZipInterface|null
      */
     protected $oZipAdapter;
 
     /**
      * Get drawing hash table
      *
-     * @return \PhpOffice\PhpPresentation\HashTable
+     * @return HashTable
      */
-    public function getDrawingHashTable()
+    public function getDrawingHashTable(): HashTable
     {
         return $this->oDrawingHashTable;
     }
@@ -45,7 +48,7 @@ abstract class AbstractWriter
      * @return PhpPresentation
      * @throws \Exception
      */
-    public function getPhpPresentation()
+    public function getPhpPresentation(): PhpPresentation
     {
         if (empty($this->oPresentation)) {
             throw new \Exception("No PhpPresentation assigned.");
@@ -56,9 +59,9 @@ abstract class AbstractWriter
     /**
      * Get PhpPresentation object
      *
-     * @param  PhpPresentation                       $pPhpPresentation PhpPresentation object
+     * @param PhpPresentation|null $pPhpPresentation PhpPresentation object
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\AbstractWriter
+     * @return self
      */
     public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
     {
@@ -69,18 +72,18 @@ abstract class AbstractWriter
 
     /**
      * @param ZipInterface $oZipAdapter
-     * @return $this
+     * @return self
      */
-    public function setZipAdapter(ZipInterface $oZipAdapter)
+    public function setZipAdapter(ZipInterface $oZipAdapter): self
     {
         $this->oZipAdapter = $oZipAdapter;
         return $this;
     }
 
     /**
-     * @return ZipInterface
+     * @return ZipInterface|null
      */
-    public function getZipAdapter()
+    public function getZipAdapter(): ?ZipInterface
     {
         return $this->oZipAdapter;
     }
@@ -88,10 +91,10 @@ abstract class AbstractWriter
     /**
      * Get an array of all drawings
      *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
+     * @return array<int, AbstractShape>
      * @throws \Exception
      */
-    protected function allDrawings()
+    protected function allDrawings(): array
     {
         // Get an array of all drawings
         $aDrawings  = array();
@@ -118,7 +121,11 @@ abstract class AbstractWriter
         return $aDrawings;
     }
 
-    private function iterateCollection(\ArrayIterator $oIterator)
+    /**
+     * @param ArrayIterator<int, AbstractShape> $oIterator
+     * @return array<int, AbstractShape>
+     */
+    private function iterateCollection(ArrayIterator $oIterator): array
     {
         $arrayReturn = array();
         if ($oIterator->count() <= 0) {

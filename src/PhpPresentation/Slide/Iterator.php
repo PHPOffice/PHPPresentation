@@ -17,19 +17,19 @@
 
 namespace PhpOffice\PhpPresentation\Slide;
 
+use IteratorIterator;
 use PhpOffice\PhpPresentation\PhpPresentation;
 
 /**
- * \PhpOffice\PhpPresentation\Slide\Iterator
- *
  * Used to iterate slides in PhpPresentation
  */
-class Iterator extends \IteratorIterator
+// @phpstan-ignore-next-line
+class Iterator extends IteratorIterator
 {
     /**
      * Presentation to iterate
      *
-     * @var \PhpOffice\PhpPresentation\PhpPresentation
+     * @var PhpPresentation
      */
     private $subject;
 
@@ -45,9 +45,8 @@ class Iterator extends \IteratorIterator
      *
      * @param PhpPresentation $subject
      */
-    public function __construct(PhpPresentation $subject = null)
+    public function __construct(PhpPresentation $subject)
     {
-        // Set subject
         $this->subject = $subject;
     }
 

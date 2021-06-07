@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Shape\RichText;
 
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
+use PhpOffice\PhpPresentation\Style\Font;
 
 /**
  * Rich text text element
@@ -39,7 +40,7 @@ class TextElement implements TextElementInterface
     /**
      * Hyperlink
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @var Hyperlink|null
      */
     protected $hyperlink;
 
@@ -67,7 +68,7 @@ class TextElement implements TextElementInterface
     /**
      * Set text
      *
-     * @param                                            $pText string   Text
+     * @param string $pText Text value
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */
     public function setText($pText = '')
@@ -80,30 +81,26 @@ class TextElement implements TextElementInterface
     /**
      * Get font
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return null|Font
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return null;
     }
 
     /**
-     * Has Hyperlink?
-     *
-     * @return boolean
+     * @return bool
      */
-    public function hasHyperlink()
+    public function hasHyperlink(): bool
     {
         return !is_null($this->hyperlink);
     }
 
     /**
-     * Get Hyperlink
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @return Hyperlink
      * @throws \Exception
      */
-    public function getHyperlink()
+    public function getHyperlink(): Hyperlink
     {
         if (is_null($this->hyperlink)) {
             $this->hyperlink = new Hyperlink();
@@ -115,7 +112,7 @@ class TextElement implements TextElementInterface
     /**
      * Set Hyperlink
      *
-     * @param  \PhpOffice\PhpPresentation\Shape\Hyperlink $pHyperlink
+     * @param Hyperlink|null $pHyperlink
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
      */
@@ -151,7 +148,7 @@ class TextElement implements TextElementInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->text . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }

@@ -27,7 +27,7 @@ class DocPropsApp extends AbstractDecoratorWriter
         $objWriter->writeElement('Application', 'Microsoft Office PowerPoint');
 
         // Slides
-        $objWriter->writeElement('Slides', $this->getPresentation()->getSlideCount());
+        $objWriter->writeElement('Slides', (string) $this->getPresentation()->getSlideCount());
 
         // ScaleCrop
         $objWriter->writeElement('ScaleCrop', 'false');

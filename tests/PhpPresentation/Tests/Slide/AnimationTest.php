@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation\Tests;
 
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\Slide\Animation;
 use PHPUnit\Framework\TestCase;
 
@@ -27,9 +28,10 @@ use PHPUnit\Framework\TestCase;
  */
 class AnimationTest extends TestCase
 {
-    public function testShape()
+    public function testShape(): void
     {
-        $oStub = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\AbstractShape');
+        /** @var AbstractShape $oStub */
+        $oStub = $this->getMockForAbstractClass(AbstractShape::class);
 
         $object = new Animation();
 

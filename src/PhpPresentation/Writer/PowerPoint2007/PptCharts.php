@@ -2,6 +2,7 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\PhpPresentation;
@@ -24,10 +25,10 @@ use PhpOffice\PhpPresentation\Style\Fill;
 class PptCharts extends AbstractDecoratorWriter
 {
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     * @return ZipInterface
      * @throws \Exception
      */
-    public function render()
+    public function render(): ZipInterface
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
@@ -53,11 +54,11 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write chart to XML format
      *
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart $chart
-     * @return string                    XML Output
+     * @param Chart $chart
+     * @return string XML Output
      * @throws \Exception
      */
-    public function writeChart(Chart $chart)
+    public function writeChart(Chart $chart): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -201,13 +202,13 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write chart to XML format
      *
-     * @param  PhpPresentation $presentation
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart $chart
-     * @param  string $tempName
-     * @return string                    String output
+     * @param PhpPresentation $presentation
+     * @param Chart $chart
+     * @param string $tempName
+     * @return string String output
      * @throws \Exception
      */
-    public function writeSpreadsheet(PhpPresentation $presentation, $chart, $tempName)
+    public function writeSpreadsheet(PhpPresentation $presentation, Chart $chart, string $tempName): string
     {
         // Need output?
         if (!$chart->hasIncludedSpreadsheet()) {
@@ -272,11 +273,11 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write element with value attribute
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param XMLWriter $objWriter XML Writer
      * @param string $elementName
      * @param string $value
      */
-    protected function writeElementWithValAttribute($objWriter, $elementName, $value)
+    protected function writeElementWithValAttribute(XMLWriter $objWriter, string $elementName, string $value): void
     {
         $objWriter->startElement($elementName);
         $objWriter->writeAttribute('val', $value);
@@ -286,12 +287,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write single value or reference
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param XMLWriter $objWriter XML Writer
      * @param boolean $isReference
-     * @param mixed $value
+     * @param string $value
      * @param string $reference
      */
-    protected function writeSingleValueOrReference($objWriter, $isReference, $value, $reference)
+    protected function writeSingleValueOrReference(XMLWriter $objWriter, bool $isReference, string $value, string $reference): void
     {
         if (!$isReference) {
             // Value
@@ -318,20 +319,17 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write series value or reference
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param XMLWriter $objWriter XML Writer
      * @param boolean $isReference
-     * @param mixed $values
+     * @param array<int, mixed> $values
      * @param string $reference
      */
-    protected function writeMultipleValuesOrReference($objWriter, $isReference, $values, $reference)
+    protected function writeMultipleValuesOrReference(XMLWriter $objWriter, bool $isReference, array $values, string $reference): void
     {
         // c:strLit / c:numLit
         // c:strRef / c:numRef
         $referenceType = ($isReference ? 'Ref' : 'Lit');
-        $dataType = 'str';
-        if (is_int($values[0]) || is_float($values[0])) {
-            $dataType = 'num';
-        }
+        $dataType = is_numeric($values[0]) ? 'num' : 'str';
         $objWriter->startElement('c:' . $dataType . $referenceType);
 
         $numValues = count($values);
@@ -379,11 +377,11 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Title
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Title $subject
+     * @param XMLWriter $objWriter XML Writer
+     * @param Title $subject
      * @throws \Exception
      */
-    protected function writeTitle(XMLWriter $objWriter, Title $subject)
+    protected function writeTitle(XMLWriter $objWriter, Title $subject): void
     {
         // c:title
         $objWriter->startElement('c:title');
@@ -477,12 +475,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Plot Area
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\PlotArea $subject
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart $chart
+     * @param XMLWriter $objWriter XML Writer
+     * @param PlotArea $subject
+     * @param Chart $chart
      * @throws \Exception
      */
-    protected function writePlotArea(XMLWriter $objWriter, PlotArea $subject, Chart $chart)
+    protected function writePlotArea(XMLWriter $objWriter, PlotArea $subject, Chart $chart): void
     {
         // c:plotArea
         $objWriter->startElement('c:plotArea');
@@ -528,11 +526,11 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Legend
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Legend $subject
+     * @param XMLWriter $objWriter XML Writer
+     * @param Chart\Legend $subject
      * @throws \Exception
      */
-    protected function writeLegend(XMLWriter $objWriter, Legend $subject)
+    protected function writeLegend(XMLWriter $objWriter, Legend $subject): void
     {
         // c:legend
         $objWriter->startElement('c:legend');
@@ -627,11 +625,11 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Layout
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  mixed $subject
+     * @param XMLWriter $objWriter XML Writer
+     * @param Legend|PlotArea|Title $subject
      * @throws \Exception
      */
-    protected function writeLayout(XMLWriter $objWriter, $subject)
+    protected function writeLayout(XMLWriter $objWriter, $subject): void
     {
         // c:layout
         $objWriter->startElement('c:layout');
@@ -683,12 +681,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Area
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Area $subject
-     * @param  boolean $includeSheet
+     * @param XMLWriter $objWriter XML Writer
+     * @param Chart\Type\Area $subject
+     * @param boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypeArea(XMLWriter $objWriter, Area $subject, $includeSheet = false)
+    protected function writeTypeArea(XMLWriter $objWriter, Area $subject, bool $includeSheet = false): void
     {
         // c:lineChart
         $objWriter->startElement('c:areaChart');
@@ -786,12 +784,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Bar
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar $subject
-     * @param  boolean $includeSheet
+     * @param XMLWriter $objWriter XML Writer
+     * @param Chart\Type\Bar $subject
+     * @param boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, $includeSheet = false)
+    protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, bool $includeSheet = false): void
     {
         // c:barChart
         $objWriter->startElement('c:barChart');
@@ -1004,12 +1002,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Bar3D
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D $subject
-     * @param  boolean $includeSheet
+     * @param XMLWriter $objWriter XML Writer
+     * @param Chart\Type\Bar3D $subject
+     * @param boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, $includeSheet = false)
+    protected function writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, bool $includeSheet = false): void
     {
         // c:bar3DChart
         $objWriter->startElement('c:bar3DChart');
@@ -1198,12 +1196,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Pie
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut $subject
-     * @param  boolean $includeSheet
+     * @param XMLWriter $objWriter XML Writer
+     * @param Doughnut $subject
+     * @param boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypeDoughnut(XMLWriter $objWriter, Doughnut $subject, $includeSheet = false)
+    protected function writeTypeDoughnut(XMLWriter $objWriter, Doughnut $subject, bool $includeSheet = false): void
     {
         // c:pieChart
         $objWriter->startElement('c:doughnutChart');
@@ -1272,83 +1270,85 @@ class PptCharts extends AbstractDecoratorWriter
             ++$seriesIndex;
         }
 
-        // c:dLbls
-        $objWriter->startElement('c:dLbls');
+        if (isset($series) && is_object($series) && $series instanceof Chart\Series) {
+            // c:dLbls
+            $objWriter->startElement('c:dLbls');
 
-        $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
-        $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
-        $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
-        $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
-        $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
-        $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
-        $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
-        if ($series->hasDlblNumFormat()) {
-            //c:numFmt
-            $objWriter->startElement('c:numFmt');
-            $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
-            $objWriter->writeAttribute('sourceLinked', '0');
+            if ($series->hasDlblNumFormat()) {
+                //c:numFmt
+                $objWriter->startElement('c:numFmt');
+                $objWriter->writeAttribute('formatCode', $series->getDlblNumFormat());
+                $objWriter->writeAttribute('sourceLinked', '0');
+                $objWriter->endElement();
+            }
+
+            // c:dLbls\c:txPr
+            $objWriter->startElement('c:txPr');
+            $objWriter->writeElement('a:bodyPr', null);
+            $objWriter->writeElement('a:lstStyle', null);
+
+            // c:dLbls\c:txPr\a:p
+            $objWriter->startElement('a:p');
+
+            // c:dLbls\c:txPr\a:p\a:pPr
+            $objWriter->startElement('a:pPr');
+
+            // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr
+            $objWriter->startElement('a:defRPr');
+            $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
+            $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
+            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
+            $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
+            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
+            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+
+            // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:solidFill
+            $objWriter->startElement('a:solidFill');
+            $this->writeColor($objWriter, $series->getFont()->getColor());
+            $objWriter->endElement();
+
+            // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:latin
+            $objWriter->startElement('a:latin');
+            $objWriter->writeAttribute('typeface', $series->getFont()->getName());
+            $objWriter->endElement();
+
+            // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\
+            $objWriter->endElement();
+            // c:dLbls\c:txPr\a:p\a:pPr\
+            $objWriter->endElement();
+
+            // c:dLbls\c:txPr\a:p\a:endParaRPr
+            $objWriter->startElement('a:endParaRPr');
+            $objWriter->writeAttribute('lang', 'en-US');
+            $objWriter->writeAttribute('dirty', '0');
+            $objWriter->endElement();
+
+            // c:dLbls\c:txPr\a:p\
+            $objWriter->endElement();
+            // c:dLbls\c:txPr\
+            $objWriter->endElement();
+
+            $separator = $series->getSeparator();
+            if (!empty($separator) && $separator != PHP_EOL) {
+                // c:dLbls\c:separator
+                $objWriter->writeElement('c:separator', $separator);
+            }
+
+            // c:dLbls\
             $objWriter->endElement();
         }
 
-        // c:dLbls\c:txPr
-        $objWriter->startElement('c:txPr');
-        $objWriter->writeElement('a:bodyPr', null);
-        $objWriter->writeElement('a:lstStyle', null);
-
-        // c:dLbls\c:txPr\a:p
-        $objWriter->startElement('a:p');
-
-        // c:dLbls\c:txPr\a:p\a:pPr
-        $objWriter->startElement('a:pPr');
-
-        // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr
-        $objWriter->startElement('a:defRPr');
-        $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
-        $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-        $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
-        $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
-        $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-        $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-        $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
-
-        // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:solidFill
-        $objWriter->startElement('a:solidFill');
-        $this->writeColor($objWriter, $series->getFont()->getColor());
-        $objWriter->endElement();
-
-        // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:latin
-        $objWriter->startElement('a:latin');
-        $objWriter->writeAttribute('typeface', $series->getFont()->getName());
-        $objWriter->endElement();
-
-        // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\
-        $objWriter->endElement();
-        // c:dLbls\c:txPr\a:p\a:pPr\
-        $objWriter->endElement();
-
-        // c:dLbls\c:txPr\a:p\a:endParaRPr
-        $objWriter->startElement('a:endParaRPr');
-        $objWriter->writeAttribute('lang', 'en-US');
-        $objWriter->writeAttribute('dirty', '0');
-        $objWriter->endElement();
-
-        // c:dLbls\c:txPr\a:p\
-        $objWriter->endElement();
-        // c:dLbls\c:txPr\
-        $objWriter->endElement();
-
-        $separator = $series->getSeparator();
-        if (!empty($separator) && $separator != PHP_EOL) {
-            // c:dLbls\c:separator
-            $objWriter->writeElement('c:separator', $separator);
-        }
-
-        // c:dLbls\
-        $objWriter->endElement();
-
         $this->writeElementWithValAttribute($objWriter, 'c:firstSliceAng', '0');
-        $this->writeElementWithValAttribute($objWriter, 'c:holeSize', $subject->getHoleSize());
+        $this->writeElementWithValAttribute($objWriter, 'c:holeSize', (string) $subject->getHoleSize());
 
         $objWriter->endElement();
     }
@@ -1356,12 +1356,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Pie
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Pie $subject
-     * @param  boolean $includeSheet
+     * @param XMLWriter $objWriter XML Writer
+     * @param Pie $subject
+     * @param boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypePie(XMLWriter $objWriter, Pie $subject, $includeSheet = false)
+    protected function writeTypePie(XMLWriter $objWriter, Pie $subject, bool $includeSheet = false): void
     {
         // c:pieChart
         $objWriter->startElement('c:pieChart');
@@ -1522,12 +1522,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Pie3D
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D $subject
-     * @param  boolean $includeSheet
+     * @param XMLWriter $objWriter XML Writer
+     * @param Pie3D $subject
+     * @param boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, $includeSheet = false)
+    protected function writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, bool $includeSheet = false): void
     {
         // c:pie3DChart
         $objWriter->startElement('c:pie3DChart');
@@ -1682,12 +1682,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Line
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Line $subject
-     * @param  boolean $includeSheet
+     * @param XMLWriter $objWriter XML Writer
+     * @param Line $subject
+     * @param boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypeLine(XMLWriter $objWriter, Line $subject, $includeSheet = false)
+    protected function writeTypeLine(XMLWriter $objWriter, Line $subject, bool $includeSheet = false): void
     {
         // c:lineChart
         $objWriter->startElement('c:lineChart');
@@ -1852,12 +1852,12 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write Type Scatter
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter $subject
-     * @param  boolean $includeSheet
+     * @param XMLWriter $objWriter XML Writer
+     * @param Chart\Type\Scatter $subject
+     * @param boolean $includeSheet
      * @throws \Exception
      */
-    protected function writeTypeScatter(XMLWriter $objWriter, Scatter $subject, $includeSheet = false)
+    protected function writeTypeScatter(XMLWriter $objWriter, Scatter $subject, bool $includeSheet = false): void
     {
         // c:scatterChart
         $objWriter->startElement('c:scatterChart');
@@ -2031,11 +2031,11 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write chart relationships to XML format
      *
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart $pChart
-     * @return string                    XML Output
+     * @param Chart $pChart
+     * @return string XML Output
      * @throws \Exception
      */
-    public function writeChartRelationships(Chart $pChart)
+    public function writeChartRelationships(Chart $pChart): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -2062,7 +2062,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Chart\Marker $oMarker
      */
-    protected function writeSeriesMarker(XMLWriter $objWriter, Chart\Marker $oMarker)
+    protected function writeSeriesMarker(XMLWriter $objWriter, Chart\Marker $oMarker): void
     {
         // c:marker
         $objWriter->startElement('c:marker');
@@ -2096,11 +2096,11 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * @param XMLWriter $objWriter
      * @param Chart\Axis $oAxis
-     * @param $typeAxis
+     * @param string $typeAxis
      * @param Chart\Type\AbstractType $typeChart
      * @throws \Exception
      */
-    protected function writeAxis(XMLWriter $objWriter, Chart\Axis $oAxis, $typeAxis, Chart\Type\AbstractType $typeChart)
+    protected function writeAxis(XMLWriter $objWriter, Chart\Axis $oAxis, string $typeAxis, Chart\Type\AbstractType $typeChart): void
     {
         if ($typeAxis != Chart\Axis::AXIS_X && $typeAxis != Chart\Axis::AXIS_Y) {
             return;
@@ -2344,7 +2344,7 @@ class PptCharts extends AbstractDecoratorWriter
      * @param Gridlines $oGridlines
      * @throws \Exception
      */
-    protected function writeAxisGridlines(XMLWriter $objWriter, Gridlines $oGridlines)
+    protected function writeAxisGridlines(XMLWriter $objWriter, Gridlines $oGridlines): void
     {
         // c:spPr
         $objWriter->startElement('c:spPr');

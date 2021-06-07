@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ChartTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Chart();
 
@@ -38,7 +38,7 @@ class ChartTest extends TestCase
     }
 
 
-    public function testClone()
+    public function testClone(): void
     {
         $object = new Chart();
 
@@ -51,7 +51,7 @@ class ChartTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $oClone->getView3D());
     }
 
-    public function testIncludeSpreadsheet()
+    public function testIncludeSpreadsheet(): void
     {
         $object = new Chart();
 

@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
+use PhpOffice\PhpPresentation\PhpPresentation;
+
 /**
  * Reader interface
  */
@@ -25,17 +27,17 @@ interface ReaderInterface
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
      *
-     * @param  string  $pFilename
+     * @param string  $pFilename
      * @return boolean
      */
-    public function canRead($pFilename);
+    public function canRead(string $pFilename): bool;
 
     /**
      * Loads PhpPresentation from file
      *
-     * @param  string    $pFilename
-     * @return \PhpOffice\PhpPresentation\PhpPresentation
+     * @param string    $pFilename
+     * @return PhpPresentation
      * @throws \Exception
      */
-    public function load($pFilename);
+    public function load(string $pFilename): PhpPresentation;
 }

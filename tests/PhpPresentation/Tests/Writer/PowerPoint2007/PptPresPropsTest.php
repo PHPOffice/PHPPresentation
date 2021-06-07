@@ -8,7 +8,7 @@ class PptPresPropsTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testRender()
+    public function testRender(): void
     {
         $this->assertZipFileExists('ppt/presProps.xml');
         $element = '/p:presentationPr/p:extLst/p:ext';
@@ -17,7 +17,7 @@ class PptPresPropsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testLoopContinuously()
+    public function testLoopContinuously(): void
     {
         $this->assertZipFileExists('ppt/presProps.xml');
         $element = '/p:presentationPr/p:showPr';

@@ -42,23 +42,21 @@ abstract class AbstractType implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Data
-     *
-     * @var array
+     * @var array<int, Series>
      */
-    private $data = array();
+    private $series = array();
 
     /**
      * Has Axis X?
      *
      * @return boolean
      */
-    public function hasAxisX()
+    public function hasAxisX(): bool
     {
         return $this->hasAxisX;
     }
@@ -68,7 +66,7 @@ abstract class AbstractType implements ComparableInterface
      *
      * @return boolean
      */
-    public function hasAxisY()
+    public function hasAxisY(): bool
     {
         return $this->hasAxisY;
     }
@@ -79,9 +77,9 @@ abstract class AbstractType implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -92,10 +90,10 @@ abstract class AbstractType implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
      * @return AbstractType
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
         return $this;
@@ -104,34 +102,34 @@ abstract class AbstractType implements ComparableInterface
     /**
      * Add Series
      *
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Series $value
+     * @param Series $value
      * @return $this
      */
     public function addSeries(Series $value)
     {
-        $this->data[] = $value;
+        $this->series[] = $value;
         return $this;
     }
 
     /**
      * Get Series
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series[]
+     * @return array<int, Series>
      */
-    public function getSeries()
+    public function getSeries(): array
     {
-        return $this->data;
+        return $this->series;
     }
 
     /**
      * Set Series
      *
-     * @param  array $value Array of \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param array<int, Series> $series
      * @return $this
      */
-    public function setSeries($value = array())
+    public function setSeries(array $series = array())
     {
-        $this->data = $value;
+        $this->series = $series;
         return $this;
     }
 
@@ -139,8 +137,9 @@ abstract class AbstractType implements ComparableInterface
      * Get Data
      *
      * @deprecated getSeries
+     * @return array<int, Series>
      */
-    public function getData()
+    public function getData(): array
     {
         return $this->getSeries();
     }
@@ -149,10 +148,10 @@ abstract class AbstractType implements ComparableInterface
      * Set Data
      *
      * @deprecated setSeries
-     * @param array $value
+     * @param array<int, Series> $value
      * @return AbstractType
      */
-    public function setData($value = array())
+    public function setData(array $value = array())
     {
         return $this->setSeries($value);
     }
@@ -163,9 +162,9 @@ abstract class AbstractType implements ComparableInterface
     public function __clone()
     {
         $arrayClone = array();
-        foreach ($this->data as $itemSeries) {
+        foreach ($this->series as $itemSeries) {
             $arrayClone[] = clone $itemSeries;
         }
-        $this->data = $arrayClone;
+        $this->series = $arrayClone;
     }
 }

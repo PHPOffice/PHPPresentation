@@ -836,6 +836,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::TITLE_SLIDE
         $this->layouts[1] = array(
+            'id' => 1,
             'masterid'  => 1,
             'name'      => Layout::TITLE_SLIDE,
             'body'      => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1076,6 +1077,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::TITLE_AND_CONTENT
         $this->layouts[2] = array(
+            'id' => 2,
             'masterid'  => 1,
             'name'      => Layout::TITLE_AND_CONTENT,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1244,6 +1246,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::SECTION_HEADER
         $this->layouts[3] = array(
+            'id' => 3,
             'masterid'  => 1,
             'name'      => Layout::SECTION_HEADER,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1488,6 +1491,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::TWO_CONTENT
         $this->layouts[4] = array(
+            'id' => 4,
             'masterid'  => 1,
             'name'      => Layout::TWO_CONTENT,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -1774,6 +1778,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::COMPARISON
         $this->layouts[5] = array(
+            'id' => 5,
             'masterid'  => 1,
             'name'      => Layout::COMPARISON,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2194,6 +2199,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::TITLE_ONLY
         $this->layouts[6] = array(
+            'id' => 6,
             'masterid'  => 1,
             'name'      => Layout::TITLE_ONLY,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2310,6 +2316,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::BLANK
         $this->layouts[7] = array(
+            'id' => 7,
             'masterid'  => 1,
             'name'      => Layout::BLANK,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2403,6 +2410,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::CONTENT_WITH_CAPTION
         $this->layouts[8] = array(
+            'id' => 8,
             'masterid'  => 1,
             'name'      => Layout::CONTENT_WITH_CAPTION,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2678,6 +2686,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::PICTURE_WITH_CAPTION
         $this->layouts[9] = array(
+            'id' => 9,
             'masterid'  => 1,
             'name'      => Layout::PICTURE_WITH_CAPTION,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -2929,6 +2938,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::TITLE_AND_VERTICAL_TEXT
         $this->layouts[10] = array(
+            'id' => 10,
             'masterid'  => 1,
             'name'      => Layout::TITLE_AND_VERTICAL_TEXT,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
@@ -3097,6 +3107,7 @@ class PackDefault extends AbstractLayoutPack
 
         // Layouts - Layout::VERTICAL_TITLE_AND_TEXT
         $this->layouts[11] = array(
+            'id' => 11,
             'masterid'  => 1,
             'name'      => Layout::VERTICAL_TITLE_AND_TEXT,
             'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>

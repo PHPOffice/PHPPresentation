@@ -27,67 +27,67 @@ class Placeholder
     public const PH_TYPE_FOOTER = 'ftr';
     public const PH_TYPE_DATETIME = 'dt';
     public const PH_TYPE_SLIDENUM = 'sldNum';
+
     /**
-     * hasCustomPrompt
      * Indicates whether the placeholder should have a customer prompt.
      *
      * @var bool
      */
     protected $hasCustomPrompt;
+
     /**
-     * idx
      * Specifies the index of the placeholder. This is used when applying templates or changing layouts to
      * match a placeholder on one template or master to another.
      *
-     * @var int
+     * @var int|null
      */
     protected $idx;
+
     /**
-     * type
      * Specifies what content type the placeholder is to contains
+     * @var string
      */
     protected $type;
 
     /**
-     * Placeholder constructor.
-     * @param $type
+     * @param string $type
      */
-    public function __construct($type)
+    public function __construct(string $type)
     {
         $this->type = $type;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
     /**
-     * @param mixed $type
-     * @return Placeholder
+     * @param string $type
+     * @return self
      */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getIdx()
+    public function getIdx(): ?int
     {
         return $this->idx;
     }
 
     /**
      * @param int $idx
-     * @return Placeholder
+     * @return self
      */
-    public function setIdx($idx)
+    public function setIdx(int $idx): self
     {
         $this->idx = $idx;
         return $this;

@@ -32,7 +32,7 @@ interface TextElementInterface
     /**
      * Set text
      *
-     * @param                                            $pText string   Text
+     * @param string $pText Text value
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */
     public function setText($pText = '');
@@ -60,5 +60,5 @@ interface TextElementInterface
      *
      * @return string Hash code
      */
-    public function getHashCode();
+    public function getHashCode(): string;
 }

@@ -27,7 +27,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AbstractGraphicTest extends TestCase
 {
-    public function testWidthAndHeight()
+    public function testWidthAndHeight(): void
     {
         $min = 10;
         $max = 20;
@@ -60,7 +60,7 @@ class AbstractGraphicTest extends TestCase
         $this->assertEquals($min, $stub->getHeight());
     }
 
-    public function testWidthAndHeight2()
+    public function testWidthAndHeight2(): void
     {
         $min = 10;
         $max = 20;

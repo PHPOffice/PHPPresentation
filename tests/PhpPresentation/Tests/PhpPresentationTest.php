@@ -33,7 +33,7 @@ class PhpPresentationTest extends TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new PhpPresentation();
         $slide = $object->getSlide();
@@ -48,7 +48,7 @@ class PhpPresentationTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Iterator', $object->getSlideIterator());
     }
 
-    public function testProperties()
+    public function testProperties(): void
     {
         $object = new PhpPresentation();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
@@ -61,7 +61,7 @@ class PhpPresentationTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
     }
 
-    public function testPresentationProperties()
+    public function testPresentationProperties(): void
     {
         $object = new PhpPresentation();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->getPresentationProperties());
@@ -72,7 +72,7 @@ class PhpPresentationTest extends TestCase
     /**
      * Test add external slide
      */
-    public function testAddExternalSlide()
+    public function testAddExternalSlide(): void
     {
         $origin = new PhpPresentation();
         $slide = $origin->getSlide();
@@ -85,7 +85,7 @@ class PhpPresentationTest extends TestCase
     /**
      * Test copy presentation
      */
-    public function testCopy()
+    public function testCopy(): void
     {
         $object = new PhpPresentation();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->copy());
@@ -94,7 +94,7 @@ class PhpPresentationTest extends TestCase
     /**
      * Test remove slide by index exception
      */
-    public function testRemoveSlideByIndexException()
+    public function testRemoveSlideByIndexException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Slide index is out of bounds.');
@@ -106,7 +106,7 @@ class PhpPresentationTest extends TestCase
     /**
      * Test get slide exception
      */
-    public function testGetSlideException()
+    public function testGetSlideException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Slide index is out of bounds.');
@@ -118,7 +118,7 @@ class PhpPresentationTest extends TestCase
     /**
      * Test set active slide index exception
      */
-    public function testSetActiveSlideIndexException()
+    public function testSetActiveSlideIndexException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Active slide index is out of bounds.');
@@ -130,7 +130,7 @@ class PhpPresentationTest extends TestCase
     /**
      * @deprecated
      */
-    public function testMarkAsFinal()
+    public function testMarkAsFinal(): void
     {
         $object = new PhpPresentation();
         $this->assertFalse($object->isMarkedAsFinal());
@@ -145,7 +145,7 @@ class PhpPresentationTest extends TestCase
     /**
      * @deprecated
      */
-    public function testZoom()
+    public function testZoom(): void
     {
         $object = new PhpPresentation();
         $this->assertEquals(1, $object->getZoom());

@@ -38,10 +38,13 @@ class ColorMap
     /**
      * Mapping - Stores the mapping betweenSlide and theme
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $mapping = array();
 
+    /**
+     * @var array<string, string>
+     */
     public static $mappingDefault = array(
         self::COLOR_BG1 => 'lt1',
         self::COLOR_TX1 => 'dk1',
@@ -71,9 +74,9 @@ class ColorMap
      *
      * @param string $item
      * @param string $newThemeColor
-     * @return ColorMap
+     * @return self
      */
-    public function changeColor($item, $newThemeColor)
+    public function changeColor(string $item, string $newThemeColor): self
     {
         $this->mapping[$item] = $newThemeColor;
         return $this;
@@ -82,10 +85,10 @@ class ColorMap
     /**
      * Store a new map. For use with the reader
      *
-     * @param array $arrayMapping
-     * @return ColorMap
+     * @param array<string, string> $arrayMapping
+     * @return self
      */
-    public function setMapping(array $arrayMapping = array())
+    public function setMapping(array $arrayMapping = array()): self
     {
         $this->mapping = $arrayMapping;
         return $this;
@@ -94,9 +97,9 @@ class ColorMap
     /**
      * Get the whole mapping as an array
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function getMapping()
+    public function getMapping(): array
     {
         return $this->mapping;
     }

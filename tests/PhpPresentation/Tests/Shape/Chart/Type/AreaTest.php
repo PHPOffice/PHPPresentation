@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AreaTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Area();
 
@@ -46,7 +46,7 @@ class AreaTest extends TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Area();
 
@@ -54,7 +54,7 @@ class AreaTest extends TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 

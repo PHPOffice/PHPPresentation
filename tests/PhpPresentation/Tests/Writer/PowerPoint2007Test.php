@@ -4,6 +4,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
 
 /**
  * Test class for PowerPoint2007
@@ -17,7 +18,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     /**
      * Test create new instance
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $objectPrefix = 'PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\';
 
@@ -31,7 +32,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     /**
      * Test save
      */
-    public function testSave()
+    public function testSave(): void
     {
         $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');
 
@@ -46,7 +47,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     /**
      * Test save with empty filename
      */
-    public function testSaveEmptyException()
+    public function testSaveEmptyException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Filename is empty');
@@ -58,7 +59,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     /**
      * Test save with empty assignation
      */
-    public function testSaveUnassignedException()
+    public function testSaveUnassignedException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
@@ -70,7 +71,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     /**
      * Test get PhpPresentation exception
      */
-    public function testGetPhpPresentationException()
+    public function testGetPhpPresentationException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
@@ -82,7 +83,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     /**
      * Test disk caching
      */
-    public function testDiskCaching()
+    public function testDiskCaching(): void
     {
         $object = new PowerPoint2007($this->oPresentation);
         $this->assertFalse($object->hasDiskCaching());
@@ -99,7 +100,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     /**
      * Test set/get disk caching exception
      */
-    public function testCachingException()
+    public function testCachingException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Directory does not exist: foo');
@@ -112,20 +113,21 @@ class PowerPoint2007Test extends PhpPresentationTestCase
      * Test LayoutPack
      * @deprecated 0.7
      */
-    public function testLayoutPack()
+    public function testLayoutPack(): void
     {
-        $oLayoutPack = $this->getMockBuilder('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack')->getMock();
+        /** @var AbstractLayoutPack $oLayoutPack */
+        $oLayoutPack = $this->getMockBuilder(AbstractLayoutPack::class)->getMock();
 
         $object = new PowerPoint2007();
 
-        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack", $object->getLayoutPack());
+        $this->assertInstanceOf(AbstractLayoutPack::class, $object->getLayoutPack());
         $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007", $object->setLayoutPack());
         $this->assertNull($object->getLayoutPack());
         $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007", $object->setLayoutPack($oLayoutPack));
-        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack", $object->getLayoutPack());
+        $this->assertInstanceOf(AbstractLayoutPack::class, $object->getLayoutPack());
     }
 
-    public function testZoom()
+    public function testZoom(): void
     {
         $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx');
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'n', 100);
@@ -148,7 +150,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testFeatureThumbnail()
+    public function testFeatureThumbnail(): void
     {
         $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
 

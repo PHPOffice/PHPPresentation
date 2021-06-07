@@ -17,9 +17,11 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use ArrayObject;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -31,6 +33,7 @@ use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
@@ -47,12 +50,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 {
     /**
      * @param AbstractSlideAlias $pSlideMaster
-     * @param $objWriter
-     * @param $relId
+     * @param XMLWriter $objWriter
+     * @param int $relId
      * @return mixed
      * @throws \Exception
      */
-    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, $objWriter, $relId)
+    protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, XMLWriter $objWriter, int $relId)
     {
         if ($pSlideMaster->getShapeCollection()->count() > 0) {
             // Loop trough images and write relationships
@@ -116,11 +119,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
     /**
      * @param XMLWriter $objWriter
-     * @param \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[] $shapes
+     * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapes
      * @param int $shapeId
      * @throws \Exception
      */
-    protected function writeShapeCollection(XMLWriter $objWriter, $shapes = array(), &$shapeId = 0)
+    protected function writeShapeCollection(XMLWriter $objWriter, $shapes = [], &$shapeId = 0): void
     {
         if (count($shapes) == 0) {
             return;
@@ -143,7 +146,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Comment) {
             } else {
-                throw new \Exception("Unknown Shape type: {get_class($shape)}");
+                throw new \Exception(sprintf(
+                    "Unknown Shape type: %s",
+                    get_class($shape)
+                ));
             }
         }
     }
@@ -151,12 +157,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write txt
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\RichText $shape
-     * @param  int $shapeId
+     * @param XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\PhpPresentation\Shape\RichText $shape
+     * @param int $shapeId
      * @throws \Exception
      */
-    protected function writeShapeText(XMLWriter $objWriter, RichText $shape, $shapeId)
+    protected function writeShapeText(XMLWriter $objWriter, RichText $shape, int $shapeId): void
     {
         // p:sp
         $objWriter->startElement('p:sp');
@@ -303,12 +309,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write table
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\Table $shape
-     * @param  int $shapeId
+     * @param XMLWriter $objWriter XML Writer
+     * @param \PhpOffice\PhpPresentation\Shape\Table $shape
+     * @param int $shapeId
      * @throws \Exception
      */
-    protected function writeShapeTable(XMLWriter $objWriter, ShapeTable $shape, $shapeId)
+    protected function writeShapeTable(XMLWriter $objWriter, ShapeTable $shape, int $shapeId): void
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -503,12 +509,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write paragraphs
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] $paragraphs
-     * @param  bool $bIsPlaceholder
+     * @param XMLWriter $objWriter XML Writer
+     * @param array<Paragraph> $paragraphs
+     * @param bool $bIsPlaceholder
      * @throws \Exception
      */
-    protected function writeParagraphs(XMLWriter $objWriter, $paragraphs, $bIsPlaceholder = false)
+    protected function writeParagraphs(XMLWriter $objWriter, array $paragraphs, bool $bIsPlaceholder = false): void
     {
         // Loop trough paragraphs
         foreach ($paragraphs as $paragraph) {
@@ -623,12 +629,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write Line Shape
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Line $shape
-     * @param  int $shapeId
+     * @param int $shapeId
      * @throws \Exception
      */
-    protected function writeShapeLine(XMLWriter $objWriter, Line $shape, $shapeId)
+    protected function writeShapeLine(XMLWriter $objWriter, Line $shape, int $shapeId): void
     {
         // p:sp
         $objWriter->startElement('p:cxnSp');
@@ -720,7 +726,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter
      * @param Shadow $oShadow
      */
-    protected function writeShadow(XMLWriter $objWriter, $oShadow)
+    protected function writeShadow(XMLWriter $objWriter, Shadow $oShadow): void
     {
         if (!($oShadow instanceof Shadow)) {
             return;
@@ -751,11 +757,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write hyperlink
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param \PhpOffice\PhpPresentation\AbstractShape|\PhpOffice\PhpPresentation\Shape\RichText\TextElement $shape
+     * @param XMLWriter $objWriter XML Writer
+     * @param AbstractShape|TextElement $shape
      * @throws \Exception
      */
-    protected function writeHyperlink(XMLWriter $objWriter, $shape)
+    protected function writeHyperlink(XMLWriter $objWriter, $shape): void
     {
         if (!$shape->hasHyperlink()) {
             return;
@@ -774,9 +780,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write Note Slide
      * @param Note $pNote
      * @throws \Exception
-     * @return  string
+     * @return string
      */
-    protected function writeNote(Note $pNote)
+    protected function writeNote(Note $pNote): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -1060,11 +1066,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write chart
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param \PhpOffice\PhpPresentation\Shape\Chart $shape
-     * @param  int $shapeId
+     * @param XMLWriter $objWriter XML Writer
+     * @param ShapeChart $shape
+     * @param int $shapeId
      */
-    protected function writeShapeChart(XMLWriter $objWriter, ShapeChart $shape, $shapeId)
+    protected function writeShapeChart(XMLWriter $objWriter, ShapeChart $shape, int $shapeId): void
     {
         // p:graphicFrame
         $objWriter->startElement('p:graphicFrame');
@@ -1120,12 +1126,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write pic
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Shape\AbstractGraphic $shape
-     * @param  int $shapeId
+     * @param XMLWriter $objWriter XML Writer
+     * @param AbstractGraphic $shape
+     * @param int $shapeId
      * @throws \Exception
      */
-    protected function writeShapePic(XMLWriter $objWriter, AbstractGraphic $shape, $shapeId)
+    protected function writeShapePic(XMLWriter $objWriter, AbstractGraphic $shape, int $shapeId): void
     {
         // p:pic
         $objWriter->startElement('p:pic');
@@ -1222,12 +1228,12 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * Write group
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter XML Writer
+     * @param XMLWriter $objWriter XML Writer
      * @param \PhpOffice\PhpPresentation\Shape\Group $group
-     * @param  int $shapeId
+     * @param int $shapeId
      * @throws \Exception
      */
-    protected function writeShapeGroup(XMLWriter $objWriter, Group $group, &$shapeId)
+    protected function writeShapeGroup(XMLWriter $objWriter, Group $group, int &$shapeId): void
     {
         // p:grpSp
         $objWriter->startElement('p:grpSp');
@@ -1277,10 +1283,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     }
 
     /**
-     * @param \PhpOffice\PhpPresentation\Slide\AbstractSlide $pSlide
-     * @param $objWriter
+     * @param AbstractSlideAlias $pSlide
+     * @param XMLWriter $objWriter
      */
-    protected function writeSlideBackground(AbstractSlideAlias $pSlide, XMLWriter $objWriter)
+    protected function writeSlideBackground(AbstractSlideAlias $pSlide, XMLWriter $objWriter): void
     {
         if (!($pSlide->getBackground() instanceof Slide\AbstractBackground)) {
             return;
@@ -1350,11 +1356,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write Transition Slide
      * @link http://officeopenxml.com/prSlide-transitions.php
      * @param XMLWriter $objWriter
-     * @param Slide\Transition $transition
+     * @param Slide\Transition|null $transition
      */
-    protected function writeSlideTransition(XMLWriter $objWriter, $transition)
+    protected function writeSlideTransition(XMLWriter $objWriter, ?Slide\Transition $transition): void
     {
-        if (!$transition instanceof Slide\Transition) {
+        if (!$transition) {
             return;
         }
         $objWriter->startElement('p:transition');
@@ -1593,13 +1599,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-    private function getGUID()
+    private function getGUID(): string
     {
         if (function_exists('com_create_guid')) {
             return com_create_guid();
         } else {
-            mt_srand((float)microtime() * 10000);//optional for php 4.2.0 and up.
-            $charid = strtoupper(md5(uniqid(rand(), true)));
+            mt_srand(intval(microtime(true) * 10000));
+            $charid = strtoupper(md5(uniqid((string) rand(), true)));
             $hyphen = chr(45);// "-"
             $uuid = chr(123)// "{"
                 . substr($charid, 0, 8) . $hyphen

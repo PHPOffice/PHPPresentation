@@ -27,7 +27,7 @@ use PhpOffice\PhpPresentation\Shape\Comment\Author;
 class Comment extends AbstractShape implements ComparableInterface
 {
     /**
-     * @var Author
+     * @var Author|null
      */
     protected $author;
 
@@ -48,18 +48,18 @@ class Comment extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * @return Author
+     * @return Author|null
      */
-    public function getAuthor()
+    public function getAuthor(): ?Author
     {
         return $this->author;
     }
 
     /**
      * @param Author $author
-     * @return Comment
+     * @return self
      */
-    public function setAuthor(Author $author)
+    public function setAuthor(Author $author): self
     {
         $this->author = $author;
         return $this;
@@ -104,7 +104,7 @@ class Comment extends AbstractShape implements ComparableInterface
     /**
      * Comment has not height
      *
-     * @return null
+     * @return int|null
      */
     public function getHeight()
     {
@@ -114,10 +114,10 @@ class Comment extends AbstractShape implements ComparableInterface
     /**
      * Set Height
      *
-     * @param  int $pValue
+     * @param int $pValue
      * @return $this
      */
-    public function setHeight($pValue = 0)
+    public function setHeight(int $pValue = 0)
     {
         return $this;
     }
@@ -125,7 +125,7 @@ class Comment extends AbstractShape implements ComparableInterface
     /**
      * Comment has not width
      *
-     * @return null
+     * @return int|null
      */
     public function getWidth()
     {
@@ -135,10 +135,10 @@ class Comment extends AbstractShape implements ComparableInterface
     /**
      * Set Width
      *
-     * @param  int $pValue
-     * @return $this
+     * @param int $pValue
+     * @return self
      */
-    public function setWidth($pValue = 0)
+    public function setWidth(int $pValue = 0)
     {
         return $this;
     }

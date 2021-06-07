@@ -6,7 +6,6 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
-use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 class MetaInfManifest extends AbstractDecoratorWriter
 {
@@ -82,7 +81,7 @@ class MetaInfManifest extends AbstractDecoratorWriter
 
                 $objWriter->startElement('manifest:file-entry');
                 $objWriter->writeAttribute('manifest:media-type', $mimeType);
-                $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename($numSlide)));
+                $objWriter->writeAttribute('manifest:full-path', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename((string) $numSlide)));
                 $objWriter->endElement();
             }
         }

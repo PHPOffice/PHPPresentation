@@ -17,9 +17,6 @@
 
 namespace PhpOffice\PhpPresentation;
 
-use PhpOffice\PhpPresentation\Shape\Chart;
-use PhpOffice\PhpPresentation\Shape\RichText;
-use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
@@ -38,7 +35,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Slide layout
      *
-     * @var SlideLayout
+     * @var SlideLayout|null
      */
     private $slideLayout;
 
@@ -51,7 +48,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
 
     /**
      *
-     * @var \PhpOffice\PhpPresentation\Slide\Note
+     * @var Note
      */
     private $slideNote;
 
@@ -64,7 +61,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Name of the title
      *
-     * @var string
+     * @var string|null
      */
     protected $name;
 
@@ -89,14 +86,16 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
             $oSlideLayout = reset($arraySlideLayouts);
             $this->setSlideLayout($oSlideLayout);
         }
+        // Set note
+        $this->setNote(new Note());
     }
 
     /**
      * Get slide layout
      *
-     * @return SlideLayout
+     * @return SlideLayout|null
      */
-    public function getSlideLayout()
+    public function getSlideLayout(): ?SlideLayout
     {
         return $this->slideLayout;
     }
@@ -104,10 +103,10 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Set slide layout
      *
-     * @param  SlideLayout $layout
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @param SlideLayout $layout
+     * @return self
      */
-    public function setSlideLayout(SlideLayout $layout)
+    public function setSlideLayout(SlideLayout $layout): self
     {
         $this->slideLayout = $layout;
         return $this;
@@ -126,7 +125,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Set slide master id
      *
-     * @param  int $masterId
+     * @param int $masterId
      * @return \PhpOffice\PhpPresentation\Slide
      */
     public function setSlideMasterId($masterId = 1)
@@ -150,22 +149,19 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
 
     /**
      *
-     * @return \PhpOffice\PhpPresentation\Slide\Note
+     * @return Note
      */
-    public function getNote()
+    public function getNote(): Note
     {
-        if (is_null($this->slideNote)) {
-            $this->setNote();
-        }
         return $this->slideNote;
     }
 
     /**
      *
-     * @param \PhpOffice\PhpPresentation\Slide\Note $note
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @param Note|null $note
+     * @return self
      */
-    public function setNote(Note $note = null)
+    public function setNote(Note $note = null): self
     {
         $this->slideNote = (is_null($note) ? new Note() : $note);
         $this->slideNote->setParent($this);
@@ -177,17 +173,17 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
      * Get the name of the slide
      * @return string
      */
-    public function getName()
+    public function getName(): ?string
     {
         return $this->name;
     }
 
     /**
      * Set the name of the slide
-     * @param string $name
-     * @return $this
+     * @param string|null $name
+     * @return self
      */
-    public function setName($name = null)
+    public function setName(?string $name = null): self
     {
         $this->name = $name;
         return $this;
@@ -214,7 +210,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Add an animation to the slide
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\Animation
+     * @param \PhpOffice\PhpPresentation\Slide\Animation $animation
      * @return Slide
      */
     public function addAnimation($animation)

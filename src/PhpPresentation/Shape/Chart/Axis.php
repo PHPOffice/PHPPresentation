@@ -56,12 +56,12 @@ class Axis implements ComparableInterface
     private $font;
 
     /**
-     * @var Gridlines
+     * @var Gridlines|null
      */
     protected $majorGridlines;
 
     /**
-     * @var Gridlines
+     * @var Gridlines|null
      */
     protected $minorGridlines;
 
@@ -130,7 +130,7 @@ class Axis implements ComparableInterface
     /**
      * Set Title
      *
-     * @param  string                         $value
+     * @param string                         $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
      */
     public function setTitle($value = 'Axis Title')
@@ -153,7 +153,7 @@ class Axis implements ComparableInterface
     /**
      * Set font
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
+     * @param \PhpOffice\PhpPresentation\Style\Font               $pFont Font
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
      */
@@ -176,7 +176,7 @@ class Axis implements ComparableInterface
     /**
      * Set Format Code
      *
-     * @param  string                         $value
+     * @param string                         $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
      */
     public function setFormatCode($value = '')
@@ -223,36 +223,36 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * @return Gridlines
+     * @return Gridlines|null
      */
-    public function getMajorGridlines()
+    public function getMajorGridlines(): ?Gridlines
     {
         return $this->majorGridlines;
     }
 
     /**
      * @param Gridlines $majorGridlines
-     * @return Axis
+     * @return self
      */
-    public function setMajorGridlines(Gridlines $majorGridlines)
+    public function setMajorGridlines(Gridlines $majorGridlines): self
     {
         $this->majorGridlines = $majorGridlines;
         return $this;
     }
 
     /**
-     * @return Gridlines
+     * @return Gridlines|null
      */
-    public function getMinorGridlines()
+    public function getMinorGridlines(): ?Gridlines
     {
         return $this->minorGridlines;
     }
 
     /**
      * @param Gridlines $minorGridlines
-     * @return Axis
+     * @return self
      */
-    public function setMinorGridlines(Gridlines $minorGridlines)
+    public function setMinorGridlines(Gridlines $minorGridlines): self
     {
         $this->minorGridlines = $minorGridlines;
         return $this;
@@ -353,7 +353,7 @@ class Axis implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->title . $this->formatCode . __CLASS__);
     }
@@ -361,7 +361,7 @@ class Axis implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -371,9 +371,9 @@ class Axis implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -384,10 +384,10 @@ class Axis implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
      * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
         return $this;

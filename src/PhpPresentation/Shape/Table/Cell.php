@@ -31,7 +31,7 @@ class Cell implements ComparableInterface
     /**
      * Rich text paragraphs
      *
-     * @var \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[]
+     * @var array<Paragraph>
      */
     private $richTextParagraphs;
 
@@ -80,7 +80,7 @@ class Cell implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -115,9 +115,9 @@ class Cell implements ComparableInterface
     /**
      * Get active paragraph
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return Paragraph
      */
-    public function getActiveParagraph()
+    public function getActiveParagraph(): Paragraph
     {
         return $this->richTextParagraphs[$this->activeParagraph];
     }
@@ -125,11 +125,11 @@ class Cell implements ComparableInterface
     /**
      * Set active paragraph
      *
-     * @param  int $index
+     * @param int $index
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return Paragraph
      */
-    public function setActiveParagraph($index = 0)
+    public function setActiveParagraph($index = 0): Paragraph
     {
         if ($index >= count($this->richTextParagraphs)) {
             throw new \Exception("Invalid paragraph count.");
@@ -143,11 +143,11 @@ class Cell implements ComparableInterface
     /**
      * Get paragraph
      *
-     * @param  int $index
+     * @param int $index
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return Paragraph
      */
-    public function getParagraph($index = 0)
+    public function getParagraph($index = 0): Paragraph
     {
         if ($index >= count($this->richTextParagraphs)) {
             throw new \Exception("Invalid paragraph count.");
@@ -159,10 +159,10 @@ class Cell implements ComparableInterface
     /**
      * Create paragraph
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+     * @return Paragraph
      * @throws \Exception
      */
-    public function createParagraph()
+    public function createParagraph(): Paragraph
     {
         $this->richTextParagraphs[] = new Paragraph();
         $totalRichTextParagraphs = count($this->richTextParagraphs);
@@ -183,7 +183,7 @@ class Cell implements ComparableInterface
     /**
      * Add text
      *
-     * @param  \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface $pText Rich text element
+     * @param \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface $pText Rich text element
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
@@ -197,7 +197,7 @@ class Cell implements ComparableInterface
     /**
      * Create text (can not be formatted !)
      *
-     * @param  string                                   $pText Text
+     * @param string                                   $pText Text
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
      * @throws \Exception
      */
@@ -220,7 +220,7 @@ class Cell implements ComparableInterface
     /**
      * Create text run (can be formatted)
      *
-     * @param  string                           $pText Text
+     * @param string                           $pText Text
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Run
      * @throws \Exception
      */
@@ -239,7 +239,7 @@ class Cell implements ComparableInterface
         // Return value
         $returnValue = '';
 
-        // Loop trough all \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+        // Loop trough all Paragraph
         foreach ($this->richTextParagraphs as $p) {
             $returnValue .= $p->getPlainText();
         }
@@ -261,7 +261,7 @@ class Cell implements ComparableInterface
     /**
      * Get paragraphs
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[]
+     * @return array<Paragraph>
      */
     public function getParagraphs()
     {
@@ -271,15 +271,11 @@ class Cell implements ComparableInterface
     /**
      * Set paragraphs
      *
-     * @param  \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] $paragraphs Array of paragraphs
-     * @throws \Exception
+     * @param array<Paragraph> $paragraphs Array of paragraphs
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
-    public function setParagraphs($paragraphs = null)
+    public function setParagraphs(array $paragraphs = []): self
     {
-        if (!is_array($paragraphs)) {
-            throw new \Exception("Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.");
-        }
         $this->richTextParagraphs = $paragraphs;
         $this->activeParagraph    = count($this->richTextParagraphs) - 1;
         return $this;
@@ -298,7 +294,7 @@ class Cell implements ComparableInterface
     /**
      * Set fill
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Fill     $fill
+     * @param \PhpOffice\PhpPresentation\Style\Fill     $fill
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setFill(Fill $fill)
@@ -321,7 +317,7 @@ class Cell implements ComparableInterface
     /**
      * Set borders
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Borders  $borders
+     * @param \PhpOffice\PhpPresentation\Style\Borders  $borders
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setBorders(Borders $borders)
@@ -344,33 +340,29 @@ class Cell implements ComparableInterface
     /**
      * Set width
      *
-     * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @param int $pValue
+     * @return self
      */
-    public function setWidth($value = 0)
+    public function setWidth(int $pValue = 0)
     {
-        $this->width = $value;
+        $this->width = $pValue;
 
         return $this;
     }
 
     /**
-     * Get colSpan
-     *
      * @return int
      */
-    public function getColSpan()
+    public function getColSpan(): int
     {
         return $this->colSpan;
     }
 
     /**
-     * Set colSpan
-     *
-     * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @param int $value
+     * @return self
      */
-    public function setColSpan($value = 0)
+    public function setColSpan(int $value = 0): self
     {
         $this->colSpan = $value;
 
@@ -378,22 +370,18 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get rowSpan
-     *
      * @return int
      */
-    public function getRowSpan()
+    public function getRowSpan(): int
     {
         return $this->rowSpan;
     }
 
     /**
-     * Set rowSpan
-     *
-     * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @param int $value
+     * @return self
      */
-    public function setRowSpan($value = 0)
+    public function setRowSpan(int $value = 0): self
     {
         $this->rowSpan = $value;
 
@@ -405,7 +393,7 @@ class Cell implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         $hashElements = '';
         foreach ($this->richTextParagraphs as $element) {
@@ -421,9 +409,9 @@ class Cell implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -434,10 +422,12 @@ class Cell implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

@@ -28,13 +28,13 @@ use PHPUnit\Framework\TestCase;
  */
 class SerializedTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Serialized(new PhpPresentation());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
     }
 
-    public function testEmptyConstruct()
+    public function testEmptyConstruct(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
@@ -43,7 +43,7 @@ class SerializedTest extends TestCase
         $object->getPhpPresentation();
     }
 
-    public function testSaveEmpty()
+    public function testSaveEmpty(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Filename is empty.');
@@ -52,7 +52,7 @@ class SerializedTest extends TestCase
         $object->save('');
     }
 
-    public function testSaveNoObject()
+    public function testSaveNoObject(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
@@ -61,7 +61,7 @@ class SerializedTest extends TestCase
         $object->save('file.phpppt');
     }
 
-    public function testSave()
+    public function testSave(): void
     {
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
@@ -74,7 +74,7 @@ class SerializedTest extends TestCase
         $this->assertFileExists($file);
     }
 
-    public function testSaveNotExistingDir()
+    public function testSaveNotExistingDir(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not open');
@@ -90,7 +90,7 @@ class SerializedTest extends TestCase
         $object->save($file.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'test');
     }
 
-    public function testSaveOverwriting()
+    public function testSaveOverwriting(): void
     {
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();

@@ -14,7 +14,6 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
-use PhpOffice\PhpPresentation\Writer\ODPresentation;
 use PhpOffice\Common\Drawing;
 
 /**
@@ -26,7 +25,7 @@ class ContentTest extends PhpPresentationTestCase
 {
     protected $writerName = 'ODPresentation';
 
-    public function testDrawingWithHyperlink()
+    public function testDrawingWithHyperlink(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
@@ -39,7 +38,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testDrawingShapeFill()
+    public function testDrawingShapeFill(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
@@ -61,7 +60,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:fill-color', $oColor->getRGB());
     }
 
-    public function testComment()
+    public function testComment(): void
     {
         $expectedName = 'Name';
         $expectedText = 'Text';
@@ -87,7 +86,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testCommentWithoutAuthor()
+    public function testCommentWithoutAuthor(): void
     {
         $oComment = new Comment();
         $this->oPresentation->getActiveSlide()->addShape($oComment);
@@ -98,7 +97,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testFillGradientLinearRichText()
+    public function testFillGradientLinearRichText(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oShape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
@@ -113,7 +112,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testFillSolidRichText()
+    public function testFillSolidRichText(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF4672A8'));
@@ -126,7 +125,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testGroup()
+    public function testGroup(): void
     {
         $oShapeGroup = $this->oPresentation->getActiveSlide()->createGroup();
         $oShape = $oShapeGroup->createDrawingShape();
@@ -140,7 +139,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testList()
+    public function testList(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
@@ -158,7 +157,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testInnerList()
+    public function testInnerList(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setMarginLeft(25)->setIndent(-25);
@@ -186,7 +185,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testParagraphRichText()
+    public function testParagraphRichText(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->createTextRun('Alpha');
@@ -205,7 +204,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testListWithRichText()
+    public function testListWithRichText(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
@@ -221,7 +220,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testMedia()
+    public function testMedia(): void
     {
         $expectedName = 'MyName';
         $expectedWidth = mt_rand(1, 100);
@@ -260,7 +259,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testNote()
+    public function testNote(): void
     {
         $oNote = $this->oPresentation->getActiveSlide()->getNote();
         $oRichText = $oNote->createRichTextShape()->setHeight(300)->setWidth(600);
@@ -273,7 +272,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testRichTextAutoShrink()
+    public function testRichTextAutoShrink(): void
     {
         $oRichText1 = $this->oPresentation->getActiveSlide()->createRichTextShape();
 
@@ -303,7 +302,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testRichTextRunLanguage()
+    public function testRichTextRunLanguage(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRun = $oRichText->createTextRun('MyText');
@@ -323,7 +322,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testRichTextBorder()
+    public function testRichTextBorder(): void
     {
         $oRichText1 = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_NONE);
@@ -360,7 +359,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testRichTextShadow()
+    public function testRichTextShadow(): void
     {
         $randAlpha = mt_rand(0, 100);
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
@@ -405,7 +404,7 @@ class ContentTest extends PhpPresentationTestCase
         }
     }
 
-    public function testSlideName()
+    public function testSlideName(): void
     {
         $element = '/office:document-content/office:body/office:presentation/draw:page';
 
@@ -429,7 +428,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testStyleAlignment()
+    public function testStyleAlignment(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText1 = $oSlide->createRichTextShape();
@@ -485,7 +484,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testStyleFont()
+    public function testStyleFont(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRun = $oRichText->createTextRun('Run1');
@@ -500,7 +499,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testTable()
+    public function testTable(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
         $oShape->createRow();
@@ -511,7 +510,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testTableEmpty()
+    public function testTableEmpty(): void
     {
         $this->oPresentation->getActiveSlide()->createTableShape();
 
@@ -521,7 +520,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testTableCellFill()
+    public function testTableCellFill(): void
     {
         $oColor = new Color();
         $oColor->setRGB(Color::COLOR_BLUE);
@@ -547,7 +546,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTableWithColspan()
+    public function testTableWithColspan(): void
     {
         $value = mt_rand(2, 100);
 
@@ -566,7 +565,7 @@ class ContentTest extends PhpPresentationTestCase
     /**
      * @link : https://github.com/PHPOffice/PHPPresentation/issues/70
      */
-    public function testTableWithHyperlink()
+    public function testTableWithHyperlink(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createTableShape(4);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
@@ -583,7 +582,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testTableWithText()
+    public function testTableWithText(): void
     {
         $oRun = new Run();
         $oRun->setText('Test');
@@ -603,7 +602,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testTransition()
+    public function testTransition(): void
     {
         $value = mt_rand(1000, 5000);
 
@@ -809,7 +808,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testVisibility()
+    public function testVisibility(): void
     {
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
 

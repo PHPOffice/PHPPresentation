@@ -7,7 +7,7 @@ use PhpOffice\PhpPresentation\AbstractShape;
 class Animation
 {
     /**
-     * @var array
+     * @var array<AbstractShape>
      */
     protected $shapeCollection = array();
 
@@ -22,15 +22,15 @@ class Animation
     }
 
     /**
-     * @return array
+     * @return array<AbstractShape>
      */
-    public function getShapeCollection()
+    public function getShapeCollection(): array
     {
         return $this->shapeCollection;
     }
 
     /**
-     * @param array $array
+     * @param array<AbstractShape> $array
      * @return Animation
      */
     public function setShapeCollection(array $array = array())

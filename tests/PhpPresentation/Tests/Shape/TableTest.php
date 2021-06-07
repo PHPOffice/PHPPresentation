@@ -27,14 +27,14 @@ use PHPUnit\Framework\TestCase;
  */
 class TableTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Table();
         $this->assertEmpty($object->getRows());
         $this->assertFalse($object->isResizeProportional());
     }
 
-    public function testNumColums()
+    public function testNumColums(): void
     {
         $value = mt_rand(1, 100);
         $object = new Table();
@@ -44,7 +44,7 @@ class TableTest extends TestCase
         $this->assertEquals($value, $object->getNumColumns());
     }
 
-    public function testRows()
+    public function testRows(): void
     {
         $object = new Table();
 
@@ -55,7 +55,7 @@ class TableTest extends TestCase
         $this->assertNull($object->getRow(1, true));
     }
 
-    public function testGetRowException()
+    public function testGetRowException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Row number out of bounds.');
@@ -64,7 +64,7 @@ class TableTest extends TestCase
         $object->getRow();
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Table();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());

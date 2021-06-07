@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
  */
 class TitleTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Title();
 
@@ -39,7 +39,7 @@ class TitleTest extends TestCase
         $this->assertEquals(18, $object->getFont()->getSize());
     }
 
-    public function testAlignment()
+    public function testAlignment(): void
     {
         $object = new Title();
 
@@ -47,7 +47,7 @@ class TitleTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
     }
 
-    public function testFont()
+    public function testFont(): void
     {
         $object = new Title();
 
@@ -57,7 +57,7 @@ class TitleTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
-    public function testHashIndex()
+    public function testHashIndex(): void
     {
         $object = new Title();
         $value = mt_rand(1, 100);
@@ -67,7 +67,7 @@ class TitleTest extends TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testHeight()
+    public function testHeight(): void
     {
         $object = new Title();
         $value = mt_rand(0, 100);
@@ -78,7 +78,7 @@ class TitleTest extends TestCase
         $this->assertEquals($value, $object->getHeight());
     }
 
-    public function testOffsetX()
+    public function testOffsetX(): void
     {
         $object = new Title();
         $value = mt_rand(0, 100);
@@ -89,7 +89,7 @@ class TitleTest extends TestCase
         $this->assertEquals($value, $object->getOffsetX());
     }
 
-    public function testOffsetY()
+    public function testOffsetY(): void
     {
         $object = new Title();
         $value = mt_rand(0, 100);
@@ -100,7 +100,7 @@ class TitleTest extends TestCase
         $this->assertEquals($value, $object->getOffsetY());
     }
 
-    public function testText()
+    public function testText(): void
     {
         $object = new Title();
 
@@ -110,7 +110,7 @@ class TitleTest extends TestCase
         $this->assertEquals('AAAA', $object->getText());
     }
 
-    public function testVisible()
+    public function testVisible(): void
     {
         $object = new Title();
 
@@ -122,7 +122,7 @@ class TitleTest extends TestCase
         $this->assertFalse($object->isVisible());
     }
 
-    public function testWidth()
+    public function testWidth(): void
     {
         $object = new Title();
         $value = mt_rand(0, 100);

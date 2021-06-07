@@ -76,7 +76,7 @@ class Border implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -105,7 +105,7 @@ class Border implements ComparableInterface
     /**
      * Set line width (in points)
      *
-     * @param  int                        $pValue
+     * @param int                        $pValue
      * @return \PhpOffice\PhpPresentation\Style\Border
      */
     public function setLineWidth($pValue = 1)
@@ -128,7 +128,7 @@ class Border implements ComparableInterface
     /**
      * Set line style
      *
-     * @param  string                     $pValue
+     * @param string                     $pValue
      * @return \PhpOffice\PhpPresentation\Style\Border
      */
     public function setLineStyle($pValue = self::LINE_SINGLE)
@@ -154,7 +154,7 @@ class Border implements ComparableInterface
     /**
      * Set dash style
      *
-     * @param  string                     $pValue
+     * @param string                     $pValue
      * @return \PhpOffice\PhpPresentation\Style\Border
      */
     public function setDashStyle($pValue = self::DASH_SOLID)
@@ -180,7 +180,7 @@ class Border implements ComparableInterface
     /**
      * Set Border Color
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Color  $color
+     * @param \PhpOffice\PhpPresentation\Style\Color  $color
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Style\Border
      */
@@ -196,7 +196,7 @@ class Border implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(
             $this->lineStyle
@@ -213,9 +213,9 @@ class Border implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -226,10 +226,12 @@ class Border implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

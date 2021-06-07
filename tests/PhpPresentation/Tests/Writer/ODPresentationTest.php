@@ -18,7 +18,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     /**
      * Test create new instance
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         ;
         $this->oPresentation->getActiveSlide()->createDrawingShape();
@@ -32,7 +32,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     /**
      * Test save
      */
-    public function testSave()
+    public function testSave(): void
     {
         $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');
         $imageFile = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png';
@@ -55,7 +55,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     /**
      * Test get PhpPresentation exception
      */
-    public function testSaveEmpty()
+    public function testSaveEmpty(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Filename is empty');
@@ -67,7 +67,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     /**
      * Test get PhpPresentation exception
      */
-    public function testGetPhpPresentationException()
+    public function testGetPhpPresentationException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('No PhpPresentation assigned.');
@@ -79,7 +79,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     /**
      * Test set/get disk caching
      */
-    public function testSetGetUseDiskCaching()
+    public function testSetGetUseDiskCaching(): void
     {
         $object = new ODPresentation($this->oPresentation);
         $this->assertFalse($object->hasDiskCaching());
@@ -92,7 +92,7 @@ class ODPresentationTest extends PhpPresentationTestCase
     /**
      * Test set/get disk caching exception
      */
-    public function testSetUseDiskCachingException()
+    public function testSetUseDiskCachingException(): void
     {
         $this->expectException(\Exception::class);
 
@@ -100,7 +100,7 @@ class ODPresentationTest extends PhpPresentationTestCase
         $object->setUseDiskCaching(true, 'foo');
     }
 
-    public function testFeatureThumbnail()
+    public function testFeatureThumbnail(): void
     {
         $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
 

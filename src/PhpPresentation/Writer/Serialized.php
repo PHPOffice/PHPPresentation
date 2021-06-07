@@ -21,6 +21,7 @@ use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
+use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\Serialized
@@ -45,10 +46,10 @@ class Serialized extends AbstractWriter implements WriterInterface
     /**
      * Save PhpPresentation to file
      *
-     * @param  string    $pFilename
+     * @param string    $pFilename
      * @throws \Exception
      */
-    public function save($pFilename)
+    public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty.");
@@ -70,7 +71,10 @@ class Serialized extends AbstractWriter implements WriterInterface
             for ($j = 0; $j < $oPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
                 if ($oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
                     $imgTemp = $oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $objZip->addFromString('media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME), file_get_contents($imgTemp->getPath()));
+                    $objZip->addFromString(
+                        'media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME),
+                        file_get_contents($imgTemp->getPath())
+                    );
                 }
             }
         }
@@ -85,8 +89,8 @@ class Serialized extends AbstractWriter implements WriterInterface
     /**
      * Serialize PhpPresentation object to XML
      *
-     * @param  PhpPresentation $pPhpPresentation
-     * @param  string        $pFilename
+     * @param PhpPresentation $pPhpPresentation
+     * @param string        $pFilename
      * @return string        XML Output
      * @throws \Exception
      */
@@ -101,7 +105,12 @@ class Serialized extends AbstractWriter implements WriterInterface
             for ($j = 0; $j < $pPhpPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
                 if ($pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
                     $imgTemp = $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $imgTemp->setPath('zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME), false);
+                    $imgPath = 'zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME);
+                    if ($imgTemp instanceof File) {
+                        $imgTemp->setPath($imgPath, false);
+                    } else {
+                        $imgTemp->setPath($imgPath);
+                    }
                 }
             }
         }

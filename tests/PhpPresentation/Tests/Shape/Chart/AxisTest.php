@@ -18,7 +18,9 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Style\Font;
+use PhpOffice\PhpPresentation\Style\Outline;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,7 +30,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AxisTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Axis();
 
@@ -38,7 +40,7 @@ class AxisTest extends TestCase
         $this->assertNull($object->getMajorGridlines());
     }
 
-    public function testBounds()
+    public function testBounds(): void
     {
         $value = mt_rand(0, 100);
         $object = new Axis();
@@ -56,7 +58,7 @@ class AxisTest extends TestCase
         $this->assertNull($object->getMaxBounds());
     }
 
-    public function testFont()
+    public function testFont(): void
     {
         $object = new Axis();
 
@@ -66,7 +68,7 @@ class AxisTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
-    public function testFormatCode()
+    public function testFormatCode(): void
     {
         $object = new Axis();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setFormatCode());
@@ -75,19 +77,20 @@ class AxisTest extends TestCase
         $this->assertEquals('AAAA', $object->getFormatCode());
     }
 
-    public function testGridLines()
+    public function testGridLines(): void
     {
         $object = new Axis();
 
-        $oMock = $this->getMockBuilder('PhpOffice\PhpPresentation\Shape\Chart\Gridlines')->getMock();
+        /** @var Gridlines $oMock */
+        $oMock = $this->getMockBuilder(Gridlines::class)->getMock();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMajorGridlines($oMock));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Gridlines', $object->getMajorGridlines());
+        $this->assertInstanceOf(Gridlines::class, $object->getMajorGridlines());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setMinorGridlines($oMock));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Gridlines', $object->getMinorGridlines());
+        $this->assertInstanceOf(Gridlines::class, $object->getMinorGridlines());
     }
 
-    public function testHashIndex()
+    public function testHashIndex(): void
     {
         $object = new Axis();
         $value = mt_rand(1, 100);
@@ -97,7 +100,7 @@ class AxisTest extends TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testIsVisible()
+    public function testIsVisible(): void
     {
         $object = new Axis();
         $this->assertTrue($object->isVisible());
@@ -107,17 +110,18 @@ class AxisTest extends TestCase
         $this->assertTrue($object->isVisible());
     }
 
-    public function testOutline()
+    public function testOutline(): void
     {
-        $oMock = $this->getMockBuilder('PhpOffice\PhpPresentation\Style\\Outline')->getMock();
+        /** @var Outline $oMock */
+        $oMock = $this->getMockBuilder(Outline::class)->getMock();
 
         $object = new Axis();
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\\Outline', $object->getOutline());
+        $this->assertInstanceOf(Outline::class, $object->getOutline());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->setOutline($oMock));
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\\Outline', $object->getOutline());
+        $this->assertInstanceOf(Outline::class, $object->getOutline());
     }
 
-    public function testTickMark()
+    public function testTickMark(): void
     {
         $value = Axis::TICK_MARK_INSIDE;
         $object = new Axis();
@@ -135,7 +139,7 @@ class AxisTest extends TestCase
         $this->assertEquals(Axis::TICK_MARK_NONE, $object->getMajorTickMark());
     }
 
-    public function testTitle()
+    public function testTitle(): void
     {
         $object = new Axis();
         $this->assertEquals('Axis Title', $object->getTitle());
@@ -143,7 +147,7 @@ class AxisTest extends TestCase
         $this->assertEquals('AAAA', $object->getTitle());
     }
 
-    public function testUnit()
+    public function testUnit(): void
     {
         $value = mt_rand(0, 100);
         $object = new Axis();

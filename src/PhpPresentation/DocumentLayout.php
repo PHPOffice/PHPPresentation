@@ -51,6 +51,8 @@ class DocumentLayout
      * Absolute distances are specified in English Metric Units (EMUs),
      * occasionally referred to as A units; there are 360000 EMUs per
      * centimeter, 914400 EMUs per inch, 12700 EMUs per point.
+     *
+     * @var array<string, array<string, int>>
      */
     private $dimension = array(
         self::LAYOUT_SCREEN_4X3 => array('cx' => 9144000, 'cy' => 6858000),
@@ -98,7 +100,7 @@ class DocumentLayout
      *
      * @return string
      */
-    public function getDocumentLayout()
+    public function getDocumentLayout(): string
     {
         return $this->layout;
     }
@@ -106,11 +108,11 @@ class DocumentLayout
     /**
      * Set Document Layout
      *
-     * @param array|string $pValue
-     * @param  boolean $isLandscape
-     * @return \PhpOffice\PhpPresentation\DocumentLayout
+     * @param array<string, int>|string $pValue
+     * @param boolean $isLandscape
+     * @return self
      */
-    public function setDocumentLayout($pValue = self::LAYOUT_SCREEN_4X3, $isLandscape = true)
+    public function setDocumentLayout($pValue = self::LAYOUT_SCREEN_4X3, $isLandscape = true): self
     {
         switch ($pValue) {
             case self::LAYOUT_SCREEN_4X3:
@@ -149,9 +151,9 @@ class DocumentLayout
      * Get Document Layout cx
      *
      * @param string $unit
-     * @return integer
+     * @return float
      */
-    public function getCX($unit = self::UNIT_EMU)
+    public function getCX(string $unit = self::UNIT_EMU): float
     {
         return $this->convertUnit($this->dimensionX, self::UNIT_EMU, $unit);
     }
@@ -160,9 +162,9 @@ class DocumentLayout
      * Get Document Layout cy
      *
      * @param string $unit
-     * @return integer
+     * @return float
      */
-    public function getCY($unit = self::UNIT_EMU)
+    public function getCY(string $unit = self::UNIT_EMU): float
     {
         return $this->convertUnit($this->dimensionY, self::UNIT_EMU, $unit);
     }
@@ -172,9 +174,9 @@ class DocumentLayout
      *
      * @param float $value
      * @param string $unit
-     * @return DocumentLayout
+     * @return self
      */
-    public function setCX($value, $unit = self::UNIT_EMU)
+    public function setCX(float $value, string $unit = self::UNIT_EMU): self
     {
         $this->layout = self::LAYOUT_CUSTOM;
         $this->dimensionX = $this->convertUnit($value, $unit, self::UNIT_EMU);
@@ -186,9 +188,9 @@ class DocumentLayout
      *
      * @param float $value
      * @param string $unit
-     * @return DocumentLayout
+     * @return self
      */
-    public function setCY($value, $unit = self::UNIT_EMU)
+    public function setCY(float $value, string $unit = self::UNIT_EMU): self
     {
         $this->layout = self::LAYOUT_CUSTOM;
         $this->dimensionY = $this->convertUnit($value, $unit, self::UNIT_EMU);
@@ -202,7 +204,7 @@ class DocumentLayout
      * @param string $toUnit
      * @return float
      */
-    protected function convertUnit($value, $fromUnit, $toUnit)
+    protected function convertUnit(float $value, string $fromUnit, string $toUnit): float
     {
         // Convert from $fromUnit to EMU
         switch ($fromUnit) {

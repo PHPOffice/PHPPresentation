@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
+use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,9 +28,10 @@ use PHPUnit\Framework\TestCase;
  */
 class SlideLayoutTest extends TestCase
 {
-    public function testBase()
+    public function testBase(): void
     {
-        $mockSlideMaster = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\SlideMaster');
+        /** @var SlideMaster $mockSlideMaster */
+        $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
 
         $object = new SlideLayout($mockSlideMaster);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $object);
@@ -37,10 +39,10 @@ class SlideLayoutTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->colorMap);
     }
 
-    public function testLayoutName()
+    public function testLayoutName(): void
     {
-        // Mocks
-        $mockSlideMaster = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\SlideMaster');
+        /** @var SlideMaster $mockSlideMaster */
+        $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
 
         // Expected
         $expectedLayoutName = 'Title'.rand(1, 100);
@@ -48,17 +50,17 @@ class SlideLayoutTest extends TestCase
         $object = new SlideLayout($mockSlideMaster);
 
         $this->assertNull($object->getLayoutName());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideLayout', $object->setLayoutName($expectedLayoutName));
+        $this->assertInstanceOf(SlideLayout::class, $object->setLayoutName($expectedLayoutName));
         $this->assertEquals($expectedLayoutName, $object->getLayoutName());
     }
 
-    public function testSlideMaster()
+    public function testSlideMaster(): void
     {
-        // Mocks
-        $mockSlideMaster = $this->getMockForAbstractClass('PhpOffice\PhpPresentation\Slide\SlideMaster');
+        /** @var SlideMaster $mockSlideMaster */
+        $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
 
         $object = new SlideLayout($mockSlideMaster);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\SlideMaster', $object->getSlideMaster());
+        $this->assertInstanceOf(SlideMaster::class, $object->getSlideMaster());
     }
 }

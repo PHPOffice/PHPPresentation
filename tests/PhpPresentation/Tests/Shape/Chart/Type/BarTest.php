@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class BarTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Bar();
 
@@ -46,7 +46,7 @@ class BarTest extends TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Bar();
 
@@ -54,7 +54,7 @@ class BarTest extends TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testBarDirection()
+    public function testBarDirection(): void
     {
         $object = new Bar();
         $this->assertEquals(Bar::DIRECTION_VERTICAL, $object->getBarDirection());
@@ -64,7 +64,7 @@ class BarTest extends TestCase
         $this->assertEquals(Bar::DIRECTION_VERTICAL, $object->getBarDirection());
     }
 
-    public function testBarGrouping()
+    public function testBarGrouping(): void
     {
         $object = new Bar();
         $this->assertEquals(Bar::GROUPING_CLUSTERED, $object->getBarGrouping());
@@ -76,7 +76,7 @@ class BarTest extends TestCase
         $this->assertEquals(Bar::GROUPING_PERCENTSTACKED, $object->getBarGrouping());
     }
 
-    public function testGapWidthPercent()
+    public function testGapWidthPercent(): void
     {
         $value = mt_rand(0, 500);
         $object = new Bar();
@@ -89,7 +89,7 @@ class BarTest extends TestCase
         $this->assertEquals(500, $object->getGapWidthPercent());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 

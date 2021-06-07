@@ -27,11 +27,9 @@ use PHPUnit\Framework\TestCase;
  */
 class PresentationPropertiesTest extends TestCase
 {
-    public function testCommentVisible()
+    public function testCommentVisible(): void
     {
         $object = new PresentationProperties();
-        $this->assertFalse($object->isCommentVisible());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible('AAAA'));
         $this->assertFalse($object->isCommentVisible());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible(true));
         $this->assertTrue($object->isCommentVisible());
@@ -41,11 +39,9 @@ class PresentationPropertiesTest extends TestCase
         $this->assertFalse($object->isCommentVisible());
     }
 
-    public function testLoopUntilEsc()
+    public function testLoopUntilEsc(): void
     {
         $object = new PresentationProperties();
-        $this->assertFalse($object->isLoopContinuouslyUntilEsc());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLoopContinuouslyUntilEsc('AAAA'));
         $this->assertFalse($object->isLoopContinuouslyUntilEsc());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLoopContinuouslyUntilEsc(true));
         $this->assertTrue($object->isLoopContinuouslyUntilEsc());
@@ -55,7 +51,7 @@ class PresentationPropertiesTest extends TestCase
         $this->assertFalse($object->isLoopContinuouslyUntilEsc());
     }
 
-    public function testLastView()
+    public function testLastView(): void
     {
         $object = new PresentationProperties();
         $this->assertEquals(PresentationProperties::VIEW_SLIDE, $object->getLastView());
@@ -67,11 +63,9 @@ class PresentationPropertiesTest extends TestCase
         $this->assertEquals(PresentationProperties::VIEW_SLIDE, $object->getLastView());
     }
 
-    public function testMarkAsFinal()
+    public function testMarkAsFinal(): void
     {
         $object = new PresentationProperties();
-        $this->assertFalse($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal('AAAA'));
         $this->assertFalse($object->isMarkedAsFinal());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal(true));
         $this->assertTrue($object->isMarkedAsFinal());
@@ -81,7 +75,7 @@ class PresentationPropertiesTest extends TestCase
         $this->assertTrue($object->isMarkedAsFinal());
     }
 
-    public function testThumbnail()
+    public function testThumbnail(): void
     {
         $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
 
@@ -97,11 +91,9 @@ class PresentationPropertiesTest extends TestCase
         $this->assertEquals($imagePath, $object->getThumbnailPath());
     }
 
-    public function testZoom()
+    public function testZoom(): void
     {
         $object = new PresentationProperties();
-        $this->assertEquals(1, $object->getZoom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setZoom('AAAA'));
         $this->assertEquals(1, $object->getZoom());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setZoom(2.3));
         $this->assertEquals(2.3, $object->getZoom());

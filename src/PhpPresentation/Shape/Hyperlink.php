@@ -53,15 +53,15 @@ class Hyperlink
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Hyperlink
      *
-     * @param  string    $pUrl     Url to link the shape to
-     * @param  string    $pTooltip Tooltip to display on the hyperlink
+     * @param string    $pUrl     Url to link the shape to
+     * @param string    $pTooltip Tooltip to display on the hyperlink
      * @throws \Exception
      */
     public function __construct($pUrl = '', $pTooltip = '')
@@ -84,7 +84,7 @@ class Hyperlink
     /**
      * Set URL
      *
-     * @param  string                        $value
+     * @param string                        $value
      * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
      */
     public function setUrl($value = '')
@@ -107,7 +107,7 @@ class Hyperlink
     /**
      * Set tooltip
      *
-     * @param  string                        $value
+     * @param string                        $value
      * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
      */
     public function setTooltip($value = '')
@@ -130,7 +130,7 @@ class Hyperlink
     /**
      * Set slide number
      *
-     * @param  int                           $value
+     * @param int                           $value
      * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
      */
     public function setSlideNumber($value = 1)
@@ -156,7 +156,7 @@ class Hyperlink
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->url . $this->tooltip . __CLASS__);
     }
@@ -167,9 +167,9 @@ class Hyperlink
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -180,10 +180,12 @@ class Hyperlink
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

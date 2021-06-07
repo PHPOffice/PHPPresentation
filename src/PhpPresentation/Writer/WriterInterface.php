@@ -25,8 +25,8 @@ interface WriterInterface
     /**
      * Save PhpPresentation to file
      *
-     * @param  string    $pFilename
+     * @param string    $pFilename
      * @throws \Exception
      */
-    public function save($pFilename);
+    public function save(string $pFilename): void;
 }

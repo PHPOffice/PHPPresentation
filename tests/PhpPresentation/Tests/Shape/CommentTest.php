@@ -18,6 +18,7 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Comment;
+use PhpOffice\PhpPresentation\Shape\Comment\Author;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -27,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class CommentTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Comment();
 
@@ -38,45 +39,46 @@ class CommentTest extends TestCase
         $this->assertNull($object->getWidth());
     }
 
-    public function testGetSetAuthor()
+    public function testGetSetAuthor(): void
     {
         $object = new Comment();
 
-        $oStub = $this->getMockBuilder('PhpOffice\PhpPresentation\Shape\Comment\Author')->getMock();
+        /** @var Author $oStub */
+        $oStub = $this->getMockBuilder(Author::class)->getMock();
 
         $this->assertNull($object->getAuthor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment', $object->setAuthor($oStub));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment\\Author', $object->getAuthor());
+        $this->assertInstanceOf(Comment::class, $object->setAuthor($oStub));
+        $this->assertInstanceOf(Author::class, $object->getAuthor());
     }
 
-    public function testGetSetDate()
+    public function testGetSetDate(): void
     {
         $expectedDate = time();
 
         $object = new Comment();
         $this->assertIsInt($object->getDate());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment', $object->setDate($expectedDate));
+        $this->assertInstanceOf(Comment::class, $object->setDate($expectedDate));
         $this->assertEquals($expectedDate, $object->getDate());
         $this->assertIsInt($object->getDate());
     }
 
-    public function testGetSetText()
+    public function testGetSetText(): void
     {
         $expectedText = 'AABBCCDD';
 
         $object = new Comment();
         $this->assertNull($object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment', $object->setText($expectedText));
+        $this->assertInstanceOf(Comment::class, $object->setText($expectedText));
         $this->assertEquals($expectedText, $object->getText());
     }
 
-    public function testGetSetHeightAndWidtg()
+    public function testGetSetHeightAndWidtg(): void
     {
         $object = new Comment();
         $this->assertNull($object->getHeight());
         $this->assertNull($object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment', $object->setHeight(1));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment', $object->setWidth(1));
+        $this->assertInstanceOf(Comment::class, $object->setHeight(1));
+        $this->assertInstanceOf(Comment::class, $object->setWidth(1));
         $this->assertNull($object->getHeight());
         $this->assertNull($object->getWidth());
     }

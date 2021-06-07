@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class PieTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Pie();
 
@@ -46,7 +46,7 @@ class PieTest extends TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Pie();
 
@@ -55,7 +55,7 @@ class PieTest extends TestCase
     }
 
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 

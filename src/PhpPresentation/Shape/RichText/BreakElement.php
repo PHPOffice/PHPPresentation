@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPresentation\Shape\RichText;
 
+use PhpOffice\PhpPresentation\Style\Font;
+
 /**
  * Rich text break
  */
@@ -42,10 +44,10 @@ class BreakElement implements TextElementInterface
     /**
      * Set text
      *
-     * @param                                            $pText string   Text
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @param string $pText Text value
+     * @return self
      */
-    public function setText($pText = '')
+    public function setText($pText = ''): self
     {
         return $this;
     }
@@ -53,9 +55,9 @@ class BreakElement implements TextElementInterface
     /**
      * Get font
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return null|Font
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return null;
     }
@@ -63,10 +65,10 @@ class BreakElement implements TextElementInterface
     /**
      * Set language
      *
-     * @param $lang
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @param string $lang
+     * @return self
      */
-    public function setLanguage($lang)
+    public function setLanguage($lang): self
     {
         return $this;
     }
@@ -74,9 +76,9 @@ class BreakElement implements TextElementInterface
     /**
      * Get language
      *
-     * @return string Language
+     * @return null|string
      */
-    public function getLanguage()
+    public function getLanguage(): ?string
     {
         return null;
     }
@@ -86,7 +88,7 @@ class BreakElement implements TextElementInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(__CLASS__);
     }

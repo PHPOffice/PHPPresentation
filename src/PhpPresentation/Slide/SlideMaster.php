@@ -52,7 +52,7 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
      */
     protected $arraySchemeColor = array();
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $defaultSchemeColor = array(
         'dk1' => '000000',
@@ -72,7 +72,7 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * Create a new slideMaster
      *
-     * @param PhpPresentation $pParent
+     * @param PhpPresentation|null $pParent
      * @throws \Exception
      */
     public function __construct(PhpPresentation $pParent = null)
@@ -115,7 +115,7 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * Add slideLayout
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\SlideLayout $slideLayout
+     * @param \PhpOffice\PhpPresentation\Slide\SlideLayout $slideLayout
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Slide\SlideLayout
      */

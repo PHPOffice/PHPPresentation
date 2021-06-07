@@ -2,6 +2,8 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
+use GdImage;
+
 class Gd extends AbstractDrawingAdapter
 {
     /* Rendering functions */
@@ -66,7 +68,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Set image resource
      *
-     * @param $value resource
+     * @param resource $value
      * @return $this
      */
     public function setImageResource($value = null)
@@ -95,7 +97,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Set rendering function
      *
-     * @param  string                            $value
+     * @param string                            $value
      * @return $this
      */
     public function setRenderingFunction($value = self::RENDERING_DEFAULT)
@@ -109,7 +111,7 @@ class Gd extends AbstractDrawingAdapter
      *
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return $this->mimeType;
     }
@@ -117,7 +119,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * Set mime type
      *
-     * @param  string $value
+     * @param string $value
      * @return $this
      */
     public function setMimeType($value = self::MIMETYPE_DEFAULT)
@@ -129,7 +131,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getContents()
+    public function getContents(): string
     {
         ob_start();
         if ($this->getMimeType() === self::MIMETYPE_DEFAULT) {
@@ -145,7 +147,7 @@ class Gd extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         $extension = strtolower($this->getMimeType());
         $extension = explode('/', $extension);
@@ -156,8 +158,30 @@ class Gd extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getIndexedFilename()
+    public function getIndexedFilename(): string
     {
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();
+    }
+
+    /**
+     * @var string
+     */
+    protected $path;
+
+    /**
+     * Get Path
+     *
+     * @return string
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
     }
 }
