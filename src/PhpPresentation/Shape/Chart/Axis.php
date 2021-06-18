@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -22,7 +23,7 @@ use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\Axis
+ * \PhpOffice\PhpPresentation\Shape\Chart\Axis.
  */
 class Axis implements ComparableInterface
 {
@@ -35,21 +36,21 @@ class Axis implements ComparableInterface
     public const TICK_MARK_OUTSIDE = 'out';
 
     /**
-     * Title
+     * Title.
      *
      * @var string
      */
     private $title = 'Axis Title';
 
     /**
-     * Format code
+     * Format code.
      *
      * @var string
      */
     private $formatCode = '';
 
     /**
-     * Font
+     * Font.
      *
      * @var \PhpOffice\PhpPresentation\Style\Font
      */
@@ -101,12 +102,12 @@ class Axis implements ComparableInterface
     protected $outline;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isVisible = true;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance.
      *
      * @param string $title Title
      */
@@ -114,11 +115,11 @@ class Axis implements ComparableInterface
     {
         $this->title = $title;
         $this->outline = new Outline();
-        $this->font  = new Font();
+        $this->font = new Font();
     }
 
     /**
-     * Get Title
+     * Get Title.
      *
      * @return string
      */
@@ -128,9 +129,10 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Set Title
+     * Set Title.
      *
-     * @param string                         $value
+     * @param string $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
      */
     public function setTitle($value = 'Axis Title')
@@ -141,7 +143,7 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Get font
+     * Get font.
      *
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
@@ -151,20 +153,23 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Set font
+     * Set font.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Font               $pFont Font
+     * @param \PhpOffice\PhpPresentation\Style\Font $pFont Font
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
      */
     public function setFont(Font $pFont = null)
     {
         $this->font = $pFont;
+
         return $this;
     }
 
     /**
-     * Get Format Code
+     * Get Format Code.
      *
      * @return string
      */
@@ -174,9 +179,10 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Set Format Code
+     * Set Format Code.
      *
-     * @param string                         $value
+     * @param string $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
      */
     public function setFormatCode($value = '')
@@ -196,11 +202,13 @@ class Axis implements ComparableInterface
 
     /**
      * @param int|null $minBounds
+     *
      * @return Axis
      */
     public function setMinBounds($minBounds = null)
     {
-        $this->minBounds = is_null($minBounds) ? null : (int)$minBounds;
+        $this->minBounds = is_null($minBounds) ? null : (int) $minBounds;
+
         return $this;
     }
 
@@ -214,47 +222,37 @@ class Axis implements ComparableInterface
 
     /**
      * @param int|null $maxBounds
+     *
      * @return Axis
      */
     public function setMaxBounds($maxBounds = null)
     {
-        $this->maxBounds = is_null($maxBounds) ? null : (int)$maxBounds;
+        $this->maxBounds = is_null($maxBounds) ? null : (int) $maxBounds;
+
         return $this;
     }
 
-    /**
-     * @return Gridlines|null
-     */
     public function getMajorGridlines(): ?Gridlines
     {
         return $this->majorGridlines;
     }
 
-    /**
-     * @param Gridlines $majorGridlines
-     * @return self
-     */
     public function setMajorGridlines(Gridlines $majorGridlines): self
     {
         $this->majorGridlines = $majorGridlines;
+
         return $this;
     }
 
-    /**
-     * @return Gridlines|null
-     */
     public function getMinorGridlines(): ?Gridlines
     {
         return $this->minorGridlines;
     }
 
-    /**
-     * @param Gridlines $minorGridlines
-     * @return self
-     */
     public function setMinorGridlines(Gridlines $minorGridlines): self
     {
         $this->minorGridlines = $minorGridlines;
+
         return $this;
     }
 
@@ -268,11 +266,13 @@ class Axis implements ComparableInterface
 
     /**
      * @param string $pTickMark
+     *
      * @return Axis
      */
     public function setMinorTickMark($pTickMark = self::TICK_MARK_NONE)
     {
         $this->minorTickMark = $pTickMark;
+
         return $this;
     }
 
@@ -286,11 +286,13 @@ class Axis implements ComparableInterface
 
     /**
      * @param string $pTickMark
+     *
      * @return Axis
      */
     public function setMajorTickMark($pTickMark = self::TICK_MARK_NONE)
     {
         $this->majorTickMark = $pTickMark;
+
         return $this;
     }
 
@@ -304,11 +306,13 @@ class Axis implements ComparableInterface
 
     /**
      * @param float $pUnit
+     *
      * @return Axis
      */
     public function setMinorUnit($pUnit = null)
     {
         $this->minorUnit = $pUnit;
+
         return $this;
     }
 
@@ -322,11 +326,13 @@ class Axis implements ComparableInterface
 
     /**
      * @param float $pUnit
+     *
      * @return Axis
      */
     public function setMajorUnit($pUnit = null)
     {
         $this->majorUnit = $pUnit;
+
         return $this;
     }
 
@@ -339,17 +345,17 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * @param Outline $outline
      * @return Axis
      */
     public function setOutline(Outline $outline)
     {
         $this->outline = $outline;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -359,14 +365,14 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -379,23 +385,26 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
     /**
      * Axis is hidden ?
-     * @return boolean
+     *
+     * @return bool
      */
     public function isVisible()
     {
@@ -403,14 +412,16 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Hide an axis
+     * Hide an axis.
      *
-     * @param boolean $value delete
+     * @param bool $value delete
+     *
      * @return $this
      */
     public function setIsVisible($value)
     {
-        $this->isVisible = (bool)$value;
+        $this->isVisible = (bool) $value;
+
         return $this;
     }
 }

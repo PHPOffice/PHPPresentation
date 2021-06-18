@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,21 +21,19 @@ namespace PhpOffice\PhpPresentation\Reader;
 use Exception;
 use PhpOffice\Common\File;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Drawing\File as DrawingFile;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
+use PhpOffice\PhpPresentation\Shape\Drawing\File as DrawingFile;
 use ZipArchive;
 
 /**
- * Serialized format reader
+ * Serialized format reader.
  */
 class Serialized implements ReaderInterface
 {
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
      *
-     * @param string $pFilename
      * @throws \Exception
-     * @return boolean
      */
     public function canRead(string $pFilename): bool
     {
@@ -44,15 +43,13 @@ class Serialized implements ReaderInterface
     /**
      * Does a file support UnserializePhpPresentation ?
      *
-     * @param string    $pFilename
      * @throws \Exception
-     * @return boolean
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
         }
 
         // File exists, does it contain PhpPresentation.xml?
@@ -60,51 +57,42 @@ class Serialized implements ReaderInterface
     }
 
     /**
-     * Loads PhpPresentation Serialized file
+     * Loads PhpPresentation Serialized file.
      *
-     * @param string        $pFilename
-     * @return PhpPresentation
      * @throws \Exception
      */
     public function load(string $pFilename): PhpPresentation
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
         }
 
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized: " . $pFilename . '.');
         }
 
         return $this->loadSerialized($pFilename);
     }
 
     /**
-     * Load PhpPresentation Serialized file
-     *
-     * @param string $pFilename
-     * @return PhpPresentation
+     * Load PhpPresentation Serialized file.
      */
     private function loadSerialized(string $pFilename): PhpPresentation
     {
         $oArchive = new ZipArchive();
-        if ($oArchive->open($pFilename) !== true) {
+        if (true !== $oArchive->open($pFilename)) {
             throw new Exception('');
         }
 
         $xmlContent = $oArchive->getFromName('PhpPresentation.xml');
         if (empty($xmlContent)) {
-            throw new Exception(sprintf(
-                'The file %s in the serialized file %s is malformed',
-                'PhpPresentation.xml',
-                $pFilename
-            ));
+            throw new Exception(sprintf('The file %s in the serialized file %s is malformed', 'PhpPresentation.xml', $pFilename));
         }
 
         $xmlData = simplexml_load_string($xmlContent);
-        $file    = unserialize(base64_decode((string) $xmlData->data));
+        $file = unserialize(base64_decode((string) $xmlData->data));
 
         // Update media links
         for ($i = 0; $i < $file->getSlideCount(); ++$i) {
@@ -122,6 +110,7 @@ class Serialized implements ReaderInterface
         }
 
         $oArchive->close();
+
         return $file;
     }
 }

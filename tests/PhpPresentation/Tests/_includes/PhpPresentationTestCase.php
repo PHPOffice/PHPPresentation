@@ -35,7 +35,7 @@ class PhpPresentationTestCase extends TestCase
     protected $writerName;
 
     /**
-     * DOMDocument object
+     * DOMDocument object.
      *
      * @var DOMDocument|null
      */
@@ -47,42 +47,42 @@ class PhpPresentationTestCase extends TestCase
     private $xmlXPath;
 
     /**
-     * File name
+     * File name.
      *
      * @var string|null
      */
     private $xmlFile;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $xmlInternalErrors;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $xmlDisableEntityLoader;
 
     /**
      * @var array<string, array<string, string>>
      */
-    private $arrayOpenDocumentRNG = array(
-        '1.0' => array(
+    private $arrayOpenDocumentRNG = [
+        '1.0' => [
             'META-INF/manifest.xml' => 'OpenDocument-manifest-schema-v1.0-os.rng',
             '*' => 'OpenDocument-strict-schema-v1.0-os.rng',
-        ),
-        '1.1' => array(
+        ],
+        '1.1' => [
             'META-INF/manifest.xml' => 'OpenDocument-manifest-schema-v1.1.rng',
             '*' => 'OpenDocument-strict-schema-v1.1.rng',
-        ),
-        '1.2' => array(
+        ],
+        '1.2' => [
             'META-INF/manifest.xml' => 'OpenDocument-v1.2-os-manifest-schema.rng',
             '*' => 'OpenDocument-v1.2-os-schema.rng',
-        )
-    );
+        ],
+    ];
 
     /**
-     * Executed before each method of the class
+     * Executed before each method of the class.
      */
     protected function setUp(): void
     {
@@ -100,7 +100,7 @@ class PhpPresentationTestCase extends TestCase
     }
 
     /**
-     * Executed after each method of the class
+     * Executed after each method of the class.
      */
     protected function tearDown(): void
     {
@@ -111,19 +111,17 @@ class PhpPresentationTestCase extends TestCase
     }
 
     /**
-     * Delete directory
-     *
-     * @param string $dir
+     * Delete directory.
      */
     private function deleteDir(string $dir): void
     {
         foreach (scandir($dir) as $file) {
-            if ($file === '.' || $file === '..') {
+            if ('.' === $file || '..' === $file) {
                 continue;
-            } elseif (is_file($dir . "/" . $file)) {
-                unlink($dir . "/" . $file);
-            } elseif (is_dir($dir . "/" . $file)) {
-                $this->deleteDir($dir . "/" . $file);
+            } elseif (is_file($dir . '/' . $file)) {
+                unlink($dir . '/' . $file);
+            } elseif (is_dir($dir . '/' . $file)) {
+                $this->deleteDir($dir . '/' . $file);
             }
         }
 
@@ -144,18 +142,19 @@ class PhpPresentationTestCase extends TestCase
         $this->xmlDom = new DOMDocument();
         $strContent = file_get_contents($file);
         // docProps/app.xml
-        if ($baseFile == 'docProps/app.xml') {
+        if ('docProps/app.xml' == $baseFile) {
             $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/extended-properties"', '', $strContent);
         }
         // docProps/custom.xml
-        if ($baseFile == 'docProps/custom.xml') {
+        if ('docProps/custom.xml' == $baseFile) {
             $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $strContent);
         }
         // _rels/.rels
-        if (strpos($baseFile, '_rels/') !== false && strpos($baseFile, '.rels') !== false) {
+        if (false !== strpos($baseFile, '_rels/') && false !== strpos($baseFile, '.rels')) {
             $strContent = str_replace(' xmlns="http://schemas.openxmlformats.org/package/2006/relationships"', '', $strContent);
         }
         $this->xmlDom->loadXML($strContent);
+
         return $this->xmlDom;
     }
 
@@ -164,7 +163,7 @@ class PhpPresentationTestCase extends TestCase
      */
     private function getXmlNodeList(string $file, string $xpath): DOMNodeList
     {
-        if ($this->xmlDom === null || $file !== $this->xmlFile) {
+        if (null === $this->xmlDom || $file !== $this->xmlFile) {
             $this->getXmlDom($file);
         }
 
@@ -176,7 +175,6 @@ class PhpPresentationTestCase extends TestCase
     }
 
     /**
-     * @param PhpPresentation $oPhpPresentation
      * @param string $writerName
      */
     protected function writePresentationFile(PhpPresentation $oPhpPresentation, $writerName): void
@@ -190,7 +188,7 @@ class PhpPresentationTestCase extends TestCase
 
         $zip = new \ZipArchive();
         $res = $zip->open($this->filePath);
-        if ($res === true) {
+        if (true === $res) {
             $zip->extractTo($this->workDirectory);
             $zip->close();
         }
@@ -378,7 +376,7 @@ class PhpPresentationTestCase extends TestCase
 
         foreach ($iterator as $file) {
             /** @var \SplFileInfo $file */
-            if ($file->getExtension() !== 'xml') {
+            if ('xml' !== $file->getExtension()) {
                 continue;
             }
 
@@ -405,7 +403,7 @@ class PhpPresentationTestCase extends TestCase
 
         foreach ($iterator as $file) {
             /** @var \SplFileInfo $file */
-            if ($file->getExtension() !== 'xml') {
+            if ('xml' !== $file->getExtension()) {
                 continue;
             }
 
@@ -416,17 +414,17 @@ class PhpPresentationTestCase extends TestCase
             // http://schemas.openxmlformats.org/ to http://purl.oclc.org/ooxml/
             // We need to use the http://purl.oclc.org/ooxml/ namespace to validate
             // the xml against the current schema
-            $xmlSource = str_replace(array(
-                "http://schemas.openxmlformats.org/drawingml/2006/main",
-                "http://schemas.openxmlformats.org/drawingml/2006/chart",
-                "http://schemas.openxmlformats.org/officeDocument/2006/relationships",
-                "http://schemas.openxmlformats.org/presentationml/2006/main",
-            ), array(
-                "http://purl.oclc.org/ooxml/drawingml/main",
-                "http://purl.oclc.org/ooxml/drawingml/chart",
-                "http://purl.oclc.org/ooxml/officeDocument/relationships",
-                "http://purl.oclc.org/ooxml/presentationml/main",
-            ), $xmlSource);
+            $xmlSource = str_replace([
+                'http://schemas.openxmlformats.org/drawingml/2006/main',
+                'http://schemas.openxmlformats.org/drawingml/2006/chart',
+                'http://schemas.openxmlformats.org/officeDocument/2006/relationships',
+                'http://schemas.openxmlformats.org/presentationml/2006/main',
+            ], [
+                'http://purl.oclc.org/ooxml/drawingml/main',
+                'http://purl.oclc.org/ooxml/drawingml/chart',
+                'http://purl.oclc.org/ooxml/officeDocument/relationships',
+                'http://purl.oclc.org/ooxml/presentationml/main',
+            ], $xmlSource);
 
             $dom->loadXML($xmlSource);
             $dom->schemaValidate(__DIR__ . '/../../../resources/schema/ooxml/pml.xsd');
@@ -439,11 +437,6 @@ class PhpPresentationTestCase extends TestCase
         unset($iterator);
     }
 
-    /**
-     * @param string $version
-     * @param boolean $triggerError
-     * @return boolean
-     */
     public function assertIsSchemaOpenDocumentValid(string $version = '1.0', bool $triggerError = true): bool
     {
         if (!array_key_exists($version, $this->arrayOpenDocumentRNG)) {
@@ -457,7 +450,7 @@ class PhpPresentationTestCase extends TestCase
         $isValid = true;
         foreach ($iterator as $file) {
             /** @var \SplFileInfo $file */
-            if ($file->getExtension() !== 'xml') {
+            if ('xml' !== $file->getExtension()) {
                 continue;
             }
 
@@ -466,7 +459,7 @@ class PhpPresentationTestCase extends TestCase
             $xmlSource = $dom->saveXML();
 
             $dom->loadXML($xmlSource);
-            $pathRNG = __DIR__ . '/../../../resources/schema/opendocument/'.$version.'/';
+            $pathRNG = __DIR__ . '/../../../resources/schema/opendocument/' . $version . '/';
             if (isset($this->arrayOpenDocumentRNG[$version][$fileName])) {
                 $pathRNG .= $this->arrayOpenDocumentRNG[$version][$fileName];
             } else {
@@ -477,12 +470,13 @@ class PhpPresentationTestCase extends TestCase
             $error = libxml_get_last_error();
             if ($error instanceof LibXMLError) {
                 if ($triggerError) {
-                    $this->failXmlError($error, $fileName, $xmlSource, array('version' => $version));
+                    $this->failXmlError($error, $fileName, $xmlSource, ['version' => $version]);
                 }
                 $isValid = false;
             }
         }
         unset($iterator);
+
         return $isValid;
     }
 
@@ -490,17 +484,14 @@ class PhpPresentationTestCase extends TestCase
     {
         $isValid = $this->assertIsSchemaOpenDocumentValid($version, false);
         if ($isValid) {
-            self::fail('Failed : This document is currently valid (Schema version: '.$version.')');
+            self::fail('Failed : This document is currently valid (Schema version: ' . $version . ')');
         }
     }
 
     /**
-     * @param \LibXMLError $error
-     * @param string $fileName
-     * @param string $source
      * @param array<string, string> $params
      */
-    protected function failXmlError(LibXMLError $error, string $fileName, string $source, array $params = array()): void
+    protected function failXmlError(LibXMLError $error, string $fileName, string $source, array $params = []): void
     {
         switch ($error->level) {
             case LIBXML_ERR_WARNING:
@@ -516,9 +507,9 @@ class PhpPresentationTestCase extends TestCase
                 $errorType = 'Error';
                 break;
         }
-        $errorLine = (int)$error->line;
+        $errorLine = (int) $error->line;
         $contents = explode("\n", $source);
-        $lines = array();
+        $lines = [];
         if (isset($contents[$errorLine - 2])) {
             $lines[] = '>> ' . $contents[$errorLine - 2];
         }
@@ -530,9 +521,9 @@ class PhpPresentationTestCase extends TestCase
         }
         $paramStr = '';
         if (!empty($params)) {
-            $paramStr .= "\n" . ' - Parameters :'."\n";
+            $paramStr .= "\n" . ' - Parameters :' . "\n";
             foreach ($params as $key => $val) {
-                $paramStr .= '   - '.$key.' : '.$val."\n";
+                $paramStr .= '   - ' . $key . ' : ' . $val . "\n";
             }
         }
         self::fail(sprintf(

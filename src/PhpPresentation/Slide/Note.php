@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -21,73 +22,73 @@ use ArrayObject;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
+use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
-use PhpOffice\PhpPresentation\Shape\RichText;
 
 /**
- * Note class
+ * Note class.
  */
 class Note implements ComparableInterface, ShapeContainerInterface
 {
     /**
-     * Parent slide
+     * Parent slide.
      *
      * @var Slide
      */
     private $parent;
 
     /**
-     * Collection of shapes
+     * Collection of shapes.
      *
      * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
      */
     private $shapeCollection;
 
     /**
-     * Note identifier
+     * Note identifier.
      *
      * @var string
      */
     private $identifier;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Offset X
+     * Offset X.
      *
      * @var int
      */
     protected $offsetX;
 
     /**
-     * Offset Y
+     * Offset Y.
      *
      * @var int
      */
     protected $offsetY;
 
     /**
-     * Extent X
+     * Extent X.
      *
      * @var int
      */
     protected $extentX;
 
     /**
-     * Extent Y
+     * Extent Y.
      *
      * @var int
      */
     protected $extentY;
 
     /**
-     * Create a new note
+     * Create a new note.
      *
      * @param Slide $pParent
      */
@@ -104,7 +105,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
     }
 
     /**
-     * Get collection of shapes
+     * Get collection of shapes.
      *
      * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
      */
@@ -114,10 +115,10 @@ class Note implements ComparableInterface, ShapeContainerInterface
     }
 
     /**
-     * Add shape to slide
+     * Add shape to slide.
      *
-     * @param AbstractShape $shape
      * @return AbstractShape
+     *
      * @throws \Exception
      */
     public function addShape(AbstractShape $shape)
@@ -128,9 +129,8 @@ class Note implements ComparableInterface, ShapeContainerInterface
     }
 
     /**
-     * Create rich text shape
+     * Create rich text shape.
      *
-     * @return RichText
      * @throws \Exception
      */
     public function createRichTextShape(): RichText
@@ -142,7 +142,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
     }
 
     /**
-     * Get parent
+     * Get parent.
      *
      * @return Slide
      */
@@ -152,80 +152,75 @@ class Note implements ComparableInterface, ShapeContainerInterface
     }
 
     /**
-     * Set parent
+     * Set parent.
      *
-     * @param Slide $parent
      * @return Note
      */
     public function setParent(Slide $parent)
     {
         $this->parent = $parent;
+
         return $this;
     }
 
-
     /**
-     * Get X Offset
-     *
-     * @return int
+     * Get X Offset.
      */
     public function getOffsetX(): int
     {
-        if ($this->offsetX === null) {
+        if (null === $this->offsetX) {
             $offsets = GeometryCalculator::calculateOffsets($this);
             $this->offsetX = $offsets[GeometryCalculator::X];
             $this->offsetY = $offsets[GeometryCalculator::Y];
         }
+
         return $this->offsetX;
     }
 
     /**
-     * Get Y Offset
-     *
-     * @return int
+     * Get Y Offset.
      */
     public function getOffsetY(): int
     {
-        if ($this->offsetY === null) {
+        if (null === $this->offsetY) {
             $offsets = GeometryCalculator::calculateOffsets($this);
             $this->offsetX = $offsets[GeometryCalculator::X];
             $this->offsetY = $offsets[GeometryCalculator::Y];
         }
+
         return $this->offsetY;
     }
 
     /**
-     * Get X Extent
-     *
-     * @return int
+     * Get X Extent.
      */
     public function getExtentX(): int
     {
-        if ($this->extentX === null) {
+        if (null === $this->extentX) {
             $extents = GeometryCalculator::calculateExtents($this);
             $this->extentX = $extents[GeometryCalculator::X];
             $this->extentY = $extents[GeometryCalculator::Y];
         }
+
         return $this->extentX;
     }
 
     /**
-     * Get Y Extent
-     *
-     * @return int
+     * Get Y Extent.
      */
     public function getExtentY(): int
     {
-        if ($this->extentY === null) {
+        if (null === $this->extentY) {
             $extents = GeometryCalculator::calculateExtents($this);
             $this->extentX = $extents[GeometryCalculator::X];
             $this->extentY = $extents[GeometryCalculator::Y];
         }
+
         return $this->extentY;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -235,7 +230,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -248,17 +243,19 @@ class Note implements ComparableInterface, ShapeContainerInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

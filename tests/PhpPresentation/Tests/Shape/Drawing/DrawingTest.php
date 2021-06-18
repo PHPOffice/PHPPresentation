@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
@@ -21,9 +22,10 @@ use PhpOffice\PhpPresentation\Tests\Shape\Drawing\DrawingTest;
 
 function function_exists(string $function): bool
 {
-    if ($function === 'getimagesizefromstring') {
+    if ('getimagesizefromstring' === $function) {
         return DrawingTest::$getimagesizefromstringExists;
     }
+
     return \function_exists($function);
 }
 

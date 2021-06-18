@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -18,7 +19,7 @@
 namespace PhpOffice\PhpPresentation\Style;
 
 /**
- * PhpOffice\PhpPresentation\Style\ColorMap
+ * PhpOffice\PhpPresentation\Style\ColorMap.
  */
 class ColorMap
 {
@@ -36,16 +37,16 @@ class ColorMap
     public const COLOR_FOLHLINK = 'folHlink';
 
     /**
-     * Mapping - Stores the mapping betweenSlide and theme
+     * Mapping - Stores the mapping betweenSlide and theme.
      *
      * @var array<string, string>
      */
-    protected $mapping = array();
+    protected $mapping = [];
 
     /**
      * @var array<string, string>
      */
-    public static $mappingDefault = array(
+    public static $mappingDefault = [
         self::COLOR_BG1 => 'lt1',
         self::COLOR_TX1 => 'dk1',
         self::COLOR_BG2 => 'lt2',
@@ -57,12 +58,12 @@ class ColorMap
         self::COLOR_ACCENT5 => 'accent5',
         self::COLOR_ACCENT6 => 'accent6',
         self::COLOR_HLINK => 'hlink',
-        self::COLOR_FOLHLINK => 'folHlink'
-    );
+        self::COLOR_FOLHLINK => 'folHlink',
+    ];
 
     /**
      * ColorMap constructor.
-     * Create a new ColorMap with standard values
+     * Create a new ColorMap with standard values.
      */
     public function __construct()
     {
@@ -70,32 +71,29 @@ class ColorMap
     }
 
     /**
-     * Change the color of one of the elements in the map
-     *
-     * @param string $item
-     * @param string $newThemeColor
-     * @return self
+     * Change the color of one of the elements in the map.
      */
     public function changeColor(string $item, string $newThemeColor): self
     {
         $this->mapping[$item] = $newThemeColor;
+
         return $this;
     }
 
     /**
-     * Store a new map. For use with the reader
+     * Store a new map. For use with the reader.
      *
      * @param array<string, string> $arrayMapping
-     * @return self
      */
-    public function setMapping(array $arrayMapping = array()): self
+    public function setMapping(array $arrayMapping = []): self
     {
         $this->mapping = $arrayMapping;
+
         return $this;
     }
 
     /**
-     * Get the whole mapping as an array
+     * Get the whole mapping as an array.
      *
      * @return array<string, string>
      */

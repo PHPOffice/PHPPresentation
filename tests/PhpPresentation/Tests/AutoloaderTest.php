@@ -12,7 +12,8 @@
  *
  * @copyright   2010-2014 PhpPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -21,24 +22,24 @@ use PhpOffice\PhpPresentation\Autoloader;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Autoloader
+ * Test class for Autoloader.
  */
 class AutoloaderTest extends TestCase
 {
     /**
-     * Register
+     * Register.
      */
     public function testRegister(): void
     {
         Autoloader::register();
         $this->assertContains(
-            array('PhpOffice\\PhpPresentation\\Autoloader', 'autoload'),
+            ['PhpOffice\\PhpPresentation\\Autoloader', 'autoload'],
             spl_autoload_functions()
         );
     }
 
     /**
-     * Autoload
+     * Autoload.
      */
     public function testAutoload(): void
     {

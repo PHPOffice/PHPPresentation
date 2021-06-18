@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\Style\Font;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Run element
+ * Test class for Run element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Run
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText\Run
  */
 class RunTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
     public function testConstruct(): void
     {
@@ -71,11 +72,11 @@ class RunTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
     public function testHashCode(): void
     {
         $object = new Run();
-        $this->assertEquals(md5($object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($object->getFont()->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

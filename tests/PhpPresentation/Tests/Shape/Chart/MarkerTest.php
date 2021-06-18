@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
@@ -21,9 +22,9 @@ use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Legend element
+ * Test class for Legend element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Marker
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Marker
  */
 class MarkerTest extends TestCase
 {

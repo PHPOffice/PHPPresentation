@@ -5,12 +5,11 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
-use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 /**
- * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
  */
 class MetaInfManifestTest extends PhpPresentationTestCase
 {
@@ -20,7 +19,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
 
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
@@ -36,7 +35,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/filedoesntexist.png', false);
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/filedoesntexist.png', false);
 
         $this->writePresentationFile($this->oPresentation, 'ODPresentation');
     }
@@ -63,7 +62,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $oSlide = $this->oPresentation->getActiveSlide();
 
         $oShape = new Drawing\ZipFile();
-        $oShape->setPath('zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif');
+        $oShape->setPath('zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif');
         $oSlide->addShape($oShape);
 
         $element = '/manifest:manifest/manifest:file-entry[5]';
@@ -78,7 +77,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->expectExceptionMessage('does not exist');
 
         $oShape = new Drawing\ZipFile();
-        $oShape->setPath('zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'filedoesntexist.zip');
+        $oShape->setPath('zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'filedoesntexist.zip');
         $this->oPresentation->getActiveSlide()->addShape($oShape);
 
         $this->writePresentationFile($this->oPresentation, 'ODPresentation');
@@ -99,7 +98,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
     public function testSlideBackground(): void
     {
         $oBkgImage = new Image();
-        $oBkgImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
+        $oBkgImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
         $this->oPresentation->getActiveSlide()->setBackground($oBkgImage);
 
         $element = '/manifest:manifest/manifest:file-entry[5]';

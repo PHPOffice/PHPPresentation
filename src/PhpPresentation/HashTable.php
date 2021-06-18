@@ -10,38 +10,38 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpPresentation;
 
-use PhpOffice\PhpPresentation\ComparableInterface;
-
 /**
- * \PhpOffice\PhpPresentation\HashTable
+ * \PhpOffice\PhpPresentation\HashTable.
  */
 class HashTable
 {
     /**
-     * HashTable elements
+     * HashTable elements.
      *
      * @var array<string, ComparableInterface>
      */
-    public $items = array();
+    public $items = [];
 
     /**
-     * HashTable key map
+     * HashTable key map.
      *
      * @var array<int, string>
      */
-    public $keyMap = array();
+    public $keyMap = [];
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\HashTable
+     * Create a new \PhpOffice\PhpPresentation\HashTable.
      *
      * @param array<int, ComparableInterface> $pSource Optional source array to create HashTable from
+     *
      * @throws \Exception
      */
     public function __construct(array $pSource = [])
@@ -50,7 +50,7 @@ class HashTable
     }
 
     /**
-     * Add HashTable items from source
+     * Add HashTable items from source.
      *
      * @param array<int, ComparableInterface> $pSource Source array to create HashTable from
      */
@@ -62,7 +62,7 @@ class HashTable
     }
 
     /**
-     * Add HashTable item
+     * Add HashTable item.
      *
      * @param ComparableInterface $pSource Item to add
      */
@@ -87,9 +87,10 @@ class HashTable
     }
 
     /**
-     * Remove HashTable item
+     * Remove HashTable item.
      *
      * @param ComparableInterface $pSource Item to remove
+     *
      * @throws \Exception
      */
     public function remove(ComparableInterface $pSource): void
@@ -112,18 +113,16 @@ class HashTable
     }
 
     /**
-     * Clear HashTable
+     * Clear HashTable.
      */
     public function clear(): void
     {
-        $this->items  = array();
-        $this->keyMap = array();
+        $this->items = [];
+        $this->keyMap = [];
     }
 
     /**
-     * Count
-     *
-     * @return int
+     * Count.
      */
     public function count(): int
     {
@@ -131,23 +130,19 @@ class HashTable
     }
 
     /**
-     * Get index for hash code
+     * Get index for hash code.
      *
-     * @param string $pHashCode
      * @return int Index (-1 if not found)
      */
     public function getIndexForHashCode(string $pHashCode = ''): int
     {
         $index = array_search($pHashCode, $this->keyMap);
-        return $index === false ? -1 : $index;
+
+        return false === $index ? -1 : $index;
     }
 
     /**
-     * Get by index
-     *
-     * @param int $pIndex
-     * @return ComparableInterface|null
-     *
+     * Get by index.
      */
     public function getByIndex(int $pIndex = 0): ?ComparableInterface
     {
@@ -159,11 +154,7 @@ class HashTable
     }
 
     /**
-     * Get by hashcode
-     *
-     * @param string $pHashCode
-     * @return ComparableInterface|null
-     *
+     * Get by hashcode.
      */
     public function getByHashCode(string $pHashCode = ''): ?ComparableInterface
     {
@@ -175,7 +166,7 @@ class HashTable
     }
 
     /**
-     * HashTable to array
+     * HashTable to array.
      *
      * @return array<ComparableInterface>
      */

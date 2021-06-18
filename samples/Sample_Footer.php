@@ -1,6 +1,6 @@
 <?php
 /**
- * Footer file
+ * Footer file.
  */
 ?>
 </div>

@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Table;
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Row element
+ * Test class for Row element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Row
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Row
  */
 class RowTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
     public function testConstruct(): void
     {
@@ -78,7 +79,7 @@ class RowTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
     public function testSetGetHashIndex(): void
     {

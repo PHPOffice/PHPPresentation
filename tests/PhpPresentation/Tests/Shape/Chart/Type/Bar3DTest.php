@@ -12,19 +12,20 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Bar3D element
+ * Test class for Bar3D element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D
  */
 class Bar3DTest extends TestCase
 {
@@ -35,10 +36,10 @@ class Bar3DTest extends TestCase
         $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar3D', $object->setSeries());
         $this->assertEmpty($object->getSeries());
@@ -96,6 +97,6 @@ class Bar3DTest extends TestCase
         $object = new Bar3D();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

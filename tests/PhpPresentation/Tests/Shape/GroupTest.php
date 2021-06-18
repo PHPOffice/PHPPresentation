@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
@@ -22,9 +23,9 @@ use PhpOffice\PhpPresentation\Shape\Line;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Group element
+ * Test class for Group element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Group
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Group
  */
 class GroupTest extends TestCase
 {
@@ -56,7 +57,7 @@ class GroupTest extends TestCase
     public function testExtentX(): void
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 50);
+        $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(20, $object->getExtentX());
@@ -65,7 +66,7 @@ class GroupTest extends TestCase
     public function testExtentY(): void
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 50);
+        $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(30, $object->getExtentY());
@@ -74,7 +75,7 @@ class GroupTest extends TestCase
     public function testOffsetX(): void
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 50);
+        $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(10, $object->getOffsetX());
@@ -86,7 +87,7 @@ class GroupTest extends TestCase
     public function testOffsetY(): void
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 50);
+        $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(20, $object->getOffsetY());
@@ -108,7 +109,7 @@ class GroupTest extends TestCase
         $extentY = $endY - $offsetY;
 
         $object = new Group();
-        $line1  = new Line($offsetX, $offsetY, $endX, $endY);
+        $line1 = new Line($offsetX, $offsetY, $endX, $endY);
         $object->addShape($line1);
 
         $this->assertEquals($offsetX, $object->getOffsetX());
@@ -131,12 +132,12 @@ class GroupTest extends TestCase
         $extentX = ($endX - $offsetX) + $increase;
         $extentY = ($endY - $offsetY) + $increase;
 
-        $line1  = new Line($offsetX, $offsetY, $endX, $endY);
+        $line1 = new Line($offsetX, $offsetY, $endX, $endY);
         $line2 = new Line(
-            $offsetX+$increase,
-            $offsetY+$increase,
-            $endX+$increase,
-            $endY+$increase
+            $offsetX + $increase,
+            $offsetY + $increase,
+            $endX + $increase,
+            $endY + $increase
         );
 
         $object = new Group();

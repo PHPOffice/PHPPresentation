@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -22,12 +23,12 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Border;
 
 /**
- * Line shape
+ * Line shape.
  */
 class Line extends AbstractShape implements ComparableInterface
 {
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Line instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\Line instance.
      *
      * @param int $fromX
      * @param int $fromY
@@ -46,7 +47,7 @@ class Line extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */

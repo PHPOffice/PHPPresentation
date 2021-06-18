@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class FillTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
     public function testConstruct(): void
     {
@@ -43,7 +44,7 @@ class FillTest extends TestCase
     }
 
     /**
-     * Test get/set end color
+     * Test get/set end color.
      */
     public function testSetGetEndColor(): void
     {
@@ -56,7 +57,7 @@ class FillTest extends TestCase
     }
 
     /**
-     * Test get/set fill type
+     * Test get/set fill type.
      */
     public function testSetGetFillType(): void
     {
@@ -68,7 +69,7 @@ class FillTest extends TestCase
     }
 
     /**
-     * Test get/set rotation
+     * Test get/set rotation.
      */
     public function testSetGetRotation(): void
     {
@@ -81,7 +82,7 @@ class FillTest extends TestCase
     }
 
     /**
-     * Test get/set start color
+     * Test get/set start color.
      */
     public function testSetGetStartColor(): void
     {
@@ -94,7 +95,7 @@ class FillTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
     public function testSetGetHashIndex(): void
     {

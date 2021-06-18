@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
@@ -21,9 +22,9 @@ use PhpOffice\PhpPresentation\Shape\Drawing\ZipFile;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Drawing element
+ * Test class for Drawing element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Drawing
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Drawing
  */
 class ZipFileTest extends TestCase
 {
@@ -48,9 +49,9 @@ class ZipFileTest extends TestCase
 
         DrawingTest::$getimagesizefromstringExists = true;
 
-        $this->fileOk = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif';
-        $this->fileKoZip = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'fileNotExist.pptx#ppt/media/phppowerpoint_logo1.gif';
-        $this->fileKoFile = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/filenotexists.gif';
+        $this->fileOk = 'zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif';
+        $this->fileKoZip = 'zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'fileNotExist.pptx#ppt/media/phppowerpoint_logo1.gif';
+        $this->fileKoFile = 'zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'Sample_01_Simple.pptx#ppt/media/filenotexists.gif';
     }
 
     public function testContentsException(): void

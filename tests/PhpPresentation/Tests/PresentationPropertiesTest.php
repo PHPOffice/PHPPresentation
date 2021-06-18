@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -21,9 +22,9 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for DocumentProperties
+ * Test class for DocumentProperties.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PresentationProperties
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PresentationProperties
  */
 class PresentationPropertiesTest extends TestCase
 {
@@ -77,7 +78,7 @@ class PresentationPropertiesTest extends TestCase
 
     public function testThumbnail(): void
     {
-        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
 
         $object = new PresentationProperties();
         $this->assertNull($object->getThumbnailPath());

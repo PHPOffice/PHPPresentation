@@ -12,27 +12,28 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Table;
 
-use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Style\Borders;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Cell element
+ * Test class for Cell element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Cell
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Cell
  */
 class CellTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
     public function testConstruct(): void
     {
@@ -57,7 +58,7 @@ class CellTest extends TestCase
         $value = mt_rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs(array()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs([]));
         $this->assertCount(0, $object->getParagraphs());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
         $this->assertCount(1, $object->getParagraphs());
@@ -82,7 +83,7 @@ class CellTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
     public function testSetGetHashIndex(): void
     {
@@ -109,19 +110,19 @@ class CellTest extends TestCase
         $this->assertCount(6, $object->getActiveParagraph()->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
         $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', $object->getPlainText());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', (string) $object);
+        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', $object->getPlainText());
+        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', (string) $object);
     }
 
     public function testParagraphs(): void
     {
         $object = new Cell();
 
-        $array = array(
+        $array = [
             new Paragraph(),
             new Paragraph(),
             new Paragraph(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs($array));
         $this->assertCount(3, $object->getParagraphs());

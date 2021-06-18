@@ -5,14 +5,15 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
 use PhpOffice\PhpPresentation\Style\ColorMap;
-use PhpOffice\PhpPresentation\Slide\Background\Image;
 
 class PptSlideLayouts extends AbstractSlide
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -34,10 +35,10 @@ class PptSlideLayouts extends AbstractSlide
     }
 
     /**
-     * Write slide layout relationships to XML format
+     * Write slide layout relationships to XML format.
      *
-     * @param \PhpOffice\PhpPresentation\Slide\SlideLayout $oSlideLayout
-     * @return string    XML Output
+     * @return string XML Output
+     *
      * @throws \Exception
      */
     public function writeSlideLayoutRelationships(SlideLayout $oSlideLayout)
@@ -66,7 +67,7 @@ class PptSlideLayouts extends AbstractSlide
             $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oSlideLayout->getRelsIndex()));
             $oBackground->relationId = 'rId' . $relId;
 
-            $relId++;
+            ++$relId;
         }
 
         $objWriter->endElement();
@@ -76,10 +77,10 @@ class PptSlideLayouts extends AbstractSlide
     }
 
     /**
-     * Write slide to XML format
+     * Write slide to XML format.
      *
-     * @param \PhpOffice\PhpPresentation\Slide\SlideLayout $pSlideLayout
      * @return string XML Output
+     *
      * @throws \Exception
      */
     public function writeSlideLayout(SlideLayout $pSlideLayout)
@@ -96,7 +97,7 @@ class PptSlideLayouts extends AbstractSlide
         $objWriter->writeAttribute('preserve', 1);
         // p:sldLayout\p:cSld
         $objWriter->startElement('p:cSld');
-        $objWriter->writeAttributeIf($pSlideLayout->getLayoutName() != '', 'name', $pSlideLayout->getLayoutName());
+        $objWriter->writeAttributeIf('' != $pSlideLayout->getLayoutName(), 'name', $pSlideLayout->getLayoutName());
         // Background
         $this->writeSlideBackground($pSlideLayout, $objWriter);
         // p:sldLayout\p:cSld\p:spTree

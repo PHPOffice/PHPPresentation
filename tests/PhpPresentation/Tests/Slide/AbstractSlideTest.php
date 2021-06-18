@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Slide;
@@ -22,9 +23,9 @@ use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Table element
+ * Test class for Table element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\AbstractGraphic
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\AbstractGraphic
  */
 class AbstractSlideTest extends TestCase
 {
@@ -33,16 +34,16 @@ class AbstractSlideTest extends TestCase
         /** @var AbstractSlide $stub */
         $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide');
 
-        $array = array();
+        $array = [];
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
         $this->assertIsArray($stub->getShapeCollection());
         $this->assertCount(count($array), $stub->getShapeCollection());
 
-        $array = array(
+        $array = [
             new RichText(),
             new RichText(),
             new RichText(),
-        );
+        ];
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide', $stub->setShapeCollection($array));
         $this->assertIsArray($stub->getShapeCollection());
         $this->assertCount(count($array), $stub->getShapeCollection());

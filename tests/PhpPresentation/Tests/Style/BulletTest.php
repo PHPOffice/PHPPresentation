@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class BulletTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
     public function testConstruct(): void
     {
@@ -42,7 +43,7 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet char
+     * Test get/set bullet char.
      */
     public function testSetGetBulletChar(): void
     {
@@ -54,7 +55,7 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet color
+     * Test get/set bullet color.
      */
     public function testSetGetBulletColor(): void
     {
@@ -66,14 +67,13 @@ class BulletTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
         $this->assertEquals(Color::COLOR_BLACK, $object->getBulletColor()->getARGB());
 
-
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletColor(new Color($expectedARGB)));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
         $this->assertEquals($expectedARGB, $object->getBulletColor()->getARGB());
     }
 
     /**
-     * Test get/set bullet font
+     * Test get/set bullet font.
      */
     public function testSetGetBulletFont(): void
     {
@@ -87,7 +87,7 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet numeric start at
+     * Test get/set bullet numeric start at.
      */
     public function testSetGetBulletNumericStartAt(): void
     {
@@ -100,7 +100,7 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet numeric style
+     * Test get/set bullet numeric style.
      */
     public function testSetGetBulletNumericStyle(): void
     {
@@ -112,7 +112,7 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet type
+     * Test get/set bullet type.
      */
     public function testSetGetBulletType(): void
     {
@@ -124,7 +124,7 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set has index
+     * Test get/set has index.
      */
     public function testSetGetHashIndex(): void
     {

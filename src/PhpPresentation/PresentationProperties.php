@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -18,7 +19,7 @@
 namespace PhpOffice\PhpPresentation;
 
 /**
- * \PhpOffice\PhpPresentation\PresentationProperties
+ * \PhpOffice\PhpPresentation\PresentationProperties.
  */
 class PresentationProperties
 {
@@ -34,7 +35,7 @@ class PresentationProperties
     /**
      * @var array<int, string>
      */
-    protected $arrayView = array(
+    protected $arrayView = [
         self::VIEW_HANDOUT,
         self::VIEW_NOTES,
         self::VIEW_NOTES_MASTER,
@@ -43,7 +44,7 @@ class PresentationProperties
         self::VIEW_SLIDE_MASTER,
         self::VIEW_SLIDE_SORTER,
         self::VIEW_SLIDE_THUMBNAIL,
-    );
+    ];
 
     /**
      * @var bool
@@ -51,7 +52,8 @@ class PresentationProperties
     protected $isLoopUntilEsc = false;
 
     /**
-     * Mark as final
+     * Mark as final.
+     *
      * @var bool
      */
     protected $markAsFinal = false;
@@ -62,7 +64,8 @@ class PresentationProperties
     protected $thumbnail;
 
     /**
-     * Zoom
+     * Zoom.
+     *
      * @var float
      */
     protected $zoom = 1.0;
@@ -77,26 +80,21 @@ class PresentationProperties
      */
     protected $isCommentVisible = false;
 
-    /**
-     * @return bool
-     */
     public function isLoopContinuouslyUntilEsc(): bool
     {
         return $this->isLoopUntilEsc;
     }
 
-    /**
-     * @param bool $value
-     * @return self
-     */
     public function setLoopContinuouslyUntilEsc(bool $value = false): self
     {
         $this->isLoopUntilEsc = $value;
+
         return $this;
     }
 
     /**
-     * Return the thumbnail file path
+     * Return the thumbnail file path.
+     *
      * @return string
      */
     public function getThumbnailPath()
@@ -105,8 +103,10 @@ class PresentationProperties
     }
 
     /**
-     * Define the path for the thumbnail file / preview picture
+     * Define the path for the thumbnail file / preview picture.
+     *
      * @param string $path
+     *
      * @return \PhpOffice\PhpPresentation\PresentationProperties
      */
     public function setThumbnailPath($path = '')
@@ -114,22 +114,23 @@ class PresentationProperties
         if (file_exists($path)) {
             $this->thumbnail = $path;
         }
+
         return $this;
     }
 
     /**
-     * Mark a document as final
-     * @param bool $state
-     * @return self
+     * Mark a document as final.
      */
     public function markAsFinal(bool $state = true): self
     {
         $this->markAsFinal = $state;
+
         return $this;
     }
 
     /**
-     * Return if this document is marked as final
+     * Return if this document is marked as final.
+     *
      * @return bool
      */
     public function isMarkedAsFinal()
@@ -138,19 +139,17 @@ class PresentationProperties
     }
 
     /**
-     * Set the zoom of the document (in percentage)
-     * @param float $zoom
-     * @return self
+     * Set the zoom of the document (in percentage).
      */
     public function setZoom(float $zoom = 1.0): self
     {
         $this->zoom = $zoom;
+
         return $this;
     }
 
     /**
-     * Return the zoom (in percentage)
-     * @return float
+     * Return the zoom (in percentage).
      */
     public function getZoom(): float
     {
@@ -159,6 +158,7 @@ class PresentationProperties
 
     /**
      * @param string $value
+     *
      * @return $this
      */
     public function setLastView($value = self::VIEW_SLIDE)
@@ -166,6 +166,7 @@ class PresentationProperties
         if (in_array($value, $this->arrayView)) {
             $this->lastView = $value;
         }
+
         return $this;
     }
 
@@ -177,19 +178,13 @@ class PresentationProperties
         return $this->lastView;
     }
 
-    /**
-     * @param bool $value
-     * @return self
-     */
     public function setCommentVisible(bool $value = false): self
     {
         $this->isCommentVisible = $value;
+
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isCommentVisible(): bool
     {
         return $this->isCommentVisible;

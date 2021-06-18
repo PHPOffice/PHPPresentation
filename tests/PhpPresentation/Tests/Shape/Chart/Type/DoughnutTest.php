@@ -12,19 +12,20 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Doughnut element
+ * Test class for Doughnut element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut
  */
 class DoughnutTest extends TestCase
 {
@@ -35,10 +36,10 @@ class DoughnutTest extends TestCase
         $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setSeries());
         $this->assertEmpty($object->getSeries());

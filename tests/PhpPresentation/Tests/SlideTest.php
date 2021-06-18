@@ -12,22 +12,23 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
 
+use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 use PhpOffice\PhpPresentation\Slide\Animation;
 use PhpOffice\PhpPresentation\Slide\Transition;
-use PhpOffice\PhpPresentation\PhpPresentation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class SlideTest extends TestCase
 {
@@ -84,7 +85,7 @@ class SlideTest extends TestCase
         $this->assertInstanceOf(Slide::class, $object->setAnimations());
         $this->assertIsArray($object->getAnimations());
         $this->assertCount(0, $object->getAnimations());
-        $this->assertInstanceOf(Slide::class, $object->setAnimations(array($oStub)));
+        $this->assertInstanceOf(Slide::class, $object->setAnimations([$oStub]));
         $this->assertIsArray($object->getAnimations());
         $this->assertCount(1, $object->getAnimations());
     }

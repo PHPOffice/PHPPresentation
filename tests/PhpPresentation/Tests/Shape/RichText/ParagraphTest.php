@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
@@ -25,14 +26,14 @@ use PhpOffice\PhpPresentation\Style\Font;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Paragraph element
+ * Test class for Paragraph element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
  */
 class ParagraphTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
     public function testConstruct(): void
     {
@@ -51,7 +52,7 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set bullet style
+     * Test get/set bullet style.
      */
     public function testBulletStyle(): void
     {
@@ -64,7 +65,7 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set font
+     * Test get/set font.
      */
     public function testFont(): void
     {
@@ -77,18 +78,18 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set hashCode
+     * Test get/set hashCode.
      */
     public function testHashCode(): void
     {
         $object = new Paragraph();
         $oElement = new TextElement();
         $object->addText($oElement);
-        $this->assertEquals(md5($oElement->getHashCode().$object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oElement->getHashCode() . $object->getFont()->getHashCode() . get_class($object)), $object->getHashCode());
     }
 
     /**
-     * Test get/set hashIndex
+     * Test get/set hashIndex.
      */
     public function testHashIndex(): void
     {
@@ -99,7 +100,7 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set linespacing
+     * Test get/set linespacing.
      */
     public function testLineSpacing(): void
     {
@@ -111,7 +112,7 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set richTextElements
+     * Test get/set richTextElements.
      */
     public function testRichTextElements(): void
     {
@@ -121,17 +122,17 @@ class ParagraphTest extends TestCase
         $object->createBreak();
         $this->assertCount(1, $object->getRichTextElements());
 
-        $array = array(
+        $array = [
             new TextElement(),
             new TextElement(),
             new TextElement(),
-        );
+        ];
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setRichTextElements($array));
         $this->assertCount(3, $object->getRichTextElements());
     }
 
     /**
-     * Test text methods
+     * Test text methods.
      */
     public function testText(): void
     {
@@ -148,7 +149,7 @@ class ParagraphTest extends TestCase
         $this->assertCount(5, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BBB'));
         $this->assertCount(6, $object->getRichTextElements());
-        $this->assertEquals('AAA'."\r\n".'BBB', $object->getPlainText());
-        $this->assertEquals('AAA'."\r\n".'BBB', (string) $object);
+        $this->assertEquals('AAA' . "\r\n" . 'BBB', $object->getPlainText());
+        $this->assertEquals('AAA' . "\r\n" . 'BBB', (string) $object);
     }
 }

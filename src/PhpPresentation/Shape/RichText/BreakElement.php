@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,19 +21,19 @@ namespace PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Font;
 
 /**
- * Rich text break
+ * Rich text break.
  */
 class BreakElement implements TextElementInterface
 {
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Break instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Break instance.
      */
     public function __construct()
     {
     }
 
     /**
-     * Get text
+     * Get text.
      *
      * @return string Text
      */
@@ -42,10 +43,9 @@ class BreakElement implements TextElementInterface
     }
 
     /**
-     * Set text
+     * Set text.
      *
      * @param string $pText Text value
-     * @return self
      */
     public function setText($pText = ''): self
     {
@@ -53,9 +53,7 @@ class BreakElement implements TextElementInterface
     }
 
     /**
-     * Get font
-     *
-     * @return null|Font
+     * Get font.
      */
     public function getFont(): ?Font
     {
@@ -63,10 +61,9 @@ class BreakElement implements TextElementInterface
     }
 
     /**
-     * Set language
+     * Set language.
      *
      * @param string $lang
-     * @return self
      */
     public function setLanguage($lang): self
     {
@@ -74,9 +71,7 @@ class BreakElement implements TextElementInterface
     }
 
     /**
-     * Get language
-     *
-     * @return null|string
+     * Get language.
      */
     public function getLanguage(): ?string
     {
@@ -84,7 +79,7 @@ class BreakElement implements TextElementInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */

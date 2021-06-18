@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -22,9 +23,9 @@ use PhpOffice\PhpPresentation\Slide\Animation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Animation
+ * Test class for Animation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Slide\Animation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Slide\Animation
  */
 class AnimationTest extends TestCase
 {
@@ -43,7 +44,7 @@ class AnimationTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection());
         $this->assertIsArray($object->getShapeCollection());
         $this->assertCount(0, $object->getShapeCollection());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection(array($oStub)));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Animation', $object->setShapeCollection([$oStub]));
         $this->assertIsArray($object->getShapeCollection());
         $this->assertCount(1, $object->getShapeCollection());
     }

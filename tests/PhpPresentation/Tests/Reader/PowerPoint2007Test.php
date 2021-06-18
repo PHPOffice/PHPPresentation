@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
@@ -26,14 +27,14 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PowerPoint2007 reader
+ * Test class for PowerPoint2007 reader.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Reader\PowerPoint2007
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Reader\PowerPoint2007
  */
 class PowerPoint2007Test extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
     public function testCanRead(): void
     {
@@ -489,7 +490,6 @@ class PowerPoint2007Test extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
         $this->assertFalse($oPhpPresentation->getPresentationProperties()->isMarkedAsFinal());
 
-
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_MarkAsFinal.pptx';
         $object = new PowerPoint2007();
         $oPhpPresentation = $object->load($file);
@@ -504,7 +504,6 @@ class PowerPoint2007Test extends TestCase
         $oPhpPresentation = $object->load($file);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
         $this->assertEquals(1, $oPhpPresentation->getPresentationProperties()->getZoom());
-
 
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_Zoom.pptx';
         $object = new PowerPoint2007();

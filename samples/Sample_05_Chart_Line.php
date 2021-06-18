@@ -3,8 +3,8 @@
 include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
@@ -31,15 +31,15 @@ $oShadow->setVisible(true)->setDirection(45)->setDistance(10);
 
 // Generate sample data for chart
 echo date('H:i:s') . ' Generate sample data for chart' . EOL;
-$seriesData = array(
+$seriesData = [
     'Monday' => 12,
     'Tuesday' => 15,
     'Wednesday' => 13,
     'Thursday' => 17,
     'Friday' => 14,
     'Saturday' => 9,
-    'Sunday' => 7
-);
+    'Sunday' => 7,
+];
 
 // Create templated slide
 echo EOL . date('H:i:s') . ' Create templated slide' . EOL;

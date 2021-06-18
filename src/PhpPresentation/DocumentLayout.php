@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,7 +21,7 @@ namespace PhpOffice\PhpPresentation;
 use PhpOffice\Common\Drawing;
 
 /**
- * \PhpOffice\PhpPresentation\DocumentLayout
+ * \PhpOffice\PhpPresentation\DocumentLayout.
  */
 class DocumentLayout
 {
@@ -45,7 +46,7 @@ class DocumentLayout
     public const UNIT_POINT = 'pt';
 
     /**
-     * Dimension types
+     * Dimension types.
      *
      * 1 px = 9525 EMU @ 96dpi (which is seems to be the default)
      * Absolute distances are specified in English Metric Units (EMUs),
@@ -54,41 +55,43 @@ class DocumentLayout
      *
      * @var array<string, array<string, int>>
      */
-    private $dimension = array(
-        self::LAYOUT_SCREEN_4X3 => array('cx' => 9144000, 'cy' => 6858000),
-        self::LAYOUT_SCREEN_16X10 => array('cx' => 9144000, 'cy' => 5715000),
-        self::LAYOUT_SCREEN_16X9 => array('cx' => 9144000, 'cy' => 5143500),
-        self::LAYOUT_35MM => array('cx' => 10287000, 'cy' => 6858000),
-        self::LAYOUT_A3 => array('cx' => 15120000, 'cy' => 10692000),
-        self::LAYOUT_A4 => array('cx' => 10692000, 'cy' => 7560000),
-        self::LAYOUT_B4ISO => array('cx' => 10826750, 'cy' => 8120063),
-        self::LAYOUT_B5ISO => array('cx' => 7169150, 'cy' => 5376863),
-        self::LAYOUT_BANNER => array('cx' => 7315200, 'cy' => 914400),
-        self::LAYOUT_LETTER => array('cx' => 9144000, 'cy' => 6858000),
-        self::LAYOUT_OVERHEAD => array('cx' => 9144000, 'cy' => 6858000),
-    );
+    private $dimension = [
+        self::LAYOUT_SCREEN_4X3 => ['cx' => 9144000, 'cy' => 6858000],
+        self::LAYOUT_SCREEN_16X10 => ['cx' => 9144000, 'cy' => 5715000],
+        self::LAYOUT_SCREEN_16X9 => ['cx' => 9144000, 'cy' => 5143500],
+        self::LAYOUT_35MM => ['cx' => 10287000, 'cy' => 6858000],
+        self::LAYOUT_A3 => ['cx' => 15120000, 'cy' => 10692000],
+        self::LAYOUT_A4 => ['cx' => 10692000, 'cy' => 7560000],
+        self::LAYOUT_B4ISO => ['cx' => 10826750, 'cy' => 8120063],
+        self::LAYOUT_B5ISO => ['cx' => 7169150, 'cy' => 5376863],
+        self::LAYOUT_BANNER => ['cx' => 7315200, 'cy' => 914400],
+        self::LAYOUT_LETTER => ['cx' => 9144000, 'cy' => 6858000],
+        self::LAYOUT_OVERHEAD => ['cx' => 9144000, 'cy' => 6858000],
+    ];
 
     /**
-     * Layout name
+     * Layout name.
      *
      * @var string
      */
     private $layout;
 
     /**
-     * Layout X dimension
+     * Layout X dimension.
+     *
      * @var float
      */
     private $dimensionX;
 
     /**
-     * Layout Y dimension
+     * Layout Y dimension.
+     *
      * @var float
      */
     private $dimensionY;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\DocumentLayout
+     * Create a new \PhpOffice\PhpPresentation\DocumentLayout.
      */
     public function __construct()
     {
@@ -96,9 +99,7 @@ class DocumentLayout
     }
 
     /**
-     * Get Document Layout
-     *
-     * @return string
+     * Get Document Layout.
      */
     public function getDocumentLayout(): string
     {
@@ -106,11 +107,10 @@ class DocumentLayout
     }
 
     /**
-     * Set Document Layout
+     * Set Document Layout.
      *
      * @param array<string, int>|string $pValue
-     * @param boolean $isLandscape
-     * @return self
+     * @param bool $isLandscape
      */
     public function setDocumentLayout($pValue = self::LAYOUT_SCREEN_4X3, $isLandscape = true): self
     {
@@ -148,10 +148,7 @@ class DocumentLayout
     }
 
     /**
-     * Get Document Layout cx
-     *
-     * @param string $unit
-     * @return float
+     * Get Document Layout cx.
      */
     public function getCX(string $unit = self::UNIT_EMU): float
     {
@@ -159,10 +156,7 @@ class DocumentLayout
     }
 
     /**
-     * Get Document Layout cy
-     *
-     * @param string $unit
-     * @return float
+     * Get Document Layout cy.
      */
     public function getCY(string $unit = self::UNIT_EMU): float
     {
@@ -170,39 +164,29 @@ class DocumentLayout
     }
 
     /**
-     * Get Document Layout cx
-     *
-     * @param float $value
-     * @param string $unit
-     * @return self
+     * Get Document Layout cx.
      */
     public function setCX(float $value, string $unit = self::UNIT_EMU): self
     {
         $this->layout = self::LAYOUT_CUSTOM;
         $this->dimensionX = $this->convertUnit($value, $unit, self::UNIT_EMU);
+
         return $this;
     }
 
     /**
-     * Get Document Layout cy
-     *
-     * @param float $value
-     * @param string $unit
-     * @return self
+     * Get Document Layout cy.
      */
     public function setCY(float $value, string $unit = self::UNIT_EMU): self
     {
         $this->layout = self::LAYOUT_CUSTOM;
         $this->dimensionY = $this->convertUnit($value, $unit, self::UNIT_EMU);
+
         return $this;
     }
 
     /**
-     * Convert EMUs to differents units
-     * @param float $value
-     * @param string $fromUnit
-     * @param string $toUnit
-     * @return float
+     * Convert EMUs to differents units.
      */
     protected function convertUnit(float $value, string $fromUnit, string $toUnit): float
     {
@@ -249,6 +233,7 @@ class DocumentLayout
             default:
             // no changes
         }
+
         return $value;
     }
 }

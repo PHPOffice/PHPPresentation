@@ -13,18 +13,15 @@ class SchemeColor extends AbstractBackground
     protected $schemeColor;
 
     /**
-     * @param StyleSchemeColor|null $color
      * @return $this
      */
     public function setSchemeColor(StyleSchemeColor $color = null): self
     {
         $this->schemeColor = $color;
+
         return $this;
     }
 
-    /**
-     * @return StyleSchemeColor|null
-     */
     public function getSchemeColor(): ?StyleSchemeColor
     {
         return $this->schemeColor;

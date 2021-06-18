@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -24,55 +25,55 @@ use PhpOffice\PhpPresentation\Shape\Chart\Title;
 use PhpOffice\PhpPresentation\Shape\Chart\View3D;
 
 /**
- * Chart element
+ * Chart element.
  */
 class Chart extends AbstractGraphic implements ComparableInterface
 {
     /**
-     * Title
+     * Title.
      *
      * @var \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     private $title;
 
     /**
-     * Legend
+     * Legend.
      *
      * @var \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     private $legend;
 
     /**
-     * Plot area
+     * Plot area.
      *
      * @var \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     private $plotArea;
 
     /**
-     * View 3D
+     * View 3D.
      *
      * @var \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     private $view3D;
 
     /**
-     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation
+     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation.
      *
      * @var bool
      */
     private $includeSpreadsheet = false;
 
     /**
-     * Create a new Chart
+     * Create a new Chart.
      */
     public function __construct()
     {
         // Initialize
-        $this->title    = new Title();
-        $this->legend   = new Legend();
+        $this->title = new Title();
+        $this->legend = new Legend();
         $this->plotArea = new PlotArea();
-        $this->view3D   = new View3D();
+        $this->view3D = new View3D();
 
         // Initialize parent
         parent::__construct();
@@ -82,14 +83,14 @@ class Chart extends AbstractGraphic implements ComparableInterface
     {
         parent::__clone();
 
-        $this->title     = clone $this->title;
-        $this->legend    = clone $this->legend;
-        $this->plotArea  = clone $this->plotArea;
-        $this->view3D    = clone $this->view3D;
+        $this->title = clone $this->title;
+        $this->legend = clone $this->legend;
+        $this->plotArea = clone $this->plotArea;
+        $this->view3D = clone $this->view3D;
     }
 
     /**
-     * Get Title
+     * Get Title.
      *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
@@ -99,7 +100,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Get Legend
+     * Get Legend.
      *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
@@ -109,7 +110,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Get PlotArea
+     * Get PlotArea.
      *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
@@ -119,7 +120,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Get View3D
+     * Get View3D.
      *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
@@ -129,9 +130,9 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation
+     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasIncludedSpreadsheet()
     {
@@ -139,19 +140,21 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation
+     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation.
      *
-     * @param boolean                   $value
+     * @param bool $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart
      */
     public function setIncludeSpreadsheet($value = false)
     {
         $this->includeSpreadsheet = $value;
+
         return $this;
     }
 
     /**
-     * Get indexed filename (using image index)
+     * Get indexed filename (using image index).
      *
      * @return string
      */
@@ -161,7 +164,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */

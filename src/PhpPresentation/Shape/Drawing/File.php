@@ -12,9 +12,7 @@ class File extends AbstractDrawingAdapter
     protected $path = '';
 
     /**
-     * Get Path
-     *
-     * @return string
+     * Get Path.
      */
     public function getPath(): string
     {
@@ -22,11 +20,13 @@ class File extends AbstractDrawingAdapter
     }
 
     /**
-     * Set Path
+     * Set Path.
      *
-     * @param string                      $pValue      File path
-     * @param boolean                     $pVerifyFile Verify file
+     * @param string $pValue File path
+     * @param bool $pVerifyFile Verify file
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
      */
     public function setPath(string $pValue = '', $pVerifyFile = true): self
@@ -39,7 +39,7 @@ class File extends AbstractDrawingAdapter
         $this->path = $pValue;
 
         if ($pVerifyFile) {
-            if ($this->width == 0 && $this->height == 0) {
+            if (0 == $this->width && 0 == $this->height) {
                 list($this->width, $this->height) = getimagesize($this->getPath());
             }
         }
@@ -47,18 +47,11 @@ class File extends AbstractDrawingAdapter
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getContents(): string
     {
         return CommonFile::fileGetContents($this->getPath());
     }
 
-
-    /**
-     * @return string
-     */
     public function getExtension(): string
     {
         return pathinfo($this->getPath(), PATHINFO_EXTENSION);
@@ -66,26 +59,24 @@ class File extends AbstractDrawingAdapter
 
     /**
      * @throws \Exception
-     * @return string
      */
     public function getMimeType(): string
     {
         if (!CommonFile::fileExists($this->getPath())) {
-            throw new \Exception('File '.$this->getPath().' does not exist');
+            throw new \Exception('File ' . $this->getPath() . ' does not exist');
         }
         $image = getimagesizefromstring(CommonFile::fileGetContents($this->getPath()));
+
         return image_type_to_mime_type($image[2]);
     }
 
-    /**
-     * @return string
-     */
     public function getIndexedFilename(): string
     {
         $output = str_replace('.' . $this->getExtension(), '', pathinfo($this->getPath(), PATHINFO_FILENAME));
         $output .= $this->getImageIndex();
-        $output .= '.'.$this->getExtension();
+        $output .= '.' . $this->getExtension();
         $output = str_replace(' ', '_', $output);
+
         return $output;
     }
 }

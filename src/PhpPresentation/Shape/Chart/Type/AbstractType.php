@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -21,26 +22,26 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\Type
+ * \PhpOffice\PhpPresentation\Shape\Chart\Type.
  */
 abstract class AbstractType implements ComparableInterface
 {
     /**
      * Has Axis X?
      *
-     * @var boolean
+     * @var bool
      */
     protected $hasAxisX = true;
 
     /**
      * Has Axis Y?
      *
-     * @var boolean
+     * @var bool
      */
     protected $hasAxisY = true;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
@@ -49,12 +50,10 @@ abstract class AbstractType implements ComparableInterface
     /**
      * @var array<int, Series>
      */
-    private $series = array();
+    private $series = [];
 
     /**
      * Has Axis X?
-     *
-     * @return boolean
      */
     public function hasAxisX(): bool
     {
@@ -63,8 +62,6 @@ abstract class AbstractType implements ComparableInterface
 
     /**
      * Has Axis Y?
-     *
-     * @return boolean
      */
     public function hasAxisY(): bool
     {
@@ -72,7 +69,7 @@ abstract class AbstractType implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -85,34 +82,36 @@ abstract class AbstractType implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return AbstractType
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
     /**
-     * Add Series
+     * Add Series.
      *
-     * @param Series $value
      * @return $this
      */
     public function addSeries(Series $value)
     {
         $this->series[] = $value;
+
         return $this;
     }
 
     /**
-     * Get Series
+     * Get Series.
      *
      * @return array<int, Series>
      */
@@ -122,21 +121,24 @@ abstract class AbstractType implements ComparableInterface
     }
 
     /**
-     * Set Series
+     * Set Series.
      *
      * @param array<int, Series> $series
+     *
      * @return $this
      */
-    public function setSeries(array $series = array())
+    public function setSeries(array $series = [])
     {
         $this->series = $series;
+
         return $this;
     }
 
     /**
-     * Get Data
+     * Get Data.
      *
      * @deprecated getSeries
+     *
      * @return array<int, Series>
      */
     public function getData(): array
@@ -145,23 +147,25 @@ abstract class AbstractType implements ComparableInterface
     }
 
     /**
-     * Set Data
+     * Set Data.
      *
      * @deprecated setSeries
+     *
      * @param array<int, Series> $value
+     *
      * @return AbstractType
      */
-    public function setData(array $value = array())
+    public function setData(array $value = [])
     {
         return $this->setSeries($value);
     }
 
     /**
-     * @link http://php.net/manual/en/language.oop5.cloning.php
+     * @see http://php.net/manual/en/language.oop5.cloning.php
      */
     public function __clone()
     {
-        $arrayClone = array();
+        $arrayClone = [];
         foreach ($this->series as $itemSeries) {
             $arrayClone[] = clone $itemSeries;
         }

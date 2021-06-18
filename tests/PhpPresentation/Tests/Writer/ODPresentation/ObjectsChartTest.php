@@ -21,9 +21,9 @@ use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
- * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\ObjectsChart
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Writer\ODPresentation\ObjectsChart
  */
 class ObjectsChartTest extends PhpPresentationTestCase
 {
@@ -32,18 +32,18 @@ class ObjectsChartTest extends PhpPresentationTestCase
     /**
      * @var array<string, string>
      */
-    protected $seriesData = array(
+    protected $seriesData = [
         'A' => '1',
         'B' => '2',
         'C' => '4',
         'D' => '3',
         'E' => '2',
-    );
+    ];
 
     public function testAxisFont(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oBar = new Bar();
         $oBar->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar);
@@ -80,7 +80,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testLegend(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oLine = new Line();
         $oLine->addSeries($oSeries);
@@ -152,7 +152,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testSeries(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oPie = new Pie();
         $oPie->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
@@ -240,7 +240,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeArea(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->getFill()->setStartColor(new Color('FF93A9CE'));
         $oArea = new Area();
         $oArea->addSeries($oSeries);
@@ -268,7 +268,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     {
         $value = mt_rand(0, 100);
 
-        $oSeries = new Series('Downloads', array('A' => '1', 'B' => '2', 'C' => '4', 'D' => '3', 'E' => '2'));
+        $oSeries = new Series('Downloads', ['A' => '1', 'B' => '2', 'C' => '4', 'D' => '3', 'E' => '2']);
         $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
         $oLine = new Line();
         $oLine->addSeries($oSeries);
@@ -319,7 +319,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeBar(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -353,7 +353,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     public function testTypeBarGroupingStacked(): void
     {
         $oBar = new Bar();
-        $oBar->addSeries(new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2')));
+        $oBar->addSeries(new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']));
         $oBar->setBarGrouping(Bar::GROUPING_STACKED);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oBar);
@@ -372,7 +372,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     public function testTypeBarGroupingPercentStacked(): void
     {
         $oBar = new Bar();
-        $oBar->addSeries(new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2')));
+        $oBar->addSeries(new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']));
         $oBar->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oBar);
@@ -390,7 +390,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeBarHorizontal(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -417,7 +417,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeBar3D(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -448,7 +448,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeBar3DHorizontal(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -516,7 +516,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeLine(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oLine = new Line();
         $oLine->addSeries($oSeries);
@@ -553,36 +553,36 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeLineGridlines(): void
     {
-        $arrayTests = array(
-            array(
+        $arrayTests = [
+            [
                 'dimension' => 'x',
                 'styleName' => 'styleAxisXGridlinesMajor',
                 'styleClass' => 'major',
                 'methodAxis' => 'getAxisX',
-                'methodGrid' => 'setMajorGridlines'
-            ),
-            array(
+                'methodGrid' => 'setMajorGridlines',
+            ],
+            [
                 'dimension' => 'x',
                 'styleName' => 'styleAxisXGridlinesMinor',
                 'styleClass' => 'minor',
                 'methodAxis' => 'getAxisX',
-                'methodGrid' => 'setMinorGridlines'
-            ),
-            array(
+                'methodGrid' => 'setMinorGridlines',
+            ],
+            [
                 'dimension' => 'y',
                 'styleName' => 'styleAxisYGridlinesMajor',
                 'styleClass' => 'major',
                 'methodAxis' => 'getAxisY',
-                'methodGrid' => 'setMajorGridlines'
-            ),
-            array(
+                'methodGrid' => 'setMajorGridlines',
+            ],
+            [
                 'dimension' => 'y',
                 'styleName' => 'styleAxisYGridlinesMinor',
                 'styleClass' => 'minor',
                 'methodAxis' => 'getAxisY',
-                'methodGrid' => 'setMinorGridlines'
-            ),
-        );
+                'methodGrid' => 'setMinorGridlines',
+            ],
+        ];
         $expectedColor = new Color(Color::COLOR_BLUE);
 
         foreach ($arrayTests as $arrayTest) {
@@ -590,9 +590,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $this->oPresentation->removeSlideByIndex(0)->createSlide();
 
             $expectedSizePts = mt_rand(1, 100);
-            $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSizePts), 2, '.', '').'cm';
-            $expectedElementGrid = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\''.$arrayTest['dimension'].'\']/chart:grid';
-            $expectedElementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\''.$arrayTest['styleName'].'\']/style:graphic-properties';
+            $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSizePts), 2, '.', '') . 'cm';
+            $expectedElementGrid = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\'' . $arrayTest['dimension'] . '\']/chart:grid';
+            $expectedElementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $arrayTest['styleName'] . '\']/style:graphic-properties';
 
             $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
             $oLine = new Line();
@@ -631,7 +631,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
         $expectedSize = mt_rand(1, 100);
-        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '').'cm';
+        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '') . 'cm';
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oLine = new Line();
@@ -650,7 +650,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol2);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
@@ -659,7 +659,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol3);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
@@ -668,7 +668,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol4);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
@@ -677,7 +677,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol5);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-name');
@@ -691,7 +691,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     public function testTypeLineSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
+        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
 
@@ -718,7 +718,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->setOutline($oOutline);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipFileExists('Object 1/content.xml');
@@ -733,7 +733,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypePie(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -764,7 +764,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypePie3D(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -797,7 +797,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     {
         $value = mt_rand(0, 100);
 
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oPie3D = new Pie3D();
         $oPie3D->setExplosion($value);
@@ -814,7 +814,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
     public function testTypeScatter(): void
     {
-        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oScatter = new Scatter();
         $oScatter->addSeries($oSeries);
@@ -837,7 +837,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $expectedSymbol5 = Marker::SYMBOL_NONE;
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
         $expectedSize = mt_rand(1, 100);
-        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '').'cm';
+        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '') . 'cm';
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oScatter = new Scatter();
@@ -856,7 +856,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol2);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
@@ -865,7 +865,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol3);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
@@ -874,7 +874,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol4);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
@@ -883,7 +883,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol5);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-name');
@@ -897,7 +897,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     public function testTypeScatterSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
+        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
 
@@ -923,7 +923,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->setOutline($oOutline);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipFileExists('Object 1/content.xml');

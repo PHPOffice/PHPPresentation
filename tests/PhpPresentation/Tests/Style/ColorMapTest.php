@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -32,7 +33,7 @@ class ColorMapTest extends TestCase
     public function testMapping(): void
     {
         $object = new ColorMap();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping(array()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping([]));
         $this->assertIsArray($object->getMapping());
         $this->assertCount(0, $object->getMapping());
         $array = ColorMap::$mappingDefault;

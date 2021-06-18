@@ -3,7 +3,6 @@
 include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\RichText;
 
 // Create new PHPPresentation object
 echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;

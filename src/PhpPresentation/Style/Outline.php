@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -18,7 +19,7 @@
 namespace PhpOffice\PhpPresentation\Style;
 
 /**
- * \PhpOffice\PhpPresentation\Style\Outline
+ * \PhpOffice\PhpPresentation\Style\Outline.
  */
 class Outline
 {
@@ -36,40 +37,30 @@ class Outline
         $this->fill = new Fill();
     }
 
-    /**
-     * @return Fill
-     */
     public function getFill(): Fill
     {
         return $this->fill;
     }
 
-    /**
-     * @param Fill $fill
-     * @return self
-     */
     public function setFill(Fill $fill): self
     {
         $this->fill = $fill;
+
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getWidth(): ?int
     {
         return $this->width;
     }
 
     /**
-     * Value in points
-     * @param int $pValue
-     * @return self
+     * Value in points.
      */
     public function setWidth(int $pValue = 0): self
     {
         $this->width = $pValue;
+
         return $this;
     }
 }

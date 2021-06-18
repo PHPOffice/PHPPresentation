@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -18,13 +19,14 @@
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack;
 
 /**
- * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack
+ * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack.
+ *
  * @deprecated 0.7
  */
 abstract class AbstractLayoutPack
 {
     /**
-     * Master slides
+     * Master slides.
      *
      * Structure:
      * - masterid
@@ -32,10 +34,10 @@ abstract class AbstractLayoutPack
      *
      * @var array<int, array{'masterid': int, 'body': string}>
      */
-    protected $masterSlides = array();
+    protected $masterSlides = [];
 
     /**
-     * Master slide relations
+     * Master slide relations.
      *
      * Structure:
      * - master id
@@ -47,10 +49,10 @@ abstract class AbstractLayoutPack
      *
      * @var array<int, array<string, string>>
      */
-    protected $masterSlideRels = array();
+    protected $masterSlideRels = [];
 
     /**
-     * Themes
+     * Themes.
      *
      * Structure:
      * - masterid
@@ -58,10 +60,10 @@ abstract class AbstractLayoutPack
      *
      * @var array<int, array{'masterid': int, 'body': string}>
      */
-    protected $themes = array();
+    protected $themes = [];
 
     /**
-     * Theme relations
+     * Theme relations.
      *
      * Structure:
      * - masterid
@@ -73,7 +75,7 @@ abstract class AbstractLayoutPack
      *
      * @var array<int, array<string, string>>
      */
-    protected $themeRelations = array();
+    protected $themeRelations = [];
 
     /**
      * Array of slide layouts.
@@ -86,10 +88,10 @@ abstract class AbstractLayoutPack
      *
      * @var array<int, array{'id': int, 'masterid': int, 'name': string, 'body': string}>
      */
-    protected $layouts = array();
+    protected $layouts = [];
 
     /**
-     * Layout relations
+     * Layout relations.
      *
      * Structure:
      * - layoutId (referencing layout id in layouts array)
@@ -101,10 +103,10 @@ abstract class AbstractLayoutPack
      *
      * @var array<int, array<string, string>>
      */
-    protected $layoutRelations = array();
+    protected $layoutRelations = [];
 
     /**
-     * Get master slides
+     * Get master slides.
      *
      * @return array<int, array{'masterid': int, 'body': string}>
      */
@@ -114,7 +116,7 @@ abstract class AbstractLayoutPack
     }
 
     /**
-     * Get master slide relations
+     * Get master slide relations.
      *
      * @return array<int, array<string, string>>
      */
@@ -124,7 +126,7 @@ abstract class AbstractLayoutPack
     }
 
     /**
-     * Get themes
+     * Get themes.
      *
      * @return array<int, array{'masterid': int, 'body': string}>
      */
@@ -134,7 +136,7 @@ abstract class AbstractLayoutPack
     }
 
     /**
-     * Get theme relations
+     * Get theme relations.
      *
      * @return array<int, array<string, string>>
      */
@@ -144,7 +146,7 @@ abstract class AbstractLayoutPack
     }
 
     /**
-     * Get array of slide layouts
+     * Get array of slide layouts.
      *
      * @return array<int, array{'id': int, 'masterid': int, 'name': string, 'body': string}>
      */
@@ -154,7 +156,7 @@ abstract class AbstractLayoutPack
     }
 
     /**
-     * Get array of slide layout relations
+     * Get array of slide layout relations.
      *
      * @return array<int, array<string, string>>
      */
@@ -171,9 +173,8 @@ abstract class AbstractLayoutPack
      * - name (string)
      * - body (string)
      *
-     * @param string $name
-     * @param int $masterId
      * @return array{'id': int, 'masterid': int, 'name': string, 'body': string}
+     *
      * @throws \Exception
      */
     public function findLayout(string $name = '', int $masterId = 1): array
@@ -190,8 +191,6 @@ abstract class AbstractLayoutPack
     /**
      * Find specific slide layout id.
      *
-     * @param string $name
-     * @return int
      * @throws \Exception
      */
     public function findLayoutId(string $name = ''): int
@@ -208,8 +207,6 @@ abstract class AbstractLayoutPack
     /**
      * Find specific slide layout name.
      *
-     * @param int $idLayout
-     * @return string
      * @throws \Exception
      */
     public function findLayoutName(int $idLayout): string

@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,7 +21,7 @@ namespace PhpOffice\PhpPresentation\Style;
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * \PhpOffice\PhpPresentation\Style\Shadow
+ * \PhpOffice\PhpPresentation\Style\Shadow.
  */
 class Shadow implements ComparableInterface
 {
@@ -35,14 +36,14 @@ class Shadow implements ComparableInterface
     public const SHADOW_TOP_RIGHT = 'tr';
 
     /**
-     * Visible
+     * Visible.
      *
-     * @var boolean
+     * @var bool
      */
     private $visible;
 
     /**
-     * Blur radius
+     * Blur radius.
      *
      * Defaults to 6
      *
@@ -51,7 +52,7 @@ class Shadow implements ComparableInterface
     private $blurRadius;
 
     /**
-     * Shadow distance
+     * Shadow distance.
      *
      * Defaults to 2
      *
@@ -60,14 +61,14 @@ class Shadow implements ComparableInterface
     private $distance;
 
     /**
-     * Shadow direction (in degrees)
+     * Shadow direction (in degrees).
      *
      * @var int
      */
     private $direction;
 
     /**
-     * Shadow alignment
+     * Shadow alignment.
      *
      * @var string
      */
@@ -84,31 +85,29 @@ class Shadow implements ComparableInterface
     private $alpha;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Shadow
+     * Create a new \PhpOffice\PhpPresentation\Style\Shadow.
      */
     public function __construct()
     {
         // Initialise values
-        $this->visible    = false;
+        $this->visible = false;
         $this->blurRadius = 6;
-        $this->distance   = 2;
-        $this->direction  = 0;
-        $this->alignment  = self::SHADOW_BOTTOM_RIGHT;
-        $this->color      = new Color(Color::COLOR_BLACK);
-        $this->alpha      = 50;
+        $this->distance = 2;
+        $this->direction = 0;
+        $this->alignment = self::SHADOW_BOTTOM_RIGHT;
+        $this->color = new Color(Color::COLOR_BLACK);
+        $this->alpha = 50;
     }
 
     /**
-     * Get Visible
-     *
-     * @return boolean
+     * Get Visible.
      */
     public function isVisible(): bool
     {
@@ -116,10 +115,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Set Visible
-     *
-     * @param bool $pValue
-     * @return self
+     * Set Visible.
      */
     public function setVisible(bool $pValue = false): self
     {
@@ -129,9 +125,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Get Blur radius
-     *
-     * @return int
+     * Get Blur radius.
      */
     public function getBlurRadius(): int
     {
@@ -139,10 +133,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Set Blur radius
-     *
-     * @param int $pValue
-     * @return self
+     * Set Blur radius.
      */
     public function setBlurRadius(int $pValue = 6): self
     {
@@ -152,9 +143,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Get Shadow distance
-     *
-     * @return int
+     * Get Shadow distance.
      */
     public function getDistance(): int
     {
@@ -162,9 +151,8 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Set Shadow distance
+     * Set Shadow distance.
      *
-     * @param int  $pValue
      * @return $this
      */
     public function setDistance(int $pValue = 2): self
@@ -175,9 +163,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Get Shadow direction (in degrees)
-     *
-     * @return int
+     * Get Shadow direction (in degrees).
      */
     public function getDirection(): int
     {
@@ -185,10 +171,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Set Shadow direction (in degrees)
-     *
-     * @param int $pValue
-     * @return self
+     * Set Shadow direction (in degrees).
      */
     public function setDirection(int $pValue = 0): self
     {
@@ -198,9 +181,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Get Shadow alignment
-     *
-     * @return string
+     * Get Shadow alignment.
      */
     public function getAlignment(): string
     {
@@ -208,10 +189,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Set Shadow alignment
-     *
-     * @param string $pValue
-     * @return self
+     * Set Shadow alignment.
      */
     public function setAlignment(string $pValue = self::SHADOW_BOTTOM_RIGHT): self
     {
@@ -221,9 +199,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Get Color
-     *
-     * @return Color|null
+     * Get Color.
      */
     public function getColor(): ?Color
     {
@@ -231,10 +207,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Set Color
-     *
-     * @param Color|null $pValue
-     * @return self
+     * Set Color.
      */
     public function setColor(Color $pValue = null): self
     {
@@ -244,9 +217,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Get Alpha
-     *
-     * @return int
+     * Get Alpha.
      */
     public function getAlpha(): int
     {
@@ -254,10 +225,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Set Alpha
-     *
-     * @param int $pValue
-     * @return self
+     * Set Alpha.
      */
     public function setAlpha(int $pValue = 0): self
     {
@@ -267,7 +235,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -277,7 +245,7 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -290,17 +258,19 @@ class Shadow implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,49 +21,49 @@ namespace PhpOffice\PhpPresentation\Style;
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * \PhpOffice\PhpPresentation\Style\Color
+ * \PhpOffice\PhpPresentation\Style\Color.
  */
 class Color implements ComparableInterface
 {
     /* Colors */
-    public const COLOR_BLACK                       = 'FF000000';
-    public const COLOR_WHITE                       = 'FFFFFFFF';
-    public const COLOR_RED                         = 'FFFF0000';
-    public const COLOR_DARKRED                     = 'FF800000';
-    public const COLOR_BLUE                        = 'FF0000FF';
-    public const COLOR_DARKBLUE                    = 'FF000080';
-    public const COLOR_GREEN                       = 'FF00FF00';
-    public const COLOR_DARKGREEN                   = 'FF008000';
-    public const COLOR_YELLOW                      = 'FFFFFF00';
-    public const COLOR_DARKYELLOW                  = 'FF808000';
+    public const COLOR_BLACK = 'FF000000';
+    public const COLOR_WHITE = 'FFFFFFFF';
+    public const COLOR_RED = 'FFFF0000';
+    public const COLOR_DARKRED = 'FF800000';
+    public const COLOR_BLUE = 'FF0000FF';
+    public const COLOR_DARKBLUE = 'FF000080';
+    public const COLOR_GREEN = 'FF00FF00';
+    public const COLOR_DARKGREEN = 'FF008000';
+    public const COLOR_YELLOW = 'FFFFFF00';
+    public const COLOR_DARKYELLOW = 'FF808000';
 
     /**
-     * ARGB - Alpha RGB
+     * ARGB - Alpha RGB.
      *
      * @var string
      */
     private $argb;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Color
+     * Create a new \PhpOffice\PhpPresentation\Style\Color.
      *
      * @param string $pARGB
      */
     public function __construct($pARGB = self::COLOR_BLACK)
     {
         // Initialise values
-        $this->argb            = $pARGB;
+        $this->argb = $pARGB;
     }
 
     /**
-     * Get ARGB
+     * Get ARGB.
      *
      * @return string
      */
@@ -72,14 +73,15 @@ class Color implements ComparableInterface
     }
 
     /**
-     * Set ARGB
+     * Set ARGB.
      *
-     * @param string                    $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Color
      */
     public function setARGB($pValue = self::COLOR_BLACK)
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = self::COLOR_BLACK;
         }
         $this->argb = $pValue;
@@ -89,22 +91,26 @@ class Color implements ComparableInterface
 
     /**
      * Get the alpha % of the ARGB
-     * Will return 100 if no ARGB
-     * @return integer
+     * Will return 100 if no ARGB.
+     *
+     * @return int
      */
     public function getAlpha()
     {
         $alpha = 100;
         if (strlen($this->argb) >= 6) {
             $dec = hexdec(substr($this->argb, 0, 2));
-            $alpha = number_format(($dec/255) * 100, 2);
+            $alpha = number_format(($dec / 255) * 100, 2);
         }
+
         return $alpha;
     }
 
     /**
-     * Set the alpha % of the ARGB
+     * Set the alpha % of the ARGB.
+     *
      * @param int $alpha
+     *
      * @return $this
      */
     public function setAlpha($alpha = 100)
@@ -119,17 +125,18 @@ class Color implements ComparableInterface
         $alpha = dechex((int) $alpha);
         $alpha = str_pad($alpha, 2, '0', STR_PAD_LEFT);
         $this->argb = $alpha . substr($this->argb, 2);
+
         return $this;
     }
 
     /**
-     * Get RGB
+     * Get RGB.
      *
      * @return string
      */
     public function getRGB()
     {
-        if (strlen($this->argb) == 6) {
+        if (6 == strlen($this->argb)) {
             return $this->argb;
         } else {
             return substr($this->argb, 2);
@@ -137,18 +144,19 @@ class Color implements ComparableInterface
     }
 
     /**
-     * Set RGB
+     * Set RGB.
      *
      * @param string $pValue
      * @param string $pAlpha
+     *
      * @return \PhpOffice\PhpPresentation\Style\Color
      */
     public function setRGB($pValue = '000000', $pAlpha = 'FF')
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = '000000';
         }
-        if ($pAlpha == '') {
+        if ('' == $pAlpha) {
             $pAlpha = 'FF';
         }
         $this->argb = $pAlpha . $pValue;
@@ -157,7 +165,7 @@ class Color implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -170,7 +178,7 @@ class Color implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -183,17 +191,19 @@ class Color implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

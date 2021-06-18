@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
@@ -26,14 +27,14 @@ use PHPUnit\Framework\TestCase;
 require 'AbstractWriter.php';
 
 /**
- * Test class for AbstractWriter
+ * Test class for AbstractWriter.
  *
- * @coversDefaultClass AbstractWriter
+ * @coversDefaultClass \AbstractWriter
  */
 class AbstractWriterTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
     public function testConstruct(): void
     {
@@ -48,7 +49,7 @@ class AbstractWriterTest extends TestCase
     }
 
     /**
-     * Test all drawings method
+     * Test all drawings method.
      */
     public function testAllDrawingsIncludesMasterSlides(): void
     {

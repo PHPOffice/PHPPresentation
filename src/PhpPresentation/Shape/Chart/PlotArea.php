@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -21,54 +22,54 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
+ * \PhpOffice\PhpPresentation\Shape\Chart\PlotArea.
  */
 class PlotArea implements ComparableInterface
 {
     /**
-     * Type
+     * Type.
      *
-     * @var null|AbstractType
+     * @var AbstractType|null
      */
     private $type;
 
     /**
-     * Axis X
+     * Axis X.
      *
      * @var Axis
      */
     private $axisX;
 
     /**
-     * Axis Y
+     * Axis Y.
      *
      * @var Axis
      */
     private $axisY;
 
     /**
-     * OffsetX (as a fraction of the chart)
+     * OffsetX (as a fraction of the chart).
      *
      * @var float
      */
     private $offsetX = 0;
 
     /**
-     * OffsetY (as a fraction of the chart)
+     * OffsetY (as a fraction of the chart).
      *
      * @var float
      */
     private $offsetY = 0;
 
     /**
-     * Width (as a fraction of the chart)
+     * Width (as a fraction of the chart).
      *
      * @var float
      */
     private $width = 0;
 
     /**
-     * Height (as a fraction of the chart)
+     * Height (as a fraction of the chart).
      *
      * @var float
      */
@@ -82,12 +83,11 @@ class PlotArea implements ComparableInterface
 
     public function __clone()
     {
-        $this->axisX     = clone $this->axisX;
-        $this->axisY     = clone $this->axisY;
+        $this->axisX = clone $this->axisX;
+        $this->axisY = clone $this->axisY;
     }
 
     /**
-     * @return AbstractType
      * @throws \Exception
      */
     public function getType(): AbstractType
@@ -99,10 +99,6 @@ class PlotArea implements ComparableInterface
         return $this->type;
     }
 
-    /**
-     * @param AbstractType $value
-     * @return self
-     */
     public function setType(AbstractType $value): self
     {
         $this->type = $value;
@@ -111,9 +107,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Get Axis X
-     *
-     * @return Axis
+     * Get Axis X.
      */
     public function getAxisX(): Axis
     {
@@ -121,9 +115,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Get Axis Y
-     *
-     * @return Axis
+     * Get Axis Y.
      */
     public function getAxisY(): Axis
     {
@@ -131,9 +123,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Get OffsetX (as a fraction of the chart)
-     *
-     * @return float
+     * Get OffsetX (as a fraction of the chart).
      */
     public function getOffsetX(): float
     {
@@ -141,10 +131,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Set OffsetX (as a fraction of the chart)
-     *
-     * @param float $pValue
-     * @return self
+     * Set OffsetX (as a fraction of the chart).
      */
     public function setOffsetX(float $pValue = 0): self
     {
@@ -154,9 +141,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Get OffsetY (as a fraction of the chart)
-     *
-     * @return float
+     * Get OffsetY (as a fraction of the chart).
      */
     public function getOffsetY(): float
     {
@@ -164,9 +149,8 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Set OffsetY (as a fraction of the chart)
+     * Set OffsetY (as a fraction of the chart).
      *
-     * @param float $pValue
      * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     public function setOffsetY(float $pValue = 0): self
@@ -177,9 +161,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Get Width (as a fraction of the chart)
-     *
-     * @return float
+     * Get Width (as a fraction of the chart).
      */
     public function getWidth(): float
     {
@@ -187,10 +169,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Set Width (as a fraction of the chart)
-     *
-     * @param int $pValue
-     * @return self
+     * Set Width (as a fraction of the chart).
      */
     public function setWidth(int $pValue = 0): self
     {
@@ -200,9 +179,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Get Height (as a fraction of the chart)
-     *
-     * @return float
+     * Get Height (as a fraction of the chart).
      */
     public function getHeight(): float
     {
@@ -210,9 +187,8 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Set Height (as a fraction of the chart)
+     * Set Height (as a fraction of the chart).
      *
-     * @param float $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     public function setHeight(float $value = 0): self
@@ -223,7 +199,7 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -233,14 +209,14 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -253,17 +229,19 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return PlotArea
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }
