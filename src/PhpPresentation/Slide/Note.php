@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation\Slide;
 
+use ArrayObject;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
@@ -39,9 +40,9 @@ class Note implements ComparableInterface, ShapeContainerInterface
     /**
      * Collection of shapes
      *
-     * @var \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[]
+     * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
      */
-    private $shapeCollection = null;
+    private $shapeCollection;
 
     /**
      * Note identifier
@@ -53,7 +54,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -96,7 +97,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
         $this->parent = $pParent;
 
         // Shape collection
-        $this->shapeCollection = new \ArrayObject();
+        $this->shapeCollection = new ArrayObject();
 
         // Set identifier
         $this->identifier = md5(rand(0, 9999) . time());
@@ -105,7 +106,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
     /**
      * Get collection of shapes
      *
-     * @return \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[]
+     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
      */
     public function getShapeCollection()
     {
@@ -115,8 +116,8 @@ class Note implements ComparableInterface, ShapeContainerInterface
     /**
      * Add shape to slide
      *
-     * @param  \PhpOffice\PhpPresentation\AbstractShape $shape
-     * @return \PhpOffice\PhpPresentation\AbstractShape
+     * @param AbstractShape $shape
+     * @return AbstractShape
      * @throws \Exception
      */
     public function addShape(AbstractShape $shape)
@@ -129,10 +130,10 @@ class Note implements ComparableInterface, ShapeContainerInterface
     /**
      * Create rich text shape
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return RichText
      * @throws \Exception
      */
-    public function createRichTextShape()
+    public function createRichTextShape(): RichText
     {
         $shape = new RichText();
         $this->addShape($shape);
@@ -168,7 +169,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return int
      */
-    public function getOffsetX()
+    public function getOffsetX(): int
     {
         if ($this->offsetX === null) {
             $offsets = GeometryCalculator::calculateOffsets($this);
@@ -183,7 +184,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return int
      */
-    public function getOffsetY()
+    public function getOffsetY(): int
     {
         if ($this->offsetY === null) {
             $offsets = GeometryCalculator::calculateOffsets($this);
@@ -198,7 +199,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return int
      */
-    public function getExtentX()
+    public function getExtentX(): int
     {
         if ($this->extentX === null) {
             $extents = GeometryCalculator::calculateExtents($this);
@@ -213,7 +214,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return int
      */
-    public function getExtentY()
+    public function getExtentY(): int
     {
         if ($this->extentY === null) {
             $extents = GeometryCalculator::calculateExtents($this);
@@ -228,7 +229,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->identifier . __CLASS__);
     }
@@ -239,9 +240,9 @@ class Note implements ComparableInterface, ShapeContainerInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -252,10 +253,12 @@ class Note implements ComparableInterface, ShapeContainerInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

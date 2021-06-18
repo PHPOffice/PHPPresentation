@@ -27,14 +27,10 @@ class Outline
      */
     protected $fill;
     /**
-     * @var int
+     * @var int|null
      */
     protected $width;
 
-
-    /**
-     * Outline constructor.
-     */
     public function __construct()
     {
         $this->fill = new Fill();
@@ -43,37 +39,37 @@ class Outline
     /**
      * @return Fill
      */
-    public function getFill()
+    public function getFill(): Fill
     {
         return $this->fill;
     }
 
     /**
      * @param Fill $fill
-     * @return Outline
+     * @return self
      */
-    public function setFill(Fill $fill)
+    public function setFill(Fill $fill): self
     {
         $this->fill = $fill;
         return $this;
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getWidth()
+    public function getWidth(): ?int
     {
         return $this->width;
     }
 
     /**
      * Value in points
-     * @param int $width
-     * @return Outline
+     * @param int $pValue
+     * @return self
      */
-    public function setWidth($width)
+    public function setWidth(int $pValue = 0): self
     {
-        $this->width = intval($width);
+        $this->width = $pValue;
         return $this;
     }
 }

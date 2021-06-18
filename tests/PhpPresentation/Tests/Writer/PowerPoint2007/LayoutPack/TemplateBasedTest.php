@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
  */
 class TemplateBasedTest extends TestCase
 {
-    public function testFindLayout()
+    public function testFindLayout(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
         $templateBased = new TemplateBased($file);
@@ -41,7 +41,7 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    public function testFindLayoutException()
+    public function testFindLayoutException(): void
     {
         $this->expectException(\Exception::class);
 
@@ -51,7 +51,7 @@ class TemplateBasedTest extends TestCase
         $templateBased->findLayout($name);
     }
 
-    public function testFindLayoutId()
+    public function testFindLayoutId(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
         $templateBased = new TemplateBased($file);
@@ -63,7 +63,7 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    public function testFindLayoutIdException()
+    public function testFindLayoutIdException(): void
     {
         $this->expectException(\Exception::class);
 
@@ -73,7 +73,7 @@ class TemplateBasedTest extends TestCase
         $templateBased->findLayoutId($name);
     }
 
-    public function testFindLayoutName()
+    public function testFindLayoutName(): void
     {
         $oLayout = new PackDefault();
         foreach ($oLayout->getLayouts() as $keyLayout => $layout) {
@@ -82,7 +82,7 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    public function testFindLayoutNameException()
+    public function testFindLayoutNameException(): void
     {
         $this->expectException(\Exception::class);
 

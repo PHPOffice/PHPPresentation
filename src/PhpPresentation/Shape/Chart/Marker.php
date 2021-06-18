@@ -33,6 +33,9 @@ class Marker
     public const SYMBOL_TRIANGLE = 'triangle';
     public const SYMBOL_X = 'x';
 
+    /**
+     * @var array<int, string>
+     */
     public static $arraySymbol = array(
         self::SYMBOL_CIRCLE,
         self::SYMBOL_DASH,
@@ -59,16 +62,16 @@ class Marker
     /**
      * @return string
      */
-    public function getSymbol()
+    public function getSymbol(): string
     {
         return $this->symbol;
     }
 
     /**
      * @param string $symbol
-     * @return $this
+     * @return self
      */
-    public function setSymbol($symbol = self::SYMBOL_NONE)
+    public function setSymbol(string $symbol = self::SYMBOL_NONE): self
     {
         $this->symbol = $symbol;
         return $this;
@@ -77,16 +80,16 @@ class Marker
     /**
      * @return int
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
 
     /**
      * @param int $size
-     * @return $this
+     * @return self
      */
-    public function setSize($size = 5)
+    public function setSize(int $size = 5): self
     {
         $this->size = $size;
         return $this;

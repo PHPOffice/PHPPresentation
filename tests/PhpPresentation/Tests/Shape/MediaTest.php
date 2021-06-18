@@ -7,14 +7,14 @@ use PHPUnit\Framework\TestCase;
 
 class MediaTest extends TestCase
 {
-    public function testInheritance()
+    public function testInheritance(): void
     {
         $object = new Media();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object);
     }
 
-    public function testMimeType()
+    public function testMimeType(): void
     {
         $object = new Media();
         $object->setPath('file.mp4', false);

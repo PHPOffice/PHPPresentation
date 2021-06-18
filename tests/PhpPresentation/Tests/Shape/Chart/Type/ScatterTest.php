@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ScatterTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Scatter();
 
@@ -46,7 +46,7 @@ class ScatterTest extends TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSerties()
+    public function testSerties(): void
     {
         $object = new Scatter();
 
@@ -54,7 +54,7 @@ class ScatterTest extends TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 

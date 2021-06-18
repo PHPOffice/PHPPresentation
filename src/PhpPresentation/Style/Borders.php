@@ -69,7 +69,7 @@ class Borders implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -154,7 +154,7 @@ class Borders implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(
             $this->getLeft()->getHashCode()
@@ -173,9 +173,9 @@ class Borders implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -186,10 +186,12 @@ class Borders implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

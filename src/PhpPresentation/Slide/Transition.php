@@ -86,23 +86,23 @@ class Transition
      */
     protected $hasTimeTrigger = false;
     /**
-     * @var int
+     * @var int|null
      */
     protected $advanceTimeTrigger = null;
     /**
-     * @var null|self::SPEED_SLOW|self::SPEED_MEDIUM|self::SPEED_FAST
+     * @var null|string
      */
     protected $speed = null;
     /**
-     * @var null|self::TRANSITION_*
+     * @var null|string
      */
     protected $transitionType = null;
-    /**
-     * @var array
-     */
-    protected $transitionOptions = array();
 
-    public function setSpeed($speed = self::SPEED_MEDIUM)
+    /**
+     * @param string|null $speed
+     * @return self
+     */
+    public function setSpeed(?string $speed = self::SPEED_MEDIUM): self
     {
         if (in_array($speed, array(self::SPEED_FAST, self::SPEED_MEDIUM, self::SPEED_SLOW))) {
             $this->speed = $speed;
@@ -113,53 +113,48 @@ class Transition
         return $this;
     }
 
-    public function getSpeed()
+    public function getSpeed(): ?string
     {
         return $this->speed;
     }
 
-    public function setManualTrigger($value = false)
+    public function setManualTrigger(bool $value = false): self
     {
-        if (is_bool($value)) {
-            $this->hasManualTrigger = $value;
-        }
+        $this->hasManualTrigger = $value;
         return $this;
     }
 
-    public function hasManualTrigger()
+    public function hasManualTrigger(): bool
     {
         return $this->hasManualTrigger;
     }
 
-    public function setTimeTrigger($value = false, $advanceTime = 1000)
+    public function setTimeTrigger(bool $value = false, int $advanceTime = 1000): self
     {
-        if (is_bool($value)) {
-            $this->hasTimeTrigger = $value;
-        }
-        $this->advanceTimeTrigger = null;
-        if ($this->hasTimeTrigger === true) {
-            $this->advanceTimeTrigger = (int) $advanceTime;
-        }
+        $this->hasTimeTrigger = $value;
+        $this->advanceTimeTrigger = $value === true ? $advanceTime : null;
+
         return $this;
     }
 
-    public function hasTimeTrigger()
+    public function hasTimeTrigger(): bool
     {
         return $this->hasTimeTrigger;
     }
 
-    public function getAdvanceTimeTrigger()
+    public function getAdvanceTimeTrigger(): ?int
     {
         return $this->advanceTimeTrigger;
     }
 
-    public function setTransitionType($type = null)
+    public function setTransitionType(string $type = null): self
     {
         $this->transitionType = $type;
+
         return $this;
     }
 
-    public function getTransitionType()
+    public function getTransitionType(): ?string
     {
         return $this->transitionType;
     }

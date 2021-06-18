@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPresentation;
 
+use PhpOffice\PhpPresentation\ComparableInterface;
+
 /**
  * \PhpOffice\PhpPresentation\HashTable
  */
@@ -25,46 +27,35 @@ class HashTable
     /**
      * HashTable elements
      *
-     * @var array
+     * @var array<string, ComparableInterface>
      */
     public $items = array();
 
     /**
      * HashTable key map
      *
-     * @var array
+     * @var array<int, string>
      */
     public $keyMap = array();
 
     /**
      * Create a new \PhpOffice\PhpPresentation\HashTable
      *
-     * @param  \PhpOffice\PhpPresentation\ComparableInterface[] $pSource Optional source array to create HashTable from
+     * @param array<int, ComparableInterface> $pSource Optional source array to create HashTable from
      * @throws \Exception
      */
-    public function __construct(array $pSource = null)
+    public function __construct(array $pSource = [])
     {
-        if (!is_null($pSource)) {
-            // Create HashTable
-            $this->addFromSource($pSource);
-        }
+        $this->addFromSource($pSource);
     }
 
     /**
      * Add HashTable items from source
      *
-     * @param  \PhpOffice\PhpPresentation\ComparableInterface[] $pSource Source array to create HashTable from
-     * @throws \Exception
+     * @param array<int, ComparableInterface> $pSource Source array to create HashTable from
      */
-    public function addFromSource($pSource = null)
+    public function addFromSource(array $pSource = []): void
     {
-        // Check if an array was passed
-        if ($pSource == null) {
-            return;
-        } elseif (!is_array($pSource)) {
-            throw new \Exception('Invalid array parameter passed.');
-        }
-
         foreach ($pSource as $item) {
             $this->add($item);
         }
@@ -73,25 +64,22 @@ class HashTable
     /**
      * Add HashTable item
      *
-     * @param \PhpOffice\PhpPresentation\ComparableInterface $pSource Item to add
+     * @param ComparableInterface $pSource Item to add
      */
-    public function add(ComparableInterface $pSource)
+    public function add(ComparableInterface $pSource): void
     {
         // Determine hashcode
         $hashIndex = $pSource->getHashIndex();
         $hashCode = $pSource->getHashCode();
-
-        if (is_null($hashIndex)) {
-            $hashCode = $pSource->getHashCode();
-        } elseif (isset($this->keyMap[$hashIndex])) {
+        if (isset($this->keyMap[$hashIndex])) {
             $hashCode = $this->keyMap[$hashIndex];
         }
 
         // Add value
         if (!isset($this->items[$hashCode])) {
             $this->items[$hashCode] = $pSource;
-            $index                   = count($this->items) - 1;
-            $this->keyMap[$index]   = $hashCode;
+            $index = count($this->items) - 1;
+            $this->keyMap[$index] = $hashCode;
             $pSource->setHashIndex($index);
         } else {
             $pSource->setHashIndex($this->items[$hashCode]->getHashIndex());
@@ -101,10 +89,10 @@ class HashTable
     /**
      * Remove HashTable item
      *
-     * @param  \PhpOffice\PhpPresentation\ComparableInterface $pSource Item to remove
+     * @param ComparableInterface $pSource Item to remove
      * @throws \Exception
      */
-    public function remove(ComparableInterface $pSource)
+    public function remove(ComparableInterface $pSource): void
     {
         if (isset($this->items[$pSource->getHashCode()])) {
             unset($this->items[$pSource->getHashCode()]);
@@ -125,9 +113,8 @@ class HashTable
 
     /**
      * Clear HashTable
-     *
      */
-    public function clear()
+    public function clear(): void
     {
         $this->items  = array();
         $this->keyMap = array();
@@ -138,7 +125,7 @@ class HashTable
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->items);
     }
@@ -146,22 +133,23 @@ class HashTable
     /**
      * Get index for hash code
      *
-     * @param  string $pHashCode
-     * @return int    Index
+     * @param string $pHashCode
+     * @return int Index (-1 if not found)
      */
-    public function getIndexForHashCode($pHashCode = '')
+    public function getIndexForHashCode(string $pHashCode = ''): int
     {
-        return array_search($pHashCode, $this->keyMap);
+        $index = array_search($pHashCode, $this->keyMap);
+        return $index === false ? -1 : $index;
     }
 
     /**
      * Get by index
      *
-     * @param  int                       $pIndex
-     * @return \PhpOffice\PhpPresentation\ComparableInterface
+     * @param int $pIndex
+     * @return ComparableInterface|null
      *
      */
-    public function getByIndex($pIndex = 0)
+    public function getByIndex(int $pIndex = 0): ?ComparableInterface
     {
         if (isset($this->keyMap[$pIndex])) {
             return $this->getByHashCode($this->keyMap[$pIndex]);
@@ -173,11 +161,11 @@ class HashTable
     /**
      * Get by hashcode
      *
-     * @param  string                    $pHashCode
-     * @return \PhpOffice\PhpPresentation\ComparableInterface
+     * @param string $pHashCode
+     * @return ComparableInterface|null
      *
      */
-    public function getByHashCode($pHashCode = '')
+    public function getByHashCode(string $pHashCode = ''): ?ComparableInterface
     {
         if (isset($this->items[$pHashCode])) {
             return $this->items[$pHashCode];
@@ -189,9 +177,9 @@ class HashTable
     /**
      * HashTable to array
      *
-     * @return \PhpOffice\PhpPresentation\ComparableInterface[]
+     * @return array<ComparableInterface>
      */
-    public function toArray()
+    public function toArray(): array
     {
         return $this->items;
     }

@@ -56,7 +56,7 @@ class Row implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -80,12 +80,12 @@ class Row implements ComparableInterface
     /**
      * Get cell
      *
-     * @param  int $cell Cell number
-     * @param  boolean $exceptionAsNull Return a null value instead of an exception?
+     * @param int $cell Cell number
+     * @param boolean $exceptionAsNull Return a null value instead of an exception?
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return Cell|null
      */
-    public function getCell($cell = 0, $exceptionAsNull = false)
+    public function getCell($cell = 0, $exceptionAsNull = false): ?Cell
     {
         if (!isset($this->cells[$cell])) {
             if ($exceptionAsNull) {
@@ -100,9 +100,9 @@ class Row implements ComparableInterface
     /**
      * Get cells
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell[]
+     * @return array<Cell>
      */
-    public function getCells()
+    public function getCells(): array
     {
         return $this->cells;
     }
@@ -136,7 +136,7 @@ class Row implements ComparableInterface
     /**
      * Set fill
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Fill      $fill
+     * @param \PhpOffice\PhpPresentation\Style\Fill      $fill
      * @return \PhpOffice\PhpPresentation\Shape\Table\Row
      */
     public function setFill(Fill $fill)
@@ -159,7 +159,7 @@ class Row implements ComparableInterface
     /**
      * Set height
      *
-     * @param  int                          $value
+     * @param int                          $value
      * @return \PhpOffice\PhpPresentation\Shape\Table\Row
      */
     public function setHeight($value = 0)
@@ -174,7 +174,7 @@ class Row implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         $hashElements = '';
         foreach ($this->cells as $cell) {
@@ -190,9 +190,9 @@ class Row implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -203,10 +203,12 @@ class Row implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

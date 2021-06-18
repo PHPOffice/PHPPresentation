@@ -46,9 +46,9 @@ class Run extends TextElement implements TextElementInterface
     /**
      * Get font
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return Font
      */
-    public function getFont()
+    public function getFont(): Font
     {
         return $this->font;
     }
@@ -56,7 +56,7 @@ class Run extends TextElement implements TextElementInterface
     /**
      * Set font
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font                  $pFont Font
+     * @param \PhpOffice\PhpPresentation\Style\Font                  $pFont Font
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */
@@ -72,7 +72,7 @@ class Run extends TextElement implements TextElementInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->getText() . $this->font->getHashCode() . __CLASS__);
     }

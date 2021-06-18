@@ -31,7 +31,7 @@ class RowTest extends TestCase
     /**
      * Test can read
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Row();
         $this->assertCount(1, $object->getCells());
@@ -43,7 +43,7 @@ class RowTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
     }
 
-    public function testGetCell()
+    public function testGetCell(): void
     {
         $object = new Row();
 
@@ -51,7 +51,7 @@ class RowTest extends TestCase
         $this->assertNull($object->getCell(1000, true));
     }
 
-    public function testGetCellException()
+    public function testGetCellException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Cell number out of bounds.');
@@ -60,14 +60,14 @@ class RowTest extends TestCase
         $object->getCell(1);
     }
 
-    public function testNextCell()
+    public function testNextCell(): void
     {
         $object = new Row(2);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->nextCell());
     }
 
-    public function testNextCellException()
+    public function testNextCellException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Cell count out of bounds.');
@@ -80,7 +80,7 @@ class RowTest extends TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Row();
         $value = mt_rand(1, 100);
@@ -88,7 +88,7 @@ class RowTest extends TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testGetSetFill()
+    public function testGetSetFill(): void
     {
         $object = new Row();
 
@@ -96,7 +96,7 @@ class RowTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
     }
 
-    public function testGetSetHeight()
+    public function testGetSetHeight(): void
     {
         $object = new Row();
 

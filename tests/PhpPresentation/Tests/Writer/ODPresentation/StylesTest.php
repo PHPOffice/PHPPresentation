@@ -18,7 +18,7 @@ class StylesTest extends PhpPresentationTestCase
 {
     protected $writerName = 'ODPresentation';
 
-    public function testDocumentLayout()
+    public function testDocumentLayout(): void
     {
         $element = "/office:document-styles/office:automatic-styles/style:page-layout/style:page-layout-properties";
 
@@ -39,7 +39,7 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testCustomDocumentLayout()
+    public function testCustomDocumentLayout(): void
     {
         $oDocumentLayout = new DocumentLayout();
         $oDocumentLayout->setDocumentLayout(array('cx' => rand(1, 100),'cy' => rand(1, 100),));
@@ -56,7 +56,7 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testGradientTable()
+    public function testGradientTable(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape();
@@ -70,7 +70,7 @@ class StylesTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testStrokeDash()
+    public function testStrokeDash(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText1 = $oSlide->createRichTextShape();

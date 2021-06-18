@@ -80,7 +80,7 @@ class Legend implements ComparableInterface
     /**
      * Font
      *
-     * @var \PhpOffice\PhpPresentation\Style\Font
+     * @var Font|null
      */
     private $font;
 
@@ -129,7 +129,7 @@ class Legend implements ComparableInterface
     /**
      * Set Visible
      *
-     * @param  boolean                          $value
+     * @param boolean                          $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setVisible($value = true)
@@ -151,7 +151,7 @@ class Legend implements ComparableInterface
     /**
      * Set Position
      *
-     * @param  string                          $value
+     * @param string                          $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setPosition($value = self::POSITION_RIGHT)
@@ -165,7 +165,7 @@ class Legend implements ComparableInterface
      *
      * @return float
      */
-    public function getOffsetX()
+    public function getOffsetX(): float
     {
         return $this->offsetX;
     }
@@ -173,12 +173,12 @@ class Legend implements ComparableInterface
     /**
      * Set OffsetX (as a fraction of the chart)
      *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @param float $pValue
+     * @return self
      */
-    public function setOffsetX($value = 0)
+    public function setOffsetX(float $pValue = 0): self
     {
-        $this->offsetX = (float)$value;
+        $this->offsetX = $pValue;
         return $this;
     }
 
@@ -187,7 +187,7 @@ class Legend implements ComparableInterface
      *
      * @return float
      */
-    public function getOffsetY()
+    public function getOffsetY(): float
     {
         return $this->offsetY;
     }
@@ -195,12 +195,12 @@ class Legend implements ComparableInterface
     /**
      * Set OffsetY (as a fraction of the chart)
      *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @param float $pValue
+     * @return self
      */
-    public function setOffsetY($value = 0)
+    public function setOffsetY(float $pValue = 0): self
     {
-        $this->offsetY = (float)$value;
+        $this->offsetY = $pValue;
         return $this;
     }
 
@@ -209,7 +209,7 @@ class Legend implements ComparableInterface
      *
      * @return float
      */
-    public function getWidth()
+    public function getWidth(): float
     {
         return $this->width;
     }
@@ -217,12 +217,12 @@ class Legend implements ComparableInterface
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @param float $pValue
+     * @return self
      */
-    public function setWidth($value = 0)
+    public function setWidth(float $pValue = 0): self
     {
-        $this->width = (float)$value;
+        $this->width = $pValue;
         return $this;
     }
 
@@ -231,7 +231,7 @@ class Legend implements ComparableInterface
      *
      * @return float
      */
-    public function getHeight()
+    public function getHeight(): float
     {
         return $this->height;
     }
@@ -239,21 +239,21 @@ class Legend implements ComparableInterface
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @param float $value
+     * @return self
      */
-    public function setHeight($value = 0)
+    public function setHeight(float $value = 0): self
     {
-        $this->height = (float)$value;
+        $this->height = $value;
         return $this;
     }
 
     /**
      * Get font
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return Font|null
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return $this->font;
     }
@@ -261,11 +261,11 @@ class Legend implements ComparableInterface
     /**
      * Set font
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
+     * @param Font|null $pFont Font
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @return self
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(Font $pFont = null): self
     {
         $this->font = $pFont;
         return $this;
@@ -284,7 +284,7 @@ class Legend implements ComparableInterface
     /**
      * Set Border
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Border $border
+     * @param \PhpOffice\PhpPresentation\Style\Border $border
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setBorder(Border $border)
@@ -306,7 +306,7 @@ class Legend implements ComparableInterface
     /**
      * Set Fill
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Fill $fill
+     * @param \PhpOffice\PhpPresentation\Style\Fill $fill
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setFill(Fill $fill)
@@ -328,7 +328,7 @@ class Legend implements ComparableInterface
     /**
      * Set alignment
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Alignment          $alignment
+     * @param \PhpOffice\PhpPresentation\Style\Alignment          $alignment
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
      */
     public function setAlignment(Alignment $alignment)
@@ -342,7 +342,7 @@ class Legend implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->position . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->font->getHashCode() . $this->border->getHashCode() . $this->fill->getHashCode() . $this->alignment->getHashCode() . ($this->visible ? 't' : 'f') . __CLASS__);
     }
@@ -350,7 +350,7 @@ class Legend implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -360,9 +360,9 @@ class Legend implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -373,10 +373,10 @@ class Legend implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
      * @return Legend
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
         return $this;

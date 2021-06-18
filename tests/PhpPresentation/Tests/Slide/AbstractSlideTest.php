@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class AbstractSlideTest extends TestCase
 {
-    public function testCollection()
+    public function testCollection(): void
     {
         /** @var AbstractSlide $stub */
         $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Slide\\AbstractSlide');

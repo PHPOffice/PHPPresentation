@@ -28,10 +28,10 @@ class GeometryCalculator
     /**
     * Calculate X and Y offsets for a set of shapes within a container such as a slide or group.
     *
-    * @param  \PhpOffice\PhpPresentation\ShapeContainerInterface $container
-    * @return array
+    * @param ShapeContainerInterface $container
+    * @return array<string, int>
     */
-    public static function calculateOffsets(ShapeContainerInterface $container)
+    public static function calculateOffsets(ShapeContainerInterface $container): array
     {
         $offsets = array(self::X => 0, self::Y => 0);
 
@@ -61,24 +61,25 @@ class GeometryCalculator
     /**
     * Calculate X and Y extents for a set of shapes within a container such as a slide or group.
     *
-    * @param  \PhpOffice\PhpPresentation\ShapeContainerInterface $container
-    * @return array
+    * @param ShapeContainerInterface $container
+    * @return array<string, int>
     */
-    public static function calculateExtents(ShapeContainerInterface $container)
+    public static function calculateExtents(ShapeContainerInterface $container): array
     {
+        /** @var array<string, int> $extents */
         $extents = array(self::X => 0, self::Y => 0);
 
         if ($container !== null && count($container->getShapeCollection()) != 0) {
             $shapes = $container->getShapeCollection();
             if ($shapes[0] !== null) {
-                $extents[self::X] = $shapes[0]->getOffsetX() + $shapes[0]->getWidth();
-                $extents[self::Y] = $shapes[0]->getOffsetY() + $shapes[0]->getHeight();
+                $extents[self::X] = (int) ($shapes[0]->getOffsetX() + $shapes[0]->getWidth());
+                $extents[self::Y] = (int) ($shapes[0]->getOffsetY() + $shapes[0]->getHeight());
             }
 
             foreach ($shapes as $shape) {
                 if ($shape !== null) {
-                    $extentX = $shape->getOffsetX() + $shape->getWidth();
-                    $extentY = $shape->getOffsetY() + $shape->getHeight();
+                    $extentX = (int) ($shape->getOffsetX() + $shape->getWidth());
+                    $extentY = (int) ($shape->getOffsetY() + $shape->getHeight());
 
                     if ($extentX > $extents[self::X]) {
                         $extents[self::X] = $extentX;

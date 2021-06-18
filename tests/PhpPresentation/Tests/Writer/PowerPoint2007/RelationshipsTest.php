@@ -9,7 +9,7 @@ class RelationshipsTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testCommentsAuthors()
+    public function testCommentsAuthors(): void
     {
         $oAuthor = new Comment\Author();
         $oComment = new Comment();

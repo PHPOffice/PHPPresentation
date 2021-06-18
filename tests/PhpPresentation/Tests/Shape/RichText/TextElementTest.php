@@ -31,7 +31,7 @@ class TextElementTest extends TestCase
     /**
      * Test can read
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new TextElement();
         $this->assertEquals('', $object->getText());
@@ -40,13 +40,13 @@ class TextElementTest extends TestCase
         $this->assertEquals('AAA', $object->getText());
     }
 
-    public function testFont()
+    public function testFont(): void
     {
         $object = new TextElement();
         $this->assertNull($object->getFont());
     }
 
-    public function testHyperlink()
+    public function testHyperlink(): void
     {
         $object = new TextElement();
         $this->assertFalse($object->hasHyperlink());
@@ -59,7 +59,7 @@ class TextElementTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->getHyperlink());
     }
 
-    public function testLanguage()
+    public function testLanguage(): void
     {
         $object = new TextElement();
         $this->assertNull($object->getLanguage());
@@ -67,7 +67,7 @@ class TextElementTest extends TestCase
         $this->assertEquals('en-US', $object->getLanguage());
     }
 
-    public function testText()
+    public function testText(): void
     {
         $object = new TextElement();
         $this->assertEquals('', $object->getText());
@@ -80,7 +80,7 @@ class TextElementTest extends TestCase
     /**
      * Test get/set hash index
      */
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new TextElement();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());

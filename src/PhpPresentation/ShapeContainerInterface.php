@@ -17,6 +17,8 @@
 
 namespace PhpOffice\PhpPresentation;
 
+use ArrayObject;
+
 /**
  * PhpOffice\PhpPresentation\ShapeContainerInterface
  */
@@ -25,15 +27,15 @@ interface ShapeContainerInterface
     /**
     * Get collection of shapes
     *
-    * @return \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[]
+    * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
     */
     public function getShapeCollection();
 
     /**
     * Add shape to slide
     *
-    * @param  \PhpOffice\PhpPresentation\AbstractShape $shape
-    * @return \PhpOffice\PhpPresentation\AbstractShape
+    * @param AbstractShape $shape
+    * @return AbstractShape
     */
     public function addShape(AbstractShape $shape);
 
@@ -42,26 +44,32 @@ interface ShapeContainerInterface
     *
     * @return int
     */
-    public function getOffsetX();
+    public function getOffsetX(): int;
 
     /**
     * Get Y Offset
     *
     * @return int
     */
-    public function getOffsetY();
+    public function getOffsetY(): int;
 
     /**
     * Get X Extent
     *
     * @return int
     */
-    public function getExtentX();
+    public function getExtentX(): int;
 
     /**
     * Get Y Extent
     *
     * @return int
     */
-    public function getExtentY();
+    public function getExtentY(): int;
+
+
+    /**
+     * @return string
+     */
+    public function getHashCode(): string;
 }

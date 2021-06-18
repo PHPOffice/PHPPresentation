@@ -22,9 +22,6 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 
-/**
- * \PhpOffice\PhpPresentation\Shape\Chart\Series
- */
 class Series implements ComparableInterface
 {
     /* Label positions */
@@ -40,7 +37,7 @@ class Series implements ComparableInterface
 
     /**
      * DataPointFills (key/value)
-     * @var array
+     * @var array<int, Fill>
      */
     protected $dataPointFills = array();
 
@@ -51,25 +48,21 @@ class Series implements ComparableInterface
     protected $DlblNumFormat = '';
 
     /**
-     * Separator
-     * @var string
+     * @var string|null
      */
-    protected $separator = null;
+    protected $separator;
 
     /**
-     * Fill
-     * @var \PhpOffice\PhpPresentation\Style\Fill
+     * @var Fill|null
      */
     protected $fill;
 
     /**
-     * Font
-     * @var \PhpOffice\PhpPresentation\Style\Font
+     * @var Font|null
      */
     protected $font;
 
     /**
-     * Label position
      * @var string
      */
     protected $labelPosition = 'ctr';
@@ -80,7 +73,7 @@ class Series implements ComparableInterface
     protected $marker;
 
     /**
-     * @var Outline
+     * @var Outline|null
      */
     protected $outline;
 
@@ -98,7 +91,7 @@ class Series implements ComparableInterface
 
     /**
      * Show Legend Key
-     * @var boolean
+     * @var bool
      */
     private $showLegendKey = false;
 
@@ -128,23 +121,21 @@ class Series implements ComparableInterface
 
     /**
      * Values (key/value)
-     * @var array
+     * @var array<string, string>
      */
     private $values = array();
 
     /**
      * Hash index
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Series instance
-     *
-     * @param string $title  Title
-     * @param array  $values Values
+     * @param string $title
+     * @param array<string, string> $values
      */
-    public function __construct($title = 'Series Title', $values = array())
+    public function __construct(string $title = 'Series Title', array $values = array())
     {
         $this->fill = new Fill();
         $this->font = new Font();
@@ -160,7 +151,7 @@ class Series implements ComparableInterface
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -168,10 +159,10 @@ class Series implements ComparableInterface
     /**
      * Set Title
      *
-     * @param  string                           $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param string $value
+     * @return self
      */
-    public function setTitle($value = 'Series Title')
+    public function setTitle(string $value = 'Series Title'): self
     {
         $this->title = $value;
 
@@ -183,7 +174,7 @@ class Series implements ComparableInterface
      *
      * @return string
      */
-    public function getDlblNumFormat()
+    public function getDlblNumFormat(): string
     {
         return $this->DlblNumFormat;
     }
@@ -191,9 +182,9 @@ class Series implements ComparableInterface
     /**
      * Has Data Label NumFormat
      *
-     * @return string
+     * @return bool
      */
-    public function hasDlblNumFormat()
+    public function hasDlblNumFormat(): bool
     {
         return !empty($this->DlblNumFormat);
     }
@@ -201,44 +192,38 @@ class Series implements ComparableInterface
     /**
      * Set Data Label NumFormat
      *
-     * @param  string $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param string $value
+     * @return self
      */
-    public function setDlblNumFormat($value = '')
+    public function setDlblNumFormat(string $value = ''): self
     {
         $this->DlblNumFormat = $value;
         return $this;
     }
 
     /**
-     * Get Fill
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return Fill
      */
-    public function getFill()
+    public function getFill(): ?Fill
     {
         return $this->fill;
     }
 
     /**
-     * Set Fill
-     *
-     * @param \PhpOffice\PhpPresentation\Style\Fill $fill
-     * @return Series
+     * @param Fill|null $fill
+     * @return self
      */
-    public function setFill(Fill $fill = null)
+    public function setFill(Fill $fill = null): self
     {
         $this->fill = $fill;
         return $this;
     }
 
     /**
-     * Get DataPointFill
-     *
-     * @param  int                      $dataPointIndex Data point index.
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @param int $dataPointIndex Data point index.
+     * @return Fill
      */
-    public function getDataPointFill($dataPointIndex)
+    public function getDataPointFill(int $dataPointIndex): Fill
     {
         if (!isset($this->dataPointFills[$dataPointIndex])) {
             $this->dataPointFills[$dataPointIndex] = new Fill();
@@ -248,11 +233,9 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get DataPointFills
-     *
      * @return Fill[]
      */
-    public function getDataPointFills()
+    public function getDataPointFills(): array
     {
         return $this->dataPointFills;
     }
@@ -260,9 +243,9 @@ class Series implements ComparableInterface
     /**
      * Get Values
      *
-     * @return array
+     * @return array<string, string>
      */
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
@@ -270,12 +253,12 @@ class Series implements ComparableInterface
     /**
      * Set Values
      *
-     * @param  array                            $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param array<string, string> $values
+     * @return self
      */
-    public function setValues($value = array())
+    public function setValues(array $values = array()): self
     {
-        $this->values = $value;
+        $this->values = $values;
 
         return $this;
     }
@@ -283,11 +266,11 @@ class Series implements ComparableInterface
     /**
      * Add Value
      *
-     * @param  mixed                            $key
-     * @param  mixed                            $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param string $key
+     * @param string $value
+     * @return self
      */
-    public function addValue($key, $value)
+    public function addValue(string $key, string $value): self
     {
         $this->values[$key] = $value;
 
@@ -299,7 +282,7 @@ class Series implements ComparableInterface
      *
      * @return boolean
      */
-    public function hasShowSeriesName()
+    public function hasShowSeriesName(): bool
     {
         return $this->showSeriesName;
     }
@@ -307,10 +290,10 @@ class Series implements ComparableInterface
     /**
      * Set ShowSeriesName
      *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param boolean $value
+     * @return self
      */
-    public function setShowSeriesName($value)
+    public function setShowSeriesName(bool $value): self
     {
         $this->showSeriesName = $value;
 
@@ -322,7 +305,7 @@ class Series implements ComparableInterface
      *
      * @return boolean
      */
-    public function hasShowCategoryName()
+    public function hasShowCategoryName(): bool
     {
         return $this->showCategoryName;
     }
@@ -330,10 +313,10 @@ class Series implements ComparableInterface
     /**
      * Set ShowCategoryName
      *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param boolean $value
+     * @return self
      */
-    public function setShowCategoryName($value)
+    public function setShowCategoryName(bool $value): self
     {
         $this->showCategoryName = $value;
 
@@ -343,9 +326,9 @@ class Series implements ComparableInterface
     /**
      * Get ShowValue
      *
-     * @return boolean
+     * @return bool
      */
-    public function hasShowLegendKey()
+    public function hasShowLegendKey(): bool
     {
         return $this->showLegendKey;
     }
@@ -353,12 +336,12 @@ class Series implements ComparableInterface
     /**
      * Set ShowValue
      *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param bool $value
+     * @return self
      */
-    public function setShowLegendKey($value)
+    public function setShowLegendKey(bool $value): self
     {
-        $this->showLegendKey = (bool)$value;
+        $this->showLegendKey = $value;
 
         return $this;
     }
@@ -368,7 +351,7 @@ class Series implements ComparableInterface
      *
      * @return boolean
      */
-    public function hasShowValue()
+    public function hasShowValue(): bool
     {
         return $this->showValue;
     }
@@ -376,10 +359,10 @@ class Series implements ComparableInterface
     /**
      * Set ShowValue
      *
-     * @param  boolean $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param boolean $value
+     * @return self
      */
-    public function setShowValue($value)
+    public function setShowValue(bool $value): self
     {
         $this->showValue = $value;
 
@@ -391,7 +374,7 @@ class Series implements ComparableInterface
      *
      * @return boolean
      */
-    public function hasShowPercentage()
+    public function hasShowPercentage(): bool
     {
         return $this->showPercentage;
     }
@@ -399,10 +382,10 @@ class Series implements ComparableInterface
     /**
      * Set ShowPercentage
      *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param boolean $value
+     * @return self
      */
-    public function setShowPercentage($value)
+    public function setShowPercentage(bool $value): self
     {
         $this->showPercentage = $value;
 
@@ -410,31 +393,27 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowLeaderLines
-     *
      * @return boolean
      */
-    public function hasShowSeparator()
+    public function hasShowSeparator(): bool
     {
         return !is_null($this->separator);
     }
 
     /**
-     * Set Separator
-     * @param  string $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param string|null $pValue
+     * @return self
      */
-    public function setSeparator($pValue)
+    public function setSeparator(?string $pValue): self
     {
         $this->separator = $pValue;
         return $this;
     }
 
     /**
-     * Get Separator
-     * @return string
+     * @return string|null
      */
-    public function getSeparator()
+    public function getSeparator(): ?string
     {
         return $this->separator;
     }
@@ -444,7 +423,7 @@ class Series implements ComparableInterface
      *
      * @return boolean
      */
-    public function hasShowLeaderLines()
+    public function hasShowLeaderLines(): bool
     {
         return $this->showLeaderLines;
     }
@@ -452,8 +431,8 @@ class Series implements ComparableInterface
     /**
      * Set ShowLeaderLines
      *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param boolean                          $value
+     * @return self
      */
     public function setShowLeaderLines($value)
     {
@@ -465,9 +444,9 @@ class Series implements ComparableInterface
     /**
      * Get font
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return Font
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return $this->font;
     }
@@ -475,11 +454,10 @@ class Series implements ComparableInterface
     /**
      * Set font
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param Font|null $pFont Font
+     * @return self
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(Font $pFont = null): self
     {
         $this->font = $pFont;
 
@@ -491,7 +469,7 @@ class Series implements ComparableInterface
      *
      * @return string
      */
-    public function getLabelPosition()
+    public function getLabelPosition(): string
     {
         return $this->labelPosition;
     }
@@ -499,10 +477,10 @@ class Series implements ComparableInterface
     /**
      * Set label position
      *
-     * @param  string                           $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param string $value
+     * @return self
      */
-    public function setLabelPosition($value)
+    public function setLabelPosition(string $value): self
     {
         $this->labelPosition = $value;
 
@@ -512,34 +490,34 @@ class Series implements ComparableInterface
     /**
      * @return Marker
      */
-    public function getMarker()
+    public function getMarker(): Marker
     {
         return $this->marker;
     }
 
     /**
      * @param Marker $marker
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @return self
      */
-    public function setMarker(Marker $marker)
+    public function setMarker(Marker $marker): self
     {
         $this->marker = $marker;
         return $this;
     }
 
     /**
-     * @return Outline
+     * @return Outline|null
      */
-    public function getOutline()
+    public function getOutline(): ?Outline
     {
         return $this->outline;
     }
 
     /**
-     * @param Outline $outline
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param Outline|null $outline
+     * @return self
      */
-    public function setOutline(Outline $outline)
+    public function setOutline(?Outline $outline): self
     {
         $this->outline = $outline;
         return $this;
@@ -550,7 +528,7 @@ class Series implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5((is_null($this->fill) ? 'null' : $this->fill->getHashCode()) . (is_null($this->font) ? 'null' : $this->font->getHashCode()) . var_export($this->values, true) . var_export($this, true) . __CLASS__);
     }
@@ -561,9 +539,9 @@ class Series implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -574,10 +552,10 @@ class Series implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param int $value Hash index
+     * @return self
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value): self
     {
         $this->hashIndex = $value;
         return $this;

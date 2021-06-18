@@ -31,6 +31,9 @@ class PresentationProperties
     public const VIEW_SLIDE_SORTER = 'sldSorterView';
     public const VIEW_SLIDE_THUMBNAIL = 'sldThumbnailView';
 
+    /**
+     * @var array<int, string>
+     */
     protected $arrayView = array(
         self::VIEW_HANDOUT,
         self::VIEW_NOTES,
@@ -42,8 +45,8 @@ class PresentationProperties
         self::VIEW_SLIDE_THUMBNAIL,
     );
 
-    /*
-     * @var boolean
+    /**
+     * @var bool
      */
     protected $isLoopUntilEsc = false;
 
@@ -53,7 +56,7 @@ class PresentationProperties
      */
     protected $markAsFinal = false;
 
-    /*
+    /**
      * @var string
      */
     protected $thumbnail;
@@ -62,35 +65,33 @@ class PresentationProperties
      * Zoom
      * @var float
      */
-    protected $zoom = 1;
+    protected $zoom = 1.0;
 
-    /*
+    /**
      * @var string
      */
     protected $lastView = self::VIEW_SLIDE;
 
-    /*
-     * @var boolean
+    /**
+     * @var bool
      */
     protected $isCommentVisible = false;
 
     /**
      * @return bool
      */
-    public function isLoopContinuouslyUntilEsc()
+    public function isLoopContinuouslyUntilEsc(): bool
     {
         return $this->isLoopUntilEsc;
     }
 
     /**
      * @param bool $value
-     * @return \PhpOffice\PhpPresentation\PresentationProperties
+     * @return self
      */
-    public function setLoopContinuouslyUntilEsc($value = false)
+    public function setLoopContinuouslyUntilEsc(bool $value = false): self
     {
-        if (is_bool($value)) {
-            $this->isLoopUntilEsc = $value;
-        }
+        $this->isLoopUntilEsc = $value;
         return $this;
     }
 
@@ -119,13 +120,11 @@ class PresentationProperties
     /**
      * Mark a document as final
      * @param bool $state
-     * @return PresentationProperties
+     * @return self
      */
-    public function markAsFinal($state = true)
+    public function markAsFinal(bool $state = true): self
     {
-        if (is_bool($state)) {
-            $this->markAsFinal = $state;
-        }
+        $this->markAsFinal = $state;
         return $this;
     }
 
@@ -141,13 +140,11 @@ class PresentationProperties
     /**
      * Set the zoom of the document (in percentage)
      * @param float $zoom
-     * @return PresentationProperties
+     * @return self
      */
-    public function setZoom($zoom = 1.0)
+    public function setZoom(float $zoom = 1.0): self
     {
-        if (is_numeric($zoom)) {
-            $this->zoom = (float)$zoom;
-        }
+        $this->zoom = $zoom;
         return $this;
     }
 
@@ -155,7 +152,7 @@ class PresentationProperties
      * Return the zoom (in percentage)
      * @return float
      */
-    public function getZoom()
+    public function getZoom(): float
     {
         return $this->zoom;
     }
@@ -182,20 +179,18 @@ class PresentationProperties
 
     /**
      * @param bool $value
-     * @return $this
+     * @return self
      */
-    public function setCommentVisible($value = false)
+    public function setCommentVisible(bool $value = false): self
     {
-        if (is_bool($value)) {
-            $this->isCommentVisible = $value;
-        }
+        $this->isCommentVisible = $value;
         return $this;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function isCommentVisible()
+    public function isCommentVisible(): bool
     {
         return $this->isCommentVisible;
     }

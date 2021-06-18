@@ -23,6 +23,9 @@ use PhpOffice\PhpPresentation\Style\ColorMap;
 
 class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
+    /**
+     * @var SlideMaster
+     */
     protected $slideMaster;
     /**
      * Slide relation ID (should not be used by user code!)
@@ -45,7 +48,7 @@ class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * Slide layout ID (should not be used by user code!)
      *
-     * @var int
+     * @var string|null
      */
     protected $layoutName;
     /**
@@ -73,18 +76,18 @@ class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeCon
     }
 
     /**
-     * @return int
+     * @return string|null
      */
-    public function getLayoutName()
+    public function getLayoutName(): ?string
     {
         return $this->layoutName;
     }
 
     /**
-     * @param int $layoutName
-     * @return SlideLayout
+     * @param string $layoutName
+     * @return self
      */
-    public function setLayoutName($layoutName)
+    public function setLayoutName(string $layoutName): self
     {
         $this->layoutName = $layoutName;
         return $this;
@@ -93,7 +96,7 @@ class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * @return SlideMaster
      */
-    public function getSlideMaster()
+    public function getSlideMaster(): SlideMaster
     {
         return $this->slideMaster;
     }

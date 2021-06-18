@@ -24,7 +24,7 @@ class PptTheme extends AbstractDecoratorWriter
     /**
      * Write theme to XML format
      *
-     * @param  Slide\SlideMaster $oMasterSlide
+     * @param Slide\SlideMaster $oMasterSlide
      * @return string XML Output
      */
     protected function writeTheme(Slide\SlideMaster $oMasterSlide)

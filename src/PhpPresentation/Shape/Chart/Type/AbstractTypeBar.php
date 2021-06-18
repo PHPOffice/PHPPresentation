@@ -129,7 +129,7 @@ class AbstractTypeBar extends AbstractType
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         $hash = '';
         foreach ($this->getSeries() as $series) {

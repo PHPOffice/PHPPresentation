@@ -25,15 +25,15 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph as RichTextParagraph;
 class TextStyle
 {
     /**
-     * @var array
+     * @var array<int, RichTextParagraph>
      */
     protected $bodyStyle = array();
     /**
-     * @var array
+     * @var array<int, RichTextParagraph>
      */
     protected $titleStyle = array();
     /**
-     * @var array
+     * @var array<int, RichTextParagraph>
      */
     protected $otherStyle = array();
 
@@ -71,15 +71,12 @@ class TextStyle
     }
 
     /**
-     * @param $lvl
+     * @param int|null $lvl
      * @return bool
      */
-    private function checkLvl($lvl)
+    private function checkLvl(?int $lvl): bool
     {
-        if (!is_int($lvl)) {
-            return false;
-        }
-        if ($lvl > 9) {
+        if (is_null($lvl) || $lvl > 9) {
             return false;
         }
         return true;
@@ -87,10 +84,10 @@ class TextStyle
 
     /**
      * @param RichTextParagraph $style
-     * @param $lvl
-     * @return TextStyle
+     * @param int|null $lvl
+     * @return self
      */
-    public function setBodyStyleAtLvl(RichTextParagraph $style, $lvl)
+    public function setBodyStyleAtLvl(RichTextParagraph $style, ?int $lvl): self
     {
         if ($this->checkLvl($lvl)) {
             $this->bodyStyle[$lvl] = $style;
@@ -100,10 +97,10 @@ class TextStyle
 
     /**
      * @param RichTextParagraph $style
-     * @param $lvl
-     * @return TextStyle
+     * @param int|null $lvl
+     * @return self
      */
-    public function setTitleStyleAtLvl(RichTextParagraph $style, $lvl)
+    public function setTitleStyleAtLvl(RichTextParagraph $style, ?int $lvl): self
     {
         if ($this->checkLvl($lvl)) {
             $this->titleStyle[$lvl] = $style;
@@ -113,10 +110,10 @@ class TextStyle
 
     /**
      * @param RichTextParagraph $style
-     * @param $lvl
+     * @param int|null $lvl
      * @return TextStyle
      */
-    public function setOtherStyleAtLvl(RichTextParagraph $style, $lvl)
+    public function setOtherStyleAtLvl(RichTextParagraph $style, ?int $lvl): self
     {
         if ($this->checkLvl($lvl)) {
             $this->otherStyle[$lvl] = $style;
@@ -125,10 +122,10 @@ class TextStyle
     }
 
     /**
-     * @param $lvl
-     * @return mixed
+     * @param int|null $lvl
+     * @return RichTextParagraph|null
      */
-    public function getBodyStyleAtLvl($lvl)
+    public function getBodyStyleAtLvl(?int $lvl): ?RichTextParagraph
     {
         if ($this->checkLvl($lvl) && !empty($this->bodyStyle[$lvl])) {
             return $this->bodyStyle[$lvl];
@@ -137,10 +134,10 @@ class TextStyle
     }
 
     /**
-     * @param $lvl
-     * @return mixed
+     * @param int|null $lvl
+     * @return RichTextParagraph|null
      */
-    public function getTitleStyleAtLvl($lvl)
+    public function getTitleStyleAtLvl(?int $lvl): ?RichTextParagraph
     {
         if ($this->checkLvl($lvl) && !empty($this->titleStyle[$lvl])) {
             return $this->titleStyle[$lvl];
@@ -149,10 +146,10 @@ class TextStyle
     }
 
     /**
-     * @param $lvl
-     * @return mixed
+     * @param int|null $lvl
+     * @return RichTextParagraph|null
      */
-    public function getOtherStyleAtLvl($lvl)
+    public function getOtherStyleAtLvl(?int $lvl): ?RichTextParagraph
     {
         if ($this->checkLvl($lvl) && !empty($this->otherStyle[$lvl])) {
             return $this->otherStyle[$lvl];
@@ -161,25 +158,25 @@ class TextStyle
     }
 
     /**
-     * @return array
+     * @return array<int, RichTextParagraph>
      */
-    public function getBodyStyle()
+    public function getBodyStyle(): array
     {
         return $this->bodyStyle;
     }
 
     /**
-     * @return array
+     * @return array<int, RichTextParagraph>
      */
-    public function getTitleStyle()
+    public function getTitleStyle(): array
     {
         return $this->titleStyle;
     }
 
     /**
-     * @return array
+     * @return array<int, RichTextParagraph>
      */
-    public function getOtherStyle()
+    public function getOtherStyle(): array
     {
         return $this->otherStyle;
     }

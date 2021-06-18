@@ -2,6 +2,12 @@
 
 namespace PhpOffice\PhpPresentation\Tests;
 
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMNodeList;
+use DOMXPath;
+use LibXMLError;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PHPUnit\Framework\TestCase;
@@ -9,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 class PhpPresentationTestCase extends TestCase
 {
     /**
-     * @var PhpPresentation
+     * @var PhpPresentation|null
      */
     protected $oPresentation;
 
@@ -31,21 +37,19 @@ class PhpPresentationTestCase extends TestCase
     /**
      * DOMDocument object
      *
-     * @var \DOMDocument
+     * @var DOMDocument|null
      */
     private $xmlDom;
 
     /**
-     * DOMXpath object
-     *
-     * @var \DOMXpath
+     * @var DOMXPath|null
      */
     private $xmlXPath;
 
     /**
      * File name
      *
-     * @var string
+     * @var string|null
      */
     private $xmlFile;
 
@@ -60,7 +64,7 @@ class PhpPresentationTestCase extends TestCase
     private $xmlDisableEntityLoader;
 
     /**
-     * @var array
+     * @var array<string, array<string, string>>
      */
     private $arrayOpenDocumentRNG = array(
         '1.0' => array(
@@ -126,7 +130,7 @@ class PhpPresentationTestCase extends TestCase
         rmdir($dir);
     }
 
-    protected function getXmlDom(string $file): \DOMDocument
+    protected function getXmlDom(string $file): DOMDocument
     {
         $baseFile = $file;
         if (null !== $this->xmlDom && $file === $this->xmlFile) {
@@ -137,7 +141,7 @@ class PhpPresentationTestCase extends TestCase
         $this->xmlFile = $file;
 
         $file = $this->workDirectory . '/' . $file;
-        $this->xmlDom = new \DOMDocument();
+        $this->xmlDom = new DOMDocument();
         $strContent = file_get_contents($file);
         // docProps/app.xml
         if ($baseFile == 'docProps/app.xml') {
@@ -155,14 +159,17 @@ class PhpPresentationTestCase extends TestCase
         return $this->xmlDom;
     }
 
-    private function getXmlNodeList($file, $xpath)
+    /**
+     * @return DOMNodeList<DOMNode>
+     */
+    private function getXmlNodeList(string $file, string $xpath): DOMNodeList
     {
         if ($this->xmlDom === null || $file !== $this->xmlFile) {
             $this->getXmlDom($file);
         }
 
         if (null === $this->xmlXPath) {
-            $this->xmlXPath = new \DOMXpath($this->xmlDom);
+            $this->xmlXPath = new DOMXPath($this->xmlDom);
         }
 
         return $this->xmlXPath->query($xpath);
@@ -279,7 +286,10 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertEquals($value, $nodeList->item(0)->getAttribute($attribute));
+        /** @var DOMElement $nodeItem */
+        $nodeItem = $nodeList->item(0);
+        self::assertInstanceOf(DOMElement::class, $nodeItem);
+        self::assertEquals($value, $nodeItem->getAttribute($attribute));
     }
 
     /**
@@ -292,7 +302,10 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertStringStartsWith($value, $nodeList->item(0)->getAttribute($attribute));
+        /** @var DOMElement $nodeItem */
+        $nodeItem = $nodeList->item(0);
+        self::assertInstanceOf(DOMElement::class, $nodeItem);
+        self::assertStringStartsWith($value, $nodeItem->getAttribute($attribute));
     }
 
     /**
@@ -305,7 +318,10 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertStringEndsWith($value, $nodeList->item(0)->getAttribute($attribute));
+        /** @var DOMElement $nodeItem */
+        $nodeItem = $nodeList->item(0);
+        self::assertInstanceOf(DOMElement::class, $nodeItem);
+        self::assertStringEndsWith($value, $nodeItem->getAttribute($attribute));
     }
 
     /**
@@ -318,7 +334,10 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertStringContainsString($value, $nodeList->item(0)->getAttribute($attribute));
+        /** @var DOMElement $nodeItem */
+        $nodeItem = $nodeList->item(0);
+        self::assertInstanceOf(DOMElement::class, $nodeItem);
+        self::assertStringContainsString($value, $nodeItem->getAttribute($attribute));
     }
 
     /**
@@ -330,7 +349,10 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertTrue($nodeList->item(0)->hasAttribute($attribute));
+        /** @var DOMElement $nodeItem */
+        $nodeItem = $nodeList->item(0);
+        self::assertInstanceOf(DOMElement::class, $nodeItem);
+        self::assertTrue($nodeItem->hasAttribute($attribute));
     }
 
     /**
@@ -342,7 +364,10 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertFalse($nodeList->item(0)->hasAttribute($attribute));
+        /** @var DOMElement $nodeItem */
+        $nodeItem = $nodeList->item(0);
+        self::assertInstanceOf(DOMElement::class, $nodeItem);
+        self::assertFalse($nodeItem->hasAttribute($attribute));
     }
 
     public function assertIsSchemaECMA376Valid(): void
@@ -365,7 +390,7 @@ class PhpPresentationTestCase extends TestCase
             $dom->schemaValidate(__DIR__ . '/../../../resources/schema/ecma-376/pml.xsd');
 
             $error = libxml_get_last_error();
-            if ($error instanceof \LibXMLError) {
+            if ($error instanceof LibXMLError) {
                 $this->failXmlError($error, $fileName, $xmlSource);
             }
         }
@@ -407,7 +432,7 @@ class PhpPresentationTestCase extends TestCase
             $dom->schemaValidate(__DIR__ . '/../../../resources/schema/ooxml/pml.xsd');
 
             $error = libxml_get_last_error();
-            if ($error instanceof \LibXMLError) {
+            if ($error instanceof LibXMLError) {
                 $this->failXmlError($error, $fileName, $xmlSource);
             }
         }
@@ -419,11 +444,10 @@ class PhpPresentationTestCase extends TestCase
      * @param boolean $triggerError
      * @return boolean
      */
-    public function assertIsSchemaOpenDocumentValid($version = '1.0', $triggerError = true): bool
+    public function assertIsSchemaOpenDocumentValid(string $version = '1.0', bool $triggerError = true): bool
     {
         if (!array_key_exists($version, $this->arrayOpenDocumentRNG)) {
             self::fail('assertIsSchemaOpenDocumentValid > Use a valid version');
-            return false;
         }
 
         // validate all XML files
@@ -451,7 +475,7 @@ class PhpPresentationTestCase extends TestCase
             $dom->relaxNGValidate($pathRNG);
 
             $error = libxml_get_last_error();
-            if ($error instanceof \LibXMLError) {
+            if ($error instanceof LibXMLError) {
                 if ($triggerError) {
                     $this->failXmlError($error, $fileName, $xmlSource, array('version' => $version));
                 }
@@ -462,7 +486,7 @@ class PhpPresentationTestCase extends TestCase
         return $isValid;
     }
 
-    public function assertIsSchemaOpenDocumentNotValid($version = '1.0'): void
+    public function assertIsSchemaOpenDocumentNotValid(string $version = '1.0'): void
     {
         $isValid = $this->assertIsSchemaOpenDocumentValid($version, false);
         if ($isValid) {
@@ -474,9 +498,9 @@ class PhpPresentationTestCase extends TestCase
      * @param \LibXMLError $error
      * @param string $fileName
      * @param string $source
-     * @param array $params
+     * @param array<string, string> $params
      */
-    protected function failXmlError(\LibXMLError $error, $fileName, $source, array $params = array()): void
+    protected function failXmlError(LibXMLError $error, string $fileName, string $source, array $params = array()): void
     {
         switch ($error->level) {
             case LIBXML_ERR_WARNING:

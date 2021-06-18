@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
  */
 class NoteTest extends TestCase
 {
-    public function testParent()
+    public function testParent(): void
     {
         $object = new Note();
         $this->assertNull($object->getParent());
@@ -40,7 +40,7 @@ class NoteTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getParent());
     }
 
-    public function testExtent()
+    public function testExtent(): void
     {
         $object = new Note();
         $this->assertNotNull($object->getExtentX());
@@ -49,13 +49,13 @@ class NoteTest extends TestCase
         $this->assertNotNull($object->getExtentY());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Note();
         $this->assertIsString($object->getHashCode());
     }
 
-    public function testOffset()
+    public function testOffset(): void
     {
         $object = new Note();
         $this->assertNotNull($object->getOffsetX());
@@ -64,7 +64,7 @@ class NoteTest extends TestCase
         $this->assertNotNull($object->getOffsetY());
     }
 
-    public function testShape()
+    public function testShape(): void
     {
         $object = new Note();
         $this->assertEquals(0, $object->getShapeCollection()->count());
@@ -79,7 +79,7 @@ class NoteTest extends TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Note();
         $value = mt_rand(1, 100);

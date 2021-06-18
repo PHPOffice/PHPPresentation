@@ -30,7 +30,7 @@ abstract class AbstractLayoutPack
      * - masterid
      * - body
      *
-     * @var array
+     * @var array<int, array{'masterid': int, 'body': string}>
      */
     protected $masterSlides = array();
 
@@ -45,7 +45,7 @@ abstract class AbstractLayoutPack
      * - target (full path in OpenXML package)
      * - contents (body)
      *
-     * @var array
+     * @var array<int, array<string, string>>
      */
     protected $masterSlideRels = array();
 
@@ -56,7 +56,7 @@ abstract class AbstractLayoutPack
      * - masterid
      * - body
      *
-     * @var array
+     * @var array<int, array{'masterid': int, 'body': string}>
      */
     protected $themes = array();
 
@@ -71,7 +71,7 @@ abstract class AbstractLayoutPack
      * - target (full path in OpenXML package)
      * - contents (body)
      *
-     * @var array
+     * @var array<int, array<string, string>>
      */
     protected $themeRelations = array();
 
@@ -84,7 +84,7 @@ abstract class AbstractLayoutPack
      * - name (string)
      * - body (string)
      *
-     * @var array
+     * @var array<int, array{'id': int, 'masterid': int, 'name': string, 'body': string}>
      */
     protected $layouts = array();
 
@@ -99,16 +99,16 @@ abstract class AbstractLayoutPack
      * - target (full path in OpenXML package)
      * - contents (body)
      *
-     * @var array
+     * @var array<int, array<string, string>>
      */
     protected $layoutRelations = array();
 
     /**
      * Get master slides
      *
-     * @return array
+     * @return array<int, array{'masterid': int, 'body': string}>
      */
-    public function getMasterSlides()
+    public function getMasterSlides(): array
     {
         return $this->masterSlides;
     }
@@ -116,9 +116,9 @@ abstract class AbstractLayoutPack
     /**
      * Get master slide relations
      *
-     * @return array
+     * @return array<int, array<string, string>>
      */
-    public function getMasterSlideRelations()
+    public function getMasterSlideRelations(): array
     {
         return $this->masterSlideRels;
     }
@@ -126,9 +126,9 @@ abstract class AbstractLayoutPack
     /**
      * Get themes
      *
-     * @return array
+     * @return array<int, array{'masterid': int, 'body': string}>
      */
-    public function getThemes()
+    public function getThemes(): array
     {
         return $this->themes;
     }
@@ -136,9 +136,9 @@ abstract class AbstractLayoutPack
     /**
      * Get theme relations
      *
-     * @return array
+     * @return array<int, array<string, string>>
      */
-    public function getThemeRelations()
+    public function getThemeRelations(): array
     {
         return $this->themeRelations;
     }
@@ -146,7 +146,7 @@ abstract class AbstractLayoutPack
     /**
      * Get array of slide layouts
      *
-     * @return array
+     * @return array<int, array{'id': int, 'masterid': int, 'name': string, 'body': string}>
      */
     public function getLayouts()
     {
@@ -156,9 +156,9 @@ abstract class AbstractLayoutPack
     /**
      * Get array of slide layout relations
      *
-     * @return array
+     * @return array<int, array<string, string>>
      */
-    public function getLayoutRelations()
+    public function getLayoutRelations(): array
     {
         return $this->layoutRelations;
     }
@@ -173,10 +173,10 @@ abstract class AbstractLayoutPack
      *
      * @param string $name
      * @param int $masterId
-     * @return array
+     * @return array{'id': int, 'masterid': int, 'name': string, 'body': string}
      * @throws \Exception
      */
-    public function findLayout($name = '', $masterId = 1)
+    public function findLayout(string $name = '', int $masterId = 1): array
     {
         foreach ($this->layouts as $layout) {
             if ($layout['name'] == $name && $layout['masterid'] == $masterId) {
@@ -194,7 +194,7 @@ abstract class AbstractLayoutPack
      * @return int
      * @throws \Exception
      */
-    public function findLayoutId($name = '')
+    public function findLayoutId(string $name = ''): int
     {
         foreach ($this->layouts as $layoutId => $layout) {
             if ($layout['name'] == $name) {
@@ -209,10 +209,10 @@ abstract class AbstractLayoutPack
      * Find specific slide layout name.
      *
      * @param int $idLayout
-     * @return int
+     * @return string
      * @throws \Exception
      */
-    public function findLayoutName($idLayout = null)
+    public function findLayoutName(int $idLayout): string
     {
         foreach ($this->layouts as $layoutId => $layout) {
             if ($layoutId == $idLayout) {

@@ -17,8 +17,12 @@
 
 namespace PhpOffice\PhpPresentation\Reader;
 
+use Exception;
 use PhpOffice\Common\File;
+use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Drawing\File as DrawingFile;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
+use ZipArchive;
 
 /**
  * Serialized format reader
@@ -28,11 +32,11 @@ class Serialized implements ReaderInterface
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
      *
-     * @param  string $pFilename
+     * @param string $pFilename
      * @throws \Exception
      * @return boolean
      */
-    public function canRead($pFilename)
+    public function canRead(string $pFilename): bool
     {
         return $this->fileSupportsUnserializePhpPresentation($pFilename);
     }
@@ -40,11 +44,11 @@ class Serialized implements ReaderInterface
     /**
      * Does a file support UnserializePhpPresentation ?
      *
-     * @param  string    $pFilename
+     * @param string    $pFilename
      * @throws \Exception
      * @return boolean
      */
-    public function fileSupportsUnserializePhpPresentation($pFilename = '')
+    public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
@@ -58,11 +62,11 @@ class Serialized implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file
      *
-     * @param  string        $pFilename
-     * @return \PhpOffice\PhpPresentation\PhpPresentation
+     * @param string        $pFilename
+     * @return PhpPresentation
      * @throws \Exception
      */
-    public function load($pFilename)
+    public function load(string $pFilename): PhpPresentation
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
@@ -80,34 +84,44 @@ class Serialized implements ReaderInterface
     /**
      * Load PhpPresentation Serialized file
      *
-     * @param  string        $pFilename
-     * @return \PhpOffice\PhpPresentation\PhpPresentation
+     * @param string $pFilename
+     * @return PhpPresentation
      */
-    private function loadSerialized($pFilename)
+    private function loadSerialized(string $pFilename): PhpPresentation
     {
-        $oArchive = new \ZipArchive();
-        if ($oArchive->open($pFilename) === true) {
-            $xmlContent = $oArchive->getFromName('PhpPresentation.xml');
+        $oArchive = new ZipArchive();
+        if ($oArchive->open($pFilename) !== true) {
+            throw new Exception('');
+        }
 
-            if (!empty($xmlContent)) {
-                $xmlData = simplexml_load_string($xmlContent);
-                $file    = unserialize(base64_decode((string) $xmlData->data));
+        $xmlContent = $oArchive->getFromName('PhpPresentation.xml');
+        if (empty($xmlContent)) {
+            throw new Exception(sprintf(
+                'The file %s in the serialized file %s is malformed',
+                'PhpPresentation.xml',
+                $pFilename
+            ));
+        }
 
-                // Update media links
-                for ($i = 0; $i < $file->getSlideCount(); ++$i) {
-                    for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                        if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                            $imgTemp = $file->getSlide($i)->getShapeCollection()->offsetGet($j);
-                            $imgTemp->setPath('zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME), false);
-                        }
+        $xmlData = simplexml_load_string($xmlContent);
+        $file    = unserialize(base64_decode((string) $xmlData->data));
+
+        // Update media links
+        for ($i = 0; $i < $file->getSlideCount(); ++$i) {
+            for ($j = 0; $j < $file->getSlide($i)->getShapeCollection()->count(); ++$j) {
+                if ($file->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
+                    $imgTemp = $file->getSlide($i)->getShapeCollection()->offsetGet($j);
+                    $imgPath = 'zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME);
+                    if ($imgTemp instanceof DrawingFile) {
+                        $imgTemp->setPath($imgPath, false);
+                    } else {
+                        $imgTemp->setPath($imgPath);
                     }
                 }
-
-                $oArchive->close();
-                return $file;
             }
         }
 
-        return null;
+        $oArchive->close();
+        return $file;
     }
 }

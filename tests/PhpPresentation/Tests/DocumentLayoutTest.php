@@ -30,7 +30,7 @@ class DocumentLayoutTest extends TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new DocumentLayout();
 
@@ -42,7 +42,7 @@ class DocumentLayoutTest extends TestCase
     /**
      * Test set custom layout
      */
-    public function testSetCustomLayout()
+    public function testSetCustomLayout(): void
     {
         $object = new DocumentLayout();
         $object->setDocumentLayout(array('cx' => 6858000, 'cy' => 9144000), false);
@@ -55,7 +55,7 @@ class DocumentLayoutTest extends TestCase
         $this->assertEquals(9144000, $object->getCY());
     }
 
-    public function testCX()
+    public function testCX(): void
     {
         $value = mt_rand(1, 100000);
         $object = new DocumentLayout();
@@ -75,7 +75,7 @@ class DocumentLayoutTest extends TestCase
         $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_PIXEL));
     }
 
-    public function testCY()
+    public function testCY(): void
     {
         $value = mt_rand(1, 100000);
         $object = new DocumentLayout();

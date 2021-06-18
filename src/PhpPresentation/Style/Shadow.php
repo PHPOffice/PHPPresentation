@@ -74,15 +74,11 @@ class Shadow implements ComparableInterface
     private $alignment;
 
     /**
-     * Color
-     *
-     * @var \PhpOffice\PhpPresentation\Style\Color
+     * @var Color|null
      */
     private $color;
 
     /**
-     * Alpha
-     *
      * @var int
      */
     private $alpha;
@@ -90,7 +86,7 @@ class Shadow implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -114,7 +110,7 @@ class Shadow implements ComparableInterface
      *
      * @return boolean
      */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->visible;
     }
@@ -122,10 +118,10 @@ class Shadow implements ComparableInterface
     /**
      * Set Visible
      *
-     * @param  boolean                    $pValue
-     * @return $this
+     * @param bool $pValue
+     * @return self
      */
-    public function setVisible($pValue = false)
+    public function setVisible(bool $pValue = false): self
     {
         $this->visible = $pValue;
 
@@ -137,7 +133,7 @@ class Shadow implements ComparableInterface
      *
      * @return int
      */
-    public function getBlurRadius()
+    public function getBlurRadius(): int
     {
         return $this->blurRadius;
     }
@@ -145,10 +141,10 @@ class Shadow implements ComparableInterface
     /**
      * Set Blur radius
      *
-     * @param  int                        $pValue
-     * @return $this
+     * @param int $pValue
+     * @return self
      */
-    public function setBlurRadius($pValue = 6)
+    public function setBlurRadius(int $pValue = 6): self
     {
         $this->blurRadius = $pValue;
 
@@ -160,7 +156,7 @@ class Shadow implements ComparableInterface
      *
      * @return int
      */
-    public function getDistance()
+    public function getDistance(): int
     {
         return $this->distance;
     }
@@ -168,10 +164,10 @@ class Shadow implements ComparableInterface
     /**
      * Set Shadow distance
      *
-     * @param  int                        $pValue
+     * @param int  $pValue
      * @return $this
      */
-    public function setDistance($pValue = 2)
+    public function setDistance(int $pValue = 2): self
     {
         $this->distance = $pValue;
 
@@ -183,7 +179,7 @@ class Shadow implements ComparableInterface
      *
      * @return int
      */
-    public function getDirection()
+    public function getDirection(): int
     {
         return $this->direction;
     }
@@ -191,10 +187,10 @@ class Shadow implements ComparableInterface
     /**
      * Set Shadow direction (in degrees)
      *
-     * @param  int                        $pValue
-     * @return $this
+     * @param int $pValue
+     * @return self
      */
-    public function setDirection($pValue = 0)
+    public function setDirection(int $pValue = 0): self
     {
         $this->direction = $pValue;
 
@@ -204,9 +200,9 @@ class Shadow implements ComparableInterface
     /**
      * Get Shadow alignment
      *
-     * @return int
+     * @return string
      */
-    public function getAlignment()
+    public function getAlignment(): string
     {
         return $this->alignment;
     }
@@ -214,10 +210,10 @@ class Shadow implements ComparableInterface
     /**
      * Set Shadow alignment
      *
-     * @param  string                        $pValue
-     * @return $this
+     * @param string $pValue
+     * @return self
      */
-    public function setAlignment($pValue = self::SHADOW_BOTTOM_RIGHT)
+    public function setAlignment(string $pValue = self::SHADOW_BOTTOM_RIGHT): self
     {
         $this->alignment = $pValue;
 
@@ -227,9 +223,9 @@ class Shadow implements ComparableInterface
     /**
      * Get Color
      *
-     * @return \PhpOffice\PhpPresentation\Style\Color
+     * @return Color|null
      */
-    public function getColor()
+    public function getColor(): ?Color
     {
         return $this->color;
     }
@@ -237,11 +233,10 @@ class Shadow implements ComparableInterface
     /**
      * Set Color
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Color  $pValue
-     * @throws \Exception
-     * @return $this
+     * @param Color|null $pValue
+     * @return self
      */
-    public function setColor(Color $pValue = null)
+    public function setColor(Color $pValue = null): self
     {
         $this->color = $pValue;
 
@@ -253,7 +248,7 @@ class Shadow implements ComparableInterface
      *
      * @return int
      */
-    public function getAlpha()
+    public function getAlpha(): int
     {
         return $this->alpha;
     }
@@ -261,10 +256,10 @@ class Shadow implements ComparableInterface
     /**
      * Set Alpha
      *
-     * @param  int                        $pValue
-     * @return $this
+     * @param int $pValue
+     * @return self
      */
-    public function setAlpha($pValue = 0)
+    public function setAlpha(int $pValue = 0): self
     {
         $this->alpha = $pValue;
 
@@ -276,7 +271,7 @@ class Shadow implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(($this->visible ? 't' : 'f') . $this->blurRadius . $this->distance . $this->direction . $this->alignment . $this->color->getHashCode() . $this->alpha . __CLASS__);
     }
@@ -287,9 +282,9 @@ class Shadow implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -300,10 +295,12 @@ class Shadow implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+        return $this;
     }
 }

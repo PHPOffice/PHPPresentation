@@ -123,7 +123,7 @@ class DocumentProperties
     /**
      * Set Creator
      *
-     * @param  string                           $pValue
+     * @param string                           $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setCreator($pValue = '')
@@ -146,7 +146,7 @@ class DocumentProperties
     /**
      * Set Last Modified By
      *
-     * @param  string                           $pValue
+     * @param string                           $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setLastModifiedBy($pValue = '')
@@ -195,7 +195,7 @@ class DocumentProperties
     /**
      * Set Modified
      *
-     * @param  int                         $pValue
+     * @param int                         $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setModified($pValue = null)
@@ -221,7 +221,7 @@ class DocumentProperties
     /**
      * Set Title
      *
-     * @param  string                           $pValue
+     * @param string                           $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setTitle($pValue = '')
@@ -244,7 +244,7 @@ class DocumentProperties
     /**
      * Set Description
      *
-     * @param  string                           $pValue
+     * @param string                           $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setDescription($pValue = '')
@@ -267,7 +267,7 @@ class DocumentProperties
     /**
      * Set Subject
      *
-     * @param  string                           $pValue
+     * @param string                           $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setSubject($pValue = '')
@@ -290,7 +290,7 @@ class DocumentProperties
     /**
      * Set Keywords
      *
-     * @param  string                           $pValue
+     * @param string                           $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setKeywords($pValue = '')
@@ -313,7 +313,7 @@ class DocumentProperties
     /**
      * Set Category
      *
-     * @param  string                           $pValue
+     * @param string                           $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setCategory($pValue = '')
@@ -336,7 +336,7 @@ class DocumentProperties
     /**
      * Set Company
      *
-     * @param  string                           $pValue
+     * @param string                           $pValue
      * @return \PhpOffice\PhpPresentation\DocumentProperties
      */
     public function setCompany($pValue = '')

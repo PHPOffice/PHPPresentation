@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class Pie3DTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Pie3D();
 
@@ -46,7 +46,7 @@ class Pie3DTest extends TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Pie3D();
 
@@ -54,7 +54,7 @@ class Pie3DTest extends TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testExplosion()
+    public function testExplosion(): void
     {
         $value = mt_rand(0, 100);
         $object = new Pie3D();
@@ -64,7 +64,7 @@ class Pie3DTest extends TestCase
         $this->assertEquals($value, $object->getExplosion());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 

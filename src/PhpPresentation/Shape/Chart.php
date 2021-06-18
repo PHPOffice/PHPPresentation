@@ -141,7 +141,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
     /**
      * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation
      *
-     * @param  boolean                   $value
+     * @param boolean                   $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart
      */
     public function setIncludeSpreadsheet($value = false)
@@ -165,7 +165,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(parent::getHashCode() . $this->title->getHashCode() . $this->legend->getHashCode() . $this->plotArea->getHashCode() . $this->view3D->getHashCode() . ($this->includeSpreadsheet ? 1 : 0) . __CLASS__);
     }

@@ -31,7 +31,7 @@ class RunTest extends TestCase
     /**
      * Test can read
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Run();
         $this->assertEquals('', $object->getText());
@@ -42,14 +42,14 @@ class RunTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
-    public function testFont()
+    public function testFont(): void
     {
         $object = new Run();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setFont(new Font()));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
-    public function testLanguage()
+    public function testLanguage(): void
     {
         $object = new Run();
         $this->assertNull($object->getLanguage());
@@ -57,7 +57,7 @@ class RunTest extends TestCase
         $this->assertEquals('en-US', $object->getLanguage());
     }
 
-    public function testText()
+    public function testText(): void
     {
         $object = new Run();
         $this->assertEquals('', $object->getText());
@@ -73,7 +73,7 @@ class RunTest extends TestCase
     /**
      * Test get/set hash index
      */
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Run();
         $this->assertEquals(md5($object->getFont()->getHashCode().get_class($object)), $object->getHashCode());

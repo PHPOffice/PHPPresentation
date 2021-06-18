@@ -30,20 +30,20 @@ class ObjectsChartTest extends PhpPresentationTestCase
     protected $writerName = 'ODPresentation';
 
     /**
-     * @var array
+     * @var array<string, string>
      */
     protected $seriesData = array(
-        'A' => 1,
-        'B' => 2,
-        'C' => 4,
-        'D' => 3,
-        'E' => 2,
+        'A' => '1',
+        'B' => '2',
+        'C' => '4',
+        'D' => '3',
+        'E' => '2',
     );
 
-    public function testAxisFont()
+    public function testAxisFont(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oBar = new Bar();
         $oBar->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar);
@@ -78,9 +78,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testLegend()
+    public function testLegend(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oLine = new Line();
         $oLine->addSeries($oSeries);
@@ -150,9 +150,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oPie = new Pie();
         $oPie->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
@@ -212,7 +212,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTitleVisibility()
+    public function testTitleVisibility(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oLine = new Line();
@@ -238,9 +238,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeArea()
+    public function testTypeArea(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->getFill()->setStartColor(new Color('FF93A9CE'));
         $oArea = new Area();
         $oArea->addSeries($oSeries);
@@ -264,11 +264,11 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeAxisBounds()
+    public function testTypeAxisBounds(): void
     {
         $value = mt_rand(0, 100);
 
-        $oSeries = new Series('Downloads', array('A' => 1, 'B' => 2, 'C' => 4, 'D' => 3, 'E' => 2));
+        $oSeries = new Series('Downloads', array('A' => '1', 'B' => '2', 'C' => '4', 'D' => '3', 'E' => '2'));
         $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
         $oLine = new Line();
         $oLine->addSeries($oSeries);
@@ -317,9 +317,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBar()
+    public function testTypeBar(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -350,10 +350,10 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBarGroupingStacked()
+    public function testTypeBarGroupingStacked(): void
     {
         $oBar = new Bar();
-        $oBar->addSeries(new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2)));
+        $oBar->addSeries(new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2')));
         $oBar->setBarGrouping(Bar::GROUPING_STACKED);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oBar);
@@ -369,10 +369,10 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBarGroupingPercentStacked()
+    public function testTypeBarGroupingPercentStacked(): void
     {
         $oBar = new Bar();
-        $oBar->addSeries(new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2)));
+        $oBar->addSeries(new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2')));
         $oBar->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oBar);
@@ -388,9 +388,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBarHorizontal()
+    public function testTypeBarHorizontal(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -415,9 +415,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBar3D()
+    public function testTypeBar3D(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -446,9 +446,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBar3DHorizontal()
+    public function testTypeBar3DHorizontal(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -475,7 +475,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeDoughnut()
+    public function testTypeDoughnut(): void
     {
         // $randHoleSize = mt_rand(10, 90);
         $randSeparator = chr(mt_rand(ord('A'), ord('Z')));
@@ -514,9 +514,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeLine()
+    public function testTypeLine(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oLine = new Line();
         $oLine->addSeries($oSeries);
@@ -551,7 +551,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeLineGridlines()
+    public function testTypeLineGridlines(): void
     {
         $arrayTests = array(
             array(
@@ -596,13 +596,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
             $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
             $oLine = new Line();
-            $oLine->addSeries(new Series('Downloads', array(
-                'A' => 1,
-                'B' => 2,
-                'C' => 4,
-                'D' => 3,
-                'E' => 2,
-            )));
+            $oLine->addSeries(new Series('Downloads', $this->seriesData));
             $oShape->getPlotArea()->setType($oLine);
             $oGridlines = new Gridlines();
             $oGridlines->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($expectedColor);
@@ -627,7 +621,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         }
     }
 
-    public function testTypeLineMarker()
+    public function testTypeLineMarker(): void
     {
         $expectedSymbol1 = Marker::SYMBOL_PLUS;
         $expectedSymbol2 = Marker::SYMBOL_DASH;
@@ -641,13 +635,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oLine = new Line();
-        $oSeries = new Series('Downloads', array(
-            'A' => 1,
-            'B' => 2,
-            'C' => 4,
-            'D' => 3,
-            'E' => 2,
-        ));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getMarker()->setSymbol($expectedSymbol1)->setSize($expectedSize);
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
@@ -700,7 +688,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeLineSeriesOutline()
+    public function testTypeLineSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
         $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
@@ -716,13 +704,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oLine = new Line();
-        $oSeries = new Series('Downloads', array(
-            'A' => 1,
-            'B' => 2,
-            'C' => 4,
-            'D' => 3,
-            'E' => 2,
-        ));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
@@ -749,9 +731,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypePie()
+    public function testTypePie(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -780,9 +762,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypePie3D()
+    public function testTypePie3D(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -811,11 +793,11 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypePie3DExplosion()
+    public function testTypePie3DExplosion(): void
     {
         $value = mt_rand(0, 100);
 
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oPie3D = new Pie3D();
         $oPie3D->setExplosion($value);
@@ -830,9 +812,9 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeScatter()
+    public function testTypeScatter(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', array('Jan' => '1', 'Feb' => '5', 'Mar' => '2'));
         $oSeries->setShowSeriesName(true);
         $oScatter = new Scatter();
         $oScatter->addSeries($oSeries);
@@ -846,7 +828,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeScatterMarker()
+    public function testTypeScatterMarker(): void
     {
         $expectedSymbol1 = Marker::SYMBOL_PLUS;
         $expectedSymbol2 = Marker::SYMBOL_DASH;
@@ -859,13 +841,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oScatter = new Scatter();
-        $oSeries = new Series('Downloads', array(
-            'A' => 1,
-            'B' => 2,
-            'C' => 4,
-            'D' => 3,
-            'E' => 2,
-        ));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getMarker()->setSymbol($expectedSymbol1)->setSize($expectedSize);
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
@@ -918,7 +894,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeScatterSeriesOutline()
+    public function testTypeScatterSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
         $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
@@ -933,13 +909,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oScatter = new Scatter();
-        $oSeries = new Series('Downloads', array(
-            'A' => 1,
-            'B' => 2,
-            'C' => 4,
-            'D' => 3,
-            'E' => 2,
-        ));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 

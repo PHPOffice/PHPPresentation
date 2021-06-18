@@ -20,8 +20,6 @@ namespace PhpOffice\PhpPresentation\Writer;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
-use PhpOffice\PhpPresentation\Shape\Table;
 use DirectoryIterator;
 
 /**
@@ -71,10 +69,10 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     /**
      * Save PhpPresentation to file
      *
-     * @param  string    $pFilename
+     * @param string    $pFilename
      * @throws \Exception
      */
-    public function save($pFilename)
+    public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
             throw new \Exception("Filename is empty");
@@ -155,8 +153,8 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param  boolean $pValue
-     * @param  string $pDirectory Disk caching directory
+     * @param boolean $pValue
+     * @param string $pDirectory Disk caching directory
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
      */

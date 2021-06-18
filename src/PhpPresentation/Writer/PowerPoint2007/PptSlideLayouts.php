@@ -36,7 +36,7 @@ class PptSlideLayouts extends AbstractSlide
     /**
      * Write slide layout relationships to XML format
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\SlideLayout $oSlideLayout
+     * @param \PhpOffice\PhpPresentation\Slide\SlideLayout $oSlideLayout
      * @return string    XML Output
      * @throws \Exception
      */
@@ -78,7 +78,7 @@ class PptSlideLayouts extends AbstractSlide
     /**
      * Write slide to XML format
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\SlideLayout $pSlideLayout
+     * @param \PhpOffice\PhpPresentation\Slide\SlideLayout $pSlideLayout
      * @return string XML Output
      * @throws \Exception
      */

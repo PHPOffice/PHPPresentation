@@ -17,6 +17,7 @@
 
 namespace PhpOffice\PhpPresentation;
 
+use ArrayObject;
 use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Iterator;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
@@ -29,28 +30,28 @@ class PhpPresentation
     /**
      * Document properties
      *
-     * @var \PhpOffice\PhpPresentation\DocumentProperties
+     * @var DocumentProperties
      */
     protected $documentProperties;
 
     /**
      * Presentation properties
      *
-     * @var \PhpOffice\PhpPresentation\PresentationProperties
+     * @var PresentationProperties
      */
     protected $presentationProps;
 
     /**
      * Document layout
      *
-     * @var \PhpOffice\PhpPresentation\DocumentLayout
+     * @var DocumentLayout
      */
     protected $layout;
 
     /**
      * Collection of Slide objects
      *
-     * @var \PhpOffice\PhpPresentation\Slide[]
+     * @var array<int, Slide>
      */
     protected $slideCollection = array();
 
@@ -63,7 +64,7 @@ class PhpPresentation
 
     /**
      * Collection of Master Slides
-     * @var \ArrayObject|\PhpOffice\PhpPresentation\Slide\SlideMaster[]
+     * @var array<int, SlideMaster>|ArrayObject<int, SlideMaster>
      */
     protected $slideMasters;
 
@@ -88,10 +89,10 @@ class PhpPresentation
     /**
      * Get properties
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      * @deprecated for getDocumentProperties
      */
-    public function getProperties()
+    public function getProperties(): DocumentProperties
     {
         return $this->getDocumentProperties();
     }
@@ -99,11 +100,11 @@ class PhpPresentation
     /**
      * Set properties
      *
-     * @param  \PhpOffice\PhpPresentation\DocumentProperties $value
+     * @param DocumentProperties $value
      * @deprecated for setDocumentProperties
-     * @return PhpPresentation
+     * @return self
      */
-    public function setProperties(DocumentProperties $value)
+    public function setProperties(DocumentProperties $value): self
     {
         return $this->setDocumentProperties($value);
     }
@@ -111,9 +112,9 @@ class PhpPresentation
     /**
      * Get properties
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
-    public function getDocumentProperties()
+    public function getDocumentProperties(): DocumentProperties
     {
         return $this->documentProperties;
     }
@@ -121,10 +122,10 @@ class PhpPresentation
     /**
      * Set properties
      *
-     * @param  \PhpOffice\PhpPresentation\DocumentProperties $value
-     * @return PhpPresentation
+     * @param DocumentProperties $value
+     * @return self
      */
-    public function setDocumentProperties(DocumentProperties $value)
+    public function setDocumentProperties(DocumentProperties $value): self
     {
         $this->documentProperties = $value;
 
@@ -134,9 +135,9 @@ class PhpPresentation
     /**
      * Get presentation properties
      *
-     * @return \PhpOffice\PhpPresentation\PresentationProperties
+     * @return PresentationProperties
      */
-    public function getPresentationProperties()
+    public function getPresentationProperties(): PresentationProperties
     {
         return $this->presentationProps;
     }
@@ -144,10 +145,10 @@ class PhpPresentation
     /**
      * Set presentation properties
      *
-     * @param  \PhpOffice\PhpPresentation\PresentationProperties $value
+     * @param PresentationProperties $value
      * @return PhpPresentation
      */
-    public function setPresentationProperties(PresentationProperties $value)
+    public function setPresentationProperties(PresentationProperties $value): self
     {
         $this->presentationProps = $value;
         return $this;
@@ -156,9 +157,9 @@ class PhpPresentation
     /**
      * Get layout
      *
-     * @return \PhpOffice\PhpPresentation\DocumentLayout
+     * @return DocumentLayout
      */
-    public function getLayout()
+    public function getLayout(): DocumentLayout
     {
         return $this->layout;
     }
@@ -166,10 +167,10 @@ class PhpPresentation
     /**
      * Set layout
      *
-     * @param  \PhpOffice\PhpPresentation\DocumentLayout $value
-     * @return PhpPresentation
+     * @param DocumentLayout $value
+     * @return self
      */
-    public function setLayout(DocumentLayout $value)
+    public function setLayout(DocumentLayout $value): self
     {
         $this->layout = $value;
 
@@ -179,9 +180,9 @@ class PhpPresentation
     /**
      * Get active slide
      *
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      */
-    public function getActiveSlide()
+    public function getActiveSlide(): Slide
     {
         return $this->slideCollection[$this->activeSlideIndex];
     }
@@ -189,10 +190,10 @@ class PhpPresentation
     /**
      * Create slide and add it to this presentation
      *
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      * @throws \Exception
      */
-    public function createSlide()
+    public function createSlide(): Slide
     {
         $newSlide = new Slide($this);
         $this->addSlide($newSlide);
@@ -202,11 +203,11 @@ class PhpPresentation
     /**
      * Add slide
      *
-     * @param  \PhpOffice\PhpPresentation\Slide $slide
+     * @param Slide $slide
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      */
-    public function addSlide(Slide $slide = null)
+    public function addSlide(Slide $slide): Slide
     {
         $this->slideCollection[] = $slide;
 
@@ -216,11 +217,11 @@ class PhpPresentation
     /**
      * Remove slide by index
      *
-     * @param  int $index Slide index
+     * @param int $index Slide index
      * @throws \Exception
-     * @return PhpPresentation
+     * @return self
      */
-    public function removeSlideByIndex($index = 0)
+    public function removeSlideByIndex(int $index = 0): self
     {
         if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Slide index is out of bounds.");
@@ -233,11 +234,11 @@ class PhpPresentation
     /**
      * Get slide by index
      *
-     * @param  int $index Slide index
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @param int $index Slide index
+     * @return Slide
      * @throws \Exception
      */
-    public function getSlide($index = 0)
+    public function getSlide(int $index = 0): Slide
     {
         if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Slide index is out of bounds.");
@@ -248,9 +249,9 @@ class PhpPresentation
     /**
      * Get all slides
      *
-     * @return \PhpOffice\PhpPresentation\Slide[]
+     * @return array<int, Slide>
      */
-    public function getAllSlides()
+    public function getAllSlides(): array
     {
         return $this->slideCollection;
     }
@@ -258,20 +259,21 @@ class PhpPresentation
     /**
      * Get index for slide
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\AbstractSlide $slide
-     * @return int
+     * @param Slide\AbstractSlide $slide
+     * @return int|null
      * @throws \Exception
      */
-    public function getIndex(Slide\AbstractSlide $slide)
+    public function getIndex(Slide\AbstractSlide $slide): ?int
     {
-        $index = null;
+        if (empty($this->slideCollection)) {
+            return null;
+        }
         foreach ($this->slideCollection as $key => $value) {
             if ($value->getHashCode() == $slide->getHashCode()) {
-                $index = $key;
-                break;
+                return $key;
             }
         }
-        return $index;
+        return null;
     }
 
     /**
@@ -279,7 +281,7 @@ class PhpPresentation
      *
      * @return int
      */
-    public function getSlideCount()
+    public function getSlideCount(): int
     {
         return count($this->slideCollection);
     }
@@ -289,7 +291,7 @@ class PhpPresentation
      *
      * @return int Active slide index
      */
-    public function getActiveSlideIndex()
+    public function getActiveSlideIndex(): int
     {
         return $this->activeSlideIndex;
     }
@@ -297,11 +299,11 @@ class PhpPresentation
     /**
      * Set active slide index
      *
-     * @param  int $index Active slide index
+     * @param int $index Active slide index
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      */
-    public function setActiveSlideIndex($index = 0)
+    public function setActiveSlideIndex(int $index = 0): Slide
     {
         if ($index > count($this->slideCollection) - 1) {
             throw new \Exception("Active slide index is out of bounds.");
@@ -314,11 +316,11 @@ class PhpPresentation
     /**
      * Add external slide
      *
-     * @param  \PhpOffice\PhpPresentation\Slide $slide External slide to add
+     * @param Slide $slide External slide to add
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      */
-    public function addExternalSlide(Slide $slide)
+    public function addExternalSlide(Slide $slide): Slide
     {
         $slide->rebindParent($this);
 
@@ -330,9 +332,9 @@ class PhpPresentation
     /**
      * Get slide iterator
      *
-     * @return \PhpOffice\PhpPresentation\Slide\Iterator
+     * @return Iterator
      */
-    public function getSlideIterator()
+    public function getSlideIterator(): Iterator
     {
         return new Iterator($this);
     }
@@ -340,10 +342,10 @@ class PhpPresentation
     /**
      * Create a masterslide and add it to this presentation
      *
-     * @return \PhpOffice\PhpPresentation\Slide\SlideMaster
+     * @return SlideMaster
      * @throws \Exception
      */
-    public function createMasterSlide()
+    public function createMasterSlide(): SlideMaster
     {
         $newMasterSlide = new SlideMaster($this);
         $this->addMasterSlide($newMasterSlide);
@@ -353,11 +355,11 @@ class PhpPresentation
     /**
      * Add masterslide
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\SlideMaster $slide
-     * @return \PhpOffice\PhpPresentation\Slide\SlideMaster
+     * @param SlideMaster $slide
+     * @return SlideMaster
      * @throws \Exception
      */
-    public function addMasterSlide(SlideMaster $slide = null)
+    public function addMasterSlide(SlideMaster $slide): SlideMaster
     {
         $this->slideMasters[] = $slide;
 
@@ -370,7 +372,7 @@ class PhpPresentation
      * @return PhpPresentation
      * @throws \Exception
      */
-    public function copy()
+    public function copy(): PhpPresentation
     {
         $copied = clone $this;
 
@@ -389,7 +391,7 @@ class PhpPresentation
      * @return PresentationProperties
      * @deprecated for getPresentationProperties()->markAsFinal()
      */
-    public function markAsFinal($state = true)
+    public function markAsFinal(bool $state = true): PresentationProperties
     {
         return $this->getPresentationProperties()->markAsFinal($state);
     }
@@ -399,7 +401,7 @@ class PhpPresentation
      * @return bool
      * @deprecated for getPresentationProperties()->isMarkedAsFinal()
      */
-    public function isMarkedAsFinal()
+    public function isMarkedAsFinal(): bool
     {
         return $this->getPresentationProperties()->isMarkedAsFinal();
     }
@@ -410,7 +412,7 @@ class PhpPresentation
      * @return PresentationProperties
      * @deprecated for getPresentationProperties()->setZoom()
      */
-    public function setZoom($zoom = 1.0)
+    public function setZoom(float $zoom = 1.0): PresentationProperties
     {
         return $this->getPresentationProperties()->setZoom($zoom);
     }
@@ -420,13 +422,13 @@ class PhpPresentation
      * @return float
      * @deprecated for getPresentationProperties()->getZoom()
      */
-    public function getZoom()
+    public function getZoom(): float
     {
         return $this->getPresentationProperties()->getZoom();
     }
 
     /**
-     * @return \ArrayObject|Slide\SlideMaster[]
+     * @return array<int, Slide\SlideMaster>|ArrayObject<int, Slide\SlideMaster>
      */
     public function getAllMasterSlides()
     {
@@ -434,12 +436,12 @@ class PhpPresentation
     }
 
     /**
-     * @param \ArrayObject|Slide\SlideMaster[] $slideMasters
-     * @return $this
+     * @param array<int, Slide\SlideMaster>|ArrayObject<int, Slide\SlideMaster> $slideMasters
+     * @return self
      */
-    public function setAllMasterSlides($slideMasters = array())
+    public function setAllMasterSlides($slideMasters = array()): self
     {
-        if ($slideMasters instanceof \ArrayObject || is_array($slideMasters)) {
+        if ($slideMasters instanceof ArrayObject || is_array($slideMasters)) {
             $this->slideMasters = $slideMasters;
         }
         return $this;

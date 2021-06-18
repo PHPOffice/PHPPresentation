@@ -58,9 +58,9 @@ class TemplateBased extends AbstractLayoutPack
                 foreach ($presentationRels->Relationship as $presRel) {
                     if ($presRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideMaster") {
                         // Found slide master!
-                        $slideMasterId         = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));
+                        $slideMasterId = str_replace('slideMaster', '', basename($presRel["Target"], '.xml'));
                         $this->masterSlides[] = array(
-                            'masterid' => $slideMasterId,
+                            'masterid' => (int) $slideMasterId,
                             'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . basename($presRel["Target"])))
                         );
 
@@ -69,9 +69,9 @@ class TemplateBased extends AbstractLayoutPack
                         foreach ($masterRelations->Relationship as $masterRel) {
                             if ($masterRel["Type"] == "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme") {
                                 // Found theme!
-                                $themeId                     = str_replace('theme', '', basename($masterRel["Target"], '.xml'));
+                                $themeId                     = (int) str_replace('theme', '', basename($masterRel["Target"], '.xml'));
                                 $this->themes[$themeId - 1] = array(
-                                    'masterid' => $slideMasterId,
+                                    'masterid' => (int) $slideMasterId,
                                     'body' => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
                                 );
 
@@ -96,8 +96,8 @@ class TemplateBased extends AbstractLayoutPack
                                 // Found slide layout!
                                 $layoutId  = str_replace('slideLayout', '', basename($masterRel["Target"], '.xml'));
                                 $layout    = array(
-                                    'id'        => $layoutId,
-                                    'masterid'  => $slideMasterId,
+                                    'id'        => (int) $layoutId,
+                                    'masterid'  => (int) $slideMasterId,
                                     'name'      => '-unknown-',
                                     'body'      => $package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/" . basename($masterRel["Target"])))
                                 );
@@ -109,7 +109,7 @@ class TemplateBased extends AbstractLayoutPack
                                 $layoutXml->registerXPathNamespace("p", "http://schemas.openxmlformats.org/presentationml/2006/main");
                                 $slide                     = $layoutXml->xpath('/p:sldLayout/p:cSld');
                                 $layout['name']            = (string) $slide[0]['name'];
-                                $this->layouts[$layoutId] = $layout;
+                                $this->layouts[(int) $layoutId] = $layout;
 
                                 // Search for slide layout relations
                                 $layoutRelations = @simplexml_load_string($package->getFromName($this->absoluteZipPath(dirname($rel["Target"]) . "/" . dirname($presRel["Target"]) . "/" . dirname($masterRel["Target"]) . "/_rels/" . basename($masterRel["Target"]) . ".rels")));
@@ -160,11 +160,11 @@ class TemplateBased extends AbstractLayoutPack
     /**
      * Compare master slides
      *
-     * @param array $firstSlide
-     * @param array $secondSlide
+     * @param array<string, string> $firstSlide
+     * @param array<string, string> $secondSlide
      * @return int
      */
-    public static function cmpMaster($firstSlide, $secondSlide)
+    public static function cmpMaster(array $firstSlide, array $secondSlide): int
     {
         if ($firstSlide['masterid'] == $secondSlide['masterid']) {
             return 0;
@@ -176,16 +176,18 @@ class TemplateBased extends AbstractLayoutPack
     /**
      * Determine absolute zip path
      *
-     * @param  string $path
+     * @param string $path
      * @return string
      */
-    protected function absoluteZipPath($path)
+    protected function absoluteZipPath(string $path): string
     {
-        $path      = str_replace(array(
+        $path = str_replace(array(
             '/',
             '\\'
         ), DIRECTORY_SEPARATOR, $path);
-        $parts     = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
+        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), function (string $var) {
+            return (bool) strlen($var);
+        });
         $absolutes = array();
         foreach ($parts as $part) {
             if ('.' == $part) {

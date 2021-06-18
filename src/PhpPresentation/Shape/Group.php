@@ -17,9 +17,10 @@
 
 namespace PhpOffice\PhpPresentation\Shape;
 
+use ArrayObject;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\GeometryCalculator;
-use PHPOffice\PhpPresentation\ShapeContainerInterface;
+use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
@@ -29,9 +30,9 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
     * Collection of shapes
     *
-    * @var \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[]
+    * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
     */
-    private $shapeCollection = null;
+    private $shapeCollection;
 
     /**
     * Extent X
@@ -51,19 +52,15 @@ class Group extends AbstractShape implements ShapeContainerInterface
     {
         parent::__construct();
 
-        // For logic purposes.
-        $this->offsetX = null;
-        $this->offsetY = null;
-
         // Shape collection
-        $this->shapeCollection = new \ArrayObject();
+        $this->shapeCollection = new ArrayObject();
     }
 
     /**
-    * Get collection of shapes
-    *
-     * @return \ArrayObject|AbstractShape[]
-    */
+     * Get collection of shapes
+     *
+     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
+     */
     public function getShapeCollection()
     {
         return $this->shapeCollection;
@@ -72,8 +69,8 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
      * Add shape to slide
      *
-     * @param  \PhpOffice\PhpPresentation\AbstractShape $shape
-     * @return \PhpOffice\PhpPresentation\AbstractShape
+     * @param AbstractShape $shape
+     * @return AbstractShape
      * @throws \Exception
      */
     public function addShape(AbstractShape $shape)
@@ -88,9 +85,9 @@ class Group extends AbstractShape implements ShapeContainerInterface
     *
     * @return int
     */
-    public function getOffsetX()
+    public function getOffsetX(): int
     {
-        if ($this->offsetX === null) {
+        if (empty($this->offsetX)) {
             $offsets = GeometryCalculator::calculateOffsets($this);
             $this->offsetX = $offsets[GeometryCalculator::X];
             $this->offsetY = $offsets[GeometryCalculator::Y];
@@ -102,10 +99,10 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
     * Ignores setting the X Offset, preserving the default behavior.
     *
-    * @param  int                 $pValue
+    * @param int $pValue
     * @return $this
     */
-    public function setOffsetX($pValue = 0)
+    public function setOffsetX(int $pValue = 0)
     {
         return $this;
     }
@@ -115,9 +112,9 @@ class Group extends AbstractShape implements ShapeContainerInterface
     *
     * @return int
     */
-    public function getOffsetY()
+    public function getOffsetY(): int
     {
-        if ($this->offsetY === null) {
+        if (empty($this->offsetY)) {
             $offsets = GeometryCalculator::calculateOffsets($this);
             $this->offsetX = $offsets[GeometryCalculator::X];
             $this->offsetY = $offsets[GeometryCalculator::Y];
@@ -129,10 +126,10 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
     * Ignores setting the Y Offset, preserving the default behavior.
     *
-    * @param  int                 $pValue
+    * @param int                 $pValue
     * @return $this
     */
-    public function setOffsetY($pValue = 0)
+    public function setOffsetY(int $pValue = 0)
     {
         return $this;
     }
@@ -142,7 +139,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     *
     * @return int
     */
-    public function getExtentX()
+    public function getExtentX(): int
     {
         if ($this->extentX === null) {
             $extents = GeometryCalculator::calculateExtents($this);
@@ -158,7 +155,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     *
     * @return int
     */
-    public function getExtentY()
+    public function getExtentY(): int
     {
         if ($this->extentY === null) {
             $extents = GeometryCalculator::calculateExtents($this);
@@ -172,10 +169,10 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
     * Ignores setting the width, preserving the default behavior.
     *
-    * @param  int                 $pValue
-    * @return $this
+    * @param int                 $pValue
+    * @return self
     */
-    public function setWidth($pValue = 0)
+    public function setWidth(int $pValue = 0)
     {
         return $this;
     }
@@ -183,10 +180,10 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
     * Ignores setting the height, preserving the default behavior.
     *
-    * @param  int                 $pValue
+    * @param int                 $pValue
     * @return $this
     */
-    public function setHeight($pValue = 0)
+    public function setHeight(int $pValue = 0)
     {
         return $this;
     }
@@ -208,10 +205,10 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
      * Create line shape
      *
-     * @param  int $fromX Starting point x offset
-     * @param  int $fromY Starting point y offset
-     * @param  int $toX Ending point x offset
-     * @param  int $toY Ending point y offset
+     * @param int $fromX Starting point x offset
+     * @param int $fromY Starting point y offset
+     * @param int $toX Ending point x offset
+     * @param int $toY Ending point y offset
      * @return \PhpOffice\PhpPresentation\Shape\Line
      * @throws \Exception
      */
@@ -254,7 +251,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
      * Create table shape
      *
-     * @param  int $columns Number of columns
+     * @param int $columns Number of columns
      * @return \PhpOffice\PhpPresentation\Shape\Table
      * @throws \Exception
      */

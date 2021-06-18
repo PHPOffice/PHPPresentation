@@ -116,7 +116,7 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     /**
      * Set Name
      *
-     * @param  string $pValue
+     * @param string $pValue
      * @return $this
      */
     public function setName($pValue = '')
@@ -138,7 +138,7 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     /**
      * Set Description
      *
-     * @param  string $pValue
+     * @param string $pValue
      * @return $this
      */
     public function setDescription($pValue = '')
@@ -151,10 +151,10 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     /**
      * Set Width
      *
-     * @param  int $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     * @param int $pValue
+     * @return self
      */
-    public function setWidth($pValue = 0)
+    public function setWidth(int $pValue = 0)
     {
         // Resize proportional?
         if ($this->resizeProportional && $pValue != 0 && $this->width != 0) {
@@ -171,10 +171,10 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     /**
      * Set Height
      *
-     * @param  int $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     * @param int $pValue
+     * @return self
      */
-    public function setHeight($pValue = 0)
+    public function setHeight(int $pValue = 0)
     {
         // Resize proportional?
         if ($this->resizeProportional && $pValue != 0 && $this->height != 0) {
@@ -191,11 +191,11 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     /**
      * Set width and height with proportional resize
      * @author Vincent@luo MSN:kele_100@hotmail.com
-     * @param  int $width
-     * @param  int $height
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     * @param int $width
+     * @param int $height
+     * @return self
      */
-    public function setWidthAndHeight($width = 0, $height = 0)
+    public function setWidthAndHeight(int $width = 0, int $height = 0)
     {
         $xratio = $width / $this->width;
         $yratio = $height / $this->height;
@@ -225,10 +225,10 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     /**
      * Set ResizeProportional
      *
-     * @param  boolean                         $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     * @param boolean                         $pValue
+     * @return self
      */
-    public function setResizeProportional($pValue = true)
+    public function setResizeProportional($pValue = true): self
     {
         $this->resizeProportional = $pValue;
 
@@ -240,7 +240,7 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->name . $this->description . parent::getHashCode() . __CLASS__);
     }

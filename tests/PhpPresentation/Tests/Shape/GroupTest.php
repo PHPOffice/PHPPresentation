@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class GroupTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Group();
 
@@ -41,7 +41,7 @@ class GroupTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setHeight(rand(1, 100)));
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $object = new Group();
 
@@ -53,7 +53,7 @@ class GroupTest extends TestCase
         $this->assertEquals(5, $object->getShapeCollection()->count());
     }
 
-    public function testExtentX()
+    public function testExtentX(): void
     {
         $object = new Group();
         $line1  = new Line(10, 20, 30, 50);
@@ -62,7 +62,7 @@ class GroupTest extends TestCase
         $this->assertEquals(20, $object->getExtentX());
     }
 
-    public function testExtentY()
+    public function testExtentY(): void
     {
         $object = new Group();
         $line1  = new Line(10, 20, 30, 50);
@@ -71,7 +71,7 @@ class GroupTest extends TestCase
         $this->assertEquals(30, $object->getExtentY());
     }
 
-    public function testOffsetX()
+    public function testOffsetX(): void
     {
         $object = new Group();
         $line1  = new Line(10, 20, 30, 50);
@@ -83,7 +83,7 @@ class GroupTest extends TestCase
         $this->assertEquals(10, $object->getOffsetX());
     }
 
-    public function testOffsetY()
+    public function testOffsetY(): void
     {
         $object = new Group();
         $line1  = new Line(10, 20, 30, 50);
@@ -95,7 +95,7 @@ class GroupTest extends TestCase
         $this->assertEquals(20, $object->getOffsetY());
     }
 
-    public function testExtentsAndOffsetsForOneShape()
+    public function testExtentsAndOffsetsForOneShape(): void
     {
         // We record initial values here because
         // PhpOffice\PhpPresentation\Shape\Line subtracts the offsets
@@ -117,7 +117,7 @@ class GroupTest extends TestCase
         $this->assertEquals($extentY, $object->getExtentY());
     }
 
-    public function testExtentsAndOffsetsForTwoShapes()
+    public function testExtentsAndOffsetsForTwoShapes(): void
     {
         // Since Groups and Slides cache offsets and extents on first
         // calculation, this test is separate from the above.

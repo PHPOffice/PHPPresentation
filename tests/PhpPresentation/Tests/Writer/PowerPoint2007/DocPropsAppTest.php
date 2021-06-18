@@ -14,13 +14,13 @@ class DocPropsAppTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testRender()
+    public function testRender(): void
     {
         $this->assertZipFileExists('docProps/app.xml');
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testCompany()
+    public function testCompany(): void
     {
         $expected = 'aAbBcDeE';
 

@@ -31,7 +31,7 @@ class IteratorTest extends TestCase
 {
     /**
      */
-    public function testMethod()
+    public function testMethod(): void
     {
         $oPhpPresentation = new PhpPresentation();
         $oPhpPresentation->addSlide(new Slide());
@@ -40,13 +40,13 @@ class IteratorTest extends TestCase
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
         $this->assertEquals(0, $object->key());
-        $this->assertNull($object->next());
+        $object->next();
         $this->assertEquals(1, $object->key());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
         $this->assertTrue($object->valid());
-        $this->assertNull($object->next());
+        $object->next();
         $this->assertFalse($object->valid());
-        $this->assertNull($object->rewind());
+        $object->rewind();
         $this->assertEquals(0, $object->key());
     }
 }

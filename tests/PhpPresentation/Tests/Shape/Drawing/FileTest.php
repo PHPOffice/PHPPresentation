@@ -27,13 +27,13 @@ use PHPUnit\Framework\TestCase;
  */
 class FileTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new File();
         $this->assertEmpty($object->getPath());
     }
 
-    public function testPathBasic()
+    public function testPathBasic(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('File  not found!');
@@ -42,7 +42,7 @@ class FileTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->setPath());
     }
 
-    public function testPathWithoutVerifyFile()
+    public function testPathWithoutVerifyFile(): void
     {
         $object = new File();
 
@@ -50,7 +50,7 @@ class FileTest extends TestCase
         $this->assertEmpty($object->getPath());
     }
 
-    public function testPathWithRealFile()
+    public function testPathWithRealFile(): void
     {
         $object = new File();
 

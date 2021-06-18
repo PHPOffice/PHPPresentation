@@ -19,7 +19,7 @@ namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
 use PhpOffice\PhpPresentation\Tests\Shape\Drawing\DrawingTest;
 
-function function_exists($function)
+function function_exists(string $function): bool
 {
     if ($function === 'getimagesizefromstring') {
         return DrawingTest::$getimagesizefromstringExists;
@@ -35,9 +35,12 @@ use PHPUnit\Framework\TestCase;
 // @codingStandardsIgnoreEnd
 class DrawingTest extends TestCase
 {
+    /**
+     * @var bool
+     */
     public static $getimagesizefromstringExists = true;
 
-    public function testIgnore()
+    public function testIgnore(): void
     {
     }
 }

@@ -8,7 +8,7 @@ use PhpOffice\PhpPresentation\Style\SchemeColor as StyleSchemeColor;
 class SchemeColor extends AbstractBackground
 {
     /**
-     * @var StyleSchemeColor
+     * @var StyleSchemeColor|null
      */
     protected $schemeColor;
 
@@ -16,16 +16,16 @@ class SchemeColor extends AbstractBackground
      * @param StyleSchemeColor|null $color
      * @return $this
      */
-    public function setSchemeColor(StyleSchemeColor $color = null)
+    public function setSchemeColor(StyleSchemeColor $color = null): self
     {
         $this->schemeColor = $color;
         return $this;
     }
 
     /**
-     * @return StyleSchemeColor
+     * @return StyleSchemeColor|null
      */
-    public function getSchemeColor()
+    public function getSchemeColor(): ?StyleSchemeColor
     {
         return $this->schemeColor;
     }

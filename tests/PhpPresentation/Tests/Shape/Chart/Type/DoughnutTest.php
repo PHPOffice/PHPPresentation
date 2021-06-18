@@ -28,7 +28,7 @@ use PHPUnit\Framework\TestCase;
  */
 class DoughnutTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Doughnut();
 
@@ -46,7 +46,7 @@ class DoughnutTest extends TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testHoleSize()
+    public function testHoleSize(): void
     {
         $rand = mt_rand(10, 90);
         $object = new Doughnut();
@@ -62,7 +62,7 @@ class DoughnutTest extends TestCase
         $this->assertEquals(50, $object->getHoleSize());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Doughnut();
 
@@ -70,7 +70,7 @@ class DoughnutTest extends TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 

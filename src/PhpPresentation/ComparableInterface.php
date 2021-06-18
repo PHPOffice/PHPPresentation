@@ -27,7 +27,7 @@ interface ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode();
+    public function getHashCode(): string;
 
     /**
      * Get hash index
@@ -35,9 +35,9 @@ interface ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex();
+    public function getHashIndex(): ?int;
 
     /**
      * Set hash index
@@ -45,7 +45,8 @@ interface ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     * @return $this
      */
-    public function setHashIndex($value);
+    public function setHashIndex(int $value);
 }

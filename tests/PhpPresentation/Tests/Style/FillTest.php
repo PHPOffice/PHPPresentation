@@ -31,7 +31,7 @@ class FillTest extends TestCase
     /**
      * Test create new instance
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Fill();
         $this->assertEquals(Fill::FILL_NONE, $object->getFillType());
@@ -45,7 +45,7 @@ class FillTest extends TestCase
     /**
      * Test get/set end color
      */
-    public function testSetGetEndColor()
+    public function testSetGetEndColor(): void
     {
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setEndColor());
@@ -58,7 +58,7 @@ class FillTest extends TestCase
     /**
      * Test get/set fill type
      */
-    public function testSetGetFillType()
+    public function testSetGetFillType(): void
     {
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setFillType());
@@ -70,7 +70,7 @@ class FillTest extends TestCase
     /**
      * Test get/set rotation
      */
-    public function testSetGetRotation()
+    public function testSetGetRotation(): void
     {
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setRotation());
@@ -83,7 +83,7 @@ class FillTest extends TestCase
     /**
      * Test get/set start color
      */
-    public function testSetGetStartColor()
+    public function testSetGetStartColor(): void
     {
         $object = new Fill();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->setStartColor());
@@ -96,7 +96,7 @@ class FillTest extends TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Fill();
         $value = mt_rand(1, 100);

@@ -30,7 +30,7 @@ class HyperlinkTest extends TestCase
     /**
      * Test can read
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Hyperlink();
         $this->assertEmpty($object->getUrl());
@@ -48,7 +48,7 @@ class HyperlinkTest extends TestCase
     /**
      * Test get hash code
      */
-    public function testGetHashCode()
+    public function testGetHashCode(): void
     {
         $object = new Hyperlink();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());
@@ -63,7 +63,7 @@ class HyperlinkTest extends TestCase
     /**
      * Test get/set hash index
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Hyperlink();
         $value = mt_rand(1, 100);
@@ -71,7 +71,7 @@ class HyperlinkTest extends TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testGetSetSlideNumber()
+    public function testGetSetSlideNumber(): void
     {
         $object = new Hyperlink();
 
@@ -86,7 +86,7 @@ class HyperlinkTest extends TestCase
         $this->assertEquals('ppaction://hlinksldjump', $object->getUrl());
     }
 
-    public function testGetSetTooltip()
+    public function testGetSetTooltip(): void
     {
         $object = new Hyperlink();
 
@@ -97,7 +97,7 @@ class HyperlinkTest extends TestCase
         $this->assertEquals('TEST', $object->getTooltip());
     }
 
-    public function testGetSetUrl()
+    public function testGetSetUrl(): void
     {
         $object = new Hyperlink();
 
@@ -108,7 +108,7 @@ class HyperlinkTest extends TestCase
         $this->assertEquals('http://www.github.com', $object->getUrl());
     }
 
-    public function testIsInternal()
+    public function testIsInternal(): void
     {
         $object = new Hyperlink();
 

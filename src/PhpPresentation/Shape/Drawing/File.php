@@ -9,14 +9,14 @@ class File extends AbstractDrawingAdapter
     /**
      * @var string
      */
-    protected $path;
+    protected $path = '';
 
     /**
      * Get Path
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -24,12 +24,12 @@ class File extends AbstractDrawingAdapter
     /**
      * Set Path
      *
-     * @param  string                      $pValue      File path
-     * @param  boolean                     $pVerifyFile Verify file
+     * @param string                      $pValue      File path
+     * @param boolean                     $pVerifyFile Verify file
      * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
      */
-    public function setPath($pValue = '', $pVerifyFile = true)
+    public function setPath(string $pValue = '', $pVerifyFile = true): self
     {
         if ($pVerifyFile) {
             if (!file_exists($pValue)) {
@@ -50,7 +50,7 @@ class File extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getContents()
+    public function getContents(): string
     {
         return CommonFile::fileGetContents($this->getPath());
     }
@@ -59,7 +59,7 @@ class File extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         return pathinfo($this->getPath(), PATHINFO_EXTENSION);
     }
@@ -68,7 +68,7 @@ class File extends AbstractDrawingAdapter
      * @throws \Exception
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         if (!CommonFile::fileExists($this->getPath())) {
             throw new \Exception('File '.$this->getPath().' does not exist');
@@ -80,7 +80,7 @@ class File extends AbstractDrawingAdapter
     /**
      * @return string
      */
-    public function getIndexedFilename()
+    public function getIndexedFilename(): string
     {
         $output = str_replace('.' . $this->getExtension(), '', pathinfo($this->getPath(), PATHINFO_FILENAME));
         $output .= $this->getImageIndex();

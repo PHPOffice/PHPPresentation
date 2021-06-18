@@ -85,7 +85,7 @@ class Title implements ComparableInterface
     /**
      * Hash index
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
@@ -113,7 +113,7 @@ class Title implements ComparableInterface
     /**
      * Set Visible
      *
-     * @param  boolean                         $value
+     * @param boolean                         $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setVisible($value = true)
@@ -136,7 +136,7 @@ class Title implements ComparableInterface
     /**
      * Set Text
      *
-     * @param  string                          $value
+     * @param string                          $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setText($value = null)
@@ -151,7 +151,7 @@ class Title implements ComparableInterface
      *
      * @return float
      */
-    public function getOffsetX()
+    public function getOffsetX(): float
     {
         return $this->offsetX;
     }
@@ -159,10 +159,10 @@ class Title implements ComparableInterface
     /**
      * Set OffsetX (as a fraction of the chart)
      *
-     * @param  float                           $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @param float                           $value
+     * @return self
      */
-    public function setOffsetX($value = 0.01)
+    public function setOffsetX(float $value = 0.01): self
     {
         $this->offsetX = $value;
 
@@ -174,7 +174,7 @@ class Title implements ComparableInterface
      *
      * @return float
      */
-    public function getOffsetY()
+    public function getOffsetY(): float
     {
         return $this->offsetY;
     }
@@ -182,12 +182,12 @@ class Title implements ComparableInterface
     /**
      * Set OffsetY (as a fraction of the chart)
      *
-     * @param  float                           $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @param float $pValue
+     * @return self
      */
-    public function setOffsetY($value = 0.01)
+    public function setOffsetY(float $pValue = 0.01): self
     {
-        $this->offsetY = $value;
+        $this->offsetY = $pValue;
 
         return $this;
     }
@@ -197,7 +197,7 @@ class Title implements ComparableInterface
      *
      * @return float
      */
-    public function getWidth()
+    public function getWidth(): float
     {
         return $this->width;
     }
@@ -205,12 +205,12 @@ class Title implements ComparableInterface
     /**
      * Set Width (as a fraction of the chart)
      *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @param float $pValue
+     * @return self
      */
-    public function setWidth($value = 0)
+    public function setWidth(float $pValue = 0): self
     {
-        $this->width = (float)$value;
+        $this->width = $pValue;
 
         return $this;
     }
@@ -220,7 +220,7 @@ class Title implements ComparableInterface
      *
      * @return float
      */
-    public function getHeight()
+    public function getHeight(): float
     {
         return $this->height;
     }
@@ -228,12 +228,12 @@ class Title implements ComparableInterface
     /**
      * Set Height (as a fraction of the chart)
      *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @param float $value
+     * @return self
      */
-    public function setHeight($value = 0)
+    public function setHeight(float $value = 0): self
     {
-        $this->height = (float)$value;
+        $this->height = $value;
 
         return $this;
     }
@@ -241,9 +241,9 @@ class Title implements ComparableInterface
     /**
      * Get font
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return Font|null
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return $this->font;
     }
@@ -251,11 +251,11 @@ class Title implements ComparableInterface
     /**
      * Set font
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
+     * @param Font|null $pFont Font
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return self
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(Font $pFont = null): self
     {
         $this->font = $pFont;
 
@@ -275,7 +275,7 @@ class Title implements ComparableInterface
     /**
      * Set alignment
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Alignment   $alignment
+     * @param \PhpOffice\PhpPresentation\Style\Alignment   $alignment
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setAlignment(Alignment $alignment)
@@ -290,7 +290,7 @@ class Title implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->text . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->font->getHashCode() . $this->alignment->getHashCode() . ($this->visible ? 't' : 'f') . __CLASS__);
     }
@@ -301,9 +301,9 @@ class Title implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
@@ -314,10 +314,10 @@ class Title implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
      * @return Title
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
         return $this;

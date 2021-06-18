@@ -31,7 +31,7 @@ class LineTest extends TestCase
     /**
      * Test can read
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $value = mt_rand(1, 100);
         $object = new Line($value, $value, $value, $value);

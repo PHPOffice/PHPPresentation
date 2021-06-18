@@ -22,14 +22,14 @@ use PHPUnit\Framework\TestCase;
 
 class ColorMapTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new ColorMap();
         $this->assertIsArray($object->getMapping());
         $this->assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
-    public function testMapping()
+    public function testMapping(): void
     {
         $object = new ColorMap();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping(array()));
@@ -41,7 +41,7 @@ class ColorMapTest extends TestCase
         $this->assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
-    public function testModifier()
+    public function testModifier(): void
     {
         $object = new ColorMap();
         $key = array_rand(ColorMap::$mappingDefault);

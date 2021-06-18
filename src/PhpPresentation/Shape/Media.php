@@ -28,7 +28,7 @@ class Media extends File implements ComparableInterface
     /**
      * @return string
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         switch (strtolower($this->getExtension())) {
             case 'mp4':
