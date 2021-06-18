@@ -5,8 +5,7 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
- * Class DocPropsThumbnailTest
- * @package PhpPresentation\Tests\Writer\PowerPoint2007
+ * Class DocPropsThumbnailTest.
  */
 class DocPropsThumbnailTest extends PhpPresentationTestCase
 {
@@ -20,7 +19,7 @@ class DocPropsThumbnailTest extends PhpPresentationTestCase
 
     public function testFeatureThumbnail(): void
     {
-        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
 
         $this->oPresentation->getPresentationProperties()->setThumbnailPath($imagePath);
         $this->assertZipFileExists('docProps/thumbnail.jpeg');

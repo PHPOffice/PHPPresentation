@@ -10,12 +10,12 @@ class Pictures extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
+     *
      * @throws \Exception
      */
-
     public function render()
     {
-        $arrMedia = array();
+        $arrMedia = [];
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
             $shape = $this->getDrawingHashTable()->getByIndex($i);
             if (!($shape instanceof Drawing\AbstractDrawingAdapter)) {
@@ -29,7 +29,7 @@ class Pictures extends AbstractDecoratorWriter
             // Add background image slide
             $oBkgImage = $oSlide->getBackground();
             if ($oBkgImage instanceof Image) {
-                $this->getZip()->addFromString('Pictures/'.$oBkgImage->getIndexedFilename((string) $keySlide), file_get_contents($oBkgImage->getPath()));
+                $this->getZip()->addFromString('Pictures/' . $oBkgImage->getIndexedFilename((string) $keySlide), file_get_contents($oBkgImage->getPath()));
             }
         }
 

@@ -8,6 +8,7 @@ class Meta extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -60,6 +61,7 @@ class Meta extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         $this->getZip()->addFromString('meta.xml', $objWriter->getData());
+
         return $this->getZip();
     }
 }

@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\Style\Font;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class FontTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
     public function testConstruct(): void
     {
@@ -48,7 +49,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set Character Spacing
+     * Test get/set Character Spacing.
      */
     public function testSetGetCharacterSpacing(): void
     {
@@ -63,7 +64,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set color
+     * Test get/set color.
      */
     public function testSetGetColor(): void
     {
@@ -75,7 +76,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set name
+     * Test get/set name.
      */
     public function testSetGetName(): void
     {
@@ -89,7 +90,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set size
+     * Test get/set size.
      */
     public function testSetGetSize(): void
     {
@@ -102,7 +103,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set underline
+     * Test get/set underline.
      */
     public function testSetGetUnderline(): void
     {
@@ -116,7 +117,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set bold
+     * Test get/set bold.
      */
     public function testSetIsBold(): void
     {
@@ -130,7 +131,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set italic
+     * Test get/set italic.
      */
     public function testSetIsItalic(): void
     {
@@ -144,7 +145,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set strikethrough
+     * Test get/set strikethrough.
      */
     public function testSetIsStriketrough(): void
     {
@@ -158,7 +159,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set subscript
+     * Test get/set subscript.
      */
     public function testSetIsSubScript(): void
     {
@@ -185,7 +186,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set superscript
+     * Test get/set superscript.
      */
     public function testSetIsSuperScript(): void
     {
@@ -212,7 +213,7 @@ class FontTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
     public function testSetGetHashIndex(): void
     {

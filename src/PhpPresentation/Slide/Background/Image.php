@@ -12,7 +12,7 @@ class Image extends AbstractBackground
     public $relationId;
 
     /**
-     * Path
+     * Path.
      *
      * @var string
      */
@@ -29,7 +29,7 @@ class Image extends AbstractBackground
     protected $width;
 
     /**
-     * Get Path
+     * Get Path.
      *
      * @return string
      */
@@ -39,11 +39,13 @@ class Image extends AbstractBackground
     }
 
     /**
-     * Set Path
+     * Set Path.
      *
-     * @param string                      $pValue      File path
-     * @param boolean                     $pVerifyFile Verify file
+     * @param string $pValue File path
+     * @param bool $pVerifyFile Verify file
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Slide\Background\Image
      */
     public function setPath(string $pValue = '', bool $pVerifyFile = true)
@@ -53,17 +55,18 @@ class Image extends AbstractBackground
                 throw new \Exception("File not found : $pValue");
             }
 
-            if ($this->width == 0 && $this->height == 0) {
+            if (0 == $this->width && 0 == $this->height) {
                 // Get width/height
                 list($this->width, $this->height) = getimagesize($pValue);
             }
         }
         $this->path = $pValue;
+
         return $this;
     }
 
     /**
-     * Get Filename
+     * Get Filename.
      *
      * @return string
      */
@@ -73,7 +76,7 @@ class Image extends AbstractBackground
     }
 
     /**
-     * Get Extension
+     * Get Extension.
      *
      * @return string
      */
@@ -85,9 +88,10 @@ class Image extends AbstractBackground
     }
 
     /**
-     * Get indexed filename (using image index)
+     * Get indexed filename (using image index).
      *
      * @param string $numSlide
+     *
      * @return string
      */
     public function getIndexedFilename($numSlide)

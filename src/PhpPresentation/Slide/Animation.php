@@ -9,15 +9,15 @@ class Animation
     /**
      * @var array<AbstractShape>
      */
-    protected $shapeCollection = array();
+    protected $shapeCollection = [];
 
     /**
-     * @param AbstractShape $shape
      * @return Animation
      */
     public function addShape(AbstractShape $shape)
     {
         $this->shapeCollection[] = $shape;
+
         return $this;
     }
 
@@ -31,11 +31,13 @@ class Animation
 
     /**
      * @param array<AbstractShape> $array
+     *
      * @return Animation
      */
-    public function setShapeCollection(array $array = array())
+    public function setShapeCollection(array $array = [])
     {
         $this->shapeCollection = $array;
+
         return $this;
     }
 }

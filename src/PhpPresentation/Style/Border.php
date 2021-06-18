@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,68 +21,68 @@ namespace PhpOffice\PhpPresentation\Style;
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * \PhpOffice\PhpPresentation\Style\Border
+ * \PhpOffice\PhpPresentation\Style\Border.
  */
 class Border implements ComparableInterface
 {
     /* Line style */
-    public const LINE_NONE             = 'none';
-    public const LINE_SINGLE           = 'sng';
-    public const LINE_DOUBLE           = 'dbl';
-    public const LINE_THICKTHIN        = 'thickThin';
-    public const LINE_THINTHICK        = 'thinThick';
-    public const LINE_TRI              = 'tri';
+    public const LINE_NONE = 'none';
+    public const LINE_SINGLE = 'sng';
+    public const LINE_DOUBLE = 'dbl';
+    public const LINE_THICKTHIN = 'thickThin';
+    public const LINE_THINTHICK = 'thinThick';
+    public const LINE_TRI = 'tri';
 
     /* Dash style */
-    public const DASH_DASH             = 'dash';
-    public const DASH_DASHDOT          = 'dashDot';
-    public const DASH_DOT              = 'dot';
-    public const DASH_LARGEDASH        = 'lgDash';
-    public const DASH_LARGEDASHDOT     = 'lgDashDot';
-    public const DASH_LARGEDASHDOTDOT  = 'lgDashDotDot';
-    public const DASH_SOLID            = 'solid';
-    public const DASH_SYSDASH          = 'sysDash';
-    public const DASH_SYSDASHDOT       = 'sysDashDot';
-    public const DASH_SYSDASHDOTDOT    = 'sysDashDotDot';
-    public const DASH_SYSDOT           = 'sysDot';
+    public const DASH_DASH = 'dash';
+    public const DASH_DASHDOT = 'dashDot';
+    public const DASH_DOT = 'dot';
+    public const DASH_LARGEDASH = 'lgDash';
+    public const DASH_LARGEDASHDOT = 'lgDashDot';
+    public const DASH_LARGEDASHDOTDOT = 'lgDashDotDot';
+    public const DASH_SOLID = 'solid';
+    public const DASH_SYSDASH = 'sysDash';
+    public const DASH_SYSDASHDOT = 'sysDashDot';
+    public const DASH_SYSDASHDOTDOT = 'sysDashDotDot';
+    public const DASH_SYSDOT = 'sysDot';
 
     /**
-     * Line width
+     * Line width.
      *
      * @var int
      */
     private $lineWidth = 1;
 
     /**
-     * Line style
+     * Line style.
      *
      * @var string
      */
     private $lineStyle;
 
     /**
-     * Dash style
+     * Dash style.
      *
      * @var string
      */
     private $dashStyle;
 
     /**
-     * Border color
+     * Border color.
      *
      * @var \PhpOffice\PhpPresentation\Style\Color
      */
     private $color;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Border
+     * Create a new \PhpOffice\PhpPresentation\Style\Border.
      */
     public function __construct()
     {
@@ -89,11 +90,11 @@ class Border implements ComparableInterface
         $this->lineWidth = 1;
         $this->lineStyle = self::LINE_SINGLE;
         $this->dashStyle = self::DASH_SOLID;
-        $this->color     = new Color(Color::COLOR_BLACK);
+        $this->color = new Color(Color::COLOR_BLACK);
     }
 
     /**
-     * Get line width (in points)
+     * Get line width (in points).
      *
      * @return int
      */
@@ -103,9 +104,10 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Set line width (in points)
+     * Set line width (in points).
      *
-     * @param int                        $pValue
+     * @param int $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Border
      */
     public function setLineWidth($pValue = 1)
@@ -116,7 +118,7 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Get line style
+     * Get line style.
      *
      * @return string
      */
@@ -126,14 +128,15 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Set line style
+     * Set line style.
      *
-     * @param string                     $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Border
      */
     public function setLineStyle($pValue = self::LINE_SINGLE)
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = self::LINE_SINGLE;
         }
         $this->lineStyle = $pValue;
@@ -142,7 +145,7 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Get dash style
+     * Get dash style.
      *
      * @return string
      */
@@ -152,14 +155,15 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Set dash style
+     * Set dash style.
      *
-     * @param string                     $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Border
      */
     public function setDashStyle($pValue = self::DASH_SOLID)
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = self::DASH_SOLID;
         }
         $this->dashStyle = $pValue;
@@ -168,7 +172,7 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Get Border Color
+     * Get Border Color.
      *
      * @return \PhpOffice\PhpPresentation\Style\Color
      */
@@ -178,10 +182,12 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Set Border Color
+     * Set Border Color.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Color  $color
+     * @param \PhpOffice\PhpPresentation\Style\Color $color
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Style\Border
      */
     public function setColor(Color $color = null)
@@ -192,7 +198,7 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -208,7 +214,7 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -221,17 +227,19 @@ class Border implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

@@ -6,9 +6,9 @@ use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
- * Test class for PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptMedia
+ * Test class for PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptMedia.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptMedia
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptMedia
  */
 class PptMediaTest extends PhpPresentationTestCase
 {
@@ -18,7 +18,7 @@ class PptMediaTest extends PhpPresentationTestCase
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
 
         $this->assertZipFileExists('ppt/media/' . $oShape->getIndexedFilename());
         $this->assertIsSchemaECMA376Valid();
@@ -31,7 +31,7 @@ class PptMediaTest extends PhpPresentationTestCase
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/filedoesntexist.png', false);
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/filedoesntexist.png', false);
 
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
@@ -40,7 +40,7 @@ class PptMediaTest extends PhpPresentationTestCase
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oDrawing = new Drawing\ZipFile();
-        $oDrawing->setPath('zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files' . DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif');
+        $oDrawing->setPath('zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif');
         $oSlide->addShape($oDrawing);
 
         $this->assertZipFileExists('ppt/media/' . $oDrawing->getIndexedFilename());
@@ -53,7 +53,7 @@ class PptMediaTest extends PhpPresentationTestCase
         $this->expectExceptionMessage('does not exist');
 
         $oDrawing = new Drawing\ZipFile();
-        $oDrawing->setPath('zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'filedoesntexist.zip#secondpath');
+        $oDrawing->setPath('zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'filedoesntexist.zip#secondpath');
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oSlide->addShape($oDrawing);

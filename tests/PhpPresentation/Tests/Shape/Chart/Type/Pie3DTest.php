@@ -12,19 +12,20 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Pie3D element
+ * Test class for Pie3D element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D
  */
 class Pie3DTest extends TestCase
 {
@@ -35,10 +36,10 @@ class Pie3DTest extends TestCase
         $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Pie3D', $object->setSeries());
         $this->assertEmpty($object->getSeries());
@@ -71,6 +72,6 @@ class Pie3DTest extends TestCase
         $object = new Pie3D();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

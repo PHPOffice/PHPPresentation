@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -22,9 +23,9 @@ use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Slide\SlideLayout
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Slide\SlideLayout
  */
 class SlideLayoutTest extends TestCase
 {
@@ -45,7 +46,7 @@ class SlideLayoutTest extends TestCase
         $mockSlideMaster = $this->getMockForAbstractClass(SlideMaster::class);
 
         // Expected
-        $expectedLayoutName = 'Title'.rand(1, 100);
+        $expectedLayoutName = 'Title' . rand(1, 100);
 
         $object = new SlideLayout($mockSlideMaster);
 

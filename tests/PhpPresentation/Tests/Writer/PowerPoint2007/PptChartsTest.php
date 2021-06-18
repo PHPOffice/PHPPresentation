@@ -18,8 +18,8 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Color;
-use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
@@ -30,13 +30,13 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @var array<string, string>
      */
-    protected $seriesData = array(
+    protected $seriesData = [
         'A' => '1',
         'B' => '2',
         'C' => '4',
         'D' => '3',
         'E' => '2',
-    );
+    ];
 
     public function testPlotAreaBadType(): void
     {
@@ -579,32 +579,32 @@ class PptChartsTest extends PhpPresentationTestCase
 
     public function testTypeLineGridlines(): void
     {
-        $arrayTests = array(
-            array(
+        $arrayTests = [
+            [
                 'methodAxis' => 'getAxisX',
                 'methodGrid' => 'setMajorGridlines',
                 'expectedElement' => '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:majorGridlines/c:spPr/a:ln',
                 'expectedElementColor' => '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:majorGridlines/c:spPr/a:ln/a:solidFill/a:srgbClr',
-            ),
-            array(
+            ],
+            [
                 'methodAxis' => 'getAxisX',
                 'methodGrid' => 'setMinorGridlines',
                 'expectedElement' => '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:minorGridlines/c:spPr/a:ln',
                 'expectedElementColor' => '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:minorGridlines/c:spPr/a:ln/a:solidFill/a:srgbClr',
-            ),
-            array(
+            ],
+            [
                 'methodAxis' => 'getAxisY',
                 'methodGrid' => 'setMajorGridlines',
                 'expectedElement' => '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorGridlines/c:spPr/a:ln',
                 'expectedElementColor' => '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorGridlines/c:spPr/a:ln/a:solidFill/a:srgbClr',
-            ),
-            array(
+            ],
+            [
                 'methodAxis' => 'getAxisY',
                 'methodGrid' => 'setMinorGridlines',
                 'expectedElement' => '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorGridlines/c:spPr/a:ln',
                 'expectedElementColor' => '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorGridlines/c:spPr/a:ln/a:solidFill/a:srgbClr',
-            ),
-        );
+            ],
+        ];
         $expectedColor = new Color(Color::COLOR_BLUE);
         foreach ($arrayTests as $arrayTest) {
             $expectedSizePts = mt_rand(1, 100);
@@ -613,13 +613,13 @@ class PptChartsTest extends PhpPresentationTestCase
             $this->oPresentation->removeSlideByIndex()->createSlide();
             $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
             $oLine = new Line();
-            $oLine->addSeries(new Series('Downloads', array(
+            $oLine->addSeries(new Series('Downloads', [
                 'A' => '1',
                 'B' => '2',
                 'C' => '4',
                 'D' => '3',
                 'E' => '2',
-            )));
+            ]));
             $oShape->getPlotArea()->setType($oLine);
             $oGridlines = new Gridlines();
             $oGridlines->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($expectedColor);
@@ -645,7 +645,7 @@ class PptChartsTest extends PhpPresentationTestCase
         do {
             $expectedSymbolKey = array_rand(Marker::$arraySymbol);
             $expectedSymbol = Marker::$arraySymbol[$expectedSymbolKey];
-        } while ($expectedSymbol == Marker::SYMBOL_NONE);
+        } while (Marker::SYMBOL_NONE == $expectedSymbol);
         $expectedSize = mt_rand(2, 72);
         $expectedEltSymbol = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:symbol';
         $expectedElementSize = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:marker/c:size';
@@ -666,7 +666,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $oSeries->getMarker()->setSize(1);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
@@ -675,7 +675,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $oSeries->getMarker()->setSize(73);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
@@ -684,7 +684,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $oSeries->getMarker()->setSymbol(Marker::SYMBOL_NONE);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
@@ -718,7 +718,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $oSeries->setOutline($oOutline);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
@@ -930,7 +930,7 @@ class PptChartsTest extends PhpPresentationTestCase
         do {
             $expectedSymbol = array_rand(Marker::$arraySymbol);
             $expectedSymbol = Marker::$arraySymbol[$expectedSymbol];
-        } while ($expectedSymbol == Marker::SYMBOL_NONE);
+        } while (Marker::SYMBOL_NONE == $expectedSymbol);
         $expectedSize = mt_rand(2, 72);
         $expectedEltSymbol = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:symbol';
         $expectedElementSize = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:marker/c:size';
@@ -951,7 +951,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $oSeries->getMarker()->setSize(1);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
@@ -960,7 +960,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $oSeries->getMarker()->setSize(73);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElementSize);
@@ -969,7 +969,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $oSeries->getMarker()->setSymbol(Marker::SYMBOL_NONE);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedEltSymbol);
@@ -1028,7 +1028,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         $oSeries->setOutline($oOutline);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());

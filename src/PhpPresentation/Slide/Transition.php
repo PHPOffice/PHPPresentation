@@ -10,18 +10,16 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use PhpOffice\PhpPresentation\Slide;
-use PhpOffice\PhpPresentation\Shape\RichText;
-
 /**
- * Transition class
+ * Transition class.
  */
 class Transition
 {
@@ -90,21 +88,17 @@ class Transition
      */
     protected $advanceTimeTrigger = null;
     /**
-     * @var null|string
+     * @var string|null
      */
     protected $speed = null;
     /**
-     * @var null|string
+     * @var string|null
      */
     protected $transitionType = null;
 
-    /**
-     * @param string|null $speed
-     * @return self
-     */
     public function setSpeed(?string $speed = self::SPEED_MEDIUM): self
     {
-        if (in_array($speed, array(self::SPEED_FAST, self::SPEED_MEDIUM, self::SPEED_SLOW))) {
+        if (in_array($speed, [self::SPEED_FAST, self::SPEED_MEDIUM, self::SPEED_SLOW])) {
             $this->speed = $speed;
         } else {
             $this->speed = null;
@@ -121,6 +115,7 @@ class Transition
     public function setManualTrigger(bool $value = false): self
     {
         $this->hasManualTrigger = $value;
+
         return $this;
     }
 
@@ -132,7 +127,7 @@ class Transition
     public function setTimeTrigger(bool $value = false, int $advanceTime = 1000): self
     {
         $this->hasTimeTrigger = $value;
-        $this->advanceTimeTrigger = $value === true ? $advanceTime : null;
+        $this->advanceTimeTrigger = true === $value ? $advanceTime : null;
 
         return $this;
     }

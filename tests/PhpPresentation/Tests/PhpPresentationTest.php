@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -24,14 +25,14 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class PhpPresentationTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
     public function testConstruct(): void
     {
@@ -70,7 +71,7 @@ class PhpPresentationTest extends TestCase
     }
 
     /**
-     * Test add external slide
+     * Test add external slide.
      */
     public function testAddExternalSlide(): void
     {
@@ -83,7 +84,7 @@ class PhpPresentationTest extends TestCase
     }
 
     /**
-     * Test copy presentation
+     * Test copy presentation.
      */
     public function testCopy(): void
     {
@@ -92,7 +93,7 @@ class PhpPresentationTest extends TestCase
     }
 
     /**
-     * Test remove slide by index exception
+     * Test remove slide by index exception.
      */
     public function testRemoveSlideByIndexException(): void
     {
@@ -104,7 +105,7 @@ class PhpPresentationTest extends TestCase
     }
 
     /**
-     * Test get slide exception
+     * Test get slide exception.
      */
     public function testGetSlideException(): void
     {
@@ -116,7 +117,7 @@ class PhpPresentationTest extends TestCase
     }
 
     /**
-     * Test set active slide index exception
+     * Test set active slide index exception.
      */
     public function testSetActiveSlideIndexException(): void
     {

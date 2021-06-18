@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for memory drawing element
+ * Test class for memory drawing element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Line
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Line
  */
 class LineTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
     public function testConstruct(): void
     {

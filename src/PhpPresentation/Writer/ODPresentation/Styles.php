@@ -7,41 +7,42 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
-use PhpOffice\PhpPresentation\Style\Fill;
-use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Fill;
 
 class Styles extends AbstractDecoratorWriter
 {
     /**
-     * Stores font styles draw:gradient nodes
+     * Stores font styles draw:gradient nodes.
      *
      * @var array<int, string>
      */
-    protected $arrayGradient = array();
+    protected $arrayGradient = [];
     /**
-     * Stores font styles draw:stroke-dash nodes
+     * Stores font styles draw:stroke-dash nodes.
      *
      * @var array<int, string>
      */
-    protected $arrayStrokeDash = array();
+    protected $arrayStrokeDash = [];
 
     /**
-     * @return ZipInterface
      * @throws \Exception
      */
     public function render(): ZipInterface
     {
         $this->getZip()->addFromString('styles.xml', $this->writePart());
+
         return $this->getZip();
     }
 
     /**
-     * Write Meta file to XML format
+     * Write Meta file to XML format.
      *
      * @return string XML Output
+     *
      * @throws \Exception
      */
     protected function writePart(): string
@@ -164,24 +165,21 @@ class Styles extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the default style information for a RichText shape
-     *
-     * @param XMLWriter $objWriter
-     * @param RichText $shape
+     * Write the default style information for a RichText shape.
      */
     protected function writeRichTextStyle(XMLWriter $objWriter, RichText $shape): void
     {
         $oFill = $shape->getFill();
-        if ($oFill->getFillType() == Fill::FILL_GRADIENT_LINEAR || $oFill->getFillType() == Fill::FILL_GRADIENT_PATH) {
+        if (Fill::FILL_GRADIENT_LINEAR == $oFill->getFillType() || Fill::FILL_GRADIENT_PATH == $oFill->getFillType()) {
             if (!in_array($oFill->getHashCode(), $this->arrayGradient)) {
                 $this->writeGradientFill($objWriter, $oFill);
             }
         }
         $oBorder = $shape->getBorder();
-        if ($oBorder->getDashStyle() != Border::DASH_SOLID) {
+        if (Border::DASH_SOLID != $oBorder->getDashStyle()) {
             if (!in_array($oBorder->getDashStyle(), $this->arrayStrokeDash)) {
                 $objWriter->startElement('draw:stroke-dash');
-                $objWriter->writeAttribute('draw:name', 'strokeDash_'.$oBorder->getDashStyle());
+                $objWriter->writeAttribute('draw:name', 'strokeDash_' . $oBorder->getDashStyle());
                 $objWriter->writeAttribute('draw:style', 'rect');
                 switch ($oBorder->getDashStyle()) {
                     case Border::DASH_DASH:
@@ -252,16 +250,13 @@ class Styles extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the default style information for a Table shape
-     *
-     * @param XMLWriter $objWriter
-     * @param Table $shape
+     * Write the default style information for a Table shape.
      */
     protected function writeTableStyle(XMLWriter $objWriter, Table $shape): void
     {
         foreach ($shape->getRows() as $row) {
             foreach ($row->getCells() as $cell) {
-                if ($cell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
+                if (Fill::FILL_GRADIENT_LINEAR == $cell->getFill()->getFillType()) {
                     if (!in_array($cell->getFill()->getHashCode(), $this->arrayGradient)) {
                         $this->writeGradientFill($objWriter, $cell->getFill());
                     }
@@ -271,10 +266,7 @@ class Styles extends AbstractDecoratorWriter
     }
 
     /**
-     * Writes the style information for a group of shapes
-     *
-     * @param XMLWriter $objWriter
-     * @param Group $group
+     * Writes the style information for a group of shapes.
      */
     protected function writeGroupStyle(XMLWriter $objWriter, Group $group): void
     {
@@ -289,20 +281,18 @@ class Styles extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the gradient style
-     * @param XMLWriter $objWriter
-     * @param Fill $oFill
+     * Write the gradient style.
      */
     protected function writeGradientFill(XMLWriter $objWriter, Fill $oFill): void
     {
         $objWriter->startElement('draw:gradient');
-        $objWriter->writeAttribute('draw:name', 'gradient_'.$oFill->getHashCode());
-        $objWriter->writeAttribute('draw:display-name', 'gradient_'.$oFill->getHashCode());
+        $objWriter->writeAttribute('draw:name', 'gradient_' . $oFill->getHashCode());
+        $objWriter->writeAttribute('draw:display-name', 'gradient_' . $oFill->getHashCode());
         $objWriter->writeAttribute('draw:style', 'linear');
         $objWriter->writeAttribute('draw:start-intensity', '100%');
         $objWriter->writeAttribute('draw:end-intensity', '100%');
-        $objWriter->writeAttribute('draw:start-color', '#'.$oFill->getStartColor()->getRGB());
-        $objWriter->writeAttribute('draw:end-color', '#'.$oFill->getEndColor()->getRGB());
+        $objWriter->writeAttribute('draw:start-color', '#' . $oFill->getStartColor()->getRGB());
+        $objWriter->writeAttribute('draw:end-color', '#' . $oFill->getEndColor()->getRGB());
         $objWriter->writeAttribute('draw:border', '0%');
         $objWriter->writeAttribute('draw:angle', $oFill->getRotation() - 90);
         $objWriter->endElement();
@@ -310,16 +300,13 @@ class Styles extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the background image style
-     * @param XMLWriter $objWriter
-     * @param Image $oBkgImage
-     * @param int $numSlide
+     * Write the background image style.
      */
     protected function writeBackgroundStyle(XMLWriter $objWriter, Image $oBkgImage, int $numSlide): void
     {
         $objWriter->startElement('draw:fill-image');
-        $objWriter->writeAttribute('draw:name', 'background_'. (string) $numSlide);
-        $objWriter->writeAttribute('xlink:href', 'Pictures/'  .str_replace(' ', '_', $oBkgImage->getIndexedFilename((string) $numSlide)));
+        $objWriter->writeAttribute('draw:name', 'background_' . (string) $numSlide);
+        $objWriter->writeAttribute('xlink:href', 'Pictures/' . str_replace(' ', '_', $oBkgImage->getIndexedFilename((string) $numSlide)));
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');

@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Slide;
@@ -23,14 +24,12 @@ use PhpOffice\PhpPresentation\Slide\Iterator;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for IOFactory
+ * Test class for IOFactory.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\IOFactory
+ * @coversDefaultClass \PhpOffice\PhpPresentation\IOFactory
  */
 class IteratorTest extends TestCase
 {
-    /**
-     */
     public function testMethod(): void
     {
         $oPhpPresentation = new PhpPresentation();

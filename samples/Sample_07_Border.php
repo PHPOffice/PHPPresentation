@@ -4,9 +4,8 @@ include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Style\Alignment;
-use PhpOffice\PhpPresentation\Style\Color;
-use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Color;
 
 // Create new PHPPresentation object
 echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;
@@ -20,17 +19,16 @@ $objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')->setLastMo
 echo date('H:i:s') . ' Create slide' . EOL;
 $currentSlide = $objPHPPresentation->getActiveSlide();
 
-
-for ($inc = 1; $inc <= 4; $inc++) {
+for ($inc = 1; $inc <= 4; ++$inc) {
     // Create a shape (text)
     echo date('H:i:s') . ' Create a shape (rich text)' . EOL;
     $shape = $currentSlide->createRichTextShape()->setHeight(200)->setWidth(300);
-    if ($inc == 1 || $inc == 3) {
+    if (1 == $inc || 3 == $inc) {
         $shape->setOffsetX(10);
     } else {
         $shape->setOffsetX(320);
     }
-    if ($inc == 1 || $inc == 2) {
+    if (1 == $inc || 2 == $inc) {
         $shape->setOffsetY(10);
     } else {
         $shape->setOffsetY(220);

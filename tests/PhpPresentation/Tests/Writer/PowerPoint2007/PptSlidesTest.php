@@ -7,26 +7,26 @@ use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Slide\Animation;
+use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
-use PhpOffice\PhpPresentation\Slide\Animation;
-use PhpOffice\PhpPresentation\Slide\Transition;
-use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
- * Test class for PowerPoint2007
+ * Test class for PowerPoint2007.
  *
- * @coversDefaultClass PowerPoint2007
+ * @coversDefaultClass \PowerPoint2007
  */
 class PptSlideTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/42
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/42
      */
     public function testAlignmentShapeAuto(): void
     {
@@ -41,7 +41,7 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/42
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/42
      */
     public function testAlignmentShapeBase(): void
     {
@@ -57,7 +57,7 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/35
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
      */
     public function testAlignmentShapeBottom(): void
     {
@@ -73,7 +73,7 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/35
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
      */
     public function testAlignmentShapeCenter(): void
     {
@@ -89,7 +89,7 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/35
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
      */
     public function testAlignmentShapeTop(): void
     {
@@ -186,7 +186,7 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:solidFill/a:srgbClr/a:alpha';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', (string)($oColor->getAlpha() * 1000));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', (string) ($oColor->getAlpha() * 1000));
         $this->assertIsSchemaECMA376Valid();
     }
 
@@ -226,7 +226,7 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/61
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/61
      */
     public function testFillGradientLinearRichText(): void
     {
@@ -272,7 +272,7 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/61
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/61
      */
     public function testFillGradientPathText(): void
     {
@@ -337,7 +337,7 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/61
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/61
      */
     public function testFillSolidText(): void
     {
@@ -834,7 +834,7 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/70
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/70
      */
     public function testTableWithHyperlink(): void
     {
@@ -889,7 +889,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
         foreach ($arrayConstants as $key => $value) {
-            if (strpos($key, 'TRANSITION_') !== 0) {
+            if (0 !== strpos($key, 'TRANSITION_')) {
                 continue;
             }
 

@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -37,68 +38,67 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      */
     protected $relsIndex;
     /**
-     *
      * @var Transition|null
      */
     protected $slideTransition;
 
     /**
-     * Collection of shapes
+     * Collection of shapes.
      *
      * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
      */
     protected $shapeCollection = [];
     /**
-     * Extent Y
+     * Extent Y.
      *
      * @var int
      */
     protected $extentY;
     /**
-     * Extent X
+     * Extent X.
      *
      * @var int
      */
     protected $extentX;
     /**
-     * Offset X
+     * Offset X.
      *
      * @var int
      */
     protected $offsetX;
     /**
-     * Offset Y
+     * Offset Y.
      *
      * @var int
      */
     protected $offsetY;
     /**
-     * Slide identifier
+     * Slide identifier.
      *
      * @var string
      */
     protected $identifier;
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     protected $hashIndex;
     /**
-     * Parent presentation
+     * Parent presentation.
      *
      * @var PhpPresentation|null
      */
     protected $parent;
     /**
-     * Background of the slide
+     * Background of the slide.
      *
      * @var AbstractBackground
      */
     protected $background;
 
     /**
-     * Get collection of shapes
+     * Get collection of shapes.
      *
      * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
      */
@@ -108,92 +108,91 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     }
 
     /**
-     * Get collection of shapes
+     * Get collection of shapes.
      *
      * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapeCollection
+     *
      * @return AbstractSlide
      */
-    public function setShapeCollection($shapeCollection = array())
+    public function setShapeCollection($shapeCollection = [])
     {
         $this->shapeCollection = $shapeCollection;
+
         return $this;
     }
 
     /**
-     * Add shape to slide
+     * Add shape to slide.
      *
-     * @param AbstractShape $shape
      * @return AbstractShape
+     *
      * @throws \Exception
      */
     public function addShape(AbstractShape $shape)
     {
         $shape->setContainer($this);
+
         return $shape;
     }
 
     /**
-     * Get X Offset
-     *
-     * @return int
+     * Get X Offset.
      */
     public function getOffsetX(): int
     {
-        if ($this->offsetX === null) {
+        if (null === $this->offsetX) {
             $offsets = GeometryCalculator::calculateOffsets($this);
             $this->offsetX = $offsets[GeometryCalculator::X];
             $this->offsetY = $offsets[GeometryCalculator::Y];
         }
+
         return $this->offsetX;
     }
 
     /**
-     * Get Y Offset
-     *
-     * @return int
+     * Get Y Offset.
      */
     public function getOffsetY(): int
     {
-        if ($this->offsetY === null) {
+        if (null === $this->offsetY) {
             $offsets = GeometryCalculator::calculateOffsets($this);
             $this->offsetX = $offsets[GeometryCalculator::X];
             $this->offsetY = $offsets[GeometryCalculator::Y];
         }
+
         return $this->offsetY;
     }
 
     /**
-     * Get X Extent
-     *
-     * @return int
+     * Get X Extent.
      */
     public function getExtentX(): int
     {
-        if ($this->extentX === null) {
+        if (null === $this->extentX) {
             $extents = GeometryCalculator::calculateExtents($this);
             $this->extentX = $extents[GeometryCalculator::X];
             $this->extentY = $extents[GeometryCalculator::Y];
         }
+
         return $this->extentX;
     }
 
     /**
-     * Get Y Extent
-     *
-     * @return int
+     * Get Y Extent.
      */
     public function getExtentY(): int
     {
-        if ($this->extentY === null) {
+        if (null === $this->extentY) {
             $extents = GeometryCalculator::calculateExtents($this);
             $this->extentX = $extents[GeometryCalculator::X];
             $this->extentY = $extents[GeometryCalculator::Y];
         }
+
         return $this->extentY;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -203,7 +202,7 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -216,107 +215,109 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
     /**
-     * Create rich text shape
+     * Create rich text shape.
      *
-     * @return RichText
      * @throws \Exception
      */
     public function createRichTextShape(): RichText
     {
         $shape = new RichText();
         $this->addShape($shape);
+
         return $shape;
     }
 
     /**
-     * Create line shape
+     * Create line shape.
      *
      * @param int $fromX Starting point x offset
      * @param int $fromY Starting point y offset
      * @param int $toX Ending point x offset
      * @param int $toY Ending point y offset
-     * @return Line
+     *
      * @throws \Exception
      */
     public function createLineShape(int $fromX, int $fromY, int $toX, int $toY): Line
     {
         $shape = new Line($fromX, $fromY, $toX, $toY);
         $this->addShape($shape);
+
         return $shape;
     }
 
     /**
-     * Create chart shape
+     * Create chart shape.
      *
-     * @return Chart
      * @throws \Exception
      */
     public function createChartShape(): Chart
     {
         $shape = new Chart();
         $this->addShape($shape);
+
         return $shape;
     }
 
     /**
-     * Create drawing shape
+     * Create drawing shape.
      *
-     * @return File
      * @throws \Exception
      */
     public function createDrawingShape(): File
     {
         $shape = new File();
         $this->addShape($shape);
+
         return $shape;
     }
 
     /**
-     * Create table shape
+     * Create table shape.
      *
      * @param int $columns Number of columns
-     * @return Table
+     *
      * @throws \Exception
      */
     public function createTableShape(int $columns = 1): Table
     {
         $shape = new Table($columns);
         $this->addShape($shape);
+
         return $shape;
     }
 
     /**
-     * Creates a group within this slide
+     * Creates a group within this slide.
      *
-     * @return Group
      * @throws \Exception
      */
     public function createGroup(): Group
     {
         $shape = new Group();
         $this->addShape($shape);
+
         return $shape;
     }
 
     /**
-     * Get parent
-     *
-     * @return PhpPresentation|null
+     * Get parent.
      */
     public function getParent(): ?PhpPresentation
     {
@@ -324,22 +325,18 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
     }
 
     /**
-     * Re-bind parent
+     * Re-bind parent.
      *
-     * @param PhpPresentation $parent
-     * @return AbstractSlide
      * @throws \Exception
      */
     public function rebindParent(PhpPresentation $parent): AbstractSlide
     {
         $this->parent->removeSlideByIndex($this->parent->getIndex($this));
         $this->parent = $parent;
+
         return $this;
     }
 
-    /**
-     * @return AbstractBackground|null
-     */
     public function getBackground(): ?AbstractBackground
     {
         return $this->background;
@@ -347,48 +344,35 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      * @param AbstractBackground $background
-     * @return AbstractSlide
      */
     public function setBackground(AbstractBackground $background = null): AbstractSlide
     {
         $this->background = $background;
+
         return $this;
     }
 
-    /**
-     * @return Transition|null
-     */
     public function getTransition(): ?Transition
     {
         return $this->slideTransition;
     }
 
-    /**
-     *
-     * @param Transition|null $transition
-     * @return self
-     */
     public function setTransition(Transition $transition = null): self
     {
         $this->slideTransition = $transition;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getRelsIndex(): string
     {
         return $this->relsIndex;
     }
 
-    /**
-     * @param string $indexName
-     * @return self
-     */
     public function setRelsIndex(string $indexName): self
     {
         $this->relsIndex = $indexName;
+
         return $this;
     }
 }

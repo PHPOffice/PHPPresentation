@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,26 +21,28 @@ namespace PhpOffice\PhpPresentation\Style;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph as RichTextParagraph;
 
 /**
- * Class TextStyle
+ * Class TextStyle.
  */
 class TextStyle
 {
     /**
      * @var array<int, RichTextParagraph>
      */
-    protected $bodyStyle = array();
+    protected $bodyStyle = [];
     /**
      * @var array<int, RichTextParagraph>
      */
-    protected $titleStyle = array();
+    protected $titleStyle = [];
     /**
      * @var array<int, RichTextParagraph>
      */
-    protected $otherStyle = array();
+    protected $otherStyle = [];
 
     /**
      * TextStyle constructor.
+     *
      * @param bool $default
+     *
      * @throws \Exception
      */
     public function __construct($default = true)
@@ -70,47 +73,34 @@ class TextStyle
         }
     }
 
-    /**
-     * @param int|null $lvl
-     * @return bool
-     */
     private function checkLvl(?int $lvl): bool
     {
         if (is_null($lvl) || $lvl > 9) {
             return false;
         }
+
         return true;
     }
 
-    /**
-     * @param RichTextParagraph $style
-     * @param int|null $lvl
-     * @return self
-     */
     public function setBodyStyleAtLvl(RichTextParagraph $style, ?int $lvl): self
     {
         if ($this->checkLvl($lvl)) {
             $this->bodyStyle[$lvl] = $style;
         }
+
         return $this;
     }
 
-    /**
-     * @param RichTextParagraph $style
-     * @param int|null $lvl
-     * @return self
-     */
     public function setTitleStyleAtLvl(RichTextParagraph $style, ?int $lvl): self
     {
         if ($this->checkLvl($lvl)) {
             $this->titleStyle[$lvl] = $style;
         }
+
         return $this;
     }
 
     /**
-     * @param RichTextParagraph $style
-     * @param int|null $lvl
      * @return TextStyle
      */
     public function setOtherStyleAtLvl(RichTextParagraph $style, ?int $lvl): self
@@ -118,42 +108,34 @@ class TextStyle
         if ($this->checkLvl($lvl)) {
             $this->otherStyle[$lvl] = $style;
         }
+
         return $this;
     }
 
-    /**
-     * @param int|null $lvl
-     * @return RichTextParagraph|null
-     */
     public function getBodyStyleAtLvl(?int $lvl): ?RichTextParagraph
     {
         if ($this->checkLvl($lvl) && !empty($this->bodyStyle[$lvl])) {
             return $this->bodyStyle[$lvl];
         }
+
         return null;
     }
 
-    /**
-     * @param int|null $lvl
-     * @return RichTextParagraph|null
-     */
     public function getTitleStyleAtLvl(?int $lvl): ?RichTextParagraph
     {
         if ($this->checkLvl($lvl) && !empty($this->titleStyle[$lvl])) {
             return $this->titleStyle[$lvl];
         }
+
         return null;
     }
 
-    /**
-     * @param int|null $lvl
-     * @return RichTextParagraph|null
-     */
     public function getOtherStyleAtLvl(?int $lvl): ?RichTextParagraph
     {
         if ($this->checkLvl($lvl) && !empty($this->otherStyle[$lvl])) {
             return $this->otherStyle[$lvl];
         }
+
         return null;
     }
 

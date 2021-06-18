@@ -12,19 +12,20 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Scatter element
+ * Test class for Scatter element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
  */
 class ScatterTest extends TestCase
 {
@@ -35,10 +36,10 @@ class ScatterTest extends TestCase
         $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter', $object->setSeries());
         $this->assertEmpty($object->getSeries());
@@ -61,6 +62,6 @@ class ScatterTest extends TestCase
         $object = new Scatter();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

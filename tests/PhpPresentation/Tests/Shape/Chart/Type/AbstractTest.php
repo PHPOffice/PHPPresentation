@@ -12,20 +12,21 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Scatter element
+ * Test class for Scatter element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
  */
 class AbstractTest extends TestCase
 {
@@ -54,10 +55,10 @@ class AbstractTest extends TestCase
         $this->assertEmpty($stub->getData());
         $this->assertIsArray($stub->getData());
 
-        $arraySeries = array(
+        $arraySeries = [
             new Series(),
-            new Series()
-        );
+            new Series(),
+        ];
         $this->assertInstanceOf(AbstractType::class, $stub->setData($arraySeries));
         $this->assertIsArray($stub->getData());
         $this->assertCount(count($arraySeries), $stub->getData());
@@ -65,12 +66,12 @@ class AbstractTest extends TestCase
 
     public function testClone(): void
     {
-        $arraySeries = array(
+        $arraySeries = [
             new Series(),
             new Series(),
             new Series(),
             new Series(),
-        );
+        ];
 
         /** @var AbstractType $stub */
         $stub = $this->getMockForAbstractClass(AbstractType::class);

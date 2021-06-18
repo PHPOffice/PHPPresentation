@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -21,29 +22,27 @@ use IteratorIterator;
 use PhpOffice\PhpPresentation\PhpPresentation;
 
 /**
- * Used to iterate slides in PhpPresentation
+ * Used to iterate slides in PhpPresentation.
  */
 // @phpstan-ignore-next-line
 class Iterator extends IteratorIterator
 {
     /**
-     * Presentation to iterate
+     * Presentation to iterate.
      *
      * @var PhpPresentation
      */
     private $subject;
 
     /**
-     * Current iterator position
+     * Current iterator position.
      *
      * @var int
      */
     private $position = 0;
 
     /**
-     * Create a new slide iterator
-     *
-     * @param PhpPresentation $subject
+     * Create a new slide iterator.
      */
     public function __construct(PhpPresentation $subject)
     {
@@ -51,7 +50,7 @@ class Iterator extends IteratorIterator
     }
 
     /**
-     * Destructor
+     * Destructor.
      */
     public function __destruct()
     {
@@ -59,7 +58,7 @@ class Iterator extends IteratorIterator
     }
 
     /**
-     * Rewind iterator
+     * Rewind iterator.
      */
     public function rewind()
     {
@@ -67,9 +66,10 @@ class Iterator extends IteratorIterator
     }
 
     /**
-     * Current \PhpOffice\PhpPresentation\Slide
+     * Current \PhpOffice\PhpPresentation\Slide.
      *
      * @return \PhpOffice\PhpPresentation\Slide
+     *
      * @throws \Exception
      */
     public function current()
@@ -78,7 +78,7 @@ class Iterator extends IteratorIterator
     }
 
     /**
-     * Current key
+     * Current key.
      *
      * @return int
      */
@@ -88,7 +88,7 @@ class Iterator extends IteratorIterator
     }
 
     /**
-     * Next value
+     * Next value.
      */
     public function next()
     {
@@ -98,7 +98,7 @@ class Iterator extends IteratorIterator
     /**
      * More \PhpOffice\PhpPresentation\Slide instances available?
      *
-     * @return boolean
+     * @return bool
      */
     public function valid()
     {

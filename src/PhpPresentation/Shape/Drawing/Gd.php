@@ -2,8 +2,6 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
-use GdImage;
-
 class Gd extends AbstractDrawingAdapter
 {
     /* Rendering functions */
@@ -19,35 +17,35 @@ class Gd extends AbstractDrawingAdapter
     public const MIMETYPE_JPEG = 'image/jpeg';
 
     /**
-     * Image resource
+     * Image resource.
      *
      * @var resource
      */
     protected $imageResource;
 
     /**
-     * Rendering function
+     * Rendering function.
      *
      * @var string
      */
     protected $renderingFunction = self::RENDERING_DEFAULT;
 
     /**
-     * Mime type
+     * Mime type.
      *
      * @var string
      */
     protected $mimeType = self::MIMETYPE_DEFAULT;
 
     /**
-     * Unique name
+     * Unique name.
      *
      * @var string
      */
     protected $uniqueName;
 
     /**
-     * Gd constructor
+     * Gd constructor.
      */
     public function __construct()
     {
@@ -56,7 +54,7 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Get image resource
+     * Get image resource.
      *
      * @return resource
      */
@@ -66,9 +64,10 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Set image resource
+     * Set image resource.
      *
      * @param resource $value
+     *
      * @return $this
      */
     public function setImageResource($value = null)
@@ -77,7 +76,7 @@ class Gd extends AbstractDrawingAdapter
 
         if (!is_null($this->imageResource)) {
             // Get width/height
-            $this->width  = imagesx($this->imageResource);
+            $this->width = imagesx($this->imageResource);
             $this->height = imagesy($this->imageResource);
         }
 
@@ -85,7 +84,7 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Get rendering function
+     * Get rendering function.
      *
      * @return string
      */
@@ -95,21 +94,21 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Set rendering function
+     * Set rendering function.
      *
-     * @param string                            $value
+     * @param string $value
+     *
      * @return $this
      */
     public function setRenderingFunction($value = self::RENDERING_DEFAULT)
     {
         $this->renderingFunction = $value;
+
         return $this;
     }
 
     /**
-     * Get mime type
-     *
-     * @return string
+     * Get mime type.
      */
     public function getMimeType(): string
     {
@@ -117,47 +116,42 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Set mime type
+     * Set mime type.
      *
      * @param string $value
+     *
      * @return $this
      */
     public function setMimeType($value = self::MIMETYPE_DEFAULT)
     {
         $this->mimeType = $value;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getContents(): string
     {
         ob_start();
-        if ($this->getMimeType() === self::MIMETYPE_DEFAULT) {
+        if (self::MIMETYPE_DEFAULT === $this->getMimeType()) {
             imagealphablending($this->getImageResource(), false);
             imagesavealpha($this->getImageResource(), true);
         }
         call_user_func($this->getRenderingFunction(), $this->getImageResource());
         $imageContents = ob_get_contents();
         ob_end_clean();
+
         return $imageContents;
     }
 
-    /**
-     * @return string
-     */
     public function getExtension(): string
     {
         $extension = strtolower($this->getMimeType());
         $extension = explode('/', $extension);
         $extension = $extension[1];
+
         return $extension;
     }
 
-    /**
-     * @return string
-     */
     public function getIndexedFilename(): string
     {
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();
@@ -169,9 +163,7 @@ class Gd extends AbstractDrawingAdapter
     protected $path;
 
     /**
-     * Get Path
-     *
-     * @return string
+     * Get Path.
      */
     public function getPath(): string
     {

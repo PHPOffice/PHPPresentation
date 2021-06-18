@@ -21,11 +21,13 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
     /**
      * @param \PhpOffice\PhpPresentation\Shape\Chart[] $arrayChart
+     *
      * @return AbstractDecoratorWriter
      */
     public function setArrayChart($arrayChart)
     {
         $this->arrayChart = $arrayChart;
+
         return $this;
     }
 }

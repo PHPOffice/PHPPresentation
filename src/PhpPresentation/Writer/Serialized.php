@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -24,14 +25,15 @@ use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 /**
- * \PhpOffice\PhpPresentation\Writer\Serialized
+ * \PhpOffice\PhpPresentation\Writer\Serialized.
  */
 class Serialized extends AbstractWriter implements WriterInterface
 {
     /**
-     * Create a new \PhpOffice\PhpPresentation\Writer\Serialized
+     * Create a new \PhpOffice\PhpPresentation\Writer\Serialized.
      *
      * @param \PhpOffice\PhpPresentation\PhpPresentation $pPhpPresentation
+     *
      * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
@@ -44,18 +46,17 @@ class Serialized extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Save PhpPresentation to file
+     * Save PhpPresentation to file.
      *
-     * @param string    $pFilename
      * @throws \Exception
      */
     public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
-            throw new \Exception("Filename is empty.");
+            throw new \Exception('Filename is empty.');
         }
         if (!is_dir(dirname($pFilename))) {
-            throw new \Exception(sprintf("Could not open %s for writing.", $pFilename));
+            throw new \Exception(sprintf('Could not open %s for writing.', $pFilename));
         }
         $oPresentation = $this->getPhpPresentation();
 
@@ -87,11 +88,13 @@ class Serialized extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Serialize PhpPresentation object to XML
+     * Serialize PhpPresentation object to XML.
      *
      * @param PhpPresentation $pPhpPresentation
-     * @param string        $pFilename
-     * @return string        XML Output
+     * @param string $pFilename
+     *
+     * @return string XML Output
+     *
      * @throws \Exception
      */
     private function writeSerialized(PhpPresentation $pPhpPresentation = null, $pFilename = '')

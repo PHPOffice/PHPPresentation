@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
@@ -25,14 +26,14 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for ODPresentation reader
+ * Test class for ODPresentation reader.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Reader\ODPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Reader\ODPresentation
  */
 class ODPresentationTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
     public function testCanRead(): void
     {
@@ -92,7 +93,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Sample 02 Subject', $oPhpPresentation->getDocumentProperties()->getSubject());
         $this->assertEquals('Sample 02 Description', $oPhpPresentation->getDocumentProperties()->getDescription());
         $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
-        //
+
         $this->assertCount(4, $oPhpPresentation->getAllSlides());
 
         // Slide 1

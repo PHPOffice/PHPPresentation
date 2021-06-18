@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -18,7 +19,7 @@
 namespace PhpOffice\PhpPresentation;
 
 /**
- * PhpOffice\PhpPresentation\GeometryCalculator
+ * PhpOffice\PhpPresentation\GeometryCalculator.
  */
 class GeometryCalculator
 {
@@ -26,24 +27,23 @@ class GeometryCalculator
     public const Y = 'Y';
 
     /**
-    * Calculate X and Y offsets for a set of shapes within a container such as a slide or group.
-    *
-    * @param ShapeContainerInterface $container
-    * @return array<string, int>
-    */
+     * Calculate X and Y offsets for a set of shapes within a container such as a slide or group.
+     *
+     * @return array<string, int>
+     */
     public static function calculateOffsets(ShapeContainerInterface $container): array
     {
-        $offsets = array(self::X => 0, self::Y => 0);
+        $offsets = [self::X => 0, self::Y => 0];
 
-        if ($container !== null && count($container->getShapeCollection()) != 0) {
+        if (null !== $container && 0 != count($container->getShapeCollection())) {
             $shapes = $container->getShapeCollection();
-            if ($shapes[0] !== null) {
+            if (null !== $shapes[0]) {
                 $offsets[self::X] = $shapes[0]->getOffsetX();
                 $offsets[self::Y] = $shapes[0]->getOffsetY();
             }
 
             foreach ($shapes as $shape) {
-                if ($shape !== null) {
+                if (null !== $shape) {
                     if ($shape->getOffsetX() < $offsets[self::X]) {
                         $offsets[self::X] = $shape->getOffsetX();
                     }
@@ -59,25 +59,24 @@ class GeometryCalculator
     }
 
     /**
-    * Calculate X and Y extents for a set of shapes within a container such as a slide or group.
-    *
-    * @param ShapeContainerInterface $container
-    * @return array<string, int>
-    */
+     * Calculate X and Y extents for a set of shapes within a container such as a slide or group.
+     *
+     * @return array<string, int>
+     */
     public static function calculateExtents(ShapeContainerInterface $container): array
     {
         /** @var array<string, int> $extents */
-        $extents = array(self::X => 0, self::Y => 0);
+        $extents = [self::X => 0, self::Y => 0];
 
-        if ($container !== null && count($container->getShapeCollection()) != 0) {
+        if (null !== $container && 0 != count($container->getShapeCollection())) {
             $shapes = $container->getShapeCollection();
-            if ($shapes[0] !== null) {
+            if (null !== $shapes[0]) {
                 $extents[self::X] = (int) ($shapes[0]->getOffsetX() + $shapes[0]->getWidth());
                 $extents[self::Y] = (int) ($shapes[0]->getOffsetY() + $shapes[0]->getHeight());
             }
 
             foreach ($shapes as $shape) {
-                if ($shape !== null) {
+                if (null !== $shape) {
                     $extentX = (int) ($shape->getOffsetX() + $shape->getWidth());
                     $extentY = (int) ($shape->getOffsetY() + $shape->getHeight());
 

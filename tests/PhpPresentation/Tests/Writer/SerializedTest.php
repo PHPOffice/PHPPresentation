@@ -12,19 +12,20 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
-use PhpOffice\PhpPresentation\Writer\Serialized;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Writer\Serialized;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for serialized reader
+ * Test class for serialized reader.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Reader\Serialized
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Reader\Serialized
  */
 class SerializedTest extends TestCase
 {
@@ -66,7 +67,7 @@ class SerializedTest extends TestCase
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
-        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
+        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
         $object = new Serialized($oPhpPresentation);
         $object->save($file);
@@ -82,12 +83,12 @@ class SerializedTest extends TestCase
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
-        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
+        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
         $object = new Serialized($oPhpPresentation);
 
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
 
-        $object->save($file.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'test');
+        $object->save($file . DIRECTORY_SEPARATOR . 'test' . DIRECTORY_SEPARATOR . 'test');
     }
 
     public function testSaveOverwriting(): void
@@ -95,7 +96,7 @@ class SerializedTest extends TestCase
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
-        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
+        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
 
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
         file_put_contents($file, rand(1, 100));

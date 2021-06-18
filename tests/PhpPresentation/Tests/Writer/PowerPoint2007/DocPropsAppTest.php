@@ -3,7 +3,7 @@
  * Created by PhpStorm.
  * User: lefevre_f
  * Date: 01/03/2016
- * Time: 12:35
+ * Time: 12:35.
  */
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;

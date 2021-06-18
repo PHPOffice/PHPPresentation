@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Comment;
@@ -21,9 +22,9 @@ use PhpOffice\PhpPresentation\Shape\Comment\Author;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Author element
+ * Test class for Author element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Comment\Author
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Comment\Author
  */
 class AuthorTest extends TestCase
 {

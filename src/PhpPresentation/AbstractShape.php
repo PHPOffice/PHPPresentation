@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -24,40 +25,40 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
 
 /**
- * Abstract shape
+ * Abstract shape.
  */
 abstract class AbstractShape implements ComparableInterface
 {
     /**
-     * Container
+     * Container.
      *
      * @var ShapeContainerInterface|null
      */
     protected $container;
 
     /**
-     * Offset X
+     * Offset X.
      *
      * @var int
      */
     protected $offsetX;
 
     /**
-     * Offset Y
+     * Offset Y.
      *
      * @var int
      */
     protected $offsetY;
 
     /**
-     * Width
+     * Width.
      *
      * @var int
      */
     protected $width;
 
     /**
-     * Height
+     * Height.
      *
      * @var int
      */
@@ -69,21 +70,21 @@ abstract class AbstractShape implements ComparableInterface
     private $fill;
 
     /**
-     * Border
+     * Border.
      *
      * @var Border
      */
     private $border;
 
     /**
-     * Rotation
+     * Rotation.
      *
      * @var int
      */
     protected $rotation;
 
     /**
-     * Shadow
+     * Shadow.
      *
      * @var Shadow|null
      */
@@ -100,14 +101,14 @@ abstract class AbstractShape implements ComparableInterface
     protected $placeholder;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new self
+     * Create a new self.
      */
     public function __construct()
     {
@@ -119,7 +120,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Magic Method : clone
+     * Magic Method : clone.
      */
     public function __clone()
     {
@@ -130,9 +131,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Container, Slide or Group
-     *
-     * @return ShapeContainerInterface|null
+     * Get Container, Slide or Group.
      */
     public function getContainer(): ?ShapeContainerInterface
     {
@@ -140,11 +139,13 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Container, Slide or Group
+     * Set Container, Slide or Group.
      *
      * @param ShapeContainerInterface $pValue
      * @param bool $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
+     *
      * @throws \Exception
+     *
      * @return $this
      */
     public function setContainer(ShapeContainerInterface $pValue = null, $pOverrideOld = false)
@@ -172,11 +173,7 @@ abstract class AbstractShape implements ComparableInterface
                 // Set new \PhpOffice\PhpPresentation\Slide
                 $this->setContainer($pValue);
             } else {
-                throw new \Exception(sprintf(
-                    'A %s has already been assigned. Shapes can only exist on one %s.',
-                    ShapeContainerInterface::class,
-                    ShapeContainerInterface::class
-                ));
+                throw new \Exception(sprintf('A %s has already been assigned. Shapes can only exist on one %s.', ShapeContainerInterface::class, ShapeContainerInterface::class));
             }
         }
 
@@ -184,9 +181,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get OffsetX
-     *
-     * @return int
+     * Get OffsetX.
      */
     public function getOffsetX(): int
     {
@@ -194,9 +189,8 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set OffsetX
+     * Set OffsetX.
      *
-     * @param int $pValue
      * @return $this
      */
     public function setOffsetX(int $pValue = 0)
@@ -207,7 +201,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get OffsetY
+     * Get OffsetY.
      *
      * @return int
      */
@@ -217,9 +211,8 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set OffsetY
+     * Set OffsetY.
      *
-     * @param int $pValue
      * @return $this
      */
     public function setOffsetY(int $pValue = 0)
@@ -230,7 +223,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Width
+     * Get Width.
      *
      * @return int
      */
@@ -240,19 +233,19 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Width
+     * Set Width.
      *
-     * @param int $pValue
      * @return $this
      */
     public function setWidth(int $pValue = 0)
     {
         $this->width = $pValue;
+
         return $this;
     }
 
     /**
-     * Get Height
+     * Get Height.
      *
      * @return int
      */
@@ -262,33 +255,32 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Height
+     * Set Height.
      *
-     * @param int $pValue
      * @return $this
      */
     public function setHeight(int $pValue = 0)
     {
         $this->height = $pValue;
+
         return $this;
     }
 
     /**
-     * Set width and height with proportional resize
+     * Set width and height with proportional resize.
      *
-     * @param int $width
-     * @param int $height
      * @return self
      */
     public function setWidthAndHeight(int $width = 0, int $height = 0)
     {
         $this->width = $width;
         $this->height = $height;
+
         return $this;
     }
 
     /**
-     * Get Rotation
+     * Get Rotation.
      *
      * @return int
      */
@@ -298,66 +290,57 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Rotation
+     * Set Rotation.
      *
      * @param int $pValue
+     *
      * @return $this
      */
     public function setRotation($pValue = 0)
     {
         $this->rotation = $pValue;
+
         return $this;
     }
 
-    /**
-     * @return Fill|null
-     */
     public function getFill(): ?Fill
     {
         return $this->fill;
     }
 
-    /**
-     * @param Fill|null $pValue
-     * @return self
-     */
     public function setFill(Fill $pValue = null): self
     {
         $this->fill = $pValue;
+
         return $this;
     }
 
-    /**
-     * @return Border
-     */
     public function getBorder(): Border
     {
         return $this->border;
     }
 
-    /**
-     * @return Shadow|null
-     */
     public function getShadow(): ?Shadow
     {
         return $this->shadow;
     }
 
     /**
-     * @param Shadow|null $pValue
      * @throws \Exception
+     *
      * @return $this
      */
     public function setShadow(Shadow $pValue = null)
     {
         $this->shadow = $pValue;
+
         return $this;
     }
 
     /**
      * Has Hyperlink?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHyperlink()
     {
@@ -365,9 +348,8 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Hyperlink
+     * Get Hyperlink.
      *
-     * @return Hyperlink
      * @throws \Exception
      */
     public function getHyperlink(): Hyperlink
@@ -375,24 +357,24 @@ abstract class AbstractShape implements ComparableInterface
         if (is_null($this->hyperlink)) {
             $this->hyperlink = new Hyperlink();
         }
+
         return $this->hyperlink;
     }
 
     /**
-     * Set Hyperlink
+     * Set Hyperlink.
      *
-     * @param Hyperlink|null $pHyperlink
      * @throws \Exception
-     * @return self
      */
     public function setHyperlink(Hyperlink $pHyperlink = null): self
     {
         $this->hyperlink = $pHyperlink;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -402,7 +384,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -415,17 +397,19 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
@@ -439,16 +423,14 @@ abstract class AbstractShape implements ComparableInterface
         if (!$this->isPlaceholder()) {
             return null;
         }
+
         return $this->placeholder;
     }
 
-    /**
-     * @param Placeholder $placeholder
-     * @return self
-     */
     public function setPlaceHolder(Placeholder $placeholder): self
     {
         $this->placeholder = $placeholder;
+
         return $this;
     }
 }

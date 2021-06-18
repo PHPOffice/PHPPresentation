@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\Style\Shadow;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class ShadowTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
     public function testConstruct(): void
     {
@@ -45,7 +46,7 @@ class ShadowTest extends TestCase
     }
 
     /**
-     * Test get/set alignment
+     * Test get/set alignment.
      */
     public function testSetGetAlignment(): void
     {
@@ -57,7 +58,7 @@ class ShadowTest extends TestCase
     }
 
     /**
-     * Test get/set alpha
+     * Test get/set alpha.
      */
     public function testSetGetAlpha(): void
     {
@@ -70,7 +71,7 @@ class ShadowTest extends TestCase
     }
 
     /**
-     * Test get/set blur radius
+     * Test get/set blur radius.
      */
     public function testSetGetBlurRadius(): void
     {
@@ -83,7 +84,7 @@ class ShadowTest extends TestCase
     }
 
     /**
-     * Test get/set color
+     * Test get/set color.
      */
     public function testSetGetColor(): void
     {
@@ -96,7 +97,7 @@ class ShadowTest extends TestCase
     }
 
     /**
-     * Test get/set direction
+     * Test get/set direction.
      */
     public function testSetGetDirection(): void
     {
@@ -109,7 +110,7 @@ class ShadowTest extends TestCase
     }
 
     /**
-     * Test get/set distance
+     * Test get/set distance.
      */
     public function testSetGetDistance(): void
     {
@@ -122,7 +123,7 @@ class ShadowTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
     public function testSetGetHashIndex(): void
     {
@@ -133,7 +134,7 @@ class ShadowTest extends TestCase
     }
 
     /**
-     * Test get/set visible
+     * Test get/set visible.
      */
     public function testSetIsVisible(): void
     {

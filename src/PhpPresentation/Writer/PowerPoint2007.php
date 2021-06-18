@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -25,35 +26,38 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPac
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 
 /**
- * \PhpOffice\PhpPresentation\Writer\PowerPoint2007
+ * \PhpOffice\PhpPresentation\Writer\PowerPoint2007.
  */
 class PowerPoint2007 extends AbstractWriter implements WriterInterface
 {
     /**
      * Use disk caching where possible?
      *
-     * @var boolean
+     * @var bool
      */
     protected $useDiskCaching = false;
 
     /**
-     * Disk caching directory
+     * Disk caching directory.
      *
      * @var string
      */
     protected $diskCachingDir;
 
     /**
-     * Layout pack to use
+     * Layout pack to use.
+     *
      * @deprecated 0.7
+     *
      * @var \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
      */
     protected $layoutPack;
 
     /**
-     * Create a new PowerPoint2007 file
+     * Create a new PowerPoint2007 file.
      *
      * @param PhpPresentation $pPhpPresentation
+     *
      * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
@@ -74,23 +78,22 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Save PhpPresentation to file
+     * Save PhpPresentation to file.
      *
-     * @param string $pFilename
      * @throws \Exception
      */
     public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
-            throw new \Exception("Filename is empty");
+            throw new \Exception('Filename is empty');
         }
         $oPresentation = $this->getPhpPresentation();
 
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
-        if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
+        if ('php://output' == strtolower($pFilename) || 'php://stdout' == strtolower($pFilename)) {
             $pFilename = @tempnam('./', 'phppttmp');
-            if ($pFilename == '') {
+            if ('' == $pFilename) {
                 $pFilename = $originalFilename;
             }
         }
@@ -101,8 +104,8 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         $oZip = $this->getZipAdapter();
         $oZip->open($pFilename);
 
-        $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'PowerPoint2007');
-        $arrayFiles = array();
+        $oDir = new DirectoryIterator(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PowerPoint2007');
+        $arrayFiles = [];
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;
@@ -133,11 +136,11 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
 
         // If a temporary file was used, copy it to the correct file stream
         if ($originalFilename != $pFilename) {
-            if (copy($pFilename, $originalFilename) === false) {
+            if (false === copy($pFilename, $originalFilename)) {
                 throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
             }
-            if (@unlink($pFilename) === false) {
-                throw new \Exception('The file '.$pFilename.' could not be removed.');
+            if (false === @unlink($pFilename)) {
+                throw new \Exception('The file ' . $pFilename . ' could not be removed.');
             }
         }
     }
@@ -145,7 +148,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Get use disk caching where possible?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasDiskCaching()
     {
@@ -155,9 +158,11 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param boolean $pValue
+     * @param bool $pValue
      * @param string $pDirectory Disk caching directory
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
@@ -175,7 +180,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Get disk caching directory
+     * Get disk caching directory.
      *
      * @return string
      */
@@ -185,9 +190,10 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Get layout pack to use
+     * Get layout pack to use.
      *
      * @deprecated 0.7
+     *
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
      */
     public function getLayoutPack()
@@ -196,10 +202,12 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Set layout pack to use
+     * Set layout pack to use.
      *
      * @deprecated 0.7
+     *
      * @param \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
      */
     public function setLayoutPack(AbstractLayoutPack $pValue = null)

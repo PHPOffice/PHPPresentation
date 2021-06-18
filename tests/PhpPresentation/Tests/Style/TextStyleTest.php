@@ -12,15 +12,16 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Style\Alignment;
-use PhpOffice\PhpPresentation\Style\TextStyle;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
+use PhpOffice\PhpPresentation\Style\TextStyle;
 use PHPUnit\Framework\TestCase;
 
 class TextStyleTest extends TestCase

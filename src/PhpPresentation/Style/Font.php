@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,7 +21,7 @@ namespace PhpOffice\PhpPresentation\Style;
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * \PhpOffice\PhpPresentation\Style\Font
+ * \PhpOffice\PhpPresentation\Style\Font.
  */
 class Font implements ComparableInterface
 {
@@ -45,102 +46,102 @@ class Font implements ComparableInterface
     public const UNDERLINE_WORDS = 'words';
 
     /**
-     * Name
+     * Name.
      *
      * @var string
      */
     private $name;
 
     /**
-     * Font Size
+     * Font Size.
      *
      * @var int
      */
     private $size;
 
     /**
-     * Bold
+     * Bold.
      *
-     * @var boolean
+     * @var bool
      */
     private $bold;
 
     /**
-     * Italic
+     * Italic.
      *
-     * @var boolean
+     * @var bool
      */
     private $italic;
 
     /**
-     * Superscript
+     * Superscript.
      *
-     * @var boolean
+     * @var bool
      */
     private $superScript;
 
     /**
-     * Subscript
+     * Subscript.
      *
-     * @var boolean
+     * @var bool
      */
     private $subScript;
 
     /**
-     * Underline
+     * Underline.
      *
      * @var string
      */
     private $underline;
 
     /**
-     * Strikethrough
+     * Strikethrough.
      *
-     * @var boolean
+     * @var bool
      */
     private $strikethrough;
 
     /**
-     * Foreground color
+     * Foreground color.
      *
      * @var Color
      */
     private $color;
 
     /**
-     * Character Spacing
+     * Character Spacing.
      *
      * @var int
      */
     private $characterSpacing;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Font
+     * Create a new \PhpOffice\PhpPresentation\Style\Font.
      */
     public function __construct()
     {
         // Initialise values
-        $this->name             = 'Calibri';
-        $this->size             = 10;
+        $this->name = 'Calibri';
+        $this->size = 10;
         $this->characterSpacing = 0;
-        $this->bold             = false;
-        $this->italic           = false;
-        $this->superScript      = false;
-        $this->subScript        = false;
-        $this->underline        = self::UNDERLINE_NONE;
-        $this->strikethrough    = false;
-        $this->color            = new Color(Color::COLOR_BLACK);
+        $this->bold = false;
+        $this->italic = false;
+        $this->superScript = false;
+        $this->subScript = false;
+        $this->underline = self::UNDERLINE_NONE;
+        $this->strikethrough = false;
+        $this->color = new Color(Color::COLOR_BLACK);
     }
 
     /**
-     * Get Name
+     * Get Name.
      *
      * @return string
      */
@@ -150,14 +151,15 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Name
+     * Set Name.
      *
-     * @param string                   $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
     public function setName($pValue = 'Calibri')
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = 'Calibri';
         }
         $this->name = $pValue;
@@ -166,9 +168,9 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Character Spacing
+     * Get Character Spacing.
      *
-     * @return double
+     * @return float
      */
     public function getCharacterSpacing()
     {
@@ -177,13 +179,15 @@ class Font implements ComparableInterface
 
     /**
      * Set Character Spacing
-     * Value in pt
+     * Value in pt.
+     *
      * @param float|int $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
     public function setCharacterSpacing($pValue = 0)
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = 0;
         }
         $this->characterSpacing = $pValue * 100;
@@ -192,9 +196,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Size
-     *
-     * @return int
+     * Get Size.
      */
     public function getSize(): int
     {
@@ -202,10 +204,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Size
-     *
-     * @param int $pValue
-     * @return self
+     * Set Size.
      */
     public function setSize(int $pValue = 10): self
     {
@@ -215,9 +214,9 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Bold
+     * Get Bold.
      *
-     * @return boolean
+     * @return bool
      */
     public function isBold()
     {
@@ -225,10 +224,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Bold
-     *
-     * @param bool $pValue
-     * @return self
+     * Set Bold.
      */
     public function setBold(bool $pValue = false): self
     {
@@ -238,9 +234,9 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Italic
+     * Get Italic.
      *
-     * @return boolean
+     * @return bool
      */
     public function isItalic()
     {
@@ -248,10 +244,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Italic
-     *
-     * @param bool $pValue
-     * @return self
+     * Set Italic.
      */
     public function setItalic(bool $pValue = false): self
     {
@@ -261,9 +254,9 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get SuperScript
+     * Get SuperScript.
      *
-     * @return boolean
+     * @return bool
      */
     public function isSuperScript()
     {
@@ -271,41 +264,31 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set SuperScript
-     *
-     * @param bool $pValue
-     * @return self
+     * Set SuperScript.
      */
     public function setSuperScript(bool $pValue = false): self
     {
         $this->superScript = $pValue;
 
         // Set SubScript at false only if SuperScript is true
-        if ($pValue === true) {
+        if (true === $pValue) {
             $this->subScript = false;
         }
 
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isSubScript(): bool
     {
         return $this->subScript;
     }
 
-    /**
-     * @param bool $pValue
-     * @return self
-     */
     public function setSubScript(bool $pValue = false): self
     {
         $this->subScript = $pValue;
 
         // Set SuperScript at false only if SubScript is true
-        if ($pValue === true) {
+        if (true === $pValue) {
             $this->superScript = false;
         }
 
@@ -313,7 +296,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Underline
+     * Get Underline.
      *
      * @return string
      */
@@ -323,14 +306,15 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Underline
+     * Set Underline.
      *
-     * @param string                   $pValue \PhpOffice\PhpPresentation\Style\Font underline type
+     * @param string $pValue \PhpOffice\PhpPresentation\Style\Font underline type
+     *
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
     public function setUnderline($pValue = self::UNDERLINE_NONE)
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = self::UNDERLINE_NONE;
         }
         $this->underline = $pValue;
@@ -339,9 +323,9 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Strikethrough
+     * Get Strikethrough.
      *
-     * @return boolean
+     * @return bool
      */
     public function isStrikethrough()
     {
@@ -349,10 +333,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Strikethrough
-     *
-     * @param bool $pValue
-     * @return self
+     * Set Strikethrough.
      */
     public function setStrikethrough(bool $pValue = false): self
     {
@@ -362,9 +343,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Color
-     *
-     * @return Color
+     * Get Color.
      */
     public function getColor(): Color
     {
@@ -372,11 +351,9 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Color
+     * Set Color.
      *
-     * @param Color $pValue
      * @throws \Exception
-     * @return self
      */
     public function setColor(Color $pValue): self
     {
@@ -386,7 +363,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -396,7 +373,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -409,17 +386,19 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

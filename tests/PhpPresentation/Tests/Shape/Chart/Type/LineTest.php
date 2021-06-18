@@ -12,19 +12,20 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Line element
+ * Test class for Line element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Line
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Line
  */
 class LineTest extends TestCase
 {
@@ -35,10 +36,10 @@ class LineTest extends TestCase
         $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->setSeries());
         $this->assertEmpty($object->getSeries());
@@ -61,6 +62,6 @@ class LineTest extends TestCase
         $object = new Line();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

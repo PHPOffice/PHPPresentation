@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -21,55 +22,55 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Fill;
 
 /**
- * Table row
+ * Table row.
  */
 class Row implements ComparableInterface
 {
     /**
-     * Cells
+     * Cells.
      *
      * @var \PhpOffice\PhpPresentation\Shape\Table\Cell[]
      */
     private $cells;
 
     /**
-     * Fill
+     * Fill.
      *
      * @var \PhpOffice\PhpPresentation\Style\Fill
      */
     private $fill;
 
     /**
-     * Height (in pixels)
+     * Height (in pixels).
      *
      * @var int
      */
     private $height = 38;
 
     /**
-     * Active cell index
+     * Active cell index.
      *
      * @var int
      */
     private $activeCellIndex = -1;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Table\Row instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\Table\Row instance.
      *
      * @param int $columns Number of columns
      */
     public function __construct($columns = 1)
     {
         // Initialise variables
-        $this->cells = array();
-        for ($i = 0; $i < $columns; $i++) {
+        $this->cells = [];
+        for ($i = 0; $i < $columns; ++$i) {
             $this->cells[] = new Cell();
         }
 
@@ -78,12 +79,12 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Get cell
+     * Get cell.
      *
      * @param int $cell Cell number
-     * @param boolean $exceptionAsNull Return a null value instead of an exception?
+     * @param bool $exceptionAsNull Return a null value instead of an exception?
+     *
      * @throws \Exception
-     * @return Cell|null
      */
     public function getCell($cell = 0, $exceptionAsNull = false): ?Cell
     {
@@ -98,7 +99,7 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Get cells
+     * Get cells.
      *
      * @return array<Cell>
      */
@@ -108,23 +109,25 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Next cell (moves one cell to the right)
+     * Next cell (moves one cell to the right).
      *
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     *
      * @throws \Exception
      */
     public function nextCell()
     {
-        $this->activeCellIndex++;
+        ++$this->activeCellIndex;
         if (isset($this->cells[$this->activeCellIndex])) {
             $this->cells[$this->activeCellIndex]->setFill(clone $this->getFill());
+
             return $this->cells[$this->activeCellIndex];
         }
-        throw new \Exception("Cell count out of bounds.");
+        throw new \Exception('Cell count out of bounds.');
     }
 
     /**
-     * Get fill
+     * Get fill.
      *
      * @return \PhpOffice\PhpPresentation\Style\Fill
      */
@@ -134,9 +137,8 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Set fill
+     * Set fill.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Fill      $fill
      * @return \PhpOffice\PhpPresentation\Shape\Table\Row
      */
     public function setFill(Fill $fill)
@@ -147,7 +149,7 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Get height
+     * Get height.
      *
      * @return int
      */
@@ -157,9 +159,10 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Set height
+     * Set height.
      *
-     * @param int                          $value
+     * @param int $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Table\Row
      */
     public function setHeight($value = 0)
@@ -170,7 +173,7 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -185,7 +188,7 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -198,17 +201,19 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

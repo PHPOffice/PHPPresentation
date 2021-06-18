@@ -6,6 +6,7 @@ class ThumbnailsThumbnail extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -37,6 +38,7 @@ class ThumbnailsThumbnail extends AbstractDecoratorWriter
                 $this->getZip()->addFromString('Thumbnails/thumbnail.png', $imageContents);
             }
         }
+
         return $this->getZip();
     }
 }

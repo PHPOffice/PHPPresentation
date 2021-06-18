@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -21,14 +22,14 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class ColorTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
     public function testConstruct(): void
     {
@@ -39,7 +40,7 @@ class ColorTest extends TestCase
     }
 
     /**
-     * Test Alpha
+     * Test Alpha.
      */
     public function testAlpha(): void
     {
@@ -56,7 +57,7 @@ class ColorTest extends TestCase
     }
 
     /**
-     * Test get/set ARGB
+     * Test get/set ARGB.
      */
     public function testSetGetARGB(): void
     {
@@ -70,7 +71,7 @@ class ColorTest extends TestCase
     }
 
     /**
-     * Test get/set RGB
+     * Test get/set RGB.
      */
     public function testSetGetRGB(): void
     {
@@ -90,7 +91,7 @@ class ColorTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
     public function testSetGetHashIndex(): void
     {

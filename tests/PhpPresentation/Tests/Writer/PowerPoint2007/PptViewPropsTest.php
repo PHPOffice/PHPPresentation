@@ -22,7 +22,7 @@ class PptViewPropsTest extends PhpPresentationTestCase
 
     public function testCommentVisible(): void
     {
-        $expectedElement ='/p:viewPr';
+        $expectedElement = '/p:viewPr';
 
         $this->oPresentation->getPresentationProperties()->setCommentVisible(true);
 
@@ -34,7 +34,7 @@ class PptViewPropsTest extends PhpPresentationTestCase
 
     public function testLastView(): void
     {
-        $expectedElement ='/p:viewPr';
+        $expectedElement = '/p:viewPr';
         $expectedLastView = PresentationProperties::VIEW_OUTLINE;
 
         $this->oPresentation->getPresentationProperties()->setLastView($expectedLastView);

@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -18,7 +19,7 @@
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\Axis
+ * \PhpOffice\PhpPresentation\Shape\Chart\Axis.
  */
 class Marker
 {
@@ -36,7 +37,7 @@ class Marker
     /**
      * @var array<int, string>
      */
-    public static $arraySymbol = array(
+    public static $arraySymbol = [
         self::SYMBOL_CIRCLE,
         self::SYMBOL_DASH,
         self::SYMBOL_DIAMOND,
@@ -46,8 +47,8 @@ class Marker
         self::SYMBOL_SQUARE,
         self::SYMBOL_STAR,
         self::SYMBOL_TRIANGLE,
-        self::SYMBOL_X
-    );
+        self::SYMBOL_X,
+    ];
 
     /**
      * @var string
@@ -59,39 +60,27 @@ class Marker
      */
     protected $size = 5;
 
-    /**
-     * @return string
-     */
     public function getSymbol(): string
     {
         return $this->symbol;
     }
 
-    /**
-     * @param string $symbol
-     * @return self
-     */
     public function setSymbol(string $symbol = self::SYMBOL_NONE): self
     {
         $this->symbol = $symbol;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getSize(): int
     {
         return $this->size;
     }
 
-    /**
-     * @param int $size
-     * @return self
-     */
     public function setSize(int $size = 5): self
     {
         $this->size = $size;
+
         return $this;
     }
 }

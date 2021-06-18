@@ -29,12 +29,12 @@ abstract class AbstractDecoratorWriter
     protected $oZip;
 
     /**
-     * @param HashTable $hashTable
      * @return $this
      */
     public function setDrawingHashTable(HashTable $hashTable)
     {
         $this->oHashTable = $hashTable;
+
         return $this;
     }
 
@@ -47,12 +47,12 @@ abstract class AbstractDecoratorWriter
     }
 
     /**
-     * @param PhpPresentation $oPresentation
      * @return $this
      */
     public function setPresentation(PhpPresentation $oPresentation)
     {
         $this->oPresentation = $oPresentation;
+
         return $this;
     }
 
@@ -65,12 +65,12 @@ abstract class AbstractDecoratorWriter
     }
 
     /**
-     * @param ZipInterface $oZip
      * @return $this
      */
     public function setZip(ZipInterface $oZip)
     {
         $this->oZip = $oZip;
+
         return $this;
     }
 

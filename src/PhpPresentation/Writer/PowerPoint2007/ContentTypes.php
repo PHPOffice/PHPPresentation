@@ -10,27 +10,27 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
-use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
-use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 /**
- * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\ContentTypes
+ * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\ContentTypes.
  */
 class ContentTypes extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -101,13 +101,13 @@ class ContentTypes extends AbstractDecoratorWriter
         }
 
         // Add media content-types
-        $aMediaContentTypes = array();
+        $aMediaContentTypes = [];
 
         // GIF, JPEG, PNG
-        $aMediaContentTypes['gif']  = 'image/gif';
-        $aMediaContentTypes['jpg']  = 'image/jpeg';
+        $aMediaContentTypes['gif'] = 'image/gif';
+        $aMediaContentTypes['jpg'] = 'image/jpeg';
         $aMediaContentTypes['jpeg'] = 'image/jpeg';
-        $aMediaContentTypes['png']  = 'image/png';
+        $aMediaContentTypes['png'] = 'image/png';
         foreach ($aMediaContentTypes as $key => $value) {
             $this->writeDefaultContentType($objWriter, $key, $value);
         }
@@ -142,17 +142,18 @@ class ContentTypes extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Default content type
+     * Write Default content type.
      *
-     * @param XMLWriter $objWriter    XML Writer
-     * @param string $pPartname    Part name
+     * @param XMLWriter $objWriter XML Writer
+     * @param string $pPartname Part name
      * @param string $pContentType Content type
+     *
      * @throws \Exception
      */
     private function writeDefaultContentType(XMLWriter $objWriter, string $pPartname = '', string $pContentType = ''): void
     {
-        if ($pPartname == '' || $pContentType == '') {
-            throw new \Exception("Invalid parameters passed.");
+        if ('' == $pPartname || '' == $pContentType) {
+            throw new \Exception('Invalid parameters passed.');
         }
         // Write content type
         $objWriter->startElement('Default');
@@ -162,17 +163,18 @@ class ContentTypes extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Override content type
+     * Write Override content type.
      *
-     * @param XMLWriter $objWriter    XML Writer
-     * @param string $pPartname    Part name
+     * @param XMLWriter $objWriter XML Writer
+     * @param string $pPartname Part name
      * @param string $pContentType Content type
+     *
      * @throws \Exception
      */
     private function writeOverrideContentType(XMLWriter $objWriter, string $pPartname = '', string $pContentType = ''): void
     {
-        if ($pPartname == '' || $pContentType == '') {
-            throw new \Exception("Invalid parameters passed.");
+        if ('' == $pPartname || '' == $pContentType) {
+            throw new \Exception('Invalid parameters passed.');
         }
         // Write content type
         $objWriter->startElement('Override');

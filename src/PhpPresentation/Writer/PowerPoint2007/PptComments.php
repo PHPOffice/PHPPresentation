@@ -12,6 +12,7 @@ class PptComments extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -21,13 +22,13 @@ class PptComments extends AbstractDecoratorWriter
             if (empty($contentXml)) {
                 continue;
             }
-            $this->getZip()->addFromString('ppt/comments/comment'.($numSlide + 1).'.xml', $contentXml);
+            $this->getZip()->addFromString('ppt/comments/comment' . ($numSlide + 1) . '.xml', $contentXml);
         }
+
         return $this->getZip();
     }
 
     /**
-     * @param Slide $oSlide
      * @return string
      */
     protected function writeSlideComments(Slide $oSlide)
@@ -35,7 +36,7 @@ class PptComments extends AbstractDecoratorWriter
         /**
          * @var Comment[]
          */
-        $arrayComment = array();
+        $arrayComment = [];
         foreach ($oSlide->getShapeCollection() as $oShape) {
             if ($oShape instanceof Comment) {
                 $arrayComment[] = $oShape;

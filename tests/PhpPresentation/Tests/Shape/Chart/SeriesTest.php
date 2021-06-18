@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
@@ -25,9 +26,9 @@ use PhpOffice\PhpPresentation\Style\Outline;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Series element
+ * Test class for Series element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Series
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Series
  */
 class SeriesTest extends TestCase
 {
@@ -109,7 +110,7 @@ class SeriesTest extends TestCase
     {
         $object = new Series();
 
-        $this->assertEquals(md5($object->getFill()->getHashCode().$object->getFont()->getHashCode().var_export($object->getValues(), true) . var_export($object, true).get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($object->getFill()->getHashCode() . $object->getFont()->getHashCode() . var_export($object->getValues(), true) . var_export($object, true) . get_class($object)), $object->getHashCode());
     }
 
     public function testLabelPosition(): void
@@ -226,12 +227,12 @@ class SeriesTest extends TestCase
         $object = new Series();
 
         /** @var array<string, string> $array */
-        $array = array(
+        $array = [
             '0' => 'a',
             '1' => 'b',
             '2' => 'c',
             '3' => 'd',
-        );
+        ];
 
         $this->assertIsArray($object->getValues());
         $this->assertEmpty($object->getValues());

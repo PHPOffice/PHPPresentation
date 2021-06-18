@@ -7,16 +7,16 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
 
 /**
- * Test class for PowerPoint2007
+ * Test class for PowerPoint2007.
  *
- * @coversDefaultClass PowerPoint2007
+ * @coversDefaultClass \PowerPoint2007
  */
 class PowerPoint2007Test extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
     /**
-     * Test create new instance
+     * Test create new instance.
      */
     public function testConstruct(): void
     {
@@ -30,7 +30,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test save
+     * Test save.
      */
     public function testSave(): void
     {
@@ -45,7 +45,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test save with empty filename
+     * Test save with empty filename.
      */
     public function testSaveEmptyException(): void
     {
@@ -57,7 +57,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test save with empty assignation
+     * Test save with empty assignation.
      */
     public function testSaveUnassignedException(): void
     {
@@ -69,7 +69,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test get PhpPresentation exception
+     * Test get PhpPresentation exception.
      */
     public function testGetPhpPresentationException(): void
     {
@@ -81,7 +81,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test disk caching
+     * Test disk caching.
      */
     public function testDiskCaching(): void
     {
@@ -98,7 +98,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test set/get disk caching exception
+     * Test set/get disk caching exception.
      */
     public function testCachingException(): void
     {
@@ -110,7 +110,8 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test LayoutPack
+     * Test LayoutPack.
+     *
      * @deprecated 0.7
      */
     public function testLayoutPack(): void
@@ -121,9 +122,9 @@ class PowerPoint2007Test extends PhpPresentationTestCase
         $object = new PowerPoint2007();
 
         $this->assertInstanceOf(AbstractLayoutPack::class, $object->getLayoutPack());
-        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007", $object->setLayoutPack());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007', $object->setLayoutPack());
         $this->assertNull($object->getLayoutPack());
-        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007", $object->setLayoutPack($oLayoutPack));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007', $object->setLayoutPack($oLayoutPack));
         $this->assertInstanceOf(AbstractLayoutPack::class, $object->getLayoutPack());
     }
 
@@ -152,7 +153,7 @@ class PowerPoint2007Test extends PhpPresentationTestCase
 
     public function testFeatureThumbnail(): void
     {
-        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
 
         $xPathManifest = '/Relationships/Relationship[@Target=\'docProps/thumbnail.jpeg\'][@Type=\'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail\']';
 

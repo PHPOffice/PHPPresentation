@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -18,71 +19,68 @@
 namespace PhpOffice\PhpPresentation\Shape\RichText;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
-use PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+ * \PhpOffice\PhpPresentation\Shape\RichText\Paragraph.
  */
 class Paragraph implements ComparableInterface
 {
     /**
-     * Rich text elements
+     * Rich text elements.
      *
      * @var array<TextElementInterface>
      */
     private $richTextElements;
 
     /**
-     * Alignment
+     * Alignment.
      *
      * @var Alignment
      */
     private $alignment;
 
     /**
-     * Font
+     * Font.
      *
      * @var Font|null
      */
     private $font;
 
     /**
-     * Bullet style
+     * Bullet style.
      *
      * @var \PhpOffice\PhpPresentation\Style\Bullet
      */
     private $bulletStyle;
 
     /**
-     * @var integer
+     * @var int
      */
     private $lineSpacing = 100;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Paragraph instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Paragraph instance.
      */
     public function __construct()
     {
-        $this->richTextElements = array();
+        $this->richTextElements = [];
         $this->alignment = new Alignment();
         $this->font = new Font();
         $this->bulletStyle = new Bullet();
     }
 
     /**
-     * Get alignment
-     *
-     * @return Alignment
+     * Get alignment.
      */
     public function getAlignment(): Alignment
     {
@@ -90,10 +88,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Set alignment
-     *
-     * @param Alignment $alignment
-     * @return self
+     * Set alignment.
      */
     public function setAlignment(Alignment $alignment): self
     {
@@ -103,9 +98,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Get font
-     *
-     * @return Font|null
+     * Get font.
      */
     public function getFont(): ?Font
     {
@@ -113,11 +106,11 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Set font
+     * Set font.
      *
      * @param Font|null $pFont Font
+     *
      * @throws \Exception
-     * @return self
      */
     public function setFont(Font $pFont = null): self
     {
@@ -127,9 +120,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Get bullet style
-     *
-     * @return Bullet|null
+     * Get bullet style.
      */
     public function getBulletStyle(): ?Bullet
     {
@@ -137,11 +128,9 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Set bullet style
+     * Set bullet style.
      *
-     * @param Bullet|null $style
      * @throws \Exception
-     * @return self
      */
     public function setBulletStyle(Bullet $style = null): self
     {
@@ -151,10 +140,10 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Create text (can not be formatted !)
+     * Create text (can not be formatted !).
      *
      * @param string $pText Text
-     * @return TextElement
+     *
      * @throws \Exception
      */
     public function createText(string $pText = ''): TextElement
@@ -166,11 +155,11 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Add text
+     * Add text.
      *
      * @param TextElementInterface|null $pText Rich text element
+     *
      * @throws \Exception
-     * @return self
      */
     public function addText(TextElementInterface $pText = null): self
     {
@@ -180,9 +169,8 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Create break
+     * Create break.
      *
-     * @return BreakElement
      * @throws \Exception
      */
     public function createBreak(): BreakElement
@@ -194,10 +182,10 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Create text run (can be formatted)
+     * Create text run (can be formatted).
      *
      * @param string $pText Text
-     * @return Run
+     *
      * @throws \Exception
      */
     public function createTextRun(string $pText = ''): Run
@@ -210,7 +198,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Convert to string
+     * Convert to string.
      *
      * @return string
      */
@@ -220,9 +208,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Get plain text
-     *
-     * @return string
+     * Get plain text.
      */
     public function getPlainText(): string
     {
@@ -241,7 +227,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Get Rich Text elements
+     * Get Rich Text elements.
      *
      * @return array<TextElementInterface>
      */
@@ -251,19 +237,19 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Set Rich Text elements
+     * Set Rich Text elements.
      *
      * @param array<TextElementInterface> $pElements Array of elements
-     * @return self
      */
     public function setRichTextElements(array $pElements = []): self
     {
         $this->richTextElements = $pElements;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -278,7 +264,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -291,17 +277,19 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
@@ -315,11 +303,13 @@ class Paragraph implements ComparableInterface
 
     /**
      * @param int $lineSpacing
+     *
      * @return Paragraph
      */
     public function setLineSpacing($lineSpacing)
     {
         $this->lineSpacing = $lineSpacing;
+
         return $this;
     }
 }

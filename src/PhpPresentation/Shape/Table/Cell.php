@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -24,76 +25,76 @@ use PhpOffice\PhpPresentation\Style\Borders;
 use PhpOffice\PhpPresentation\Style\Fill;
 
 /**
- * Table cell
+ * Table cell.
  */
 class Cell implements ComparableInterface
 {
     /**
-     * Rich text paragraphs
+     * Rich text paragraphs.
      *
      * @var array<Paragraph>
      */
     private $richTextParagraphs;
 
     /**
-     * Active paragraph
+     * Active paragraph.
      *
      * @var int
      */
     private $activeParagraph = 0;
 
     /**
-     * Fill
+     * Fill.
      *
      * @var \PhpOffice\PhpPresentation\Style\Fill
      */
     private $fill;
 
     /**
-     * Borders
+     * Borders.
      *
      * @var \PhpOffice\PhpPresentation\Style\Borders
      */
     private $borders;
 
     /**
-     * Width (in pixels)
+     * Width (in pixels).
      *
      * @var int
      */
     private $width = 0;
 
     /**
-     * Colspan
+     * Colspan.
      *
      * @var int
      */
     private $colSpan = 0;
 
     /**
-     * Rowspan
+     * Rowspan.
      *
      * @var int
      */
     private $rowSpan = 0;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\RichText instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\RichText instance.
      */
     public function __construct()
     {
         // Initialise variables
-        $this->richTextParagraphs = array(
-            new Paragraph()
-        );
-        $this->activeParagraph    = 0;
+        $this->richTextParagraphs = [
+            new Paragraph(),
+        ];
+        $this->activeParagraph = 0;
 
         // Set fill
         $this->fill = new Fill();
@@ -103,7 +104,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get active paragraph index
+     * Get active paragraph index.
      *
      * @return int
      */
@@ -113,9 +114,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get active paragraph
-     *
-     * @return Paragraph
+     * Get active paragraph.
      */
     public function getActiveParagraph(): Paragraph
     {
@@ -123,16 +122,16 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Set active paragraph
+     * Set active paragraph.
      *
      * @param int $index
+     *
      * @throws \Exception
-     * @return Paragraph
      */
     public function setActiveParagraph($index = 0): Paragraph
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception("Invalid paragraph count.");
+            throw new \Exception('Invalid paragraph count.');
         }
 
         $this->activeParagraph = $index;
@@ -141,25 +140,24 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get paragraph
+     * Get paragraph.
      *
      * @param int $index
+     *
      * @throws \Exception
-     * @return Paragraph
      */
     public function getParagraph($index = 0): Paragraph
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception("Invalid paragraph count.");
+            throw new \Exception('Invalid paragraph count.');
         }
 
         return $this->richTextParagraphs[$index];
     }
 
     /**
-     * Create paragraph
+     * Create paragraph.
      *
-     * @return Paragraph
      * @throws \Exception
      */
     public function createParagraph(): Paragraph
@@ -177,14 +175,17 @@ class Cell implements ComparableInterface
             $this->getActiveParagraph()->setFont($font);
             $this->getActiveParagraph()->setBulletStyle($bulletStyle);
         }
+
         return $this->getActiveParagraph();
     }
 
     /**
-     * Add text
+     * Add text.
      *
      * @param \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface $pText Rich text element
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function addText(TextElementInterface $pText = null)
@@ -195,10 +196,12 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Create text (can not be formatted !)
+     * Create text (can not be formatted !).
      *
-     * @param string                                   $pText Text
+     * @param string $pText Text
+     *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
+     *
      * @throws \Exception
      */
     public function createText($pText = '')
@@ -207,9 +210,10 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Create break
+     * Create break.
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\BreakElement
+     *
      * @throws \Exception
      */
     public function createBreak()
@@ -218,10 +222,12 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Create text run (can be formatted)
+     * Create text run (can be formatted).
      *
-     * @param string                           $pText Text
+     * @param string $pText Text
+     *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Run
+     *
      * @throws \Exception
      */
     public function createTextRun($pText = '')
@@ -230,7 +236,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get plain text
+     * Get plain text.
      *
      * @return string
      */
@@ -249,7 +255,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Convert to string
+     * Convert to string.
      *
      * @return string
      */
@@ -259,7 +265,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get paragraphs
+     * Get paragraphs.
      *
      * @return array<Paragraph>
      */
@@ -269,20 +275,22 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Set paragraphs
+     * Set paragraphs.
      *
      * @param array<Paragraph> $paragraphs Array of paragraphs
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setParagraphs(array $paragraphs = []): self
     {
         $this->richTextParagraphs = $paragraphs;
-        $this->activeParagraph    = count($this->richTextParagraphs) - 1;
+        $this->activeParagraph = count($this->richTextParagraphs) - 1;
+
         return $this;
     }
 
     /**
-     * Get fill
+     * Get fill.
      *
      * @return \PhpOffice\PhpPresentation\Style\Fill
      */
@@ -292,9 +300,8 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Set fill
+     * Set fill.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Fill     $fill
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setFill(Fill $fill)
@@ -305,7 +312,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get borders
+     * Get borders.
      *
      * @return \PhpOffice\PhpPresentation\Style\Borders
      */
@@ -315,9 +322,8 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Set borders
+     * Set borders.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Borders  $borders
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
     public function setBorders(Borders $borders)
@@ -328,7 +334,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get width
+     * Get width.
      *
      * @return int
      */
@@ -338,9 +344,8 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Set width
+     * Set width.
      *
-     * @param int $pValue
      * @return self
      */
     public function setWidth(int $pValue = 0)
@@ -350,18 +355,11 @@ class Cell implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getColSpan(): int
     {
         return $this->colSpan;
     }
 
-    /**
-     * @param int $value
-     * @return self
-     */
     public function setColSpan(int $value = 0): self
     {
         $this->colSpan = $value;
@@ -369,18 +367,11 @@ class Cell implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getRowSpan(): int
     {
         return $this->rowSpan;
     }
 
-    /**
-     * @param int $value
-     * @return self
-     */
     public function setRowSpan(int $value = 0): self
     {
         $this->rowSpan = $value;
@@ -389,7 +380,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -404,7 +395,7 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -417,17 +408,19 @@ class Cell implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return $this
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

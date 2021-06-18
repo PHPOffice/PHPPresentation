@@ -2,15 +2,17 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Comment\Author;
-use PhpOffice\Common\XMLWriter;
 
 class Relationships extends AbstractDecoratorWriter
 {
     /**
-     * Add relationships to ZIP file
+     * Add relationships to ZIP file.
+     *
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -22,9 +24,10 @@ class Relationships extends AbstractDecoratorWriter
     }
 
     /**
-     * Write relationships to XML format
+     * Write relationships to XML format.
      *
-     * @return string        XML Output
+     * @return string XML Output
+     *
      * @throws \Exception
      */
     public function writeRelationships()
@@ -67,9 +70,10 @@ class Relationships extends AbstractDecoratorWriter
     }
 
     /**
-     * Write presentation relationships to XML format
+     * Write presentation relationships to XML format.
      *
-     * @return string        XML Output
+     * @return string XML Output
+     *
      * @throws \Exception
      */
     public function writePresentationRelationships()
@@ -105,7 +109,6 @@ class Relationships extends AbstractDecoratorWriter
         $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/presProps', 'presProps.xml');
         $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/viewProps', 'viewProps.xml');
         $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/tableStyles', 'tableStyles.xml');
-
 
         // Comments Authors
         foreach ($this->getPresentation()->getAllSlides() as $oSlide) {

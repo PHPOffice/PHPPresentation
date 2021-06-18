@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for IOFactory
+ * Test class for IOFactory.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\IOFactory
+ * @coversDefaultClass \PhpOffice\PhpPresentation\IOFactory
  */
 class IOFactoryTest extends TestCase
 {
     /**
-     * Test create writer
+     * Test create writer.
      */
     public function testCreateWriter(): void
     {
@@ -39,7 +40,7 @@ class IOFactoryTest extends TestCase
     }
 
     /**
-     * Test create reader
+     * Test create reader.
      */
     public function testCreateReader(): void
     {
@@ -49,7 +50,7 @@ class IOFactoryTest extends TestCase
     }
 
     /**
-     * Test load class exception
+     * Test load class exception.
      */
     public function testLoadClassException(): void
     {
@@ -60,16 +61,16 @@ class IOFactoryTest extends TestCase
 
     public function testLoad(): void
     {
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'serialized.phppt'));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'serialized.phppt'));
     }
 
     /**
-     * Test load class exception
+     * Test load class exception.
      */
     public function testLoadException(): void
     {
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.');
-        IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
+        IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
     }
 }

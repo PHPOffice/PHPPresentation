@@ -9,6 +9,7 @@ class PptPresentation extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -29,11 +30,11 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->startElement('p:sldMasterIdLst');
 
         // Add slide masters
-        $relationId    = 1;
+        $relationId = 1;
         $slideMasterId = 2147483648;
 
         $countMasterSlides = count($this->oPresentation->getAllMasterSlides());
-        for ($inc = 1; $inc <= $countMasterSlides; $inc++) {
+        for ($inc = 1; $inc <= $countMasterSlides; ++$inc) {
             // p:sldMasterId
             $objWriter->startElement('p:sldMasterId');
             $objWriter->writeAttribute('id', $slideMasterId);
@@ -46,7 +47,7 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         // theme
-        $relationId++;
+        ++$relationId;
 
         // p:sldIdLst
         $objWriter->startElement('p:sldIdLst');
@@ -65,7 +66,7 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->startElement('p:sldSz');
         $objWriter->writeAttribute('cx', $this->oPresentation->getLayout()->getCX());
         $objWriter->writeAttribute('cy', $this->oPresentation->getLayout()->getCY());
-        if ($this->oPresentation->getLayout()->getDocumentLayout() != DocumentLayout::LAYOUT_CUSTOM) {
+        if (DocumentLayout::LAYOUT_CUSTOM != $this->oPresentation->getLayout()->getDocumentLayout()) {
             $objWriter->writeAttribute('type', $this->oPresentation->getLayout()->getDocumentLayout());
         }
         $objWriter->endElement();

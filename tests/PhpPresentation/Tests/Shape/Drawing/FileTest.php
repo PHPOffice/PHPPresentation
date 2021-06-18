@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
@@ -21,9 +22,9 @@ use PhpOffice\PhpPresentation\Shape\Drawing\File;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Drawing element
+ * Test class for Drawing element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Drawing
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Drawing
  */
 class FileTest extends TestCase
 {
@@ -54,7 +55,7 @@ class FileTest extends TestCase
     {
         $object = new File();
 
-        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->setPath($imagePath, false));
         $this->assertEquals($imagePath, $object->getPath());

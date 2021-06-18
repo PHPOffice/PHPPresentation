@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -36,13 +37,15 @@ class Series implements ComparableInterface
     public const LABEL_TOP = 't';
 
     /**
-     * DataPointFills (key/value)
+     * DataPointFills (key/value).
+     *
      * @var array<int, Fill>
      */
-    protected $dataPointFills = array();
+    protected $dataPointFills = [];
 
     /**
-     * Data Label Number Format
+     * Data Label Number Format.
+     *
      * @var string
      */
     protected $DlblNumFormat = '';
@@ -78,78 +81,84 @@ class Series implements ComparableInterface
     protected $outline;
 
     /**
-     * Show Category Name
-     * @var boolean
+     * Show Category Name.
+     *
+     * @var bool
      */
     private $showCategoryName = false;
 
     /**
-     * Show Leader Lines
-     * @var boolean
+     * Show Leader Lines.
+     *
+     * @var bool
      */
     private $showLeaderLines = true;
 
     /**
-     * Show Legend Key
+     * Show Legend Key.
+     *
      * @var bool
      */
     private $showLegendKey = false;
 
     /**
-     * ShowPercentage
-     * @var boolean
+     * ShowPercentage.
+     *
+     * @var bool
      */
     private $showPercentage = false;
 
     /**
-     * ShowSeriesName
-     * @var boolean
+     * ShowSeriesName.
+     *
+     * @var bool
      */
     private $showSeriesName = false;
 
     /**
-     * ShowValue
-     * @var boolean
+     * ShowValue.
+     *
+     * @var bool
      */
     private $showValue = true;
 
     /**
-     * Title
+     * Title.
+     *
      * @var string
      */
     private $title = 'Series Title';
 
     /**
-     * Values (key/value)
+     * Values (key/value).
+     *
      * @var array<string, string>
      */
-    private $values = array();
+    private $values = [];
 
     /**
-     * Hash index
+     * Hash index.
+     *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * @param string $title
      * @param array<string, string> $values
      */
-    public function __construct(string $title = 'Series Title', array $values = array())
+    public function __construct(string $title = 'Series Title', array $values = [])
     {
         $this->fill = new Fill();
         $this->font = new Font();
         $this->font->setName('Calibri');
         $this->font->setSize(9);
-        $this->title  = $title;
+        $this->title = $title;
         $this->values = $values;
         $this->marker = new Marker();
     }
 
     /**
-     * Get Title
-     *
-     * @return string
+     * Get Title.
      */
     public function getTitle(): string
     {
@@ -157,10 +166,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set Title
-     *
-     * @param string $value
-     * @return self
+     * Set Title.
      */
     public function setTitle(string $value = 'Series Title'): self
     {
@@ -170,9 +176,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get Data Label NumFormat
-     *
-     * @return string
+     * Get Data Label NumFormat.
      */
     public function getDlblNumFormat(): string
     {
@@ -180,9 +184,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Has Data Label NumFormat
-     *
-     * @return bool
+     * Has Data Label NumFormat.
      */
     public function hasDlblNumFormat(): bool
     {
@@ -190,14 +192,12 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set Data Label NumFormat
-     *
-     * @param string $value
-     * @return self
+     * Set Data Label NumFormat.
      */
     public function setDlblNumFormat(string $value = ''): self
     {
         $this->DlblNumFormat = $value;
+
         return $this;
     }
 
@@ -209,19 +209,15 @@ class Series implements ComparableInterface
         return $this->fill;
     }
 
-    /**
-     * @param Fill|null $fill
-     * @return self
-     */
     public function setFill(Fill $fill = null): self
     {
         $this->fill = $fill;
+
         return $this;
     }
 
     /**
-     * @param int $dataPointIndex Data point index.
-     * @return Fill
+     * @param int $dataPointIndex data point index
      */
     public function getDataPointFill(int $dataPointIndex): Fill
     {
@@ -241,7 +237,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get Values
+     * Get Values.
      *
      * @return array<string, string>
      */
@@ -251,12 +247,11 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set Values
+     * Set Values.
      *
      * @param array<string, string> $values
-     * @return self
      */
-    public function setValues(array $values = array()): self
+    public function setValues(array $values = []): self
     {
         $this->values = $values;
 
@@ -264,11 +259,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Add Value
-     *
-     * @param string $key
-     * @param string $value
-     * @return self
+     * Add Value.
      */
     public function addValue(string $key, string $value): self
     {
@@ -278,9 +269,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowSeriesName
-     *
-     * @return boolean
+     * Get ShowSeriesName.
      */
     public function hasShowSeriesName(): bool
     {
@@ -288,10 +277,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set ShowSeriesName
-     *
-     * @param boolean $value
-     * @return self
+     * Set ShowSeriesName.
      */
     public function setShowSeriesName(bool $value): self
     {
@@ -301,9 +287,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowCategoryName
-     *
-     * @return boolean
+     * Get ShowCategoryName.
      */
     public function hasShowCategoryName(): bool
     {
@@ -311,10 +295,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set ShowCategoryName
-     *
-     * @param boolean $value
-     * @return self
+     * Set ShowCategoryName.
      */
     public function setShowCategoryName(bool $value): self
     {
@@ -324,9 +305,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowValue
-     *
-     * @return bool
+     * Get ShowValue.
      */
     public function hasShowLegendKey(): bool
     {
@@ -334,10 +313,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set ShowValue
-     *
-     * @param bool $value
-     * @return self
+     * Set ShowValue.
      */
     public function setShowLegendKey(bool $value): self
     {
@@ -347,9 +323,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowValue
-     *
-     * @return boolean
+     * Get ShowValue.
      */
     public function hasShowValue(): bool
     {
@@ -357,10 +331,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set ShowValue
-     *
-     * @param boolean $value
-     * @return self
+     * Set ShowValue.
      */
     public function setShowValue(bool $value): self
     {
@@ -370,9 +341,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowPercentage
-     *
-     * @return boolean
+     * Get ShowPercentage.
      */
     public function hasShowPercentage(): bool
     {
@@ -380,10 +349,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set ShowPercentage
-     *
-     * @param boolean $value
-     * @return self
+     * Set ShowPercentage.
      */
     public function setShowPercentage(bool $value): self
     {
@@ -392,36 +358,25 @@ class Series implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return boolean
-     */
     public function hasShowSeparator(): bool
     {
         return !is_null($this->separator);
     }
 
-    /**
-     * @param string|null $pValue
-     * @return self
-     */
     public function setSeparator(?string $pValue): self
     {
         $this->separator = $pValue;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSeparator(): ?string
     {
         return $this->separator;
     }
 
     /**
-     * Get ShowLeaderLines
-     *
-     * @return boolean
+     * Get ShowLeaderLines.
      */
     public function hasShowLeaderLines(): bool
     {
@@ -429,9 +384,10 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set ShowLeaderLines
+     * Set ShowLeaderLines.
      *
-     * @param boolean                          $value
+     * @param bool $value
+     *
      * @return self
      */
     public function setShowLeaderLines($value)
@@ -442,7 +398,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get font
+     * Get font.
      *
      * @return Font
      */
@@ -452,10 +408,9 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set font
+     * Set font.
      *
      * @param Font|null $pFont Font
-     * @return self
      */
     public function setFont(Font $pFont = null): self
     {
@@ -465,9 +420,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get label position
-     *
-     * @return string
+     * Get label position.
      */
     public function getLabelPosition(): string
     {
@@ -475,10 +428,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set label position
-     *
-     * @param string $value
-     * @return self
+     * Set label position.
      */
     public function setLabelPosition(string $value): self
     {
@@ -487,44 +437,32 @@ class Series implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return Marker
-     */
     public function getMarker(): Marker
     {
         return $this->marker;
     }
 
-    /**
-     * @param Marker $marker
-     * @return self
-     */
     public function setMarker(Marker $marker): self
     {
         $this->marker = $marker;
+
         return $this;
     }
 
-    /**
-     * @return Outline|null
-     */
     public function getOutline(): ?Outline
     {
         return $this->outline;
     }
 
-    /**
-     * @param Outline|null $outline
-     * @return self
-     */
     public function setOutline(?Outline $outline): self
     {
         $this->outline = $outline;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -534,7 +472,7 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -547,23 +485,22 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
-     * @return self
      */
     public function setHashIndex(int $value): self
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
-
     /**
-     * @link http://php.net/manual/en/language.oop5.cloning.php
+     * @see http://php.net/manual/en/language.oop5.cloning.php
      */
     public function __clone()
     {

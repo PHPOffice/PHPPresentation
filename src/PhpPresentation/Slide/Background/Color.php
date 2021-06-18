@@ -12,19 +12,13 @@ class Color extends AbstractBackground
      */
     protected $color;
 
-    /**
-     * @param StyleColor|null $color
-     * @return self
-     */
     public function setColor(StyleColor $color = null): self
     {
         $this->color = $color;
+
         return $this;
     }
 
-    /**
-     * @return StyleColor|null
-     */
     public function getColor(): ?StyleColor
     {
         return $this->color;

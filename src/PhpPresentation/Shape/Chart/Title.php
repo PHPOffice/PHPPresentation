@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -22,88 +23,88 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Font;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\Title
+ * \PhpOffice\PhpPresentation\Shape\Chart\Title.
  */
 class Title implements ComparableInterface
 {
     /**
-     * Visible
+     * Visible.
      *
-     * @var boolean
+     * @var bool
      */
     private $visible = true;
 
     /**
-     * Text
+     * Text.
      *
      * @var string
      */
     private $text = 'Chart Title';
 
     /**
-     * OffsetX (as a fraction of the chart)
+     * OffsetX (as a fraction of the chart).
      *
      * @var float
      */
     private $offsetX = 0.01;
 
     /**
-     * OffsetY (as a fraction of the chart)
+     * OffsetY (as a fraction of the chart).
      *
      * @var float
      */
     private $offsetY = 0.01;
 
     /**
-     * Width (as a fraction of the chart)
+     * Width (as a fraction of the chart).
      *
      * @var float
      */
     private $width = 0;
 
     /**
-     * Height (as a fraction of the chart)
+     * Height (as a fraction of the chart).
      *
      * @var float
      */
     private $height = 0;
 
     /**
-     * Alignment
+     * Alignment.
      *
      * @var \PhpOffice\PhpPresentation\Style\Alignment
      */
     private $alignment;
 
     /**
-     * Font
+     * Font.
      *
      * @var \PhpOffice\PhpPresentation\Style\Font
      */
     private $font;
 
     /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Title instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Title instance.
      */
     public function __construct()
     {
         $this->alignment = new Alignment();
-        $this->font      = new Font();
+        $this->font = new Font();
         $this->font->setName('Calibri');
         $this->font->setSize(18);
     }
 
     /**
-     * Get Visible
+     * Get Visible.
      *
-     * @return boolean
+     * @return bool
      */
     public function isVisible()
     {
@@ -111,9 +112,10 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set Visible
+     * Set Visible.
      *
-     * @param boolean                         $value
+     * @param bool $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setVisible($value = true)
@@ -124,7 +126,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get Text
+     * Get Text.
      *
      * @return string
      */
@@ -134,9 +136,10 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set Text
+     * Set Text.
      *
-     * @param string                          $value
+     * @param string $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setText($value = null)
@@ -147,9 +150,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get OffsetX (as a fraction of the chart)
-     *
-     * @return float
+     * Get OffsetX (as a fraction of the chart).
      */
     public function getOffsetX(): float
     {
@@ -157,10 +158,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set OffsetX (as a fraction of the chart)
-     *
-     * @param float                           $value
-     * @return self
+     * Set OffsetX (as a fraction of the chart).
      */
     public function setOffsetX(float $value = 0.01): self
     {
@@ -170,9 +168,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get OffsetY (as a fraction of the chart)
-     *
-     * @return float
+     * Get OffsetY (as a fraction of the chart).
      */
     public function getOffsetY(): float
     {
@@ -180,10 +176,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set OffsetY (as a fraction of the chart)
-     *
-     * @param float $pValue
-     * @return self
+     * Set OffsetY (as a fraction of the chart).
      */
     public function setOffsetY(float $pValue = 0.01): self
     {
@@ -193,9 +186,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get Width (as a fraction of the chart)
-     *
-     * @return float
+     * Get Width (as a fraction of the chart).
      */
     public function getWidth(): float
     {
@@ -203,10 +194,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set Width (as a fraction of the chart)
-     *
-     * @param float $pValue
-     * @return self
+     * Set Width (as a fraction of the chart).
      */
     public function setWidth(float $pValue = 0): self
     {
@@ -216,9 +204,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get Height (as a fraction of the chart)
-     *
-     * @return float
+     * Get Height (as a fraction of the chart).
      */
     public function getHeight(): float
     {
@@ -226,10 +212,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set Height (as a fraction of the chart)
-     *
-     * @param float $value
-     * @return self
+     * Set Height (as a fraction of the chart).
      */
     public function setHeight(float $value = 0): self
     {
@@ -239,9 +222,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get font
-     *
-     * @return Font|null
+     * Get font.
      */
     public function getFont(): ?Font
     {
@@ -249,11 +230,11 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set font
+     * Set font.
      *
      * @param Font|null $pFont Font
+     *
      * @throws \Exception
-     * @return self
      */
     public function setFont(Font $pFont = null): self
     {
@@ -263,7 +244,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get alignment
+     * Get alignment.
      *
      * @return \PhpOffice\PhpPresentation\Style\Alignment
      */
@@ -273,9 +254,8 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set alignment
+     * Set alignment.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Alignment   $alignment
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setAlignment(Alignment $alignment)
@@ -286,7 +266,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
@@ -296,7 +276,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
@@ -309,17 +289,19 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
      * @param int $value Hash index
+     *
      * @return Title
      */
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

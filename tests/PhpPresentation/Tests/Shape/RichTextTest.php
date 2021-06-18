@@ -12,20 +12,21 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\RichText;
-use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for RichText element
+ * Test class for RichText element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText
  */
 class RichTextTest extends TestCase
 {
@@ -91,11 +92,11 @@ class RichTextTest extends TestCase
     {
         $object = new RichText();
 
-        $array = array(
+        $array = [
             new Paragraph(),
             new Paragraph(),
             new Paragraph(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setParagraphs($array));
         $this->assertCount(3, $object->getParagraphs());
@@ -119,8 +120,8 @@ class RichTextTest extends TestCase
         $this->assertCount(6, $object->getActiveParagraph()->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
         $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', $object->getPlainText());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', (string) $object);
+        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', $object->getPlainText());
+        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', (string) $object);
     }
 
     public function testGetSetAutoFit(): void
@@ -150,6 +151,7 @@ class RichTextTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(false));
         $this->assertFalse($object->hasAutoShrinkHorizontal());
     }
+
     public function testGetSetVAutoShrink(): void
     {
         $object = new RichText();
@@ -258,8 +260,8 @@ class RichTextTest extends TestCase
     {
         $object = new RichText();
 
-        $hash  = $object->getActiveParagraph()->getHashCode();
-        $hash .= RichText::WRAP_SQUARE.RichText::AUTOFIT_DEFAULT.RichText::OVERFLOW_OVERFLOW.RichText::OVERFLOW_OVERFLOW.'0014.89.69.64.8';
+        $hash = $object->getActiveParagraph()->getHashCode();
+        $hash .= RichText::WRAP_SQUARE . RichText::AUTOFIT_DEFAULT . RichText::OVERFLOW_OVERFLOW . RichText::OVERFLOW_OVERFLOW . '0014.89.69.64.8';
         $hash .= md5('00000' . $object->getFill()->getHashCode() . $object->getShadow()->getHashCode() . '' . get_parent_class($object));
         $hash .= get_class($object);
         $this->assertEquals(md5($hash), $object->getHashCode());

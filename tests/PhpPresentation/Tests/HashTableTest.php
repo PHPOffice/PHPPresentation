@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -22,14 +23,12 @@ use PhpOffice\PhpPresentation\Slide;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for HashTable
+ * Test class for HashTable.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\HashTable
+ * @coversDefaultClass \PhpOffice\PhpPresentation\HashTable
  */
 class HashTableTest extends TestCase
 {
-    /**
-     */
     public function testConstructNull(): void
     {
         $object = new HashTable();
@@ -41,22 +40,18 @@ class HashTableTest extends TestCase
         $this->assertEmpty($object->toArray());
     }
 
-    /**
-     */
     public function testConstructSource(): void
     {
-        $object = new HashTable(array(
+        $object = new HashTable([
             new Slide(),
             new Slide(),
-        ));
+        ]);
 
         $this->assertEquals(2, $object->count());
         $this->assertIsArray($object->toArray());
         $this->assertCount(2, $object->toArray());
     }
 
-    /**
-     */
     public function testAdd(): void
     {
         $object = new HashTable();
@@ -65,7 +60,7 @@ class HashTableTest extends TestCase
         // Add From Source : Null
         $object->addFromSource();
         // Add From Source : Array
-        $object->addFromSource(array($oSlide));
+        $object->addFromSource([$oSlide]);
         $this->assertIsArray($object->toArray());
         $this->assertCount(1, $object->toArray());
         // Clear
@@ -84,8 +79,6 @@ class HashTableTest extends TestCase
         $this->assertCount(1, $object->toArray());
     }
 
-    /**
-     */
     public function testIndex(): void
     {
         $object = new HashTable();
@@ -102,8 +95,6 @@ class HashTableTest extends TestCase
         $this->assertEquals($oSlide2, $object->getByIndex(1));
     }
 
-    /**
-     */
     public function testRemove(): void
     {
         $object = new HashTable();

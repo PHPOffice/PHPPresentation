@@ -12,21 +12,20 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
-use PhpOffice\PhpPresentation\Shape\Chart;
-use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\PlotArea;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PlotArea element
+ * Test class for PlotArea element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\PlotArea
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
  */
 class PlotAreaTest extends TestCase
 {

@@ -2,6 +2,7 @@
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
+use PhpOffice\Common\Drawing;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -14,12 +15,11 @@ use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
-use PhpOffice\Common\Drawing;
 
 /**
- * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
  */
 class ContentTest extends PhpPresentationTestCase
 {
@@ -29,7 +29,7 @@ class ContentTest extends PhpPresentationTestCase
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
         $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
 
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
@@ -129,7 +129,7 @@ class ContentTest extends PhpPresentationTestCase
     {
         $oShapeGroup = $this->oPresentation->getActiveSlide()->createGroup();
         $oShape = $oShapeGroup->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
         $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
 
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g';
@@ -342,7 +342,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('content.xml', $element, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'svg:stroke-color', '#' . $oRichText1->getBorder()->getColor()->getRGB());
         $this->assertZipXmlAttributeExists('content.xml', $element, 'svg:stroke-width');
-        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'svg:stroke-width', (string)number_format(CommonDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''));
+        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'svg:stroke-width', (string) number_format(CommonDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''));
         $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'svg:stroke-width', 'cm');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'draw:stroke');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:stroke', 'solid');
@@ -375,12 +375,12 @@ class ContentTest extends PhpPresentationTestCase
             $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow', 'visible');
             $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:mirror', 'none');
             // Opacity
-            $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:shadow-opacity', (string)(100 - $randAlpha));
+            $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:shadow-opacity', (string) (100 - $randAlpha));
             $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:shadow-opacity', '%');
             // Color
             $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:shadow-color', '#');
             // X
-            if ($inc == 90 || $inc == 270) {
+            if (90 == $inc || 270 == $inc) {
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '0cm');
             } else {
                 if ($inc > 90 && $inc < 270) {
@@ -390,10 +390,10 @@ class ContentTest extends PhpPresentationTestCase
                 }
             }
             // Y
-            if ($inc == 0 || $inc == 180 || $inc == 360) {
+            if (0 == $inc || 180 == $inc || 360 == $inc) {
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '0cm');
             } else {
-                if (($inc > 0 && $inc < 180) || $inc == 360) {
+                if (($inc > 0 && $inc < 180) || 360 == $inc) {
                     $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', Drawing::pixelsToCentimeters($randDistance) . 'cm');
                 } else {
                     $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
@@ -457,27 +457,27 @@ class ContentTest extends PhpPresentationTestCase
         $p5HashCode = $oRichText5->getActiveParagraph()->getHashCode();
         $p6HashCode = $oRichText6->getActiveParagraph()->getHashCode();
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p1HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p1HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'center');
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p2HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p2HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'justify');
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p3HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p3HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'left');
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p4HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p4HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'justify');
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p5HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p5HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'left');
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p6HashCode.'\']/style:paragraph-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p6HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'right');
 
@@ -492,7 +492,7 @@ class ContentTest extends PhpPresentationTestCase
 
         $expectedHashCode = $oRun->getHashCode();
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$expectedHashCode.'\']/style:text-properties';
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-weight', 'bold');
 
@@ -563,7 +563,7 @@ class ContentTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/70
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/70
      */
     public function testTableWithHyperlink(): void
     {
@@ -646,7 +646,7 @@ class ContentTest extends PhpPresentationTestCase
         $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
         foreach ($arrayConstants as $key => $value) {
-            if (strpos($key, 'TRANSITION_') !== 0) {
+            if (0 !== strpos($key, 'TRANSITION_')) {
                 continue;
             }
             $this->resetPresentationFile();

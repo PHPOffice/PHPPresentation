@@ -13,7 +13,7 @@ $oDrawing1 = clone $oShapeDrawing;
 $oRichText1 = clone $oShapeRichText;
 
 // Create slide
-echo date('H:i:s') . ' Create slide'.EOL;
+echo date('H:i:s') . ' Create slide' . EOL;
 $oSlide1 = $objPHPPresentation->getActiveSlide();
 $oSlide1->addShape($oDrawing1);
 $oSlide1->addShape($oRichText1);

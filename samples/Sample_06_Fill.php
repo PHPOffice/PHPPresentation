@@ -12,32 +12,31 @@ echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;
 $objPHPPresentation = new PhpPresentation();
 
 // Set properties
-echo date('H:i:s') . ' Set properties'.EOL;
+echo date('H:i:s') . ' Set properties' . EOL;
 $objPHPPresentation->getDocumentProperties()->setCreator('PHPOffice')
-                                  ->setLastModifiedBy('PHPPresentation Team')
-                                  ->setTitle('Sample 01 Title')
-                                  ->setSubject('Sample 01 Subject')
-                                  ->setDescription('Sample 01 Description')
-                                  ->setKeywords('office 2007 openxml libreoffice odt php')
-                                  ->setCategory('Sample Category');
+    ->setLastModifiedBy('PHPPresentation Team')
+    ->setTitle('Sample 01 Title')
+    ->setSubject('Sample 01 Subject')
+    ->setDescription('Sample 01 Description')
+    ->setKeywords('office 2007 openxml libreoffice odt php')
+    ->setCategory('Sample Category');
 
 // Create slide
-echo date('H:i:s') . ' Create slide'.EOL;
+echo date('H:i:s') . ' Create slide' . EOL;
 $currentSlide = $objPHPPresentation->getActiveSlide();
 
-
-for ($inc = 1 ; $inc <= 4 ; $inc++) {
+for ($inc = 1; $inc <= 4; ++$inc) {
     // Create a shape (text)
-    echo date('H:i:s') . ' Create a shape (rich text)'.EOL;
+    echo date('H:i:s') . ' Create a shape (rich text)' . EOL;
     $shape = $currentSlide->createRichTextShape()
-                          ->setHeight(200)
-                          ->setWidth(300);
-    if ($inc == 1 || $inc == 3) {
+        ->setHeight(200)
+        ->setWidth(300);
+    if (1 == $inc || 3 == $inc) {
         $shape->setOffsetX(10);
     } else {
         $shape->setOffsetX(320);
     }
-    if ($inc == 1 || $inc == 2) {
+    if (1 == $inc || 2 == $inc) {
         $shape->setOffsetY(10);
     } else {
         $shape->setOffsetY(220);
@@ -61,8 +60,8 @@ for ($inc = 1 ; $inc <= 4 ; $inc++) {
 
     $textRun = $shape->createTextRun('Use PHPPresentation!');
     $textRun->getFont()->setBold(true)
-                       ->setSize(30)
-                       ->setColor(new Color('FFE06B20'));
+        ->setSize(30)
+        ->setColor(new Color('FFE06B20'));
 }
 
 // Save file

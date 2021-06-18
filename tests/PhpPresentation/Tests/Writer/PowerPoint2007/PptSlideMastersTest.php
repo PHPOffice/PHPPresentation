@@ -13,9 +13,9 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\PptSlideMasters;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PowerPoint2007
+ * Test class for PowerPoint2007.
  *
- * @coversDefaultClass PowerPoint2007
+ * @coversDefaultClass \PowerPoint2007
  */
 class PptSlideMastersTest extends TestCase
 {
@@ -24,10 +24,10 @@ class PptSlideMastersTest extends TestCase
         $writer = new PptSlideMasters();
         /** @var \PHPUnit\Framework\MockObject\MockObject|SlideMaster $slideMaster */
         $slideMaster = $this->getMockBuilder(SlideMaster::class)
-            ->setMethods(array('getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'))
+            ->setMethods(['getAllSlideLayouts', 'getRelsIndex', 'getShapeCollection'])
             ->getMock();
 
-        $layouts = array(new SlideLayout($slideMaster));
+        $layouts = [new SlideLayout($slideMaster)];
 
         $slideMaster->expects($this->once())
             ->method('getAllSlideLayouts')
