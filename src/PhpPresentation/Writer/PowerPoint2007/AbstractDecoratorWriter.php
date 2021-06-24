@@ -98,14 +98,15 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
         // a:headEnd
         $objWriter->startElement('a:headEnd');
-        $objWriter->writeAttribute('type', 'none');
+
+        $objWriter->writeAttribute('type', $pBorder->getHeadEnd());
         $objWriter->writeAttribute('w', 'med');
         $objWriter->writeAttribute('len', 'med');
         $objWriter->endElement();
 
         // a:tailEnd
         $objWriter->startElement('a:tailEnd');
-        $objWriter->writeAttribute('type', 'none');
+        $objWriter->writeAttribute('type', $pBorder->getTailEnd());
         $objWriter->writeAttribute('w', 'med');
         $objWriter->writeAttribute('len', 'med');
         $objWriter->endElement();
