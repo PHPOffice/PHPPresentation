@@ -1137,6 +1137,19 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         if ($shape->hasHyperlink()) {
             $this->writeHyperlink($objWriter, $shape);
         }
+
+        if($shape->getExtension() == 'svg') {
+            $objWriter->startElement('a:extLst');
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', '{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}');
+            $objWriter->startElement('a16:creationId');
+            $objWriter->writeAttribute('xmlns:a16', 'http://schemas.microsoft.com/office/drawing/2014/main');
+            $objWriter->writeAttribute('id', '{F8CFD691-5332-EB49-9B42-7D7B3DB9185D}');
+            $objWriter->endElement();
+            $objWriter->endElement();
+            $objWriter->endElement();
+        }
+
         $objWriter->endElement();
         // p:cNvPicPr
         $objWriter->startElement('p:cNvPicPr');
@@ -1179,6 +1192,33 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // a:blip
         $objWriter->startElement('a:blip');
         $objWriter->writeAttribute('r:embed', $shape->relationId);
+
+        //SVG info
+
+        if($shape->getExtension() == 'svg') {
+            $objWriter->startElement('a:extLst');
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', '{28A0092B-C50C-407E-A947-70E740481C1C}');
+            $objWriter->startElement('a14:useLocalDpi');
+            $objWriter->writeAttribute('xmlns:a14', 'http://schemas.microsoft.com/office/drawing/2010/main');
+            $objWriter->writeAttribute('val', '0');
+            $objWriter->endElement();
+            $objWriter->endElement();
+
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', '{96DAC541-7B7A-43D3-8B79-37D633B846F1}');
+
+            $objWriter->startElement('asvg:svgBlip');
+            $objWriter->writeAttribute('xmlns:asvg', 'http://schemas.microsoft.com/office/drawing/2016/SVG/main');
+            $objWriter->writeAttribute('r:embed', $shape->relationId);
+
+            $objWriter->endElement();
+            $objWriter->endElement();
+
+            $objWriter->endElement();
+
+        }
+
         $objWriter->endElement();
         // a:stretch
         $objWriter->startElement('a:stretch');

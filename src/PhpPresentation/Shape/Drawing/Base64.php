@@ -23,6 +23,7 @@ class Base64 extends AbstractDrawingAdapter
         'image/jpeg' => 'jpg',
         'image/png'  => 'png',
         'image/gif'  => 'gif',
+        'image/svg+xml' => 'svg',
     );
 
     /**
@@ -91,6 +92,12 @@ class Base64 extends AbstractDrawingAdapter
      */
     public function getMimeType()
     {
+        list($data, ) = explode(';', $this->getData());
+        list(, $mime) = explode(':', $data);
+
+        if(!empty($mime))
+            return $mime;
+
         $sImage = $this->getContents();
         if (!function_exists('getimagesizefromstring')) {
             $uri = 'data://application/octet-stream;base64,' . base64_encode($sImage);
