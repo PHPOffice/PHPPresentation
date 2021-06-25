@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -22,16 +23,16 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for IOFactory
+ * Test class for IOFactory.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\IOFactory
+ * @coversDefaultClass \PhpOffice\PhpPresentation\IOFactory
  */
 class IOFactoryTest extends TestCase
 {
     /**
-     * Test create writer
+     * Test create writer.
      */
-    public function testCreateWriter()
+    public function testCreateWriter(): void
     {
         $class = 'PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007';
 
@@ -39,9 +40,9 @@ class IOFactoryTest extends TestCase
     }
 
     /**
-     * Test create reader
+     * Test create reader.
      */
-    public function testCreateReader()
+    public function testCreateReader(): void
     {
         $class = 'PhpOffice\\PhpPresentation\\Reader\\ReaderInterface';
 
@@ -49,29 +50,27 @@ class IOFactoryTest extends TestCase
     }
 
     /**
-     * Test load class exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage is not a valid reader
+     * Test load class exception.
      */
-    public function testLoadClassException()
+    public function testLoadClassException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('"" is not a valid reader');
         IOFactory::createReader();
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'serialized.phppt'));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'serialized.phppt'));
     }
 
     /**
-     * Test load class exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.
+     * Test load class exception.
      */
-    public function testLoadException()
+    public function testLoadException(): void
     {
-        IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.');
+        IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
     }
 }

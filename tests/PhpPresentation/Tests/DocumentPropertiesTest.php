@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
@@ -21,19 +22,19 @@ use PhpOffice\PhpPresentation\DocumentProperties;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for DocumentProperties
+ * Test class for DocumentProperties.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\DocumentProperties
+ * @coversDefaultClass \PhpOffice\PhpPresentation\DocumentProperties
  */
 class DocumentPropertiesTest extends TestCase
 {
     /**
-     * Test get set value
+     * Test get set value.
      */
-    public function testGetSet()
+    public function testGetSet(): void
     {
         $object = new DocumentProperties();
-        $properties = array(
+        $properties = [
             'creator' => '',
             'lastModifiedBy' => '',
             'created' => '',
@@ -44,7 +45,7 @@ class DocumentPropertiesTest extends TestCase
             'keywords' => '',
             'category' => '',
             'company' => '',
-        );
+        ];
 
         foreach ($properties as $key => $val) {
             $get = "get{$key}";
@@ -55,15 +56,15 @@ class DocumentPropertiesTest extends TestCase
     }
 
     /**
-     * Test get set with null value
+     * Test get set with null value.
      */
-    public function testGetSetNull()
+    public function testGetSetNull(): void
     {
         $object = new DocumentProperties();
-        $properties = array(
+        $properties = [
             'created' => '',
             'modified' => '',
-        );
+        ];
         $time = time();
 
         foreach (array_keys($properties) as $key) {

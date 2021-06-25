@@ -25,12 +25,12 @@ class Gridlines
     }
 
     /**
-     * @param Outline $outline
      * @return Gridlines
      */
     public function setOutline(Outline $outline)
     {
         $this->outline = $outline;
+
         return $this;
     }
 }

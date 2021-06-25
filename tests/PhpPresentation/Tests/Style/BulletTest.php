@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -22,16 +23,16 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class BulletTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Bullet();
         $this->assertEquals(Bullet::TYPE_NONE, $object->getBulletType());
@@ -42,9 +43,9 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet char
+     * Test get/set bullet char.
      */
-    public function testSetGetBulletChar()
+    public function testSetGetBulletChar(): void
     {
         $object = new Bullet();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletChar());
@@ -54,9 +55,9 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet color
+     * Test get/set bullet color.
      */
-    public function testSetGetBulletColor()
+    public function testSetGetBulletColor(): void
     {
         $object = new Bullet();
 
@@ -66,16 +67,15 @@ class BulletTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
         $this->assertEquals(Color::COLOR_BLACK, $object->getBulletColor()->getARGB());
 
-
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletColor(new Color($expectedARGB)));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getBulletColor());
         $this->assertEquals($expectedARGB, $object->getBulletColor()->getARGB());
     }
 
     /**
-     * Test get/set bullet font
+     * Test get/set bullet font.
      */
-    public function testSetGetBulletFont()
+    public function testSetGetBulletFont(): void
     {
         $object = new Bullet();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont());
@@ -87,9 +87,9 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet numeric start at
+     * Test get/set bullet numeric start at.
      */
-    public function testSetGetBulletNumericStartAt()
+    public function testSetGetBulletNumericStartAt(): void
     {
         $object = new Bullet();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStartAt());
@@ -100,9 +100,9 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet numeric style
+     * Test get/set bullet numeric style.
      */
-    public function testSetGetBulletNumericStyle()
+    public function testSetGetBulletNumericStyle(): void
     {
         $object = new Bullet();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletNumericStyle());
@@ -112,9 +112,9 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set bullet type
+     * Test get/set bullet type.
      */
-    public function testSetGetBulletType()
+    public function testSetGetBulletType(): void
     {
         $object = new Bullet();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletType());
@@ -124,9 +124,9 @@ class BulletTest extends TestCase
     }
 
     /**
-     * Test get/set has index
+     * Test get/set has index.
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Bullet();
         $value = mt_rand(1, 100);

@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -22,14 +23,14 @@ use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for TemplateBased
+ * Test class for TemplateBased.
  *
  * @deprecated 0.7
- * @coversDefaultClass TemplateBased
+ * @coversDefaultClass \TemplateBased
  */
 class TemplateBasedTest extends TestCase
 {
-    public function testFindLayout()
+    public function testFindLayout(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
         $templateBased = new TemplateBased($file);
@@ -41,18 +42,17 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Exception
-     */
-    public function testFindLayoutException()
+    public function testFindLayoutException(): void
     {
+        $this->expectException(\Exception::class);
+
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
         $templateBased = new TemplateBased($file);
         $name = 'Invalid';
         $templateBased->findLayout($name);
     }
 
-    public function testFindLayoutId()
+    public function testFindLayoutId(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
         $templateBased = new TemplateBased($file);
@@ -64,18 +64,17 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Exception
-     */
-    public function testFindLayoutIdException()
+    public function testFindLayoutIdException(): void
     {
+        $this->expectException(\Exception::class);
+
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.pptx';
         $templateBased = new TemplateBased($file);
         $name = 'Invalid';
         $templateBased->findLayoutId($name);
     }
 
-    public function testFindLayoutName()
+    public function testFindLayoutName(): void
     {
         $oLayout = new PackDefault();
         foreach ($oLayout->getLayouts() as $keyLayout => $layout) {
@@ -84,11 +83,10 @@ class TemplateBasedTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Exception
-     */
-    public function testFindLayoutNameException()
+    public function testFindLayoutNameException(): void
     {
+        $this->expectException(\Exception::class);
+
         $oLayout = new PackDefault();
         $oLayout->findLayoutName(1000);
     }

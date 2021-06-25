@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Slide;
@@ -23,15 +24,13 @@ use PhpOffice\PhpPresentation\Slide\Iterator;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for IOFactory
+ * Test class for IOFactory.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\IOFactory
+ * @coversDefaultClass \PhpOffice\PhpPresentation\IOFactory
  */
 class IteratorTest extends TestCase
 {
-    /**
-     */
-    public function testMethod()
+    public function testMethod(): void
     {
         $oPhpPresentation = new PhpPresentation();
         $oPhpPresentation->addSlide(new Slide());
@@ -40,13 +39,13 @@ class IteratorTest extends TestCase
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
         $this->assertEquals(0, $object->key());
-        $this->assertNull($object->next());
+        $object->next();
         $this->assertEquals(1, $object->key());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->current());
         $this->assertTrue($object->valid());
-        $this->assertNull($object->next());
+        $object->next();
         $this->assertFalse($object->valid());
-        $this->assertNull($object->rewind());
+        $object->rewind();
         $this->assertEquals(0, $object->key());
     }
 }

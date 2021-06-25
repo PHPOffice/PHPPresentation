@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -22,26 +23,26 @@ use PHPUnit\Framework\TestCase;
 
 class ColorMapTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new ColorMap();
-        $this->assertInternalType('array', $object->getMapping());
+        $this->assertIsArray($object->getMapping());
         $this->assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
-    public function testMapping()
+    public function testMapping(): void
     {
         $object = new ColorMap();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping(array()));
-        $this->assertInternalType('array', $object->getMapping());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping([]));
+        $this->assertIsArray($object->getMapping());
         $this->assertCount(0, $object->getMapping());
         $array = ColorMap::$mappingDefault;
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping($array));
-        $this->assertInternalType('array', $object->getMapping());
+        $this->assertIsArray($object->getMapping());
         $this->assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
-    public function testModifier()
+    public function testModifier(): void
     {
         $object = new ColorMap();
         $key = array_rand(ColorMap::$mappingDefault);

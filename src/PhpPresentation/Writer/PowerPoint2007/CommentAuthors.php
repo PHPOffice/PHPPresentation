@@ -11,6 +11,7 @@ class CommentAuthors extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -18,7 +19,7 @@ class CommentAuthors extends AbstractDecoratorWriter
         /**
          * @var Author[]
          */
-        $arrayAuthors = array();
+        $arrayAuthors = [];
         foreach ($this->getPresentation()->getAllSlides() as $oSlide) {
             foreach ($oSlide->getShapeCollection() as $oShape) {
                 if (!($oShape instanceof Comment)) {
@@ -43,6 +44,7 @@ class CommentAuthors extends AbstractDecoratorWriter
 
     /**
      * @param Author[] $arrayAuthors
+     *
      * @return string
      */
     protected function writeCommentsAuthors($arrayAuthors)
@@ -63,7 +65,7 @@ class CommentAuthors extends AbstractDecoratorWriter
             $objWriter->writeAttribute('id', $oAuthor->getIndex());
             $objWriter->writeAttribute('name', $oAuthor->getName());
             $objWriter->writeAttribute('initials', $oAuthor->getInitials());
-            $objWriter->writeAttribute('lastIdx', "2");
+            $objWriter->writeAttribute('lastIdx', '2');
             $objWriter->writeAttribute('clrIdx', 0);
             $objWriter->endElement();
         }

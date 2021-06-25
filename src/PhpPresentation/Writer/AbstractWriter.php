@@ -2,7 +2,10 @@
 
 namespace PhpOffice\PhpPresentation\Writer;
 
+use ArrayIterator;
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
+use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
@@ -11,93 +14,101 @@ use PhpOffice\PhpPresentation\Shape\Group;
 abstract class AbstractWriter
 {
     /**
-     * Private unique hash table
+     * Private unique hash table.
      *
-     * @var \PhpOffice\PhpPresentation\HashTable
+     * @var HashTable
      */
     protected $oDrawingHashTable;
 
     /**
-     * Private PhpPresentation
+     * Private PhpPresentation.
      *
      * @var PhpPresentation
      */
     protected $oPresentation;
 
     /**
-     * @var ZipInterface
+     * @var ZipInterface|null
      */
     protected $oZipAdapter;
 
     /**
-     * Get drawing hash table
-     *
-     * @return \PhpOffice\PhpPresentation\HashTable
+     * Get drawing hash table.
      */
-    public function getDrawingHashTable()
+    public function getDrawingHashTable(): HashTable
     {
         return $this->oDrawingHashTable;
     }
 
     /**
-     * Get PhpPresentation object
+     * Get PhpPresentation object.
      *
-     * @return PhpPresentation
      * @throws \Exception
      */
-    public function getPhpPresentation()
+    public function getPhpPresentation(): PhpPresentation
     {
         if (empty($this->oPresentation)) {
-            throw new \Exception("No PhpPresentation assigned.");
+            throw new \Exception('No PhpPresentation assigned.');
         }
+
         return $this->oPresentation;
     }
 
     /**
-     * Get PhpPresentation object
+     * Get PhpPresentation object.
      *
-     * @param  PhpPresentation                       $pPhpPresentation PhpPresentation object
+     * @param PhpPresentation|null $pPhpPresentation PhpPresentation object
+     *
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Writer\AbstractWriter
+     *
+     * @return self
      */
     public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
     {
         $this->oPresentation = $pPhpPresentation;
+
         return $this;
     }
 
-
-    /**
-     * @param ZipInterface $oZipAdapter
-     * @return $this
-     */
-    public function setZipAdapter(ZipInterface $oZipAdapter)
+    public function setZipAdapter(ZipInterface $oZipAdapter): self
     {
         $this->oZipAdapter = $oZipAdapter;
+
         return $this;
     }
 
-    /**
-     * @return ZipInterface
-     */
-    public function getZipAdapter()
+    public function getZipAdapter(): ?ZipInterface
     {
         return $this->oZipAdapter;
     }
 
     /**
-     * Get an array of all drawings
+     * Get an array of all drawings.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
+     * @return array<int, AbstractShape>
+     *
      * @throws \Exception
      */
-    protected function allDrawings()
+    protected function allDrawings(): array
     {
         // Get an array of all drawings
-        $aDrawings  = array();
+        $aDrawings = [];
+
+        // Get an array of all master slides
+        $aSlideMasters = $this->getPhpPresentation()->getAllMasterSlides();
+
+        $aSlideMasterLayouts = array_map(function ($oSlideMaster) {
+            return $oSlideMaster->getAllSlideLayouts();
+        }, $aSlideMasters);
+
+        // Get an array of all slide layouts
+        $aSlideLayouts = [];
+        array_walk_recursive($aSlideMasterLayouts, function ($oSlideLayout) use (&$aSlideLayouts) {
+            $aSlideLayouts[] = $oSlideLayout;
+        });
 
         // Loop through PhpPresentation
-        foreach (array_merge($this->getPhpPresentation()->getAllSlides(), $this->getPhpPresentation()->getAllMasterSlides()) as $oSlide) {
+        foreach (array_merge($this->getPhpPresentation()->getAllSlides(), $aSlideMasters, $aSlideLayouts) as $oSlide) {
             $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
             $aDrawings = array_merge($aDrawings, $arrayReturn);
         }
@@ -105,9 +116,14 @@ abstract class AbstractWriter
         return $aDrawings;
     }
 
-    private function iterateCollection(\ArrayIterator $oIterator)
+    /**
+     * @param ArrayIterator<int, AbstractShape> $oIterator
+     *
+     * @return array<int, AbstractShape>
+     */
+    private function iterateCollection(ArrayIterator $oIterator): array
     {
-        $arrayReturn = array();
+        $arrayReturn = [];
         if ($oIterator->count() <= 0) {
             return $arrayReturn;
         }
@@ -124,6 +140,7 @@ abstract class AbstractWriter
             }
             $oIterator->next();
         }
+
         return $arrayReturn;
     }
 }

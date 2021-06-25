@@ -12,101 +12,98 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
-use PhpOffice\PhpPresentation\Writer\Serialized;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Writer\Serialized;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for serialized reader
+ * Test class for serialized reader.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Reader\Serialized
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Reader\Serialized
  */
 class SerializedTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Serialized(new PhpPresentation());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
-     */
-    public function testEmptyConstruct()
+    public function testEmptyConstruct(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+
         $object = new Serialized();
         $object->getPhpPresentation();
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Filename is empty.
-     */
-    public function testSaveEmpty()
+    public function testSaveEmpty(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Filename is empty.');
+
         $object = new Serialized(new PhpPresentation());
         $object->save('');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
-     */
-    public function testSaveNoObject()
+    public function testSaveNoObject(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+
         $object = new Serialized();
         $object->save('file.phpppt');
     }
 
-    public function testSave()
+    public function testSave(): void
     {
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
-        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
+        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
         $object = new Serialized($oPhpPresentation);
         $object->save($file);
-        
+
         $this->assertFileExists($file);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open
-     */
-    public function testSaveNotExistingDir()
+    public function testSaveNotExistingDir(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open');
+
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
-        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
+        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
         $object = new Serialized($oPhpPresentation);
 
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
 
-        $this->assertFileExists($file, $object->save($file.DIRECTORY_SEPARATOR.'test'.DIRECTORY_SEPARATOR.'test'));
+        $object->save($file . DIRECTORY_SEPARATOR . 'test' . DIRECTORY_SEPARATOR . 'test');
     }
 
-    public function testSaveOverwriting()
+    public function testSaveOverwriting(): void
     {
         $oPhpPresentation = new PhpPresentation();
         $oSlide = $oPhpPresentation->getActiveSlide();
         $oImage = $oSlide->createDrawingShape();
-        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
-        
+        $oImage->setPath(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png');
+
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
         file_put_contents($file, rand(1, 100));
 
         $object = new Serialized($oPhpPresentation);
         $object->save($file);
-            
+
         $this->assertFileExists($file);
     }
 }

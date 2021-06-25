@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\XMLWriter;
@@ -7,6 +8,7 @@ class PptPresProps extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()

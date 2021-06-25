@@ -7,20 +7,19 @@ use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
 
 /**
- * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation
+ * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Writer\ODPresentation
  */
 class ODPresentationTest extends PhpPresentationTestCase
 {
     protected $writerName = 'ODPresentation';
 
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
-        ;
         $this->oPresentation->getActiveSlide()->createDrawingShape();
         $object = new ODPresentation($this->oPresentation);
 
@@ -30,9 +29,9 @@ class ODPresentationTest extends PhpPresentationTestCase
     }
 
     /**
-     * Test save
+     * Test save.
      */
-    public function testSave()
+    public function testSave(): void
     {
         $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');
         $imageFile = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png';
@@ -53,33 +52,33 @@ class ODPresentationTest extends PhpPresentationTestCase
     }
 
     /**
-     * Test get PhpPresentation exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Filename is empty
+     * Test get PhpPresentation exception.
      */
-    public function testSaveEmpty()
+    public function testSaveEmpty(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Filename is empty');
+
         $object = new ODPresentation();
         $object->save('');
     }
 
     /**
-     * Test get PhpPresentation exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
+     * Test get PhpPresentation exception.
      */
-    public function testGetPhpPresentationException()
+    public function testGetPhpPresentationException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+
         $object = new ODPresentation();
         $object->getPhpPresentation();
     }
 
     /**
-     * Test set/get disk caching
+     * Test set/get disk caching.
      */
-    public function testSetGetUseDiskCaching()
+    public function testSetGetUseDiskCaching(): void
     {
         $object = new ODPresentation($this->oPresentation);
         $this->assertFalse($object->hasDiskCaching());
@@ -90,19 +89,19 @@ class ODPresentationTest extends PhpPresentationTestCase
     }
 
     /**
-     * Test set/get disk caching exception
-     *
-     * @expectedException \Exception
+     * Test set/get disk caching exception.
      */
-    public function testSetUseDiskCachingException()
+    public function testSetUseDiskCachingException(): void
     {
+        $this->expectException(\Exception::class);
+
         $object = new ODPresentation($this->oPresentation);
         $object->setUseDiskCaching(true, 'foo');
     }
 
-    public function testFeatureThumbnail()
+    public function testFeatureThumbnail(): void
     {
-        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
 
         $xPathManifest = '/manifest:manifest/manifest:file-entry[@manifest:media-type=\'image/png\'][@manifest:full-path=\'Thumbnails/thumbnail.png\']';
 

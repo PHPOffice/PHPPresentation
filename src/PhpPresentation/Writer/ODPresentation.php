@@ -10,48 +10,48 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpPresentation\Writer;
 
+use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
-use PhpOffice\PhpPresentation\Shape\Table;
-use DirectoryIterator;
 
 /**
- * ODPresentation writer
+ * ODPresentation writer.
  */
 class ODPresentation extends AbstractWriter implements WriterInterface
 {
     /**
      * @var \PhpOffice\PhpPresentation\Shape\Chart[]
      */
-    public $chartArray = array();
+    public $chartArray = [];
 
     /**
-    * Use disk caching where possible?
-    *
-    * @var boolean
-    */
+     * Use disk caching where possible?
+     *
+     * @var bool
+     */
     private $useDiskCaching = false;
 
     /**
-     * Disk caching directory
+     * Disk caching directory.
      *
      * @var string
      */
     private $diskCachingDirectory;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Writer\ODPresentation
+     * Create a new \PhpOffice\PhpPresentation\Writer\ODPresentation.
      *
      * @param PhpPresentation $pPhpPresentation
+     *
      * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
@@ -69,21 +69,20 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Save PhpPresentation to file
+     * Save PhpPresentation to file.
      *
-     * @param  string    $pFilename
      * @throws \Exception
      */
-    public function save($pFilename)
+    public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
-            throw new \Exception("Filename is empty");
+            throw new \Exception('Filename is empty');
         }
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
-        if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
+        if ('php://output' == strtolower($pFilename) || 'php://stdout' == strtolower($pFilename)) {
             $pFilename = @tempnam('./', 'phppttmp');
-            if ($pFilename == '') {
+            if ('' == $pFilename) {
                 $pFilename = $originalFilename;
             }
         }
@@ -97,22 +96,22 @@ class ODPresentation extends AbstractWriter implements WriterInterface
 
         // Variables
         $oPresentation = $this->getPhpPresentation();
-        $arrayChart = array();
+        $arrayChart = [];
 
-        $arrayFiles = array();
-        $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'ODPresentation');
+        $arrayFiles = [];
+        $oDir = new DirectoryIterator(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ODPresentation');
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;
             }
 
             $class = __NAMESPACE__ . '\\ODPresentation\\' . $oFile->getBasename('.php');
-            $o = new \ReflectionClass($class);
+            $class = new \ReflectionClass($class);
 
-            if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
+            if ($class->isAbstract() || !$class->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
                 continue;
             }
-            $arrayFiles[$oFile->getBasename('.php')] = $o;
+            $arrayFiles[$oFile->getBasename('.php')] = $class;
         }
 
         ksort($arrayFiles);
@@ -133,10 +132,10 @@ class ODPresentation extends AbstractWriter implements WriterInterface
 
         // If a temporary file was used, copy it to the correct file stream
         if ($originalFilename != $pFilename) {
-            if (copy($pFilename, $originalFilename) === false) {
+            if (false === copy($pFilename, $originalFilename)) {
                 throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
             }
-            if (@unlink($pFilename) === false) {
+            if (false === @unlink($pFilename)) {
                 throw new \Exception('The file ' . $pFilename . ' could not be removed.');
             }
         }
@@ -145,7 +144,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     /**
      * Get use disk caching where possible?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasDiskCaching()
     {
@@ -155,9 +154,11 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param  boolean $pValue
-     * @param  string $pDirectory Disk caching directory
+     * @param bool $pValue
+     * @param string $pDirectory Disk caching directory
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
      */
     public function setUseDiskCaching($pValue = false, $pDirectory = null)
@@ -175,7 +176,7 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Get disk caching directory
+     * Get disk caching directory.
      *
      * @return string
      */

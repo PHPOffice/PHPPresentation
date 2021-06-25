@@ -6,23 +6,18 @@ use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 
 abstract class AbstractDrawingAdapter extends AbstractGraphic
 {
-    /**
-     * @return string
-     */
-    abstract public function getContents();
+    abstract public function getContents(): string;
+
+    abstract public function getExtension(): string;
+
+    abstract public function getIndexedFilename(): string;
+
+    abstract public function getMimeType(): string;
+
+    abstract public function getPath(): string;
 
     /**
-     * @return string
+     * @return self
      */
-    abstract public function getExtension();
-
-    /**
-     * @return string
-     */
-    abstract public function getIndexedFilename();
-
-    /**
-     * @return string
-     */
-    abstract public function getMimeType();
+    abstract public function setPath(string $path);
 }

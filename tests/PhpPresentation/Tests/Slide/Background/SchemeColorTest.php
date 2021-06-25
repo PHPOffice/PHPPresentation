@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class SchemeColorTest extends TestCase
 {
-    public function testBasic()
+    public function testBasic(): void
     {
         $oStyle = new StyleSchemeColor();
 

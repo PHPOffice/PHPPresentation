@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
@@ -21,13 +22,13 @@ use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Legend element
+ * Test class for Legend element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Marker
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Marker
  */
 class MarkerTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Marker();
 
@@ -35,17 +36,17 @@ class MarkerTest extends TestCase
         $this->assertEquals(5, $object->getSize());
     }
 
-    public function testSymbol()
+    public function testSymbol(): void
     {
         $object = new Marker();
 
-        $expected = array_rand(Marker::$arraySymbol);
+        $expected = Marker::$arraySymbol[array_rand(Marker::$arraySymbol)];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->setSymbol($expected));
         $this->assertEquals($expected, $object->getSymbol());
     }
 
-    public function testSize()
+    public function testSize(): void
     {
         $object = new Marker();
         $value = mt_rand(1, 100);

@@ -12,7 +12,7 @@ classes to write to different presentation file formats, i.e. Microsoft
 PHPPresentation is an open source project licensed under the terms of `LGPL
 version 3 <https://github.com/PHPOffice/PHPPresentation/blob/develop/COPYING.LESSER>`__.
 PHPPresentation is aimed to be a high quality software product by incorporating
-`continuous integration <https://travis-ci.org/PHPOffice/PHPPresentation>`__ and
+`continuous integration <https://github.com/PHPOffice/PHPPresentation/actions/workflows/php.yml>`__ and
 `unit testing <http://phpoffice.github.io/PHPPresentation/coverage/develop/>`__.
 You can learn more about PHPPresentation by reading this Developers'
 Documentation and the `API Documentation <http://phpoffice.github.io/PHPPresentation/docs/develop/>`__.

@@ -12,29 +12,30 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Table;
 
-use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Style\Borders;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Cell element
+ * Test class for Cell element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Cell
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Cell
  */
 class CellTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Cell();
         $this->assertEquals(0, $object->getActiveParagraphIndex());
@@ -43,7 +44,7 @@ class CellTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Borders', $object->getBorders());
     }
 
-    public function testActiveParagraph()
+    public function testActiveParagraph(): void
     {
         $object = new Cell();
         $this->assertEquals(0, $object->getActiveParagraphIndex());
@@ -57,36 +58,34 @@ class CellTest extends TestCase
         $value = mt_rand(0, 1);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs(array()));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs([]));
         $this->assertCount(0, $object->getParagraphs());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->createParagraph());
         $this->assertCount(1, $object->getParagraphs());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid paragraph count.
-     */
-    public function testActiveParagraphException()
+    public function testActiveParagraphException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid paragraph count.');
+
         $object = new Cell();
         $object->setActiveParagraph(1000);
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid paragraph count.
-     */
-    public function testGetParagraphException()
+    public function testGetParagraphException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid paragraph count.');
+
         $object = new Cell();
         $object->getParagraph(1000);
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Cell();
         $value = mt_rand(1, 100);
@@ -94,7 +93,7 @@ class CellTest extends TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testText()
+    public function testText(): void
     {
         $object = new Cell();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->addText());
@@ -111,36 +110,26 @@ class CellTest extends TestCase
         $this->assertCount(6, $object->getActiveParagraph()->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
         $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', $object->getPlainText());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', (string) $object);
+        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', $object->getPlainText());
+        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', (string) $object);
     }
 
-    public function testParagraphs()
+    public function testParagraphs(): void
     {
         $object = new Cell();
 
-        $array = array(
+        $array = [
             new Paragraph(),
             new Paragraph(),
             new Paragraph(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->setParagraphs($array));
         $this->assertCount(3, $object->getParagraphs());
         $this->assertEquals(2, $object->getActiveParagraphIndex());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.
-     */
-    public function testParagraphsException()
-    {
-        $object = new Cell();
-        $object->setParagraphs(1000);
-    }
-
-    public function testGetSetBorders()
+    public function testGetSetBorders(): void
     {
         $object = new Cell();
 
@@ -148,7 +137,7 @@ class CellTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Borders', $object->getBorders());
     }
 
-    public function testGetSetColspan()
+    public function testGetSetColspan(): void
     {
         $object = new Cell();
 
@@ -160,7 +149,7 @@ class CellTest extends TestCase
         $this->assertEquals($value, $object->getColSpan());
     }
 
-    public function testGetSetFill()
+    public function testGetSetFill(): void
     {
         $object = new Cell();
 
@@ -168,7 +157,7 @@ class CellTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
     }
 
-    public function testGetSetRowspan()
+    public function testGetSetRowspan(): void
     {
         $object = new Cell();
 
@@ -180,7 +169,7 @@ class CellTest extends TestCase
         $this->assertEquals($value, $object->getRowSpan());
     }
 
-    public function testGetSetWidth()
+    public function testGetSetWidth(): void
     {
         $object = new Cell();
 

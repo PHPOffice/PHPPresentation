@@ -12,33 +12,34 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Doughnut element
+ * Test class for Doughnut element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut
  */
 class DoughnutTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Doughnut();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Doughnut', $object->setSeries());
         $this->assertEmpty($object->getSeries());
@@ -46,7 +47,7 @@ class DoughnutTest extends TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testHoleSize()
+    public function testHoleSize(): void
     {
         $rand = mt_rand(10, 90);
         $object = new Doughnut();
@@ -62,7 +63,7 @@ class DoughnutTest extends TestCase
         $this->assertEquals(50, $object->getHoleSize());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Doughnut();
 
@@ -70,7 +71,7 @@ class DoughnutTest extends TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 

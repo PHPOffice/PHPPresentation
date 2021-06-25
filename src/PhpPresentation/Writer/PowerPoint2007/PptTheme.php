@@ -2,13 +2,14 @@
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
-use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\Slide;
 
 class PptTheme extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -20,16 +21,14 @@ class PptTheme extends AbstractDecoratorWriter
         return $this->getZip();
     }
 
-
     /**
-     * Write theme to XML format
+     * Write theme to XML format.
      *
-     * @param  Slide\SlideMaster $oMasterSlide
      * @return string XML Output
      */
     protected function writeTheme(Slide\SlideMaster $oMasterSlide)
     {
-        $arrayFont = array(
+        $arrayFont = [
             'Jpan' => 'ＭＳ Ｐゴシック',
             'Hang' => '맑은 고딕',
             'Hans' => '宋体',
@@ -59,12 +58,12 @@ class PptTheme extends AbstractDecoratorWriter
             'Mong' => 'Mongolian Baiti',
             'Viet' => 'Times New Roman',
             'Uigh' => 'Microsoft Uighur',
-        );
+        ];
 
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
 
-        $name = 'Theme'.rand(1, 100);
+        $name = 'Theme' . rand(1, 100);
 
         // XML header
         $objWriter->startDocument('1.0', 'UTF-8', 'yes');
@@ -83,13 +82,13 @@ class PptTheme extends AbstractDecoratorWriter
 
         foreach ($oMasterSlide->getAllSchemeColors() as $oSchemeColor) {
             // a:theme/a:themeElements/a:clrScheme/a:*
-            $objWriter->startElement('a:'.$oSchemeColor->getValue());
+            $objWriter->startElement('a:' . $oSchemeColor->getValue());
 
-            if (in_array($oSchemeColor->getValue(), array(
-                'dk1', 'lt1'
-            ))) {
+            if (in_array($oSchemeColor->getValue(), [
+                'dk1', 'lt1',
+            ])) {
                 $objWriter->startElement('a:sysClr');
-                $objWriter->writeAttribute('val', ($oSchemeColor->getValue() == 'dk1' ? 'windowText' : 'window'));
+                $objWriter->writeAttribute('val', ('dk1' == $oSchemeColor->getValue() ? 'windowText' : 'window'));
                 $objWriter->writeAttribute('lastClr', $oSchemeColor->getRGB());
                 $objWriter->endElement();
             } else {

@@ -4,20 +4,21 @@ namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
 
 /**
- * Test class for PowerPoint2007
+ * Test class for PowerPoint2007.
  *
- * @coversDefaultClass PowerPoint2007
+ * @coversDefaultClass \PowerPoint2007
  */
 class PowerPoint2007Test extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $objectPrefix = 'PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\';
 
@@ -29,9 +30,9 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test save
+     * Test save.
      */
-    public function testSave()
+    public function testSave(): void
     {
         $filename = tempnam(sys_get_temp_dir(), 'PhpPresentation');
 
@@ -44,45 +45,45 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test save with empty filename
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Filename is empty
+     * Test save with empty filename.
      */
-    public function testSaveEmptyException()
+    public function testSaveEmptyException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Filename is empty');
+
         $object = new PowerPoint2007($this->oPresentation);
         $object->save('');
     }
 
     /**
-     * Test save with empty assignation
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
+     * Test save with empty assignation.
      */
-    public function testSaveUnassignedException()
+    public function testSaveUnassignedException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+
         $object = new PowerPoint2007();
         $object->save('filename.pptx');
     }
 
     /**
-     * Test get PhpPresentation exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage No PhpPresentation assigned.
+     * Test get PhpPresentation exception.
      */
-    public function testGetPhpPresentationException()
+    public function testGetPhpPresentationException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('No PhpPresentation assigned.');
+
         $object = new PowerPoint2007();
         $object->getPhpPresentation();
     }
 
     /**
-     * Test disk caching
+     * Test disk caching.
      */
-    public function testDiskCaching()
+    public function testDiskCaching(): void
     {
         $object = new PowerPoint2007($this->oPresentation);
         $this->assertFalse($object->hasDiskCaching());
@@ -97,35 +98,37 @@ class PowerPoint2007Test extends PhpPresentationTestCase
     }
 
     /**
-     * Test set/get disk caching exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Directory does not exist: foo
+     * Test set/get disk caching exception.
      */
-    public function testCachingException()
+    public function testCachingException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Directory does not exist: foo');
+
         $object = new PowerPoint2007($this->oPresentation);
         $object->setUseDiskCaching(true, 'foo');
     }
 
     /**
-     * Test LayoutPack
+     * Test LayoutPack.
+     *
      * @deprecated 0.7
      */
-    public function testLayoutPack()
+    public function testLayoutPack(): void
     {
-        $oLayoutPack = $this->getMockBuilder('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack')->getMock();
+        /** @var AbstractLayoutPack $oLayoutPack */
+        $oLayoutPack = $this->getMockBuilder(AbstractLayoutPack::class)->getMock();
 
         $object = new PowerPoint2007();
 
-        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack", $object->getLayoutPack());
-        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007", $object->setLayoutPack());
+        $this->assertInstanceOf(AbstractLayoutPack::class, $object->getLayoutPack());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007', $object->setLayoutPack());
         $this->assertNull($object->getLayoutPack());
-        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007", $object->setLayoutPack($oLayoutPack));
-        $this->assertInstanceOf("PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack", $object->getLayoutPack());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007', $object->setLayoutPack($oLayoutPack));
+        $this->assertInstanceOf(AbstractLayoutPack::class, $object->getLayoutPack());
     }
 
-    public function testZoom()
+    public function testZoom(): void
     {
         $this->assertZipXmlElementExists('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx');
         $this->assertZipXmlAttributeEquals('ppt/viewProps.xml', '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx', 'n', 100);
@@ -148,9 +151,9 @@ class PowerPoint2007Test extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testFeatureThumbnail()
+    public function testFeatureThumbnail(): void
     {
-        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
 
         $xPathManifest = '/Relationships/Relationship[@Target=\'docProps/thumbnail.jpeg\'][@Type=\'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail\']';
 

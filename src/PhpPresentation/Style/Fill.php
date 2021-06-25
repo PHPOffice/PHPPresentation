@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,82 +21,82 @@ namespace PhpOffice\PhpPresentation\Style;
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * \PhpOffice\PhpPresentation\Style\Fill
+ * \PhpOffice\PhpPresentation\Style\Fill.
  */
 class Fill implements ComparableInterface
 {
     /* Fill types */
-    const FILL_NONE                         = 'none';
-    const FILL_SOLID                        = 'solid';
-    const FILL_GRADIENT_LINEAR              = 'linear';
-    const FILL_GRADIENT_PATH                = 'path';
-    const FILL_PATTERN_DARKDOWN             = 'darkDown';
-    const FILL_PATTERN_DARKGRAY             = 'darkGray';
-    const FILL_PATTERN_DARKGRID             = 'darkGrid';
-    const FILL_PATTERN_DARKHORIZONTAL       = 'darkHorizontal';
-    const FILL_PATTERN_DARKTRELLIS          = 'darkTrellis';
-    const FILL_PATTERN_DARKUP               = 'darkUp';
-    const FILL_PATTERN_DARKVERTICAL         = 'darkVertical';
-    const FILL_PATTERN_GRAY0625             = 'gray0625';
-    const FILL_PATTERN_GRAY125              = 'gray125';
-    const FILL_PATTERN_LIGHTDOWN            = 'lightDown';
-    const FILL_PATTERN_LIGHTGRAY            = 'lightGray';
-    const FILL_PATTERN_LIGHTGRID            = 'lightGrid';
-    const FILL_PATTERN_LIGHTHORIZONTAL      = 'lightHorizontal';
-    const FILL_PATTERN_LIGHTTRELLIS         = 'lightTrellis';
-    const FILL_PATTERN_LIGHTUP              = 'lightUp';
-    const FILL_PATTERN_LIGHTVERTICAL        = 'lightVertical';
-    const FILL_PATTERN_MEDIUMGRAY           = 'mediumGray';
+    public const FILL_NONE = 'none';
+    public const FILL_SOLID = 'solid';
+    public const FILL_GRADIENT_LINEAR = 'linear';
+    public const FILL_GRADIENT_PATH = 'path';
+    public const FILL_PATTERN_DARKDOWN = 'darkDown';
+    public const FILL_PATTERN_DARKGRAY = 'darkGray';
+    public const FILL_PATTERN_DARKGRID = 'darkGrid';
+    public const FILL_PATTERN_DARKHORIZONTAL = 'darkHorizontal';
+    public const FILL_PATTERN_DARKTRELLIS = 'darkTrellis';
+    public const FILL_PATTERN_DARKUP = 'darkUp';
+    public const FILL_PATTERN_DARKVERTICAL = 'darkVertical';
+    public const FILL_PATTERN_GRAY0625 = 'gray0625';
+    public const FILL_PATTERN_GRAY125 = 'gray125';
+    public const FILL_PATTERN_LIGHTDOWN = 'lightDown';
+    public const FILL_PATTERN_LIGHTGRAY = 'lightGray';
+    public const FILL_PATTERN_LIGHTGRID = 'lightGrid';
+    public const FILL_PATTERN_LIGHTHORIZONTAL = 'lightHorizontal';
+    public const FILL_PATTERN_LIGHTTRELLIS = 'lightTrellis';
+    public const FILL_PATTERN_LIGHTUP = 'lightUp';
+    public const FILL_PATTERN_LIGHTVERTICAL = 'lightVertical';
+    public const FILL_PATTERN_MEDIUMGRAY = 'mediumGray';
 
     /**
-     * Fill type
+     * Fill type.
      *
      * @var string
      */
     private $fillType;
 
     /**
-     * Rotation
+     * Rotation.
      *
-     * @var double
+     * @var float
      */
     private $rotation;
 
     /**
-     * Start color
+     * Start color.
      *
      * @var \PhpOffice\PhpPresentation\Style\Color
      */
     private $startColor;
 
     /**
-     * End color
+     * End color.
      *
      * @var \PhpOffice\PhpPresentation\Style\Color
      */
     private $endColor;
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Fill
+     * Create a new \PhpOffice\PhpPresentation\Style\Fill.
      */
     public function __construct()
     {
         // Initialise values
-        $this->fillType            = self::FILL_NONE;
-        $this->rotation            = (double)0;
-        $this->startColor          = new Color(Color::COLOR_WHITE);
-        $this->endColor            = new Color(Color::COLOR_BLACK);
+        $this->fillType = self::FILL_NONE;
+        $this->rotation = (float) 0;
+        $this->startColor = new Color(Color::COLOR_WHITE);
+        $this->endColor = new Color(Color::COLOR_BLACK);
     }
 
     /**
-     * Get Fill Type
+     * Get Fill Type.
      *
      * @return string
      */
@@ -105,9 +106,10 @@ class Fill implements ComparableInterface
     }
 
     /**
-     * Set Fill Type
+     * Set Fill Type.
      *
-     * @param  string                   $pValue \PhpOffice\PhpPresentation\Style\Fill fill type
+     * @param string $pValue \PhpOffice\PhpPresentation\Style\Fill fill type
+     *
      * @return \PhpOffice\PhpPresentation\Style\Fill
      */
     public function setFillType($pValue = self::FILL_NONE)
@@ -118,9 +120,9 @@ class Fill implements ComparableInterface
     }
 
     /**
-     * Get Rotation
+     * Get Rotation.
      *
-     * @return double
+     * @return float
      */
     public function getRotation()
     {
@@ -128,20 +130,21 @@ class Fill implements ComparableInterface
     }
 
     /**
-     * Set Rotation
+     * Set Rotation.
      *
      * @param float|int $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Fill
      */
     public function setRotation($pValue = 0)
     {
-        $this->rotation = (double)$pValue;
+        $this->rotation = (float) $pValue;
 
         return $this;
     }
 
     /**
-     * Get Start Color
+     * Get Start Color.
      *
      * @return \PhpOffice\PhpPresentation\Style\Color
      */
@@ -153,10 +156,12 @@ class Fill implements ComparableInterface
     }
 
     /**
-     * Set Start Color
+     * Set Start Color.
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Color $pValue
+     * @param \PhpOffice\PhpPresentation\Style\Color $pValue
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Style\Fill
      */
     public function setStartColor(Color $pValue = null)
@@ -167,7 +172,7 @@ class Fill implements ComparableInterface
     }
 
     /**
-     * Get End Color
+     * Get End Color.
      *
      * @return \PhpOffice\PhpPresentation\Style\Color
      */
@@ -179,10 +184,12 @@ class Fill implements ComparableInterface
     }
 
     /**
-     * Set End Color
+     * Set End Color.
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Color $pValue
+     * @param \PhpOffice\PhpPresentation\Style\Color $pValue
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Style\Fill
      */
     public function setEndColor(Color $pValue = null)
@@ -193,11 +200,11 @@ class Fill implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(
             $this->getFillType()
@@ -209,28 +216,32 @@ class Fill implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
+        return $this;
     }
 }

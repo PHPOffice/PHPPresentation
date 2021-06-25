@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -21,16 +22,16 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class AlignmentTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Alignment();
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $object->getHorizontal());
@@ -45,9 +46,9 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set horizontal
+     * Test get/set horizontal.
      */
-    public function testSetGetHorizontal()
+    public function testSetGetHorizontal(): void
     {
         $object = new Alignment();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setHorizontal(''));
@@ -57,12 +58,12 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set vertical
+     * Test get/set vertical.
      */
-    public function testTextDirection()
+    public function testTextDirection(): void
     {
         $object = new Alignment();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setTextDirection(null));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setTextDirection(''));
         $this->assertEquals(Alignment::TEXT_DIRECTION_HORIZONTAL, $object->getTextDirection());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setTextDirection(Alignment::TEXT_DIRECTION_VERTICAL_90));
         $this->assertEquals(Alignment::TEXT_DIRECTION_VERTICAL_90, $object->getTextDirection());
@@ -71,9 +72,9 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set vertical
+     * Test get/set vertical.
      */
-    public function testSetGetVertical()
+    public function testSetGetVertical(): void
     {
         $object = new Alignment();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->setVertical(''));
@@ -83,24 +84,21 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set min level exception
+     * Test get/set min level exception.
      */
-    public function testSetGetLevelExceptionMin()
+    public function testSetGetLevelExceptionMin(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid value should be more than 0.');
+
         $object = new Alignment();
-        if (method_exists($this, 'setExpectedException')) {
-            $this->setExpectedException('\Exception', 'Invalid value should be more than 0.');
-        }
-        if (method_exists($this, 'expectException')) {
-            $this->expectException('\Exception', 'Invalid value should be more than 0.');
-        }
         $object->setLevel(-1);
     }
 
     /**
-     * Test get/set level
+     * Test get/set level.
      */
-    public function testSetGetLevel()
+    public function testSetGetLevel(): void
     {
         $object = new Alignment();
         $value = mt_rand(1, 8);
@@ -109,9 +107,9 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set indent
+     * Test get/set indent.
      */
-    public function testSetGetIndent()
+    public function testSetGetIndent(): void
     {
         $object = new Alignment();
         // != Alignment::HORIZONTAL_GENERAL
@@ -133,9 +131,9 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set margin bottom
+     * Test get/set margin bottom.
      */
-    public function testSetGetMarginBottom()
+    public function testSetGetMarginBottom(): void
     {
         $object = new Alignment();
         $value = mt_rand(0, 100);
@@ -146,9 +144,9 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set margin left
+     * Test get/set margin left.
      */
-    public function testSetGetMarginLeft()
+    public function testSetGetMarginLeft(): void
     {
         $object = new Alignment();
         // != Alignment::HORIZONTAL_GENERAL
@@ -170,9 +168,9 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set margin right
+     * Test get/set margin right.
      */
-    public function testSetGetMarginRight()
+    public function testSetGetMarginRight(): void
     {
         $object = new Alignment();
         // != Alignment::HORIZONTAL_GENERAL
@@ -194,9 +192,9 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set margin top
+     * Test get/set margin top.
      */
-    public function testSetGetMarginTop()
+    public function testSetGetMarginTop(): void
     {
         $object = new Alignment();
         $value = mt_rand(1, 100);
@@ -207,11 +205,11 @@ class AlignmentTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
-        $value = md5(rand(1, 100));
+        $value = rand(1, 100);
 
         $object = new Alignment();
         $object->setHashIndex($value);

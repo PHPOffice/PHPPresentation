@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -22,16 +23,16 @@ use PhpOffice\PhpPresentation\Style\Outline;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Style\Outline
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Style\Outline
  */
 class OutlineTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Outline();
         $this->assertNull($object->getWidth());
@@ -39,9 +40,9 @@ class OutlineTest extends TestCase
     }
 
     /**
-     * Test get/set fill
+     * Test get/set fill.
      */
-    public function testSetGetFill()
+    public function testSetGetFill(): void
     {
         $object = new Outline();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
@@ -50,16 +51,14 @@ class OutlineTest extends TestCase
     }
 
     /**
-     * Test get/set width
+     * Test get/set width.
      */
-    public function testSetGetWidth()
+    public function testSetGetWidth(): void
     {
         $object = new Outline();
         $this->assertNull($object->getWidth());
         $value = mt_rand(1, 100);
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Outline', $object->setWidth(1.5));
-        $this->assertEquals(1, $object->getWidth());
     }
 }

@@ -8,7 +8,7 @@ class PptTablePropsTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testRender()
+    public function testRender(): void
     {
         $this->assertZipFileExists('ppt/tableStyles.xml');
         $element = '/a:tblStyleLst';

@@ -12,23 +12,25 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Scatter element
+ * Test class for Scatter element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter
  */
 class AbstractTest extends TestCase
 {
-    public function testAxis()
+    public function testAxis(): void
     {
         $object = new Scatter();
 
@@ -36,7 +38,7 @@ class AbstractTest extends TestCase
         $this->assertTrue($object->hasAxisY());
     }
 
-    public function testHashIndex()
+    public function testHashIndex(): void
     {
         $object = new Scatter();
         $value = mt_rand(1, 100);
@@ -46,36 +48,38 @@ class AbstractTest extends TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testData()
+    public function testData(): void
     {
-        $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType');
+        /** @var AbstractType $stub */
+        $stub = $this->getMockForAbstractClass(AbstractType::class);
         $this->assertEmpty($stub->getData());
-        $this->assertInternalType('array', $stub->getData());
+        $this->assertIsArray($stub->getData());
 
-        $arraySeries = array(
+        $arraySeries = [
             new Series(),
-            new Series()
-        );
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType', $stub->setData($arraySeries));
-        $this->assertInternalType('array', $stub->getData());
+            new Series(),
+        ];
+        $this->assertInstanceOf(AbstractType::class, $stub->setData($arraySeries));
+        $this->assertIsArray($stub->getData());
         $this->assertCount(count($arraySeries), $stub->getData());
     }
 
-    public function testClone()
+    public function testClone(): void
     {
-        $arraySeries = array(
+        $arraySeries = [
             new Series(),
             new Series(),
             new Series(),
             new Series(),
-        );
+        ];
 
-        $stub = $this->getMockForAbstractClass('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType');
+        /** @var AbstractType $stub */
+        $stub = $this->getMockForAbstractClass(AbstractType::class);
         $stub->setData($arraySeries);
         $clone = clone $stub;
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType', $clone);
-        $this->assertInternalType('array', $stub->getData());
+        $this->assertInstanceOf(AbstractType::class, $clone);
+        $this->assertIsArray($stub->getData());
         $this->assertCount(count($arraySeries), $stub->getData());
     }
 }

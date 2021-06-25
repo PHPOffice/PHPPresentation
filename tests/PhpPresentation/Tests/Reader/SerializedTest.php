@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
@@ -21,16 +22,16 @@ use PhpOffice\PhpPresentation\Reader\Serialized;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for serialized reader
+ * Test class for serialized reader.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Reader\Serialized
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Reader\Serialized
  */
 class SerializedTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testCanRead()
+    public function testCanRead(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
         $object = new Serialized();
@@ -38,46 +39,47 @@ class SerializedTest extends TestCase
         $this->assertTrue($object->canRead($file));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
-    public function testLoadFileNotExists()
+    public function testLoadFileNotExists(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+
         $object = new Serialized();
         $object->load('');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized:
-     */
-    public function testLoadFileBadFormat()
+    public function testLoadFileBadFormat(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized:');
+
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_01_Simple.pptx';
         $object = new Serialized();
         $object->load($file);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
-    public function testFileSupportsNotExists()
+    public function testFileSupportsNotExists(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+
         $object = new Serialized();
         $object->fileSupportsUnserializePhpPresentation('');
     }
 
-    public function testLoadSerializedFileNotExists()
+    public function testLoadSerializedFileNotExists(): void
     {
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage(sprintf('The file PhpPresentation.xml in the serialized file %s is malformed', $file));
+
         $oArchive = new \ZipArchive();
         $oArchive->open($file, \ZipArchive::CREATE);
         $oArchive->addFromString('PhpPresentation.xml', '');
         $oArchive->close();
 
         $object = new Serialized();
-        $this->assertNull($object->load($file));
+        $object->load($file);
     }
 }

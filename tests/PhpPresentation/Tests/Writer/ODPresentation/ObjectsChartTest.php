@@ -21,29 +21,29 @@ use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
- * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\ObjectsChart
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Writer\ODPresentation\ObjectsChart
  */
 class ObjectsChartTest extends PhpPresentationTestCase
 {
     protected $writerName = 'ODPresentation';
 
     /**
-     * @var array
+     * @var array<string, string>
      */
-    protected $seriesData = array(
-        'A' => 1,
-        'B' => 2,
-        'C' => 4,
-        'D' => 3,
-        'E' => 2,
-    );
+    protected $seriesData = [
+        'A' => '1',
+        'B' => '2',
+        'C' => '4',
+        'D' => '3',
+        'E' => '2',
+    ];
 
-    public function testAxisFont()
+    public function testAxisFont(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oBar = new Bar();
         $oBar->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar);
@@ -75,12 +75,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Arial');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testLegend()
+    public function testLegend(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oLine = new Line();
         $oLine->addSeries($oSeries);
@@ -102,7 +102,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-header-rows/table:table-row/table:table-cell[@office:value-type=\'string\']';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oChart->getLegend()->setPosition(Legend::POSITION_RIGHT);
         $this->resetPresentationFile();
@@ -111,7 +111,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'end');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oChart->getLegend()->setPosition(Legend::POSITION_LEFT);
         $this->resetPresentationFile();
@@ -120,7 +120,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'start');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oChart->getLegend()->setPosition(Legend::POSITION_BOTTOM);
         $this->resetPresentationFile();
@@ -129,7 +129,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'bottom');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oChart->getLegend()->setPosition(Legend::POSITION_TOP);
         $this->resetPresentationFile();
@@ -138,7 +138,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'top');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oChart->getLegend()->setPosition(Legend::POSITION_TOPRIGHT);
         $this->resetPresentationFile();
@@ -147,12 +147,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:legend-position', 'top-end');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oPie = new Pie();
         $oPie->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
@@ -166,7 +166,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->setShowValue(false);
         $this->resetPresentationFile();
@@ -176,7 +176,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-number');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         // $showCategoryName = false / $showPercentage = true / $showValue = true
         $oSeries->setShowValue(true);
@@ -188,7 +188,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value-and-percentage');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         // $showCategoryName = false / $showPercentage = true / $showValue = false
         $oSeries->setShowValue(false);
@@ -199,7 +199,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:data-label-text');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         // $showCategoryName = false / $showPercentage = true / $showValue = false
         $oSeries->setShowCategoryName(true);
@@ -209,10 +209,10 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:data-label-text');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-text', 'true');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTitleVisibility()
+    public function testTitleVisibility(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oLine = new Line();
@@ -227,19 +227,20 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $elementStyle);
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
         $this->resetPresentationFile();
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementTitle);
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $elementStyle);
 
-                 // chart:title : Element chart failed to validate attributes         $this->assertIsSchemaOpenDocumentValid('1.2');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeArea()
+    public function testTypeArea(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->getFill()->setStartColor(new Color('FF93A9CE'));
         $oArea = new Area();
         $oArea->addSeries($oSeries);
@@ -260,14 +261,14 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'draw:fill-color', '#93A9CE');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeAxisBounds()
+    public function testTypeAxisBounds(): void
     {
         $value = mt_rand(0, 100);
 
-        $oSeries = new Series('Downloads', array('A' => 1, 'B' => 2, 'C' => 4, 'D' => 3, 'E' => 2));
+        $oSeries = new Series('Downloads', ['A' => '1', 'B' => '2', 'C' => '4', 'D' => '3', 'E' => '2']);
         $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
         $oLine = new Line();
         $oLine->addSeries($oSeries);
@@ -280,7 +281,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:maximum');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
         $this->resetPresentationFile();
@@ -290,7 +291,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:minimum', $value);
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oShape->getPlotArea()->getAxisX()->setMinBounds(null);
         $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
@@ -301,7 +302,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:maximum', $value);
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
         $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
@@ -313,12 +314,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:maximum', $value);
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBar()
+    public function testTypeBar(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -346,13 +347,13 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBarGroupingStacked()
+    public function testTypeBarGroupingStacked(): void
     {
         $oBar = new Bar();
-        $oBar->addSeries(new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2)));
+        $oBar->addSeries(new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']));
         $oBar->setBarGrouping(Bar::GROUPING_STACKED);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oBar);
@@ -365,13 +366,13 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'value');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBarGroupingPercentStacked()
+    public function testTypeBarGroupingPercentStacked(): void
     {
         $oBar = new Bar();
-        $oBar->addSeries(new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2)));
+        $oBar->addSeries(new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']));
         $oBar->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oBar);
@@ -384,12 +385,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:data-label-number', 'percentage');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBarHorizontal()
+    public function testTypeBarHorizontal(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -411,12 +412,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:right-angled-axes');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBar3D()
+    public function testTypeBar3D(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -425,14 +426,14 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oBar3D->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oBar3D);
-        
+
         $element = '/office:document-content/office:body/office:chart/chart:chart';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:bar');
-        
+
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
-        
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:vertical', 'false');
@@ -442,12 +443,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:right-angled-axes', 'true');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeBar3DHorizontal()
+    public function testTypeBar3DHorizontal(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -457,11 +458,11 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oBar3D->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oBar3D);
-        
+
         $element = '/office:document-content/office:body/office:chart/chart:chart';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:bar');
-        
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:vertical', 'true');
@@ -471,10 +472,10 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:right-angled-axes', 'true');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeDoughnut()
+    public function testTypeDoughnut(): void
     {
         // $randHoleSize = mt_rand(10, 90);
         $randSeparator = chr(mt_rand(ord('A'), ord('Z')));
@@ -498,7 +499,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:automatic-styles/style:style/style:chart-properties/chart:label-separator/text:p';
         $this->assertZipXmlElementNotExists('Object 1/content.xml', $element);
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         // $oDoughnut->setHoleSize($randHoleSize);
         // $this->resetPresentationFile();
@@ -510,18 +511,18 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlElementEquals('Object 1/content.xml', $element, $randSeparator);
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeLine()
+    public function testTypeLine(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oLine = new Line();
         $oLine->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oLine);
-    
+
         $element = '/office:document-content/office:body/office:chart/chart:chart';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:line');
@@ -547,41 +548,41 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'svg:stroke-color', '#878787');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeLineGridlines()
+    public function testTypeLineGridlines(): void
     {
-        $arrayTests = array(
-            array(
+        $arrayTests = [
+            [
                 'dimension' => 'x',
                 'styleName' => 'styleAxisXGridlinesMajor',
                 'styleClass' => 'major',
                 'methodAxis' => 'getAxisX',
-                'methodGrid' => 'setMajorGridlines'
-            ),
-            array(
+                'methodGrid' => 'setMajorGridlines',
+            ],
+            [
                 'dimension' => 'x',
                 'styleName' => 'styleAxisXGridlinesMinor',
                 'styleClass' => 'minor',
                 'methodAxis' => 'getAxisX',
-                'methodGrid' => 'setMinorGridlines'
-            ),
-            array(
+                'methodGrid' => 'setMinorGridlines',
+            ],
+            [
                 'dimension' => 'y',
                 'styleName' => 'styleAxisYGridlinesMajor',
                 'styleClass' => 'major',
                 'methodAxis' => 'getAxisY',
-                'methodGrid' => 'setMajorGridlines'
-            ),
-            array(
+                'methodGrid' => 'setMajorGridlines',
+            ],
+            [
                 'dimension' => 'y',
                 'styleName' => 'styleAxisYGridlinesMinor',
                 'styleClass' => 'minor',
                 'methodAxis' => 'getAxisY',
-                'methodGrid' => 'setMinorGridlines'
-            ),
-        );
+                'methodGrid' => 'setMinorGridlines',
+            ],
+        ];
         $expectedColor = new Color(Color::COLOR_BLUE);
 
         foreach ($arrayTests as $arrayTest) {
@@ -589,19 +590,13 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $this->oPresentation->removeSlideByIndex(0)->createSlide();
 
             $expectedSizePts = mt_rand(1, 100);
-            $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSizePts), 2, '.', '').'cm';
-            $expectedElementGrid = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\''.$arrayTest['dimension'].'\']/chart:grid';
-            $expectedElementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\''.$arrayTest['styleName'].'\']/style:graphic-properties';
+            $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSizePts), 2, '.', '') . 'cm';
+            $expectedElementGrid = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\'' . $arrayTest['dimension'] . '\']/chart:grid';
+            $expectedElementStyle = '/office:document-content/office:automatic-styles/style:style[@style:name=\'' . $arrayTest['styleName'] . '\']/style:graphic-properties';
 
             $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
             $oLine = new Line();
-            $oLine->addSeries(new Series('Downloads', array(
-                'A' => 1,
-                'B' => 2,
-                'C' => 4,
-                'D' => 3,
-                'E' => 2,
-            )));
+            $oLine->addSeries(new Series('Downloads', $this->seriesData));
             $oShape->getPlotArea()->setType($oLine);
             $oGridlines = new Gridlines();
             $oGridlines->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($expectedColor);
@@ -622,11 +617,11 @@ class ObjectsChartTest extends PhpPresentationTestCase
             $this->assertZipXmlAttributeEndsWith('Object 1/content.xml', $expectedElementStyle, 'svg:stroke-color', $expectedColor->getRGB());
 
             // chart:title : Element chart failed to validate attributes
-            $this->assertIsSchemaOpenDocumentValid('1.2');
+            $this->assertIsSchemaOpenDocumentNotValid('1.2');
         }
     }
 
-    public function testTypeLineMarker()
+    public function testTypeLineMarker(): void
     {
         $expectedSymbol1 = Marker::SYMBOL_PLUS;
         $expectedSymbol2 = Marker::SYMBOL_DASH;
@@ -636,17 +631,11 @@ class ObjectsChartTest extends PhpPresentationTestCase
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
         $expectedSize = mt_rand(1, 100);
-        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '').'cm';
+        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '') . 'cm';
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oLine = new Line();
-        $oSeries = new Series('Downloads', array(
-            'A' => 1,
-            'B' => 2,
-            'C' => 4,
-            'D' => 3,
-            'E' => 2,
-        ));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getMarker()->setSymbol($expectedSymbol1)->setSize($expectedSize);
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
@@ -658,37 +647,37 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-height', $expectedSizeCm);
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol2);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol3);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol4);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol5);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-name');
@@ -696,13 +685,13 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-height');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeLineSeriesOutline()
+    public function testTypeLineSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
+        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
 
@@ -715,13 +704,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oLine = new Line();
-        $oSeries = new Series('Downloads', array(
-            'A' => 1,
-            'B' => 2,
-            'C' => 4,
-            'D' => 3,
-            'E' => 2,
-        ));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
@@ -732,10 +715,10 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->setOutline($oOutline);
-        $oLine->setSeries(array($oSeries));
+        $oLine->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipFileExists('Object 1/content.xml');
@@ -745,12 +728,12 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
-    
-    public function testTypePie()
+
+    public function testTypePie(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -759,29 +742,29 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oPie->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oPie);
-    
+
         $element = '/office:document-content/office:body/office:chart/chart:chart';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:circle');
-        
+
         $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:series/chart:data-point';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
-        
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
-        
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypePie3D()
+    public function testTypePie3D(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF4672A8'));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FFAB4744'));
@@ -807,45 +790,45 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:reverse-direction', 'true');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
-    
-    public function testTypePie3DExplosion()
+
+    public function testTypePie3DExplosion(): void
     {
         $value = mt_rand(0, 100);
-        
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oPie3D = new Pie3D();
         $oPie3D->setExplosion($value);
         $oPie3D->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oPie3D);
-    
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:pie-offset', $value);
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
-    
-    public function testTypeScatter()
+
+    public function testTypeScatter(): void
     {
-        $oSeries = new Series('Series', array('Jan' => 1, 'Feb' => 5, 'Mar' => 2));
+        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oSeries->setShowSeriesName(true);
         $oScatter = new Scatter();
         $oScatter->addSeries($oSeries);
         $oChart = $this->oPresentation->getActiveSlide()->createChartShape();
         $oChart->getPlotArea()->setType($oScatter);
-    
+
         $element = '/office:document-content/office:body/office:chart/chart:chart';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:class', 'chart:scatter');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeScatterMarker()
+    public function testTypeScatterMarker(): void
     {
         $expectedSymbol1 = Marker::SYMBOL_PLUS;
         $expectedSymbol2 = Marker::SYMBOL_DASH;
@@ -854,17 +837,11 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $expectedSymbol5 = Marker::SYMBOL_NONE;
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:chart-properties';
         $expectedSize = mt_rand(1, 100);
-        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '').'cm';
+        $expectedSizeCm = number_format(CommonDrawing::pointsToCentimeters($expectedSize), 2, '.', '') . 'cm';
 
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oScatter = new Scatter();
-        $oSeries = new Series('Downloads', array(
-            'A' => 1,
-            'B' => 2,
-            'C' => 4,
-            'D' => 3,
-            'E' => 2,
-        ));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getMarker()->setSymbol($expectedSymbol1)->setSize($expectedSize);
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
@@ -876,37 +853,37 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-height', $expectedSizeCm);
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol2);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'horizontal-bar');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol3);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'circle');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol4);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'chart:symbol-name', 'arrow-up');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->getMarker()->setSymbol($expectedSymbol5);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-name');
@@ -914,13 +891,13 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $expectedElement, 'chart:symbol-height');
 
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testTypeScatterSeriesOutline()
+    public function testTypeScatterSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '').'cm';
+        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
 
@@ -932,13 +909,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oScatter = new Scatter();
-        $oSeries = new Series('Downloads', array(
-            'A' => 1,
-            'B' => 2,
-            'C' => 4,
-            'D' => 3,
-            'E' => 2,
-        ));
+        $oSeries = new Series('Downloads', $this->seriesData);
         $oScatter->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oScatter);
 
@@ -949,10 +920,10 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#4a7ebb');
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
 
         $oSeries->setOutline($oOutline);
-        $oScatter->setSeries(array($oSeries));
+        $oScatter->setSeries([$oSeries]);
         $this->resetPresentationFile();
 
         $this->assertZipFileExists('Object 1/content.xml');
@@ -962,6 +933,6 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $expectedElement, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $expectedElement, 'svg:stroke-color', '#' . $oColor->getRGB());
         // chart:title : Element chart failed to validate attributes
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 }

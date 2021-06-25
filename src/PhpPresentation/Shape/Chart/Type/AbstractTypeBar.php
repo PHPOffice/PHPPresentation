@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -18,58 +19,56 @@
 namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
+ * \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar.
  */
 class AbstractTypeBar extends AbstractType
 {
     /** Orientation of bars */
-    const DIRECTION_VERTICAL = 'col';
-    const DIRECTION_HORIZONTAL = 'bar';
+    public const DIRECTION_VERTICAL = 'col';
+    public const DIRECTION_HORIZONTAL = 'bar';
 
     /** Grouping of bars */
-    const GROUPING_CLUSTERED = 'clustered'; //Chart series are drawn next to each other along the category axis.
-    const GROUPING_STACKED = 'stacked'; //Chart series are drawn next to each other on the value axis.
-    const GROUPING_PERCENTSTACKED = 'percentStacked'; //Chart series are drawn next to each other along the value axis and scaled to total 100%
-
+    public const GROUPING_CLUSTERED = 'clustered'; //Chart series are drawn next to each other along the category axis.
+    public const GROUPING_STACKED = 'stacked'; //Chart series are drawn next to each other on the value axis.
+    public const GROUPING_PERCENTSTACKED = 'percentStacked'; //Chart series are drawn next to each other along the value axis and scaled to total 100%
 
     /**
-     * Orientation of bars
+     * Orientation of bars.
      *
      * @var string
      */
     protected $barDirection = self::DIRECTION_VERTICAL;
 
-
     /**
-     * Grouping of bars
+     * Grouping of bars.
      *
      * @var string
      */
     protected $barGrouping = self::GROUPING_CLUSTERED;
 
-
     /**
-     * Space between bar or columns clusters
+     * Space between bar or columns clusters.
      *
      * @var int
      */
     protected $gapWidthPercent = 150;
 
-
     /**
-     * Set bar orientation
+     * Set bar orientation.
      *
-     * @param string                          $value
+     * @param string $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar
      */
     public function setBarDirection($value = self::DIRECTION_VERTICAL)
     {
         $this->barDirection = $value;
+
         return $this;
     }
 
     /**
-     * Get orientation
+     * Get orientation.
      *
      * @return string
      */
@@ -79,19 +78,21 @@ class AbstractTypeBar extends AbstractType
     }
 
     /**
-     * Set bar grouping (stack or expanded style bar)
+     * Set bar grouping (stack or expanded style bar).
      *
-     * @param string                          $value
+     * @param string $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar
      */
     public function setBarGrouping($value = self::GROUPING_CLUSTERED)
     {
         $this->barGrouping = $value;
+
         return $this;
     }
 
     /**
-     * Get grouping  (stack or expanded style bar)
+     * Get grouping  (stack or expanded style bar).
      *
      * @return string
      */
@@ -110,6 +111,7 @@ class AbstractTypeBar extends AbstractType
 
     /**
      * @param int $gapWidthPercent
+     *
      * @return $this
      */
     public function setGapWidthPercent($gapWidthPercent)
@@ -121,20 +123,22 @@ class AbstractTypeBar extends AbstractType
             $gapWidthPercent = 500;
         }
         $this->gapWidthPercent = $gapWidthPercent;
+
         return $this;
     }
-    
+
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         $hash = '';
         foreach ($this->getSeries() as $series) {
             $hash .= $series->getHashCode();
         }
+
         return $hash;
     }
 }

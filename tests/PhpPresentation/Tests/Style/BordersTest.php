@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
@@ -22,16 +23,16 @@ use PhpOffice\PhpPresentation\Style\Borders;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class BordersTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Borders();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getBottom());
@@ -45,9 +46,9 @@ class BordersTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Borders();
         $value = mt_rand(1, 100);
@@ -56,9 +57,9 @@ class BordersTest extends TestCase
     }
 
     /**
-     * Test get/set hash code
+     * Test get/set hash code.
      */
-    public function testGetHashCode()
+    public function testGetHashCode(): void
     {
         $object = new Borders();
         $this->assertEquals(

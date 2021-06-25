@@ -12,26 +12,28 @@
  *
  * @copyright   2009-2017 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
+use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\Writer;
 
 /**
- * Mock class for AbstractWriter
- *
+ * Mock class for AbstractWriter.
  */
 class AbstractWriter extends Writer\AbstractWriter
 {
     /**
-     * public wrapper for protected method
+     * public wrapper for protected method.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractDrawing[] All drawings in PhpPresentation
+     * @return AbstractShape[] All drawings in PhpPresentation
+     *
      * @throws \Exception
      */
-    public function allDrawings()
+    public function allDrawings(): array
     {
         return parent::allDrawings();
     }

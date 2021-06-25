@@ -12,31 +12,32 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\RichText;
-use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for RichText element
+ * Test class for RichText element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText
  */
 class RichTextTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new RichText();
         $this->assertEquals(0, $object->getActiveParagraphIndex());
         $this->assertCount(1, $object->getParagraphs());
     }
 
-    public function testActiveParagraph()
+    public function testActiveParagraph(): void
     {
         $object = new RichText();
         $this->assertEquals(0, $object->getActiveParagraphIndex());
@@ -51,27 +52,25 @@ class RichTextTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->getParagraph($value));
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid paragraph count.
-     */
-    public function testActiveParagraphException()
+    public function testActiveParagraphException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid paragraph count.');
+
         $object = new RichText();
         $object->setActiveParagraph(1000);
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid paragraph count.
-     */
-    public function testGetParagraphException()
+    public function testGetParagraphException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid paragraph count.');
+
         $object = new RichText();
         $object->getParagraph(1000);
     }
 
-    public function testColumns()
+    public function testColumns(): void
     {
         $object = new RichText();
 
@@ -80,42 +79,31 @@ class RichTextTest extends TestCase
         $this->assertEquals($value, $object->getColumns());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Number of columns should be 1-16
-     */
-    public function testColumnsException()
+    public function testColumnsException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Number of columns should be 1-16');
+
         $object = new RichText();
         $object->setColumns(1000);
     }
 
-    public function testParagraphs()
+    public function testParagraphs(): void
     {
         $object = new RichText();
 
-        $array = array(
+        $array = [
             new Paragraph(),
             new Paragraph(),
             new Paragraph(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setParagraphs($array));
         $this->assertCount(3, $object->getParagraphs());
         $this->assertEquals(2, $object->getActiveParagraphIndex());
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid \PhpOffice\PhpPresentation\Shape\RichText\Paragraph[] array passed.
-     */
-    public function testParagraphsException()
-    {
-        $object = new RichText();
-        $object->setParagraphs(1000);
-    }
-
-    public function testText()
+    public function testText(): void
     {
         $object = new RichText();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->addText());
@@ -132,11 +120,11 @@ class RichTextTest extends TestCase
         $this->assertCount(6, $object->getActiveParagraph()->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
         $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', $object->getPlainText());
-        $this->assertEquals('ALPHA'."\r\n".'BETA', (string) $object);
+        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', $object->getPlainText());
+        $this->assertEquals('ALPHA' . "\r\n" . 'BETA', (string) $object);
     }
 
-    public function testGetSetAutoFit()
+    public function testGetSetAutoFit(): void
     {
         $object = new RichText();
 
@@ -147,14 +135,14 @@ class RichTextTest extends TestCase
         $this->assertEquals(RichText::AUTOFIT_NORMAL, $object->getAutoFit());
     }
 
-    public function testGetSetHAutoShrink()
+    public function testGetSetHAutoShrink(): void
     {
         $object = new RichText();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal());
         $this->assertNull($object->hasAutoShrinkHorizontal());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(2));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(null));
         $this->assertNull($object->hasAutoShrinkHorizontal());
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(true));
@@ -163,14 +151,15 @@ class RichTextTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkHorizontal(false));
         $this->assertFalse($object->hasAutoShrinkHorizontal());
     }
-    public function testGetSetVAutoShrink()
+
+    public function testGetSetVAutoShrink(): void
     {
         $object = new RichText();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical());
         $this->assertNull($object->hasAutoShrinkVertical());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(2));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(null));
         $this->assertNull($object->hasAutoShrinkVertical());
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText', $object->setAutoShrinkVertical(true));
@@ -180,7 +169,7 @@ class RichTextTest extends TestCase
         $this->assertFalse($object->hasAutoShrinkVertical());
     }
 
-    public function testGetSetHOverflow()
+    public function testGetSetHOverflow(): void
     {
         $object = new RichText();
 
@@ -191,7 +180,7 @@ class RichTextTest extends TestCase
         $this->assertEquals(RichText::OVERFLOW_CLIP, $object->getHorizontalOverflow());
     }
 
-    public function testGetSetInset()
+    public function testGetSetInset(): void
     {
         $object = new RichText();
 
@@ -217,7 +206,7 @@ class RichTextTest extends TestCase
         $this->assertEquals($value, $object->getInsetTop());
     }
 
-    public function testGetSetUpright()
+    public function testGetSetUpright(): void
     {
         $object = new RichText();
 
@@ -231,7 +220,7 @@ class RichTextTest extends TestCase
         $this->assertFalse($object->isUpright());
     }
 
-    public function testGetSetVertical()
+    public function testGetSetVertical(): void
     {
         $object = new RichText();
 
@@ -245,7 +234,7 @@ class RichTextTest extends TestCase
         $this->assertFalse($object->isVertical());
     }
 
-    public function testGetSetVOverflow()
+    public function testGetSetVOverflow(): void
     {
         $object = new RichText();
 
@@ -256,7 +245,7 @@ class RichTextTest extends TestCase
         $this->assertEquals(RichText::OVERFLOW_CLIP, $object->getVerticalOverflow());
     }
 
-    public function testGetSetWrap()
+    public function testGetSetWrap(): void
     {
         $object = new RichText();
 
@@ -267,12 +256,12 @@ class RichTextTest extends TestCase
         $this->assertEquals(RichText::WRAP_NONE, $object->getWrap());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new RichText();
 
-        $hash  = $object->getActiveParagraph()->getHashCode();
-        $hash .= RichText::WRAP_SQUARE.RichText::AUTOFIT_DEFAULT.RichText::OVERFLOW_OVERFLOW.RichText::OVERFLOW_OVERFLOW.'0014.89.69.64.8';
+        $hash = $object->getActiveParagraph()->getHashCode();
+        $hash .= RichText::WRAP_SQUARE . RichText::AUTOFIT_DEFAULT . RichText::OVERFLOW_OVERFLOW . RichText::OVERFLOW_OVERFLOW . '0014.89.69.64.8';
         $hash .= md5('00000' . $object->getFill()->getHashCode() . $object->getShadow()->getHashCode() . '' . get_parent_class($object));
         $hash .= get_class($object);
         $this->assertEquals(md5($hash), $object->getHashCode());

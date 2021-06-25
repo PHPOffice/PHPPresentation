@@ -10,26 +10,27 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
-use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
-use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 
 /**
- * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\ContentTypes
+ * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\ContentTypes.
  */
 class ContentTypes extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -69,7 +70,7 @@ class ContentTypes extends AbstractDecoratorWriter
         $sldLayoutNr = 0;
         $sldLayoutId = time() + 689016272; // requires minimum value of 2 147 483 648
         foreach ($this->oPresentation->getAllMasterSlides() as $idx => $oSlideMaster) {
-            $oSlideMaster->setRelsIndex($idx + 1);
+            $oSlideMaster->setRelsIndex((string) ($idx + 1));
             $this->writeOverrideContentType($objWriter, '/ppt/slideMasters/slideMaster' . $oSlideMaster->getRelsIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.slideMaster+xml');
             $this->writeOverrideContentType($objWriter, '/ppt/theme/theme' . $oSlideMaster->getRelsIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.theme+xml');
             foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
@@ -102,13 +103,13 @@ class ContentTypes extends AbstractDecoratorWriter
         }
 
         // Add media content-types
-        $aMediaContentTypes = array();
+        $aMediaContentTypes = [];
 
         // GIF, JPEG, PNG
-        $aMediaContentTypes['gif']  = 'image/gif';
-        $aMediaContentTypes['jpg']  = 'image/jpeg';
+        $aMediaContentTypes['gif'] = 'image/gif';
+        $aMediaContentTypes['jpg'] = 'image/jpeg';
         $aMediaContentTypes['jpeg'] = 'image/jpeg';
-        $aMediaContentTypes['png']  = 'image/png';
+        $aMediaContentTypes['png'] = 'image/png';
         foreach ($aMediaContentTypes as $key => $value) {
             $this->writeDefaultContentType($objWriter, $key, $value);
         }
@@ -123,7 +124,7 @@ class ContentTypes extends AbstractDecoratorWriter
             if ($shapeIndex instanceof ShapeChart) {
                 // Chart content type
                 $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $shapeIndex->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
-            } else {
+            } elseif ($shapeIndex instanceof AbstractDrawingAdapter) {
                 $extension = strtolower($shapeIndex->getExtension());
                 $mimeType = $shapeIndex->getMimeType();
 
@@ -143,17 +144,18 @@ class ContentTypes extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Default content type
+     * Write Default content type.
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
-     * @param  string                         $pPartname    Part name
-     * @param  string                         $pContentType Content type
+     * @param XMLWriter $objWriter XML Writer
+     * @param string $pPartname Part name
+     * @param string $pContentType Content type
+     *
      * @throws \Exception
      */
-    private function writeDefaultContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
+    private function writeDefaultContentType(XMLWriter $objWriter, string $pPartname = '', string $pContentType = ''): void
     {
-        if ($pPartname == '' || $pContentType == '') {
-            throw new \Exception("Invalid parameters passed.");
+        if ('' == $pPartname || '' == $pContentType) {
+            throw new \Exception('Invalid parameters passed.');
         }
         // Write content type
         $objWriter->startElement('Default');
@@ -163,17 +165,18 @@ class ContentTypes extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Override content type
+     * Write Override content type.
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
-     * @param  string                         $pPartname    Part name
-     * @param  string                         $pContentType Content type
+     * @param XMLWriter $objWriter XML Writer
+     * @param string $pPartname Part name
+     * @param string $pContentType Content type
+     *
      * @throws \Exception
      */
-    private function writeOverrideContentType(XMLWriter $objWriter, $pPartname = '', $pContentType = '')
+    private function writeOverrideContentType(XMLWriter $objWriter, string $pPartname = '', string $pContentType = ''): void
     {
-        if ($pPartname == '' || $pContentType == '') {
-            throw new \Exception("Invalid parameters passed.");
+        if ('' == $pPartname || '' == $pContentType) {
+            throw new \Exception('Invalid parameters passed.');
         }
         // Write content type
         $objWriter->startElement('Override');

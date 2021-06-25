@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpOffice\PhpPresentation\Slide;
 
 use PhpOffice\PhpPresentation\AbstractShape;
@@ -6,35 +7,37 @@ use PhpOffice\PhpPresentation\AbstractShape;
 class Animation
 {
     /**
-     * @var array
+     * @var array<AbstractShape>
      */
-    protected $shapeCollection = array();
+    protected $shapeCollection = [];
 
     /**
-     * @param AbstractShape $shape
      * @return Animation
      */
     public function addShape(AbstractShape $shape)
     {
         $this->shapeCollection[] = $shape;
+
         return $this;
     }
 
     /**
-     * @return array
+     * @return array<AbstractShape>
      */
-    public function getShapeCollection()
+    public function getShapeCollection(): array
     {
         return $this->shapeCollection;
     }
 
     /**
-     * @param array $array
+     * @param array<AbstractShape> $array
+     *
      * @return Animation
      */
-    public function setShapeCollection(array $array = array())
+    public function setShapeCollection(array $array = [])
     {
         $this->shapeCollection = $array;
+
         return $this;
     }
 }

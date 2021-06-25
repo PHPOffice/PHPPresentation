@@ -12,31 +12,29 @@ use PhpOffice\PhpPresentation\Style\Outline;
 abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer\AbstractDecoratorWriter
 {
     /**
-     * Write relationship
+     * Write relationship.
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter   XML Writer
-     * @param  int                            $pId         Relationship ID. rId will be prepended!
-     * @param  string                         $pType       Relationship type
-     * @param  string                         $pTarget     Relationship target
-     * @param  string                         $pTargetMode Relationship target mode
+     * @param XMLWriter $objWriter XML Writer
+     * @param int $pId Relationship ID. rId will be prepended!
+     * @param string $pType Relationship type
+     * @param string $pTarget Relationship target
+     * @param string $pTargetMode Relationship target mode
+     *
      * @throws \Exception
      */
-    protected function writeRelationship(XMLWriter $objWriter, $pId = 1, $pType = '', $pTarget = '', $pTargetMode = '')
+    protected function writeRelationship(XMLWriter $objWriter, int $pId = 1, string $pType = '', string $pTarget = '', string $pTargetMode = ''): void
     {
-        if ($pType == '' || $pTarget == '') {
-            throw new \Exception("Invalid parameters passed.");
-        }
-        if (strpos($pId, 'rId') === false) {
-            $pId = 'rId' . $pId;
+        if ('' == $pType || '' == $pTarget) {
+            throw new \Exception('Invalid parameters passed.');
         }
 
         // Write relationship
         $objWriter->startElement('Relationship');
-        $objWriter->writeAttribute('Id', $pId);
+        $objWriter->writeAttribute('Id', 'rId' . (string) $pId);
         $objWriter->writeAttribute('Type', $pType);
         $objWriter->writeAttribute('Target', $pTarget);
 
-        if ($pTargetMode != '') {
+        if ('' != $pTargetMode) {
             $objWriter->writeAttribute('TargetMode', $pTargetMode);
         }
 
@@ -44,26 +42,27 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Write Border
+     * Write Border.
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter    XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Border     $pBorder      Border
-     * @param  string                         $pElementName Element name
+     * @param XMLWriter $objWriter XML Writer
+     * @param Border $pBorder Border
+     * @param string $pElementName Element name
+     *
      * @throws \Exception
      */
-    protected function writeBorder(XMLWriter $objWriter, $pBorder, $pElementName = 'L')
+    protected function writeBorder(XMLWriter $objWriter, Border $pBorder, string $pElementName = 'L'): void
     {
         if (!($pBorder instanceof Border)) {
             return;
         }
 
-        if ($pBorder->getLineStyle() == Border::LINE_NONE && $pElementName == '') {
+        if (Border::LINE_NONE == $pBorder->getLineStyle() && '' == $pElementName) {
             return;
         }
 
         // Line style
         $lineStyle = $pBorder->getLineStyle();
-        if ($lineStyle == Border::LINE_NONE) {
+        if (Border::LINE_NONE == $lineStyle) {
             $lineStyle = Border::LINE_SINGLE;
         }
 
@@ -78,7 +77,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->writeAttribute('algn', 'ctr');
 
         // Fill?
-        if ($pBorder->getLineStyle() == Border::LINE_NONE) {
+        if (Border::LINE_NONE == $pBorder->getLineStyle()) {
             // a:noFill
             $objWriter->writeElement('a:noFill', null);
         } else {
@@ -114,12 +113,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
         $objWriter->endElement();
     }
 
-    /**
-     * @param XMLWriter $objWriter
-     * @param Color $color
-     * @param int|null $alpha
-     */
-    protected function writeColor(XMLWriter $objWriter, Color $color, $alpha = null)
+    protected function writeColor(XMLWriter $objWriter, Color $color, ?int $alpha = null): void
     {
         if (is_null($alpha)) {
             $alpha = $color->getAlpha();
@@ -138,32 +132,35 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Write Fill
+     * Write Fill.
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
+     * @param XMLWriter $objWriter XML Writer
+     * @param Fill|null $pFill Fill style
+     *
      * @throws \Exception
      */
-    protected function writeFill(XMLWriter $objWriter, $pFill)
+    protected function writeFill(XMLWriter $objWriter, ?Fill $pFill): void
     {
-        if (! $pFill instanceof Fill) {
+        if (!$pFill) {
             return;
         }
 
         // Is it a fill?
-        if ($pFill->getFillType() == Fill::FILL_NONE) {
+        if (Fill::FILL_NONE == $pFill->getFillType()) {
             $objWriter->writeElement('a:noFill');
+
             return;
         }
 
         // Is it a solid fill?
-        if ($pFill->getFillType() == Fill::FILL_SOLID) {
+        if (Fill::FILL_SOLID == $pFill->getFillType()) {
             $this->writeSolidFill($objWriter, $pFill);
+
             return;
         }
 
         // Check if this is a pattern type or gradient type
-        if ($pFill->getFillType() == Fill::FILL_GRADIENT_LINEAR || $pFill->getFillType() == Fill::FILL_GRADIENT_PATH) {
+        if (Fill::FILL_GRADIENT_LINEAR == $pFill->getFillType() || Fill::FILL_GRADIENT_PATH == $pFill->getFillType()) {
             // Gradient fill
             $this->writeGradientFill($objWriter, $pFill);
         } else {
@@ -173,13 +170,14 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Write Solid Fill
+     * Write Solid Fill.
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
+     * @param XMLWriter $objWriter XML Writer
+     * @param Fill $pFill Fill style
+     *
      * @throws \Exception
      */
-    protected function writeSolidFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writeSolidFill(XMLWriter $objWriter, Fill $pFill): void
     {
         // a:gradFill
         $objWriter->startElement('a:solidFill');
@@ -188,13 +186,14 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Write Gradient Fill
+     * Write Gradient Fill.
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
+     * @param XMLWriter $objWriter XML Writer
+     * @param Fill $pFill Fill style
+     *
      * @throws \Exception
      */
-    protected function writeGradientFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writeGradientFill(XMLWriter $objWriter, Fill $pFill): void
     {
         // a:gradFill
         $objWriter->startElement('a:gradFill');
@@ -225,13 +224,14 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Write Pattern Fill
+     * Write Pattern Fill.
      *
-     * @param  \PhpOffice\Common\XMLWriter $objWriter XML Writer
-     * @param  \PhpOffice\PhpPresentation\Style\Fill       $pFill     Fill style
+     * @param XMLWriter $objWriter XML Writer
+     * @param Fill $pFill Fill style
+     *
      * @throws \Exception
      */
-    protected function writePatternFill(XMLWriter $objWriter, Fill $pFill)
+    protected function writePatternFill(XMLWriter $objWriter, Fill $pFill): void
     {
         // a:pattFill
         $objWriter->startElement('a:pattFill');
@@ -254,14 +254,13 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Write Outline
-     * @param XMLWriter $objWriter
-     * @param Outline $oOutline
+     * Write Outline.
+     *
      * @throws \Exception
      */
-    protected function writeOutline(XMLWriter $objWriter, $oOutline)
+    protected function writeOutline(XMLWriter $objWriter, ?Outline $oOutline): void
     {
-        if (!$oOutline instanceof Outline) {
+        if (!$oOutline) {
             return;
         }
         // Width : pts
@@ -283,19 +282,18 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Determine absolute zip path
-     *
-     * @param  string $path
-     * @return string
+     * Determine absolute zip path.
      */
-    protected function absoluteZipPath($path)
+    protected function absoluteZipPath(string $path): string
     {
-        $path      = str_replace(array(
+        $path = str_replace([
             '/',
-            '\\'
-        ), DIRECTORY_SEPARATOR, $path);
-        $parts     = array_filter(explode(DIRECTORY_SEPARATOR, $path), 'strlen');
-        $absolutes = array();
+            '\\',
+        ], DIRECTORY_SEPARATOR, $path);
+        $parts = array_filter(explode(DIRECTORY_SEPARATOR, $path), function (string $var) {
+            return (bool) strlen($var);
+        });
+        $absolutes = [];
         foreach ($parts as $part) {
             if ('.' == $part) {
                 continue;

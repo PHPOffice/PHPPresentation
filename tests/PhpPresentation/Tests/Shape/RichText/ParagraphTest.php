@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
@@ -25,16 +26,16 @@ use PhpOffice\PhpPresentation\Style\Font;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Paragraph element
+ * Test class for Paragraph element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Paragraph
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText\Paragraph
  */
 class ParagraphTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Paragraph();
         $this->assertEmpty($object->getRichTextElements());
@@ -43,7 +44,7 @@ class ParagraphTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
     }
 
-    public function testAlignment()
+    public function testAlignment(): void
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
@@ -51,9 +52,9 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set bullet style
+     * Test get/set bullet style.
      */
-    public function testBulletStyle()
+    public function testBulletStyle(): void
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->getBulletStyle());
@@ -64,9 +65,9 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set font
+     * Test get/set font.
      */
-    public function testFont()
+    public function testFont(): void
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
@@ -77,20 +78,20 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set hashCode
+     * Test get/set hashCode.
      */
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Paragraph();
         $oElement = new TextElement();
         $object->addText($oElement);
-        $this->assertEquals(md5($oElement->getHashCode().$object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oElement->getHashCode() . $object->getFont()->getHashCode() . get_class($object)), $object->getHashCode());
     }
 
     /**
-     * Test get/set hashIndex
+     * Test get/set hashIndex.
      */
-    public function testHashIndex()
+    public function testHashIndex(): void
     {
         $object = new Paragraph();
         $value = mt_rand(1, 100);
@@ -99,9 +100,9 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set linespacing
+     * Test get/set linespacing.
      */
-    public function testLineSpacing()
+    public function testLineSpacing(): void
     {
         $object = new Paragraph();
         $valueExpected = mt_rand(1, 100);
@@ -111,39 +112,29 @@ class ParagraphTest extends TestCase
     }
 
     /**
-     * Test get/set richTextElements
+     * Test get/set richTextElements.
      */
-    public function testRichTextElements()
+    public function testRichTextElements(): void
     {
         $object = new Paragraph();
-        $this->assertInternalType('array', $object->getRichTextElements());
+        $this->assertIsArray($object->getRichTextElements());
         $this->assertEmpty($object->getRichTextElements());
         $object->createBreak();
         $this->assertCount(1, $object->getRichTextElements());
 
-        $array = array(
+        $array = [
             new TextElement(),
             new TextElement(),
             new TextElement(),
-        );
+        ];
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->setRichTextElements($array));
         $this->assertCount(3, $object->getRichTextElements());
     }
 
     /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Invalid \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface[] array passed.
+     * Test text methods.
      */
-    public function testRichTextElementsException()
-    {
-        $object = new Paragraph();
-        $object->setRichTextElements(1);
-    }
-
-    /**
-     * Test text methods
-     */
-    public function testText()
+    public function testText(): void
     {
         $object = new Paragraph();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $object->addText(new TextElement()));
@@ -158,7 +149,7 @@ class ParagraphTest extends TestCase
         $this->assertCount(5, $object->getRichTextElements());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BBB'));
         $this->assertCount(6, $object->getRichTextElements());
-        $this->assertEquals('AAA'."\r\n".'BBB', $object->getPlainText());
-        $this->assertEquals('AAA'."\r\n".'BBB', (string) $object);
+        $this->assertEquals('AAA' . "\r\n" . 'BBB', $object->getPlainText());
+        $this->assertEquals('AAA' . "\r\n" . 'BBB', (string) $object);
     }
 }

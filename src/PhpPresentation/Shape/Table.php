@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -21,33 +22,33 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Table\Row;
 
 /**
- * Table shape
+ * Table shape.
  */
 class Table extends AbstractGraphic implements ComparableInterface
 {
     /**
-     * Rows
+     * Rows.
      *
      * @var \PhpOffice\PhpPresentation\Shape\Table\Row[]
      */
     private $rows;
 
     /**
-     * Number of columns
+     * Number of columns.
      *
      * @var int
      */
     private $columnCount = 1;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Table instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\Table instance.
      *
      * @param int $columns Number of columns
      */
     public function __construct($columns = 1)
     {
         // Initialise variables
-        $this->rows        = array();
+        $this->rows = [];
         $this->columnCount = $columns;
 
         // Initialize parent
@@ -58,14 +59,14 @@ class Table extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Get row
+     * Get row.
      *
-     * @param  int $row Row number
-     * @param  boolean $exceptionAsNull Return a null value instead of an exception?
+     * @param int $row Row number
+     * @param bool $exceptionAsNull Return a null value instead of an exception?
+     *
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
      */
-    public function getRow($row = 0, $exceptionAsNull = false)
+    public function getRow($row = 0, $exceptionAsNull = false): ?Row
     {
         if (!isset($this->rows[$row])) {
             if ($exceptionAsNull) {
@@ -78,9 +79,9 @@ class Table extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Get rows
+     * Get rows.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row[]
+     * @return Row[]
      */
     public function getRows()
     {
@@ -88,13 +89,13 @@ class Table extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Create row
+     * Create row.
      *
      * @return \PhpOffice\PhpPresentation\Shape\Table\Row
      */
     public function createRow()
     {
-        $row           = new Row($this->columnCount);
+        $row = new Row($this->columnCount);
         $this->rows[] = $row;
 
         return $row;
@@ -110,20 +111,22 @@ class Table extends AbstractGraphic implements ComparableInterface
 
     /**
      * @param int $numColumn
+     *
      * @return Table
      */
     public function setNumColumns($numColumn)
     {
         $this->columnCount = $numColumn;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         $hashElements = '';
         foreach ($this->rows as $row) {

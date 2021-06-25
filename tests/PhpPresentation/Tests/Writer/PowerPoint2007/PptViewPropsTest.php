@@ -9,7 +9,7 @@ class PptViewPropsTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testRender()
+    public function testRender(): void
     {
         $expectedElement = '/p:viewPr';
 
@@ -20,9 +20,9 @@ class PptViewPropsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testCommentVisible()
+    public function testCommentVisible(): void
     {
-        $expectedElement ='/p:viewPr';
+        $expectedElement = '/p:viewPr';
 
         $this->oPresentation->getPresentationProperties()->setCommentVisible(true);
 
@@ -32,9 +32,9 @@ class PptViewPropsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testLastView()
+    public function testLastView(): void
     {
-        $expectedElement ='/p:viewPr';
+        $expectedElement = '/p:viewPr';
         $expectedLastView = PresentationProperties::VIEW_OUTLINE;
 
         $this->oPresentation->getPresentationProperties()->setLastView($expectedLastView);

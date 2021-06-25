@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
@@ -22,16 +23,16 @@ use PhpOffice\PhpPresentation\Style\Font;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Run element
+ * Test class for Run element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Run
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText\Run
  */
 class RunTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Run();
         $this->assertEquals('', $object->getText());
@@ -42,14 +43,14 @@ class RunTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
-    public function testFont()
+    public function testFont(): void
     {
         $object = new Run();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setFont(new Font()));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
-    public function testLanguage()
+    public function testLanguage(): void
     {
         $object = new Run();
         $this->assertNull($object->getLanguage());
@@ -57,7 +58,7 @@ class RunTest extends TestCase
         $this->assertEquals('en-US', $object->getLanguage());
     }
 
-    public function testText()
+    public function testText(): void
     {
         $object = new Run();
         $this->assertEquals('', $object->getText());
@@ -71,11 +72,11 @@ class RunTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Run();
-        $this->assertEquals(md5($object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($object->getFont()->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

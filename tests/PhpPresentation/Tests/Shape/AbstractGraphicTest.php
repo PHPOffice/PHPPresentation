@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
@@ -21,13 +22,13 @@ use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Table element
+ * Test class for Table element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\AbstractGraphic
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\AbstractGraphic
  */
 class AbstractGraphicTest extends TestCase
 {
-    public function testWidthAndHeight()
+    public function testWidthAndHeight(): void
     {
         $min = 10;
         $max = 20;
@@ -60,7 +61,7 @@ class AbstractGraphicTest extends TestCase
         $this->assertEquals($min, $stub->getHeight());
     }
 
-    public function testWidthAndHeight2()
+    public function testWidthAndHeight2(): void
     {
         $min = 10;
         $max = 20;

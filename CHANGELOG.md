@@ -4,11 +4,15 @@
 
 ### Bugfix
 - PowerPoint2007 : Text is subscripted when set superscript to false - @qmachard GH-360
+- Core : Defining width & height of a shape don't return any error if width & height were equal to 0 - @surger GH-555
 
 ### Changes
+- Dropped support for HHVM - @sunspikes GH-556
 - PHP 7.1 is now supported - @Progi1984 GH-355
 - PhpOffice\PhpPresentation\Style\Color : Define only the transparency - @Progi1984 GH-370
 - PowerPoint2007 Reader : Background Color based on SchemeColor - @Progi1984 GH-397
+- PowerPoint2007 Reader : Support for hyperlinks under pictures - @ulziibuyan
+- PowerPoint2007 Reader : Load images in their initial format (and not by default in PNG) - @polidog GH-553
 
 ### Features
 - ODPresentation Writer : Support for the position of Legend - @Progi1984 GH-355

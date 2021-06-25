@@ -10,64 +10,71 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
 namespace PhpOffice\PhpPresentation\Reader;
 
-use ZipArchive;
-use PhpOffice\Common\XMLReader;
+use DateTime;
+use DOMElement;
 use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
+use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
-use PhpOffice\PhpPresentation\Style\Alignment;
+use ZipArchive;
 
 /**
- * Serialized format reader
+ * Serialized format reader.
  */
 class ODPresentation implements ReaderInterface
 {
     /**
-     * Output Object
+     * Output Object.
+     *
      * @var PhpPresentation
      */
     protected $oPhpPresentation;
     /**
-     * Output Object
+     * Output Object.
+     *
      * @var \ZipArchive
      */
     protected $oZip;
     /**
      * @var array[]
      */
-    protected $arrayStyles = array();
+    protected $arrayStyles = [];
     /**
      * @var array[]
      */
-    protected $arrayCommonStyles = array();
+    protected $arrayCommonStyles = [];
     /**
      * @var \PhpOffice\Common\XMLReader
      */
     protected $oXMLReader;
+    /**
+     * @var int
+     */
+    protected $levelParagraph = 0;
 
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
      *
-     * @param  string $pFilename
      * @throws \Exception
-     * @return boolean
      */
-    public function canRead($pFilename)
+    public function canRead(string $pFilename): bool
     {
         return $this->fileSupportsUnserializePhpPresentation($pFilename);
     }
@@ -75,83 +82,82 @@ class ODPresentation implements ReaderInterface
     /**
      * Does a file support UnserializePhpPresentation ?
      *
-     * @param  string    $pFilename
      * @throws \Exception
-     * @return boolean
      */
-    public function fileSupportsUnserializePhpPresentation($pFilename = '')
+    public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception("Could not open " . $pFilename . " for reading! File does not exist.");
+            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
         }
-        
+
         $oZip = new ZipArchive();
         // Is it a zip ?
-        if ($oZip->open($pFilename) === true) {
+        if (true === $oZip->open($pFilename)) {
             // Is it an OpenXML Document ?
             // Is it a Presentation ?
-            if (is_array($oZip->statName('META-INF/manifest.xml')) && is_array($oZip->statName('mimetype')) && $oZip->getFromName('mimetype') == 'application/vnd.oasis.opendocument.presentation') {
+            if (is_array($oZip->statName('META-INF/manifest.xml')) && is_array($oZip->statName('mimetype')) && 'application/vnd.oasis.opendocument.presentation' == $oZip->getFromName('mimetype')) {
                 return true;
             }
         }
+
         return false;
     }
 
     /**
-     * Loads PhpPresentation Serialized file
+     * Loads PhpPresentation Serialized file.
      *
-     * @param  string        $pFilename
-     * @return \PhpOffice\PhpPresentation\PhpPresentation
      * @throws \Exception
      */
-    public function load($pFilename)
+    public function load(string $pFilename): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\ODPresentation: " . $pFilename . ".");
+            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\ODPresentation: " . $pFilename . '.');
         }
 
         return $this->loadFile($pFilename);
     }
 
     /**
-     * Load PhpPresentation Serialized file
+     * Load PhpPresentation Serialized file.
      *
-     * @param  string $pFilename
+     * @param string $pFilename
+     *
      * @return \PhpOffice\PhpPresentation\PhpPresentation
+     *
      * @throws \Exception
      */
     protected function loadFile($pFilename)
     {
         $this->oPhpPresentation = new PhpPresentation();
         $this->oPhpPresentation->removeSlideByIndex();
-        
+
         $this->oZip = new ZipArchive();
         $this->oZip->open($pFilename);
-        
+
         $this->oXMLReader = new XMLReader();
-        if ($this->oXMLReader->getDomFromZip($pFilename, 'meta.xml') !== false) {
+        if (false !== $this->oXMLReader->getDomFromZip($pFilename, 'meta.xml')) {
             $this->loadDocumentProperties();
         }
         $this->oXMLReader = new XMLReader();
-        if ($this->oXMLReader->getDomFromZip($pFilename, 'styles.xml') !== false) {
+        if (false !== $this->oXMLReader->getDomFromZip($pFilename, 'styles.xml')) {
             $this->loadStylesFile();
         }
         $this->oXMLReader = new XMLReader();
-        if ($this->oXMLReader->getDomFromZip($pFilename, 'content.xml') !== false) {
+        if (false !== $this->oXMLReader->getDomFromZip($pFilename, 'content.xml')) {
             $this->loadSlides();
         }
 
         return $this->oPhpPresentation;
     }
-    
+
     /**
-     * Read Document Properties
+     * Read Document Properties.
      */
-    protected function loadDocumentProperties()
+    protected function loadDocumentProperties(): void
     {
-        $arrayProperties = array(
+        $arrayProperties = [
             '/office:document-meta/office:meta/meta:initial-creator' => 'setCreator',
             '/office:document-meta/office:meta/dc:creator' => 'setLastModifiedBy',
             '/office:document-meta/office:meta/dc:title' => 'setTitle',
@@ -160,62 +166,65 @@ class ODPresentation implements ReaderInterface
             '/office:document-meta/office:meta/meta:keyword' => 'setKeywords',
             '/office:document-meta/office:meta/meta:creation-date' => 'setCreated',
             '/office:document-meta/office:meta/dc:date' => 'setModified',
-        );
+        ];
         $oProperties = $this->oPhpPresentation->getDocumentProperties();
         foreach ($arrayProperties as $path => $property) {
             $oElement = $this->oXMLReader->getElement($path);
-            if ($oElement instanceof \DOMElement) {
-                if (in_array($property, array('setCreated', 'setModified'))) {
-                    $oDateTime = new \DateTime();
-                    $oDateTime->createFromFormat(\DateTime::W3C, $oElement->nodeValue);
-                    $oProperties->{$property}($oDateTime->getTimestamp());
-                } else {
-                    $oProperties->{$property}($oElement->nodeValue);
+            if ($oElement instanceof DOMElement) {
+                $value = $oElement->nodeValue;
+                if (in_array($property, ['setCreated', 'setModified'])) {
+                    $dateTime = DateTime::createFromFormat(DateTime::W3C, $value);
+                    if (!$dateTime) {
+                        $dateTime = new DateTime();
+                    }
+                    $value = $dateTime->getTimestamp();
                 }
+                $oProperties->{$property}($value);
             }
         }
     }
-    
+
     /**
-     * Extract all slides
+     * Extract all slides.
      */
-    protected function loadSlides()
+    protected function loadSlides(): void
     {
         foreach ($this->oXMLReader->getElements('/office:document-content/office:automatic-styles/*') as $oElement) {
-            if ($oElement->hasAttribute('style:name')) {
+            if ($oElement instanceof DOMElement && $oElement->hasAttribute('style:name')) {
                 $this->loadStyle($oElement);
             }
         }
         foreach ($this->oXMLReader->getElements('/office:document-content/office:body/office:presentation/draw:page') as $oElement) {
-            if ($oElement->nodeName == 'draw:page') {
+            if ($oElement instanceof DOMElement && 'draw:page' == $oElement->nodeName) {
                 $this->loadSlide($oElement);
             }
         }
     }
 
     /**
-     * Extract style
-     * @param \DOMElement $nodeStyle
+     * Extract style.
+     *
      * @return bool
+     *
      * @throws \Exception
      */
-    protected function loadStyle(\DOMElement $nodeStyle)
+    protected function loadStyle(DOMElement $nodeStyle)
     {
         $keyStyle = $nodeStyle->getAttribute('style:name');
 
         $nodeDrawingPageProps = $this->oXMLReader->getElement('style:drawing-page-properties', $nodeStyle);
-        if ($nodeDrawingPageProps instanceof \DOMElement) {
+        if ($nodeDrawingPageProps instanceof DOMElement) {
             // Read Background Color
-            if ($nodeDrawingPageProps->hasAttribute('draw:fill-color') && $nodeDrawingPageProps->getAttribute('draw:fill') == 'solid') {
+            if ($nodeDrawingPageProps->hasAttribute('draw:fill-color') && 'solid' == $nodeDrawingPageProps->getAttribute('draw:fill')) {
                 $oBackground = new \PhpOffice\PhpPresentation\Slide\Background\Color();
                 $oColor = new Color();
                 $oColor->setRGB(substr($nodeDrawingPageProps->getAttribute('draw:fill-color'), -6));
                 $oBackground->setColor($oColor);
             }
             // Read Background Image
-            if ($nodeDrawingPageProps->getAttribute('draw:fill') == 'bitmap' && $nodeDrawingPageProps->hasAttribute('draw:fill-image-name')) {
+            if ('bitmap' == $nodeDrawingPageProps->getAttribute('draw:fill') && $nodeDrawingPageProps->hasAttribute('draw:fill-image-name')) {
                 $nameStyle = $nodeDrawingPageProps->getAttribute('draw:fill-image-name');
-                if (!empty($this->arrayCommonStyles[$nameStyle]) && $this->arrayCommonStyles[$nameStyle]['type'] == 'image' && !empty($this->arrayCommonStyles[$nameStyle]['path'])) {
+                if (!empty($this->arrayCommonStyles[$nameStyle]) && 'image' == $this->arrayCommonStyles[$nameStyle]['type'] && !empty($this->arrayCommonStyles[$nameStyle]['path'])) {
                     $tmpBkgImg = tempnam(sys_get_temp_dir(), 'PhpPresentationReaderODPBkg');
                     $contentImg = $this->oZip->getFromName($this->arrayCommonStyles[$nameStyle]['path']);
                     file_put_contents($tmpBkgImg, $contentImg);
@@ -227,28 +236,28 @@ class ODPresentation implements ReaderInterface
         }
 
         $nodeGraphicProps = $this->oXMLReader->getElement('style:graphic-properties', $nodeStyle);
-        if ($nodeGraphicProps instanceof \DOMElement) {
+        if ($nodeGraphicProps instanceof DOMElement) {
             // Read Shadow
-            if ($nodeGraphicProps->hasAttribute('draw:shadow') && $nodeGraphicProps->getAttribute('draw:shadow') == 'visible') {
+            if ($nodeGraphicProps->hasAttribute('draw:shadow') && 'visible' == $nodeGraphicProps->getAttribute('draw:shadow')) {
                 $oShadow = new Shadow();
                 $oShadow->setVisible(true);
                 if ($nodeGraphicProps->hasAttribute('draw:shadow-color')) {
                     $oShadow->getColor()->setRGB(substr($nodeGraphicProps->getAttribute('draw:shadow-color'), -6));
                 }
                 if ($nodeGraphicProps->hasAttribute('draw:shadow-opacity')) {
-                    $oShadow->setAlpha(100 - (int)substr($nodeGraphicProps->getAttribute('draw:shadow-opacity'), 0, -1));
+                    $oShadow->setAlpha(100 - (int) substr($nodeGraphicProps->getAttribute('draw:shadow-opacity'), 0, -1));
                 }
                 if ($nodeGraphicProps->hasAttribute('draw:shadow-offset-x') && $nodeGraphicProps->hasAttribute('draw:shadow-offset-y')) {
-                    $offsetX = substr($nodeGraphicProps->getAttribute('draw:shadow-offset-x'), 0, -2);
-                    $offsetY = substr($nodeGraphicProps->getAttribute('draw:shadow-offset-y'), 0, -2);
+                    $offsetX = (float) substr($nodeGraphicProps->getAttribute('draw:shadow-offset-x'), 0, -2);
+                    $offsetY = (float) substr($nodeGraphicProps->getAttribute('draw:shadow-offset-y'), 0, -2);
                     $distance = 0;
-                    if ($offsetX != 0) {
+                    if (0 != $offsetX) {
                         $distance = ($offsetX < 0 ? $offsetX * -1 : $offsetX);
-                    } elseif ($offsetY != 0) {
+                    } elseif (0 != $offsetY) {
                         $distance = ($offsetY < 0 ? $offsetY * -1 : $offsetY);
                     }
-                    $oShadow->setDirection(rad2deg(atan2($offsetY, $offsetX)));
-                    $oShadow->setDistance(CommonDrawing::centimetersToPixels($distance));
+                    $oShadow->setDirection((int) rad2deg(atan2($offsetY, $offsetX)));
+                    $oShadow->setDistance((int) round(CommonDrawing::centimetersToPixels($distance)));
                 }
             }
             // Read Fill
@@ -272,9 +281,9 @@ class ODPresentation implements ReaderInterface
                 }
             }
         }
-        
+
         $nodeTextProperties = $this->oXMLReader->getElement('style:text-properties', $nodeStyle);
-        if ($nodeTextProperties instanceof \DOMElement) {
+        if ($nodeTextProperties instanceof DOMElement) {
             $oFont = new Font();
             if ($nodeTextProperties->hasAttribute('fo:color')) {
                 $oFont->getColor()->setRGB(substr($nodeTextProperties->getAttribute('fo:color'), -6));
@@ -282,81 +291,82 @@ class ODPresentation implements ReaderInterface
             if ($nodeTextProperties->hasAttribute('fo:font-family')) {
                 $oFont->setName($nodeTextProperties->getAttribute('fo:font-family'));
             }
-            if ($nodeTextProperties->hasAttribute('fo:font-weight') && $nodeTextProperties->getAttribute('fo:font-weight') == 'bold') {
+            if ($nodeTextProperties->hasAttribute('fo:font-weight') && 'bold' == $nodeTextProperties->getAttribute('fo:font-weight')) {
                 $oFont->setBold(true);
             }
             if ($nodeTextProperties->hasAttribute('fo:font-size')) {
-                $oFont->setSize(substr($nodeTextProperties->getAttribute('fo:font-size'), 0, -2));
+                $oFont->setSize((int) substr($nodeTextProperties->getAttribute('fo:font-size'), 0, -2));
             }
         }
 
         $nodeParagraphProps = $this->oXMLReader->getElement('style:paragraph-properties', $nodeStyle);
-        if ($nodeParagraphProps instanceof \DOMElement) {
+        if ($nodeParagraphProps instanceof DOMElement) {
             $oAlignment = new Alignment();
             if ($nodeParagraphProps->hasAttribute('fo:text-align')) {
                 $oAlignment->setHorizontal($nodeParagraphProps->getAttribute('fo:text-align'));
             }
         }
-        
-        if ($nodeStyle->nodeName == 'text:list-style') {
-            $arrayListStyle = array();
+
+        if ('text:list-style' == $nodeStyle->nodeName) {
+            $arrayListStyle = [];
             foreach ($this->oXMLReader->getElements('text:list-level-style-bullet', $nodeStyle) as $oNodeListLevel) {
                 $oAlignment = new Alignment();
                 $oBullet = new Bullet();
                 $oBullet->setBulletType(Bullet::TYPE_NONE);
-                if ($oNodeListLevel->hasAttribute('text:level')) {
-                    $oAlignment->setLevel((int) $oNodeListLevel->getAttribute('text:level') - 1);
-                }
-                if ($oNodeListLevel->hasAttribute('text:bullet-char')) {
-                    $oBullet->setBulletChar($oNodeListLevel->getAttribute('text:bullet-char'));
-                    $oBullet->setBulletType(Bullet::TYPE_BULLET);
-                }
-                
-                $oNodeListProperties = $this->oXMLReader->getElement('style:list-level-properties', $oNodeListLevel);
-                if ($oNodeListProperties instanceof \DOMElement) {
-                    if ($oNodeListProperties->hasAttribute('text:min-label-width')) {
-                        $oAlignment->setIndent((int)round(CommonDrawing::centimetersToPixels(substr($oNodeListProperties->getAttribute('text:min-label-width'), 0, -2))));
+                if ($oNodeListLevel instanceof DOMElement) {
+                    if ($oNodeListLevel->hasAttribute('text:level')) {
+                        $oAlignment->setLevel((int) $oNodeListLevel->getAttribute('text:level') - 1);
                     }
-                    if ($oNodeListProperties->hasAttribute('text:space-before')) {
-                        $iSpaceBefore = CommonDrawing::centimetersToPixels(substr($oNodeListProperties->getAttribute('text:space-before'), 0, -2));
-                        $iMarginLeft = $iSpaceBefore + $oAlignment->getIndent();
-                        $oAlignment->setMarginLeft($iMarginLeft);
+                    if ($oNodeListLevel->hasAttribute('text:bullet-char')) {
+                        $oBullet->setBulletChar($oNodeListLevel->getAttribute('text:bullet-char'));
+                        $oBullet->setBulletType(Bullet::TYPE_BULLET);
+                    }
+
+                    $oNodeListProperties = $this->oXMLReader->getElement('style:list-level-properties', $oNodeListLevel);
+                    if ($oNodeListProperties instanceof DOMElement) {
+                        if ($oNodeListProperties->hasAttribute('text:min-label-width')) {
+                            $oAlignment->setIndent((int) round(CommonDrawing::centimetersToPixels(substr($oNodeListProperties->getAttribute('text:min-label-width'), 0, -2))));
+                        }
+                        if ($oNodeListProperties->hasAttribute('text:space-before')) {
+                            $iSpaceBefore = (int) CommonDrawing::centimetersToPixels(substr($oNodeListProperties->getAttribute('text:space-before'), 0, -2));
+                            $iMarginLeft = $iSpaceBefore + $oAlignment->getIndent();
+                            $oAlignment->setMarginLeft($iMarginLeft);
+                        }
+                    }
+
+                    $oNodeTextProperties = $this->oXMLReader->getElement('style:text-properties', $oNodeListLevel);
+                    if ($oNodeTextProperties instanceof DOMElement) {
+                        if ($oNodeTextProperties->hasAttribute('fo:font-family')) {
+                            $oBullet->setBulletFont($oNodeTextProperties->getAttribute('fo:font-family'));
+                        }
                     }
                 }
-                $oNodeTextProperties = $this->oXMLReader->getElement('style:text-properties', $oNodeListLevel);
-                if ($oNodeTextProperties instanceof \DOMElement) {
-                    if ($oNodeTextProperties->hasAttribute('fo:font-family')) {
-                        $oBullet->setBulletFont($oNodeTextProperties->getAttribute('fo:font-family'));
-                    }
-                }
-                
-                $arrayListStyle[$oAlignment->getLevel()] = array(
+
+                $arrayListStyle[$oAlignment->getLevel()] = [
                     'alignment' => $oAlignment,
                     'bullet' => $oBullet,
-                );
+                ];
             }
         }
-        
-        $this->arrayStyles[$keyStyle] = array(
+
+        $this->arrayStyles[$keyStyle] = [
             'alignment' => isset($oAlignment) ? $oAlignment : null,
             'background' => isset($oBackground) ? $oBackground : null,
             'fill' => isset($oFill) ? $oFill : null,
             'font' => isset($oFont) ? $oFont : null,
             'shadow' => isset($oShadow) ? $oShadow : null,
             'listStyle' => isset($arrayListStyle) ? $arrayListStyle : null,
-        );
-        
+        ];
+
         return true;
     }
 
     /**
-     * Read Slide
+     * Read Slide.
      *
-     * @param \DOMElement $nodeSlide
-     * @return bool
      * @throws \Exception
      */
-    protected function loadSlide(\DOMElement $nodeSlide)
+    protected function loadSlide(DOMElement $nodeSlide): bool
     {
         // Core
         $this->oPhpPresentation->createSlide();
@@ -371,36 +381,38 @@ class ODPresentation implements ReaderInterface
             }
         }
         foreach ($this->oXMLReader->getElements('draw:frame', $nodeSlide) as $oNodeFrame) {
-            if ($this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
-                $this->loadShapeDrawing($oNodeFrame);
-                continue;
-            }
-            if ($this->oXMLReader->getElement('draw:text-box', $oNodeFrame)) {
-                $this->loadShapeRichText($oNodeFrame);
-                continue;
+            if ($oNodeFrame instanceof DOMElement) {
+                if ($this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
+                    $this->loadShapeDrawing($oNodeFrame);
+                    continue;
+                }
+                if ($this->oXMLReader->getElement('draw:text-box', $oNodeFrame)) {
+                    $this->loadShapeRichText($oNodeFrame);
+                    continue;
+                }
             }
         }
+
         return true;
     }
 
     /**
-     * Read Shape Drawing
+     * Read Shape Drawing.
      *
-     * @param \DOMElement $oNodeFrame
      * @throws \Exception
      */
-    protected function loadShapeDrawing(\DOMElement $oNodeFrame)
+    protected function loadShapeDrawing(DOMElement $oNodeFrame): void
     {
         // Core
         $oShape = new Gd();
         $oShape->getShadow()->setVisible(false);
 
         $oNodeImage = $this->oXMLReader->getElement('draw:image', $oNodeFrame);
-        if ($oNodeImage instanceof \DOMElement) {
+        if ($oNodeImage instanceof DOMElement) {
             if ($oNodeImage->hasAttribute('xlink:href')) {
                 $sFilename = $oNodeImage->getAttribute('xlink:href');
                 // svm = StarView Metafile
-                if (pathinfo($sFilename, PATHINFO_EXTENSION) == 'svm') {
+                if ('svm' == pathinfo($sFilename, PATHINFO_EXTENSION)) {
                     return;
                 }
                 $imageFile = $this->oZip->getFromName($sFilename);
@@ -409,16 +421,16 @@ class ODPresentation implements ReaderInterface
                 }
             }
         }
-        
+
         $oShape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
         $oShape->setDescription($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
         $oShape->setResizeProportional(false);
-        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? (int)round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:width'), 0, -2))) : '');
-        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? (int)round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:height'), 0, -2))) : '');
+        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:width'), 0, -2))) : '');
+        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:height'), 0, -2))) : '');
         $oShape->setResizeProportional(true);
-        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? (int)round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:x'), 0, -2))) : '');
-        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? (int)round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:y'), 0, -2))) : '');
-        
+        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:x'), 0, -2))) : '');
+        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:y'), 0, -2))) : '');
+
         if ($oNodeFrame->hasAttribute('draw:style-name')) {
             $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
             if (isset($this->arrayStyles[$keyStyle])) {
@@ -426,73 +438,72 @@ class ODPresentation implements ReaderInterface
                 $oShape->setFill($this->arrayStyles[$keyStyle]['fill']);
             }
         }
-        
+
         $this->oPhpPresentation->getActiveSlide()->addShape($oShape);
     }
 
     /**
-     * Read Shape RichText
+     * Read Shape RichText.
      *
-     * @param \DOMElement $oNodeFrame
      * @throws \Exception
      */
-    protected function loadShapeRichText(\DOMElement $oNodeFrame)
+    protected function loadShapeRichText(DOMElement $oNodeFrame): void
     {
         // Core
         $oShape = $this->oPhpPresentation->getActiveSlide()->createRichTextShape();
-        $oShape->setParagraphs(array());
-        
-        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? (int)round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:width'), 0, -2))) : '');
-        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? (int)round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:height'), 0, -2))) : '');
-        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? (int)round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:x'), 0, -2))) : '');
-        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? (int)round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:y'), 0, -2))) : '');
-        
+        $oShape->setParagraphs([]);
+
+        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:width'), 0, -2))) : '');
+        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:height'), 0, -2))) : '');
+        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:x'), 0, -2))) : '');
+        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:y'), 0, -2))) : '');
+
         foreach ($this->oXMLReader->getElements('draw:text-box/*', $oNodeFrame) as $oNodeParagraph) {
             $this->levelParagraph = 0;
-            if ($oNodeParagraph->nodeName == 'text:p') {
-                $this->readParagraph($oShape, $oNodeParagraph);
-            }
-            if ($oNodeParagraph->nodeName == 'text:list') {
-                $this->readList($oShape, $oNodeParagraph);
+            if ($oNodeParagraph instanceof DOMElement) {
+                if ('text:p' == $oNodeParagraph->nodeName) {
+                    $this->readParagraph($oShape, $oNodeParagraph);
+                }
+                if ('text:list' == $oNodeParagraph->nodeName) {
+                    $this->readList($oShape, $oNodeParagraph);
+                }
             }
         }
-        
+
         if (count($oShape->getParagraphs()) > 0) {
             $oShape->setActiveParagraph(0);
         }
     }
-    
-    protected $levelParagraph = 0;
 
     /**
-     * Read Paragraph
-     * @param RichText $oShape
-     * @param \DOMElement $oNodeParent
+     * Read Paragraph.
+     *
      * @throws \Exception
      */
-    protected function readParagraph(RichText $oShape, \DOMElement $oNodeParent)
+    protected function readParagraph(RichText $oShape, DOMElement $oNodeParent): void
     {
         $oParagraph = $oShape->createParagraph();
         $oDomList = $this->oXMLReader->getElements('text:span', $oNodeParent);
         $oDomTextNodes = $this->oXMLReader->getElements('text()', $oNodeParent);
         foreach ($oDomTextNodes as $oDomTextNode) {
-            if (trim($oDomTextNode->nodeValue) != '') {
+            if ('' != trim($oDomTextNode->nodeValue)) {
                 $oTextRun = $oParagraph->createTextRun();
                 $oTextRun->setText(trim($oDomTextNode->nodeValue));
             }
         }
         foreach ($oDomList as $oNodeRichTextElement) {
-            $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+            if ($oNodeRichTextElement instanceof DOMElement) {
+                $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+            }
         }
     }
 
     /**
-     * Read Paragraph Item
-     * @param Paragraph $oParagraph
-     * @param \DOMElement $oNodeParent
+     * Read Paragraph Item.
+     *
      * @throws \Exception
      */
-    protected function readParagraphItem(Paragraph $oParagraph, \DOMElement $oNodeParent)
+    protected function readParagraphItem(Paragraph $oParagraph, DOMElement $oNodeParent): void
     {
         if ($this->oXMLReader->elementExists('text:line-break', $oNodeParent)) {
             $oParagraph->createBreak();
@@ -505,7 +516,7 @@ class ODPresentation implements ReaderInterface
                 }
             }
             $oTextRunLink = $this->oXMLReader->getElement('text:a', $oNodeParent);
-            if ($oTextRunLink instanceof \DOMElement) {
+            if ($oTextRunLink instanceof DOMElement) {
                 $oTextRun->setText($oTextRunLink->nodeValue);
                 if ($oTextRunLink->hasAttribute('xlink:href')) {
                     $oTextRun->getHyperlink()->setUrl($oTextRunLink->getAttribute('xlink:href'));
@@ -517,34 +528,32 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read List
+     * Read List.
      *
-     * @param RichText $oShape
-     * @param \DOMElement $oNodeParent
      * @throws \Exception
      */
-    protected function readList(RichText $oShape, \DOMElement $oNodeParent)
+    protected function readList(RichText $oShape, DOMElement $oNodeParent): void
     {
         foreach ($this->oXMLReader->getElements('text:list-item/*', $oNodeParent) as $oNodeListItem) {
-            if ($oNodeListItem->nodeName == 'text:p') {
-                $this->readListItem($oShape, $oNodeListItem, $oNodeParent);
-            }
-            if ($oNodeListItem->nodeName == 'text:list') {
-                $this->levelParagraph++;
-                $this->readList($oShape, $oNodeListItem);
-                $this->levelParagraph--;
+            if ($oNodeListItem instanceof DOMElement) {
+                if ('text:p' == $oNodeListItem->nodeName) {
+                    $this->readListItem($oShape, $oNodeListItem, $oNodeParent);
+                }
+                if ('text:list' == $oNodeListItem->nodeName) {
+                    ++$this->levelParagraph;
+                    $this->readList($oShape, $oNodeListItem);
+                    --$this->levelParagraph;
+                }
             }
         }
     }
 
     /**
-     * Read List Item
-     * @param RichText $oShape
-     * @param \DOMElement $oNodeParent
-     * @param \DOMElement $oNodeParagraph
+     * Read List Item.
+     *
      * @throws \Exception
      */
-    protected function readListItem(RichText $oShape, \DOMElement $oNodeParent, \DOMElement $oNodeParagraph)
+    protected function readListItem(RichText $oShape, DOMElement $oNodeParent, DOMElement $oNodeParagraph): void
     {
         $oParagraph = $oShape->createParagraph();
         if ($oNodeParagraph->hasAttribute('text:style-name')) {
@@ -555,21 +564,23 @@ class ODPresentation implements ReaderInterface
             }
         }
         foreach ($this->oXMLReader->getElements('text:span', $oNodeParent) as $oNodeRichTextElement) {
-            $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+            if ($oNodeRichTextElement instanceof DOMElement) {
+                $this->readParagraphItem($oParagraph, $oNodeRichTextElement);
+            }
         }
     }
 
     /**
-     * Load file 'styles.xml'
+     * Load file 'styles.xml'.
      */
-    protected function loadStylesFile()
+    protected function loadStylesFile(): void
     {
         foreach ($this->oXMLReader->getElements('/office:document-styles/office:styles/*') as $oElement) {
-            if ($oElement->nodeName == 'draw:fill-image') {
-                $this->arrayCommonStyles[$oElement->getAttribute('draw:name')] = array(
+            if ($oElement instanceof DOMElement && 'draw:fill-image' == $oElement->nodeName) {
+                $this->arrayCommonStyles[$oElement->getAttribute('draw:name')] = [
                     'type' => 'image',
-                    'path' => $oElement->hasAttribute('xlink:href') ? $oElement->getAttribute('xlink:href') : null
-                );
+                    'path' => $oElement->hasAttribute('xlink:href') ? $oElement->getAttribute('xlink:href') : null,
+                ];
             }
         }
     }

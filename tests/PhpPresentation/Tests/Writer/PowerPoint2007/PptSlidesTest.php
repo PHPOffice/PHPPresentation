@@ -7,28 +7,28 @@ use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Slide\Animation;
+use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
-use PhpOffice\PhpPresentation\Slide\Animation;
-use PhpOffice\PhpPresentation\Slide\Transition;
-use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
- * Test class for PowerPoint2007
+ * Test class for PowerPoint2007.
  *
- * @coversDefaultClass PowerPoint2007
+ * @coversDefaultClass \PowerPoint2007
  */
 class PptSlideTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/42
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/42
      */
-    public function testAlignmentShapeAuto()
+    public function testAlignmentShapeAuto(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
@@ -41,9 +41,9 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/42
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/42
      */
-    public function testAlignmentShapeBase()
+    public function testAlignmentShapeBase(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
@@ -57,9 +57,9 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/35
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
      */
-    public function testAlignmentShapeBottom()
+    public function testAlignmentShapeBottom(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
@@ -73,9 +73,9 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/35
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
      */
-    public function testAlignmentShapeCenter()
+    public function testAlignmentShapeCenter(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
@@ -89,9 +89,9 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link https://github.com/PHPOffice/PHPPresentation/issues/35
+     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
      */
-    public function testAlignmentShapeTop()
+    public function testAlignmentShapeTop(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createRichTextShape()->setWidth(400)->setHeight(400)->setOffsetX(100)->setOffsetY(100);
@@ -104,7 +104,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testAnimation()
+    public function testAnimation(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape1 = $oSlide->createRichTextShape();
@@ -123,7 +123,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testCommentRelationship()
+    public function testCommentRelationship(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oSlide->addShape(new Comment());
@@ -133,7 +133,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testCommentInGroupRelationship()
+    public function testCommentInGroupRelationship(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oGroup = new Group();
@@ -145,7 +145,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testDrawingWithHyperlink()
+    public function testDrawingWithHyperlink(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
@@ -158,7 +158,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testDrawingShapeBorder()
+    public function testDrawingShapeBorder(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
@@ -171,7 +171,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testDrawingShapeFill()
+    public function testDrawingShapeFill(): void
     {
         $oColor = new Color(Color::COLOR_DARKRED);
         $oColor->setAlpha(mt_rand(0, 100));
@@ -186,11 +186,11 @@ class PptSlideTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:spPr/a:solidFill/a:srgbClr/a:alpha';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', (string)($oColor->getAlpha() * 1000));
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', (string) ($oColor->getAlpha() * 1000));
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testDrawingShapeShadow()
+    public function testDrawingShapeShadow(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
@@ -202,7 +202,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testFillGradientLinearTable()
+    public function testFillGradientLinearTable(): void
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -226,9 +226,9 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/61
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/61
      */
-    public function testFillGradientLinearRichText()
+    public function testFillGradientLinearRichText(): void
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -248,7 +248,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testFillGradientPathTable()
+    public function testFillGradientPathTable(): void
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -272,9 +272,9 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/61
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/61
      */
-    public function testFillGradientPathText()
+    public function testFillGradientPathText(): void
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -294,7 +294,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testFillPatternTable()
+    public function testFillPatternTable(): void
     {
         $expected1 = 'E06B20';
         $expected2 = strrev($expected1);
@@ -317,7 +317,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testFillSolidTable()
+    public function testFillSolidTable(): void
     {
         $expected = 'E06B20';
 
@@ -337,9 +337,9 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/61
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/61
      */
-    public function testFillSolidText()
+    public function testFillSolidText(): void
     {
         $expected = 'E06B20';
 
@@ -355,7 +355,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testHyperlink()
+    public function testHyperlink(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -367,7 +367,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testHyperlinkInternal()
+    public function testHyperlinkInternal(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -380,7 +380,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testListBullet()
+    public function testListBullet(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -410,7 +410,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testListNumeric()
+    public function testListNumeric(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -434,7 +434,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testLine()
+    public function testLine(): void
     {
         $valEmu10 = Drawing::pixelsToEmu(10);
         $valEmu90 = Drawing::pixelsToEmu(90);
@@ -461,7 +461,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testMedia()
+    public function testMedia(): void
     {
         $expectedName = 'MyName';
         $expectedWidth = mt_rand(1, 100);
@@ -494,14 +494,14 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testNote()
+    public function testNote(): void
     {
         $oLayout = $this->oPresentation->getLayout();
         $oSlide = $this->oPresentation->getActiveSlide();
         $oNote = $oSlide->getNote();
         $oRichText = $oNote->createRichTextShape()
-            ->setHeight($oLayout->getCY($oLayout::UNIT_PIXEL))
-            ->setWidth($oLayout->getCX($oLayout::UNIT_PIXEL))
+            ->setHeight((int) $oLayout->getCY($oLayout::UNIT_PIXEL))
+            ->setWidth((int) $oLayout->getCX($oLayout::UNIT_PIXEL))
             ->setOffsetX(170)
             ->setOffsetY(180);
         $oRichText->createTextRun('testNote');
@@ -543,7 +543,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testRichTextAutoFitNormal()
+    public function testRichTextAutoFitNormal(): void
     {
         $expectedFontScale = 47.5;
         $expectedLnSpcReduction = 20;
@@ -560,7 +560,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testRichTextBreak()
+    public function testRichTextBreak(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -571,7 +571,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testRichTextHyperlink()
+    public function testRichTextHyperlink(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -582,7 +582,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testRichTextLineSpacing()
+    public function testRichTextLineSpacing(): void
     {
         $expectedLineSpacing = mt_rand(1, 100);
 
@@ -597,7 +597,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testRichTextRunLanguage()
+    public function testRichTextRunLanguage(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -619,7 +619,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testRichTextShadow()
+    public function testRichTextShadow(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -631,7 +631,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testRichTextUpright()
+    public function testRichTextUpright(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -644,7 +644,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testRichTextVertical()
+    public function testRichTextVertical(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -657,13 +657,13 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testSlideLayoutExists()
+    public function testSlideLayoutExists(): void
     {
         $this->assertZipFileExists('ppt/slideLayouts/slideLayout1.xml');
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testStyleCharacterSpacing()
+    public function testStyleCharacterSpacing(): void
     {
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
 
@@ -675,7 +675,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spc', '0');
         $this->assertIsSchemaECMA376Valid();
-        
+
         $oRun->getFont()->setCharacterSpacing(42);
         $this->resetPresentationFile();
 
@@ -684,7 +684,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testStyleSubScript()
+    public function testStyleSubScript(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -697,7 +697,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testStyleSuperScript()
+    public function testStyleSuperScript(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText = $oSlide->createRichTextShape();
@@ -710,7 +710,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTableWithAlignment()
+    public function testTableWithAlignment(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
@@ -735,7 +735,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTableWithBorder()
+    public function testTableWithBorder(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
@@ -774,7 +774,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTableWithCellMargin()
+    public function testTableWithCellMargin(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
@@ -797,7 +797,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTableWithColspan()
+    public function testTableWithColspan(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
@@ -813,7 +813,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTableWithRowspan()
+    public function testTableWithRowspan(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
@@ -834,9 +834,9 @@ class PptSlideTest extends PhpPresentationTestCase
     }
 
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/70
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/70
      */
-    public function testTableWithHyperlink()
+    public function testTableWithHyperlink(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createTableShape(4);
@@ -853,7 +853,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTransition()
+    public function testTransition(): void
     {
         $value = mt_rand(1000, 5000);
         $element = '/p:sld/p:transition';
@@ -889,7 +889,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
         foreach ($arrayConstants as $key => $value) {
-            if (strpos($key, 'TRANSITION_') !== 0) {
+            if (0 !== strpos($key, 'TRANSITION_')) {
                 continue;
             }
 
@@ -1049,7 +1049,7 @@ class PptSlideTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testVisibility()
+    public function testVisibility(): void
     {
         $expectedElement = '/p:sld';
 

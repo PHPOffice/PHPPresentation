@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,127 +21,127 @@ namespace PhpOffice\PhpPresentation\Style;
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * \PhpOffice\PhpPresentation\Style\Font
+ * \PhpOffice\PhpPresentation\Style\Font.
  */
 class Font implements ComparableInterface
 {
     /* Underline types */
-    const UNDERLINE_NONE = 'none';
-    const UNDERLINE_DASH = 'dash';
-    const UNDERLINE_DASHHEAVY = 'dashHeavy';
-    const UNDERLINE_DASHLONG = 'dashLong';
-    const UNDERLINE_DASHLONGHEAVY = 'dashLongHeavy';
-    const UNDERLINE_DOUBLE = 'dbl';
-    const UNDERLINE_DOTHASH = 'dotDash';
-    const UNDERLINE_DOTHASHHEAVY = 'dotDashHeavy';
-    const UNDERLINE_DOTDOTDASH = 'dotDotDash';
-    const UNDERLINE_DOTDOTDASHHEAVY = 'dotDotDashHeavy';
-    const UNDERLINE_DOTTED = 'dotted';
-    const UNDERLINE_DOTTEDHEAVY = 'dottedHeavy';
-    const UNDERLINE_HEAVY = 'heavy';
-    const UNDERLINE_SINGLE = 'sng';
-    const UNDERLINE_WAVY = 'wavy';
-    const UNDERLINE_WAVYDOUBLE = 'wavyDbl';
-    const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
-    const UNDERLINE_WORDS = 'words';
+    public const UNDERLINE_NONE = 'none';
+    public const UNDERLINE_DASH = 'dash';
+    public const UNDERLINE_DASHHEAVY = 'dashHeavy';
+    public const UNDERLINE_DASHLONG = 'dashLong';
+    public const UNDERLINE_DASHLONGHEAVY = 'dashLongHeavy';
+    public const UNDERLINE_DOUBLE = 'dbl';
+    public const UNDERLINE_DOTHASH = 'dotDash';
+    public const UNDERLINE_DOTHASHHEAVY = 'dotDashHeavy';
+    public const UNDERLINE_DOTDOTDASH = 'dotDotDash';
+    public const UNDERLINE_DOTDOTDASHHEAVY = 'dotDotDashHeavy';
+    public const UNDERLINE_DOTTED = 'dotted';
+    public const UNDERLINE_DOTTEDHEAVY = 'dottedHeavy';
+    public const UNDERLINE_HEAVY = 'heavy';
+    public const UNDERLINE_SINGLE = 'sng';
+    public const UNDERLINE_WAVY = 'wavy';
+    public const UNDERLINE_WAVYDOUBLE = 'wavyDbl';
+    public const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
+    public const UNDERLINE_WORDS = 'words';
 
     /**
-     * Name
+     * Name.
      *
      * @var string
      */
     private $name;
-    
+
     /**
-     * Font Size
+     * Font Size.
      *
-     * @var float|int
+     * @var int
      */
     private $size;
-    
+
     /**
-     * Bold
+     * Bold.
      *
-     * @var boolean
+     * @var bool
      */
     private $bold;
 
     /**
-     * Italic
+     * Italic.
      *
-     * @var boolean
+     * @var bool
      */
     private $italic;
 
     /**
-     * Superscript
+     * Superscript.
      *
-     * @var boolean
+     * @var bool
      */
     private $superScript;
 
     /**
-     * Subscript
+     * Subscript.
      *
-     * @var boolean
+     * @var bool
      */
     private $subScript;
 
     /**
-     * Underline
+     * Underline.
      *
      * @var string
      */
     private $underline;
 
     /**
-     * Strikethrough
+     * Strikethrough.
      *
-     * @var boolean
+     * @var bool
      */
     private $strikethrough;
 
     /**
-     * Foreground color
+     * Foreground color.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Color
+     * @var Color
      */
     private $color;
 
     /**
-     * Character Spacing
+     * Character Spacing.
      *
      * @var int
      */
     private $characterSpacing;
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Font
+     * Create a new \PhpOffice\PhpPresentation\Style\Font.
      */
     public function __construct()
     {
         // Initialise values
-        $this->name             = 'Calibri';
-        $this->size             = 10;
+        $this->name = 'Calibri';
+        $this->size = 10;
         $this->characterSpacing = 0;
-        $this->bold             = false;
-        $this->italic           = false;
-        $this->superScript      = false;
-        $this->subScript        = false;
-        $this->underline        = self::UNDERLINE_NONE;
-        $this->strikethrough    = false;
-        $this->color            = new Color(Color::COLOR_BLACK);
+        $this->bold = false;
+        $this->italic = false;
+        $this->superScript = false;
+        $this->subScript = false;
+        $this->underline = self::UNDERLINE_NONE;
+        $this->strikethrough = false;
+        $this->color = new Color(Color::COLOR_BLACK);
     }
 
     /**
-     * Get Name
+     * Get Name.
      *
      * @return string
      */
@@ -150,77 +151,72 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Name
+     * Set Name.
      *
-     * @param  string                   $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
     public function setName($pValue = 'Calibri')
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = 'Calibri';
         }
         $this->name = $pValue;
 
         return $this;
     }
-    
+
     /**
-     * Get Character Spacing
+     * Get Character Spacing.
      *
-     * @return double
+     * @return float
      */
     public function getCharacterSpacing()
     {
         return $this->characterSpacing;
     }
-    
+
     /**
      * Set Character Spacing
-     * Value in pt
+     * Value in pt.
+     *
      * @param float|int $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
     public function setCharacterSpacing($pValue = 0)
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = 0;
         }
         $this->characterSpacing = $pValue * 100;
-    
+
         return $this;
     }
 
     /**
-     * Get Size
-     *
-     * @return double
+     * Get Size.
      */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
 
     /**
-     * Set Size
-     *
-     * @param float|int $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * Set Size.
      */
-    public function setSize($pValue = 10)
+    public function setSize(int $pValue = 10): self
     {
-        if ($pValue == '') {
-            $pValue = 10;
-        }
         $this->size = $pValue;
 
         return $this;
     }
 
     /**
-     * Get Bold
+     * Get Bold.
      *
-     * @return boolean
+     * @return bool
      */
     public function isBold()
     {
@@ -228,25 +224,19 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Bold
-     *
-     * @param  boolean                  $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * Set Bold.
      */
-    public function setBold($pValue = false)
+    public function setBold(bool $pValue = false): self
     {
-        if ($pValue == '') {
-            $pValue = false;
-        }
         $this->bold = $pValue;
 
         return $this;
     }
 
     /**
-     * Get Italic
+     * Get Italic.
      *
-     * @return boolean
+     * @return bool
      */
     public function isItalic()
     {
@@ -254,25 +244,19 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Italic
-     *
-     * @param  boolean                  $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * Set Italic.
      */
-    public function setItalic($pValue = false)
+    public function setItalic(bool $pValue = false): self
     {
-        if ($pValue == '') {
-            $pValue = false;
-        }
         $this->italic = $pValue;
 
         return $this;
     }
 
     /**
-     * Get SuperScript
+     * Get SuperScript.
      *
-     * @return boolean
+     * @return bool
      */
     public function isSuperScript()
     {
@@ -280,53 +264,31 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set SuperScript
-     *
-     * @param  boolean                  $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * Set SuperScript.
      */
-    public function setSuperScript($pValue = false)
+    public function setSuperScript(bool $pValue = false): self
     {
-        if ($pValue == '') {
-            $pValue = false;
-        }
-
         $this->superScript = $pValue;
 
         // Set SubScript at false only if SuperScript is true
-        if ($pValue === true) {
+        if (true === $pValue) {
             $this->subScript = false;
         }
 
         return $this;
     }
 
-    /**
-     * Get SubScript
-     *
-     * @return boolean
-     */
-    public function isSubScript()
+    public function isSubScript(): bool
     {
         return $this->subScript;
     }
 
-    /**
-     * Set SubScript
-     *
-     * @param  boolean                  $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Font
-     */
-    public function setSubScript($pValue = false)
+    public function setSubScript(bool $pValue = false): self
     {
-        if ($pValue == '') {
-            $pValue = false;
-        }
-
         $this->subScript = $pValue;
 
         // Set SuperScript at false only if SubScript is true
-        if ($pValue === true) {
+        if (true === $pValue) {
             $this->superScript = false;
         }
 
@@ -334,7 +296,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Underline
+     * Get Underline.
      *
      * @return string
      */
@@ -344,14 +306,15 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Underline
+     * Set Underline.
      *
-     * @param  string                   $pValue \PhpOffice\PhpPresentation\Style\Font underline type
+     * @param string $pValue \PhpOffice\PhpPresentation\Style\Font underline type
+     *
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
     public function setUnderline($pValue = self::UNDERLINE_NONE)
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = self::UNDERLINE_NONE;
         }
         $this->underline = $pValue;
@@ -360,9 +323,9 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Strikethrough
+     * Get Strikethrough.
      *
-     * @return boolean
+     * @return bool
      */
     public function isStrikethrough()
     {
@@ -370,81 +333,72 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Strikethrough
-     *
-     * @param  boolean                  $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * Set Strikethrough.
      */
-    public function setStrikethrough($pValue = false)
+    public function setStrikethrough(bool $pValue = false): self
     {
-        if ($pValue == '') {
-            $pValue = false;
-        }
         $this->strikethrough = $pValue;
 
         return $this;
     }
 
     /**
-     * Get Color
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Color|\PhpOffice\PhpPresentation\Style\SchemeColor
+     * Get Color.
      */
-    public function getColor()
+    public function getColor(): Color
     {
         return $this->color;
     }
 
     /**
-     * Set Color
+     * Set Color.
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Color|\PhpOffice\PhpPresentation\Style\SchemeColor $pValue
      * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Style\Font
      */
-    public function setColor($pValue = null)
+    public function setColor(Color $pValue): self
     {
-        if (!$pValue instanceof Color) {
-            throw new \Exception('$pValue must be an instance of \PhpOffice\PhpPresentation\Style\Color');
-        }
         $this->color = $pValue;
 
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->name . $this->size . ($this->bold ? 't' : 'f') . ($this->italic ? 't' : 'f') . ($this->superScript ? 't' : 'f') . ($this->subScript ? 't' : 'f') . $this->underline . ($this->strikethrough ? 't' : 'f') . $this->color->getHashCode() . __CLASS__);
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
+        return $this;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use PhpOffice\Common\XMLWriter;
@@ -7,6 +8,7 @@ class PptViewProps extends AbstractDecoratorWriter
 {
     /**
      * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
+     *
      * @throws \Exception
      */
     public function render()
@@ -39,12 +41,12 @@ class PptViewProps extends AbstractDecoratorWriter
 
         $objWriter->startElement('a:sx');
         $objWriter->writeAttribute('d', '100');
-        $objWriter->writeAttribute('n', (int)($this->getPresentation()->getPresentationProperties()->getZoom() * 100));
+        $objWriter->writeAttribute('n', (int) ($this->getPresentation()->getPresentationProperties()->getZoom() * 100));
         $objWriter->endElement();
 
         $objWriter->startElement('a:sy');
         $objWriter->writeAttribute('d', '100');
-        $objWriter->writeAttribute('n', (int)($this->getPresentation()->getPresentationProperties()->getZoom() * 100));
+        $objWriter->writeAttribute('n', (int) ($this->getPresentation()->getPresentationProperties()->getZoom() * 100));
         $objWriter->endElement();
 
         // > // p:viewPr > p:slideViewPr > p:cSldViewPr > p:cViewPr > p:scale

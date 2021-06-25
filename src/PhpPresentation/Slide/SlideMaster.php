@@ -10,10 +10,12 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
 namespace PhpOffice\PhpPresentation\Slide;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
@@ -26,18 +28,18 @@ use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
 
 /**
- * Class SlideMaster
+ * Class SlideMaster.
  */
 class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
     /**
-     * Collection of Slide objects
+     * Collection of Slide objects.
      *
      * @var \PhpOffice\PhpPresentation\Slide\SlideLayout[]
      */
-    protected $slideLayouts = array();
+    protected $slideLayouts = [];
     /**
-     * Mapping of colors to the theme
+     * Mapping of colors to the theme.
      *
      * @var \PhpOffice\PhpPresentation\Style\ColorMap
      */
@@ -49,11 +51,11 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * @var \PhpOffice\PhpPresentation\Style\SchemeColor[]
      */
-    protected $arraySchemeColor = array();
+    protected $arraySchemeColor = [];
     /**
-     * @var array
+     * @var array<string, string>
      */
-    protected $defaultSchemeColor = array(
+    protected $defaultSchemeColor = [
         'dk1' => '000000',
         'lt1' => 'FFFFFF',
         'dk2' => '1F497D',
@@ -66,12 +68,11 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
         'accent6' => 'F79646',
         'hlink' => '0000FF',
         'folHlink' => '800080',
-    );
+    ];
 
     /**
-     * Create a new slideMaster
+     * Create a new slideMaster.
      *
-     * @param PhpPresentation $pParent
      * @throws \Exception
      */
     public function __construct(PhpPresentation $pParent = null)
@@ -99,28 +100,33 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     }
 
     /**
-     * Create a slideLayout and add it to this presentation
+     * Create a slideLayout and add it to this presentation.
      *
      * @return \PhpOffice\PhpPresentation\Slide\SlideLayout
+     *
      * @throws \Exception
      */
     public function createSlideLayout()
     {
         $newSlideLayout = new SlideLayout($this);
         $this->addSlideLayout($newSlideLayout);
+
         return $newSlideLayout;
     }
 
     /**
-     * Add slideLayout
+     * Add slideLayout.
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\SlideLayout $slideLayout
+     * @param \PhpOffice\PhpPresentation\Slide\SlideLayout $slideLayout
+     *
      * @throws \Exception
+     *
      * @return \PhpOffice\PhpPresentation\Slide\SlideLayout
      */
     public function addSlideLayout(SlideLayout $slideLayout = null)
     {
         $this->slideLayouts[] = $slideLayout;
+
         return $slideLayout;
     }
 
@@ -141,22 +147,22 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     }
 
     /**
-     * @param TextStyle $textStyle
      * @return $this
      */
     public function setTextStyles(TextStyle $textStyle)
     {
         $this->textStyles = $textStyle;
+
         return $this;
     }
 
     /**
-     * @param SchemeColor $schemeColor
      * @return $this
      */
     public function addSchemeColor(SchemeColor $schemeColor)
     {
         $this->arraySchemeColor[$schemeColor->getValue()] = $schemeColor;
+
         return $this;
     }
 

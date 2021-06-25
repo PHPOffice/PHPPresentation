@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
@@ -21,16 +22,16 @@ use PhpOffice\PhpPresentation\Reader\PowerPoint97;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PowerPoint97 reader
+ * Test class for PowerPoint97 reader.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Reader\PowerPoint97
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Reader\PowerPoint97
  */
 class PowerPoint97Test extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testCanRead()
+    public function testCanRead(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
         $object = new PowerPoint97();
@@ -38,11 +39,10 @@ class PowerPoint97Test extends TestCase
         $this->assertTrue($object->canRead($file));
     }
 
-
     /**
-     * Test cant read
+     * Test cant read.
      */
-    public function testCantRead()
+    public function testCantRead(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
         $object = new PowerPoint97();
@@ -50,38 +50,35 @@ class PowerPoint97Test extends TestCase
         $this->assertFalse($object->canRead($file));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
-    public function testLoadFileNotExists()
+    public function testLoadFileNotExists(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+
         $object = new PowerPoint97();
         $object->load('');
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97:
-     */
-    public function testLoadFileBadFormat()
+    public function testLoadFileBadFormat(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97:');
+
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_01_Simple.pptx';
         $object = new PowerPoint97();
         $object->load($file);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
-    public function testFileSupportsNotExists()
+    public function testFileSupportsNotExists(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+
         $object = new PowerPoint97();
         $object->fileSupportsUnserializePhpPresentation('');
     }
 
-    public function testLoadFile01()
+    public function testLoadFile01(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
         $object = new PowerPoint97();
@@ -93,7 +90,7 @@ class PowerPoint97Test extends TestCase
         $this->assertCount(2, $oSlide->getShapeCollection());
     }
 
-    public function testLoadFile02()
+    public function testLoadFile02(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_02.ppt';
         $object = new PowerPoint97();
@@ -114,7 +111,7 @@ class PowerPoint97Test extends TestCase
         $this->assertCount(3, $oSlide->getShapeCollection());
     }
 
-    public function testLoadFile03()
+    public function testLoadFile03(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_03.ppt';
         $object = new PowerPoint97();
@@ -126,7 +123,7 @@ class PowerPoint97Test extends TestCase
         $this->assertCount(1, $oSlide->getShapeCollection());
     }
 
-    public function testLoadFile04()
+    public function testLoadFile04(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_04.ppt';
         $object = new PowerPoint97();

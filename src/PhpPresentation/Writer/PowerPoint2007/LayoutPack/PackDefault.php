@@ -10,7 +10,8 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
@@ -20,19 +21,20 @@ namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack;
 use PhpOffice\PhpPresentation\Slide\Layout;
 
 /**
- * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\Default
+ * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\Default.
+ *
  * @deprecated 0.7
  */
 class PackDefault extends AbstractLayoutPack
 {
     /**
-     * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\Default
+     * \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\Default.
      */
     public function __construct()
     {
         // Master slide
-        $this->masterSlides = array(
-            array(
+        $this->masterSlides = [
+            [
                 'masterid' => 1,
                 'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldMaster xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main">
@@ -536,18 +538,18 @@ class PackDefault extends AbstractLayoutPack
             </a:lvl9pPr>
         </p:otherStyle>
     </p:txStyles>
-</p:sldMaster>'));
+</p:sldMaster>', ], ];
 
         // Master slide relations
-        $this->masterSlideRels = array(
+        $this->masterSlideRels = [
             //array('masterid' => '', 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
-        );
+        ];
 
         // Theme
-        $this->themes = array(
-            array(
+        $this->themes = [
+            [
                 'masterid' => 1,
-                'body'     => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+                'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <a:theme xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" name="Office Theme">
  <a:themeElements>
   <a:clrScheme name="Office">
@@ -827,18 +829,19 @@ class PackDefault extends AbstractLayoutPack
  </a:themeElements>
  <a:objectDefaults/>
  <a:extraClrSchemeLst/>
-</a:theme>'));
+</a:theme>', ], ];
 
         // Theme relations
-        $this->themeRelations = array(
+        $this->themeRelations = [
             //array('masterid' => 1, 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
-        );
+        ];
 
         // Layouts - Layout::TITLE_SLIDE
-        $this->layouts[1] = array(
-            'masterid'  => 1,
-            'name'      => Layout::TITLE_SLIDE,
-            'body'      => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[1] = [
+            'id' => 1,
+            'masterid' => 1,
+            'name' => Layout::TITLE_SLIDE,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="title" preserve="1">
     <p:cSld name="Title Slide">
         <p:spTree>
@@ -1072,13 +1075,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::TITLE_AND_CONTENT
-        $this->layouts[2] = array(
-            'masterid'  => 1,
-            'name'      => Layout::TITLE_AND_CONTENT,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[2] = [
+            'id' => 2,
+            'masterid' => 1,
+            'name' => Layout::TITLE_AND_CONTENT,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="obj" preserve="1">
     <p:cSld name="Title and Content">
         <p:spTree>
@@ -1240,13 +1244,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::SECTION_HEADER
-        $this->layouts[3] = array(
-            'masterid'  => 1,
-            'name'      => Layout::SECTION_HEADER,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[3] = [
+            'id' => 3,
+            'masterid' => 1,
+            'name' => Layout::SECTION_HEADER,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="secHead" preserve="1">
     <p:cSld name="Section Header">
         <p:spTree>
@@ -1484,13 +1489,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::TWO_CONTENT
-        $this->layouts[4] = array(
-            'masterid'  => 1,
-            'name'      => Layout::TWO_CONTENT,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[4] = [
+            'id' => 4,
+            'masterid' => 1,
+            'name' => Layout::TWO_CONTENT,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="twoObj" preserve="1">
     <p:cSld name="Two Content">
         <p:spTree>
@@ -1770,13 +1776,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::COMPARISON
-        $this->layouts[5] = array(
-            'masterid'  => 1,
-            'name'      => Layout::COMPARISON,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[5] = [
+            'id' => 5,
+            'masterid' => 1,
+            'name' => Layout::COMPARISON,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="twoTxTwoObj" preserve="1">
     <p:cSld name="Comparison">
         <p:spTree>
@@ -2190,13 +2197,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::TITLE_ONLY
-        $this->layouts[6] = array(
-            'masterid'  => 1,
-            'name'      => Layout::TITLE_ONLY,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[6] = [
+            'id' => 6,
+            'masterid' => 1,
+            'name' => Layout::TITLE_ONLY,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="titleOnly" preserve="1">
     <p:cSld name="Title Only">
         <p:spTree>
@@ -2306,13 +2314,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::BLANK
-        $this->layouts[7] = array(
-            'masterid'  => 1,
-            'name'      => Layout::BLANK,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[7] = [
+            'id' => 7,
+            'masterid' => 1,
+            'name' => Layout::BLANK,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="blank" preserve="1">
     <p:cSld name="Blank">
         <p:spTree>
@@ -2399,13 +2408,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::CONTENT_WITH_CAPTION
-        $this->layouts[8] = array(
-            'masterid'  => 1,
-            'name'      => Layout::CONTENT_WITH_CAPTION,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[8] = [
+            'id' => 8,
+            'masterid' => 1,
+            'name' => Layout::CONTENT_WITH_CAPTION,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="objTx" preserve="1">
     <p:cSld name="Content with Caption">
         <p:spTree>
@@ -2674,13 +2684,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::PICTURE_WITH_CAPTION
-        $this->layouts[9] = array(
-            'masterid'  => 1,
-            'name'      => Layout::PICTURE_WITH_CAPTION,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[9] = [
+            'id' => 9,
+            'masterid' => 1,
+            'name' => Layout::PICTURE_WITH_CAPTION,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="picTx" preserve="1">
     <p:cSld name="Picture with Caption">
         <p:spTree>
@@ -2925,13 +2936,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::TITLE_AND_VERTICAL_TEXT
-        $this->layouts[10] = array(
-            'masterid'  => 1,
-            'name'      => Layout::TITLE_AND_VERTICAL_TEXT,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[10] = [
+            'id' => 10,
+            'masterid' => 1,
+            'name' => Layout::TITLE_AND_VERTICAL_TEXT,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="vertTx" preserve="1">
     <p:cSld name="Title and Vertical Text">
         <p:spTree>
@@ -3093,13 +3105,14 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layouts - Layout::VERTICAL_TITLE_AND_TEXT
-        $this->layouts[11] = array(
-            'masterid'  => 1,
-            'name'      => Layout::VERTICAL_TITLE_AND_TEXT,
-            'body'      =>  '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+        $this->layouts[11] = [
+            'id' => 11,
+            'masterid' => 1,
+            'name' => Layout::VERTICAL_TITLE_AND_TEXT,
+            'body' => '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <p:sldLayout xmlns:a="http://schemas.openxmlformats.org/drawingml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships" xmlns:p="http://schemas.openxmlformats.org/presentationml/2006/main" type="vertTitleAndTx" preserve="1">
     <p:cSld name="Vertical Title and Text">
         <p:spTree>
@@ -3271,11 +3284,11 @@ class PackDefault extends AbstractLayoutPack
     <p:clrMapOvr>
         <a:masterClrMapping />
     </p:clrMapOvr>
-</p:sldLayout>');
+</p:sldLayout>', ];
 
         // Layout relations
-        $this->layoutRelations = array(
+        $this->layoutRelations = [
             //array('layoutId' => 0, 'id' => '', 'type' => '', 'contentType' => '', 'target' => '', 'contents' => '')
-        );
+        ];
     }
 }

@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
@@ -21,20 +22,20 @@ use PhpOffice\PhpPresentation\Shape\Table;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Table element
+ * Test class for Table element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Table
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Table
  */
 class TableTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Table();
         $this->assertEmpty($object->getRows());
         $this->assertFalse($object->isResizeProportional());
     }
 
-    public function testNumColums()
+    public function testNumColums(): void
     {
         $value = mt_rand(1, 100);
         $object = new Table();
@@ -44,7 +45,7 @@ class TableTest extends TestCase
         $this->assertEquals($value, $object->getNumColumns());
     }
 
-    public function testRows()
+    public function testRows(): void
     {
         $object = new Table();
 
@@ -55,22 +56,21 @@ class TableTest extends TestCase
         $this->assertNull($object->getRow(1, true));
     }
 
-    /**
-     * @expectedException \Exception
-     * expectedExceptionMessage Row number out of bounds.
-     */
-    public function testGetRowException()
+    public function testGetRowException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('Row number out of bounds.');
+
         $object = new Table();
         $object->getRow();
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Table();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());
 
         $row = $object->createRow();
-        $this->assertEquals(md5($row->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($row->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

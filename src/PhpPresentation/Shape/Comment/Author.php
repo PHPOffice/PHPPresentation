@@ -29,11 +29,13 @@ class Author
 
     /**
      * @param int $idxAuthor
+     *
      * @return Author
      */
     public function setIndex($idxAuthor)
     {
         $this->idxAuthor = (int) $idxAuthor;
+
         return $this;
     }
 
@@ -47,11 +49,13 @@ class Author
 
     /**
      * @param mixed $initials
+     *
      * @return Author
      */
     public function setInitials($initials)
     {
         $this->initials = $initials;
+
         return $this;
     }
 
@@ -65,20 +69,22 @@ class Author
 
     /**
      * @param string $name
+     *
      * @return Author
      */
     public function setName($name)
     {
         $this->name = $name;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->getInitials() . $this->getName() . __CLASS__);
     }

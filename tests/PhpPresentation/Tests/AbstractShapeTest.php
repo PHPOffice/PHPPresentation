@@ -12,29 +12,30 @@
  *
  * @copyright   2010-2014 PhpPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests;
 
-use PhpOffice\PhpPresentation\Shape\Placeholder;
-use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Autoloader
+ * Test class for Autoloader.
  */
 class AbstractShapeTest extends TestCase
 {
     /**
-     * Register
+     * Register.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new RichText();
 
@@ -49,7 +50,7 @@ class AbstractShapeTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->getShadow());
     }
 
-    public function testFill()
+    public function testFill(): void
     {
         $object = new RichText();
 
@@ -59,7 +60,7 @@ class AbstractShapeTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
     }
 
-    public function testHeight()
+    public function testHeight(): void
     {
         $object = new RichText();
 
@@ -70,7 +71,7 @@ class AbstractShapeTest extends TestCase
         $this->assertEquals($value, $object->getHeight());
     }
 
-    public function testHyperlink()
+    public function testHyperlink(): void
     {
         $object = new RichText();
 
@@ -84,7 +85,7 @@ class AbstractShapeTest extends TestCase
         $this->assertTrue($object->hasHyperlink());
     }
 
-    public function testOffsetX()
+    public function testOffsetX(): void
     {
         $object = new RichText();
 
@@ -95,7 +96,7 @@ class AbstractShapeTest extends TestCase
         $this->assertEquals($value, $object->getOffsetX());
     }
 
-    public function testOffsetY()
+    public function testOffsetY(): void
     {
         $object = new RichText();
 
@@ -106,7 +107,7 @@ class AbstractShapeTest extends TestCase
         $this->assertEquals($value, $object->getOffsetY());
     }
 
-    public function testRotation()
+    public function testRotation(): void
     {
         $object = new RichText();
 
@@ -117,7 +118,7 @@ class AbstractShapeTest extends TestCase
         $this->assertEquals($value, $object->getRotation());
     }
 
-    public function testShadow()
+    public function testShadow(): void
     {
         $object = new RichText();
 
@@ -127,7 +128,7 @@ class AbstractShapeTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->getShadow());
     }
 
-    public function testWidth()
+    public function testWidth(): void
     {
         $object = new RichText();
 
@@ -138,7 +139,7 @@ class AbstractShapeTest extends TestCase
         $this->assertEquals($value, $object->getWidth());
     }
 
-    public function testWidthAndHeight()
+    public function testWidthAndHeight(): void
     {
         $object = new RichText();
 
@@ -154,7 +155,7 @@ class AbstractShapeTest extends TestCase
         $this->assertEquals($value, $object->getHeight());
     }
 
-    public function testPlaceholder()
+    public function testPlaceholder(): void
     {
         $object = new RichText();
         $this->assertFalse($object->isPlaceholder(), 'Standard Shape should not be a placeholder object');
@@ -177,7 +178,7 @@ class AbstractShapeTest extends TestCase
         $this->assertEquals('subTitle', $object->getPlaceholder()->getType());
     }
 
-    public function testContainer()
+    public function testContainer(): void
     {
         $object = new RichText();
         $object2 = new RichText();
@@ -192,11 +193,7 @@ class AbstractShapeTest extends TestCase
         $this->assertNull($object->getContainer());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A \PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPresentation\ShapeContainerInterface.
-     */
-    public function testContainerException()
+    public function testContainerException(): void
     {
         $object = new RichText();
         $oSlide = new Slide();
@@ -204,6 +201,8 @@ class AbstractShapeTest extends TestCase
         $this->assertNull($object->getContainer());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer($oSlide));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getContainer());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer(null));
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('A PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one PhpOffice\PhpPresentation\ShapeContainerInterface.');
+        $object->setContainer(null);
     }
 }

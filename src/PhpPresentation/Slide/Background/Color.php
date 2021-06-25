@@ -8,24 +8,18 @@ use PhpOffice\PhpPresentation\Style\Color as StyleColor;
 class Color extends AbstractBackground
 {
     /**
-     * @var StyleColor
+     * @var StyleColor|null
      */
     protected $color;
 
-    /**
-     * @param StyleColor|null $color
-     * @return $this
-     */
-    public function setColor(StyleColor $color = null)
+    public function setColor(StyleColor $color = null): self
     {
         $this->color = $color;
+
         return $this;
     }
 
-    /**
-     * @return StyleColor
-     */
-    public function getColor()
+    public function getColor(): ?StyleColor
     {
         return $this->color;
     }

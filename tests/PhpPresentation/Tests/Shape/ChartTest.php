@@ -12,7 +12,8 @@
  *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
  */
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
@@ -21,13 +22,13 @@ use PhpOffice\PhpPresentation\Shape\Chart;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Chart element
+ * Test class for Chart element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart
  */
 class ChartTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Chart();
 
@@ -37,8 +38,7 @@ class ChartTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->getView3D());
     }
 
-
-    public function testClone()
+    public function testClone(): void
     {
         $object = new Chart();
 
@@ -51,7 +51,7 @@ class ChartTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $oClone->getView3D());
     }
 
-    public function testIncludeSpreadsheet()
+    public function testIncludeSpreadsheet(): void
     {
         $object = new Chart();
 

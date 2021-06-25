@@ -12,35 +12,34 @@ class ZipFile extends AbstractDrawingAdapter
     protected $path;
 
     /**
-     * Get Path
-     *
-     * @return string
+     * Get Path.
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
 
     /**
-     * Set Path
+     * Set Path.
      *
-     * @param  string                      $pValue      File path
+     * @param string $pValue File path
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Drawing\ZipFile
      */
-    public function setPath($pValue = '')
+    public function setPath(string $pValue = ''): self
     {
         $this->path = $pValue;
+
         return $this;
     }
 
     /**
-     * @return string
      * @throws \Exception
      */
-    public function getContents()
+    public function getContents(): string
     {
         if (!CommonFile::fileExists($this->getZipFileOut())) {
-            throw new \Exception('File '.$this->getZipFileOut().' does not exist');
+            throw new \Exception('File ' . $this->getZipFileOut() . ' does not exist');
         }
 
         $imageZip = new \ZipArchive();
@@ -48,26 +47,22 @@ class ZipFile extends AbstractDrawingAdapter
         $imageContents = $imageZip->getFromName($this->getZipFileIn());
         $imageZip->close();
         unset($imageZip);
+
         return $imageContents;
     }
 
-
-    /**
-     * @return string
-     */
-    public function getExtension()
+    public function getExtension(): string
     {
         return pathinfo($this->getZipFileIn(), PATHINFO_EXTENSION);
     }
 
     /**
-     * @return string
      * @throws \Exception
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         if (!CommonFile::fileExists($this->getZipFileOut())) {
-            throw new \Exception('File '.$this->getZipFileOut().' does not exist');
+            throw new \Exception('File ' . $this->getZipFileOut() . ' does not exist');
         }
         $oArchive = new \ZipArchive();
         $oArchive->open($this->getZipFileOut());
@@ -77,33 +72,34 @@ class ZipFile extends AbstractDrawingAdapter
         } else {
             $image = getimagesizefromstring($oArchive->getFromName($this->getZipFileIn()));
         }
+
         return image_type_to_mime_type($image[2]);
     }
 
-    /**
-     * @return string
-     */
-    public function getIndexedFilename()
+    public function getIndexedFilename(): string
     {
         $output = pathinfo($this->getZipFileIn(), PATHINFO_FILENAME);
         $output = str_replace('.' . $this->getExtension(), '', $output);
         $output .= $this->getImageIndex();
-        $output .= '.'.$this->getExtension();
+        $output .= '.' . $this->getExtension();
         $output = str_replace(' ', '_', $output);
+
         return $output;
     }
 
-    protected function getZipFileOut()
+    protected function getZipFileOut(): string
     {
         $path = str_replace('zip://', '', $this->getPath());
         $path = explode('#', $path);
+
         return empty($path[0]) ? '' : $path[0];
     }
 
-    protected function getZipFileIn()
+    protected function getZipFileIn(): string
     {
         $path = str_replace('zip://', '', $this->getPath());
         $path = explode('#', $path);
+
         return empty($path[1]) ? '' : $path[1];
     }
 }

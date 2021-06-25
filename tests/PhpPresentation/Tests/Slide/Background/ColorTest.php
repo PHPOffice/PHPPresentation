@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 class ColorTest extends TestCase
 {
-    public function testColor()
+    public function testColor(): void
     {
         $object = new Color();
 

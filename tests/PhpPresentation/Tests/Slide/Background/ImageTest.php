@@ -7,12 +7,12 @@ use PHPUnit\Framework\TestCase;
 
 class ImageTest extends TestCase
 {
-    public function testColor()
+    public function testColor(): void
     {
         $object = new Image();
 
-        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png';
-        $numSlide = mt_rand(1, 100);
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
+        $numSlide = (string) mt_rand(1, 100);
 
         $this->assertNull($object->getPath());
         $this->assertEmpty($object->getFilename());
@@ -25,19 +25,18 @@ class ImageTest extends TestCase
         $this->assertEquals('png', $object->getExtension());
         $this->assertEquals('background_' . $numSlide . '.png', $object->getIndexedFilename($numSlide));
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Image', $object->setPath(null, false));
-        $this->assertNull($object->getPath());
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Image', $object->setPath('', false));
+        $this->assertEquals('', $object->getPath());
         $this->assertEmpty($object->getFilename());
         $this->assertEmpty($object->getExtension());
         $this->assertEquals('background_' . $numSlide . '.', $object->getIndexedFilename($numSlide));
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage File not found :
-     */
-    public function testPathException()
+    public function testPathException(): void
     {
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('File not found :');
+
         $object = new Image();
         $object->setPath('pathDoesntExist', true);
     }
