@@ -1,7 +1,4 @@
-.. _shapes:
-
-Shapes
-======
+# Shapes
 
 Shapes are objects that can be added to a slide. There are five types of shapes that can be used, i.e. [rich text](#rich-text), [line](#line), [chart](#chart), [drawing](#drawing), and [table](#table). Read the corresponding section of this manual for detail information of each shape.
 
@@ -19,15 +16,15 @@ Every shapes have common properties that you can set by using fluent interface.
 
 Example:
 
-.. code-block:: php
-
-	$richtext = $slide->createRichTextShape()
+``` php
+<?php
+$richtext = $slide->createRichTextShape()
 		->setHeight(300)
 		->setWidth(600)
 		->setOffsetX(170)
 		->setOffsetY(180);
+```
 
-Line
-----
+## Line
 
 To create a line, use `createLineShape` method of slide.
