@@ -54,3 +54,6 @@ nav:
     - Writers: 'usage/writers.md'
   - FAQ: 'faq.md'
   - Credits: 'credits.md'
+  - Developers:
+    - 'Code Coverage': 'coverage/index.html'
+    - 'PHPDoc': 'docs/index.html'
