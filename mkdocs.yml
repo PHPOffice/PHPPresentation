@@ -16,6 +16,12 @@ theme:
 ## Plugins
 plugins:
   - search
+  - autolink_references:
+      autolinks:
+        - reference_prefix: GH-
+          target_url: https://github.com/PHPOffice/PHPPresentation/issues/<num>
+        - reference_prefix: CP-
+          target_url: https://archive.codeplex.com/?p=phppowerpoint&<num>
 
 ## Config
 extra:
@@ -54,6 +60,17 @@ nav:
     - Writers: 'usage/writers.md'
   - FAQ: 'faq.md'
   - Credits: 'credits.md'
+  - Releases:
+      - '1.0.0 (WIP)': 'changes/1.0.0.md'
+      - '0.9.0': 'changes/0.9.0.md'
+      - '0.8.0': 'changes/0.8.0.md'
+      - '0.7.0': 'changes/0.7.0.md'
+      - '0.6.0': 'changes/0.6.0.md'
+      - '0.5.0': 'changes/0.5.0.md'
+      - '0.4.0': 'changes/0.4.0.md'
+      - '0.3.0': 'changes/0.3.0.md'
+      - '0.2.0': 'changes/0.2.0.md'
+      - '0.1.0': 'changes/0.1.0.md'
   - Developers:
     - 'Coveralls': 'https://coveralls.io/github/PHPOffice/PHPPresentation'
     - 'Code Coverage': 'coverage/index.html'
