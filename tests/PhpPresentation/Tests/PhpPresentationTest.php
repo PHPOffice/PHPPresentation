@@ -52,13 +52,8 @@ class PhpPresentationTest extends TestCase
     public function testProperties(): void
     {
         $object = new PhpPresentation();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setProperties(new DocumentProperties()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setDocumentProperties(new DocumentProperties()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
     }
 
@@ -126,33 +121,5 @@ class PhpPresentationTest extends TestCase
 
         $object = new PhpPresentation();
         $object->setActiveSlideIndex(1);
-    }
-
-    /**
-     * @deprecated
-     */
-    public function testMarkAsFinal(): void
-    {
-        $object = new PhpPresentation();
-        $this->assertFalse($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal(true));
-        $this->assertTrue($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal(false));
-        $this->assertFalse($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal());
-        $this->assertTrue($object->isMarkedAsFinal());
-    }
-
-    /**
-     * @deprecated
-     */
-    public function testZoom(): void
-    {
-        $object = new PhpPresentation();
-        $this->assertEquals(1, $object->getZoom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setZoom(0.3));
-        $this->assertEquals(0.3, $object->getZoom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setZoom());
-        $this->assertEquals(1, $object->getZoom());
     }
 }

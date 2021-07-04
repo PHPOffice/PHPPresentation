@@ -22,8 +22,6 @@ use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007.
@@ -45,15 +43,6 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     protected $diskCachingDir;
 
     /**
-     * Layout pack to use.
-     *
-     * @deprecated 0.7
-     *
-     * @var \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
-     */
-    protected $layoutPack;
-
-    /**
      * Create a new PowerPoint2007 file.
      *
      * @param PhpPresentation $pPhpPresentation
@@ -67,9 +56,6 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
 
         // Set up disk caching location
         $this->diskCachingDir = './';
-
-        // Set layout pack
-        $this->layoutPack = new PackDefault();
 
         // Set HashTable variables
         $this->oDrawingHashTable = new HashTable();
@@ -187,33 +173,5 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     public function getDiskCachingDirectory()
     {
         return $this->diskCachingDir;
-    }
-
-    /**
-     * Get layout pack to use.
-     *
-     * @deprecated 0.7
-     *
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
-     */
-    public function getLayoutPack()
-    {
-        return $this->layoutPack;
-    }
-
-    /**
-     * Set layout pack to use.
-     *
-     * @deprecated 0.7
-     *
-     * @param \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack $pValue
-     *
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
-     */
-    public function setLayoutPack(AbstractLayoutPack $pValue = null)
-    {
-        $this->layoutPack = $pValue;
-
-        return $this;
     }
 }

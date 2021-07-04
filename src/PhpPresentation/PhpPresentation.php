@@ -89,26 +89,6 @@ class PhpPresentation
 
     /**
      * Get properties.
-     *
-     * @deprecated for getDocumentProperties
-     */
-    public function getProperties(): DocumentProperties
-    {
-        return $this->getDocumentProperties();
-    }
-
-    /**
-     * Set properties.
-     *
-     * @deprecated for setDocumentProperties
-     */
-    public function setProperties(DocumentProperties $value): self
-    {
-        return $this->setDocumentProperties($value);
-    }
-
-    /**
-     * Get properties.
      */
     public function getDocumentProperties(): DocumentProperties
     {
@@ -358,46 +338,6 @@ class PhpPresentation
         }
 
         return $copied;
-    }
-
-    /**
-     * Mark a document as final.
-     *
-     * @deprecated for getPresentationProperties()->markAsFinal()
-     */
-    public function markAsFinal(bool $state = true): PresentationProperties
-    {
-        return $this->getPresentationProperties()->markAsFinal($state);
-    }
-
-    /**
-     * Return if this document is marked as final.
-     *
-     * @deprecated for getPresentationProperties()->isMarkedAsFinal()
-     */
-    public function isMarkedAsFinal(): bool
-    {
-        return $this->getPresentationProperties()->isMarkedAsFinal();
-    }
-
-    /**
-     * Set the zoom of the document (in percentage).
-     *
-     * @deprecated for getPresentationProperties()->setZoom()
-     */
-    public function setZoom(float $zoom = 1.0): PresentationProperties
-    {
-        return $this->getPresentationProperties()->setZoom($zoom);
-    }
-
-    /**
-     * Return the zoom (in percentage).
-     *
-     * @deprecated for getPresentationProperties()->getZoom()
-     */
-    public function getZoom(): float
-    {
-        return $this->getPresentationProperties()->getZoom();
     }
 
     /**
