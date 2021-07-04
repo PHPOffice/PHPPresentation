@@ -55,5 +55,6 @@ nav:
   - FAQ: 'faq.md'
   - Credits: 'credits.md'
   - Developers:
+    - 'Coveralls': 'https://coveralls.io/github/PHPOffice/PHPPresentation'
     - 'Code Coverage': 'coverage/index.html'
     - 'PHPDoc': 'docs/index.html'
