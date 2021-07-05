@@ -135,32 +135,6 @@ abstract class AbstractType implements ComparableInterface
     }
 
     /**
-     * Get Data.
-     *
-     * @deprecated getSeries
-     *
-     * @return array<int, Series>
-     */
-    public function getData(): array
-    {
-        return $this->getSeries();
-    }
-
-    /**
-     * Set Data.
-     *
-     * @deprecated setSeries
-     *
-     * @param array<int, Series> $value
-     *
-     * @return AbstractType
-     */
-    public function setData(array $value = [])
-    {
-        return $this->setSeries($value);
-    }
-
-    /**
      * @see http://php.net/manual/en/language.oop5.cloning.php
      */
     public function __clone()

@@ -48,20 +48,20 @@ class AbstractTest extends TestCase
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testData(): void
+    public function testSeries(): void
     {
         /** @var AbstractType $stub */
         $stub = $this->getMockForAbstractClass(AbstractType::class);
-        $this->assertEmpty($stub->getData());
-        $this->assertIsArray($stub->getData());
+        $this->assertEmpty($stub->getSeries());
+        $this->assertIsArray($stub->getSeries());
 
         $arraySeries = [
             new Series(),
             new Series(),
         ];
-        $this->assertInstanceOf(AbstractType::class, $stub->setData($arraySeries));
-        $this->assertIsArray($stub->getData());
-        $this->assertCount(count($arraySeries), $stub->getData());
+        $this->assertInstanceOf(AbstractType::class, $stub->setSeries($arraySeries));
+        $this->assertIsArray($stub->getSeries());
+        $this->assertCount(count($arraySeries), $stub->getSeries());
     }
 
     public function testClone(): void
@@ -75,11 +75,11 @@ class AbstractTest extends TestCase
 
         /** @var AbstractType $stub */
         $stub = $this->getMockForAbstractClass(AbstractType::class);
-        $stub->setData($arraySeries);
+        $stub->setSeries($arraySeries);
         $clone = clone $stub;
 
         $this->assertInstanceOf(AbstractType::class, $clone);
-        $this->assertIsArray($stub->getData());
-        $this->assertCount(count($arraySeries), $stub->getData());
+        $this->assertIsArray($stub->getSeries());
+        $this->assertCount(count($arraySeries), $stub->getSeries());
     }
 }

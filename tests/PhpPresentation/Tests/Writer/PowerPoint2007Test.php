@@ -4,7 +4,6 @@ namespace PhpOffice\PhpPresentation\Tests\Writer;
 
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
 
 /**
  * Test class for PowerPoint2007.
@@ -20,13 +19,10 @@ class PowerPoint2007Test extends PhpPresentationTestCase
      */
     public function testConstruct(): void
     {
-        $objectPrefix = 'PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\';
-
         $object = new PowerPoint2007($this->oPresentation);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
         $this->assertEquals('./', $object->getDiskCachingDirectory());
-        $this->assertInstanceOf("{$objectPrefix}LayoutPack\\PackDefault", $object->getLayoutPack());
     }
 
     /**
@@ -107,25 +103,6 @@ class PowerPoint2007Test extends PhpPresentationTestCase
 
         $object = new PowerPoint2007($this->oPresentation);
         $object->setUseDiskCaching(true, 'foo');
-    }
-
-    /**
-     * Test LayoutPack.
-     *
-     * @deprecated 0.7
-     */
-    public function testLayoutPack(): void
-    {
-        /** @var AbstractLayoutPack $oLayoutPack */
-        $oLayoutPack = $this->getMockBuilder(AbstractLayoutPack::class)->getMock();
-
-        $object = new PowerPoint2007();
-
-        $this->assertInstanceOf(AbstractLayoutPack::class, $object->getLayoutPack());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007', $object->setLayoutPack());
-        $this->assertNull($object->getLayoutPack());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007', $object->setLayoutPack($oLayoutPack));
-        $this->assertInstanceOf(AbstractLayoutPack::class, $object->getLayoutPack());
     }
 
     public function testZoom(): void
