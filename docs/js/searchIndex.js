@@ -701,16 +701,6 @@ Search.appendIndex(
             "summary": "Create\u0020a\u0020new\u0020PhpPresentation\u0020with\u0020one\u0020Slide.",
             "url": "classes/PhpOffice-PhpPresentation-PhpPresentation.html#method___construct"
         },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\PhpPresentation\u003A\u003AgetProperties\u0028\u0029",
-            "name": "getProperties",
-            "summary": "Get\u0020properties.",
-            "url": "classes/PhpOffice-PhpPresentation-PhpPresentation.html#method_getProperties"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\PhpPresentation\u003A\u003AsetProperties\u0028\u0029",
-            "name": "setProperties",
-            "summary": "Set\u0020properties.",
-            "url": "classes/PhpOffice-PhpPresentation-PhpPresentation.html#method_setProperties"
-        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\PhpPresentation\u003A\u003AgetDocumentProperties\u0028\u0029",
             "name": "getDocumentProperties",
             "summary": "Get\u0020properties.",
@@ -815,26 +805,6 @@ Search.appendIndex(
             "name": "copy",
             "summary": "Copy\u0020presentation\u0020\u0028\u0021\u003D\u0020clone\u0021\u0029.",
             "url": "classes/PhpOffice-PhpPresentation-PhpPresentation.html#method_copy"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\PhpPresentation\u003A\u003AmarkAsFinal\u0028\u0029",
-            "name": "markAsFinal",
-            "summary": "Mark\u0020a\u0020document\u0020as\u0020final.",
-            "url": "classes/PhpOffice-PhpPresentation-PhpPresentation.html#method_markAsFinal"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\PhpPresentation\u003A\u003AisMarkedAsFinal\u0028\u0029",
-            "name": "isMarkedAsFinal",
-            "summary": "Return\u0020if\u0020this\u0020document\u0020is\u0020marked\u0020as\u0020final.",
-            "url": "classes/PhpOffice-PhpPresentation-PhpPresentation.html#method_isMarkedAsFinal"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\PhpPresentation\u003A\u003AsetZoom\u0028\u0029",
-            "name": "setZoom",
-            "summary": "Set\u0020the\u0020zoom\u0020of\u0020the\u0020document\u0020\u0028in\u0020percentage\u0029.",
-            "url": "classes/PhpOffice-PhpPresentation-PhpPresentation.html#method_setZoom"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\PhpPresentation\u003A\u003AgetZoom\u0028\u0029",
-            "name": "getZoom",
-            "summary": "Return\u0020the\u0020zoom\u0020\u0028in\u0020percentage\u0029.",
-            "url": "classes/PhpOffice-PhpPresentation-PhpPresentation.html#method_getZoom"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\PhpPresentation\u003A\u003AgetAllMasterSlides\u0028\u0029",
             "name": "getAllMasterSlides",
@@ -4230,16 +4200,6 @@ Search.appendIndex(
             "name": "setSeries",
             "summary": "Set\u0020Series.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#method_setSeries"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType\u003A\u003AgetData\u0028\u0029",
-            "name": "getData",
-            "summary": "Get\u0020Data.",
-            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#method_getData"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType\u003A\u003AsetData\u0028\u0029",
-            "name": "setData",
-            "summary": "Set\u0020Data.",
-            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#method_setData"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType\u003A\u003A__clone\u0028\u0029",
             "name": "__clone",
@@ -10056,116 +10016,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-DocPropsThumbnail.html#method_render"
         },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack",
-            "name": "AbstractLayoutPack",
-            "summary": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AgetMasterSlides\u0028\u0029",
-            "name": "getMasterSlides",
-            "summary": "Get\u0020master\u0020slides.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_getMasterSlides"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AgetMasterSlideRelations\u0028\u0029",
-            "name": "getMasterSlideRelations",
-            "summary": "Get\u0020master\u0020slide\u0020relations.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_getMasterSlideRelations"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AgetThemes\u0028\u0029",
-            "name": "getThemes",
-            "summary": "Get\u0020themes.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_getThemes"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AgetThemeRelations\u0028\u0029",
-            "name": "getThemeRelations",
-            "summary": "Get\u0020theme\u0020relations.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_getThemeRelations"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AgetLayouts\u0028\u0029",
-            "name": "getLayouts",
-            "summary": "Get\u0020array\u0020of\u0020slide\u0020layouts.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_getLayouts"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AgetLayoutRelations\u0028\u0029",
-            "name": "getLayoutRelations",
-            "summary": "Get\u0020array\u0020of\u0020slide\u0020layout\u0020relations.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_getLayoutRelations"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AfindLayout\u0028\u0029",
-            "name": "findLayout",
-            "summary": "Find\u0020specific\u0020slide\u0020layout.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_findLayout"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AfindLayoutId\u0028\u0029",
-            "name": "findLayoutId",
-            "summary": "Find\u0020specific\u0020slide\u0020layout\u0020id.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_findLayoutId"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003AfindLayoutName\u0028\u0029",
-            "name": "findLayoutName",
-            "summary": "Find\u0020specific\u0020slide\u0020layout\u0020name.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#method_findLayoutName"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003A\u0024masterSlides",
-            "name": "masterSlides",
-            "summary": "Master\u0020slides.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#property_masterSlides"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003A\u0024masterSlideRels",
-            "name": "masterSlideRels",
-            "summary": "Master\u0020slide\u0020relations.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#property_masterSlideRels"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003A\u0024themes",
-            "name": "themes",
-            "summary": "Themes.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#property_themes"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003A\u0024themeRelations",
-            "name": "themeRelations",
-            "summary": "Theme\u0020relations.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#property_themeRelations"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003A\u0024layouts",
-            "name": "layouts",
-            "summary": "Array\u0020of\u0020slide\u0020layouts.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#property_layouts"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\AbstractLayoutPack\u003A\u003A\u0024layoutRelations",
-            "name": "layoutRelations",
-            "summary": "Layout\u0020relations.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-AbstractLayoutPack.html#property_layoutRelations"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\PackDefault",
-            "name": "PackDefault",
-            "summary": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\Default.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-PackDefault.html"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\PackDefault\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\Default.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-PackDefault.html#method___construct"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\TemplateBased",
-            "name": "TemplateBased",
-            "summary": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\TemplateBased.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-TemplateBased.html"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\TemplateBased\u003A\u003A__construct\u0028\u0029",
-            "name": "__construct",
-            "summary": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\TemplateBased.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-TemplateBased.html#method___construct"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\TemplateBased\u003A\u003AcmpMaster\u0028\u0029",
-            "name": "cmpMaster",
-            "summary": "Compare\u0020master\u0020slides.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-TemplateBased.html#method_cmpMaster"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack\\TemplateBased\u003A\u003AabsoluteZipPath\u0028\u0029",
-            "name": "absoluteZipPath",
-            "summary": "Determine\u0020absolute\u0020zip\u0020path.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-LayoutPack-TemplateBased.html#method_absoluteZipPath"
-        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts",
             "name": "PptCharts",
             "summary": "",
@@ -10476,16 +10326,6 @@ Search.appendIndex(
             "summary": "Get\u0020disk\u0020caching\u0020directory.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007.html#method_getDiskCachingDirectory"
         },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\u003A\u003AgetLayoutPack\u0028\u0029",
-            "name": "getLayoutPack",
-            "summary": "Get\u0020layout\u0020pack\u0020to\u0020use.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007.html#method_getLayoutPack"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\u003A\u003AsetLayoutPack\u0028\u0029",
-            "name": "setLayoutPack",
-            "summary": "Set\u0020layout\u0020pack\u0020to\u0020use.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007.html#method_setLayoutPack"
-        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\u003A\u003A\u0024useDiskCaching",
             "name": "useDiskCaching",
             "summary": "Use\u0020disk\u0020caching\u0020where\u0020possible\u003F",
@@ -10495,11 +10335,6 @@ Search.appendIndex(
             "name": "diskCachingDir",
             "summary": "Disk\u0020caching\u0020directory.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007.html#property_diskCachingDir"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\u003A\u003A\u0024layoutPack",
-            "name": "layoutPack",
-            "summary": "Layout\u0020pack\u0020to\u0020use.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007.html#property_layoutPack"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\Serialized",
             "name": "Serialized",
@@ -10615,10 +10450,5 @@ Search.appendIndex(
             "name": "PowerPoint2007",
             "summary": "",
             "url": "namespaces/phpoffice-phppresentation-writer-powerpoint2007.html"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\LayoutPack",
-            "name": "LayoutPack",
-            "summary": "",
-            "url": "namespaces/phpoffice-phppresentation-writer-powerpoint2007-layoutpack.html"
         }            ]
 );

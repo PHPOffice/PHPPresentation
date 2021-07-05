@@ -603,6 +603,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#project-management" class="md-nav__link">
+    Project Management
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bc-breaks" class="md-nav__link">
+    BC Breaks
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -837,6 +851,20 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#project-management" class="md-nav__link">
+    Project Management
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#bc-breaks" class="md-nav__link">
+    BC Breaks
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -864,6 +892,8 @@
 <ul>
 <li>Dropped support for HHVM - @sunspikes <a href="https://github.com/PHPOffice/PHPPresentation/issues/556">GH-556</a></li>
 <li>PHP 7.1 is now supported - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/355">GH-355</a></li>
+<li>Added support PHP 7.4 to 8.0 &amp; Removed support PHP &lt; 7.1 - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/636">GH-636</a></li>
+<li>Removed deprecated methods/classes - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/650">GH-650</a></li>
 <li>PhpOffice\PhpPresentation\Style\Color : Define only the transparency - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/370">GH-370</a></li>
 <li>PowerPoint2007 Reader : Background Color based on SchemeColor - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/397">GH-397</a></li>
 <li>PowerPoint2007 Reader : Support for hyperlinks under pictures - @ulziibuyan</li>
@@ -878,6 +908,36 @@
 <li>PowerPoint2007 Reader : Support for fill for image - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/370">GH-370</a></li>
 <li>ODPresentation Writer : Support for fill for transparent image - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/370">GH-370</a></li>
 <li>PowerPoint2007 Writer : Support for fill for transparent image - @JewrassicPark <a href="https://github.com/PHPOffice/PHPPresentation/issues/370">GH-370</a></li>
+</ul>
+<h2 id="project-management">Project Management</h2>
+<ul>
+<li>Migrated from Travis CI to Github Actions - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/635">GH-635</a></li>
+<li>Enabled PHPStan - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/639">GH-639</a></li>
+<li>Enabled PHPCSFixer - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/637">GH-637</a></li>
+<li>Added link to Coveralls - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/648">GH-648</a></li>
+<li>Migrated from ReadTheDocs to MkDocs &amp; Github Actions - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/647">GH-647</a></li>
+<li>Added Changelog to MkDocs - @Progi1984 <a href="https://github.com/PHPOffice/PHPPresentation/issues/649">GH-649</a></li>
+</ul>
+<h2 id="bc-breaks">BC Breaks</h2>
+<ul>
+<li>Classes have been strict typed</li>
+<li><code>PhpOffice\PhpPresentation\PhpPresentation</code></li>
+<li>Removed method <code>getProperties()</code> (replaced by <code>getDocumentProperties()</code>)</li>
+<li>Removed method <code>getZoom()</code> (replaced by <code>getPresentationProperties()-&gt;getZoom()</code>)</li>
+<li>Removed method <code>isMarkedAsFinal()</code> (replaced by <code>getPresentationProperties()-&gt;isMarkedAsFinal()</code>)</li>
+<li>Removed method <code>markAsFinal($state)</code> (replaced by <code>getPresentationProperties()-&gt;markAsFinal($state)</code>)</li>
+<li>Removed method <code>setProperties($value)</code> (replaced by <code>setDocumentProperties()</code>)</li>
+<li>Removed method <code>setZoom($zoom)</code> (replaced by <code>getPresentationProperties()-&gt;setZoom($zoom)</code>)</li>
+<li><code>PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType</code></li>
+<li>Removed method <code>getData()</code> (replaced by <code>getSeries()</code>)</li>
+<li>Removed method <code>setData($value)</code> (replaced by <code>setSeries($value)</code>)</li>
+<li><code>PhpOffice\PhpPresentation\Writer\PowerPoint2007</code></li>
+<li>Removed method <code>getLayoutPack()</code></li>
+<li>Removed method <code>setLayoutPack($pValue)</code></li>
+<li>Removed classes :</li>
+<li><code>PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack</code></li>
+<li><code>PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault</code></li>
+<li><code>PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\TemplateBased</code></li>
 </ul>
                 
               
