@@ -7,9 +7,6 @@ parameters:
     - tests
   reportUnmatchedIgnoredErrors: false
   ignoreErrors:
-    ## Relative to PHPExcel
-    - '#^Call to static method createWriter\(\) on an unknown class PHPExcel_IOFactory\.#'
-    - '#^Call to static method stringFromColumnIndex\(\) on an unknown class PHPExcel_Cell\.#'
     ## Relative to Common
     - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:angleToDegrees\(\) expects int, string given\.#'
     - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:centimetersToPixels\(\) expects int, string given\.#'

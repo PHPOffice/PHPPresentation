@@ -32,33 +32,33 @@ class Chart extends AbstractGraphic implements ComparableInterface
     /**
      * Title.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @var Title
      */
     private $title;
 
     /**
      * Legend.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @var Legend
      */
     private $legend;
 
     /**
      * Plot area.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
+     * @var PlotArea
      */
     private $plotArea;
 
     /**
      * View 3D.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @var View3D
      */
     private $view3D;
 
     /**
-     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation.
+     * Is the spreadsheet included for editing data ?
      *
      * @var bool
      */
@@ -92,9 +92,9 @@ class Chart extends AbstractGraphic implements ComparableInterface
     /**
      * Get Title.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @return Title
      */
-    public function getTitle()
+    public function getTitle(): Title
     {
         return $this->title;
     }
@@ -102,9 +102,9 @@ class Chart extends AbstractGraphic implements ComparableInterface
     /**
      * Get Legend.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Legend
+     * @return Legend
      */
-    public function getLegend()
+    public function getLegend(): Legend
     {
         return $this->legend;
     }
@@ -112,9 +112,9 @@ class Chart extends AbstractGraphic implements ComparableInterface
     /**
      * Get PlotArea.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
+     * @return PlotArea
      */
-    public function getPlotArea()
+    public function getPlotArea(): PlotArea
     {
         return $this->plotArea;
     }
@@ -122,31 +122,31 @@ class Chart extends AbstractGraphic implements ComparableInterface
     /**
      * Get View3D.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
+     * @return View3D
      */
-    public function getView3D()
+    public function getView3D(): View3D
     {
         return $this->view3D;
     }
 
     /**
-     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation.
+     * Is the spreadsheet included for editing data ?
      *
      * @return bool
      */
-    public function hasIncludedSpreadsheet()
+    public function hasIncludedSpreadsheet(): bool
     {
         return $this->includeSpreadsheet;
     }
 
     /**
-     * Include spreadsheet for editing data? Requires PHPExcel in the same folder as PhpPresentation.
+     * Is the spreadsheet included for editing data ?
      *
      * @param bool $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart
+     * @return self
      */
-    public function setIncludeSpreadsheet($value = false)
+    public function setIncludeSpreadsheet(bool $value = false): self
     {
         $this->includeSpreadsheet = $value;
 
@@ -158,7 +158,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
      *
      * @return string
      */
-    public function getIndexedFilename()
+    public function getIndexedFilename(): string
     {
         return 'chart' . $this->getImageIndex() . '.xml';
     }
