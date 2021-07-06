@@ -4578,12 +4578,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AhasIncludedSpreadsheet\u0028\u0029",
             "name": "hasIncludedSpreadsheet",
-            "summary": "Include\u0020spreadsheet\u0020for\u0020editing\u0020data\u003F\u0020Requires\u0020PHPExcel\u0020in\u0020the\u0020same\u0020folder\u0020as\u0020PhpPresentation.",
+            "summary": "Is\u0020the\u0020spreadsheet\u0020included\u0020for\u0020editing\u0020data\u0020\u003F",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_hasIncludedSpreadsheet"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AsetIncludeSpreadsheet\u0028\u0029",
             "name": "setIncludeSpreadsheet",
-            "summary": "Include\u0020spreadsheet\u0020for\u0020editing\u0020data\u003F\u0020Requires\u0020PHPExcel\u0020in\u0020the\u0020same\u0020folder\u0020as\u0020PhpPresentation.",
+            "summary": "Is\u0020the\u0020spreadsheet\u0020included\u0020for\u0020editing\u0020data\u0020\u003F",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_setIncludeSpreadsheet"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AgetIndexedFilename\u0028\u0029",
@@ -4618,7 +4618,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003A\u0024includeSpreadsheet",
             "name": "includeSpreadsheet",
-            "summary": "Include\u0020spreadsheet\u0020for\u0020editing\u0020data\u003F\u0020Requires\u0020PHPExcel\u0020in\u0020the\u0020same\u0020folder\u0020as\u0020PhpPresentation.",
+            "summary": "Is\u0020the\u0020spreadsheet\u0020included\u0020for\u0020editing\u0020data\u0020\u003F",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#property_includeSpreadsheet"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Comment\\Author",
