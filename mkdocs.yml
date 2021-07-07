@@ -67,7 +67,8 @@ nav:
   - FAQ: 'faq.md'
   - Credits: 'credits.md'
   - Releases:
-      - '1.1.0 (WIP)': 'changes/1.1.0.md'
+      - '1.2.0 (WIP)': 'changes/1.2.0.md'
+      - '1.1.0': 'changes/1.1.0.md'
       - '1.0.0': 'changes/1.0.0.md'
       - '0.9.0': 'changes/0.9.0.md'
       - '0.8.0': 'changes/0.8.0.md'
