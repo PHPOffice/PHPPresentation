@@ -124,4 +124,10 @@ class ODPresentationTest extends PhpPresentationTestCase
         $this->assertZipFileExists('META-INF/manifest.xml');
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $xPathManifest);
     }
+
+    public function testOrderFileInZip(): void
+    {
+        $this->assertZipFileExists('mimetype');
+        $this->assertZipFilePositionEquals('mimetype', 0);
+    }
 }

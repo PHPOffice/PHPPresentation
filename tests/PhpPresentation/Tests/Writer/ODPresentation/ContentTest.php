@@ -36,6 +36,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 use ReflectionClass;
 
 /**
@@ -1258,6 +1259,7 @@ class ContentTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderShowType
      */
+    #[DataProvider('dataProviderShowType')]
     public function testShowType(string $slideshowType, bool $withAttribute): void
     {
         $this->oPresentation->getPresentationProperties()->setSlideshowType($slideshowType);
@@ -1298,6 +1300,7 @@ class ContentTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderLoopContinuouslyUntilEsc
      */
+    #[DataProvider('dataProviderLoopContinuouslyUntilEsc')]
     public function testLoopContinuouslyUntilEsc(bool $isLoopContinuouslyUntilEsc): void
     {
         $this->oPresentation->getPresentationProperties()->setLoopContinuouslyUntilEsc($isLoopContinuouslyUntilEsc);

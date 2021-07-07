@@ -24,6 +24,8 @@ parameters:
     - '#^Parameter \#1 \$image of function imagesy expects GdImage, resource given\.#'
     - '#^Parameter \#1 \$image of function imagealphablending expects GdImage, resource given\.#'
     - '#^Parameter \#1 \$image of function imagesavealpha expects GdImage, resource given\.#'
+    # # PHP 8.0 & Attribute
+    - '#^Attribute class PHPUnit\\Framework\\Attributes\\DataProvider does not exist\.#'
 
   ## Remove after remove ArrayObject
   treatPhpDocTypesAsCertain: false
