@@ -295,7 +295,7 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
                         $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
                         $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
-                        $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                        $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? substr($item->getLanguage(), 0, 2) : 'en'));
                         $objWriter->writeAttribute('style:script-type', 'latin');
 
                         break;

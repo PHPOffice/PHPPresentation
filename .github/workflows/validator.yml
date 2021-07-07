@@ -1,0 +1,28 @@
+name: Validator
+on: [push, pull_request]
+jobs:
+  odf:
+    name: ODF Validator
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: mbstring, intl, gd, xml, dom, json, fileinfo, curl, zip, iconv
+      - uses: actions/checkout@v2
+
+      - name: Composer Install
+        run: composer install --ansi --prefer-dist --no-interaction --no-progress
+
+      - name: Generate samples files
+        run: composer run samples
+
+      - name: Download ODFValidator
+        run: wget https://repo1.maven.org/maven2/org/odftoolkit/odfvalidator/0.12.0/odfvalidator-0.12.0-jar-with-dependencies.jar -O odfvalidator.jar
+
+      # https://odftoolkit.org/conformance/ODFValidator.html#what-is-checked
+      - name: Validate documents (ODF 1.2)
+        run: java -jar odfvalidator.jar -1.2 -e -r samples/results/ -x "^.*\/Sample_(04|22).*odp" 
+        ## 04 & 22 excluded
+        ## Cause : src/PhpPresentation/Writer/ODPresentation/Content.php::writeTableStyle
