@@ -33,7 +33,7 @@ $oSlide2->addShape(clone $oShapeRichText);
  * @link : http://publicdomainarchive.com/public-domain-images-cave-red-rocks-light-beam-cavern/
  */
 $oBkgImage = new Image();
-$oBkgImage->setPath('./resources/background.jpg');
+$oBkgImage->setPath(__DIR__ . '/resources/background.jpg');
 $oSlide2->setBackground($oBkgImage);
 
 // Save file
