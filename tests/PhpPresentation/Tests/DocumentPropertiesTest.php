@@ -37,14 +37,13 @@ class DocumentPropertiesTest extends TestCase
         $properties = [
             'creator' => '',
             'lastModifiedBy' => '',
-            'created' => '',
-            'modified' => '',
             'title' => '',
             'description' => '',
             'subject' => '',
             'keywords' => '',
             'category' => '',
             'company' => '',
+            'generator' => '',
         ];
 
         foreach ($properties as $key => $val) {

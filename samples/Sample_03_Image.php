@@ -37,7 +37,7 @@ $currentSlide->addShape($shape);
 $shape = new Drawing\File();
 $shape->setName('PHPPresentation logo')
     ->setDescription('PHPPresentation logo')
-    ->setPath('./resources/phppowerpoint_logo.gif')
+    ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
     ->setHeight(36)
     ->setOffsetX(10)
     ->setOffsetY(100);
@@ -47,7 +47,7 @@ $currentSlide->addShape($shape);
 $shape = new Drawing\ZipFile();
 $shape->setName('PHPPresentation logo')
     ->setDescription('PHPPresentation logo')
-    ->setPath('zip://./resources/Sample_12.pptx#ppt/media/phppowerpoint_logo1.gif')
+    ->setPath('zip://' . __DIR__ . '/resources/Sample_12.pptx#ppt/media/phppowerpoint_logo1.gif')
     ->setResizeProportional(false)
     ->setHeight(36)
     ->setWidth(36)
@@ -74,7 +74,7 @@ $oFill->setFillType(Fill::FILL_SOLID)
 $shape = new Drawing\File();
 $shape->setName('PHPPresentation logo')
     ->setDescription('PHPPresentation logo')
-    ->setPath('./resources/logo_ubuntu_transparent.png')
+    ->setPath(__DIR__ . '/resources/logo_ubuntu_transparent.png')
     ->setHeight(100)
     ->setOffsetX(10)
     ->setOffsetY(250)
