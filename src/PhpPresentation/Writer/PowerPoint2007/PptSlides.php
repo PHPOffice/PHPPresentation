@@ -477,7 +477,8 @@ class PptSlides extends AbstractSlide
         $objWriter->endElement();
 
         // Loop shapes
-        $this->writeShapeCollection($objWriter, $pSlide->getShapeCollection());
+        $shapId = 1;
+        $this->writeShapeCollection($objWriter, $pSlide->getShapeCollection(), $shapId);
 
         // TODO
         $objWriter->endElement();
