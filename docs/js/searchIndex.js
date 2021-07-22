@@ -848,7 +848,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties",
             "name": "PresentationProperties",
-            "summary": "\\PhpOffice\\PhpPresentation\\PresentationProperties.",
+            "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003AisLoopContinuouslyUntilEsc\u0028\u0029",
@@ -911,6 +911,16 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#property_isCommentVisible"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003AgetSlideshowType\u0028\u0029",
+            "name": "getSlideshowType",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#method_getSlideshowType"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003AsetSlideshowType\u0028\u0029",
+            "name": "setSlideshowType",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#method_setSlideshowType"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003AVIEW_HANDOUT",
             "name": "VIEW_HANDOUT",
             "summary": "",
@@ -951,10 +961,30 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#constant_VIEW_SLIDE_THUMBNAIL"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003ASLIDESHOW_TYPE_PRESENT",
+            "name": "SLIDESHOW_TYPE_PRESENT",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#constant_SLIDESHOW_TYPE_PRESENT"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003ASLIDESHOW_TYPE_BROWSE",
+            "name": "SLIDESHOW_TYPE_BROWSE",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#constant_SLIDESHOW_TYPE_BROWSE"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003ASLIDESHOW_TYPE_KIOSK",
+            "name": "SLIDESHOW_TYPE_KIOSK",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#constant_SLIDESHOW_TYPE_KIOSK"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003A\u0024arrayView",
             "name": "arrayView",
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#property_arrayView"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003A\u0024arraySlideshowTypes",
+            "name": "arraySlideshowTypes",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#property_arraySlideshowTypes"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003A\u0024isLoopUntilEsc",
             "name": "isLoopUntilEsc",
@@ -975,6 +1005,11 @@ Search.appendIndex(
             "name": "lastView",
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#property_lastView"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\PresentationProperties\u003A\u003A\u0024slideshowType",
+            "name": "slideshowType",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-PresentationProperties.html#property_slideshowType"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation",
             "name": "ODPresentation",
@@ -1010,6 +1045,11 @@ Search.appendIndex(
             "name": "loadSlides",
             "summary": "Extract\u0020all\u0020slides.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_loadSlides"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadPresentationProperties\u0028\u0029",
+            "name": "loadPresentationProperties",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_loadPresentationProperties"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadStyle\u0028\u0029",
             "name": "loadStyle",
@@ -1125,6 +1165,11 @@ Search.appendIndex(
             "name": "loadCustomProperties",
             "summary": "Read\u0020Custom\u0020Properties.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint2007.html#method_loadCustomProperties"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadPresentationProperties\u0028\u0029",
+            "name": "loadPresentationProperties",
+            "summary": "Read\u0020Presentation\u0020Properties",
+            "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint2007.html#method_loadPresentationProperties"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadViewProperties\u0028\u0029",
             "name": "loadViewProperties",
