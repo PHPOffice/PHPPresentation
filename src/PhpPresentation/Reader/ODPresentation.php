@@ -23,6 +23,7 @@ use DOMElement;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -147,6 +148,7 @@ class ODPresentation implements ReaderInterface
         $this->oXMLReader = new XMLReader();
         if (false !== $this->oXMLReader->getDomFromZip($pFilename, 'content.xml')) {
             $this->loadSlides();
+            $this->loadPresentationProperties();
         }
 
         return $this->oPhpPresentation;
@@ -197,6 +199,16 @@ class ODPresentation implements ReaderInterface
         foreach ($this->oXMLReader->getElements('/office:document-content/office:body/office:presentation/draw:page') as $oElement) {
             if ($oElement instanceof DOMElement && 'draw:page' == $oElement->nodeName) {
                 $this->loadSlide($oElement);
+            }
+        }
+    }
+
+    protected function loadPresentationProperties(): void
+    {
+        $element = $this->oXMLReader->getElement('/office:document-content/office:body/office:presentation/presentation:settings');
+        if ($element instanceof DOMElement) {
+            if ($element->getAttribute('presentation:full-screen') === 'false') {
+                $this->oPhpPresentation->getPresentationProperties()->setSlideshowType(PresentationProperties::SLIDESHOW_TYPE_BROWSE);
             }
         }
     }

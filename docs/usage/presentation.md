@@ -134,6 +134,32 @@ $state = $presentation->isMarkedAsFinal();
 // $state = true
 ```
 
+### Slideshow type
+
+You can define the type of slideshow you can with the method `setSlideshowType`.
+
+![Slideshow type](/PHPPresentation/images/presentation_slideshow_type.png)
+
+Differents types are available:
+
+* `PresentationProperties::SLIDESHOW_TYPE_PRESENT` for **Presented by a speaker**
+* `PresentationProperties::SLIDESHOW_TYPE_BROWSE` for **Browsed by an individual**
+* `PresentationProperties::SLIDESHOW_TYPE_KIOSK` for **Browsed at a kiosk**
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\PresentationProperties;
+
+$presentation = new PhpPresentation();
+
+$properties = $presentation->getPresentationProperties();
+// Set type of slideshow
+$properties->setSlideshowType(PresentationProperties::SLIDESHOW_TYPE_PRESENT);
+// Get type of slideshow
+echo $properties->getSlideshowType();
+```
+
 ### Thumbnail
 
 You can define the thumbnail of the presentation with the method `setThumbnailPath`.

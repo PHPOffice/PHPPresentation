@@ -2,6 +2,7 @@
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 class PptPresPropsTest extends PhpPresentationTestCase
@@ -21,7 +22,8 @@ class PptPresPropsTest extends PhpPresentationTestCase
     {
         $this->assertZipFileExists('ppt/presProps.xml');
         $element = '/p:presentationPr/p:showPr';
-        $this->assertZipXmlElementNotExists('ppt/presProps.xml', $element);
+        $this->assertZipXmlElementExists('ppt/presProps.xml', $element);
+        $this->assertZipXmlAttributeNotExists('ppt/presProps.xml', $element, 'loop');
         $this->assertIsSchemaECMA376Valid();
 
         $this->oPresentation->getPresentationProperties()->setLoopContinuouslyUntilEsc(true);
@@ -33,5 +35,38 @@ class PptPresPropsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('ppt/presProps.xml', $element, 'loop');
         $this->assertZipXmlAttributeEquals('ppt/presProps.xml', $element, 'loop', 1);
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * @dataProvider dataProviderShowType
+     */
+    public function testShowType(string $slideshowType, string $element): void
+    {
+        $this->oPresentation->getPresentationProperties()->setSlideshowType($slideshowType);
+
+        $this->assertZipFileExists('ppt/presProps.xml');
+        $this->assertZipXmlElementExists('ppt/presProps.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public function dataProviderShowType(): array
+    {
+        return [
+            [
+                PresentationProperties::SLIDESHOW_TYPE_PRESENT,
+                '/p:presentationPr/p:showPr/p:present',
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_BROWSE,
+                '/p:presentationPr/p:showPr/p:browse',
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_KIOSK,
+                '/p:presentationPr/p:showPr/p:kiosk',
+            ],
+        ];
     }
 }

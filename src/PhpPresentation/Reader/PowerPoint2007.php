@@ -26,6 +26,7 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -164,6 +165,11 @@ class PowerPoint2007 implements ReaderInterface
             $this->loadSlides($pptPresentation);
         }
 
+        $pptPresProps = $this->oZip->getFromName('ppt/presProps.xml');
+        if (false !== $pptPresProps) {
+            $this->loadPresentationProperties($pptPresentation);
+        }
+
         return $this->oPhpPresentation;
     }
 
@@ -241,6 +247,40 @@ class PowerPoint2007 implements ReaderInterface
             if (is_object($oElement = $xmlReader->getElement($pathMarkAsFinal))) {
                 if ('true' == $oElement->nodeValue) {
                     $this->oPhpPresentation->getPresentationProperties()->markAsFinal(true);
+                }
+            }
+        }
+    }
+
+    /**
+     * Read Presentation Properties
+     */
+    protected function loadPresentationProperties(string $sPart): void
+    {
+        $xmlReader = new XMLReader();
+        /* @phpstan-ignore-next-line */
+        if ($xmlReader->getDomFromString($sPart)) {
+            $element = $xmlReader->getElement('/p:presentationPr/p:showPr');
+            if ($element instanceof DOMElement) {
+                if ($element->hasAttribute('loop')) {
+                    $this->oPhpPresentation->getPresentationProperties()->setLoopContinuouslyUntilEsc(
+                        (bool) $element->getAttribute('loop')
+                    );
+                }
+                if (null !== $xmlReader->getElement('p:present', $element)) {
+                    $this->oPhpPresentation->getPresentationProperties()->setSlideshowType(
+                        PresentationProperties::SLIDESHOW_TYPE_PRESENT
+                    );
+                }
+                if (null !== $xmlReader->getElement('p:browse', $element)) {
+                    $this->oPhpPresentation->getPresentationProperties()->setSlideshowType(
+                        PresentationProperties::SLIDESHOW_TYPE_BROWSE
+                    );
+                }
+                if (null !== $xmlReader->getElement('p:kiosk', $element)) {
+                    $this->oPhpPresentation->getPresentationProperties()->setSlideshowType(
+                        PresentationProperties::SLIDESHOW_TYPE_KIOSK
+                    );
                 }
             }
         }

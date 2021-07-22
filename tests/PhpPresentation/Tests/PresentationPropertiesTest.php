@@ -32,11 +32,11 @@ class PresentationPropertiesTest extends TestCase
     {
         $object = new PresentationProperties();
         $this->assertFalse($object->isCommentVisible());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible(true));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setCommentVisible(true));
         $this->assertTrue($object->isCommentVisible());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible(false));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setCommentVisible(false));
         $this->assertFalse($object->isCommentVisible());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setCommentVisible());
+        $this->assertInstanceOf(PresentationProperties::class, $object->setCommentVisible());
         $this->assertFalse($object->isCommentVisible());
     }
 
@@ -44,11 +44,11 @@ class PresentationPropertiesTest extends TestCase
     {
         $object = new PresentationProperties();
         $this->assertFalse($object->isLoopContinuouslyUntilEsc());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLoopContinuouslyUntilEsc(true));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setLoopContinuouslyUntilEsc(true));
         $this->assertTrue($object->isLoopContinuouslyUntilEsc());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLoopContinuouslyUntilEsc(false));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setLoopContinuouslyUntilEsc(false));
         $this->assertFalse($object->isLoopContinuouslyUntilEsc());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLoopContinuouslyUntilEsc());
+        $this->assertInstanceOf(PresentationProperties::class, $object->setLoopContinuouslyUntilEsc());
         $this->assertFalse($object->isLoopContinuouslyUntilEsc());
     }
 
@@ -56,11 +56,11 @@ class PresentationPropertiesTest extends TestCase
     {
         $object = new PresentationProperties();
         $this->assertEquals(PresentationProperties::VIEW_SLIDE, $object->getLastView());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLastView('AAAA'));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setLastView('AAAA'));
         $this->assertEquals(PresentationProperties::VIEW_SLIDE, $object->getLastView());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLastView(PresentationProperties::VIEW_OUTLINE));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setLastView(PresentationProperties::VIEW_OUTLINE));
         $this->assertEquals(PresentationProperties::VIEW_OUTLINE, $object->getLastView());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setLastView());
+        $this->assertInstanceOf(PresentationProperties::class, $object->setLastView());
         $this->assertEquals(PresentationProperties::VIEW_SLIDE, $object->getLastView());
     }
 
@@ -68,12 +68,59 @@ class PresentationPropertiesTest extends TestCase
     {
         $object = new PresentationProperties();
         $this->assertFalse($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal(true));
+        $this->assertInstanceOf(PresentationProperties::class, $object->markAsFinal(true));
         $this->assertTrue($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal(false));
+        $this->assertInstanceOf(PresentationProperties::class, $object->markAsFinal(false));
         $this->assertFalse($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal());
+        $this->assertInstanceOf(PresentationProperties::class, $object->markAsFinal());
         $this->assertTrue($object->isMarkedAsFinal());
+    }
+
+    /**
+     * @dataProvider dataProviderSlideshowType
+     */
+    public function testSlideshowType(?string $value, string $expected): void
+    {
+        $object = new PresentationProperties();
+        // Default
+        $this->assertEquals(PresentationProperties::SLIDESHOW_TYPE_PRESENT, $object->getSlideshowType());
+        // Set value
+        if (is_null($value)) {
+            $this->assertInstanceOf(PresentationProperties::class, $object->setSlideshowType());
+        } else {
+            $this->assertInstanceOf(PresentationProperties::class, $object->setSlideshowType($value));
+        }
+        // Check value
+        $this->assertEquals($expected, $object->getSlideshowType());
+    }
+
+    /**
+     * @return array<array<string|null>>
+     */
+    public function dataProviderSlideshowType(): array
+    {
+        return [
+            [
+                null,
+                PresentationProperties::SLIDESHOW_TYPE_PRESENT,
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_PRESENT,
+                PresentationProperties::SLIDESHOW_TYPE_PRESENT,
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_KIOSK,
+                PresentationProperties::SLIDESHOW_TYPE_KIOSK,
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_BROWSE,
+                PresentationProperties::SLIDESHOW_TYPE_BROWSE,
+            ],
+            [
+                'unauthorizedValue',
+                PresentationProperties::SLIDESHOW_TYPE_PRESENT,
+            ],
+        ];
     }
 
     public function testThumbnail(): void
@@ -82,13 +129,13 @@ class PresentationPropertiesTest extends TestCase
 
         $object = new PresentationProperties();
         $this->assertNull($object->getThumbnailPath());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setThumbnailPath('AAAA'));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath('AAAA'));
         $this->assertNull($object->getThumbnailPath());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setThumbnailPath());
+        $this->assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath());
         $this->assertNull($object->getThumbnailPath());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setThumbnailPath($imagePath));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath($imagePath));
         $this->assertEquals($imagePath, $object->getThumbnailPath());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setThumbnailPath());
+        $this->assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath());
         $this->assertEquals($imagePath, $object->getThumbnailPath());
     }
 
@@ -96,9 +143,9 @@ class PresentationPropertiesTest extends TestCase
     {
         $object = new PresentationProperties();
         $this->assertEquals(1, $object->getZoom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setZoom(2.3));
+        $this->assertInstanceOf(PresentationProperties::class, $object->setZoom(2.3));
         $this->assertEquals(2.3, $object->getZoom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setZoom());
+        $this->assertInstanceOf(PresentationProperties::class, $object->setZoom());
         $this->assertEquals(1, $object->getZoom());
     }
 }
