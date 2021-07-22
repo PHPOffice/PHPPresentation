@@ -18,9 +18,6 @@
 
 namespace PhpOffice\PhpPresentation;
 
-/**
- * \PhpOffice\PhpPresentation\PresentationProperties.
- */
 class PresentationProperties
 {
     public const VIEW_HANDOUT = 'handoutView';
@@ -46,6 +43,19 @@ class PresentationProperties
         self::VIEW_SLIDE_THUMBNAIL,
     ];
 
+    public const SLIDESHOW_TYPE_PRESENT = 'present';
+    public const SLIDESHOW_TYPE_BROWSE = 'browse';
+    public const SLIDESHOW_TYPE_KIOSK = 'kiosk';
+
+    /**
+     * @var array<int, string>
+     */
+    protected $arraySlideshowTypes = [
+        self::SLIDESHOW_TYPE_PRESENT,
+        self::SLIDESHOW_TYPE_BROWSE,
+        self::SLIDESHOW_TYPE_KIOSK,
+    ];
+
     /**
      * @var bool
      */
@@ -59,7 +69,7 @@ class PresentationProperties
     protected $markAsFinal = false;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $thumbnail;
 
@@ -74,6 +84,11 @@ class PresentationProperties
      * @var string
      */
     protected $lastView = self::VIEW_SLIDE;
+
+    /**
+     * @var string
+     */
+    protected $slideshowType = self::SLIDESHOW_TYPE_PRESENT;
 
     /**
      * @var bool
@@ -95,9 +110,9 @@ class PresentationProperties
     /**
      * Return the thumbnail file path.
      *
-     * @return string
+     * @return string|null
      */
-    public function getThumbnailPath()
+    public function getThumbnailPath(): ?string
     {
         return $this->thumbnail;
     }
@@ -107,9 +122,9 @@ class PresentationProperties
      *
      * @param string $path
      *
-     * @return \PhpOffice\PhpPresentation\PresentationProperties
+     * @return self
      */
-    public function setThumbnailPath($path = '')
+    public function setThumbnailPath(string $path = ''): self
     {
         if (file_exists($path)) {
             $this->thumbnail = $path;
@@ -133,7 +148,7 @@ class PresentationProperties
      *
      * @return bool
      */
-    public function isMarkedAsFinal()
+    public function isMarkedAsFinal(): bool
     {
         return $this->markAsFinal;
     }
@@ -159,9 +174,9 @@ class PresentationProperties
     /**
      * @param string $value
      *
-     * @return $this
+     * @return self
      */
-    public function setLastView($value = self::VIEW_SLIDE)
+    public function setLastView(string $value = self::VIEW_SLIDE): self
     {
         if (in_array($value, $this->arrayView)) {
             $this->lastView = $value;
@@ -173,7 +188,7 @@ class PresentationProperties
     /**
      * @return string
      */
-    public function getLastView()
+    public function getLastView(): string
     {
         return $this->lastView;
     }
@@ -188,5 +203,27 @@ class PresentationProperties
     public function isCommentVisible(): bool
     {
         return $this->isCommentVisible;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlideshowType(): string
+    {
+        return $this->slideshowType;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return self
+     */
+    public function setSlideshowType(string $value = self::SLIDESHOW_TYPE_PRESENT): self
+    {
+        if (in_array($value, $this->arraySlideshowTypes)) {
+            $this->slideshowType = $value;
+        }
+
+        return $this;
     }
 }

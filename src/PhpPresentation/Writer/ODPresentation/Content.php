@@ -6,6 +6,7 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
@@ -252,7 +253,7 @@ class Content extends AbstractDecoratorWriter
         //===============================================
         // office:body
         $objWriter->startElement('office:body');
-        // office:presentation
+        // office:body > office:presentation
         $objWriter->startElement('office:presentation');
 
         // Write slides
@@ -300,13 +301,18 @@ class Content extends AbstractDecoratorWriter
             $objWriter->endElement();
         }
 
+        // office:document-content > office:body > office:presentation > presentation:settings
+        $objWriter->startElement('presentation:settings');
         if ($this->getPresentation()->getPresentationProperties()->isLoopContinuouslyUntilEsc()) {
-            $objWriter->startElement('presentation:settings');
             $objWriter->writeAttribute('presentation:endless', 'true');
-            $objWriter->writeAttribute('presentation:pause', 'P0s');
+            $objWriter->writeAttribute('presentation:pause', 'PT0S');
             $objWriter->writeAttribute('presentation:mouse-visible', 'false');
-            $objWriter->endElement();
         }
+        if ($this->getPresentation()->getPresentationProperties()->getSlideshowType() === PresentationProperties::SLIDESHOW_TYPE_BROWSE) {
+            $objWriter->writeAttribute('presentation:full-screen', 'false');
+        }
+        $objWriter->endElement();
+
         // > office:presentation
         $objWriter->endElement();
         // > office:body

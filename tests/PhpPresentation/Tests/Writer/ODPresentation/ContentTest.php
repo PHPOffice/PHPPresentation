@@ -5,6 +5,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 use PhpOffice\Common\Drawing;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
@@ -824,5 +825,85 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:visibility');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:visibility', 'hidden');
         $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @dataProvider dataProviderShowType
+     */
+    public function testShowType(string $slideshowType, bool $withAttribute): void
+    {
+        $this->oPresentation->getPresentationProperties()->setSlideshowType($slideshowType);
+
+        $this->assertZipFileExists('content.xml');
+        $element = '/office:document-content/office:body/office:presentation/presentation:settings';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        if ($withAttribute) {
+            $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:full-screen');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:full-screen', 'false');
+        } else {
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'presentation:full-screen');
+        }
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @return array<array<string|bool>>
+     */
+    public function dataProviderShowType(): array
+    {
+        return [
+            [
+                PresentationProperties::SLIDESHOW_TYPE_PRESENT,
+                false,
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_BROWSE,
+                true,
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_KIOSK,
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderLoopContinuouslyUntilEsc
+     */
+    public function testLoopContinuouslyUntilEsc(bool $isLoopContinuouslyUntilEsc): void
+    {
+        $this->oPresentation->getPresentationProperties()->setLoopContinuouslyUntilEsc($isLoopContinuouslyUntilEsc);
+
+        $this->assertZipFileExists('content.xml');
+        $element = '/office:document-content/office:body/office:presentation/presentation:settings';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        if ($isLoopContinuouslyUntilEsc) {
+            $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:endless');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:endless', 'true');
+            $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:pause');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:pause', 'PT0S');
+            $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:mouse-visible');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:mouse-visible', 'false');
+        } else {
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'presentation:endless');
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'presentation:pause');
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'presentation:mouse-visible');
+        }
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @return array<array<bool>>
+     */
+    public function dataProviderLoopContinuouslyUntilEsc(): array
+    {
+        return [
+            [
+                true,
+            ],
+            [
+                false,
+            ],
+        ];
     }
 }

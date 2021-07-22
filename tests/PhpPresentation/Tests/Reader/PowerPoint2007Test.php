@@ -19,6 +19,7 @@
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -92,6 +93,8 @@ class PowerPoint2007Test extends TestCase
         $this->assertEquals('Sample 02 Description', $oPhpPresentation->getDocumentProperties()->getDescription());
         $this->assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
         $this->assertEquals('Sample Category', $oPhpPresentation->getDocumentProperties()->getCategory());
+        // Presentation Properties
+        $this->assertEquals(PresentationProperties::SLIDESHOW_TYPE_PRESENT, $oPhpPresentation->getPresentationProperties()->getSlideshowType());
         // Document Layout
         $this->assertEquals(DocumentLayout::LAYOUT_SCREEN_4X3, $oPhpPresentation->getLayout()->getDocumentLayout());
         $this->assertEquals(254, $oPhpPresentation->getLayout()->getCX(DocumentLayout::UNIT_MILLIMETER));

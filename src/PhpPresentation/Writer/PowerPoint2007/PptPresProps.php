@@ -28,11 +28,18 @@ class PptPresProps extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns:p', 'http://schemas.openxmlformats.org/presentationml/2006/main');
 
         // p:presentationPr > p:showPr
+        $objWriter->startElement('p:showPr');
         if ($presentationPpts->isLoopContinuouslyUntilEsc()) {
-            $objWriter->startElement('p:showPr');
             $objWriter->writeAttribute('loop', '1');
-            $objWriter->endElement();
         }
+        // Depends on the slideshow type
+        // p:presentationPr > p:showPr > p:present
+        // p:presentationPr > p:showPr > p:browse
+        // p:presentationPr > p:showPr > p:kiosk
+        $objWriter->writeElement('p:' . $presentationPpts->getSlideshowType());
+
+        // > p:presentationPr > p:showPr
+        $objWriter->endElement();
 
         // p:extLst
         $objWriter->startElement('p:extLst');
