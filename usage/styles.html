@@ -518,12 +518,38 @@
     Alignment
   </a>
   
+    <nav class="md-nav" aria-label="Alignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rtl-ltr" class="md-nav__link">
+    RTL / LTR
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
   <a href="#font" class="md-nav__link">
     Font
   </a>
+  
+    <nav class="md-nav" aria-label="Font">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    Format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -876,12 +902,38 @@
     Alignment
   </a>
   
+    <nav class="md-nav" aria-label="Alignment">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rtl-ltr" class="md-nav__link">
+    RTL / LTR
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
   <a href="#font" class="md-nav__link">
     Font
   </a>
+  
+    <nav class="md-nav" aria-label="Font">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format" class="md-nav__link">
+    Format
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -936,11 +988,12 @@
 </ul>
 <h2 id="border">Border</h2>
 <p>Use this style to define border of a shape as example below.</p>
-<p>.. code-block:: php</p>
-<div class="highlight"><pre><span></span><code>$shape-&gt;getBorder()
-    -&gt;setLineStyle(Border::LINE_SINGLE)
-    -&gt;setLineWidth(4)
-    -&gt;getColor()-&gt;setARGB(&#39;FFC00000&#39;);
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+    <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getBorder</span><span class="p">()</span>
+        <span class="o">-&gt;</span><span class="na">setLineStyle</span><span class="p">(</span><span class="nx">Border</span><span class="o">::</span><span class="na">LINE_SINGLE</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">setLineWidth</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+        <span class="o">-&gt;</span><span class="na">getColor</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setARGB</span><span class="p">(</span><span class="s1">&#39;FFC00000&#39;</span><span class="p">);</span>
 </code></pre></div>
 <p>Properties:</p>
 <ul>
@@ -977,6 +1030,21 @@
 <li><code>marginLeft</code></li>
 <li><code>marginRight</code></li>
 </ul>
+<h3 id="rtl-ltr">RTL / LTR</h3>
+<p>You can define if the alignment is RTL or LTR.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Style\Alignment</span><span class="p">;</span>
+
+<span class="nv">$alignment</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Alignment</span><span class="p">();</span>
+
+<span class="c1">// Set alignment to RTL</span>
+<span class="nv">$alignment</span><span class="o">-&gt;</span><span class="na">setIsRTL</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
+<span class="c1">// Set alignment to LTR</span>
+<span class="nv">$alignment</span><span class="o">-&gt;</span><span class="na">setIsRTL</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
+<span class="c1">// Is the alignment RTL?</span>
+<span class="k">echo</span> <span class="nv">$alignment</span><span class="o">-&gt;</span><span class="na">isRTL</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="font">Font</h2>
 <ul>
 <li><code>name</code></li>
@@ -988,6 +1056,24 @@
 <li><code>strikethrough</code></li>
 <li><code>color</code></li>
 </ul>
+<h3 id="format">Format</h3>
+<p>Some formats are available : </p>
+<ul>
+<li><code>Font::FORMAT_LATIN</code></li>
+<li><code>Font::FORMAT_EAST_ASIAN</code></li>
+<li><code>Font::FORMAT_COMPLEX_SCRIPT</code></li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Style\Font</span><span class="p">;</span>
+
+<span class="nv">$font</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Font</span><span class="p">();</span>
+
+<span class="c1">// Set format of font</span>
+<span class="nv">$font</span><span class="o">-&gt;</span><span class="na">setFormat</span><span class="p">(</span><span class="nx">Font</span><span class="o">::</span><span class="na">FORMAT_EAST_ASIAN</span><span class="p">);</span>
+<span class="c1">// Get format of font</span>
+<span class="k">echo</span> <span class="nv">$font</span><span class="o">-&gt;</span><span class="na">getFormat</span><span class="p">();</span>
+</code></pre></div>
 <h2 id="bullet">Bullet</h2>
 <ul>
 <li><code>bulletType</code></li>

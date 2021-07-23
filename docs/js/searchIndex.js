@@ -7586,6 +7586,16 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Style-Alignment.html#method_setTextDirection"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Alignment\u003A\u003A\u0024isRTL",
+            "name": "isRTL",
+            "summary": "RTL\u0020Direction\u0020Support",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Alignment.html#property_isRTL"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Alignment\u003A\u003AsetIsRTL\u0028\u0029",
+            "name": "setIsRTL",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Alignment.html#method_setIsRTL"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Alignment\u003A\u003AgetHashCode\u0028\u0029",
             "name": "getHashCode",
             "summary": "Get\u0020hash\u0020code.",
@@ -8753,17 +8763,17 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Create\u0020a\u0020new\u0020\\PhpOffice\\PhpPresentation\\Style\\Font.",
+            "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method___construct"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetName\u0028\u0029",
             "name": "getName",
-            "summary": "Get\u0020Name.",
+            "summary": "Get\u0020Name",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_getName"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AsetName\u0028\u0029",
             "name": "setName",
-            "summary": "Set\u0020Name.",
+            "summary": "Set\u0020Name",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_setName"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetCharacterSpacing\u0028\u0029",
@@ -8855,6 +8865,16 @@ Search.appendIndex(
             "name": "setColor",
             "summary": "Set\u0020Color.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_setColor"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetFormat\u0028\u0029",
+            "name": "getFormat",
+            "summary": "Get\u0020format",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_getFormat"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AsetFormat\u0028\u0029",
+            "name": "setFormat",
+            "summary": "Set\u0020format",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_setFormat"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetHashCode\u0028\u0029",
             "name": "getHashCode",
@@ -8961,6 +8981,21 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#constant_UNDERLINE_WORDS"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AFORMAT_LATIN",
+            "name": "FORMAT_LATIN",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#constant_FORMAT_LATIN"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AFORMAT_EAST_ASIAN",
+            "name": "FORMAT_EAST_ASIAN",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#constant_FORMAT_EAST_ASIAN"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AFORMAT_COMPLEX_SCRIPT",
+            "name": "FORMAT_COMPLEX_SCRIPT",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#constant_FORMAT_COMPLEX_SCRIPT"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A\u0024name",
             "name": "name",
             "summary": "Name.",
@@ -9010,6 +9045,11 @@ Search.appendIndex(
             "name": "characterSpacing",
             "summary": "Character\u0020Spacing.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#property_characterSpacing"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A\u0024format",
+            "name": "format",
+            "summary": "Format",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#property_format"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A\u0024hashIndex",
             "name": "hashIndex",
