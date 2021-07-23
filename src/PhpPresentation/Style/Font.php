@@ -45,61 +45,65 @@ class Font implements ComparableInterface
     public const UNDERLINE_WAVYHEAVY = 'wavyHeavy';
     public const UNDERLINE_WORDS = 'words';
 
+    public const FORMAT_LATIN = 'latin';
+    public const FORMAT_EAST_ASIAN = 'ea';
+    public const FORMAT_COMPLEX_SCRIPT = 'cs';
+
     /**
      * Name.
      *
      * @var string
      */
-    private $name;
+    private $name = 'Calibri';
 
     /**
      * Font Size.
      *
      * @var int
      */
-    private $size;
+    private $size = 10;
 
     /**
      * Bold.
      *
      * @var bool
      */
-    private $bold;
+    private $bold = false;
 
     /**
      * Italic.
      *
      * @var bool
      */
-    private $italic;
+    private $italic = false;
 
     /**
      * Superscript.
      *
      * @var bool
      */
-    private $superScript;
+    private $superScript = false;
 
     /**
      * Subscript.
      *
      * @var bool
      */
-    private $subScript;
+    private $subScript = false;
 
     /**
      * Underline.
      *
      * @var string
      */
-    private $underline;
+    private $underline = self::UNDERLINE_NONE;
 
     /**
      * Strikethrough.
      *
      * @var bool
      */
-    private $strikethrough;
+    private $strikethrough = false;
 
     /**
      * Foreground color.
@@ -111,9 +115,16 @@ class Font implements ComparableInterface
     /**
      * Character Spacing.
      *
-     * @var int
+     * @var float
      */
-    private $characterSpacing;
+    private $characterSpacing = 0;
+
+    /**
+     * Format
+     *
+     * @var string
+     */
+    private $format = self::FORMAT_LATIN;
 
     /**
      * Hash index.
@@ -122,42 +133,29 @@ class Font implements ComparableInterface
      */
     private $hashIndex;
 
-    /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Font.
-     */
     public function __construct()
     {
-        // Initialise values
-        $this->name = 'Calibri';
-        $this->size = 10;
-        $this->characterSpacing = 0;
-        $this->bold = false;
-        $this->italic = false;
-        $this->superScript = false;
-        $this->subScript = false;
-        $this->underline = self::UNDERLINE_NONE;
-        $this->strikethrough = false;
         $this->color = new Color(Color::COLOR_BLACK);
     }
 
     /**
-     * Get Name.
+     * Get Name
      *
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Set Name.
+     * Set Name
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return self
      */
-    public function setName($pValue = 'Calibri')
+    public function setName(string $pValue = 'Calibri'): self
     {
         if ('' == $pValue) {
             $pValue = 'Calibri';
@@ -172,7 +170,7 @@ class Font implements ComparableInterface
      *
      * @return float
      */
-    public function getCharacterSpacing()
+    public function getCharacterSpacing(): float
     {
         return $this->characterSpacing;
     }
@@ -181,15 +179,12 @@ class Font implements ComparableInterface
      * Set Character Spacing
      * Value in pt.
      *
-     * @param float|int $pValue
+     * @param float $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return self
      */
-    public function setCharacterSpacing($pValue = 0)
+    public function setCharacterSpacing(float $pValue = 0): self
     {
-        if ('' == $pValue) {
-            $pValue = 0;
-        }
         $this->characterSpacing = $pValue * 100;
 
         return $this;
@@ -218,7 +213,7 @@ class Font implements ComparableInterface
      *
      * @return bool
      */
-    public function isBold()
+    public function isBold(): bool
     {
         return $this->bold;
     }
@@ -238,7 +233,7 @@ class Font implements ComparableInterface
      *
      * @return bool
      */
-    public function isItalic()
+    public function isItalic(): bool
     {
         return $this->italic;
     }
@@ -258,7 +253,7 @@ class Font implements ComparableInterface
      *
      * @return bool
      */
-    public function isSuperScript()
+    public function isSuperScript(): bool
     {
         return $this->superScript;
     }
@@ -300,7 +295,7 @@ class Font implements ComparableInterface
      *
      * @return string
      */
-    public function getUnderline()
+    public function getUnderline(): string
     {
         return $this->underline;
     }
@@ -308,11 +303,11 @@ class Font implements ComparableInterface
     /**
      * Set Underline.
      *
-     * @param string $pValue \PhpOffice\PhpPresentation\Style\Font underline type
+     * @param string $pValue Underline type
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return self
      */
-    public function setUnderline($pValue = self::UNDERLINE_NONE)
+    public function setUnderline(string $pValue = self::UNDERLINE_NONE): self
     {
         if ('' == $pValue) {
             $pValue = self::UNDERLINE_NONE;
@@ -327,7 +322,7 @@ class Font implements ComparableInterface
      *
      * @return bool
      */
-    public function isStrikethrough()
+    public function isStrikethrough(): bool
     {
         return $this->strikethrough;
     }
@@ -352,12 +347,40 @@ class Font implements ComparableInterface
 
     /**
      * Set Color.
-     *
-     * @throws \Exception
      */
     public function setColor(Color $pValue): self
     {
         $this->color = $pValue;
+
+        return $this;
+    }
+
+    /**
+     * Get format
+     *
+     * @return string
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
+     * Set format
+     *
+     * @param string $value
+     *
+     * @return self
+     */
+    public function setFormat(string $value = self::FORMAT_LATIN): self
+    {
+        if (in_array($value, [
+            self::FORMAT_COMPLEX_SCRIPT,
+            self::FORMAT_EAST_ASIAN,
+            self::FORMAT_LATIN,
+        ])) {
+            $this->format = $value;
+        }
 
         return $this;
     }
@@ -369,7 +392,19 @@ class Font implements ComparableInterface
      */
     public function getHashCode(): string
     {
-        return md5($this->name . $this->size . ($this->bold ? 't' : 'f') . ($this->italic ? 't' : 'f') . ($this->superScript ? 't' : 'f') . ($this->subScript ? 't' : 'f') . $this->underline . ($this->strikethrough ? 't' : 'f') . $this->color->getHashCode() . __CLASS__);
+        return md5(
+            $this->name
+            . $this->size
+            . ($this->bold ? 't' : 'f')
+            . ($this->italic ? 't' : 'f')
+            . ($this->superScript ? 't' : 'f')
+            . ($this->subScript ? 't' : 'f')
+            . $this->underline
+            . ($this->strikethrough ? 't' : 'f')
+            . $this->format
+            . $this->color->getHashCode()
+            . __CLASS__
+        );
     }
 
     /**

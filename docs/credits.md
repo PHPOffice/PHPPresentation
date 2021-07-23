@@ -32,6 +32,7 @@ Library of Congress :
 ### OpenDocument
 
 - [Oasis OpenDocument Standard Version 1.2](http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os.html)
+- [Schema Central Open Document 1.1](http://www.datypic.com/sc/odf/ss.html)
 
 ### PowerPoint 97
 

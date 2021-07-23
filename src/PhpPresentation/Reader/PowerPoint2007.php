@@ -42,6 +42,7 @@ use PhpOffice\PhpPresentation\Style\Borders;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
 use ZipArchive;
@@ -1093,6 +1094,9 @@ class PowerPoint2007 implements ReaderInterface
             if ($oSubElement->hasAttribute('lvl')) {
                 $oParagraph->getAlignment()->setLevel((int) $oSubElement->getAttribute('lvl'));
             }
+            if ($oSubElement->hasAttribute('rtl')) {
+                $oParagraph->getAlignment()->setIsRTL((bool) $oSubElement->getAttribute('rtl'));
+            }
 
             $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
 
@@ -1179,6 +1183,27 @@ class PowerPoint2007 implements ReaderInterface
                             $oText->getHyperlink()->setUrl($this->arrayRels[$this->fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target']);
                         }
                     }
+                    // Font
+                    $oElementFontFormat = null;
+                    $oElementFontFormatLatin = $document->getElement('a:latin', $oElementrPr);
+                    if (is_object($oElementFontFormatLatin)) {
+                        $oText->getFont()->setFormat(Font::FORMAT_LATIN);
+                        $oElementFontFormat = $oElementFontFormatLatin;
+                    }
+                    $oElementFontFormatEastAsian = $document->getElement('a:ea', $oElementrPr);
+                    if (is_object($oElementFontFormatEastAsian)) {
+                        $oText->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+                        $oElementFontFormat = $oElementFontFormatEastAsian;
+                    }
+                    $oElementFontFormatComplexScript = $document->getElement('a:cs', $oElementrPr);
+                    if (is_object($oElementFontFormatComplexScript)) {
+                        $oText->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+                        $oElementFontFormat = $oElementFontFormatComplexScript;
+                    }
+                    if (is_object($oElementFontFormat) && $oElementFontFormat->hasAttribute('typeface')) {
+                        $oText->getFont()->setName($oElementFontFormat->getAttribute('typeface'));
+                    }
+
                     //} else {
                     // $oText = $oParagraph->createText();
 
