@@ -25,12 +25,14 @@ Properties:
 
 Use this style to define border of a shape as example below.
 
-.. code-block:: php
+``` php
+<?php
 
 	$shape->getBorder()
 		->setLineStyle(Border::LINE_SINGLE)
 		->setLineWidth(4)
 		->getColor()->setARGB('FFC00000');
+```
 
 Properties:
 
@@ -71,6 +73,25 @@ Properties:
 - `marginLeft`
 - `marginRight`
 
+### RTL / LTR
+
+You can define if the alignment is RTL or LTR.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Alignment;
+
+$alignment = new Alignment();
+
+// Set alignment to RTL
+$alignment->setIsRTL(true);
+// Set alignment to LTR
+$alignment->setIsRTL(false);
+// Is the alignment RTL?
+echo $alignment->isRTL();
+```
+
 ## Font
 
 - `name`
@@ -82,6 +103,26 @@ Properties:
 - `strikethrough`
 - `color`
 
+### Format
+
+Some formats are available : 
+
+* `Font::FORMAT_LATIN`
+* `Font::FORMAT_EAST_ASIAN`
+* `Font::FORMAT_COMPLEX_SCRIPT`
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Font;
+
+$font = new Font();
+
+// Set format of font
+$font->setFormat(Font::FORMAT_EAST_ASIAN);
+// Get format of font
+echo $font->getFormat();
+```
 ## Bullet
 
 - `bulletType`

@@ -15,6 +15,7 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
 /**
@@ -306,20 +307,77 @@ class ContentTest extends PhpPresentationTestCase
     public function testRichTextRunLanguage(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
-        $oRun = $oRichText->createTextRun('MyText');
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $oRun->getHashCode() . '\']/style:text-properties';
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:language');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'en');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        $oRun->setLanguage('de');
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
         $this->resetPresentationFile();
 
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-asian', 'en');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-complex', 'en');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->setLanguage('de');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:language');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'de');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-asian', 'de');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-complex', 'de');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
@@ -485,18 +543,218 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testStyleFont(): void
+    public function testStyleAlignmentRTL(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText1 = $oSlide->createRichTextShape();
+        $oRichText1->getActiveParagraph()->getAlignment()->setIsRTL(true);
+        $oRichText1->createTextRun('Run1');
+        $oRichText2 = $oSlide->createRichTextShape();
+        $oRichText2->getActiveParagraph()->getAlignment()->setIsRTL(false);
+        $oRichText2->createTextRun('Run2');
+
+        $p1HashCode = $oRichText1->getActiveParagraph()->getHashCode();
+        $p2HashCode = $oRichText2->getActiveParagraph()->getHashCode();
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p1HashCode . '\']/style:paragraph-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:writing-mode', 'rl-tb');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p2HashCode . '\']/style:paragraph-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:writing-mode', 'lr-tb');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleFontBold(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRun = $oRichText->createTextRun('Run1');
         $oRun->getFont()->setBold(true);
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
 
         $expectedHashCode = $oRun->getHashCode();
-
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:font-weight');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-weight', 'bold');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
 
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-weight-asian', 'bold');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-weight-complex', 'bold');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setBold(false);
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleFontFormat(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:script-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:script-type', 'latin');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:script-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:script-type', 'asian');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:script-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:script-type', 'complex');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleFontName(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setName('Calibri');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-family-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-family-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:font-family');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-family', 'Calibri');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-family');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-family-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-family-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-family-asian', 'Calibri');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-family');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-family-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-family-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-family-complex', 'Calibri');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleFontSize(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setSize(12);
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-size-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-size-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:font-size');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-size', '12pt');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-size');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-size-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-size-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-size-asian', '12pt');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-size');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-size-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-size-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-size-complex', '12pt');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 

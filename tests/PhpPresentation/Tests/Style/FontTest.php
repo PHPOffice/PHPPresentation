@@ -51,7 +51,7 @@ class FontTest extends TestCase
     /**
      * Test get/set Character Spacing.
      */
-    public function testSetGetCharacterSpacing(): void
+    public function testCharacterSpacing(): void
     {
         $object = new Font();
         $this->assertEquals(0, $object->getCharacterSpacing());
@@ -66,7 +66,7 @@ class FontTest extends TestCase
     /**
      * Test get/set color.
      */
-    public function testSetGetColor(): void
+    public function testColor(): void
     {
         $object = new Font();
         $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
@@ -78,7 +78,24 @@ class FontTest extends TestCase
     /**
      * Test get/set name.
      */
-    public function testSetGetName(): void
+    public function testFormat(): void
+    {
+        $object = new Font();
+        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        $this->assertInstanceOf(Font::class, $object->setFormat());
+        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        $this->assertInstanceOf(Font::class, $object->setFormat('UnAuthorized'));
+        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        $this->assertInstanceOf(Font::class, $object->setFormat(Font::FORMAT_EAST_ASIAN));
+        $this->assertEquals(Font::FORMAT_EAST_ASIAN, $object->getFormat());
+        $this->assertInstanceOf(Font::class, $object->setFormat(Font::FORMAT_COMPLEX_SCRIPT));
+        $this->assertEquals(Font::FORMAT_COMPLEX_SCRIPT, $object->getFormat());
+    }
+
+    /**
+     * Test get/set name.
+     */
+    public function testName(): void
     {
         $object = new Font();
         $this->assertInstanceOf(Font::class, $object->setName());
@@ -92,7 +109,7 @@ class FontTest extends TestCase
     /**
      * Test get/set size.
      */
-    public function testSetGetSize(): void
+    public function testSize(): void
     {
         $object = new Font();
         $this->assertInstanceOf(Font::class, $object->setSize());
@@ -105,7 +122,7 @@ class FontTest extends TestCase
     /**
      * Test get/set underline.
      */
-    public function testSetGetUnderline(): void
+    public function testUnderline(): void
     {
         $object = new Font();
         $this->assertInstanceOf(Font::class, $object->setUnderline());
@@ -215,7 +232,7 @@ class FontTest extends TestCase
     /**
      * Test get/set hash index.
      */
-    public function testSetGetHashIndex(): void
+    public function testHashIndex(): void
     {
         $object = new Font();
         $value = mt_rand(1, 100);

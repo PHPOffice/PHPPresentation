@@ -300,14 +300,66 @@ class ODPresentation implements ReaderInterface
             if ($nodeTextProperties->hasAttribute('fo:color')) {
                 $oFont->getColor()->setRGB(substr($nodeTextProperties->getAttribute('fo:color'), -6));
             }
+            // Font Latin
             if ($nodeTextProperties->hasAttribute('fo:font-family')) {
-                $oFont->setName($nodeTextProperties->getAttribute('fo:font-family'));
+                $oFont
+                    ->setName($nodeTextProperties->getAttribute('fo:font-family'))
+                    ->setFormat(Font::FORMAT_LATIN);
             }
             if ($nodeTextProperties->hasAttribute('fo:font-weight') && 'bold' == $nodeTextProperties->getAttribute('fo:font-weight')) {
-                $oFont->setBold(true);
+                $oFont
+                    ->setBold(true)
+                    ->setFormat(Font::FORMAT_LATIN);
             }
             if ($nodeTextProperties->hasAttribute('fo:font-size')) {
-                $oFont->setSize((int) substr($nodeTextProperties->getAttribute('fo:font-size'), 0, -2));
+                $oFont
+                    ->setSize((int) substr($nodeTextProperties->getAttribute('fo:font-size'), 0, -2))
+                    ->setFormat(Font::FORMAT_LATIN);
+            }
+            // Font East Asian
+            if ($nodeTextProperties->hasAttribute('style:font-family-asian')) {
+                $oFont
+                    ->setName($nodeTextProperties->getAttribute('style:font-family-asian'))
+                    ->setFormat(Font::FORMAT_EAST_ASIAN);
+            }
+            if ($nodeTextProperties->hasAttribute('style:font-weight-asian') && 'bold' == $nodeTextProperties->getAttribute('style:font-weight-asian')) {
+                $oFont
+                    ->setBold(true)
+                    ->setFormat(Font::FORMAT_EAST_ASIAN);
+            }
+            if ($nodeTextProperties->hasAttribute('style:font-size-asian')) {
+                $oFont
+                    ->setSize((int) substr($nodeTextProperties->getAttribute('style:font-size-asian'), 0, -2))
+                    ->setFormat(Font::FORMAT_EAST_ASIAN);
+            }
+            // Font Complex Script
+            if ($nodeTextProperties->hasAttribute('style:font-family-complex')) {
+                $oFont
+                    ->setName($nodeTextProperties->getAttribute('style:font-family-complex'))
+                    ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+            }
+            if ($nodeTextProperties->hasAttribute('style:font-weight-complex') && 'bold' == $nodeTextProperties->getAttribute('style:font-weight-complex')) {
+                $oFont
+                    ->setBold(true)
+                    ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+            }
+            if ($nodeTextProperties->hasAttribute('style:font-size-complex')) {
+                $oFont
+                    ->setSize((int) substr($nodeTextProperties->getAttribute('style:font-size-complex'), 0, -2))
+                    ->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+            }
+            if ($nodeTextProperties->hasAttribute('style:script-type')) {
+                switch ($nodeTextProperties->getAttribute('style:script-type')) {
+                    case 'latin':
+                        $oFont->setFormat(Font::FORMAT_LATIN);
+                        break;
+                    case 'asian':
+                        $oFont->setFormat(Font::FORMAT_EAST_ASIAN);
+                        break;
+                    case 'complex':
+                        $oFont->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+                        break;
+                }
             }
         }
 
@@ -316,6 +368,24 @@ class ODPresentation implements ReaderInterface
             $oAlignment = new Alignment();
             if ($nodeParagraphProps->hasAttribute('fo:text-align')) {
                 $oAlignment->setHorizontal($nodeParagraphProps->getAttribute('fo:text-align'));
+            }
+            if ($nodeParagraphProps->hasAttribute('style:writing-mode')) {
+                switch ($nodeParagraphProps->getAttribute('style:writing-mode')) {
+                    case 'lr-tb':
+                    case 'tb-lr':
+                    case 'lr':
+                        $oAlignment->setIsRTL(false);
+                        break;
+                    case 'rl-tb':
+                    case 'tb-rl':
+                    case 'rl':
+                        $oAlignment->setIsRTL(false);
+                        break;
+                    case 'tb':
+                    case 'page':
+                    default:
+                        break;
+                }
             }
         }
 

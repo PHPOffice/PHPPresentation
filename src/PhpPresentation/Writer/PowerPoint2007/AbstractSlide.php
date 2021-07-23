@@ -519,6 +519,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             if (!$bIsPlaceholder) {
                 $objWriter->startElement('a:pPr');
                 $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
+                $objWriter->writeAttribute('rtl', $paragraph->getAlignment()->isRTL() ? '1' : '0');
                 $objWriter->writeAttribute('fontAlgn', $paragraph->getAlignment()->getVertical());
                 $objWriter->writeAttribute('marL', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginLeft()));
                 $objWriter->writeAttribute('marR', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getMarginRight()));
@@ -596,8 +597,11 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                         $this->writeColor($objWriter, $element->getFont()->getColor());
                         $objWriter->endElement();
 
-                        // Font - a:latin
-                        $objWriter->startElement('a:latin');
+                        // Font
+                        // - a:latin
+                        // - a:ea
+                        // - a:cs
+                        $objWriter->startElement('a:' . $element->getFont()->getFormat());
                         $objWriter->writeAttribute('typeface', $element->getFont()->getName());
                         $objWriter->endElement();
 

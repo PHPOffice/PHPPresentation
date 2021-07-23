@@ -119,6 +119,13 @@ class Alignment implements ComparableInterface
     private $marginBottom = 0;
 
     /**
+     * RTL Direction Support
+     *
+     * @var bool
+     */
+    private $isRTL = false;
+
+    /**
      * Hash index.
      *
      * @var int
@@ -320,6 +327,26 @@ class Alignment implements ComparableInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isRTL(): bool
+    {
+        return $this->isRTL;
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function setIsRTL(bool $value = false): self
+    {
+        $this->isRTL = $value;
+
+        return $this;
+    }
+
+    /**
      * Get hash code.
      *
      * @return string Hash code
@@ -333,6 +360,7 @@ class Alignment implements ComparableInterface
             . $this->indent
             . $this->marginLeft
             . $this->marginRight
+            . ($this->isRTL ? '1' : '0')
             . __CLASS__
         );
     }

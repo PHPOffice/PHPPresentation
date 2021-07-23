@@ -24,6 +24,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
+use PhpOffice\PhpPresentation\Style\Font;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -124,6 +125,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(400, $oShape->getOffsetY());
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
+        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
@@ -136,6 +138,8 @@ class ODPresentationTest extends TestCase
         $this->assertTrue($oRichText->getFont()->isBold());
         $this->assertEquals(28, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 1 : Shape 2 : Paragraph 2
         $oRichText = $arrayRichText[1];
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $oRichText);
@@ -146,6 +150,8 @@ class ODPresentationTest extends TestCase
         $this->assertTrue($oRichText->getFont()->isBold());
         $this->assertEquals(60, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
 
         // Slide 2
         $oSlide2 = $oPhpPresentation->getSlide(1);
@@ -175,6 +181,7 @@ class ODPresentationTest extends TestCase
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(1, $arrayRichText);
         // Slide 2 : Shape 2 : Paragraph 1
@@ -197,6 +204,7 @@ class ODPresentationTest extends TestCase
         // Slide 2 : Shape 3 : Paragraph 1
         $oParagraph = $arrayParagraphs[0];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
@@ -207,9 +215,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('A class library', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 2 : Shape 3 : Paragraph 2
         $oParagraph = $arrayParagraphs[1];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
@@ -220,9 +231,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Written in PHP', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 2 : Shape 3 : Paragraph 3
         $oParagraph = $arrayParagraphs[2];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
@@ -233,9 +247,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Representing a presentation', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 2 : Shape 3 : Paragraph 4
         $oParagraph = $arrayParagraphs[3];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(Bullet::TYPE_BULLET, $oParagraph->getBulletStyle()->getBulletType());
@@ -246,6 +263,8 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Supports writing to different file formats', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
 
         // Slide 3
         $oSlide2 = $oPhpPresentation->getSlide(2);
@@ -272,6 +291,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(50, $oShape->getOffsetY());
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
+        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
@@ -284,6 +304,8 @@ class ODPresentationTest extends TestCase
         $this->assertTrue($oRichText->getFont()->isBold());
         $this->assertEquals(48, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 3 : Shape 2
         /** @var RichText $oShape */
         $oShape = $arrayShape[2];
@@ -297,6 +319,7 @@ class ODPresentationTest extends TestCase
         // Slide 3 : Shape 3 : Paragraph 1
         $oParagraph = $arrayParagraphs[0];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(0, $oParagraph->getAlignment()->getLevel());
@@ -308,9 +331,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Generate slide decks', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 3 : Shape 3 : Paragraph 2
         $oParagraph = $arrayParagraphs[1];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(1, $oParagraph->getAlignment()->getLevel());
@@ -322,9 +348,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Represent business data', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 3 : Shape 3 : Paragraph 3
         $oParagraph = $arrayParagraphs[2];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(1, $oParagraph->getAlignment()->getLevel());
@@ -336,9 +365,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Show a family slide show', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 3 : Shape 3 : Paragraph 4
         $oParagraph = $arrayParagraphs[3];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(1, $oParagraph->getAlignment()->getLevel());
@@ -350,9 +382,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('...', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 3 : Shape 3 : Paragraph 5
         $oParagraph = $arrayParagraphs[4];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(25, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(0, $oParagraph->getAlignment()->getLevel());
@@ -364,9 +399,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Export these to different formats', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 3 : Shape 3 : Paragraph 6
         $oParagraph = $arrayParagraphs[5];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(1, $oParagraph->getAlignment()->getLevel());
@@ -378,9 +416,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('PHPPresentation 2007', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 3 : Shape 3 : Paragraph 7
         $oParagraph = $arrayParagraphs[6];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(1, $oParagraph->getAlignment()->getLevel());
@@ -392,9 +433,12 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Serialized', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 3 : Shape 3 : Paragraph 8
         $oParagraph = $arrayParagraphs[7];
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
 //         $this->assertEquals(75, $oParagraph->getAlignment()->getMarginLeft());
 //         $this->assertEquals(-25, $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(1, $oParagraph->getAlignment()->getLevel());
@@ -406,6 +450,8 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('... (more to come) ...', $oRichText->getText());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
         $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
 
         // Slide 4
         $oSlide3 = $oPhpPresentation->getSlide(3);
@@ -432,6 +478,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(50, $oShape->getOffsetY());
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
+        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
@@ -443,7 +490,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Need more info?', $oRichText->getText());
         $this->assertTrue($oRichText->getFont()->isBold());
         $this->assertEquals(48, $oRichText->getFont()->getSize());
-        $this->assertEquals('FF000000', $oShape->getActiveParagraph()->getFont()->getColor()->getARGB());
+        $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 4 : Shape 3
         /** @var RichText $oShape */
         $oShape = $arrayShape[2];
@@ -453,6 +502,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(130, $oShape->getOffsetY());
         $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
+        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
@@ -464,7 +514,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('Check the project site on GitHub:', $oRichText->getText());
         $this->assertFalse($oRichText->getFont()->isBold());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
-        $this->assertEquals('FF000000', $oShape->getActiveParagraph()->getFont()->getColor()->getARGB());
+        $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 4 : Shape 3 : Paragraph 2
         $oRichText = $arrayRichText[1];
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $oRichText);
@@ -475,7 +527,9 @@ class ODPresentationTest extends TestCase
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getText());
         $this->assertFalse($oRichText->getFont()->isBold());
         $this->assertEquals(32, $oRichText->getFont()->getSize());
-        $this->assertEquals('FF000000', $oShape->getActiveParagraph()->getFont()->getColor()->getARGB());
+        $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
+        $this->assertEquals('Calibri', $oRichText->getFont()->getName());
+        $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         $this->assertTrue($oRichText->hasHyperlink());
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getHyperlink()->getUrl());
         //$this->assertEquals('PHPPresentation', $oRichText->getHyperlink()->getTooltip());

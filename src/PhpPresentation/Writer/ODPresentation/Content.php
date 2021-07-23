@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
 
 class Content extends AbstractDecoratorWriter
@@ -219,6 +220,10 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('fo:text-align', 'left');
                         break;
                 }
+                $objWriter->writeAttribute(
+                    'style:writing-mode',
+                    $item->getAlignment()->isRTL() ? 'rl-tb' : 'lr-tb'
+                );
                 $objWriter->endElement();
                 $objWriter->endElement();
             }
@@ -230,19 +235,37 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->startElement('style:style');
                 $objWriter->writeAttribute('style:name', 'T_' . $key);
                 $objWriter->writeAttribute('style:family', 'text');
-                // style:text-properties
+
+                // style:style > style:text-properties
                 $objWriter->startElement('style:text-properties');
                 $objWriter->writeAttribute('fo:color', '#' . $item->getFont()->getColor()->getRGB());
-                $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
-                $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
-                // @todo : fo:font-style
-                if ($item->getFont()->isBold()) {
-                    $objWriter->writeAttribute('fo:font-weight', 'bold');
+                switch ($item->getFont()->getFormat()) {
+                    case Font::FORMAT_LATIN:
+                        $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
+                        $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
+                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
+                        $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                        $objWriter->writeAttribute('style:script-type', 'latin');
+                        break;
+                    case Font::FORMAT_EAST_ASIAN:
+                        $objWriter->writeAttribute('style:font-family-asian', $item->getFont()->getName());
+                        $objWriter->writeAttribute('style:font-size-asian', $item->getFont()->getSize() . 'pt');
+                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-asian', 'bold');
+                        $objWriter->writeAttribute('style:language-asian', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                        $objWriter->writeAttribute('style:script-type', 'asian');
+                        break;
+                    case Font::FORMAT_COMPLEX_SCRIPT:
+                        $objWriter->writeAttribute('style:font-family-complex', $item->getFont()->getName());
+                        $objWriter->writeAttribute('style:font-size-complex', $item->getFont()->getSize() . 'pt');
+                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-complex', 'bold');
+                        $objWriter->writeAttribute('style:language-complex', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                        $objWriter->writeAttribute('style:script-type', 'complex');
+                        break;
                 }
-                $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en'));
 
-                // @todo : style:text-underline-style
+                // > style:style > style:text-properties
                 $objWriter->endElement();
+                // > style:style
                 $objWriter->endElement();
             }
         }
