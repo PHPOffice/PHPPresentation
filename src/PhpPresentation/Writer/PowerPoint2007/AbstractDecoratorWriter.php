@@ -47,16 +47,17 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param XMLWriter $objWriter XML Writer
      * @param Border $pBorder Border
      * @param string $pElementName Element name
+     * @param bool $isMarker
      *
      * @throws \Exception
      */
-    protected function writeBorder(XMLWriter $objWriter, Border $pBorder, string $pElementName = 'L'): void
+    protected function writeBorder(XMLWriter $objWriter, Border $pBorder, string $pElementName = 'L', bool $isMarker = false): void
     {
         if (!($pBorder instanceof Border)) {
             return;
         }
 
-        if (Border::LINE_NONE == $pBorder->getLineStyle() && '' == $pElementName) {
+        if (Border::LINE_NONE == $pBorder->getLineStyle() && '' == $pElementName && !$isMarker) {
             return;
         }
 
@@ -158,14 +159,15 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
             return;
         }
 
-        // Check if this is a pattern type or gradient type
+        // Is it a gradient fill?
         if (Fill::FILL_GRADIENT_LINEAR == $pFill->getFillType() || Fill::FILL_GRADIENT_PATH == $pFill->getFillType()) {
-            // Gradient fill
             $this->writeGradientFill($objWriter, $pFill);
-        } else {
-            // Pattern fill
-            $this->writePatternFill($objWriter, $pFill);
+
+            return;
         }
+
+        // Is it a pattern fill?
+        $this->writePatternFill($objWriter, $pFill);
     }
 
     /**

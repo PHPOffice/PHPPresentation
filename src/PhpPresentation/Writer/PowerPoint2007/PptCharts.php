@@ -2058,18 +2058,18 @@ class PptCharts extends AbstractDecoratorWriter
         return $objWriter->getData();
     }
 
-    protected function writeSeriesMarker(XMLWriter $objWriter, Chart\Marker $oMarker): void
+    protected function writeSeriesMarker(XMLWriter $objWriter, Chart\Marker $marker): void
     {
         // c:marker
         $objWriter->startElement('c:marker');
         // c:marker > c:symbol
         $objWriter->startElement('c:symbol');
-        $objWriter->writeAttribute('val', $oMarker->getSymbol());
+        $objWriter->writeAttribute('val', $marker->getSymbol());
         $objWriter->endElement();
 
         // Size if different of none
-        if (Chart\Marker::SYMBOL_NONE != $oMarker->getSymbol()) {
-            $markerSize = (int) $oMarker->getSize();
+        if (Chart\Marker::SYMBOL_NONE != $marker->getSymbol()) {
+            $markerSize = (int) $marker->getSize();
             if ($markerSize < 2) {
                 $markerSize = 2;
             }
@@ -2086,6 +2086,14 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->writeAttribute('val', $markerSize);
             $objWriter->endElement();
         }
+
+        // // c:marker > c:spPr
+        $objWriter->startElement('c:spPr');
+        $this->writeFill($objWriter, $marker->getFill());
+        $this->writeBorder($objWriter, $marker->getBorder(), '', true);
+        $objWriter->endElement();
+
+        // > c:marker
         $objWriter->endElement();
     }
 

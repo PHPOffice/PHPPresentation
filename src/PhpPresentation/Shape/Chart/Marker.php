@@ -18,9 +18,9 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
-/**
- * \PhpOffice\PhpPresentation\Shape\Chart\Axis.
- */
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Fill;
+
 class Marker
 {
     public const SYMBOL_CIRCLE = 'circle';
@@ -60,6 +60,22 @@ class Marker
      */
     protected $size = 5;
 
+    /**
+     * @var Fill
+     */
+    protected $fill;
+
+    /**
+     * @var Border
+     */
+    protected $border;
+
+    public function __construct()
+    {
+        $this->fill = new Fill();
+        $this->border = new Border();
+    }
+
     public function getSymbol(): string
     {
         return $this->symbol;
@@ -80,6 +96,46 @@ class Marker
     public function setSize(int $size = 5): self
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * @return Fill
+     */
+    public function getFill(): Fill
+    {
+        return $this->fill;
+    }
+
+    /**
+     * @param Fill $fill
+     *
+     * @return self
+     */
+    public function setFill(Fill $fill): self
+    {
+        $this->fill = $fill;
+
+        return $this;
+    }
+
+    /**
+     * @return Border
+     */
+    public function getBorder(): Border
+    {
+        return $this->border;
+    }
+
+    /**
+     * @param Border $border
+     *
+     * @return self
+     */
+    public function setBorder(Border $border): self
+    {
+        $this->border = $border;
 
         return $this;
     }

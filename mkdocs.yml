@@ -34,6 +34,9 @@ markdown_extensions:
   - pymdownx.emoji:
       emoji_index: !!python/name:materialx.emoji.twemoji
       emoji_generator: !!python/name:materialx.emoji.to_svg
+  ## Support for call-outs
+  - admonition
+  - pymdownx.details
 use_directory_urls: false
 
 ## Navigation
