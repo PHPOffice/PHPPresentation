@@ -564,7 +564,12 @@ function fnSlide_Scatter(PhpPresentation $objPHPPresentation)
     $lineChart = new Scatter();
     $series = new Series('Downloads', $seriesData);
     $series->setShowSeriesName(true);
-    $series->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_DASH);
+    $series->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_CIRCLE);
+    $series->getMarker()->getFill()
+        ->setFillType(Fill::FILL_SOLID)
+        ->setStartColor(new Color('FF6F3510'))
+        ->setEndColor(new Color('FF6F3510'));
+    $series->getMarker()->getBorder()->getColor()->setRGB('FF0000');
     $series->getMarker()->setSize(10);
     $lineChart->addSeries($series);
 

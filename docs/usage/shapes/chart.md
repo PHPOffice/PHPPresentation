@@ -18,7 +18,7 @@ For each gridline, you can custom the width (in points), the fill type and the f
 ``` php
 <?php
 
-use \PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 
 $line = new Line();
 
@@ -37,7 +37,7 @@ For resetting them, you pass null as parameter to these methods.
 ``` php
 <?php
 
-use \PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 
 $line = new Line();
 
@@ -66,7 +66,7 @@ For resetting them, you pass Axis::TICK_MARK_NONE as parameter to these methods.
 ``` php
 <?php
 
-use \PhpOffice\PhpPresentation\Shape\Chart\Axis;
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 
 $line = new Line();
 
@@ -82,7 +82,7 @@ For resetting them, you pass null as parameter to these methods.
 ``` php
 <?php
 
-use \PhpOffice\PhpPresentation\Shape\Chart\Axis;
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 
 $line = new Line();
 
@@ -121,56 +121,7 @@ $shape->getTitle()->setVisible(false);
 
 ### Series
 
-You can custom the font of a serie.
-
-``` php
-<?php
-
-$series = new Series('Downloads', $seriesData);
-// Define the size
-$series->getFont()->setSize(25);
-```
-
-You can custom the marker of a serie, for Line & Scatter charts.
-
-``` php
-<?php
-
-use \PhpOffice\PhpPresentation\Shape\Chart\Marker;
-
-$series = new Series('Downloads', $seriesData);
-$marker = $series->getMarker();
-$marker->setSymbol(Marker::SYMBOL_DASH)->setSize(10);
-```
-
-You can custom the line of a serie, for Line & Scatter charts.
-
-``` php
-<?php
-
-use \PhpOffice\PhpPresentation\Style\Outline;
-
-$outline = new Outline();
-// Define the color
-$outline->getFill()->setFillType(Fill::FILL_SOLID);
-$outline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
-// Define the width (in points)
-$outline->setWidth(2);
-
-$series = new Series('Downloads', $seriesData);
-$series->setOutline($outline);
-```
-
-You can define the position of the data label.
-Each position is described in [MSDN](https://msdn.microsoft.com/en-us/library/mt459417(v=office.12).aspx).
-
-``` php
-<?php
-
-$series = new Series('Downloads', $seriesData);
-$series->setLabelPosition(Series::LABEL_INSIDEEND);
-```
-
+#### Display Informations
 You can define if some informations are displayed.
 
 ``` php
@@ -184,6 +135,94 @@ $series->setShowLegendKey(true);
 $series->setShowPercentage(true);
 $series->setShowSeriesName(true);
 $series->setShowValue(true);
+```
+
+#### Font
+You can custom the font of a serie.
+
+``` php
+<?php
+
+$series = new Series('Downloads', $seriesData);
+// Define the size
+$series->getFont()->setSize(25);
+```
+
+#### Label Position
+You can define the position of the data label.
+Each position is described in [MSDN](https://msdn.microsoft.com/en-us/library/mt459417(v=office.12).aspx).
+
+``` php
+<?php
+
+$series = new Series('Downloads', $seriesData);
+$series->setLabelPosition(Series::LABEL_INSIDEEND);
+```
+
+#### Marker
+You can custom the marker of a serie, for Line & Scatter charts.
+
+##### Customize the border
+
+!!! warning
+    Available only on the PowerPoint2007 Writer
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Marker;
+use PhpOffice\PhpPresentation\Style\Border;
+
+$series = new Series('Downloads', $seriesData);
+$marker = $series->getMarker();
+$marker->getBorder()->setLineStyle(Border::LINE_SINGLE);
+```
+
+##### Customize the fill
+
+!!! warning
+    Available only on the PowerPoint2007 Writer
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Marker;
+use PhpOffice\PhpPresentation\Style\Fill;
+
+$series = new Series('Downloads', $seriesData);
+$marker = $series->getMarker();
+$marker->getFill()->setFillType(Fill::FILL_SOLID);
+```
+
+##### Customize the symbol
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Marker;
+
+$series = new Series('Downloads', $seriesData);
+$marker = $series->getMarker();
+$marker->setSymbol(Marker::SYMBOL_DASH)->setSize(10);
+```
+
+#### Outline
+You can custom the line of a serie, for Line & Scatter charts.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Outline;
+
+$outline = new Outline();
+// Define the color
+$outline->getFill()->setFillType(Fill::FILL_SOLID);
+$outline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
+// Define the width (in points)
+$outline->setWidth(2);
+
+$series = new Series('Downloads', $seriesData);
+$series->setOutline($outline);
 ```
 
 ### View3D

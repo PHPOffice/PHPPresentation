@@ -19,6 +19,8 @@
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Fill;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -36,14 +38,20 @@ class MarkerTest extends TestCase
         $this->assertEquals(5, $object->getSize());
     }
 
-    public function testSymbol(): void
+    public function testBorder(): void
     {
         $object = new Marker();
 
-        $expected = Marker::$arraySymbol[array_rand(Marker::$arraySymbol)];
+        $this->assertInstanceOf(Border::class, $object->getBorder());
+        $this->assertInstanceOf(Marker::class, $object->setBorder(new Border()));
+    }
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->setSymbol($expected));
-        $this->assertEquals($expected, $object->getSymbol());
+    public function testFill(): void
+    {
+        $object = new Marker();
+
+        $this->assertInstanceOf(Fill::class, $object->getFill());
+        $this->assertInstanceOf(Marker::class, $object->setFill(new Fill()));
     }
 
     public function testSize(): void
@@ -51,7 +59,17 @@ class MarkerTest extends TestCase
         $object = new Marker();
         $value = mt_rand(1, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->setSize($value));
+        $this->assertInstanceOf(Marker::class, $object->setSize($value));
         $this->assertEquals($value, $object->getSize());
+    }
+
+    public function testSymbol(): void
+    {
+        $object = new Marker();
+
+        $expected = Marker::$arraySymbol[array_rand(Marker::$arraySymbol)];
+
+        $this->assertInstanceOf(Marker::class, $object->setSymbol($expected));
+        $this->assertEquals($expected, $object->getSymbol());
     }
 }
