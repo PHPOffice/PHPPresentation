@@ -202,6 +202,13 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('chart:dimension', 'x');
         $this->xmlContent->writeAttribute('chart:name', 'primary-x');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleAxisX');
+        // chart:axis > chart:title
+        if ($chart->getPlotArea()->getAxisX()->isVisible()) {
+            $this->xmlContent->startElement('chart:title');
+            $this->xmlContent->writeAttribute('chart:style-name', 'styleAxisXTitle');
+            $this->xmlContent->writeElement('text:p', $chart->getPlotArea()->getAxisX()->getTitle());
+            $this->xmlContent->endElement();
+        }
         // chart:axis > chart:categories
         $this->xmlContent->startElement('chart:categories');
         $this->xmlContent->writeAttribute('table:cell-range-address', 'table-local.$A$2:.$A$' . ($this->numData + 1));
@@ -218,6 +225,13 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('chart:dimension', 'y');
         $this->xmlContent->writeAttribute('chart:name', 'primary-y');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleAxisY');
+        // chart:axis > chart:title
+        if ($chart->getPlotArea()->getAxisY()->isVisible()) {
+            $this->xmlContent->startElement('chart:title');
+            $this->xmlContent->writeAttribute('chart:style-name', 'styleAxisYTitle');
+            $this->xmlContent->writeElement('text:p', $chart->getPlotArea()->getAxisY()->getTitle());
+            $this->xmlContent->endElement();
+        }
         // chart:axis > chart:grid
         $this->writeGridline($chart->getPlotArea()->getAxisY()->getMajorGridlines(), 'styleAxisYGridlinesMajor', 'major');
         // chart:axis > chart:grid
@@ -257,41 +271,10 @@ class ObjectsChart extends AbstractDecoratorWriter
         $chartType = $chart->getPlotArea()->getType();
 
         // AxisX
-        // style:style
-        $this->xmlContent->startElement('style:style');
-        $this->xmlContent->writeAttribute('style:name', 'styleAxisX');
-        $this->xmlContent->writeAttribute('style:family', 'chart');
-        // style:style > style:chart-properties
-        $this->xmlContent->startElement('style:chart-properties');
-        $this->xmlContent->writeAttribute('chart:display-label', 'true');
-        $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
-        $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
-        if ($chartType instanceof AbstractTypePie) {
-            $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
-        }
-        if (null != $chart->getPlotArea()->getAxisX()->getMinBounds()) {
-            $this->xmlContent->writeAttribute('chart:minimum', $chart->getPlotArea()->getAxisX()->getMinBounds());
-        }
-        if (null != $chart->getPlotArea()->getAxisX()->getMaxBounds()) {
-            $this->xmlContent->writeAttribute('chart:maximum', $chart->getPlotArea()->getAxisX()->getMaxBounds());
-        }
-        $this->xmlContent->endElement();
-        // style:style > style:graphic-properties
-        $this->xmlContent->startElement('style:graphic-properties');
-        $this->xmlContent->writeAttribute('draw:stroke', 'solid');
-        $this->xmlContent->writeAttribute('svg:stroke-width', '0.026cm');
-        $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
-        $this->xmlContent->endElement();
-        // style:style > style:text-properties
-        $oFont = $chart->getPlotArea()->getAxisX()->getFont();
-        $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#' . $oFont->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $oFont->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $oFont->getSize() . 'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $oFont->isItalic() ? 'italic' : 'normal');
-        $this->xmlContent->endElement();
-        // ##style:style
-        $this->xmlContent->endElement();
+        $this->writeAxisMainStyle($chart->getPlotArea()->getAxisX(), 'styleAxisX', $chartType instanceof AbstractTypePie);
+
+        // AxisX Title
+        $this->writeAxisTitleStyle($chart->getPlotArea()->getAxisX(), 'styleAxisXTitle');
 
         // AxisX GridLines Major
         $this->writeGridlineStyle($chart->getPlotArea()->getAxisX()->getMajorGridlines(), 'styleAxisXGridlinesMajor');
@@ -300,24 +283,32 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->writeGridlineStyle($chart->getPlotArea()->getAxisX()->getMinorGridlines(), 'styleAxisXGridlinesMinor');
 
         // AxisY
+        $this->writeAxisMainStyle($chart->getPlotArea()->getAxisY(), 'styleAxisY', $chartType instanceof AbstractTypePie);
+
+        // AxisY Title
+        $this->writeAxisTitleStyle($chart->getPlotArea()->getAxisY(), 'styleAxisYTitle');
+
+        // AxisY GridLines Major
+        $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMajorGridlines(), 'styleAxisYGridlinesMajor');
+
+        // AxisY GridLines Minor
+        $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMinorGridlines(), 'styleAxisYGridlinesMinor');
+    }
+
+    private function writeAxisMainStyle(Chart\Axis $axis, string $styleName, bool $isPieChart): void
+    {
         // style:style
         $this->xmlContent->startElement('style:style');
-        $this->xmlContent->writeAttribute('style:name', 'styleAxisY');
+        $this->xmlContent->writeAttribute('style:name', $styleName);
         $this->xmlContent->writeAttribute('style:family', 'chart');
         // style:style > style:chart-properties
         $this->xmlContent->startElement('style:chart-properties');
         $this->xmlContent->writeAttribute('chart:display-label', 'true');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-inner', 'false');
         $this->xmlContent->writeAttribute('chart:tick-marks-major-outer', 'false');
-        if ($chartType instanceof AbstractTypePie) {
-            $this->xmlContent->writeAttribute('chart:reverse-direction', 'true');
-        }
-        if (null !== $chart->getPlotArea()->getAxisY()->getMinBounds()) {
-            $this->xmlContent->writeAttribute('chart:minimum', $chart->getPlotArea()->getAxisY()->getMinBounds());
-        }
-        if (null !== $chart->getPlotArea()->getAxisY()->getMaxBounds()) {
-            $this->xmlContent->writeAttribute('chart:maximum', $chart->getPlotArea()->getAxisY()->getMaxBounds());
-        }
+        $this->xmlContent->writeAttributeIf($isPieChart, 'chart:reverse-direction', 'true');
+        $this->xmlContent->writeAttributeIf(null !== $axis->getMinBounds(), 'chart:minimum', $axis->getMinBounds());
+        $this->xmlContent->writeAttributeIf(null !== $axis->getMaxBounds(), 'chart:maximum', $axis->getMaxBounds());
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
@@ -326,21 +317,38 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttribute('svg:stroke-color', '#878787');
         $this->xmlContent->endElement();
         // style:style > style:text-properties
-        $oFont = $chart->getPlotArea()->getAxisY()->getFont();
         $this->xmlContent->startElement('style:text-properties');
-        $this->xmlContent->writeAttribute('fo:color', '#' . $oFont->getColor()->getRGB());
-        $this->xmlContent->writeAttribute('fo:font-family', $oFont->getName());
-        $this->xmlContent->writeAttribute('fo:font-size', $oFont->getSize() . 'pt');
-        $this->xmlContent->writeAttribute('fo:font-style', $oFont->isItalic() ? 'italic' : 'normal');
+        $this->xmlContent->writeAttribute('fo:color', '#' . $axis->getFont()->getColor()->getRGB());
+        $this->xmlContent->writeAttribute('fo:font-family', $axis->getFont()->getName());
+        $this->xmlContent->writeAttribute('fo:font-size', $axis->getFont()->getSize() . 'pt');
+        $this->xmlContent->writeAttribute('fo:font-style', $axis->getFont()->isItalic() ? 'italic' : 'normal');
         $this->xmlContent->endElement();
         // ## style:style
         $this->xmlContent->endElement();
+    }
 
-        // AxisY GridLines Major
-        $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMajorGridlines(), 'styleAxisYGridlinesMajor');
-
-        // AxisY GridLines Minor
-        $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMinorGridlines(), 'styleAxisYGridlinesMinor');
+    private function writeAxisTitleStyle(Chart\Axis $axis, string $styleName): void
+    {
+        // style:style
+        $this->xmlContent->startElement('style:style');
+        $this->xmlContent->writeAttribute('style:name', $styleName);
+        $this->xmlContent->writeAttribute('style:family', 'chart');
+        // style:chart-properties
+        $this->xmlContent->startElement('style:chart-properties');
+        $this->xmlContent->writeAttribute('chart:auto-position', 'true');
+        $this->xmlContent->writeAttributeIf($axis->getTitleRotation() != 0, 'style:rotation-angle', '-' . $axis->getTitleRotation());
+        // > style:chart-properties
+        $this->xmlContent->endElement();
+        // style:text-properties
+        $this->xmlContent->startElement('style:text-properties');
+        $this->xmlContent->writeAttribute('fo:color', '#' . $axis->getFont()->getColor()->getRGB());
+        $this->xmlContent->writeAttribute('fo:font-family', $axis->getFont()->getName());
+        $this->xmlContent->writeAttribute('fo:font-size', $axis->getFont()->getSize() . 'pt');
+        $this->xmlContent->writeAttribute('fo:font-style', $axis->getFont()->isItalic() ? 'italic' : 'normal');
+        // > style:text-properties
+        $this->xmlContent->endElement();
+        // > style:style
+        $this->xmlContent->endElement();
     }
 
     protected function writeGridlineStyle(?Chart\Gridlines $oGridlines, string $styleName): void

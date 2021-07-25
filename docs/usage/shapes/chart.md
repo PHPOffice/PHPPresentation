@@ -12,6 +12,27 @@ $chartShape = $slide->createChartShape();
 
 ### Axis
 
+#### Title
+
+You can define title for each axis (X & Y) with `setTitle` method.
+You can apply a rotation with the `setTitleRotation` method with an expected paremeter in degrees.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+
+$line = new Line();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($line);
+
+$shape->getPlotArea()->getAxisX()->setTitle('Axis X');
+$shape->getPlotArea()->getAxisX()->setTitleRotation(45);
+```
+
+#### Gridlines
+
 You can define gridlines (minor and major) for each axis (X & Y).
 For each gridline, you can custom the width (in points), the fill type and the fill color.
 
@@ -31,6 +52,8 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisX()->setMajorGridlines($gridlines);
 ```
 
+#### Bounds (Min & Max)
+
 For Axis, you can define the min & max bounds with `setMinBounds` & `setMaxBounds` methods.
 For resetting them, you pass null as parameter to these methods.
 
@@ -47,6 +70,8 @@ $shape->getPlotArea()->getAxisX()->setMinBounds(0);
 $shape->getPlotArea()->getAxisX()->setMaxBounds(200);
 ```
 
+#### Outline
+
 You can define outline for each axis (X & Y).
 
 ``` php
@@ -59,9 +84,10 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
 $shape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
 ```
+#### Tick Marks
 
 For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.
-For resetting them, you pass Axis::TICK_MARK_NONE as parameter to these methods.
+For resetting them, you pass `Axis::TICK_MARK_NONE` as parameter to these methods.
 
 ``` php
 <?php
@@ -75,6 +101,8 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisY()->setMinorTickMark(Axis::TICK_MARK_NONE);
 $shape->getPlotArea()->getAxisY()->setMajorTickMark(Axis::TICK_MARK_INSIDE);
 ```
+
+#### Unit
 
 For Axis Y, you can define unit with `setMinorUnit` & `setMajorUnit` methods.
 For resetting them, you pass null as parameter to these methods.
@@ -91,6 +119,7 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisY()->setMinorUnit(null);
 $shape->getPlotArea()->getAxisY()->setMajorUnit(0.05);
 ```
+#### Visibility
 
 You can define visibility for each axis (X & Y).
 

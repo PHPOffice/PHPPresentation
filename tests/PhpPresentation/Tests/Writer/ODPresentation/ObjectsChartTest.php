@@ -43,7 +43,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     public function testAxisFont(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
+        $oSeries = new Series('Series', $this->seriesData);
         $oBar = new Bar();
         $oBar->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oBar);
@@ -73,6 +73,94 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-style', 'normal');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-size', '16pt');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Arial');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testAxisTitleRotation(): void
+    {
+        $oSeries = new Series('Series', $this->seriesData);
+
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $this->assertZipFileExists('Object 1/content.xml');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisXTitle\']/style:chart-properties';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'style:rotation-angle');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $value = rand(1, 360);
+        $oShape->getPlotArea()->getAxisX()->setTitleRotation($value);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisXTitle\']/style:chart-properties';
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'style:rotation-angle');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'style:rotation-angle', '-' . $value);
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testAxisVisibility(): void
+    {
+        $oSeries = new Series('Series', $this->seriesData);
+
+        $oBar = new Bar();
+        $oBar->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oBar);
+        $oShape->getPlotArea()->getAxisX()->setTitle('Axis X');
+        $oShape->getPlotArea()->getAxisY()->setTitle('Axis Y');
+
+        $oShape->getPlotArea()->getAxisX()->setIsVisible(false);
+        $oShape->getPlotArea()->getAxisY()->setIsVisible(false);
+
+        $this->assertZipFileExists('Object 1/content.xml');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\'x\']/chart:title';
+
+        $this->assertZipXmlElementNotExists('Object 1/content.xml', $element);
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\'y\']/chart:title';
+
+        $this->assertZipXmlElementNotExists('Object 1/content.xml', $element);
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $oShape->getPlotArea()->getAxisX()->setIsVisible(true);
+        $oShape->getPlotArea()->getAxisY()->setIsVisible(true);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\'x\']/chart:title';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:style-name', 'styleAxisXTitle');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\'x\']/chart:title/text:p';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlElementEquals('Object 1/content.xml', $element, 'Axis X');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\'y\']/chart:title';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:style-name', 'styleAxisYTitle');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/chart:plot-area/chart:axis[@chart:dimension=\'y\']/chart:title/text:p';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlElementEquals('Object 1/content.xml', $element, 'Axis Y');
 
         // chart:title : Element chart failed to validate attributes
         $this->assertIsSchemaOpenDocumentNotValid('1.2');

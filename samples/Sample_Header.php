@@ -183,7 +183,7 @@ function createTemplatedSlide(PhpOffice\PhpPresentation\PhpPresentation $objPHPP
     $shape = $slide->createDrawingShape();
     $shape->setName('PHPPresentation logo')
         ->setDescription('PHPPresentation logo')
-        ->setPath('./resources/phppowerpoint_logo.gif')
+        ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
         ->setHeight(36)
         ->setOffsetX(10)
         ->setOffsetY(10);

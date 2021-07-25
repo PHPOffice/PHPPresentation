@@ -174,7 +174,9 @@ $shape4->setName('Shape 4');
 $shape4->getTitle()->setText('Chart with Outline on Axis');
 $shape4->getPlotArea()->setType($lineChart4);
 $shape4->getPlotArea()->getAxisX()->setOutline($oOutlineAxisX);
+$shape4->getPlotArea()->getAxisX()->setTitleRotation(45);
 $shape4->getPlotArea()->getAxisY()->setOutline($oOutlineAxisY);
+$shape4->getPlotArea()->getAxisY()->setTitleRotation(135);
 $currentSlide->addShape($shape4);
 
 // Create templated slide

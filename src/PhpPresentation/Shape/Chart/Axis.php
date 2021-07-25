@@ -22,9 +22,6 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 
-/**
- * \PhpOffice\PhpPresentation\Shape\Chart\Axis.
- */
 class Axis implements ComparableInterface
 {
     public const AXIS_X = 'x';
@@ -43,7 +40,12 @@ class Axis implements ComparableInterface
     private $title = 'Axis Title';
 
     /**
-     * Format code.
+     * @var int
+     */
+    private $titleRotation = 0;
+
+    /**
+     * Format code
      *
      * @var string
      */
@@ -52,7 +54,7 @@ class Axis implements ComparableInterface
     /**
      * Font.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Font
+     * @var Font
      */
     private $font;
 
@@ -111,7 +113,7 @@ class Axis implements ComparableInterface
      *
      * @param string $title Title
      */
-    public function __construct($title = 'Axis Title')
+    public function __construct(string $title = 'Axis Title')
     {
         $this->title = $title;
         $this->outline = new Outline();
@@ -123,7 +125,7 @@ class Axis implements ComparableInterface
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -133,9 +135,9 @@ class Axis implements ComparableInterface
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @return self
      */
-    public function setTitle($value = 'Axis Title')
+    public function setTitle(string $value = 'Axis Title'): self
     {
         $this->title = $value;
 
@@ -145,9 +147,9 @@ class Axis implements ComparableInterface
     /**
      * Get font.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return Font|null
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return $this->font;
     }
@@ -155,15 +157,13 @@ class Axis implements ComparableInterface
     /**
      * Set font.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Font $pFont Font
+     * @param Font|null $font
      *
-     * @throws \Exception
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @return self
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(Font $font = null): self
     {
-        $this->font = $pFont;
+        $this->font = $font;
 
         return $this;
     }
@@ -173,7 +173,7 @@ class Axis implements ComparableInterface
      *
      * @return string
      */
-    public function getFormatCode()
+    public function getFormatCode(): string
     {
         return $this->formatCode;
     }
@@ -183,9 +183,9 @@ class Axis implements ComparableInterface
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @return self
      */
-    public function setFormatCode($value = '')
+    public function setFormatCode(string $value = ''): self
     {
         $this->formatCode = $value;
 
@@ -195,7 +195,7 @@ class Axis implements ComparableInterface
     /**
      * @return int|null
      */
-    public function getMinBounds()
+    public function getMinBounds(): ?int
     {
         return $this->minBounds;
     }
@@ -203,11 +203,11 @@ class Axis implements ComparableInterface
     /**
      * @param int|null $minBounds
      *
-     * @return Axis
+     * @return self
      */
-    public function setMinBounds($minBounds = null)
+    public function setMinBounds(int $minBounds = null): self
     {
-        $this->minBounds = is_null($minBounds) ? null : (int) $minBounds;
+        $this->minBounds = is_null($minBounds) ? null : $minBounds;
 
         return $this;
     }
@@ -215,7 +215,7 @@ class Axis implements ComparableInterface
     /**
      * @return int|null
      */
-    public function getMaxBounds()
+    public function getMaxBounds(): ?int
     {
         return $this->maxBounds;
     }
@@ -223,11 +223,11 @@ class Axis implements ComparableInterface
     /**
      * @param int|null $maxBounds
      *
-     * @return Axis
+     * @return self
      */
-    public function setMaxBounds($maxBounds = null)
+    public function setMaxBounds(int $maxBounds = null): self
     {
-        $this->maxBounds = is_null($maxBounds) ? null : (int) $maxBounds;
+        $this->maxBounds = is_null($maxBounds) ? null : $maxBounds;
 
         return $this;
     }
@@ -259,19 +259,19 @@ class Axis implements ComparableInterface
     /**
      * @return string
      */
-    public function getMinorTickMark()
+    public function getMinorTickMark(): string
     {
         return $this->minorTickMark;
     }
 
     /**
-     * @param string $pTickMark
+     * @param string $tickMark
      *
-     * @return Axis
+     * @return self
      */
-    public function setMinorTickMark($pTickMark = self::TICK_MARK_NONE)
+    public function setMinorTickMark(string $tickMark = self::TICK_MARK_NONE): self
     {
-        $this->minorTickMark = $pTickMark;
+        $this->minorTickMark = $tickMark;
 
         return $this;
     }
@@ -279,59 +279,59 @@ class Axis implements ComparableInterface
     /**
      * @return string
      */
-    public function getMajorTickMark()
+    public function getMajorTickMark(): string
     {
         return $this->majorTickMark;
     }
 
     /**
-     * @param string $pTickMark
+     * @param string $tickMark
      *
-     * @return Axis
+     * @return self
      */
-    public function setMajorTickMark($pTickMark = self::TICK_MARK_NONE)
+    public function setMajorTickMark(string $tickMark = self::TICK_MARK_NONE): self
     {
-        $this->majorTickMark = $pTickMark;
+        $this->majorTickMark = $tickMark;
 
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getMinorUnit()
+    public function getMinorUnit(): ?float
     {
         return $this->minorUnit;
     }
 
     /**
-     * @param float $pUnit
+     * @param float|null $unit
      *
-     * @return Axis
+     * @return self
      */
-    public function setMinorUnit($pUnit = null)
+    public function setMinorUnit($unit = null): self
     {
-        $this->minorUnit = $pUnit;
+        $this->minorUnit = $unit;
 
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getMajorUnit()
+    public function getMajorUnit(): ?float
     {
         return $this->majorUnit;
     }
 
     /**
-     * @param float $pUnit
+     * @param float|null $unit
      *
-     * @return Axis
+     * @return self
      */
-    public function setMajorUnit($pUnit = null)
+    public function setMajorUnit(float $unit = null): self
     {
-        $this->majorUnit = $pUnit;
+        $this->majorUnit = $unit;
 
         return $this;
     }
@@ -339,15 +339,17 @@ class Axis implements ComparableInterface
     /**
      * @return Outline
      */
-    public function getOutline()
+    public function getOutline(): Outline
     {
         return $this->outline;
     }
 
     /**
-     * @return Axis
+     * @param Outline $outline
+     *
+     * @return self
      */
-    public function setOutline(Outline $outline)
+    public function setOutline(Outline $outline): self
     {
         $this->outline = $outline;
 
@@ -355,7 +357,33 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Get hash code.
+     * @return int
+     */
+    public function getTitleRotation(): int
+    {
+        return $this->titleRotation;
+    }
+
+    /**
+     * @param int $titleRotation
+     *
+     * @return self
+     */
+    public function setTitleRotation(int $titleRotation): self
+    {
+        if ($titleRotation < 0) {
+            $titleRotation = 0;
+        }
+        if ($titleRotation > 360) {
+            $titleRotation = 360;
+        }
+        $this->titleRotation = $titleRotation;
+
+        return $this;
+    }
+
+    /**
+     * Get hash code
      *
      * @return string Hash code
      */
@@ -392,7 +420,7 @@ class Axis implements ComparableInterface
      *
      * @param int $value Hash index
      *
-     * @return $this
+     * @return self
      */
     public function setHashIndex(int $value)
     {
@@ -406,7 +434,7 @@ class Axis implements ComparableInterface
      *
      * @return bool
      */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->isVisible;
     }
@@ -416,11 +444,11 @@ class Axis implements ComparableInterface
      *
      * @param bool $value delete
      *
-     * @return $this
+     * @return self
      */
-    public function setIsVisible($value)
+    public function setIsVisible(bool $value): self
     {
-        $this->isVisible = (bool) $value;
+        $this->isVisible = $value;
 
         return $this;
     }
