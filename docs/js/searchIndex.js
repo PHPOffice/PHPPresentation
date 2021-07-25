@@ -3503,8 +3503,13 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker",
             "name": "Marker",
-            "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis.",
+            "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#method___construct"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003AgetSymbol\u0028\u0029",
             "name": "getSymbol",
@@ -3525,6 +3530,26 @@ Search.appendIndex(
             "name": "setSize",
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#method_setSize"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003AgetFill\u0028\u0029",
+            "name": "getFill",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#method_getFill"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003AsetFill\u0028\u0029",
+            "name": "setFill",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#method_setFill"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003AgetBorder\u0028\u0029",
+            "name": "getBorder",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#method_getBorder"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003AsetBorder\u0028\u0029",
+            "name": "setBorder",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#method_setBorder"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003ASYMBOL_CIRCLE",
             "name": "SYMBOL_CIRCLE",
@@ -3590,6 +3615,16 @@ Search.appendIndex(
             "name": "size",
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#property_size"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003A\u0024fill",
+            "name": "fill",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#property_fill"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker\u003A\u003A\u0024border",
+            "name": "border",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Marker.html#property_border"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea",
             "name": "PlotArea",
