@@ -12,7 +12,7 @@
         <link rel="canonical" href="https://phpoffice.github.io/PHPPresentation/usage/shapes/chart.html">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.0">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.1">
     
     
       
@@ -20,7 +20,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.fe914879.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.1118c9be.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ba0d045b.min.css">
@@ -429,10 +429,65 @@
     Axis
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Axis">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#title" class="md-nav__link">
+    Title
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gridlines" class="md-nav__link">
+    Gridlines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bounds-min-max" class="md-nav__link">
+    Bounds (Min &amp; Max)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outline" class="md-nav__link">
+    Outline
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tick-marks" class="md-nav__link">
+    Tick Marks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unit" class="md-nav__link">
+    Unit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visibility" class="md-nav__link">
+    Visibility
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#title_1" class="md-nav__link">
     Title
   </a>
   
@@ -502,7 +557,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#outline" class="md-nav__link">
+  <a href="#outline_1" class="md-nav__link">
     Outline
   </a>
   
@@ -993,10 +1048,65 @@
     Axis
   </a>
   
-</li>
+    <nav class="md-nav" aria-label="Axis">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
   <a href="#title" class="md-nav__link">
+    Title
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gridlines" class="md-nav__link">
+    Gridlines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#bounds-min-max" class="md-nav__link">
+    Bounds (Min &amp; Max)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#outline" class="md-nav__link">
+    Outline
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#tick-marks" class="md-nav__link">
+    Tick Marks
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#unit" class="md-nav__link">
+    Unit
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#visibility" class="md-nav__link">
+    Visibility
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#title_1" class="md-nav__link">
     Title
   </a>
   
@@ -1066,7 +1176,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#outline" class="md-nav__link">
+  <a href="#outline_1" class="md-nav__link">
     Outline
   </a>
   
@@ -1182,6 +1292,22 @@
 </code></pre></div>
 <h2 id="parts">Parts</h2>
 <h3 id="axis">Axis</h3>
+<h4 id="title">Title</h4>
+<p>You can define title for each axis (X &amp; Y) with <code>setTitle</code> method.
+You can apply a rotation with the <code>setTitleRotation</code> method with an expected paremeter in degrees.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\Chart\Gridlines</span><span class="p">;</span>
+
+<span class="nv">$line</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Line</span><span class="p">();</span>
+
+<span class="nv">$shape</span> <span class="o">=</span> <span class="nv">$slide</span><span class="o">-&gt;</span><span class="na">createChartShape</span><span class="p">();</span>
+<span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setType</span><span class="p">(</span><span class="nv">$line</span><span class="p">);</span>
+
+<span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setTitle</span><span class="p">(</span><span class="s1">&#39;Axis X&#39;</span><span class="p">);</span>
+<span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setTitleRotation</span><span class="p">(</span><span class="mi">45</span><span class="p">);</span>
+</code></pre></div>
+<h4 id="gridlines">Gridlines</h4>
 <p>You can define gridlines (minor and major) for each axis (X &amp; Y).
 For each gridline, you can custom the width (in points), the fill type and the fill color.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
@@ -1198,6 +1324,7 @@ For each gridline, you can custom the width (in points), the fill type and the f
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setType</span><span class="p">(</span><span class="nv">$line</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setMajorGridlines</span><span class="p">(</span><span class="nv">$gridlines</span><span class="p">);</span>
 </code></pre></div>
+<h4 id="bounds-min-max">Bounds (Min &amp; Max)</h4>
 <p>For Axis, you can define the min &amp; max bounds with <code>setMinBounds</code> &amp; <code>setMaxBounds</code> methods.
 For resetting them, you pass null as parameter to these methods.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
@@ -1211,6 +1338,7 @@ For resetting them, you pass null as parameter to these methods.</p>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setMinBounds</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setMaxBounds</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
 </code></pre></div>
+<h4 id="outline">Outline</h4>
 <p>You can define outline for each axis (X &amp; Y).</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
 
@@ -1221,8 +1349,9 @@ For resetting them, you pass null as parameter to these methods.</p>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOutline</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setWidth</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOutline</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getFill</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setFillType</span><span class="p">(</span><span class="nx">Fill</span><span class="o">::</span><span class="na">FILL_SOLID</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setStartColor</span><span class="p">(</span><span class="k">new</span> <span class="nx">Color</span><span class="p">(</span><span class="nx">Color</span><span class="o">::</span><span class="na">COLOR_BLUE</span><span class="p">));</span>
 </code></pre></div>
+<h4 id="tick-marks">Tick Marks</h4>
 <p>For Axis Y, you can define tick mark with <code>setMinorTickMark</code> &amp; <code>setMajorTickMark</code> methods.
-For resetting them, you pass Axis::TICK_MARK_NONE as parameter to these methods.</p>
+For resetting them, you pass <code>Axis::TICK_MARK_NONE</code> as parameter to these methods.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
 
 <span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\Chart\Axis</span><span class="p">;</span>
@@ -1234,6 +1363,7 @@ For resetting them, you pass Axis::TICK_MARK_NONE as parameter to these methods.
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisY</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setMinorTickMark</span><span class="p">(</span><span class="nx">Axis</span><span class="o">::</span><span class="na">TICK_MARK_NONE</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisY</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setMajorTickMark</span><span class="p">(</span><span class="nx">Axis</span><span class="o">::</span><span class="na">TICK_MARK_INSIDE</span><span class="p">);</span>
 </code></pre></div>
+<h4 id="unit">Unit</h4>
 <p>For Axis Y, you can define unit with <code>setMinorUnit</code> &amp; <code>setMajorUnit</code> methods.
 For resetting them, you pass null as parameter to these methods.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
@@ -1247,6 +1377,7 @@ For resetting them, you pass null as parameter to these methods.</p>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisY</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setMinorUnit</span><span class="p">(</span><span class="k">null</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisY</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setMajorUnit</span><span class="p">(</span><span class="mf">0.05</span><span class="p">);</span>
 </code></pre></div>
+<h4 id="visibility">Visibility</h4>
 <p>You can define visibility for each axis (X &amp; Y).</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
 
@@ -1256,7 +1387,7 @@ For resetting them, you pass null as parameter to these methods.</p>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setType</span><span class="p">(</span><span class="nv">$line</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setIsVisible</span><span class="p">(</span><span class="k">false</span><span class="p">);</span>
 </code></pre></div>
-<h3 id="title">Title</h3>
+<h3 id="title_1">Title</h3>
 <p>By default, the title of a chart is displayed.
 For hiding it, you define its visibility to false.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
@@ -1336,7 +1467,7 @@ Each position is described in <a href="https://msdn.microsoft.com/en-us/library/
 <span class="nv">$marker</span> <span class="o">=</span> <span class="nv">$series</span><span class="o">-&gt;</span><span class="na">getMarker</span><span class="p">();</span>
 <span class="nv">$marker</span><span class="o">-&gt;</span><span class="na">setSymbol</span><span class="p">(</span><span class="nx">Marker</span><span class="o">::</span><span class="na">SYMBOL_DASH</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setSize</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 </code></pre></div>
-<h4 id="outline">Outline</h4>
+<h4 id="outline_1">Outline</h4>
 <p>You can custom the line of a serie, for Line &amp; Scatter charts.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
 

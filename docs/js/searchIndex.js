@@ -3023,7 +3023,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis",
             "name": "Axis",
-            "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis.",
+            "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A__construct\u0028\u0029",
@@ -3151,9 +3151,19 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_setOutline"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetTitleRotation\u0028\u0029",
+            "name": "getTitleRotation",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_getTitleRotation"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AsetTitleRotation\u0028\u0029",
+            "name": "setTitleRotation",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_setTitleRotation"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetHashCode\u0028\u0029",
             "name": "getHashCode",
-            "summary": "Get\u0020hash\u0020code.",
+            "summary": "Get\u0020hash\u0020code",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_getHashCode"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetHashIndex\u0028\u0029",
@@ -3211,9 +3221,14 @@ Search.appendIndex(
             "summary": "Title.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_title"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024titleRotation",
+            "name": "titleRotation",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_titleRotation"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024formatCode",
             "name": "formatCode",
-            "summary": "Format\u0020code.",
+            "summary": "Format\u0020code",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_formatCode"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024font",
@@ -9710,6 +9725,16 @@ Search.appendIndex(
             "name": "writeAxisStyle",
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Writer-ODPresentation-ObjectsChart.html#method_writeAxisStyle"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\ODPresentation\\ObjectsChart\u003A\u003AwriteAxisMainStyle\u0028\u0029",
+            "name": "writeAxisMainStyle",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Writer-ODPresentation-ObjectsChart.html#method_writeAxisMainStyle"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\ODPresentation\\ObjectsChart\u003A\u003AwriteAxisTitleStyle\u0028\u0029",
+            "name": "writeAxisTitleStyle",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Writer-ODPresentation-ObjectsChart.html#method_writeAxisTitleStyle"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\ODPresentation\\ObjectsChart\u003A\u003AwriteGridlineStyle\u0028\u0029",
             "name": "writeGridlineStyle",
