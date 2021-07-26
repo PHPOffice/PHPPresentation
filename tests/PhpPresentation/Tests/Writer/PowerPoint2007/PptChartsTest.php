@@ -4,6 +4,7 @@ namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use Exception;
 use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
@@ -38,6 +39,47 @@ class PptChartsTest extends PhpPresentationTestCase
         'D' => '3',
         'E' => '2',
     ];
+
+    public function testChartDisplayBlankAs(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+        $oShape->setDisplayBlankAs(Chart::BLANKAS_ZERO);
+
+        $element = '/c:chartSpace/c:chart/c:dispBlanksAs';
+
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Chart::BLANKAS_ZERO);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+        $oShape->setDisplayBlankAs(Chart::BLANKAS_SPAN);
+
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Chart::BLANKAS_SPAN);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+        $oShape->setDisplayBlankAs(Chart::BLANKAS_GAP);
+
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Chart::BLANKAS_GAP);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
 
     public function testChartIncludeSpreadsheet(): void
     {

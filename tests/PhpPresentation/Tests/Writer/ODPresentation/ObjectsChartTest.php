@@ -3,6 +3,7 @@
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
+use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
@@ -166,6 +167,46 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
+    public function testChartDisplayBlankAs(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+        $oShape->setDisplayBlankAs(Chart::BLANKAS_ZERO);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePlotArea\']/style:chart-properties';
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:treat-empty-cells');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:treat-empty-cells', 'use-zero');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->setDisplayBlankAs(Chart::BLANKAS_SPAN);
+
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:treat-empty-cells');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:treat-empty-cells', 'ignore');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->setDisplayBlankAs(Chart::BLANKAS_GAP);
+
+        $this->assertZipFileExists('Object 1/content.xml');
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:treat-empty-cells');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:treat-empty-cells', 'leave-gap');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
     public function testLegend(): void
     {
         $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
@@ -238,7 +279,72 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testSeries(): void
+    public function testSeriesValues(): void
+    {
+        $series = new Series('Series', ['Jan' => null]);
+
+        $pie = new Pie();
+        $pie->addSeries($series);
+
+        $chart = $this->oPresentation->getActiveSlide()->createChartShape();
+        $chart->getPlotArea()->setType($pie);
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-rows/table:table-row/table:table-cell[2]';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'office:value-type');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'office:value-type', 'float');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'office:value');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'office:value', 'NaN');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-rows/table:table-row/table:table-cell[2]/text:p';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlElementEquals('Object 1/content.xml', $element, 'NaN');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+
+        $series = new Series('Series', ['Jan' => '12.3']);
+        $chart->getPlotArea()->getType()->setSeries([$series]);
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-rows/table:table-row/table:table-cell[2]';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'office:value-type');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'office:value-type', 'float');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'office:value');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'office:value', '12.3');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-rows/table:table-row/table:table-cell[2]/text:p';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlElementEquals('Object 1/content.xml', $element, '12.3');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+
+        $series = new Series('Series', ['Jan' => 'data']);
+        $chart->getPlotArea()->getType()->setSeries([$series]);
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-rows/table:table-row/table:table-cell[2]';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'office:value-type');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'office:value-type', 'string');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'office:value');
+
+        $element = '/office:document-content/office:body/office:chart/chart:chart/table:table/table:table-rows/table:table-row/table:table-cell[2]/text:p';
+
+        $this->assertZipXmlElementExists('Object 1/content.xml', $element);
+        $this->assertZipXmlElementEquals('Object 1/content.xml', $element, 'data');
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testSeriesShowConfig(): void
     {
         $oSeries = new Series('Series', ['Jan' => '1', 'Feb' => '5', 'Mar' => '2']);
         $oPie = new Pie();

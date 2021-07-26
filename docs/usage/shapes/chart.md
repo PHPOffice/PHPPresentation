@@ -8,6 +8,31 @@ To create a chart, use `createChartShape` method of Slide.
 $chartShape = $slide->createChartShape();
 ```
 
+## Customization
+
+### Manage how blank values are displayed
+
+You can define how blank values are displayed with the method `setDisplayBlankAs`.
+
+![Slideshow type](/images/libreoffice_chart_displayblankas.png)
+
+Differents types are available:
+
+* `Chart::BLANKAS_GAP` for **Leave a gap**
+* `Chart::BLANKAS_ZERO` for **Assume zero** (default)
+* `Chart::BLANKAS_SPAN` for **Continue line**
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart;
+
+// Set the behavior
+$chart->setDisplayBlankAs(Chart::BLANKAS_GAP);
+// Get the behavior
+echo $chart->getDisplayBlankAs();
+```
+
 ## Parts
 
 ### Axis

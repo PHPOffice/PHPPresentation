@@ -132,7 +132,7 @@ class Series implements ComparableInterface
     /**
      * Values (key/value).
      *
-     * @var array<string, string>
+     * @var array<string, string|null>
      */
     private $values = [];
 
@@ -144,7 +144,8 @@ class Series implements ComparableInterface
     private $hashIndex;
 
     /**
-     * @param array<string, string> $values
+     * @param string $title
+     * @param array<string, string|null> $values
      */
     public function __construct(string $title = 'Series Title', array $values = [])
     {
@@ -152,9 +153,10 @@ class Series implements ComparableInterface
         $this->font = new Font();
         $this->font->setName('Calibri');
         $this->font->setSize(9);
+        $this->marker = new Marker();
+
         $this->title = $title;
         $this->values = $values;
-        $this->marker = new Marker();
     }
 
     /**
@@ -239,7 +241,7 @@ class Series implements ComparableInterface
     /**
      * Get Values.
      *
-     * @return array<string, string>
+     * @return array<string, string|null>
      */
     public function getValues(): array
     {
@@ -249,7 +251,7 @@ class Series implements ComparableInterface
     /**
      * Set Values.
      *
-     * @param array<string, string> $values
+     * @param array<string, string|null> $values
      */
     public function setValues(array $values = []): self
     {
@@ -260,8 +262,13 @@ class Series implements ComparableInterface
 
     /**
      * Add Value.
+     *
+     * @param string $key
+     * @param string|null $value
+     *
+     * @return self
      */
-    public function addValue(string $key, string $value): self
+    public function addValue(string $key, ?string $value): self
     {
         $this->values[$key] = $value;
 

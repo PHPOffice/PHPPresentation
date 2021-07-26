@@ -544,6 +544,17 @@ class ObjectsChart extends AbstractDecoratorWriter
             $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
             $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
         }
+        switch ($chart->getDisplayBlankAs()) {
+            case Chart::BLANKAS_ZERO:
+                $this->xmlContent->writeAttribute('chart:treat-empty-cells', 'use-zero');
+                break;
+            case Chart::BLANKAS_GAP:
+                $this->xmlContent->writeAttribute('chart:treat-empty-cells', 'leave-gap');
+                break;
+            case Chart::BLANKAS_SPAN:
+                $this->xmlContent->writeAttribute('chart:treat-empty-cells', 'ignore');
+                break;
+        }
         if ($chartType instanceof AbstractTypeBar) {
             $chartVertical = 'false';
             if (AbstractTypeBar::DIRECTION_HORIZONTAL == $chartType->getBarDirection()) {
@@ -809,40 +820,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > table:table-header-columns
         $this->xmlContent->endElement();
 
-        // table:table-rows
-        $this->xmlContent->startElement('table:table-rows');
-        if (empty($this->arrayData)) {
-            $this->xmlContent->startElement('table:table-row');
-            $this->xmlContent->startElement('table:table-cell');
-            $this->xmlContent->endElement();
-            $this->xmlContent->endElement();
-        } else {
-            foreach ($this->arrayData as $row) {
-                // table:table-row
-                $this->xmlContent->startElement('table:table-row');
-                foreach ($row as $cell) {
-                    // table:table-cell
-                    $this->xmlContent->startElement('table:table-cell');
-
-                    $cellNumeric = is_numeric($cell);
-                    $this->xmlContent->writeAttributeIf(!$cellNumeric, 'office:value-type', 'string');
-                    $this->xmlContent->writeAttributeIf($cellNumeric, 'office:value-type', 'float');
-                    $this->xmlContent->writeAttributeIf($cellNumeric, 'office:value', $cell);
-                    // text:p
-                    $this->xmlContent->startElement('text:p');
-                    $this->xmlContent->text($cell);
-                    // > text:p
-                    $this->xmlContent->endElement();
-                    // > table:table-cell
-                    $this->xmlContent->endElement();
-                }
-                // > table:table-row
-                $this->xmlContent->endElement();
-            }
-        }
-        // > table:table-rows
-        $this->xmlContent->endElement();
-
         // table:table-header-rows
         $this->xmlContent->startElement('table:table-header-rows');
         // table:table-row
@@ -872,6 +849,39 @@ class ObjectsChart extends AbstractDecoratorWriter
         // > table:table-row
         $this->xmlContent->endElement();
         // > table:table-header-rows
+        $this->xmlContent->endElement();
+
+        // table:table-rows
+        $this->xmlContent->startElement('table:table-rows');
+        if (empty($this->arrayData)) {
+            $this->xmlContent->startElement('table:table-row');
+            $this->xmlContent->startElement('table:table-cell');
+            $this->xmlContent->endElement();
+            $this->xmlContent->endElement();
+        } else {
+            foreach ($this->arrayData as $row) {
+                // table:table-row
+                $this->xmlContent->startElement('table:table-row');
+                foreach ($row as $cell) {
+                    // table:table-cell
+                    $this->xmlContent->startElement('table:table-cell');
+
+                    $cellValueTypeFloat = is_null($cell) ? true : is_numeric($cell);
+                    $this->xmlContent->writeAttributeIf(!$cellValueTypeFloat, 'office:value-type', 'string');
+                    $this->xmlContent->writeAttributeIf($cellValueTypeFloat, 'office:value-type', 'float');
+                    $this->xmlContent->writeAttributeIf($cellValueTypeFloat, 'office:value', is_null($cell) ? 'NaN' : $cell);
+                    // text:p
+                    $this->xmlContent->startElement('text:p');
+                    $this->xmlContent->text(is_null($cell) ? 'NaN' : $cell);
+                    $this->xmlContent->endElement();
+                    // > table:table-cell
+                    $this->xmlContent->endElement();
+                }
+                // > table:table-row
+                $this->xmlContent->endElement();
+            }
+        }
+        // > table:table-rows
         $this->xmlContent->endElement();
 
         // > table:table
