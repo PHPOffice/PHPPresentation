@@ -32,6 +32,10 @@ class Axis implements ComparableInterface
     public const TICK_MARK_INSIDE = 'in';
     public const TICK_MARK_OUTSIDE = 'out';
 
+    public const TICK_LABEL_POSITION_NEXT_TO = 'nextTo';
+    public const TICK_LABEL_POSITION_HIGH = 'high';
+    public const TICK_LABEL_POSITION_LOW = 'low';
+
     /**
      * Title.
      *
@@ -87,6 +91,11 @@ class Axis implements ComparableInterface
      * @var string
      */
     protected $majorTickMark = self::TICK_MARK_NONE;
+
+    /**
+     * @var string
+     */
+    protected $tickLabelPosition = self::TICK_LABEL_POSITION_NEXT_TO;
 
     /**
      * @var float
@@ -449,6 +458,32 @@ class Axis implements ComparableInterface
     public function setIsVisible(bool $value): self
     {
         $this->isVisible = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTickLabelPosition(): string
+    {
+        return $this->tickLabelPosition;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return self
+     */
+    public function setTickLabelPosition(string $value = self::TICK_LABEL_POSITION_NEXT_TO): self
+    {
+        if (in_array($value, [
+            self::TICK_LABEL_POSITION_HIGH,
+            self::TICK_LABEL_POSITION_LOW,
+            self::TICK_LABEL_POSITION_NEXT_TO,
+        ])) {
+            $this->tickLabelPosition = $value;
+        }
 
         return $this;
     }

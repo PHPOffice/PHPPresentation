@@ -135,6 +135,21 @@ class AxisTest extends TestCase
         $this->assertInstanceOf(Outline::class, $object->getOutline());
     }
 
+    public function testTickLabelPosition(): void
+    {
+        $object = new Axis();
+
+        $this->assertEquals(Axis::TICK_LABEL_POSITION_NEXT_TO, $object->getTickLabelPosition());
+        $this->assertInstanceOf(Axis::class, $object->setTickLabelPosition(Axis::TICK_LABEL_POSITION_HIGH));
+        $this->assertEquals(Axis::TICK_LABEL_POSITION_HIGH, $object->getTickLabelPosition());
+        $this->assertInstanceOf(Axis::class, $object->setTickLabelPosition(Axis::TICK_LABEL_POSITION_NEXT_TO));
+        $this->assertEquals(Axis::TICK_LABEL_POSITION_NEXT_TO, $object->getTickLabelPosition());
+        $this->assertInstanceOf(Axis::class, $object->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW));
+        $this->assertEquals(Axis::TICK_LABEL_POSITION_LOW, $object->getTickLabelPosition());
+        $this->assertInstanceOf(Axis::class, $object->setTickLabelPosition('Unauthorized'));
+        $this->assertEquals(Axis::TICK_LABEL_POSITION_LOW, $object->getTickLabelPosition());
+    }
+
     public function testTickMark(): void
     {
         $value = Axis::TICK_MARK_INSIDE;

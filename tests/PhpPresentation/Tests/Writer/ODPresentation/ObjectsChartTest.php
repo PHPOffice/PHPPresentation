@@ -4,6 +4,7 @@ namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
 use PhpOffice\PhpPresentation\Shape\Chart\Legend;
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
@@ -506,6 +507,50 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:minimum', $value);
         $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:maximum');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:maximum', $value);
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testTypeAxisTickLabelPosition(): void
+    {
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisX\']/style:chart-properties';
+
+        $oSeries = new Series('Series', $this->seriesData);
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'near-axis');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:axis-position');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->getPlotArea()->getAxisX()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_HIGH);
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'outside-end');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-position', '0');
+        $this->assertZipXmlAttributeNotExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
+
+        // chart:title : Element chart failed to validate attributes
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->getPlotArea()->getAxisX()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
+
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-label-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-label-position', 'outside-start');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:axis-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:axis-position', '0');
+        $this->assertZipXmlAttributeExists('Object 1/content.xml', $element, 'chart:tick-mark-position');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'chart:tick-mark-position', 'at-axis');
 
         // chart:title : Element chart failed to validate attributes
         $this->assertIsSchemaOpenDocumentNotValid('1.2');

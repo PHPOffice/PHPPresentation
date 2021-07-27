@@ -7,6 +7,7 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Title;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypePie;
@@ -309,6 +310,20 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttributeIf($isPieChart, 'chart:reverse-direction', 'true');
         $this->xmlContent->writeAttributeIf(null !== $axis->getMinBounds(), 'chart:minimum', $axis->getMinBounds());
         $this->xmlContent->writeAttributeIf(null !== $axis->getMaxBounds(), 'chart:maximum', $axis->getMaxBounds());
+        switch ($axis->getTickLabelPosition()) {
+            case Axis::TICK_LABEL_POSITION_NEXT_TO:
+                $this->xmlContent->writeAttribute('chart:axis-label-position', 'near-axis');
+                break;
+            case Axis::TICK_LABEL_POSITION_HIGH:
+                $this->xmlContent->writeAttribute('chart:axis-position', '0');
+                $this->xmlContent->writeAttribute('chart:axis-label-position', 'outside-end');
+                break;
+            case Axis::TICK_LABEL_POSITION_LOW:
+                $this->xmlContent->writeAttribute('chart:axis-position', '0');
+                $this->xmlContent->writeAttribute('chart:axis-label-position', 'outside-start');
+                $this->xmlContent->writeAttribute('chart:tick-mark-position', 'at-axis');
+                break;
+        }
         $this->xmlContent->endElement();
         // style:graphic-properties
         $this->xmlContent->startElement('style:graphic-properties');
