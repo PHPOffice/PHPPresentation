@@ -109,6 +109,28 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
 $shape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
 ```
+#### Tick Label Position
+
+You can define the tick label position with the `setTickLabelPosition` method.
+For resetting it, you pass `Axis::TICK_LABEL_POSITION_NEXT_TO` as parameter to this method.
+
+Differents types are available:
+
+* `Axis::TICK_LABEL_POSITION_HIGH`: **Labels are at the high end of the perpendicular axis**
+* `Axis::TICK_LABEL_POSITION_LOW`: **Labels are at the low end of the perpendicular axis**
+* `Axis::TICK_LABEL_POSITION_NEXT_TO`: **Labels are next to the axis** (default)
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
+
+$line = new Line();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
+```
 #### Tick Marks
 
 For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.

@@ -414,6 +414,37 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testTypeAxisTickLabelPosition(): void
+    {
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:tickLblPos';
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_NEXT_TO);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_HIGH);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_HIGH);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_LOW);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testTypeAxisTickMark(): void
     {
         $value = Axis::TICK_MARK_CROSS;

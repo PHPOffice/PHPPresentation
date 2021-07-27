@@ -2284,7 +2284,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // c:tickLblPos
         $objWriter->startElement('c:tickLblPos');
-        $objWriter->writeAttribute('val', 'nextTo');
+        $objWriter->writeAttribute('val', $oAxis->getTickLabelPosition());
         $objWriter->endElement();
 
         // c:spPr
