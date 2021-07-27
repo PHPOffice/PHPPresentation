@@ -3186,6 +3186,16 @@ Search.appendIndex(
             "summary": "Hide\u0020an\u0020axis.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_setIsVisible"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetTickLabelPosition\u0028\u0029",
+            "name": "getTickLabelPosition",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_getTickLabelPosition"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AsetTickLabelPosition\u0028\u0029",
+            "name": "setTickLabelPosition",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_setTickLabelPosition"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AAXIS_X",
             "name": "AXIS_X",
             "summary": "",
@@ -3215,6 +3225,21 @@ Search.appendIndex(
             "name": "TICK_MARK_OUTSIDE",
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_TICK_MARK_OUTSIDE"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003ATICK_LABEL_POSITION_NEXT_TO",
+            "name": "TICK_LABEL_POSITION_NEXT_TO",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_TICK_LABEL_POSITION_NEXT_TO"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003ATICK_LABEL_POSITION_HIGH",
+            "name": "TICK_LABEL_POSITION_HIGH",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_TICK_LABEL_POSITION_HIGH"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003ATICK_LABEL_POSITION_LOW",
+            "name": "TICK_LABEL_POSITION_LOW",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_TICK_LABEL_POSITION_LOW"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024title",
             "name": "title",
@@ -3265,6 +3290,11 @@ Search.appendIndex(
             "name": "majorTickMark",
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_majorTickMark"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024tickLabelPosition",
+            "name": "tickLabelPosition",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_tickLabelPosition"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024minorUnit",
             "name": "minorUnit",

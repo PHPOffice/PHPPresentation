@@ -481,6 +481,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tick-label-position" class="md-nav__link">
+    Tick Label Position
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tick-marks" class="md-nav__link">
     Tick Marks
   </a>
@@ -1120,6 +1127,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#tick-label-position" class="md-nav__link">
+    Tick Label Position
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#tick-marks" class="md-nav__link">
     Tick Marks
   </a>
@@ -1407,6 +1421,25 @@ For resetting them, you pass null as parameter to these methods.</p>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setType</span><span class="p">(</span><span class="nv">$line</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOutline</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setWidth</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOutline</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getFill</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setFillType</span><span class="p">(</span><span class="nx">Fill</span><span class="o">::</span><span class="na">FILL_SOLID</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setStartColor</span><span class="p">(</span><span class="k">new</span> <span class="nx">Color</span><span class="p">(</span><span class="nx">Color</span><span class="o">::</span><span class="na">COLOR_BLUE</span><span class="p">));</span>
+</code></pre></div>
+<h4 id="tick-label-position">Tick Label Position</h4>
+<p>You can define the tick label position with the <code>setTickLabelPosition</code> method.
+For resetting it, you pass <code>Axis::TICK_LABEL_POSITION_NEXT_TO</code> as parameter to this method.</p>
+<p>Differents types are available:</p>
+<ul>
+<li><code>Axis::TICK_LABEL_POSITION_HIGH</code>: <strong>Labels are at the high end of the perpendicular axis</strong></li>
+<li><code>Axis::TICK_LABEL_POSITION_LOW</code>: <strong>Labels are at the low end of the perpendicular axis</strong></li>
+<li><code>Axis::TICK_LABEL_POSITION_NEXT_TO</code>: <strong>Labels are next to the axis</strong> (default)</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\Chart\Axis</span><span class="p">;</span>
+
+<span class="nv">$line</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Line</span><span class="p">();</span>
+
+<span class="nv">$shape</span> <span class="o">=</span> <span class="nv">$slide</span><span class="o">-&gt;</span><span class="na">createChartShape</span><span class="p">();</span>
+<span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setType</span><span class="p">(</span><span class="nv">$line</span><span class="p">);</span>
+<span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisY</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setTickLabelPosition</span><span class="p">(</span><span class="nx">Axis</span><span class="o">::</span><span class="na">TICK_LABEL_POSITION_LOW</span><span class="p">);</span>
 </code></pre></div>
 <h4 id="tick-marks">Tick Marks</h4>
 <p>For Axis Y, you can define tick mark with <code>setMinorTickMark</code> &amp; <code>setMajorTickMark</code> methods.
