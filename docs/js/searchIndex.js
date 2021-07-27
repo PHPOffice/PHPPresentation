@@ -4651,6 +4651,11 @@ Search.appendIndex(
             "summary": "Magic\u0020Method\u0020\u003A\u0020clone.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method___clone"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AgetDisplayBlankAs\u0028\u0029",
+            "name": "getDisplayBlankAs",
+            "summary": "How\u0020missing\/blank\u0020values\u0020are\u0020displayed\u0020on\u0020chart\u0020\u0028dispBlanksAs\u0020property\u0029",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_getDisplayBlankAs"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AgetTitle\u0028\u0029",
             "name": "getTitle",
             "summary": "Get\u0020Title.",
@@ -4676,6 +4681,11 @@ Search.appendIndex(
             "summary": "Is\u0020the\u0020spreadsheet\u0020included\u0020for\u0020editing\u0020data\u0020\u003F",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_hasIncludedSpreadsheet"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AsetDisplayBlankAs\u0028\u0029",
+            "name": "setDisplayBlankAs",
+            "summary": "Define\u0020a\u0020way\u0020to\u0020display\u0020missing\/blank\u0020values\u0020\u0028dispBlanksAs\u0020property\u0029",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_setDisplayBlankAs"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AsetIncludeSpreadsheet\u0028\u0029",
             "name": "setIncludeSpreadsheet",
             "summary": "Is\u0020the\u0020spreadsheet\u0020included\u0020for\u0020editing\u0020data\u0020\u003F",
@@ -4690,6 +4700,21 @@ Search.appendIndex(
             "name": "getHashCode",
             "summary": "Get\u0020hash\u0020code.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_getHashCode"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003ABLANKAS_GAP",
+            "name": "BLANKAS_GAP",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_GAP"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003ABLANKAS_ZERO",
+            "name": "BLANKAS_ZERO",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_ZERO"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003ABLANKAS_SPAN",
+            "name": "BLANKAS_SPAN",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_SPAN"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003A\u0024title",
             "name": "title",
@@ -4715,6 +4740,11 @@ Search.appendIndex(
             "name": "includeSpreadsheet",
             "summary": "Is\u0020the\u0020spreadsheet\u0020included\u0020for\u0020editing\u0020data\u0020\u003F",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#property_includeSpreadsheet"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003A\u0024displayBlankAs",
+            "name": "displayBlankAs",
+            "summary": "How\u0020to\u0020display\u0020blank\u0020\u0028missing\u0029\u0020values\u003F\u0020Not\u0020set\u0020by\u0020default.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#property_displayBlankAs"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Comment\\Author",
             "name": "Author",

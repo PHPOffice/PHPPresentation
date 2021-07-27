@@ -317,7 +317,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Series.html#property_values">$values</a>
     <span>
-                &nbsp;: array&lt;string, string&gt;            </span>
+                &nbsp;: array&lt;string, string|null&gt;            </span>
 </dt>
 <dd>Values (key/value).</dd>
 
@@ -429,7 +429,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Series.html#method_getValues">getValues()</a>
     <span>
-                        &nbsp;: array&lt;string, string&gt;    </span>
+                        &nbsp;: array&lt;string, string|null&gt;    </span>
 </dt>
 <dd>Get Values.</dd>
 
@@ -1426,7 +1426,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">private</span>
-        <span class="phpdocumentor-signature__type">array&lt;string, string&gt;</span>
+        <span class="phpdocumentor-signature__type">array&lt;string, string|null&gt;</span>
     <span class="phpdocumentor-signature__name">$values</span>
      = <span class="phpdocumentor-signature__default-value">[]</span></code>
 
@@ -1455,7 +1455,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">505</span>
+    <span class="phpdocumentor-element-found-in__line">512</span>
 
     </aside>
 
@@ -1501,14 +1501,14 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">149</span>
+    <span class="phpdocumentor-element-found-in__line">150</span>
 
     </aside>
 
     
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$title</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;Series Title&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$values</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
+                <span class="phpdocumentor-signature__name">__construct</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$title</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;Series Title&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string, string|null&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$values</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">mixed</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
@@ -1518,12 +1518,11 @@
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                  = <span class="phpdocumentor-signature__argument__default-value">&#039;Series Title&#039;</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
+                
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$values</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string, string&gt;</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string, string|null&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">[]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
@@ -1551,7 +1550,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">264</span>
+    <span class="phpdocumentor-element-found-in__line">271</span>
 
     </aside>
 
@@ -1559,7 +1558,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">addValue</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
+                <span class="phpdocumentor-signature__name">addValue</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$key</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
@@ -1569,16 +1568,14 @@
                 : <span class="phpdocumentor-signature__argument__return-type">string</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
+                
             </dd>
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$value</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string|null</span>
                             </dt>
             <dd class="phpdocumentor-argument-list__definition">
-                    <section class="phpdocumentor-description"></section>
-
+                
             </dd>
             </dl>
 
@@ -1603,7 +1600,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">222</span>
+    <span class="phpdocumentor-element-found-in__line">224</span>
 
     </aside>
 
@@ -1647,7 +1644,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">234</span>
+    <span class="phpdocumentor-element-found-in__line">236</span>
 
     </aside>
 
@@ -1679,7 +1676,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">181</span>
+    <span class="phpdocumentor-element-found-in__line">183</span>
 
     </aside>
 
@@ -1712,7 +1709,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">207</span>
+    <span class="phpdocumentor-element-found-in__line">209</span>
 
     </aside>
 
@@ -1744,7 +1741,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">405</span>
+    <span class="phpdocumentor-element-found-in__line">412</span>
 
     </aside>
 
@@ -1777,7 +1774,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">469</span>
+    <span class="phpdocumentor-element-found-in__line">476</span>
 
     </aside>
 
@@ -1812,7 +1809,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">482</span>
+    <span class="phpdocumentor-element-found-in__line">489</span>
 
     </aside>
 
@@ -1850,7 +1847,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">425</span>
+    <span class="phpdocumentor-element-found-in__line">432</span>
 
     </aside>
 
@@ -1883,7 +1880,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">440</span>
+    <span class="phpdocumentor-element-found-in__line">447</span>
 
     </aside>
 
@@ -1916,7 +1913,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">452</span>
+    <span class="phpdocumentor-element-found-in__line">459</span>
 
     </aside>
 
@@ -1949,7 +1946,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">373</span>
+    <span class="phpdocumentor-element-found-in__line">380</span>
 
     </aside>
 
@@ -1982,7 +1979,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">163</span>
+    <span class="phpdocumentor-element-found-in__line">165</span>
 
     </aside>
 
@@ -2015,7 +2012,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">244</span>
+    <span class="phpdocumentor-element-found-in__line">246</span>
 
     </aside>
 
@@ -2023,14 +2020,14 @@ while doing a write of a workbook and when changes are not allowed.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">getValues</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, string&gt;</span></code>
+                <span class="phpdocumentor-signature__name">getValues</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;string, string|null&gt;</span></code>
 
     
     
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">array&lt;string, string&gt;</span>
+    <span class="phpdocumentor-signature__response_type">array&lt;string, string|null&gt;</span>
             &mdash;
         
     
@@ -2048,7 +2045,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">189</span>
+    <span class="phpdocumentor-element-found-in__line">191</span>
 
     </aside>
 
@@ -2081,7 +2078,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">292</span>
+    <span class="phpdocumentor-element-found-in__line">299</span>
 
     </aside>
 
@@ -2114,7 +2111,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">381</span>
+    <span class="phpdocumentor-element-found-in__line">388</span>
 
     </aside>
 
@@ -2147,7 +2144,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">310</span>
+    <span class="phpdocumentor-element-found-in__line">317</span>
 
     </aside>
 
@@ -2180,7 +2177,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">346</span>
+    <span class="phpdocumentor-element-found-in__line">353</span>
 
     </aside>
 
@@ -2213,7 +2210,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">361</span>
+    <span class="phpdocumentor-element-found-in__line">368</span>
 
     </aside>
 
@@ -2246,7 +2243,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">274</span>
+    <span class="phpdocumentor-element-found-in__line">281</span>
 
     </aside>
 
@@ -2279,7 +2276,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">328</span>
+    <span class="phpdocumentor-element-found-in__line">335</span>
 
     </aside>
 
@@ -2312,7 +2309,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">197</span>
+    <span class="phpdocumentor-element-found-in__line">199</span>
 
     </aside>
 
@@ -2356,7 +2353,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">212</span>
+    <span class="phpdocumentor-element-found-in__line">214</span>
 
     </aside>
 
@@ -2400,7 +2397,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">415</span>
+    <span class="phpdocumentor-element-found-in__line">422</span>
 
     </aside>
 
@@ -2445,7 +2442,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">495</span>
+    <span class="phpdocumentor-element-found-in__line">502</span>
 
     </aside>
 
@@ -2493,7 +2490,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">433</span>
+    <span class="phpdocumentor-element-found-in__line">440</span>
 
     </aside>
 
@@ -2537,7 +2534,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">445</span>
+    <span class="phpdocumentor-element-found-in__line">452</span>
 
     </aside>
 
@@ -2581,7 +2578,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">457</span>
+    <span class="phpdocumentor-element-found-in__line">464</span>
 
     </aside>
 
@@ -2625,7 +2622,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">366</span>
+    <span class="phpdocumentor-element-found-in__line">373</span>
 
     </aside>
 
@@ -2669,7 +2666,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">300</span>
+    <span class="phpdocumentor-element-found-in__line">307</span>
 
     </aside>
 
@@ -2713,7 +2710,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">393</span>
+    <span class="phpdocumentor-element-found-in__line">400</span>
 
     </aside>
 
@@ -2756,7 +2753,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">318</span>
+    <span class="phpdocumentor-element-found-in__line">325</span>
 
     </aside>
 
@@ -2800,7 +2797,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">354</span>
+    <span class="phpdocumentor-element-found-in__line">361</span>
 
     </aside>
 
@@ -2844,7 +2841,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">282</span>
+    <span class="phpdocumentor-element-found-in__line">289</span>
 
     </aside>
 
@@ -2888,7 +2885,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">336</span>
+    <span class="phpdocumentor-element-found-in__line">343</span>
 
     </aside>
 
@@ -2932,7 +2929,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">171</span>
+    <span class="phpdocumentor-element-found-in__line">173</span>
 
     </aside>
 
@@ -2976,7 +2973,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Series.php"><a href="files/src-phppresentation-shape-chart-series.html"><abbr title="src/PhpPresentation/Shape/Chart/Series.php">Series.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">254</span>
+    <span class="phpdocumentor-element-found-in__line">256</span>
 
     </aside>
 
@@ -2984,14 +2981,14 @@ while doing a write of a workbook and when changes are not allowed.</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">setValues</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string, string&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$values</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
+                <span class="phpdocumentor-signature__name">setValues</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">array&lt;string, string|null&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$values</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
     <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$values</span>
-                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string, string&gt;</span>
+                : <span class="phpdocumentor-signature__argument__return-type">array&lt;string, string|null&gt;</span>
                  = <span class="phpdocumentor-signature__argument__default-value">[]</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 

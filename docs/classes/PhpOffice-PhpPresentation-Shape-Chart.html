@@ -141,6 +141,27 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_GAP">BLANKAS_GAP</a>
+    <span>
+        &nbsp;= &#039;gap&#039;                    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_SPAN">BLANKAS_SPAN</a>
+    <span>
+        &nbsp;= &#039;span&#039;                    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_ZERO">BLANKAS_ZERO</a>
+    <span>
+        &nbsp;= &#039;zero&#039;                    </span>
+</dt>
+<dd></dd>
+
                 <dt class="phpdocumentor-table-of-contents__entry -property -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-AbstractGraphic.html#property_relationId">$relationId</a>
     <span>
@@ -240,6 +261,13 @@
 <dd>Border.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#property_displayBlankAs">$displayBlankAs</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd>How to display blank (missing) values? Not set by default.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html#property_fill">$fill</a>
     <span>
                 &nbsp;: <a href="classes/PhpOffice-PhpPresentation-Style-Fill.html"><abbr title="\PhpOffice\PhpPresentation\Style\Fill">Fill</abbr></a>|null            </span>
@@ -336,6 +364,13 @@
                         &nbsp;: string    </span>
 </dt>
 <dd>Get Description.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_getDisplayBlankAs">getDisplayBlankAs()</a>
+    <span>
+                        &nbsp;: string    </span>
+</dt>
+<dd>How missing/blank values are displayed on chart (dispBlanksAs property)</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html#method_getFill">getFill()</a>
@@ -506,6 +541,13 @@
 <dd>Set Description.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_setDisplayBlankAs">setDisplayBlankAs()</a>
+    <span>
+                        &nbsp;: self    </span>
+</dt>
+<dd>Define a way to display missing/blank values (dispBlanksAs property)</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html#method_setFill">setFill()</a>
     <span>
                         &nbsp;: self    </span>
@@ -608,6 +650,99 @@
 
 
         
+    <section class="phpdocumentor-constants">
+        <h3 class="phpdocumentor-elements__header" id="constants">
+            Constants
+            <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#constants" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_BLANKAS_GAP">
+        BLANKAS_GAP
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_GAP" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">32</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">BLANKAS_GAP</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;gap&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_BLANKAS_SPAN">
+        BLANKAS_SPAN
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_SPAN" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">34</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">BLANKAS_SPAN</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;span&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_BLANKAS_ZERO">
+        BLANKAS_ZERO
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#constant_BLANKAS_ZERO" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">33</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">BLANKAS_ZERO</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;zero&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+            </section>
 
         
     <section class="phpdocumentor-properties">
@@ -1082,6 +1217,39 @@
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_displayBlankAs">
+        $displayBlankAs
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#property_displayBlankAs" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">76</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">How to display blank (missing) values? Not set by default.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$displayBlankAs</span>
+     = <span class="phpdocumentor-signature__default-value">self::BLANKAS_ZERO</span></code>
+
+    
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_fill">
         $fill
         <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html#property_fill" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1222,7 +1390,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">65</span>
+    <span class="phpdocumentor-element-found-in__line">69</span>
 
     </aside>
 
@@ -1255,7 +1423,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">44</span>
+    <span class="phpdocumentor-element-found-in__line">48</span>
 
     </aside>
 
@@ -1288,7 +1456,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">51</span>
+    <span class="phpdocumentor-element-found-in__line">55</span>
 
     </aside>
 
@@ -1321,7 +1489,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">37</span>
+    <span class="phpdocumentor-element-found-in__line">41</span>
 
     </aside>
 
@@ -1354,7 +1522,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">58</span>
+    <span class="phpdocumentor-element-found-in__line">62</span>
 
     </aside>
 
@@ -1391,7 +1559,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">82</span>
+    <span class="phpdocumentor-element-found-in__line">93</span>
 
     </aside>
 
@@ -1424,7 +1592,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">70</span>
+    <span class="phpdocumentor-element-found-in__line">81</span>
 
     </aside>
 
@@ -1549,6 +1717,39 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getDisplayBlankAs">
+        getDisplayBlankAs()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_getDisplayBlankAs" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">108</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">How missing/blank values are displayed on chart (dispBlanksAs property)</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">getDisplayBlankAs</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getFill">
         getFill()
         <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html#method_getFill" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1589,7 +1790,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">171</span>
+    <span class="phpdocumentor-element-found-in__line">208</span>
 
     </aside>
 
@@ -1775,7 +1976,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">161</span>
+    <span class="phpdocumentor-element-found-in__line">198</span>
 
     </aside>
 
@@ -1808,7 +2009,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">107</span>
+    <span class="phpdocumentor-element-found-in__line">128</span>
 
     </aside>
 
@@ -1973,7 +2174,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">117</span>
+    <span class="phpdocumentor-element-found-in__line">138</span>
 
     </aside>
 
@@ -2072,7 +2273,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">97</span>
+    <span class="phpdocumentor-element-found-in__line">118</span>
 
     </aside>
 
@@ -2105,7 +2306,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">127</span>
+    <span class="phpdocumentor-element-found-in__line">148</span>
 
     </aside>
 
@@ -2204,7 +2405,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">137</span>
+    <span class="phpdocumentor-element-found-in__line">158</span>
 
     </aside>
 
@@ -2395,6 +2596,49 @@ while doing a write of a workbook and when changes are not allowed.</p>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">$this</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setDisplayBlankAs">
+        setDisplayBlankAs()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_setDisplayBlankAs" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">170</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Define a way to display missing/blank values (dispBlanksAs property)</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">setDisplayBlankAs</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$value</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">self</span>
             &mdash;
         
     
@@ -2606,7 +2850,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart.php"><a href="files/src-phppresentation-shape-chart.html"><abbr title="src/PhpPresentation/Shape/Chart.php">Chart.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">149</span>
+    <span class="phpdocumentor-element-found-in__line">186</span>
 
     </aside>
 
