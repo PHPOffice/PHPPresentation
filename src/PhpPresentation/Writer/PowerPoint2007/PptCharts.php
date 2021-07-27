@@ -146,6 +146,11 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', '1');
         $objWriter->endElement();
 
+        // c:dispBlanksAs
+        $objWriter->startElement('c:dispBlanksAs');
+        $objWriter->writeAttribute('val', $chart->getDisplayBlankAs());
+        $objWriter->endElement();
+
         $objWriter->endElement();
 
         // c:spPr
