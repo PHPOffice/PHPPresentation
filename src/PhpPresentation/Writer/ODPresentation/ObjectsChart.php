@@ -310,6 +310,8 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->writeAttributeIf($isPieChart, 'chart:reverse-direction', 'true');
         $this->xmlContent->writeAttributeIf(null !== $axis->getMinBounds(), 'chart:minimum', $axis->getMinBounds());
         $this->xmlContent->writeAttributeIf(null !== $axis->getMaxBounds(), 'chart:maximum', $axis->getMaxBounds());
+        $this->xmlContent->writeAttributeIf(null !== $axis->getMajorUnit(), 'chart:interval-major', $axis->getMajorUnit());
+        $this->xmlContent->writeAttributeIf(null !== $axis->getMinorUnit(), 'chart:interval-minor-divisor', $axis->getMinorUnit());
         switch ($axis->getTickLabelPosition()) {
             case Axis::TICK_LABEL_POSITION_NEXT_TO:
                 $this->xmlContent->writeAttribute('chart:axis-label-position', 'near-axis');
