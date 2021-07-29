@@ -4421,6 +4421,26 @@ Search.appendIndex(
             "summary": "Space\u0020between\u0020bar\u0020or\u0020columns\u0020clusters.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#property_gapWidthPercent"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeLine",
+            "name": "AbstractTypeLine",
+            "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeLine\u003A\u003A\u0024isSmooth",
+            "name": "isSmooth",
+            "summary": "Is\u0020Line\u0020Smooth\u003F",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#property_isSmooth"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeLine\u003A\u003AsetIsSmooth\u0028\u0029",
+            "name": "setIsSmooth",
+            "summary": "Set\u0020Line\u0020Smoothness",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#method_setIsSmooth"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeLine\u003A\u003AgetHashCode\u0028\u0029",
+            "name": "getHashCode",
+            "summary": "Get\u0020hash\u0020code.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#method_getHashCode"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypePie",
             "name": "AbstractTypePie",
             "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar.",
@@ -4508,7 +4528,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line",
             "name": "Line",
-            "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line.",
+            "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-Line.html"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line\u003A\u003AgetHashCode\u0028\u0029",
@@ -4538,7 +4558,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter",
             "name": "Scatter",
-            "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter.",
+            "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-Scatter.html"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter\u003A\u003AgetHashCode\u0028\u0029",

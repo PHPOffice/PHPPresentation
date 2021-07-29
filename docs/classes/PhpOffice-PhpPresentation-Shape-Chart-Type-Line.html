@@ -93,7 +93,7 @@
     Line
 
         <span class="phpdocumentor-element__extends">
-        extends <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType">AbstractType</abbr></a>
+        extends <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeLine">AbstractTypeLine</abbr></a>
     </span>
     
             <div class="phpdocumentor-element__package">
@@ -112,11 +112,11 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/Line.php"><a href="files/src-phppresentation-shape-chart-type-line.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/Line.php">Line.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">26</span>
+    <span class="phpdocumentor-element-found-in__line">23</span>
 
     </aside>
 
-            <p class="phpdocumentor-summary">\PhpOffice\PhpPresentation\Shape\Chart\Type\Line.</p>
+            <p class="phpdocumentor-summary">\PhpOffice\PhpPresentation\Shape\Chart\Type.</p>
 
 
 
@@ -156,6 +156,13 @@
                 &nbsp;: bool            </span>
 </dt>
 <dd>Has Axis Y?</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#property_isSmooth">$isSmooth</a>
+    <span>
+                &nbsp;: bool            </span>
+</dt>
+<dd>Is Line Smooth?</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#property_hashIndex">$hashIndex</a>
@@ -221,11 +228,25 @@
 <dd>Has Axis Y?</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#method_isSmooth">isSmooth()</a>
+    <span>
+                        &nbsp;: bool    </span>
+</dt>
+<dd>Is Line Smooth?</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#method_setHashIndex">setHashIndex()</a>
     <span>
                         &nbsp;: <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType">AbstractType</abbr></a>    </span>
 </dt>
 <dd>Set hash index.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#method_setIsSmooth">setIsSmooth()</a>
+    <span>
+                        &nbsp;: <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeLine">AbstractTypeLine</abbr></a>    </span>
+</dt>
+<dd>Set Line Smoothness</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#method_setSeries">setSeries()</a>
@@ -306,6 +327,39 @@
         <span class="phpdocumentor-signature__type">bool</span>
     <span class="phpdocumentor-signature__name">$hasAxisY</span>
      = <span class="phpdocumentor-signature__default-value">true</span></code>
+
+    
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_isSmooth">
+        $isSmooth
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#property_isSmooth" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeLine.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypeline.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeLine.php">AbstractTypeLine.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Is Line Smooth?</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">bool</span>
+    <span class="phpdocumentor-signature__name">$isSmooth</span>
+     = <span class="phpdocumentor-signature__default-value">false</span></code>
 
     
     
@@ -487,7 +541,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/Line.php"><a href="files/src-phppresentation-shape-chart-type-line.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/Line.php">Line.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">33</span>
+    <span class="phpdocumentor-element-found-in__line">30</span>
 
     </aside>
 
@@ -652,6 +706,39 @@ while doing a write of a workbook and when changes are not allowed.</p>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_isSmooth">
+        isSmooth()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#method_isSmooth" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeLine.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypeline.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeLine.php">AbstractTypeLine.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">35</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Is Line Smooth?</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">isSmooth</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">bool</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_setHashIndex">
         setHashIndex()
         <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#method_setHashIndex" class="headerlink"><i class="fas fa-link"></i></a>
@@ -690,6 +777,49 @@ while doing a write of a workbook and when changes are not allowed.</p>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType">AbstractType</abbr></a></span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setIsSmooth">
+        setIsSmooth()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#method_setIsSmooth" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeLine.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypeline.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeLine.php">AbstractTypeLine.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">47</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Set Line Smoothness</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">setIsSmooth</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">true</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeLine">AbstractTypeLine</abbr></a></span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$value</span>
+                : <span class="phpdocumentor-signature__argument__return-type">bool</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">true</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeLine">AbstractTypeLine</abbr></a></span>
             &mdash;
         
     
