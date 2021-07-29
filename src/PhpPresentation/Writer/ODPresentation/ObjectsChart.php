@@ -10,6 +10,7 @@ use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Title;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeLine;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypePie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
@@ -560,6 +561,8 @@ class ObjectsChart extends AbstractDecoratorWriter
         } elseif ($chartType instanceof Pie3D) {
             $this->xmlContent->writeAttribute('chart:three-dimensional', 'true');
             $this->xmlContent->writeAttribute('chart:right-angled-axes', 'true');
+        } elseif ($chartType instanceof AbstractTypeLine) {
+            $this->xmlContent->writeAttributeIf($chartType->isSmooth(), 'chart:interpolation', 'cubic-spline');
         }
         switch ($chart->getDisplayBlankAs()) {
             case Chart::BLANKAS_ZERO:
