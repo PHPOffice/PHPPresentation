@@ -41,27 +41,39 @@ class LineTest extends TestCase
             new Series(),
         ];
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->setSeries());
+        $this->assertInstanceOf(Line::class, $object->setSeries());
         $this->assertEmpty($object->getSeries());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->setSeries($array));
+        $this->assertInstanceOf(Line::class, $object->setSeries($array));
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSerties(): void
+    public function testSeries(): void
     {
         $object = new Line();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Line', $object->addSeries(new Series()));
+        $this->assertInstanceOf(Line::class, $object->addSeries(new Series()));
         $this->assertCount(1, $object->getSeries());
+    }
+
+    public function testSmooth(): void
+    {
+        $object = new Line();
+
+        $this->assertFalse($object->isSmooth());
+        $this->assertInstanceOf(Line::class, $object->setIsSmooth(true));
+        $this->assertTrue($object->isSmooth());
     }
 
     public function testHashCode(): void
     {
-        $oSeries = new Series();
+        $series = new Series();
 
         $object = new Line();
-        $object->addSeries($oSeries);
+        $object->addSeries($series);
 
-        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
+        $this->assertEquals(
+            md5(md5($object->isSmooth() ? '1' : '0') . $series->getHashCode() . get_class($object)),
+            $object->getHashCode()
+        );
     }
 }

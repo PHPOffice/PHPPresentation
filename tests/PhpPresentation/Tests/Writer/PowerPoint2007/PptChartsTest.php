@@ -959,6 +959,43 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testTypeLineSmooth(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oLine->setIsSmooth(false);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oShape->getPlotArea()->setType($oLine);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:smooth';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+        $oLine->setIsSmooth(true);
+        $oShape->getPlotArea()->setType($oLine);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:smooth';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
+    }
+
     public function testTypeLineSubScript(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -1306,6 +1343,43 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $expectedElement . '/a:solidFill');
 
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testTypeScatterSmooth(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+
+        $oScatter = new Scatter();
+        $oScatter->addSeries($oSeries);
+        $oScatter->setIsSmooth(false);
+
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oShape->getPlotArea()->setType($oScatter);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:smooth';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+        $oScatter->setIsSmooth(true);
+        $oShape->getPlotArea()->setType($oScatter);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:smooth';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
     }
 
     public function testTypeScatterSubScript(): void

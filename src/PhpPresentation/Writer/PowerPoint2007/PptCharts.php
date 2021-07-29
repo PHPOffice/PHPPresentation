@@ -1826,6 +1826,11 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
             $objWriter->endElement();
 
+            // c:smooth
+            $objWriter->startElement('c:smooth');
+            $objWriter->writeAttribute('val', $subject->isSmooth() ? '1' : '0');
+            $objWriter->endElement();
+
             $objWriter->endElement();
 
             ++$seriesIndex;
@@ -1834,11 +1839,6 @@ class PptCharts extends AbstractDecoratorWriter
         // c:marker
         $objWriter->startElement('c:marker');
         $objWriter->writeAttribute('val', '1');
-        $objWriter->endElement();
-
-        // c:smooth
-        $objWriter->startElement('c:smooth');
-        $objWriter->writeAttribute('val', '0');
         $objWriter->endElement();
 
         // c:axId
@@ -2012,7 +2012,7 @@ class PptCharts extends AbstractDecoratorWriter
 
             // c:smooth
             $objWriter->startElement('c:smooth');
-            $objWriter->writeAttribute('val', '0');
+            $objWriter->writeAttribute('val', $subject->isSmooth() ? '1' : '0');
             $objWriter->endElement();
 
             $objWriter->endElement();

@@ -20,10 +20,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 
-/**
- * \PhpOffice\PhpPresentation\Shape\Chart\Type\Line.
- */
-class Line extends AbstractType implements ComparableInterface
+class Line extends AbstractTypeLine implements ComparableInterface
 {
     /**
      * Get hash code.
@@ -37,6 +34,6 @@ class Line extends AbstractType implements ComparableInterface
             $hash .= $series->getHashCode();
         }
 
-        return md5($hash . __CLASS__);
+        return md5(parent::getHashCode() . $hash . __CLASS__);
     }
 }

@@ -18,10 +18,39 @@
 
 namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\ComparableInterface;
-
-class Scatter extends AbstractTypeLine implements ComparableInterface
+class AbstractTypeLine extends AbstractType
 {
+    /**
+     * Is Line Smooth?
+     *
+     * @var bool
+     */
+    protected $isSmooth = false;
+
+    /**
+     * Is Line Smooth?
+     *
+     * @return bool
+     */
+    public function isSmooth(): bool
+    {
+        return $this->isSmooth;
+    }
+
+    /**
+     * Set Line Smoothness
+     *
+     * @param bool $value
+     *
+     * @return AbstractTypeLine
+     */
+    public function setIsSmooth(bool $value = true): AbstractTypeLine
+    {
+        $this->isSmooth = $value;
+
+        return $this;
+    }
+
     /**
      * Get hash code.
      *
@@ -29,11 +58,6 @@ class Scatter extends AbstractTypeLine implements ComparableInterface
      */
     public function getHashCode(): string
     {
-        $hash = '';
-        foreach ($this->getSeries() as $series) {
-            $hash .= $series->getHashCode();
-        }
-
-        return md5(parent::getHashCode() . $hash . __CLASS__);
+        return md5($this->isSmooth() ? '1' : '0');
     }
 }

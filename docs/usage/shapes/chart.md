@@ -364,7 +364,22 @@ $barChart->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
 
 ### Line
 
-TODO
+#### Smooth line
+
+You can enable or disable the smooth line with `setIsSmooth` method from `AbstractTypeLine`.
+By default, smooth line is disabled.
+
+``` php
+<?php
+
+$chart = new Line();
+// Enable the smooth line
+$chart->setIsSmooth(true);
+// Disable the smooth line
+$chart->setIsSmooth(false);
+// Get status of smooth line
+$chart->isSmooth();
+```
 
 ### Pie & Pie3D
 
@@ -372,5 +387,20 @@ TODO
 
 ### Scatter
 
-TODO
+#### Smooth line
+
+You can enable or disable the smooth line with `setIsSmooth` method from `AbstractTypeLine`.
+By default, smooth line is disabled.
+
+``` php
+<?php
+
+$chart = new Scatter();
+// Enable the smooth line
+$chart->setIsSmooth(true);
+// Disable the smooth line
+$chart->setIsSmooth(false);
+// Get status of smooth line
+$chart->isSmooth();
+```
 

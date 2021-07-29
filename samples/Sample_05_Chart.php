@@ -562,6 +562,7 @@ function fnSlide_Scatter(PhpPresentation $objPHPPresentation)
     // Create a scatter chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a scatter chart (that should be inserted in a chart shape)' . EOL;
     $lineChart = new Scatter();
+    $lineChart->setIsSmooth(true);
     $series = new Series('Downloads', $seriesData);
     $series->setShowSeriesName(true);
     $series->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_CIRCLE);
