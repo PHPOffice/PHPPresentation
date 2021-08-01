@@ -269,7 +269,7 @@ class ODPresentation implements ReaderInterface
                         $distance = ($offsetY < 0 ? $offsetY * -1 : $offsetY);
                     }
                     $oShadow->setDirection((int) rad2deg(atan2($offsetY, $offsetX)));
-                    $oShadow->setDistance((int) round(CommonDrawing::centimetersToPixels($distance)));
+                    $oShadow->setDistance(CommonDrawing::centimetersToPixels($distance));
                 }
             }
             // Read Fill
@@ -365,6 +365,19 @@ class ODPresentation implements ReaderInterface
 
         $nodeParagraphProps = $this->oXMLReader->getElement('style:paragraph-properties', $nodeStyle);
         if ($nodeParagraphProps instanceof DOMElement) {
+            if ($nodeParagraphProps->hasAttribute('fo:line-height')) {
+                $lineHeightUnit = $this->getExpressionUnit($nodeParagraphProps->getAttribute('fo:margin-bottom'));
+                $lineSpacingMode = $lineHeightUnit == '%' ? Paragraph::LINE_SPACING_MODE_PERCENT : Paragraph::LINE_SPACING_MODE_POINT;
+                $lineSpacing = $this->getExpressionValue($nodeParagraphProps->getAttribute('fo:margin-bottom'));
+            }
+            if ($nodeParagraphProps->hasAttribute('fo:margin-bottom')) {
+                $spacingAfter = (float) substr($nodeParagraphProps->getAttribute('fo:margin-bottom'), 0, -2);
+                $spacingAfter = CommonDrawing::centimetersToPoints($spacingAfter);
+            }
+            if ($nodeParagraphProps->hasAttribute('fo:margin-top')) {
+                $spacingBefore = (float) substr($nodeParagraphProps->getAttribute('fo:margin-top'), 0, -2);
+                $spacingBefore = CommonDrawing::centimetersToPoints($spacingBefore);
+            }
             $oAlignment = new Alignment();
             if ($nodeParagraphProps->hasAttribute('fo:text-align')) {
                 $oAlignment->setHorizontal($nodeParagraphProps->getAttribute('fo:text-align'));
@@ -407,10 +420,10 @@ class ODPresentation implements ReaderInterface
                     $oNodeListProperties = $this->oXMLReader->getElement('style:list-level-properties', $oNodeListLevel);
                     if ($oNodeListProperties instanceof DOMElement) {
                         if ($oNodeListProperties->hasAttribute('text:min-label-width')) {
-                            $oAlignment->setIndent((int) round(CommonDrawing::centimetersToPixels(substr($oNodeListProperties->getAttribute('text:min-label-width'), 0, -2))));
+                            $oAlignment->setIndent(CommonDrawing::centimetersToPixels((float) substr($oNodeListProperties->getAttribute('text:min-label-width'), 0, -2)));
                         }
                         if ($oNodeListProperties->hasAttribute('text:space-before')) {
-                            $iSpaceBefore = (int) CommonDrawing::centimetersToPixels(substr($oNodeListProperties->getAttribute('text:space-before'), 0, -2));
+                            $iSpaceBefore = CommonDrawing::centimetersToPixels((float) substr($oNodeListProperties->getAttribute('text:space-before'), 0, -2));
                             $iMarginLeft = $iSpaceBefore + $oAlignment->getIndent();
                             $oAlignment->setMarginLeft($iMarginLeft);
                         }
@@ -432,12 +445,16 @@ class ODPresentation implements ReaderInterface
         }
 
         $this->arrayStyles[$keyStyle] = [
-            'alignment' => isset($oAlignment) ? $oAlignment : null,
-            'background' => isset($oBackground) ? $oBackground : null,
-            'fill' => isset($oFill) ? $oFill : null,
-            'font' => isset($oFont) ? $oFont : null,
-            'shadow' => isset($oShadow) ? $oShadow : null,
-            'listStyle' => isset($arrayListStyle) ? $arrayListStyle : null,
+            'alignment' => $oAlignment ?? null,
+            'background' => $oBackground ?? null,
+            'fill' => $oFill ?? null,
+            'font' => $oFont ?? null,
+            'shadow' => $oShadow ?? null,
+            'listStyle' => $arrayListStyle ?? null,
+            'spacingAfter' => $spacingAfter ?? null,
+            'spacingBefore' => $spacingBefore ?? null,
+            'lineSpacingMode' => $lineSpacingMode ?? null,
+            'lineSpacing' => $lineSpacing ?? null,
         ];
 
         return true;
@@ -507,11 +524,11 @@ class ODPresentation implements ReaderInterface
         $oShape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
         $oShape->setDescription($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
         $oShape->setResizeProportional(false);
-        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:width'), 0, -2))) : '');
-        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:height'), 0, -2))) : '');
+        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
+        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
         $oShape->setResizeProportional(true);
-        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:x'), 0, -2))) : '');
-        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:y'), 0, -2))) : '');
+        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
+        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
 
         if ($oNodeFrame->hasAttribute('draw:style-name')) {
             $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
@@ -535,10 +552,10 @@ class ODPresentation implements ReaderInterface
         $oShape = $this->oPhpPresentation->getActiveSlide()->createRichTextShape();
         $oShape->setParagraphs([]);
 
-        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:width'), 0, -2))) : '');
-        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:height'), 0, -2))) : '');
-        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:x'), 0, -2))) : '');
-        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? (int) round(CommonDrawing::centimetersToPixels(substr($oNodeFrame->getAttribute('svg:y'), 0, -2))) : '');
+        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
+        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
+        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
+        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
 
         foreach ($this->oXMLReader->getElements('draw:text-box/*', $oNodeFrame) as $oNodeParagraph) {
             $this->levelParagraph = 0;
@@ -565,6 +582,23 @@ class ODPresentation implements ReaderInterface
     protected function readParagraph(RichText $oShape, DOMElement $oNodeParent): void
     {
         $oParagraph = $oShape->createParagraph();
+        if ($oNodeParent->hasAttribute('text:style-name')) {
+            $keyStyle = $oNodeParent->getAttribute('text:style-name');
+            if (isset($this->arrayStyles[$keyStyle])) {
+                if (!empty($this->arrayStyles[$keyStyle]['spacingAfter'])) {
+                    $oParagraph->setSpacingAfter($this->arrayStyles[$keyStyle]['spacingAfter']);
+                }
+                if (!empty($this->arrayStyles[$keyStyle]['spacingBefore'])) {
+                    $oParagraph->setSpacingBefore($this->arrayStyles[$keyStyle]['spacingBefore']);
+                }
+                if (!empty($this->arrayStyles[$keyStyle]['lineSpacingMode'])) {
+                    $oParagraph->setLineSpacingMode($this->arrayStyles[$keyStyle]['lineSpacingMode']);
+                }
+                if (!empty($this->arrayStyles[$keyStyle]['lineSpacing'])) {
+                    $oParagraph->setLineSpacing($this->arrayStyles[$keyStyle]['lineSpacing']);
+                }
+            }
+        }
         $oDomList = $this->oXMLReader->getElements('text:span', $oNodeParent);
         $oDomTextNodes = $this->oXMLReader->getElements('text()', $oNodeParent);
         foreach ($oDomTextNodes as $oDomTextNode) {
@@ -665,5 +699,33 @@ class ODPresentation implements ReaderInterface
                 ];
             }
         }
+    }
+
+    /**
+     * @param string $expr
+     *
+     * @return string
+     */
+    private function getExpressionUnit(string $expr): string
+    {
+        if (substr($expr, -1) == '%') {
+            return '%';
+        }
+
+        return substr($expr, -2);
+    }
+
+    /**
+     * @param string $expr
+     *
+     * @return string
+     */
+    private function getExpressionValue(string $expr): string
+    {
+        if (substr($expr, -1) == '%') {
+            return substr($expr, 0, -1);
+        }
+
+        return substr($expr, 0, -2);
     }
 }

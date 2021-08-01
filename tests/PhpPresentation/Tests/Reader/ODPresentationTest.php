@@ -22,6 +22,7 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
@@ -124,11 +125,16 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(600, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(400, $oShape->getOffsetY());
-        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
-        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph', $oParagraph);
+        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
+        $this->assertEquals(0, $oParagraph->getSpacingAfter());
+        $this->assertEquals(0, $oParagraph->getSpacingBefore());
+        $this->assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        $this->assertEquals(100, $oParagraph->getLineSpacing());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(3, $arrayRichText);
         // Slide 1 : Shape 2 : Paragraph 1
@@ -290,11 +296,15 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(50, $oShape->getOffsetY());
-        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
-        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
+        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
+        $this->assertEquals(0, $oParagraph->getSpacingAfter());
+        $this->assertEquals(0, $oParagraph->getSpacingBefore());
+        $this->assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        $this->assertEquals(100, $oParagraph->getLineSpacing());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(1, $arrayRichText);
         // Slide 3 : Shape 2 : Paragraph 1
@@ -477,11 +487,15 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(50, $oShape->getOffsetY());
-        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
-        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
+        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
+        $this->assertEquals(0, $oParagraph->getSpacingAfter());
+        $this->assertEquals(0, $oParagraph->getSpacingBefore());
+        $this->assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        $this->assertEquals(100, $oParagraph->getLineSpacing());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(1, $arrayRichText);
         // Slide 4 : Shape 2 : Paragraph 1
@@ -501,11 +515,15 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(130, $oShape->getOffsetY());
-        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
-        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
+        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
+        $this->assertEquals(0, $oParagraph->getSpacingAfter());
+        $this->assertEquals(0, $oParagraph->getSpacingBefore());
+        $this->assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        $this->assertEquals(100, $oParagraph->getLineSpacing());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(3, $arrayRichText);
         // Slide 4 : Shape 3 : Paragraph 1

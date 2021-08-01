@@ -2,6 +2,12 @@
 
 Rich text shapes contain paragraphs of texts. To create a rich text shape, use `createRichTextShape` method of slide.
 
+Each rich text can contain multiples paragraphs.
+Each paragraph can contain:
+- a `TextElement`
+- a `BreakElement`
+- a `Run`
+
 Below are the properties that you can set for a rich text shape.
 
 - `wrap`
@@ -19,15 +25,33 @@ Below are the properties that you can set for a rich text shape.
 - `topInset` in pixels
 - `autoShrinkHorizontal` (boolean)
 - `autoShrinkVertical` (boolean)
+- `columnSpacing` see *Column Spacing*
 
 Properties that can be set for each paragraphs are as follow.
 
 - `alignment` <!-- see *[Alignment](#alignment)*-->
 - `bulletStyle` see *[Bullet](#bullet)*
-- `lineSpacing` see *[LineSpacing](#linespacing)*
+- `lineSpacing` see *Line Spacing*
 - `font` <!-- see *[Font](#font)*-->
 
-## Bullet
+## Column Spacing
+
+For a paragraph, you can define the column spacing.
+
+Example:
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText;
+
+$richText = new RichText();
+$richText->setColumnSpacing(200);
+$columnSpacing = $richText->getColumnSpacing();
+```
+
+## Paragraph
+### Bullet
 
 For a paragraph, you can define the bullet style.
 
@@ -58,9 +82,10 @@ $paragraph->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
 $paragraph->getBulletStyle()->setBulletColor(new Color(Color::COLOR_RED));
 ```
 
-## LineSpacing
+### Line Spacing
 
 For a paragraph, you can define the line spacing.
+By default, mode is in percent (`Paragraph::LINE_SPACING_MODE_PERCENT`), but you can use the point mode (`Paragraph::LINE_SPACING_MODE_POINT`).
 
 Example:
 
@@ -72,6 +97,27 @@ use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 $paragraph = new Paragraph();
 $paragraph->setLineSpacing(200);
 $lineSpacing = $paragraph->getLineSpacing();
+
+$paragraph->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_POINT);
+$lineSpacingMode = $paragraph->getLineSpacingMode();
+```
+
+### Spacing
+
+For a paragraph, you can define the spacing before and after the paragraph in point
+Example:
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+
+$paragraph = new Paragraph();
+$paragraph->setSpacingAfter(12);
+$spacingAfter = $paragraph->getSpacingAfter();
+
+$paragraph->setSpacingBefore(34);
+$spacingBefore = $paragraph->getSpacingBefore();
 ```
 
 ## Run

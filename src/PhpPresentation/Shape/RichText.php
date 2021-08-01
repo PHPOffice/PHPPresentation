@@ -106,6 +106,13 @@ class RichText extends AbstractShape implements ComparableInterface
     private $columns = 1;
 
     /**
+     * The spacing between columns
+     *
+     * @var int
+     */
+    private $columnSpacing = 0;
+
+    /**
      * Bottom inset (in pixels).
      *
      * @var float
@@ -181,7 +188,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return int
      */
-    public function getActiveParagraphIndex()
+    public function getActiveParagraphIndex(): int
     {
         return $this->activeParagraph;
     }
@@ -254,13 +261,13 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Add text.
      *
-     * @param \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface $pText Rich text element
+     * @param TextElementInterface|null $pText Rich text element
      *
      * @throws \Exception
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function addText(TextElementInterface $pText = null)
+    public function addText(TextElementInterface $pText = null): self
     {
         $this->richTextParagraphs[$this->activeParagraph]->addText($pText);
 
@@ -272,11 +279,11 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param string $pText Text
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
+     * @return RichText\TextElement
      *
      * @throws \Exception
      */
-    public function createText($pText = '')
+    public function createText(string $pText = ''): RichText\TextElement
     {
         return $this->richTextParagraphs[$this->activeParagraph]->createText($pText);
     }
@@ -284,11 +291,11 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Create break.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\BreakElement
+     * @return RichText\BreakElement
      *
      * @throws \Exception
      */
-    public function createBreak()
+    public function createBreak(): RichText\BreakElement
     {
         return $this->richTextParagraphs[$this->activeParagraph]->createBreak();
     }
@@ -298,11 +305,11 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param string $pText Text
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\Run
+     * @return RichText\Run
      *
      * @throws \Exception
      */
-    public function createTextRun($pText = '')
+    public function createTextRun(string $pText = ''): RichText\Run
     {
         return $this->richTextParagraphs[$this->activeParagraph]->createTextRun($pText);
     }
@@ -312,7 +319,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return string
      */
-    public function getPlainText()
+    public function getPlainText(): string
     {
         // Return value
         $returnValue = '';
@@ -364,7 +371,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return string
      */
-    public function getWrap()
+    public function getWrap(): string
     {
         return $this->wrap;
     }
@@ -374,9 +381,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setWrap($value = self::WRAP_SQUARE)
+    public function setWrap(string $value = self::WRAP_SQUARE): self
     {
         $this->wrap = $value;
 
@@ -388,7 +395,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return string
      */
-    public function getAutoFit()
+    public function getAutoFit(): string
     {
         return $this->autoFit;
     }
@@ -416,9 +423,9 @@ class RichText extends AbstractShape implements ComparableInterface
      * @param float|null $fontScale
      * @param float|null $lnSpcReduction
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setAutoFit($value = self::AUTOFIT_DEFAULT, $fontScale = null, $lnSpcReduction = null)
+    public function setAutoFit(string $value = self::AUTOFIT_DEFAULT, float $fontScale = null, float $lnSpcReduction = null): self
     {
         $this->autoFit = $value;
 
@@ -438,7 +445,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return string
      */
-    public function getHorizontalOverflow()
+    public function getHorizontalOverflow(): string
     {
         return $this->horizontalOverflow;
     }
@@ -448,9 +455,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setHorizontalOverflow($value = self::OVERFLOW_OVERFLOW)
+    public function setHorizontalOverflow(string $value = self::OVERFLOW_OVERFLOW): self
     {
         $this->horizontalOverflow = $value;
 
@@ -462,7 +469,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return string
      */
-    public function getVerticalOverflow()
+    public function getVerticalOverflow(): string
     {
         return $this->verticalOverflow;
     }
@@ -472,9 +479,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setVerticalOverflow($value = self::OVERFLOW_OVERFLOW)
+    public function setVerticalOverflow(string $value = self::OVERFLOW_OVERFLOW): self
     {
         $this->verticalOverflow = $value;
 
@@ -486,7 +493,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return bool
      */
-    public function isUpright()
+    public function isUpright(): bool
     {
         return $this->upright;
     }
@@ -496,9 +503,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param bool $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setUpright($value = false)
+    public function setUpright(bool $value = false): self
     {
         $this->upright = $value;
 
@@ -510,7 +517,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return bool
      */
-    public function isVertical()
+    public function isVertical(): bool
     {
         return $this->vertical;
     }
@@ -520,9 +527,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param bool $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setVertical($value = false)
+    public function setVertical(bool $value = false): self
     {
         $this->vertical = $value;
 
@@ -534,7 +541,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return int
      */
-    public function getColumns()
+    public function getColumns(): int
     {
         return $this->columns;
     }
@@ -546,9 +553,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @throws \Exception
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setColumns($value = 1)
+    public function setColumns(int $value = 1): self
     {
         if ($value > 16 || $value < 1) {
             throw new \Exception('Number of columns should be 1-16');
@@ -564,7 +571,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return float
      */
-    public function getInsetBottom()
+    public function getInsetBottom(): float
     {
         return $this->bottomInset;
     }
@@ -574,9 +581,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param float $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setInsetBottom($value = 4.8)
+    public function setInsetBottom(float $value = 4.8): self
     {
         $this->bottomInset = $value;
 
@@ -588,7 +595,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return float
      */
-    public function getInsetLeft()
+    public function getInsetLeft(): float
     {
         return $this->leftInset;
     }
@@ -598,9 +605,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param float $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setInsetLeft($value = 9.6)
+    public function setInsetLeft(float $value = 9.6): self
     {
         $this->leftInset = $value;
 
@@ -612,7 +619,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return float
      */
-    public function getInsetRight()
+    public function getInsetRight(): float
     {
         return $this->rightInset;
     }
@@ -622,9 +629,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param float $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setInsetRight($value = 9.6)
+    public function setInsetRight(float $value = 9.6): self
     {
         $this->rightInset = $value;
 
@@ -636,7 +643,7 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @return float
      */
-    public function getInsetTop()
+    public function getInsetTop(): float
     {
         return $this->topInset;
     }
@@ -646,9 +653,9 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param float $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
+     * @return self
      */
-    public function setInsetTop($value = 4.8)
+    public function setInsetTop(float $value = 4.8): self
     {
         $this->topInset = $value;
 
@@ -688,6 +695,32 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
+     * Get spacing between columns
+     *
+     * @return int
+     */
+    public function getColumnSpacing(): int
+    {
+        return $this->columnSpacing;
+    }
+
+    /**
+     * Set spacing between columns
+     *
+     * @param int $value
+     *
+     * @return self
+     */
+    public function setColumnSpacing(int $value = 0): self
+    {
+        if ($value >= 0) {
+            $this->columnSpacing = $value;
+        }
+
+        return $this;
+    }
+
+    /**
      * Get hash code.
      *
      * @return string Hash code
@@ -699,6 +732,22 @@ class RichText extends AbstractShape implements ComparableInterface
             $hashElements .= $element->getHashCode();
         }
 
-        return md5($hashElements . $this->wrap . $this->autoFit . $this->horizontalOverflow . $this->verticalOverflow . ($this->upright ? '1' : '0') . ($this->vertical ? '1' : '0') . $this->columns . $this->bottomInset . $this->leftInset . $this->rightInset . $this->topInset . parent::getHashCode() . __CLASS__);
+        return md5(
+            $hashElements
+            . $this->wrap
+            . $this->autoFit
+            . $this->horizontalOverflow
+            . $this->verticalOverflow
+            . ($this->upright ? '1' : '0')
+            . ($this->vertical ? '1' : '0')
+            . $this->columns
+            . $this->columnSpacing
+            . $this->bottomInset
+            . $this->leftInset
+            . $this->rightInset
+            . $this->topInset
+            . parent::getHashCode()
+            . __CLASS__
+        );
     }
 }

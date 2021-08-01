@@ -7,6 +7,7 @@ use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Slide\Animation;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -560,6 +561,87 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testParagraphColumns(): void
+    {
+        $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:bodyPr';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'numCol');
+        $this->assertZipXmlAttributeNotExists('ppt/slides/slide1.xml', $element, 'spcCol');
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+        $richText
+            ->setColumns(2)
+            ->setColumnSpacing(123);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $element, 'numCol');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'numCol', '2');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $element, 'spcCol');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spcCol', '1171575');
+    }
+
+    public function testParagraphLineSpacing(): void
+    {
+        $expectedLineSpacing = mt_rand(1, 100);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->getActiveParagraph()
+            ->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_PERCENT)
+            ->setLineSpacing($expectedLineSpacing);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:lnSpc/a:spcPct';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedLineSpacing * 1000);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:lnSpc/a:spcPts';
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+        $oRichText->getActiveParagraph()
+            ->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_POINT);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:lnSpc/a:spcPct';
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:lnSpc/a:spcPts';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedLineSpacing * 100);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testParagraphSpacingAfter(): void
+    {
+        $expectedVal = mt_rand(1, 100);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->getActiveParagraph()
+            ->setSpacingAfter($expectedVal);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:spcAft/a:spcPts';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedVal * 100);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testParagraphSpacingBefore(): void
+    {
+        $expectedVal = mt_rand(1, 100);
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRichText->getActiveParagraph()
+            ->setSpacingBefore($expectedVal);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:spcBef/a:spcPts';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedVal * 100);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testRichTextAutoFitNormal(): void
     {
         $expectedFontScale = 47.5;
@@ -596,21 +678,6 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:sp//a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertIsSchemaECMA376Valid();
-    }
-
-    public function testRichTextLineSpacing(): void
-    {
-        $expectedLineSpacing = mt_rand(1, 100);
-
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oRichText = $oSlide->createRichTextShape();
-        $oRichText->createTextRun('AAA');
-        $oRichText->getActiveParagraph()->setLineSpacing($expectedLineSpacing);
-
-        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:pPr/a:lnSpc/a:spcPct';
-        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'val', $expectedLineSpacing * 1000);
         $this->assertIsSchemaECMA376Valid();
     }
 

@@ -272,7 +272,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthX)));
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pointsToEmu($expectedWidthX));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorX);
@@ -280,7 +280,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidthY)));
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'w', Drawing::pointsToEmu($expectedWidthY));
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorY);
@@ -799,7 +799,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $expectedColor = new Color(Color::COLOR_BLUE);
         foreach ($arrayTests as $arrayTest) {
             $expectedSizePts = mt_rand(1, 100);
-            $expectedSizeEmu = round(Drawing::pointsToPixels(Drawing::pixelsToEmu($expectedSizePts)));
+            $expectedSizeEmu = Drawing::pointsToEmu($expectedSizePts);
 
             $this->oPresentation->removeSlideByIndex()->createSlide();
             $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
@@ -926,7 +926,7 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testTypeLineSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthEmu = Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidth));
+        $expectedWidthEmu = Drawing::pointsToEmu($expectedWidth);
         $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:spPr/a:ln';
 
         $oOutline = new Outline();
@@ -1310,7 +1310,7 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testTypeScatterSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthEmu = Drawing::pixelsToEmu(Drawing::pointsToPixels($expectedWidth));
+        $expectedWidthEmu = Drawing::pointsToEmu($expectedWidth);
         $expectedElement = '/c:chartSpace/c:chart/c:plotArea/c:scatterChart/c:ser/c:spPr/a:ln';
 
         $oOutline = new Outline();

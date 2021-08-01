@@ -8,6 +8,7 @@ use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -271,6 +272,47 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/presentation:notes/draw:frame/draw:text-box/text:p/text:span';
         $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testParagraphLineSpacing(): void
+    {
+        $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $richText->getActiveParagraph()->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_PERCENT);
+        $richText->getActiveParagraph()->setLineSpacing(200);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $richText->getActiveParagraph()->getHashCode() . '\']/style:paragraph-properties';
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:line-height');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:line-height', '200%');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $richText->getActiveParagraph()->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_POINT);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:line-height');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:line-height', '200pt');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testParagraphSpacingBefore(): void
+    {
+        $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $richText->getActiveParagraph()->setSpacingBefore(123);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $richText->getActiveParagraph()->getHashCode() . '\']/style:paragraph-properties';
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:margin-top');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:margin-top', '4.339cm');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testParagraphSpacingAfter(): void
+    {
+        $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $richText->getActiveParagraph()->setSpacingAfter(123);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $richText->getActiveParagraph()->getHashCode() . '\']/style:paragraph-properties';
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:margin-bottom');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:margin-bottom', '4.339cm');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 

@@ -23,6 +23,7 @@ use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Font;
@@ -128,11 +129,15 @@ class PowerPoint2007Test extends TestCase
         $this->assertEquals(600, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(400, $oShape->getOffsetY());
-        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
-        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
+        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
+        $this->assertEquals(0, $oParagraph->getSpacingAfter());
+        $this->assertEquals(0, $oParagraph->getSpacingBefore());
+        $this->assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        $this->assertEquals(100, $oParagraph->getLineSpacing());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(3, $arrayRichText);
         // Slide 1 : Shape 2 : Paragraph 1
@@ -296,11 +301,15 @@ class PowerPoint2007Test extends TestCase
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(50, $oShape->getOffsetY());
-        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
-        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
+        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
+        $this->assertEquals(0, $oParagraph->getSpacingAfter());
+        $this->assertEquals(0, $oParagraph->getSpacingBefore());
+        $this->assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        $this->assertEquals(100, $oParagraph->getLineSpacing());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(1, $arrayRichText);
         // Slide 3 : Shape 2 : Paragraph 1
@@ -483,11 +492,15 @@ class PowerPoint2007Test extends TestCase
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(50, $oShape->getOffsetY());
-        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
-        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
+        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
+        $this->assertEquals(0, $oParagraph->getSpacingAfter());
+        $this->assertEquals(0, $oParagraph->getSpacingBefore());
+        $this->assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        $this->assertEquals(100, $oParagraph->getLineSpacing());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(1, $arrayRichText);
         // Slide 4 : Shape 2 : Paragraph 1
@@ -496,7 +509,7 @@ class PowerPoint2007Test extends TestCase
         $this->assertEquals('Need more info?', $oRichText->getText());
         $this->assertTrue($oRichText->getFont()->isBold());
         $this->assertEquals(48, $oRichText->getFont()->getSize());
-        $this->assertEquals('FF000000', $oShape->getActiveParagraph()->getFont()->getColor()->getARGB());
+        $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         $this->assertEquals('Calibri', $oRichText->getFont()->getName());
         $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 4 : Shape 3
@@ -507,11 +520,15 @@ class PowerPoint2007Test extends TestCase
         $this->assertEquals(930, $oShape->getWidth());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(130, $oShape->getOffsetY());
-        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oShape->getActiveParagraph()->getAlignment()->getHorizontal());
-        $this->assertFalse($oShape->getActiveParagraph()->getAlignment()->isRTL());
         $arrayParagraphs = $oShape->getParagraphs();
         $this->assertCount(1, $arrayParagraphs);
         $oParagraph = $arrayParagraphs[0];
+        $this->assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
+        $this->assertFalse($oParagraph->getAlignment()->isRTL());
+        $this->assertEquals(0, $oParagraph->getSpacingAfter());
+        $this->assertEquals(0, $oParagraph->getSpacingBefore());
+        $this->assertEquals(Paragraph::LINE_SPACING_MODE_PERCENT, $oParagraph->getLineSpacingMode());
+        $this->assertEquals(100, $oParagraph->getLineSpacing());
         $arrayRichText = $oParagraph->getRichTextElements();
         $this->assertCount(3, $arrayRichText);
         // Slide 4 : Shape 3 : Paragraph 1
@@ -520,7 +537,7 @@ class PowerPoint2007Test extends TestCase
         $this->assertEquals('Check the project site on GitHub:', $oRichText->getText());
         $this->assertFalse($oRichText->getFont()->isBold());
         $this->assertEquals(36, $oRichText->getFont()->getSize());
-        $this->assertEquals('FF000000', $oShape->getActiveParagraph()->getFont()->getColor()->getARGB());
+        $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         $this->assertEquals('Calibri', $oRichText->getFont()->getName());
         $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
         // Slide 4 : Shape 3 : Paragraph 2
@@ -533,7 +550,7 @@ class PowerPoint2007Test extends TestCase
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getText());
         $this->assertFalse($oRichText->getFont()->isBold());
         $this->assertEquals(32, $oRichText->getFont()->getSize());
-        $this->assertEquals('FF000000', $oShape->getActiveParagraph()->getFont()->getColor()->getARGB());
+        $this->assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         $this->assertTrue($oRichText->hasHyperlink());
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getHyperlink()->getUrl());
         $this->assertEquals('PHPPresentation', $oRichText->getHyperlink()->getTooltip());
