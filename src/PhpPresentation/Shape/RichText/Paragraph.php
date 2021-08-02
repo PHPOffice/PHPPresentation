@@ -28,12 +28,15 @@ use PhpOffice\PhpPresentation\Style\Font;
  */
 class Paragraph implements ComparableInterface
 {
+    public const LINE_SPACING_MODE_PERCENT = 'percent';
+    public const LINE_SPACING_MODE_POINT = 'point';
+
     /**
      * Rich text elements.
      *
      * @var array<TextElementInterface>
      */
-    private $richTextElements;
+    private $richTextElements = [];
 
     /**
      * Alignment.
@@ -52,7 +55,7 @@ class Paragraph implements ComparableInterface
     /**
      * Bullet style.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Bullet
+     * @var Bullet
      */
     private $bulletStyle;
 
@@ -60,6 +63,21 @@ class Paragraph implements ComparableInterface
      * @var int
      */
     private $lineSpacing = 100;
+
+    /**
+     * @var string
+     */
+    private $lineSpacingMode = self::LINE_SPACING_MODE_PERCENT;
+
+    /**
+     * @var int
+     */
+    private $spacingBefore = 0;
+
+    /**
+     * @var int
+     */
+    private $spacingAfter = 0;
 
     /**
      * Hash index.
@@ -73,7 +91,6 @@ class Paragraph implements ComparableInterface
      */
     public function __construct()
     {
-        $this->richTextElements = [];
         $this->alignment = new Alignment();
         $this->font = new Font();
         $this->bulletStyle = new Bullet();
@@ -296,19 +313,94 @@ class Paragraph implements ComparableInterface
     /**
      * @return int
      */
-    public function getLineSpacing()
+    public function getLineSpacing(): int
     {
         return $this->lineSpacing;
     }
 
     /**
+     * Value in points
+     *
      * @param int $lineSpacing
      *
-     * @return Paragraph
+     * @return self
      */
-    public function setLineSpacing($lineSpacing)
+    public function setLineSpacing($lineSpacing): self
     {
         $this->lineSpacing = $lineSpacing;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLineSpacingMode(): string
+    {
+        return $this->lineSpacingMode;
+    }
+
+    /**
+     * @param string $lineSpacingMode
+     *
+     * @return self
+     */
+    public function setLineSpacingMode(string $lineSpacingMode): self
+    {
+        if (in_array($lineSpacingMode, [
+            self::LINE_SPACING_MODE_PERCENT,
+            self::LINE_SPACING_MODE_POINT,
+        ])) {
+            $this->lineSpacingMode = $lineSpacingMode;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Value in points
+     *
+     * @return int
+     */
+    public function getSpacingBefore(): int
+    {
+        return $this->spacingBefore;
+    }
+
+    /**
+     * Value in points
+     *
+     * @param int $spacingBefore
+     *
+     * @return self
+     */
+    public function setSpacingBefore(int $spacingBefore): self
+    {
+        $this->spacingBefore = $spacingBefore;
+
+        return $this;
+    }
+
+    /**
+     * Value in points
+     *
+     * @return int
+     */
+    public function getSpacingAfter(): int
+    {
+        return $this->spacingAfter;
+    }
+
+    /**
+     * Value in points
+     *
+     * @param int $spacingAfter
+     *
+     * @return self
+     */
+    public function setSpacingAfter(int $spacingAfter): self
+    {
+        $this->spacingAfter = $spacingAfter;
 
         return $this;
     }

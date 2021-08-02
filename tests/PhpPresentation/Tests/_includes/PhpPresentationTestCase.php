@@ -236,7 +236,15 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertNotEquals(0, $nodeList->length);
+        self::assertNotEquals(
+            0,
+            $nodeList->length,
+            sprintf(
+                'The element "%s" doesn\'t exist in the file "%s"',
+                $xPath,
+                $filePath
+            )
+        );
     }
 
     /**
@@ -251,7 +259,7 @@ class PhpPresentationTestCase extends TestCase
             0,
             $nodeList->length,
             sprintf(
-                'The element "%s" doesn\'t exist in the file "%s"',
+                'The element "%s" exist in the file "%s"',
                 $xPath,
                 $filePath
             )

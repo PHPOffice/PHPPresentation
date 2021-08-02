@@ -262,6 +262,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('tIns', CommonDrawing::pixelsToEmu($shape->getInsetTop()));
             if (1 != $shape->getColumns()) {
                 $objWriter->writeAttribute('numCol', $shape->getColumns());
+                $objWriter->writeAttribute('spcCol', CommonDrawing::pixelsToEmu($shape->getColumnSpacing()));
             }
             // a:spAutoFit
             $objWriter->startElement('a:' . $shape->getAutoFit());
@@ -384,8 +385,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // p:graphicFrame/a:graphic/a:graphicData/a:tbl/a:tblGrid/
         $objWriter->endElement();
         // Colspan / rowspan containers
-        $colSpan = [];
-        $rowSpan = [];
+        $colSpan = $rowSpan = [];
         // Default border style
         $defaultBorder = new Border();
         // Write rows
@@ -517,6 +517,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
             // a:pPr
             if (!$bIsPlaceholder) {
+                // a:pPr
                 $objWriter->startElement('a:pPr');
                 $objWriter->writeAttribute('algn', $paragraph->getAlignment()->getHorizontal());
                 $objWriter->writeAttribute('rtl', $paragraph->getAlignment()->isRTL() ? '1' : '0');
@@ -526,9 +527,29 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('indent', CommonDrawing::pixelsToEmu($paragraph->getAlignment()->getIndent()));
                 $objWriter->writeAttribute('lvl', $paragraph->getAlignment()->getLevel());
 
+                // a:pPr:a:lnSpc
                 $objWriter->startElement('a:lnSpc');
-                $objWriter->startElement('a:spcPct');
-                $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+                if ($paragraph->getLineSpacingMode() == Paragraph::LINE_SPACING_MODE_POINT) {
+                    $objWriter->startElement('a:spcPts');
+                    $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 100);
+                    $objWriter->endElement();
+                } else {
+                    $objWriter->startElement('a:spcPct');
+                    $objWriter->writeAttribute('val', $paragraph->getLineSpacing() * 1000);
+                    $objWriter->endElement();
+                }
+                // >a:pPr:a:lnSpc
+                $objWriter->endElement();
+
+                $objWriter->startElement('a:spcBef');
+                $objWriter->startElement('a:spcPts');
+                $objWriter->writeAttribute('val', $paragraph->getSpacingBefore() * 100);
+                $objWriter->endElement();
+                $objWriter->endElement();
+
+                $objWriter->startElement('a:spcAft');
+                $objWriter->startElement('a:spcPts');
+                $objWriter->writeAttribute('val', $paragraph->getSpacingAfter() * 100);
                 $objWriter->endElement();
                 $objWriter->endElement();
 

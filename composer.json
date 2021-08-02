@@ -22,7 +22,7 @@
         "php": "^7.1|^8.0",
         "ext-xml": "*",
         "ext-zip": "*",
-        "phpoffice/common": "0.2.*",
+        "phpoffice/common": "dev-develop",
         "phpoffice/phpspreadsheet": "^1.9.0"
     },
     "require-dev": {

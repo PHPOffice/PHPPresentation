@@ -200,6 +200,24 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:family', 'paragraph');
                 // style:paragraph-properties
                 $objWriter->startElement('style:paragraph-properties');
+                $objWriter->writeAttributeIf(
+                    $item->getLineSpacingMode() === Paragraph::LINE_SPACING_MODE_PERCENT,
+                    'fo:line-height',
+                    $item->getLineSpacing() . '%'
+                );
+                $objWriter->writeAttributeIf(
+                    $item->getLineSpacingMode() === Paragraph::LINE_SPACING_MODE_POINT,
+                    'fo:line-height',
+                    $item->getLineSpacing() . 'pt'
+                );
+                $objWriter->writeAttribute(
+                    'fo:margin-top',
+                    Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingBefore()), 3) . 'cm'
+                );
+                $objWriter->writeAttribute(
+                    'fo:margin-bottom',
+                    Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingAfter()), 3) . 'cm'
+                );
                 switch ($item->getAlignment()->getHorizontal()) {
                     case Alignment::HORIZONTAL_LEFT:
                         $objWriter->writeAttribute('fo:text-align', 'left');
@@ -981,7 +999,7 @@ class Content extends AbstractDecoratorWriter
                 break;
         }
         $objWriter->writeAttribute('svg:stroke-color', '#' . $shape->getBorder()->getColor()->getRGB());
-        $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((CommonDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3) . 'cm');
+        $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3) . 'cm');
         $objWriter->endElement();
 
         $objWriter->endElement();
@@ -1000,7 +1018,7 @@ class Content extends AbstractDecoratorWriter
 
             // style:table-row-properties
             $objWriter->startElement('style:table-row-properties');
-            $objWriter->writeAttribute('style:row-height', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::pointsToPixels($shapeRow->getHeight())), 3) . 'cm');
+            $objWriter->writeAttribute('style:row-height', Text::numberFormat(CommonDrawing::pointsToCentimeters($shapeRow->getHeight()), 3) . 'cm');
             $objWriter->endElement();
 
             $objWriter->endElement();
