@@ -37,5 +37,31 @@
         "psr-4": {
             "PhpOffice\\PhpPresentation\\": "src/PhpPresentation/"
         }
+    },
+    "scripts": {
+        "samples": [
+            "php samples/Sample_01_Complex.php",
+            "php samples/Sample_01_Simple.php",
+            "php samples/Sample_03_Image.php",
+            "php samples/Sample_03_Video.php",
+            "php samples/Sample_04_Table.php",
+            "php samples/Sample_05_Chart_Line.php",
+            "php samples/Sample_05_Chart.php",
+            "php samples/Sample_05_Chart_with_PhpSpreadsheet.php",
+            "php samples/Sample_06_Fill.php",
+            "php samples/Sample_07_Border.php",
+            "php samples/Sample_08_Group.php",
+            "php samples/Sample_09_SlideNote.php",
+            "php samples/Sample_10_Transition.php",
+            "php samples/Sample_11_Shape.php",
+            "php samples/Sample_13_MarkAsFinal.php",
+            "php samples/Sample_14_Zoom.php",
+            "php samples/Sample_15_Background.php",
+            "php samples/Sample_16_Thumbnail.php",
+            "php samples/Sample_17_Comment.php",
+            "php samples/Sample_18_Animation.php",
+            "php samples/Sample_19_SlideMaster.php",
+            "php samples/Sample_20_ExternalSlide.php"
+        ]
     }
 }

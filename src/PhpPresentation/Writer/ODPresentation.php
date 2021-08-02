@@ -18,7 +18,6 @@
 
 namespace PhpOffice\PhpPresentation\Writer;
 
-use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
@@ -98,26 +97,19 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         $oPresentation = $this->getPhpPresentation();
         $arrayChart = [];
 
-        $arrayFiles = [];
-        $oDir = new DirectoryIterator(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ODPresentation');
-        foreach ($oDir as $oFile) {
-            if (!$oFile->isFile()) {
-                continue;
-            }
+        $arrayFiles = [
+            __CLASS__ . '\Mimetype',
+            __CLASS__ . '\Content',
+            __CLASS__ . '\Meta',
+            __CLASS__ . '\MetaInfManifest',
+            __CLASS__ . '\ObjectsChart',
+            __CLASS__ . '\Pictures',
+            __CLASS__ . '\Styles',
+            __CLASS__ . '\ThumbnailsThumbnail',
+        ];
 
-            $class = __NAMESPACE__ . '\\ODPresentation\\' . $oFile->getBasename('.php');
-            $class = new \ReflectionClass($class);
-
-            if ($class->isAbstract() || !$class->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
-                continue;
-            }
-            $arrayFiles[$oFile->getBasename('.php')] = $class;
-        }
-
-        ksort($arrayFiles);
-
-        foreach ($arrayFiles as $o) {
-            $oService = $o->newInstance();
+        foreach ($arrayFiles as $class) {
+            $oService = new $class();
             $oService->setZip($oZip);
             $oService->setPresentation($oPresentation);
             $oService->setDrawingHashTable($this->getDrawingHashTable());
