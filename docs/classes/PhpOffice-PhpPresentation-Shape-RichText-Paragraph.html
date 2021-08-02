@@ -139,6 +139,20 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#constant_LINE_SPACING_MODE_PERCENT">LINE_SPACING_MODE_PERCENT</a>
+    <span>
+        &nbsp;= &#039;percent&#039;                    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#constant_LINE_SPACING_MODE_POINT">LINE_SPACING_MODE_POINT</a>
+    <span>
+        &nbsp;= &#039;point&#039;                    </span>
+</dt>
+<dd></dd>
+
                 <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_alignment">$alignment</a>
     <span>
@@ -175,11 +189,32 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_lineSpacingMode">$lineSpacingMode</a>
+    <span>
+                &nbsp;: string            </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_richTextElements">$richTextElements</a>
     <span>
                 &nbsp;: array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-TextElementInterface.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface">TextElementInterface</abbr></a>&gt;            </span>
 </dt>
 <dd>Rich text elements.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_spacingAfter">$spacingAfter</a>
+    <span>
+                &nbsp;: int            </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_spacingBefore">$spacingBefore</a>
+    <span>
+                &nbsp;: int            </span>
+</dt>
+<dd></dd>
 
                 <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method___construct">__construct()</a>
@@ -266,6 +301,13 @@
 <dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getLineSpacingMode">getLineSpacingMode()</a>
+    <span>
+                        &nbsp;: string    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getPlainText">getPlainText()</a>
     <span>
                         &nbsp;: string    </span>
@@ -278,6 +320,20 @@
                         &nbsp;: array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-TextElementInterface.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface">TextElementInterface</abbr></a>&gt;    </span>
 </dt>
 <dd>Get Rich Text elements.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getSpacingAfter">getSpacingAfter()</a>
+    <span>
+                        &nbsp;: int    </span>
+</dt>
+<dd>Value in points</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getSpacingBefore">getSpacingBefore()</a>
+    <span>
+                        &nbsp;: int    </span>
+</dt>
+<dd>Value in points</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setAlignment">setAlignment()</a>
@@ -310,7 +366,14 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setLineSpacing">setLineSpacing()</a>
     <span>
-                        &nbsp;: <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Paragraph">Paragraph</abbr></a>    </span>
+                        &nbsp;: self    </span>
+</dt>
+<dd>Value in points</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setLineSpacingMode">setLineSpacingMode()</a>
+    <span>
+                        &nbsp;: self    </span>
 </dt>
 <dd></dd>
 
@@ -321,11 +384,89 @@
 </dt>
 <dd>Set Rich Text elements.</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setSpacingAfter">setSpacingAfter()</a>
+    <span>
+                        &nbsp;: self    </span>
+</dt>
+<dd>Value in points</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setSpacingBefore">setSpacingBefore()</a>
+    <span>
+                        &nbsp;: self    </span>
+</dt>
+<dd>Value in points</dd>
+
         </dl>
 
 
 
         
+    <section class="phpdocumentor-constants">
+        <h3 class="phpdocumentor-elements__header" id="constants">
+            Constants
+            <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#constants" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_LINE_SPACING_MODE_PERCENT">
+        LINE_SPACING_MODE_PERCENT
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#constant_LINE_SPACING_MODE_PERCENT" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">31</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">LINE_SPACING_MODE_PERCENT</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;percent&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_LINE_SPACING_MODE_POINT">
+        LINE_SPACING_MODE_POINT
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#constant_LINE_SPACING_MODE_POINT" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">32</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">LINE_SPACING_MODE_POINT</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;point&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+            </section>
 
         
     <section class="phpdocumentor-properties">
@@ -349,7 +490,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">43</span>
+    <span class="phpdocumentor-element-found-in__line">46</span>
 
     </aside>
 
@@ -382,7 +523,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">57</span>
+    <span class="phpdocumentor-element-found-in__line">60</span>
 
     </aside>
 
@@ -415,7 +556,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">50</span>
+    <span class="phpdocumentor-element-found-in__line">53</span>
 
     </aside>
 
@@ -448,7 +589,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">69</span>
+    <span class="phpdocumentor-element-found-in__line">87</span>
 
     </aside>
 
@@ -481,7 +622,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">62</span>
+    <span class="phpdocumentor-element-found-in__line">65</span>
 
     </aside>
 
@@ -504,6 +645,38 @@
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_lineSpacingMode">
+        $lineSpacingMode
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_lineSpacingMode" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">70</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">string</span>
+    <span class="phpdocumentor-signature__name">$lineSpacingMode</span>
+     = <span class="phpdocumentor-signature__default-value">self::LINE_SPACING_MODE_PERCENT</span></code>
+
+    
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_richTextElements">
         $richTextElements
         <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_richTextElements" class="headerlink"><i class="fas fa-link"></i></a>
@@ -513,7 +686,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">36</span>
+    <span class="phpdocumentor-element-found-in__line">39</span>
 
     </aside>
 
@@ -523,7 +696,71 @@
     <span class="phpdocumentor-signature__visibility">private</span>
         <span class="phpdocumentor-signature__type">array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-TextElementInterface.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface">TextElementInterface</abbr></a>&gt;</span>
     <span class="phpdocumentor-signature__name">$richTextElements</span>
-    </code>
+     = <span class="phpdocumentor-signature__default-value">[]</span></code>
+
+    
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_spacingAfter">
+        $spacingAfter
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_spacingAfter" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">80</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">int</span>
+    <span class="phpdocumentor-signature__name">$spacingAfter</span>
+     = <span class="phpdocumentor-signature__default-value">0</span></code>
+
+    
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_spacingBefore">
+        $spacingBefore
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#property_spacingBefore" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">75</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">int</span>
+    <span class="phpdocumentor-signature__name">$spacingBefore</span>
+     = <span class="phpdocumentor-signature__default-value">0</span></code>
 
     
     
@@ -550,7 +787,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">74</span>
+    <span class="phpdocumentor-element-found-in__line">92</span>
 
     </aside>
 
@@ -583,7 +820,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">205</span>
+    <span class="phpdocumentor-element-found-in__line">222</span>
 
     </aside>
 
@@ -616,7 +853,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">164</span>
+    <span class="phpdocumentor-element-found-in__line">181</span>
 
     </aside>
 
@@ -675,7 +912,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">176</span>
+    <span class="phpdocumentor-element-found-in__line">193</span>
 
     </aside>
 
@@ -722,7 +959,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">149</span>
+    <span class="phpdocumentor-element-found-in__line">166</span>
 
     </aside>
 
@@ -781,7 +1018,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">191</span>
+    <span class="phpdocumentor-element-found-in__line">208</span>
 
     </aside>
 
@@ -840,7 +1077,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">85</span>
+    <span class="phpdocumentor-element-found-in__line">102</span>
 
     </aside>
 
@@ -873,7 +1110,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">125</span>
+    <span class="phpdocumentor-element-found-in__line">142</span>
 
     </aside>
 
@@ -906,7 +1143,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">103</span>
+    <span class="phpdocumentor-element-found-in__line">120</span>
 
     </aside>
 
@@ -939,7 +1176,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">256</span>
+    <span class="phpdocumentor-element-found-in__line">273</span>
 
     </aside>
 
@@ -974,7 +1211,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">274</span>
+    <span class="phpdocumentor-element-found-in__line">291</span>
 
     </aside>
 
@@ -1012,7 +1249,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">299</span>
+    <span class="phpdocumentor-element-found-in__line">316</span>
 
     </aside>
 
@@ -1037,6 +1274,38 @@ while doing a write of a workbook and when changes are not allowed.</p>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getLineSpacingMode">
+        getLineSpacingMode()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getLineSpacingMode" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">338</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">getLineSpacingMode</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getPlainText">
         getPlainText()
         <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getPlainText" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1044,7 +1313,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">213</span>
+    <span class="phpdocumentor-element-found-in__line">230</span>
 
     </aside>
 
@@ -1077,7 +1346,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">234</span>
+    <span class="phpdocumentor-element-found-in__line">251</span>
 
     </aside>
 
@@ -1103,6 +1372,72 @@ while doing a write of a workbook and when changes are not allowed.</p>
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getSpacingAfter">
+        getSpacingAfter()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getSpacingAfter" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">389</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Value in points</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">getSpacingAfter</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">int</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getSpacingBefore">
+        getSpacingBefore()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getSpacingBefore" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">365</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Value in points</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">getSpacingBefore</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">int</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_setAlignment">
         setAlignment()
         <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setAlignment" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1110,7 +1445,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">93</span>
+    <span class="phpdocumentor-element-found-in__line">110</span>
 
     </aside>
 
@@ -1154,7 +1489,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">135</span>
+    <span class="phpdocumentor-element-found-in__line">152</span>
 
     </aside>
 
@@ -1212,7 +1547,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">115</span>
+    <span class="phpdocumentor-element-found-in__line">132</span>
 
     </aside>
 
@@ -1271,7 +1606,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">289</span>
+    <span class="phpdocumentor-element-found-in__line">306</span>
 
     </aside>
 
@@ -1319,14 +1654,15 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">309</span>
+    <span class="phpdocumentor-element-found-in__line">328</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Value in points</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">setLineSpacing</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$lineSpacing</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Paragraph">Paragraph</abbr></a></span></code>
+                <span class="phpdocumentor-signature__name">setLineSpacing</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$lineSpacing</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
 
     
         <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
@@ -1343,7 +1679,49 @@ while doing a write of a workbook and when changes are not allowed.</p>
     
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Paragraph">Paragraph</abbr></a></span>
+    <span class="phpdocumentor-signature__response_type">self</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setLineSpacingMode">
+        setLineSpacingMode()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setLineSpacingMode" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">348</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">setLineSpacingMode</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$lineSpacingMode</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$lineSpacingMode</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">self</span>
             &mdash;
         
     
@@ -1361,7 +1739,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">244</span>
+    <span class="phpdocumentor-element-found-in__line">261</span>
 
     </aside>
 
@@ -1382,6 +1760,92 @@ while doing a write of a workbook and when changes are not allowed.</p>
                     <section class="phpdocumentor-description"><p>Array of elements</p>
 </section>
 
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">self</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setSpacingAfter">
+        setSpacingAfter()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setSpacingAfter" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">401</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Value in points</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">setSpacingAfter</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$spacingAfter</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$spacingAfter</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">self</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setSpacingBefore">
+        setSpacingBefore()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setSpacingBefore" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/RichText/Paragraph.php"><a href="files/src-phppresentation-shape-richtext-paragraph.html"><abbr title="src/PhpPresentation/Shape/RichText/Paragraph.php">Paragraph.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">377</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Value in points</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">setSpacingBefore</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$spacingBefore</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$spacingBefore</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
             </dd>
             </dl>
 

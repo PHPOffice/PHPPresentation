@@ -12,7 +12,7 @@
         <link rel="canonical" href="https://phpoffice.github.io/PHPPresentation/usage/shapes/richtext.html">
       
       <link rel="icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.1">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.2">
     
     
       
@@ -465,16 +465,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bullet" class="md-nav__link">
-    Bullet
+  <a href="#column-spacing" class="md-nav__link">
+    Column Spacing
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#linespacing" class="md-nav__link">
-    LineSpacing
+  <a href="#paragraph" class="md-nav__link">
+    Paragraph
   </a>
+  
+    <nav class="md-nav" aria-label="Paragraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bullet" class="md-nav__link">
+    Bullet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#line-spacing" class="md-nav__link">
+    Line Spacing
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spacing" class="md-nav__link">
+    Spacing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -825,16 +852,43 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#bullet" class="md-nav__link">
-    Bullet
+  <a href="#column-spacing" class="md-nav__link">
+    Column Spacing
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#linespacing" class="md-nav__link">
-    LineSpacing
+  <a href="#paragraph" class="md-nav__link">
+    Paragraph
   </a>
+  
+    <nav class="md-nav" aria-label="Paragraph">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#bullet" class="md-nav__link">
+    Bullet
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#line-spacing" class="md-nav__link">
+    Line Spacing
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#spacing" class="md-nav__link">
+    Spacing
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -864,6 +918,11 @@
                 
                 <h1 id="richtext">RichText</h1>
 <p>Rich text shapes contain paragraphs of texts. To create a rich text shape, use <code>createRichTextShape</code> method of slide.</p>
+<p>Each rich text can contain multiples paragraphs.
+Each paragraph can contain:
+- a <code>TextElement</code>
+- a <code>BreakElement</code>
+- a <code>Run</code></p>
 <p>Below are the properties that you can set for a rich text shape.</p>
 <ul>
 <li><code>wrap</code></li>
@@ -881,15 +940,28 @@
 <li><code>topInset</code> in pixels</li>
 <li><code>autoShrinkHorizontal</code> (boolean)</li>
 <li><code>autoShrinkVertical</code> (boolean)</li>
+<li><code>columnSpacing</code> see <em>Column Spacing</em></li>
 </ul>
 <p>Properties that can be set for each paragraphs are as follow.</p>
 <ul>
 <li><code>alignment</code> <!-- see *<a href="#alignment">Alignment</a>*--></li>
 <li><code>bulletStyle</code> see <em><a href="#bullet">Bullet</a></em></li>
-<li><code>lineSpacing</code> see <em><a href="#linespacing">LineSpacing</a></em></li>
+<li><code>lineSpacing</code> see <em>Line Spacing</em></li>
 <li><code>font</code> <!-- see *<a href="#font">Font</a>*--></li>
 </ul>
-<h2 id="bullet">Bullet</h2>
+<h2 id="column-spacing">Column Spacing</h2>
+<p>For a paragraph, you can define the column spacing.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\RichText</span><span class="p">;</span>
+
+<span class="nv">$richText</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RichText</span><span class="p">();</span>
+<span class="nv">$richText</span><span class="o">-&gt;</span><span class="na">setColumnSpacing</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
+<span class="nv">$columnSpacing</span> <span class="o">=</span> <span class="nv">$richText</span><span class="o">-&gt;</span><span class="na">getColumnSpacing</span><span class="p">();</span>
+</code></pre></div>
+<h2 id="paragraph">Paragraph</h2>
+<h3 id="bullet">Bullet</h3>
 <p>For a paragraph, you can define the bullet style.</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
@@ -912,8 +984,9 @@
 <span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">getBulletStyle</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setBulletType</span><span class="p">(</span><span class="nx">Bullet</span><span class="o">::</span><span class="na">TYPE_BULLET</span><span class="p">);</span>
 <span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">getBulletStyle</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setBulletColor</span><span class="p">(</span><span class="k">new</span> <span class="nx">Color</span><span class="p">(</span><span class="nx">Color</span><span class="o">::</span><span class="na">COLOR_RED</span><span class="p">));</span>
 </code></pre></div>
-<h2 id="linespacing">LineSpacing</h2>
-<p>For a paragraph, you can define the line spacing.</p>
+<h3 id="line-spacing">Line Spacing</h3>
+<p>For a paragraph, you can define the line spacing.
+By default, mode is in percent (<code>Paragraph::LINE_SPACING_MODE_PERCENT</code>), but you can use the point mode (<code>Paragraph::LINE_SPACING_MODE_POINT</code>).</p>
 <p>Example:</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
 
@@ -922,6 +995,23 @@
 <span class="nv">$paragraph</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Paragraph</span><span class="p">();</span>
 <span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">setLineSpacing</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
 <span class="nv">$lineSpacing</span> <span class="o">=</span> <span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">getLineSpacing</span><span class="p">();</span>
+
+<span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">setLineSpacingMode</span><span class="p">(</span><span class="nx">Paragraph</span><span class="o">::</span><span class="na">LINE_SPACING_MODE_POINT</span><span class="p">);</span>
+<span class="nv">$lineSpacingMode</span> <span class="o">=</span> <span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">getLineSpacingMode</span><span class="p">();</span>
+</code></pre></div>
+<h3 id="spacing">Spacing</h3>
+<p>For a paragraph, you can define the spacing before and after the paragraph in point
+Example:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\RichText\Paragraph</span><span class="p">;</span>
+
+<span class="nv">$paragraph</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Paragraph</span><span class="p">();</span>
+<span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">setSpacingAfter</span><span class="p">(</span><span class="mi">12</span><span class="p">);</span>
+<span class="nv">$spacingAfter</span> <span class="o">=</span> <span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">getSpacingAfter</span><span class="p">();</span>
+
+<span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">setSpacingBefore</span><span class="p">(</span><span class="mi">34</span><span class="p">);</span>
+<span class="nv">$spacingBefore</span> <span class="o">=</span> <span class="nv">$paragraph</span><span class="o">-&gt;</span><span class="na">getSpacingBefore</span><span class="p">();</span>
 </code></pre></div>
 <h2 id="run">Run</h2>
 <p>For a run, you can define the language.</p>
@@ -1003,10 +1093,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../..", "features": ["search.highlight", "search.suggest"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.53c85856.min.js", "version": null}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["search.highlight", "search.suggest"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.716f8af4.min.js"></script>
+      <script src="../../assets/javascripts/bundle.2b46852b.min.js"></script>
       
     
   </body>
