@@ -18,6 +18,8 @@ plugins:
   - search
   - autolink_references:
       autolinks:
+        - reference_prefix: GP-
+          target_url: https://github.com/<num>
         - reference_prefix: GH-
           target_url: https://github.com/PHPOffice/PHPPresentation/issues/<num>
         - reference_prefix: CP-
