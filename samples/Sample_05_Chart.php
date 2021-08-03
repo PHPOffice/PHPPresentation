@@ -3,13 +3,17 @@
 include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+use PhpOffice\PhpPresentation\Shape\Chart\Legend;
+use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
@@ -406,7 +410,7 @@ function fnSlide_Doughnut(PhpPresentation $objPHPPresentation)
 
     // Create a doughnut chart (that should be inserted in a shape)
     echo date('H:i:s') . ' Create a non-3D Doughnut chart (that should be inserted in a chart shape)' . EOL;
-    $doughnutChart = new \PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut();
+    $doughnutChart = new Doughnut();
     $doughnutChart->setHoleSize(43);
     $series = new Series('Downloads', $seriesData);
     $series->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color('FF7CB5EC'));
@@ -443,7 +447,7 @@ function fnSlide_Doughnut(PhpPresentation $objPHPPresentation)
     $shape->getPlotArea()->setType($doughnutChart);
     $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
     $shape->getLegend()->getFont()->setItalic(true);
-    $shape->getLegend()->setPosition(\PhpOffice\PhpPresentation\Shape\Chart\Legend::POSITION_LEFT);
+    $shape->getLegend()->setPosition(Legend::POSITION_LEFT);
 }
 
 function fnSlide_Pie3D(PhpPresentation $objPHPPresentation)
@@ -546,6 +550,63 @@ function fnSlide_Pie(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
+function fnSlide_Radar(PhpPresentation $objPHPPresentation)
+{
+    global $oFill;
+    global $oShadow;
+
+    // Create templated slide
+    echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
+    $currentSlide = createTemplatedSlide($objPHPPresentation); // local function
+
+    // Generate sample data for fourth chart
+    echo date('H:i:s') . ' Generate sample data for chart' . EOL;
+    $seriesData = ['Monday' => 0.1, 'Tuesday' => 0.33333, 'Wednesday' => 0.4444, 'Thursday' => 0.5, 'Friday' => 0.4666, 'Saturday' => 0.3666, 'Sunday' => 0.1666];
+
+    // Create a scatter chart (that should be inserted in a shape)
+    echo date('H:i:s') . ' Create a radar chart (that should be inserted in a chart shape)' . EOL;
+    $oChart = new Radar();
+    $series = new Series('Downloads', $seriesData);
+    $series->setShowSeriesName(true);
+    $series->getMarker()->setSymbol(Marker::SYMBOL_DASH);
+    $series->getMarker()->setSize(10);
+    $oChart->addSeries($series);
+
+    // Create a shape (chart)
+    echo date('H:i:s') . ' Create a shape (chart)' . EOL;
+    $shape = $currentSlide->createChartShape();
+    $shape->setName('PHPPresentation Daily Download Distribution')
+        ->setResizeProportional(false)
+        ->setHeight(550)
+        ->setWidth(700)
+        ->setOffsetX(120)
+        ->setOffsetY(80);
+    $shape->setShadow($oShadow);
+    $shape->setFill($oFill);
+    $shape->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getTitle()->setText('PHPPresentation Daily Downloads');
+    $shape->getTitle()->getFont()->setItalic(true);
+    $shape->getPlotArea()->setType($oChart);
+    $shape->getView3D()->setRotationX(30);
+    $shape->getView3D()->setPerspective(30);
+    $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
+    $shape->getLegend()->getFont()->setItalic(true);
+
+    $oGridlines = new Gridlines();
+    $oGridlines->getOutline()
+        ->setWidth(1)
+        ->getFill()
+        ->setFillType(Fill::FILL_SOLID)
+        ->setStartColor(new Color(Color::COLOR_RED)); // FF0000
+    $shape->getPlotArea()->getAxisY()
+        ->setMajorGridlines($oGridlines)
+        ->getOutline()
+        ->setWidth(2)
+        ->getFill()
+        ->setFillType(Fill::FILL_SOLID)
+        ->setStartColor(new Color(Color::COLOR_BLUE)); // 0000FF
+}
+
 function fnSlide_Scatter(PhpPresentation $objPHPPresentation)
 {
     global $oFill;
@@ -565,7 +626,7 @@ function fnSlide_Scatter(PhpPresentation $objPHPPresentation)
     $lineChart->setIsSmooth(true);
     $series = new Series('Downloads', $seriesData);
     $series->setShowSeriesName(true);
-    $series->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_CIRCLE);
+    $series->getMarker()->setSymbol(Marker::SYMBOL_CIRCLE);
     $series->getMarker()->getFill()
         ->setFillType(Fill::FILL_SOLID)
         ->setStartColor(new Color('FF6F3510'))
@@ -639,6 +700,8 @@ fnSlide_Doughnut($objPHPPresentation);
 fnSlide_Pie3D($objPHPPresentation);
 
 fnSlide_Pie($objPHPPresentation);
+
+fnSlide_Radar($objPHPPresentation);
 
 fnSlide_Scatter($objPHPPresentation);
 

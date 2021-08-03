@@ -41,7 +41,7 @@ Below are the supported features for each file formats.
 |---------------------------|----------------------|-------|-------|-------|-------|
 | **Document**              | Mark as final        |       |       |       | :material-check: |
 | **Document Properties**   | Standard             |       | :material-check: |       | :material-check: |
-|                           | Custom               |       |       |       |       |
+|                           | Custom               |       | :material-check: |       | :material-check: |
 | **Slides**                |                      |       | :material-check: |       | :material-check: |
 |                           | Name                 |       | :material-check: |       |       |
 | **Element Shape**         | Image                |       | :material-check: |       | :material-check: |
@@ -51,9 +51,14 @@ Below are the supported features for each file formats.
 |                           | RichText             |       | :material-check: |       | :material-check: |
 |                           | Table                |       | :material-check: |       | :material-check: |
 |                           | Text                 |       | :material-check: |       | :material-check: |
-| **Charts**                | Bar3D                |       | :material-check: |       | :material-check: |
+| **Charts**                | Area                 |       | :material-check: |       | :material-check: |
+|                           | Bar                  |       | :material-check: |       | :material-check: |
+|                           | Bar3D                |       | :material-check: |       | :material-check: |
+|                           | Doughnut             |       | :material-check: |       | :material-check: |
 |                           | Line                 |       | :material-check: |       | :material-check: |
+|                           | Pie                  |       | :material-check: |       | :material-check: |
 |                           | Pie3D                |       | :material-check: |       | :material-check: |
+|                           | Radar                |       | :material-check: |       | :material-check: |
 |                           | Scatter              |       | :material-check: |       | :material-check: |
 
 
@@ -63,7 +68,7 @@ Below are the supported features for each file formats.
 |---------------------------|----------------------|--------|-------|-------|-------|-------|
 | **Document**              | Mark as final        |        |       |       |       | :material-check: |
 | **Document Properties**   | Standard             |        | :material-check: |       |       | :material-check: |
-|                           | Custom               |        |       |       |       |       |
+|                           | Custom               |        | :material-check: |       |       | :material-check: |
 | **Slides**                |                      |        | :material-check: |       |       | :material-check: |
 |                           | Name                 |        |       |       |       |        | :material-check: |       |
 | **Element Shape**         | Image                |        | :material-check: |       | :material-check: | :material-check: |
@@ -71,10 +76,16 @@ Below are the supported features for each file formats.
 |                           | RichText             |        | :material-check: |       | :material-check: | :material-check: |
 |                           | Table                |        |       |       |       |       |
 |                           | Text                 |        | :material-check: |       | :material-check: | :material-check: |
-| **Charts**                | Bar3D                |        |       |       |       |       |
+| **Charts**                | Area                 |        |       |       |       |       |
+|                           | Bar                  |        |       |       |       |       |
+|                           | Bar3D                |        |       |       |       |       |
+|                           | Doughnut             |        |       |       |       |       |
 |                           | Line                 |        |       |       |       |       |
+|                           | Pie                  |        |       |       |       |       |
 |                           | Pie3D                |        |       |       |       |       |
+|                           | Radar                |        |       |       |       |       |
 |                           | Scatter              |        |       |       |       |       |
+
 
 ## Contributing
 

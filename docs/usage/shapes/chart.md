@@ -385,6 +385,21 @@ $chart->isSmooth();
 
 TODO
 
+### Radar
+
+You can create a Radar Chart.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
+
+$radarChart = new Radar();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($radarChart);
+```
+
 ### Scatter
 
 #### Smooth line

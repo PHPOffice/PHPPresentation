@@ -17,6 +17,7 @@ use PhpOffice\PhpPresentation\Shape\Chart\Type\Doughnut;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Radar;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Scatter;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
@@ -207,6 +208,56 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testAxisBounds(): void
+    {
+        $value = mt_rand(0, 100);
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:max';
+        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:min';
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds(null);
+        $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
+        $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testAxisFont(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -288,6 +339,91 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testAxisTickLabelPosition(): void
+    {
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:tickLblPos';
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_NEXT_TO);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_HIGH);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_HIGH);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_LOW);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testAxisTickMark(): void
+    {
+        $value = Axis::TICK_MARK_CROSS;
+
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorTickMark';
+        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorTickMark';
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark();
+        $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
+        $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testAxisTitleRotation(): void
     {
         $oSeries = new Series('Downloads', $this->seriesData);
@@ -343,163 +479,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTypeArea(): void
-    {
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createChartShape();
-        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
-        $oArea = new Area();
-        $oSeries = new Series('Downloads', $this->seriesData);
-        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
-        $oArea->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oArea);
-
-        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
-        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart/c:ser';
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-
-        $this->assertIsSchemaECMA376Valid();
-    }
-
-    public function testTypeAxisBounds(): void
-    {
-        $value = mt_rand(0, 100);
-
-        $oSeries = new Series('Downloads', $this->seriesData);
-        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
-        $oLine = new Line();
-        $oLine->addSeries($oSeries);
-        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
-
-        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:max';
-        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:min';
-
-        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
-        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
-
-        $this->assertIsSchemaECMA376Valid();
-
-        $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
-
-        $oShape->getPlotArea()->getAxisX()->setMinBounds(null);
-        $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
-
-        $oShape->getPlotArea()->getAxisX()->setMinBounds($value);
-        $oShape->getPlotArea()->getAxisX()->setMaxBounds($value);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
-    }
-
-    public function testTypeAxisTickLabelPosition(): void
-    {
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:tickLblPos';
-
-        $oSeries = new Series('Downloads', $this->seriesData);
-        $oLine = new Line();
-        $oLine->addSeries($oSeries);
-        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_NEXT_TO);
-
-        $this->assertIsSchemaECMA376Valid();
-
-        $oShape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_HIGH);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_HIGH);
-        $this->assertIsSchemaECMA376Valid();
-
-        $oShape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', Axis::TICK_LABEL_POSITION_LOW);
-
-        $this->assertIsSchemaECMA376Valid();
-    }
-
-    public function testTypeAxisTickMark(): void
-    {
-        $value = Axis::TICK_MARK_CROSS;
-
-        $oSeries = new Series('Downloads', $this->seriesData);
-        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
-        $oLine = new Line();
-        $oLine->addSeries($oSeries);
-        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
-        $oShape->getPlotArea()->setType($oLine);
-
-        $elementMax = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:majorTickMark';
-        $elementMin = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:minorTickMark';
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
-
-        $this->assertIsSchemaECMA376Valid();
-
-        $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', Axis::TICK_MARK_NONE);
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
-
-        $oShape->getPlotArea()->getAxisY()->setMinorTickMark();
-        $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', Axis::TICK_MARK_NONE);
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
-
-        $oShape->getPlotArea()->getAxisY()->setMinorTickMark($value);
-        $oShape->getPlotArea()->getAxisY()->setMajorTickMark($value);
-        $this->resetPresentationFile();
-
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
-        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
-        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
-
-        $this->assertIsSchemaECMA376Valid();
-    }
-
-    public function testTypeAxisXUnit(): void
+    public function testAxisXUnit(): void
     {
         $value = mt_rand(0, 100);
 
@@ -524,7 +504,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testTypeAxisYUnit(): void
+    public function testAxisYUnit(): void
     {
         $value = mt_rand(0, 100);
 
@@ -569,6 +549,27 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testTypeArea(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oArea = new Area();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oArea->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oArea);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:areaChart/c:ser';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
 
         $this->assertIsSchemaECMA376Valid();
     }
@@ -1156,6 +1157,29 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'baseline', '300000');
 
         $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testTypeRadar(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        $oRadar = new Radar();
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oRadar->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oRadar);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:radarChart';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:radarChart/c:ser';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:radarChart/c:ser/c:tx/c:v';
+        $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:radarChart/c:ser/c:dLbls/c:showLegendKey';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 0);
     }
 
     public function testTypeScatter(): void
