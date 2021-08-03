@@ -25,6 +25,7 @@ use DOMNodeList;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
@@ -244,10 +245,41 @@ class PowerPoint2007 implements ReaderInterface
         $sPart = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $sPart);
         /* @phpstan-ignore-next-line */
         if ($xmlReader->getDomFromString($sPart)) {
-            $pathMarkAsFinal = '/Properties/property[@pid="2"][@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"][@name="_MarkAsFinal"]/vt:bool';
-            if (is_object($oElement = $xmlReader->getElement($pathMarkAsFinal))) {
-                if ('true' == $oElement->nodeValue) {
-                    $this->oPhpPresentation->getPresentationProperties()->markAsFinal(true);
+            foreach ($xmlReader->getElements('/Properties/property[@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"]') as $element) {
+                if (!$element->hasAttribute('name')) {
+                    continue;
+                }
+                $propertyName = $element->getAttribute('name');
+                if ($propertyName == '_MarkAsFinal') {
+                    $attributeElement = $xmlReader->getElement('vt:bool', $element);
+                    if ($attributeElement && 'true' == $attributeElement->nodeValue) {
+                        $this->oPhpPresentation->getPresentationProperties()->markAsFinal(true);
+                    }
+                } else {
+                    $attributeTypeInt = $xmlReader->getElement('vt:i4', $element);
+                    $attributeTypeFloat = $xmlReader->getElement('vt:r8', $element);
+                    $attributeTypeBoolean = $xmlReader->getElement('vt:bool', $element);
+                    $attributeTypeDate = $xmlReader->getElement('vt:filetime', $element);
+                    $attributeTypeString = $xmlReader->getElement('vt:lpwstr', $element);
+
+                    if ($attributeTypeInt) {
+                        $propertyType = DocumentProperties::PROPERTY_TYPE_INTEGER;
+                        $propertyValue = (int) $attributeTypeInt->nodeValue;
+                    } elseif ($attributeTypeFloat) {
+                        $propertyType = DocumentProperties::PROPERTY_TYPE_FLOAT;
+                        $propertyValue = (float) $attributeTypeFloat->nodeValue;
+                    } elseif ($attributeTypeBoolean) {
+                        $propertyType = DocumentProperties::PROPERTY_TYPE_BOOLEAN;
+                        $propertyValue = $attributeTypeBoolean->nodeValue == 'true' ? true : false;
+                    } elseif ($attributeTypeDate) {
+                        $propertyType = DocumentProperties::PROPERTY_TYPE_DATE;
+                        $propertyValue = strtotime($attributeTypeDate->nodeValue);
+                    } else {
+                        $propertyType = DocumentProperties::PROPERTY_TYPE_STRING;
+                        $propertyValue = $attributeTypeString->nodeValue;
+                    }
+
+                    $this->oPhpPresentation->getDocumentProperties()->setCustomProperty($propertyName, $propertyValue, $propertyType);
                 }
             }
         }

@@ -64,6 +64,45 @@ $properties->setSubject('My subject');
 $properties->setKeywords('my, key, word');
 ```
 
+### Custom Properties
+
+You can add custom properties with the method `setCustomProperty`.
+
+Multiple types are available:
+* `DocumentProperties::PROPERTY_TYPE_STRING` for string value,
+* `DocumentProperties::PROPERTY_TYPE_BOOLEAN` for boolean value,
+* `DocumentProperties::PROPERTY_TYPE_FLOAT` for float value,
+* `DocumentProperties::PROPERTY_TYPE_INTEGER` for integer value,
+* `DocumentProperties::PROPERTY_TYPE_DATE` for date value,
+* `DocumentProperties::PROPERTY_TYPE_UNKNOWN` for unknown type value.
+
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\DocumentProperties;
+
+$properties = $presentation->getProperties();
+
+// Set the custom property
+$properties->setCustomProperty('propertyName', 'propertyValue', DocumentProperties::PROPERTY_TYPE_STRING);
+
+// Check if a custom property exists
+$properties->isCustomPropertySet('unknown'); // return `false`
+$properties->isCustomPropertySet('propertyName'); // return `true`
+
+// Return all custom properties
+$properties->getCustomProperties(); // return `['propertyName']`
+
+// Return value from a custom property
+$properties->getCustomPropertyValue('unknown'); // return `null` if not set
+$properties->getCustomPropertyValue('propertyName'); // return `propertyValue`
+
+// Return type from a custom property
+$properties->getCustomPropertyType('unknown'); // return `null` if not set
+$properties->getCustomPropertyType('propertyName'); // return `DocumentProperties::PROPERTY_TYPE_STRING`
+```
+
 ## Presentation Properties
 
 You can define some properties which are relative to the presentation, like the zoom or the thumbnail.

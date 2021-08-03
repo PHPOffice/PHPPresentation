@@ -22,6 +22,7 @@ use DateTime;
 use DOMElement;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
+use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
@@ -169,7 +170,7 @@ class ODPresentation implements ReaderInterface
             '/office:document-meta/office:meta/meta:creation-date' => 'setCreated',
             '/office:document-meta/office:meta/dc:date' => 'setModified',
         ];
-        $oProperties = $this->oPhpPresentation->getDocumentProperties();
+        $properties = $this->oPhpPresentation->getDocumentProperties();
         foreach ($arrayProperties as $path => $property) {
             $oElement = $this->oXMLReader->getElement($path);
             if ($oElement instanceof DOMElement) {
@@ -181,8 +182,36 @@ class ODPresentation implements ReaderInterface
                     }
                     $value = $dateTime->getTimestamp();
                 }
-                $oProperties->{$property}($value);
+                $properties->{$property}($value);
             }
+        }
+
+        foreach ($this->oXMLReader->getElements('/office:document-meta/office:meta/meta:user-defined') as $element) {
+            if (!($element instanceof DOMElement)
+                || !$element->hasAttribute('meta:name')) {
+                continue;
+            }
+            $propertyName = $element->getAttribute('meta:name');
+            $propertyValue = (string) $element->nodeValue;
+            $propertyType = $element->getAttribute('meta:value-type');
+            switch ($propertyType) {
+                case 'boolean':
+                    $propertyType = DocumentProperties::PROPERTY_TYPE_BOOLEAN;
+                    break;
+                case 'float':
+                    $propertyType = filter_var($propertyValue, FILTER_VALIDATE_INT) === false
+                        ? DocumentProperties::PROPERTY_TYPE_FLOAT
+                        : DocumentProperties::PROPERTY_TYPE_INTEGER;
+                    break;
+                case 'date':
+                    $propertyType = DocumentProperties::PROPERTY_TYPE_DATE;
+                    break;
+                case 'string':
+                default:
+                    $propertyType = DocumentProperties::PROPERTY_TYPE_STRING;
+                    break;
+            }
+            $properties->setCustomProperty($propertyName, $propertyValue, $propertyType);
         }
     }
 

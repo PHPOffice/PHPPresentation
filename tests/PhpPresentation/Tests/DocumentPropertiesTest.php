@@ -74,4 +74,58 @@ class DocumentPropertiesTest extends TestCase
             $this->assertEquals($time, $object->$get());
         }
     }
+
+    public function testCustomProperties(): void
+    {
+        $valueTime = time();
+
+        $object = new DocumentProperties();
+        $this->assertIsArray($object->getCustomProperties());
+        $this->assertCount(0, $object->getCustomProperties());
+        $this->assertFalse($object->isCustomPropertySet('pName'));
+        $this->assertNull($object->getCustomPropertyType('pName'));
+        $this->assertNull($object->getCustomPropertyValue('pName'));
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->setCustomProperty('pName', 'pValue', null));
+        $this->assertCount(1, $object->getCustomProperties());
+        $this->assertTrue($object->isCustomPropertySet('pName'));
+        $this->assertEquals(DocumentProperties::PROPERTY_TYPE_STRING, $object->getCustomPropertyType('pName'));
+        $this->assertEquals('pValue', $object->getCustomPropertyValue('pName'));
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->setCustomProperty('pName', 2, null));
+        $this->assertCount(1, $object->getCustomProperties());
+        $this->assertTrue($object->isCustomPropertySet('pName'));
+        $this->assertEquals(DocumentProperties::PROPERTY_TYPE_INTEGER, $object->getCustomPropertyType('pName'));
+        $this->assertEquals(2, $object->getCustomPropertyValue('pName'));
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->setCustomProperty('pName', 2.1, null));
+        $this->assertCount(1, $object->getCustomProperties());
+        $this->assertTrue($object->isCustomPropertySet('pName'));
+        $this->assertEquals(DocumentProperties::PROPERTY_TYPE_FLOAT, $object->getCustomPropertyType('pName'));
+        $this->assertEquals(2.1, $object->getCustomPropertyValue('pName'));
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->setCustomProperty('pName', true, null));
+        $this->assertCount(1, $object->getCustomProperties());
+        $this->assertTrue($object->isCustomPropertySet('pName'));
+        $this->assertEquals(DocumentProperties::PROPERTY_TYPE_BOOLEAN, $object->getCustomPropertyType('pName'));
+        $this->assertEquals(true, $object->getCustomPropertyValue('pName'));
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->setCustomProperty('pName', null, null));
+        $this->assertCount(1, $object->getCustomProperties());
+        $this->assertTrue($object->isCustomPropertySet('pName'));
+        $this->assertEquals(DocumentProperties::PROPERTY_TYPE_STRING, $object->getCustomPropertyType('pName'));
+        $this->assertEquals(null, $object->getCustomPropertyValue('pName'));
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->setCustomProperty('pName', $valueTime, DocumentProperties::PROPERTY_TYPE_DATE));
+        $this->assertCount(1, $object->getCustomProperties());
+        $this->assertTrue($object->isCustomPropertySet('pName'));
+        $this->assertEquals(DocumentProperties::PROPERTY_TYPE_DATE, $object->getCustomPropertyType('pName'));
+        $this->assertEquals($valueTime, $object->getCustomPropertyValue('pName'));
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->setCustomProperty('pName', (string) $valueTime, DocumentProperties::PROPERTY_TYPE_UNKNOWN));
+        $this->assertCount(1, $object->getCustomProperties());
+        $this->assertTrue($object->isCustomPropertySet('pName'));
+        $this->assertEquals(DocumentProperties::PROPERTY_TYPE_STRING, $object->getCustomPropertyType('pName'));
+        $this->assertEquals($valueTime, $object->getCustomPropertyValue('pName'));
+    }
 }
