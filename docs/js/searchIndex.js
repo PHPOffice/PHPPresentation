@@ -4626,6 +4626,16 @@ Search.appendIndex(
             "summary": "Get\u0020hash\u0020code.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-Pie3D.html#method_getHashCode"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Radar",
+            "name": "Radar",
+            "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-Radar.html"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Radar\u003A\u003AgetHashCode\u0028\u0029",
+            "name": "getHashCode",
+            "summary": "Get\u0020hash\u0020code",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-Radar.html#method_getHashCode"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter",
             "name": "Scatter",
             "summary": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type.",
@@ -10471,9 +10481,14 @@ Search.appendIndex(
             "summary": "Write\u0020Type\u0020Line.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-PptCharts.html#method_writeTypeLine"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts\u003A\u003AwriteTypeRadar\u0028\u0029",
+            "name": "writeTypeRadar",
+            "summary": "Write\u0020Type\u0020Radar",
+            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-PptCharts.html#method_writeTypeRadar"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts\u003A\u003AwriteTypeScatter\u0028\u0029",
             "name": "writeTypeScatter",
-            "summary": "Write\u0020Type\u0020Scatter.",
+            "summary": "Write\u0020Type\u0020Scatter",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-PptCharts.html#method_writeTypeScatter"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts\u003A\u003AwriteChartRelationships\u0028\u0029",

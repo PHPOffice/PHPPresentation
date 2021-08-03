@@ -677,6 +677,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#radar" class="md-nav__link">
+    Radar
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#scatter" class="md-nav__link">
     Scatter
   </a>
@@ -1349,6 +1356,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#radar" class="md-nav__link">
+    Radar
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#scatter" class="md-nav__link">
     Scatter
   </a>
@@ -1687,6 +1701,17 @@ By default, smooth line is disabled.</p>
 </code></pre></div>
 <h3 id="pie-pie3d">Pie &amp; Pie3D</h3>
 <p>TODO</p>
+<h3 id="radar">Radar</h3>
+<p>You can create a Radar Chart.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\Chart\Type\Radar</span><span class="p">;</span>
+
+<span class="nv">$radarChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Radar</span><span class="p">();</span>
+
+<span class="nv">$shape</span> <span class="o">=</span> <span class="nv">$slide</span><span class="o">-&gt;</span><span class="na">createChartShape</span><span class="p">();</span>
+<span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setType</span><span class="p">(</span><span class="nv">$radarChart</span><span class="p">);</span>
+</code></pre></div>
 <h3 id="scatter">Scatter</h3>
 <h4 id="smooth-line_1">Smooth line</h4>
 <p>You can enable or disable the smooth line with <code>setIsSmooth</code> method from <code>AbstractTypeLine</code>.
