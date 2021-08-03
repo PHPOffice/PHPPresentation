@@ -318,6 +318,19 @@
     Document information
   </a>
   
+    <nav class="md-nav" aria-label="Document information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-properties" class="md-nav__link">
+    Custom Properties
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -882,6 +895,19 @@
     Document information
   </a>
   
+    <nav class="md-nav" aria-label="Document information">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#custom-properties" class="md-nav__link">
+    Custom Properties
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1011,6 +1037,39 @@
 <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setModified</span><span class="p">(</span><span class="nb">mktime</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span> <span class="mi">2014</span><span class="p">));</span>
 <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setSubject</span><span class="p">(</span><span class="s1">&#39;My subject&#39;</span><span class="p">);</span>
 <span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setKeywords</span><span class="p">(</span><span class="s1">&#39;my, key, word&#39;</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="custom-properties">Custom Properties</h3>
+<p>You can add custom properties with the method <code>setCustomProperty</code>.</p>
+<p>Multiple types are available:
+* <code>DocumentProperties::PROPERTY_TYPE_STRING</code> for string value,
+* <code>DocumentProperties::PROPERTY_TYPE_BOOLEAN</code> for boolean value,
+* <code>DocumentProperties::PROPERTY_TYPE_FLOAT</code> for float value,
+* <code>DocumentProperties::PROPERTY_TYPE_INTEGER</code> for integer value,
+* <code>DocumentProperties::PROPERTY_TYPE_DATE</code> for date value,
+* <code>DocumentProperties::PROPERTY_TYPE_UNKNOWN</code> for unknown type value.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\DocumentProperties</span><span class="p">;</span>
+
+<span class="nv">$properties</span> <span class="o">=</span> <span class="nv">$presentation</span><span class="o">-&gt;</span><span class="na">getProperties</span><span class="p">();</span>
+
+<span class="c1">// Set the custom property</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">setCustomProperty</span><span class="p">(</span><span class="s1">&#39;propertyName&#39;</span><span class="p">,</span> <span class="s1">&#39;propertyValue&#39;</span><span class="p">,</span> <span class="nx">DocumentProperties</span><span class="o">::</span><span class="na">PROPERTY_TYPE_STRING</span><span class="p">);</span>
+
+<span class="c1">// Check if a custom property exists</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">isCustomPropertySet</span><span class="p">(</span><span class="s1">&#39;unknown&#39;</span><span class="p">);</span> <span class="c1">// return `false`</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">isCustomPropertySet</span><span class="p">(</span><span class="s1">&#39;propertyName&#39;</span><span class="p">);</span> <span class="c1">// return `true`</span>
+
+<span class="c1">// Return all custom properties</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">getCustomProperties</span><span class="p">();</span> <span class="c1">// return `[&#39;propertyName&#39;]`</span>
+
+<span class="c1">// Return value from a custom property</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">getCustomPropertyValue</span><span class="p">(</span><span class="s1">&#39;unknown&#39;</span><span class="p">);</span> <span class="c1">// return `null` if not set</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">getCustomPropertyValue</span><span class="p">(</span><span class="s1">&#39;propertyName&#39;</span><span class="p">);</span> <span class="c1">// return `propertyValue`</span>
+
+<span class="c1">// Return type from a custom property</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">getCustomPropertyType</span><span class="p">(</span><span class="s1">&#39;unknown&#39;</span><span class="p">);</span> <span class="c1">// return `null` if not set</span>
+<span class="nv">$properties</span><span class="o">-&gt;</span><span class="na">getCustomPropertyType</span><span class="p">(</span><span class="s1">&#39;propertyName&#39;</span><span class="p">);</span> <span class="c1">// return `DocumentProperties::PROPERTY_TYPE_STRING`</span>
 </code></pre></div>
 <h2 id="presentation-properties">Presentation Properties</h2>
 <p>You can define some properties which are relative to the presentation, like the zoom or the thumbnail.</p>

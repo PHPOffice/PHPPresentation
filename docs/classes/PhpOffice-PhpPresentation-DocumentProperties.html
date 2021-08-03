@@ -123,6 +123,48 @@
 </h3>
 
 <dl class="phpdocumentor-table-of-contents">
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_BOOLEAN">PROPERTY_TYPE_BOOLEAN</a>
+    <span>
+        &nbsp;= &#039;b&#039;                    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_DATE">PROPERTY_TYPE_DATE</a>
+    <span>
+        &nbsp;= &#039;d&#039;                    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_FLOAT">PROPERTY_TYPE_FLOAT</a>
+    <span>
+        &nbsp;= &#039;f&#039;                    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_INTEGER">PROPERTY_TYPE_INTEGER</a>
+    <span>
+        &nbsp;= &#039;i&#039;                    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_STRING">PROPERTY_TYPE_STRING</a>
+    <span>
+        &nbsp;= &#039;s&#039;                    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -constant -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_UNKNOWN">PROPERTY_TYPE_UNKNOWN</a>
+    <span>
+        &nbsp;= &#039;u&#039;                    </span>
+</dt>
+<dd></dd>
+
                 <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#property_category">$category</a>
     <span>
@@ -150,6 +192,13 @@
                 &nbsp;: string            </span>
 </dt>
 <dd>Creator.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -property -private">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#property_customProperties">$customProperties</a>
+    <span>
+                &nbsp;: array&lt;string, array&lt;string, mixed&gt;&gt;            </span>
+</dt>
+<dd>Custom Properties.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#property_description">$description</a>
@@ -198,7 +247,7 @@
     <span>
                         &nbsp;: mixed    </span>
 </dt>
-<dd>Create a new \PhpOffice\PhpPresentation\DocumentProperties.</dd>
+<dd>Create a new \PhpOffice\PhpPresentation\DocumentProperties</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCategory">getCategory()</a>
@@ -227,6 +276,27 @@
                         &nbsp;: string    </span>
 </dt>
 <dd>Get Creator.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomProperties">getCustomProperties()</a>
+    <span>
+                        &nbsp;: array&lt;int, string&gt;    </span>
+</dt>
+<dd>Get a List of Custom Property Names.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomPropertyType">getCustomPropertyType()</a>
+    <span>
+                        &nbsp;: string|null    </span>
+</dt>
+<dd>Get a Custom Property Type.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomPropertyValue">getCustomPropertyValue()</a>
+    <span>
+                        &nbsp;: string|null    </span>
+</dt>
+<dd>Get a Custom Property Value.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getDescription">getDescription()</a>
@@ -271,6 +341,13 @@
 <dd>Get Title.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_isCustomPropertySet">isCustomPropertySet()</a>
+    <span>
+                        &nbsp;: bool    </span>
+</dt>
+<dd>Check if a Custom Property is defined.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_setCategory">setCategory()</a>
     <span>
                         &nbsp;: <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html"><abbr title="\PhpOffice\PhpPresentation\DocumentProperties">DocumentProperties</abbr></a>    </span>
@@ -297,6 +374,13 @@
                         &nbsp;: <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html"><abbr title="\PhpOffice\PhpPresentation\DocumentProperties">DocumentProperties</abbr></a>    </span>
 </dt>
 <dd>Set Creator.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_setCustomProperty">setCustomProperty()</a>
+    <span>
+                        &nbsp;: self    </span>
+</dt>
+<dd>Set a Custom Property.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_setDescription">setDescription()</a>
@@ -345,6 +429,186 @@
 
 
         
+    <section class="phpdocumentor-constants">
+        <h3 class="phpdocumentor-elements__header" id="constants">
+            Constants
+            <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constants" class="headerlink"><i class="fas fa-link"></i></a>
+        </h3>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_PROPERTY_TYPE_BOOLEAN">
+        PROPERTY_TYPE_BOOLEAN
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_BOOLEAN" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">26</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">PROPERTY_TYPE_BOOLEAN</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;b&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_PROPERTY_TYPE_DATE">
+        PROPERTY_TYPE_DATE
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_DATE" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">29</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">PROPERTY_TYPE_DATE</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;d&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_PROPERTY_TYPE_FLOAT">
+        PROPERTY_TYPE_FLOAT
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_FLOAT" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">28</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">PROPERTY_TYPE_FLOAT</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;f&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_PROPERTY_TYPE_INTEGER">
+        PROPERTY_TYPE_INTEGER
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_INTEGER" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">27</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">PROPERTY_TYPE_INTEGER</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;i&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_PROPERTY_TYPE_STRING">
+        PROPERTY_TYPE_STRING
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_STRING" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">30</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">PROPERTY_TYPE_STRING</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;s&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+                    <article class="phpdocumentor-element -constant -public ">
+    <h4 class="phpdocumentor-element__name" id="constant_PROPERTY_TYPE_UNKNOWN">
+        PROPERTY_TYPE_UNKNOWN
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_UNKNOWN" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">31</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-signature phpdocumentor-code ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+    <span class="phpdocumentor-signature__type">mixed</span>
+    <span class="phpdocumentor-signature__name">PROPERTY_TYPE_UNKNOWN</span>
+    = <span class="phpdocumentor-signature__default-value">&#039;u&#039;</span>
+</code>
+
+
+        <section class="phpdocumentor-description"></section>
+
+        <section class="phpdocumentor-description"></section>
+
+    
+
+</article>
+            </section>
 
         
     <section class="phpdocumentor-properties">
@@ -368,7 +632,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">87</span>
+    <span class="phpdocumentor-element-found-in__line">94</span>
 
     </aside>
 
@@ -401,7 +665,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">94</span>
+    <span class="phpdocumentor-element-found-in__line">101</span>
 
     </aside>
 
@@ -434,7 +698,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">45</span>
+    <span class="phpdocumentor-element-found-in__line">52</span>
 
     </aside>
 
@@ -467,7 +731,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">31</span>
+    <span class="phpdocumentor-element-found-in__line">38</span>
 
     </aside>
 
@@ -491,6 +755,39 @@
             -private
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="property_customProperties">
+        $customProperties
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#property_customProperties" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">108</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Custom Properties.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">private</span>
+        <span class="phpdocumentor-signature__type">array&lt;string, array&lt;string, mixed&gt;&gt;</span>
+    <span class="phpdocumentor-signature__name">$customProperties</span>
+     = <span class="phpdocumentor-signature__default-value">[]</span></code>
+
+    
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
+            -private
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="property_description">
         $description
         <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#property_description" class="headerlink"><i class="fas fa-link"></i></a>
@@ -500,7 +797,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">66</span>
+    <span class="phpdocumentor-element-found-in__line">73</span>
 
     </aside>
 
@@ -533,7 +830,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">80</span>
+    <span class="phpdocumentor-element-found-in__line">87</span>
 
     </aside>
 
@@ -566,7 +863,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">38</span>
+    <span class="phpdocumentor-element-found-in__line">45</span>
 
     </aside>
 
@@ -599,7 +896,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">52</span>
+    <span class="phpdocumentor-element-found-in__line">59</span>
 
     </aside>
 
@@ -632,7 +929,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">73</span>
+    <span class="phpdocumentor-element-found-in__line">80</span>
 
     </aside>
 
@@ -665,7 +962,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">59</span>
+    <span class="phpdocumentor-element-found-in__line">66</span>
 
     </aside>
 
@@ -702,11 +999,11 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">99</span>
+    <span class="phpdocumentor-element-found-in__line">113</span>
 
     </aside>
 
-        <p class="phpdocumentor-summary">Create a new \PhpOffice\PhpPresentation\DocumentProperties.</p>
+        <p class="phpdocumentor-summary">Create a new \PhpOffice\PhpPresentation\DocumentProperties</p>
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
@@ -735,7 +1032,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">317</span>
+    <span class="phpdocumentor-element-found-in__line">331</span>
 
     </aside>
 
@@ -768,7 +1065,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">341</span>
+    <span class="phpdocumentor-element-found-in__line">355</span>
 
     </aside>
 
@@ -801,7 +1098,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">167</span>
+    <span class="phpdocumentor-element-found-in__line">181</span>
 
     </aside>
 
@@ -834,7 +1131,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">119</span>
+    <span class="phpdocumentor-element-found-in__line">133</span>
 
     </aside>
 
@@ -860,6 +1157,125 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_getCustomProperties">
+        getCustomProperties()
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomProperties" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">379</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Get a List of Custom Property Names.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">getCustomProperties</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">array&lt;int, string&gt;</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">array&lt;int, string&gt;</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getCustomPropertyType">
+        getCustomPropertyType()
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomPropertyType" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">419</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Get a Custom Property Type.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">getCustomPropertyType</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$propertyName</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string|null</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$propertyName</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string|null</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getCustomPropertyValue">
+        getCustomPropertyValue()
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomPropertyValue" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">403</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Get a Custom Property Value.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">getCustomPropertyValue</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$propertyName</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string|null</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$propertyName</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string|null</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_getDescription">
         getDescription()
         <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getDescription" class="headerlink"><i class="fas fa-link"></i></a>
@@ -867,7 +1283,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">245</span>
+    <span class="phpdocumentor-element-found-in__line">259</span>
 
     </aside>
 
@@ -900,7 +1316,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">293</span>
+    <span class="phpdocumentor-element-found-in__line">307</span>
 
     </aside>
 
@@ -933,7 +1349,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">143</span>
+    <span class="phpdocumentor-element-found-in__line">157</span>
 
     </aside>
 
@@ -966,7 +1382,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">194</span>
+    <span class="phpdocumentor-element-found-in__line">208</span>
 
     </aside>
 
@@ -999,7 +1415,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">269</span>
+    <span class="phpdocumentor-element-found-in__line">283</span>
 
     </aside>
 
@@ -1032,7 +1448,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">221</span>
+    <span class="phpdocumentor-element-found-in__line">235</span>
 
     </aside>
 
@@ -1058,6 +1474,49 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_isCustomPropertySet">
+        isCustomPropertySet()
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_isCustomPropertySet" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">391</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Check if a Custom Property is defined.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">isCustomPropertySet</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$propertyName</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">bool</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$propertyName</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">bool</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_setCategory">
         setCategory()
         <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_setCategory" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1065,7 +1524,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">329</span>
+    <span class="phpdocumentor-element-found-in__line">343</span>
 
     </aside>
 
@@ -1108,7 +1567,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">353</span>
+    <span class="phpdocumentor-element-found-in__line">367</span>
 
     </aside>
 
@@ -1151,7 +1610,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">179</span>
+    <span class="phpdocumentor-element-found-in__line">193</span>
 
     </aside>
 
@@ -1194,7 +1653,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">131</span>
+    <span class="phpdocumentor-element-found-in__line">145</span>
 
     </aside>
 
@@ -1230,6 +1689,69 @@
             -public
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_setCustomProperty">
+        setCustomProperty()
+        <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_setCustomProperty" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">442</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Set a Custom Property.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">setCustomProperty</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$propertyName</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">mixed&nbsp;</span><span class="phpdocumentor-signature__argument__name">$propertyValue</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$propertyType</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$propertyName</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$propertyValue</span>
+                : <span class="phpdocumentor-signature__argument__return-type">mixed</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$propertyType</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string|null</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>'i' : Integer
+'f' : Floating Point
+'s' : String
+'d' : Date/Time
+'b' : Boolean</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">self</span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_setDescription">
         setDescription()
         <a href="classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_setDescription" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1237,7 +1759,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">257</span>
+    <span class="phpdocumentor-element-found-in__line">271</span>
 
     </aside>
 
@@ -1280,7 +1802,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">305</span>
+    <span class="phpdocumentor-element-found-in__line">319</span>
 
     </aside>
 
@@ -1323,7 +1845,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">155</span>
+    <span class="phpdocumentor-element-found-in__line">169</span>
 
     </aside>
 
@@ -1366,7 +1888,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">206</span>
+    <span class="phpdocumentor-element-found-in__line">220</span>
 
     </aside>
 
@@ -1409,7 +1931,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">281</span>
+    <span class="phpdocumentor-element-found-in__line">295</span>
 
     </aside>
 
@@ -1452,7 +1974,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/DocumentProperties.php"><a href="files/src-phppresentation-documentproperties.html"><abbr title="src/PhpPresentation/DocumentProperties.php">DocumentProperties.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">233</span>
+    <span class="phpdocumentor-element-found-in__line">247</span>
 
     </aside>
 

@@ -413,7 +413,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Create\u0020a\u0020new\u0020\\PhpOffice\\PhpPresentation\\DocumentProperties.",
+            "summary": "Create\u0020a\u0020new\u0020\\PhpOffice\\PhpPresentation\\DocumentProperties",
             "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#method___construct"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003AgetCreator\u0028\u0029",
@@ -516,6 +516,61 @@ Search.appendIndex(
             "summary": "Set\u0020Company.",
             "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_setCompany"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003AgetCustomProperties\u0028\u0029",
+            "name": "getCustomProperties",
+            "summary": "Get\u0020a\u0020List\u0020of\u0020Custom\u0020Property\u0020Names.",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomProperties"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003AisCustomPropertySet\u0028\u0029",
+            "name": "isCustomPropertySet",
+            "summary": "Check\u0020if\u0020a\u0020Custom\u0020Property\u0020is\u0020defined.",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_isCustomPropertySet"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003AgetCustomPropertyValue\u0028\u0029",
+            "name": "getCustomPropertyValue",
+            "summary": "Get\u0020a\u0020Custom\u0020Property\u0020Value.",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomPropertyValue"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003AgetCustomPropertyType\u0028\u0029",
+            "name": "getCustomPropertyType",
+            "summary": "Get\u0020a\u0020Custom\u0020Property\u0020Type.",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_getCustomPropertyType"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003AsetCustomProperty\u0028\u0029",
+            "name": "setCustomProperty",
+            "summary": "Set\u0020a\u0020Custom\u0020Property.",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#method_setCustomProperty"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003APROPERTY_TYPE_BOOLEAN",
+            "name": "PROPERTY_TYPE_BOOLEAN",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_BOOLEAN"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003APROPERTY_TYPE_INTEGER",
+            "name": "PROPERTY_TYPE_INTEGER",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_INTEGER"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003APROPERTY_TYPE_FLOAT",
+            "name": "PROPERTY_TYPE_FLOAT",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_FLOAT"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003APROPERTY_TYPE_DATE",
+            "name": "PROPERTY_TYPE_DATE",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_DATE"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003APROPERTY_TYPE_STRING",
+            "name": "PROPERTY_TYPE_STRING",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_STRING"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003APROPERTY_TYPE_UNKNOWN",
+            "name": "PROPERTY_TYPE_UNKNOWN",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#constant_PROPERTY_TYPE_UNKNOWN"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003A\u0024creator",
             "name": "creator",
             "summary": "Creator.",
@@ -565,6 +620,11 @@ Search.appendIndex(
             "name": "company",
             "summary": "Company.",
             "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#property_company"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003A\u0024customProperties",
+            "name": "customProperties",
+            "summary": "Custom\u0020Properties.",
+            "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#property_customProperties"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\GeometryCalculator",
             "name": "GeometryCalculator",
