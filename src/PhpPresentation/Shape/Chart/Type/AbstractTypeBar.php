@@ -22,7 +22,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar.
  */
-class AbstractTypeBar extends AbstractType
+abstract class AbstractTypeBar extends AbstractType
 {
     /** Orientation of bars */
     public const DIRECTION_VERTICAL = 'col';
