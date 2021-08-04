@@ -36,4 +36,9 @@ class Line extends AbstractTypeLine implements ComparableInterface
 
         return md5(parent::getHashCode() . $hash . __CLASS__);
     }
+
+    public function getXmlElementName(): string
+    {
+        return 'c:lineChart';
+    }
 }

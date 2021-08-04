@@ -82,15 +82,22 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testChartIncludeSpreadsheet(): void
+    /**
+     * @dataProvider dataProviderIncludedSpreadsheet
+     */
+    public function testChartIncludeSpreadsheet(string $chartType): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
         $oShape->setIncludeSpreadsheet(true);
-        $oLine = new Line();
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
         $oSeries = new Series('Downloads', $this->seriesData);
-        $oLine->addSeries($oSeries);
-        $oShape->getPlotArea()->setType($oLine);
+        $oChart->addSeries($oSeries);
+        $oShape->getPlotArea()->setType($oChart);
+
+        $chartElementName = $oChart->getXmlElementName();
+        $chartBaseXmlPath = sprintf('/c:chartSpace/c:chart/c:plotArea/%s', $chartElementName);
 
         $this->assertTrue($oShape->hasIncludedSpreadsheet());
 
@@ -103,26 +110,26 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart';
+        $element = $chartBaseXmlPath;
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser';
+        $element = $chartBaseXmlPath . '/c:ser';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlElementCount('ppt/charts/' . $oShape->getIndexedFilename(), $element, 1);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:v';
+        $element = $chartBaseXmlPath . '/c:ser/c:tx/c:v';
         $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:strRef';
+        $element = $chartBaseXmlPath . '/c:ser/c:tx/c:strRef';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:strRef/c:f';
+        $element = $chartBaseXmlPath . '/c:ser/c:tx/c:strRef/c:f';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'Sheet1!$B$1');
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:strRef/c:strCache';
+        $element = $chartBaseXmlPath . '/c:ser/c:tx/c:strRef/c:strCache';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:strRef/c:strCache/c:pt';
+        $element = $chartBaseXmlPath . '/c:ser/c:tx/c:strRef/c:strCache/c:pt';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:strRef/c:strCache/c:pt/c:v';
+        $element = $chartBaseXmlPath . '/c:ser/c:tx/c:strRef/c:strCache/c:pt/c:v';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'Downloads');
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:val/c:numRef/c:numCache/c:pt/c:v';
+        $element = $chartBaseXmlPath . '/c:ser/c:val/c:numRef/c:numCache/c:pt/c:v';
         $this->assertZipXmlElementCount('ppt/charts/' . $oShape->getIndexedFilename(), $element, count($this->seriesData));
         foreach (array_values($this->seriesData) as $index => $value) {
             $this->assertZipXmlElementAtIndexEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $index, $value);
@@ -149,11 +156,11 @@ class PptChartsTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart';
+        $element = $chartBaseXmlPath;
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser';
+        $element = $chartBaseXmlPath . '/c:ser';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
-        $element = '/c:chartSpace/c:chart/c:plotArea/c:lineChart/c:ser/c:tx/c:v';
+        $element = $chartBaseXmlPath . '/c:ser/c:tx/c:v';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'Downloads');
         $element = '/c:chartSpace/c:externalData';
@@ -1481,6 +1488,27 @@ class PptChartsTest extends PhpPresentationTestCase
                 continue;
             }
             yield [$symbol];
+        }
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public function dataProviderIncludedSpreadsheet(): iterable
+    {
+        $chartTypes = [
+            Area::class,
+            Bar::class,
+            Bar3D::class,
+            Doughnut::class,
+            Pie::class,
+            Pie3D::class,
+            Line::class,
+            Radar::class,
+            Scatter::class,
+        ];
+        foreach ($chartTypes as $chartType) {
+            yield [$chartType];
         }
     }
 }

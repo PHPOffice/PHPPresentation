@@ -34,4 +34,9 @@ class Pie3D extends AbstractTypePie implements ComparableInterface
     {
         return md5(parent::getHashCode() . __CLASS__);
     }
+
+    public function getXmlElementName(): string
+    {
+        return 'c:pie3DChart';
+    }
 }

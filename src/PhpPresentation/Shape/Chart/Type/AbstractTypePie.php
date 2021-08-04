@@ -21,7 +21,7 @@ namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 /**
  * \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar.
  */
-class AbstractTypePie extends AbstractType
+abstract class AbstractTypePie extends AbstractType
 {
     /**
      * Create a new self instance.

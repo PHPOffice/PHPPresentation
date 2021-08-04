@@ -252,7 +252,7 @@ class PhpPresentationTestCase extends TestCase
      * @param string $xPath
      * @param int $index
      */
-    public function assertZipXmlElementAtIndexExists($filePath, $xPath, $index): void
+    public function assertZipXmlElementAtIndexExists(string $filePath, string $xPath, int $index): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
@@ -306,7 +306,7 @@ class PhpPresentationTestCase extends TestCase
      * @param int $index
      * @param mixed $value
      */
-    public function assertZipXmlElementAtIndexEquals($filePath, $xPath, $index, $value): void
+    public function assertZipXmlElementAtIndexEquals(string $filePath, string $xPath, int $index, $value): void
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
