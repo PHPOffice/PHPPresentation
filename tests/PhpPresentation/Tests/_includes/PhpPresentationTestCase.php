@@ -250,6 +250,28 @@ class PhpPresentationTestCase extends TestCase
     /**
      * @param string $filePath
      * @param string $xPath
+     * @param int $index
+     */
+    public function assertZipXmlElementAtIndexExists($filePath, $xPath, $index): void
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        $element = $nodeList->item($index);
+        self::assertNotEquals(
+            null,
+            $element,
+            sprintf(
+                'The element "%s" at index %d doesn\'t exist in the file "%s"',
+                $xPath,
+                $index,
+                $filePath
+            )
+        );
+    }
+
+    /**
+     * @param string $filePath
+     * @param string $xPath
      */
     public function assertZipXmlElementNotExists($filePath, $xPath): void
     {
@@ -276,6 +298,19 @@ class PhpPresentationTestCase extends TestCase
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
         self::assertEquals($nodeList->item(0)->nodeValue, $value);
+    }
+
+    /**
+     * @param string $filePath
+     * @param string $xPath
+     * @param int $index
+     * @param mixed $value
+     */
+    public function assertZipXmlElementAtIndexEquals($filePath, $xPath, $index, $value): void
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertEquals($nodeList->item($index)->nodeValue, $value);
     }
 
     /**
