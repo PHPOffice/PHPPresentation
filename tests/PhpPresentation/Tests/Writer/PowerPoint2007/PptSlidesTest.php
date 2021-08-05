@@ -43,9 +43,6 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    /**
-     * @see https://github.com/PHPOffice/PHPPresentation/issues/42
-     */
     public function testAlignmentShapeAuto(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -58,9 +55,6 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    /**
-     * @see https://github.com/PHPOffice/PHPPresentation/issues/42
-     */
     public function testAlignmentShapeBase(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -74,9 +68,6 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    /**
-     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
-     */
     public function testAlignmentShapeBottom(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -90,9 +81,6 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    /**
-     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
-     */
     public function testAlignmentShapeCenter(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -106,9 +94,6 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
-    /**
-     * @see https://github.com/PHPOffice/PHPPresentation/issues/35
-     */
     public function testAlignmentShapeTop(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
@@ -173,6 +158,40 @@ class PptSlidesTest extends PhpPresentationTestCase
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:hlinkClick';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:id', 'rId3');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testDrawingShapeMimetypePNG(): void
+    {
+        $shape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $shape->setHeight(10)->setWidth(10);
+        $shape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:extLst';
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:blipFill/a:blip/a:extLst';
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testDrawingShapeMimetypeSVG(): void
+    {
+        $shape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $shape->setHeight(10)->setWidth(10);
+        $shape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/tiger.svg');
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:extLst';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:extLst/a:ext';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:cNvPr/a:extLst/a:ext[@uri="{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}"]';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:blipFill/a:blip/a:extLst';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:blipFill/a:blip/a:extLst/a:ext[@uri="{28A0092B-C50C-407E-A947-70E740481C1C}"]';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
         $this->assertIsSchemaECMA376Valid();
     }
 

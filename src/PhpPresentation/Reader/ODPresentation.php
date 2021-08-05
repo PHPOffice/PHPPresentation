@@ -25,6 +25,7 @@ use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -532,11 +533,13 @@ class ODPresentation implements ReaderInterface
     protected function loadShapeDrawing(DOMElement $oNodeFrame): void
     {
         // Core
-        $oShape = new Gd();
-        $oShape->getShadow()->setVisible(false);
+        $mimetype = '';
 
         $oNodeImage = $this->oXMLReader->getElement('draw:image', $oNodeFrame);
         if ($oNodeImage instanceof DOMElement) {
+            if ($oNodeImage->hasAttribute('loext:mime-type')) {
+                $mimetype = $oNodeImage->getAttribute('loext:mime-type');
+            }
             if ($oNodeImage->hasAttribute('xlink:href')) {
                 $sFilename = $oNodeImage->getAttribute('xlink:href');
                 // svm = StarView Metafile
@@ -544,30 +547,41 @@ class ODPresentation implements ReaderInterface
                     return;
                 }
                 $imageFile = $this->oZip->getFromName($sFilename);
-                if (!empty($imageFile)) {
-                    $oShape->setImageResource(imagecreatefromstring($imageFile));
-                }
             }
         }
 
-        $oShape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
-        $oShape->setDescription($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
-        $oShape->setResizeProportional(false);
-        $oShape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
-        $oShape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
-        $oShape->setResizeProportional(true);
-        $oShape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
-        $oShape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
+        if (empty($imageFile)) {
+            return;
+        }
+
+        // Contents of file
+        if (empty($mimetype)) {
+            $shape = new Gd();
+            $shape->setImageResource(imagecreatefromstring($imageFile));
+        } else {
+            $shape = new Base64();
+            $shape->setData('data:' . $mimetype . ';base64,' . base64_encode($imageFile));
+        }
+
+        $shape->getShadow()->setVisible(false);
+        $shape->setName($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
+        $shape->setDescription($oNodeFrame->hasAttribute('draw:name') ? $oNodeFrame->getAttribute('draw:name') : '');
+        $shape->setResizeProportional(false);
+        $shape->setWidth($oNodeFrame->hasAttribute('svg:width') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:width'), 0, -2)) : 0);
+        $shape->setHeight($oNodeFrame->hasAttribute('svg:height') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:height'), 0, -2)) : 0);
+        $shape->setResizeProportional(true);
+        $shape->setOffsetX($oNodeFrame->hasAttribute('svg:x') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:x'), 0, -2)) : 0);
+        $shape->setOffsetY($oNodeFrame->hasAttribute('svg:y') ? CommonDrawing::centimetersToPixels((float) substr($oNodeFrame->getAttribute('svg:y'), 0, -2)) : 0);
 
         if ($oNodeFrame->hasAttribute('draw:style-name')) {
             $keyStyle = $oNodeFrame->getAttribute('draw:style-name');
             if (isset($this->arrayStyles[$keyStyle])) {
-                $oShape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
-                $oShape->setFill($this->arrayStyles[$keyStyle]['fill']);
+                $shape->setShadow($this->arrayStyles[$keyStyle]['shadow']);
+                $shape->setFill($this->arrayStyles[$keyStyle]['fill']);
             }
         }
 
-        $this->oPhpPresentation->getActiveSlide()->addShape($oShape);
+        $this->oPhpPresentation->getActiveSlide()->addShape($shape);
     }
 
     /**

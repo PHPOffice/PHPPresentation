@@ -67,7 +67,11 @@ class File extends AbstractDrawingAdapter
         }
         $image = getimagesizefromstring(CommonFile::fileGetContents($this->getPath()));
 
-        return image_type_to_mime_type($image[2]);
+        if (is_array($image)) {
+            return image_type_to_mime_type($image[2]);
+        }
+
+        return mime_content_type($this->getPath());
     }
 
     public function getIndexedFilename(): string

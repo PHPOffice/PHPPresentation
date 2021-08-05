@@ -1,6 +1,18 @@
 # Drawing
 
-To create a drawing, you have four sources : File, GD, Base64 and ZipFile.
+To create a drawing, you have multiples sources :
+
+- Base64
+- File
+- GD
+- ZipFile
+
+You can add multiples formats of image :
+
+- GIF
+- JPEG
+- PNG
+- SVG
 
 ## File
 

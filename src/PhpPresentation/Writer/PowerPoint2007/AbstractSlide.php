@@ -26,6 +26,7 @@ use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
+use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as ShapeDrawingFile;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd as ShapeDrawingGd;
 use PhpOffice\PhpPresentation\Shape\Group;
@@ -1148,27 +1149,54 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     {
         // p:pic
         $objWriter->startElement('p:pic');
+
         // p:nvPicPr
         $objWriter->startElement('p:nvPicPr');
+
         // p:cNvPr
         $objWriter->startElement('p:cNvPr');
         $objWriter->writeAttribute('id', $shapeId);
         $objWriter->writeAttribute('name', $shape->getName());
         $objWriter->writeAttribute('descr', $shape->getDescription());
+
         // a:hlinkClick
         if ($shape->hasHyperlink()) {
             $this->writeHyperlink($objWriter, $shape);
         }
+
+        if ($shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg') {
+            $objWriter->startElement('a:extLst');
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', '{FF2B5EF4-FFF2-40B4-BE49-F238E27FC236}');
+            $objWriter->startElement('a16:creationId');
+            $objWriter->writeAttribute('xmlns:a16', 'http://schemas.microsoft.com/office/drawing/2014/main');
+            $objWriter->writeAttribute('id', '{F8CFD691-5332-EB49-9B42-7D7B3DB9185D}');
+            $objWriter->endElement();
+            $objWriter->endElement();
+            $objWriter->endElement();
+        }
+
         $objWriter->endElement();
+
         // p:cNvPicPr
         $objWriter->startElement('p:cNvPicPr');
+
         // a:picLocks
         $objWriter->startElement('a:picLocks');
         $objWriter->writeAttribute('noChangeAspect', '1');
         $objWriter->endElement();
+
+        // #p:cNvPicPr
         $objWriter->endElement();
+
         // p:nvPr
         $objWriter->startElement('p:nvPr');
+        // PlaceHolder
+        if ($shape->isPlaceholder()) {
+            $objWriter->startElement('p:ph');
+            $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
+            $objWriter->endElement();
+        }
         /*
          * @link : https://github.com/stefslon/exportToPPTX/blob/master/exportToPPTX.m#L2128
          */
@@ -1184,7 +1212,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
             // p:nvPr > p:extLst > p:ext > p14:media
             $objWriter->startElement('p14:media');
-            $objWriter->writeAttribute('r:embed', $shape->relationId);
+            $objWriter->writeAttribute('r:embed', ((int) $shape->relationId + 1));
             $objWriter->writeAttribute('xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
             // p:nvPr > p:extLst > p:ext > ##p14:media
             $objWriter->endElement();
@@ -1196,38 +1224,81 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         // ##p:nvPr
         $objWriter->endElement();
         $objWriter->endElement();
+
         // p:blipFill
         $objWriter->startElement('p:blipFill');
+
         // a:blip
         $objWriter->startElement('a:blip');
         $objWriter->writeAttribute('r:embed', $shape->relationId);
+
+        if ($shape instanceof AbstractDrawingAdapter && $shape->getExtension() == 'svg') {
+            // a:extLst
+            $objWriter->startElement('a:extLst');
+
+            // a:extLst > a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', '{28A0092B-C50C-407E-A947-70E740481C1C}');
+            // a:extLst > a:ext > a14:useLocalDpi
+            $objWriter->startElement('a14:useLocalDpi');
+            $objWriter->writeAttribute('xmlns:a14', 'http://schemas.microsoft.com/office/drawing/2010/main');
+            $objWriter->writeAttribute('val', '0');
+            // a:extLst > a:ext > ##a14:useLocalDpi
+            $objWriter->endElement();
+            // a:extLst > ##a:ext
+            $objWriter->endElement();
+
+            // a:extLst > a:ext
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', '{96DAC541-7B7A-43D3-8B79-37D633B846F1}');
+            // a:extLst > a:ext > asvg:svgBlip
+            $objWriter->startElement('asvg:svgBlip');
+            $objWriter->writeAttribute('xmlns:asvg', 'http://schemas.microsoft.com/office/drawing/2016/SVG/main');
+            $objWriter->writeAttribute('r:embed', $shape->relationId);
+            // a:extLst > a:ext > ##asvg:svgBlip
+            $objWriter->endElement();
+            // a:extLst > ##a:ext
+            $objWriter->endElement();
+
+            // ##a:extLst
+            $objWriter->endElement();
+        }
+
         $objWriter->endElement();
+
         // a:stretch
         $objWriter->startElement('a:stretch');
-        $objWriter->writeElement('a:fillRect', null);
+        $objWriter->writeElement('a:fillRect');
         $objWriter->endElement();
+
         $objWriter->endElement();
+
         // p:spPr
         $objWriter->startElement('p:spPr');
         // a:xfrm
         $objWriter->startElement('a:xfrm');
         $objWriter->writeAttributeIf(0 != $shape->getRotation(), 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+
         // a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
         $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
         $objWriter->endElement();
+
         // a:ext
         $objWriter->startElement('a:ext');
         $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
         $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
         $objWriter->endElement();
+
         $objWriter->endElement();
+
         // a:prstGeom
         $objWriter->startElement('a:prstGeom');
         $objWriter->writeAttribute('prst', 'rect');
-        // a:avLst
+        // // a:prstGeom/a:avLst
         $objWriter->writeElement('a:avLst', null);
+        // ##a:prstGeom
         $objWriter->endElement();
 
         $this->writeFill($objWriter, $shape->getFill());
@@ -1235,6 +1306,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $this->writeShadow($objWriter, $shape->getShadow());
 
         $objWriter->endElement();
+
         $objWriter->endElement();
     }
 

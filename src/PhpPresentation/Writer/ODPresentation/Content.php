@@ -115,6 +115,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns:rdfa', 'http://docs.oasis-open.org/opendocument/meta/rdfa#');
         $objWriter->writeAttribute('xmlns:field', 'urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0');
         $objWriter->writeAttribute('xmlns:officeooo', 'http://openoffice.org/2009/office');
+        $objWriter->writeAttribute('xmlns:loext', 'urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0');
         $objWriter->writeAttribute('office:version', '1.2');
 
         // office:automatic-styles
@@ -435,6 +436,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');
+        $objWriter->writeAttribute('loext:mime-type', $shape->getMimeType());
         $objWriter->writeElement('text:p');
         $objWriter->endElement();
 

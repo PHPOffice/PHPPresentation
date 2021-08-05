@@ -28,41 +28,6 @@ class ContentTest extends PhpPresentationTestCase
 {
     protected $writerName = 'ODPresentation';
 
-    public function testDrawingWithHyperlink(): void
-    {
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
-        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
-
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
-        $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
-        $this->assertIsSchemaOpenDocumentValid('1.2');
-    }
-
-    public function testDrawingShapeFill(): void
-    {
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
-
-        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
-        $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'none');
-
-        $oColor = new Color(Color::COLOR_DARKRED);
-        $oColor->setAlpha(rand(0, 100));
-        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
-        $this->resetPresentationFile();
-
-        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
-        $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'solid');
-        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:fill-color', '#');
-        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:fill-color', $oColor->getRGB());
-    }
-
     public function testComment(): void
     {
         $expectedName = 'Name';
@@ -97,6 +62,67 @@ class ContentTest extends PhpPresentationTestCase
         $element = '/office:document-content/office:body/office:presentation/draw:page/officeooo:annotation';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeNotExists('content.xml', $element, 'dc:creator');
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testDrawingMimetype(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:image';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'loext:mime-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'loext:mime-type', 'image/png');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/tiger.svg');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:image';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'loext:mime-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'loext:mime-type', 'image/svg+xml');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testDrawingShapeFill(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'none');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $oColor = new Color(Color::COLOR_DARKRED);
+        $oColor->setAlpha(rand(0, 100));
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:fill-color', '#');
+        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:fill-color', $oColor->getRGB());
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testDrawingWithHyperlink(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
@@ -139,7 +165,8 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g/draw:frame/office:event-listeners/presentation:event-listener';
         $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
     public function testList(): void
