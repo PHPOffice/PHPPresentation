@@ -80,7 +80,7 @@ class Image extends AbstractBackground
      *
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
         $exploded = explode('.', basename($this->path));
 

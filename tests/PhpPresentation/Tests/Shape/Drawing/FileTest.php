@@ -40,14 +40,14 @@ class FileTest extends TestCase
         $this->expectExceptionMessage('File  not found!');
 
         $object = new File();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->setPath());
+        $this->assertInstanceOf(File::class, $object->setPath());
     }
 
     public function testPathWithoutVerifyFile(): void
     {
         $object = new File();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->setPath('', false));
+        $this->assertInstanceOf(File::class, $object->setPath('', false));
         $this->assertEmpty($object->getPath());
     }
 
@@ -55,11 +55,38 @@ class FileTest extends TestCase
     {
         $object = new File();
 
-        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
+        $imagePath = dirname(__DIR__, 4) . '/resources/images/PhpPresentationLogo.png';
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Drawing\\File', $object->setPath($imagePath, false));
+        $this->assertInstanceOf(File::class, $object->setPath($imagePath, false));
         $this->assertEquals($imagePath, $object->getPath());
         $this->assertEquals(0, $object->getWidth());
         $this->assertEquals(0, $object->getHeight());
+    }
+
+    /**
+     * @dataProvider dataProviderMimeType
+     */
+    public function testMimeType(string $pathFile, string $mimeType): void
+    {
+        $object = new File();
+        $this->assertInstanceOf(File::class, $object->setPath($pathFile));
+        $this->assertEquals($mimeType, $object->getMimeType());
+    }
+
+    /**
+     * @return array<array<string>>
+     */
+    public function dataProviderMimeType(): array
+    {
+        return [
+            [
+                dirname(__DIR__, 4) . '/resources/images/PhpPresentationLogo.png',
+                'image/png',
+            ],
+            [
+                dirname(__DIR__, 4) . '/resources/images/tiger.svg',
+                'image/svg+xml',
+            ],
+        ];
     }
 }

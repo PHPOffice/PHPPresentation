@@ -28,6 +28,7 @@ use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -777,7 +778,12 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadShapeDrawing(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
         // Core
-        $oShape = new Gd();
+        $document->registerNamespace('asvg', 'http://schemas.microsoft.com/office/drawing/2016/SVG/main');
+        if ($document->getElement('p:blipFill/a:blip/a:extLst/a:ext/asvg:svgBlip', $node)) {
+            $oShape = new Base64();
+        } else {
+            $oShape = new Gd();
+        }
         $oShape->getShadow()->setVisible(false);
         // Variables
         $fileRels = $oSlide->getRelsIndex();
@@ -813,10 +819,14 @@ class PowerPoint2007 implements ReaderInterface
                 $pathImage = implode('/', $pathImage);
                 $imageFile = $this->oZip->getFromName($pathImage);
                 if (!empty($imageFile)) {
-                    $info = getimagesizefromstring($imageFile);
-                    $oShape->setMimeType($info['mime']);
-                    $oShape->setRenderingFunction(str_replace('/', '', $info['mime']));
-                    $oShape->setImageResource(imagecreatefromstring($imageFile));
+                    if ($oShape instanceof Gd) {
+                        $info = getimagesizefromstring($imageFile);
+                        $oShape->setMimeType($info['mime']);
+                        $oShape->setRenderingFunction(str_replace('/', '', $info['mime']));
+                        $oShape->setImageResource(imagecreatefromstring($imageFile));
+                    } elseif ($oShape instanceof Base64) {
+                        $oShape->setData('data:image/svg+xml;base64,' . base64_encode($imageFile));
+                    }
                 }
             }
         }

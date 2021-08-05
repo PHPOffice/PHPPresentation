@@ -17,15 +17,15 @@ class MetaInfManifestTest extends PhpPresentationTestCase
 
     public function testDrawing(): void
     {
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createDrawingShape();
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
 
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeStartsWith('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/PhpPresentationLogo');
         $this->assertZipXmlAttributeEndsWith('META-INF/manifest.xml', $element, 'manifest:full-path', '.png');
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
     public function testDrawingException(): void
@@ -33,8 +33,7 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage('does not exist');
 
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createDrawingShape();
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
         $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/filedoesntexist.png', false);
 
         $this->writePresentationFile($this->oPresentation, 'ODPresentation');
@@ -54,7 +53,8 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
     public function testDrawingZip(): void
@@ -68,7 +68,8 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
     public function testDrawingZipException(): void
@@ -92,7 +93,8 @@ class MetaInfManifestTest extends PhpPresentationTestCase
         $element = '/manifest:manifest/manifest:file-entry[5]';
         $this->assertZipXmlElementExists('META-INF/manifest.xml', $element);
         $this->assertZipXmlAttributeEquals('META-INF/manifest.xml', $element, 'manifest:full-path', 'Pictures/' . $oShape->getIndexedFilename());
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
     public function testSlideBackground(): void
