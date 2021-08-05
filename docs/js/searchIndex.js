@@ -10616,11 +10616,6 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-PptSlides.html#method_writeSlideAnimations"
         },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptSlides\u003A\u003AwriteShapeDrawing\u0028\u0029",
-            "name": "writeShapeDrawing",
-            "summary": "Write\u0020pic.",
-            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-PptSlides.html#method_writeShapeDrawing"
-        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptTableProps",
             "name": "PptTableProps",
             "summary": "",
