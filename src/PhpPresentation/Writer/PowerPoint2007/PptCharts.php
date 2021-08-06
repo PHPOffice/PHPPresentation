@@ -1280,14 +1280,6 @@ class PptCharts extends AbstractDecoratorWriter
             // c:dLbls
             $objWriter->startElement('c:dLbls');
 
-            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
-            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
-
             if ($series->hasDlblNumFormat()) {
                 //c:numFmt
                 $objWriter->startElement('c:numFmt');
@@ -1342,6 +1334,14 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->endElement();
             // c:dLbls\c:txPr\
             $objWriter->endElement();
+
+            $this->writeElementWithValAttribute($objWriter, 'c:showLegendKey', $series->hasShowLegendKey() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showVal', $series->hasShowValue() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showCatName', $series->hasShowCategoryName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showSerName', $series->hasShowSeriesName() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showPercent', $series->hasShowPercentage() ? '1' : '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showBubbleSize', '0');
+            $this->writeElementWithValAttribute($objWriter, 'c:showLeaderLines', $series->hasShowLeaderLines() ? '1' : '0');
 
             $separator = $series->getSeparator();
             if (!empty($separator) && PHP_EOL != $separator) {
@@ -1898,6 +1898,15 @@ class PptCharts extends AbstractDecoratorWriter
             $this->writeSingleValueOrReference($objWriter, $includeSheet, $series->getTitle(), $coords);
             $objWriter->endElement();
 
+            // c:spPr
+            $objWriter->startElement('c:spPr');
+            // Write fill
+            $this->writeFill($objWriter, $series->getFill());
+            // Write outline
+            $this->writeOutline($objWriter, $series->getOutline());
+            // ## c:spPr
+            $objWriter->endElement();
+
             // Marker
             $this->writeSeriesMarker($objWriter, $series->getMarker());
 
@@ -1976,15 +1985,6 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->endElement();
 
-            // c:spPr
-            $objWriter->startElement('c:spPr');
-            // Write fill
-            $this->writeFill($objWriter, $series->getFill());
-            // Write outline
-            $this->writeOutline($objWriter, $series->getOutline());
-            // ## c:spPr
-            $objWriter->endElement();
-
             // Write X axis data
             $axisXData = array_keys($series->getValues());
 
@@ -2000,11 +2000,6 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('c:val');
             $coords = ($includeSheet ? 'Sheet1!$' . Coordinate::stringFromColumnIndex($seriesIndex + 2) . '$2:$' . Coordinate::stringFromColumnIndex($seriesIndex + 2) . '$' . (1 + count($axisYData)) : '');
             $this->writeMultipleValuesOrReference($objWriter, $includeSheet, $axisYData, $coords);
-            $objWriter->endElement();
-
-            // c:smooth
-            $objWriter->startElement('c:smooth');
-            $objWriter->writeAttribute('val', '0');
             $objWriter->endElement();
 
             $objWriter->endElement();

@@ -322,7 +322,7 @@ class PhpPresentationTestCase extends TestCase
     {
         $this->writePresentationFile($this->oPresentation, $this->writerName);
         $nodeList = $this->getXmlNodeList($filePath, $xPath);
-        self::assertEquals($nodeList->length, $num);
+        self::assertEquals($num, $nodeList->length);
     }
 
     /**

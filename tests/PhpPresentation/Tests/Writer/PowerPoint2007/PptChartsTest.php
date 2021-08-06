@@ -129,11 +129,16 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = $chartBaseXmlPath . '/c:ser/c:tx/c:strRef/c:strCache/c:pt/c:v';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'Downloads');
+
         $element = $chartBaseXmlPath . '/c:ser/c:val/c:numRef/c:numCache/c:pt/c:v';
+        if ($oChart instanceof Scatter) {
+            $element = $chartBaseXmlPath . '/c:ser/c:yVal/c:numRef/c:numCache/c:pt/c:v';
+        }
         $this->assertZipXmlElementCount('ppt/charts/' . $oShape->getIndexedFilename(), $element, count($this->seriesData));
         foreach (array_values($this->seriesData) as $index => $value) {
             $this->assertZipXmlElementAtIndexEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $index, $value);
         }
+
         $element = '/c:chartSpace/c:externalData';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeExists('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'r:id');
