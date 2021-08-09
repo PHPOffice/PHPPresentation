@@ -582,6 +582,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
         $oBar = new Bar();
         $oBar->setGapWidthPercent($valueGapWidthPercent);
+        $valueOverlapWidthPercent = -10;
+        $oBar->setOverlapWidthPercent($valueOverlapWidthPercent);
         $oSeries = new Series('Downloads', $this->seriesData);
         $oSeries->getDataPointFill(0)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
         $oSeries->getDataPointFill(1)->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKBLUE));
@@ -603,6 +605,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlElementEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, $oSeries->getTitle());
         $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:gapWidth';
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueGapWidthPercent);
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:barChart/c:overlap';
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $valueOverlapWidthPercent);
 
         $this->assertIsSchemaECMA376Valid();
     }

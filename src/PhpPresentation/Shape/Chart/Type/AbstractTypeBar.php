@@ -54,6 +54,14 @@ class AbstractTypeBar extends AbstractType
     protected $gapWidthPercent = 150;
 
     /**
+     * Overlap within bar or columns clusters. Value between 100 and -100 percent.
+     * For stacked bar charts, the default overlap will be 100, for grouped bar charts 0.
+     *
+     * @var int
+     */
+    protected $overlapWidthPercent = 0;
+
+    /**
      * Set bar orientation.
      *
      * @param string $value
@@ -87,6 +95,11 @@ class AbstractTypeBar extends AbstractType
     public function setBarGrouping($value = self::GROUPING_CLUSTERED)
     {
         $this->barGrouping = $value;
+        $this->overlapWidthPercent = 0;
+        
+        if( $value === self::GROUPING_STACKED || $value === self::GROUPING_PERCENTSTACKED ) {
+            $this->overlapWidthPercent = 100;
+        }
 
         return $this;
     }
@@ -123,6 +136,32 @@ class AbstractTypeBar extends AbstractType
             $gapWidthPercent = 500;
         }
         $this->gapWidthPercent = $gapWidthPercent;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOverlapWidthPercent()
+    {
+        return $this->overlapWidthPercent;
+    }
+
+    /**
+     * @param int $overlapWidthPercent
+     *
+     * @return $this
+     */
+    public function setOverlapWidthPercent($overlapWidthPercent)
+    {
+        if ($overlapWidthPercent < -100) {
+            $overlapWidthPercent = -100;
+        }
+        if ($overlapWidthPercent > 100) {
+            $overlapWidthPercent = 100;
+        }
+        $this->overlapWidthPercent = $overlapWidthPercent;
 
         return $this;
     }
