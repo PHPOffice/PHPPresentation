@@ -334,7 +334,7 @@ $barChart->setGapWidthPercent(250);
 #### Overlap
 
 You can define the bar overlap within bars or columns clusters. It is defined in percent.
-The default value is 100% for stacked and 0% for grouped bar charts. The value must be defined between -100 and 100.
+The default value is `100%` for stacked and `0%` for grouped bar charts. The value must be defined between -100 and 100.
 
 When defining the bar grouping type, the default overlap values will be set. Any changes to the overlap must be made after setting the bar grouping type through `setBarGrouping`.
 
