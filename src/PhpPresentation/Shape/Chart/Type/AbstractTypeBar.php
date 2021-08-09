@@ -149,7 +149,7 @@ class AbstractTypeBar extends AbstractType
     }
 
     /**
-     * @param int $overlapWidthPercent
+     * @param int $value overlap width percentage
      *
      * @return self
      */
