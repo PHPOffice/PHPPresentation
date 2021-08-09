@@ -94,7 +94,7 @@ class BarTest extends TestCase
     {
         $object = new Bar();
         $this->assertEquals(0, $object->getOverlapWidthPercent());
-        
+
         $object->setBarGrouping(Bar::GROUPING_STACKED);
         $this->assertEquals(100, $object->getOverlapWidthPercent());
         $object->setBarGrouping(Bar::GROUPING_CLUSTERED);

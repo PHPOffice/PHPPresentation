@@ -96,8 +96,8 @@ class AbstractTypeBar extends AbstractType
     {
         $this->barGrouping = $value;
         $this->overlapWidthPercent = 0;
-        
-        if( $value === self::GROUPING_STACKED || $value === self::GROUPING_PERCENTSTACKED ) {
+
+        if ($value === self::GROUPING_STACKED || $value === self::GROUPING_PERCENTSTACKED) {
             $this->overlapWidthPercent = 100;
         }
 
