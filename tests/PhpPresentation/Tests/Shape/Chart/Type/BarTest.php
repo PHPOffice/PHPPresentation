@@ -108,11 +108,11 @@ class BarTest extends TestCase
         $value = mt_rand(-100, 100);
         $object = new Bar();
         $this->assertEquals(0, $object->getOverlapWidthPercent());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setOverlapWidthPercent($value));
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent($value));
         $this->assertEquals($value, $object->getOverlapWidthPercent());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setOverlapWidthPercent(101));
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent(101));
         $this->assertEquals(100, $object->getOverlapWidthPercent());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setOverlapWidthPercent(-101));
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent(-101));
         $this->assertEquals(-100, $object->getOverlapWidthPercent());
     }
 

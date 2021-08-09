@@ -143,7 +143,7 @@ class AbstractTypeBar extends AbstractType
     /**
      * @return int
      */
-    public function getOverlapWidthPercent()
+    public function getOverlapWidthPercent(): int
     {
         return $this->overlapWidthPercent;
     }
@@ -151,17 +151,17 @@ class AbstractTypeBar extends AbstractType
     /**
      * @param int $overlapWidthPercent
      *
-     * @return $this
+     * @return self
      */
-    public function setOverlapWidthPercent($overlapWidthPercent)
+    public function setOverlapWidthPercent(int $value): self
     {
-        if ($overlapWidthPercent < -100) {
-            $overlapWidthPercent = -100;
+        if ($value < -100) {
+            $value = -100;
         }
-        if ($overlapWidthPercent > 100) {
-            $overlapWidthPercent = 100;
+        if ($value > 100) {
+            $value = 100;
         }
-        $this->overlapWidthPercent = $overlapWidthPercent;
+        $this->overlapWidthPercent = $value;
 
         return $this;
     }
