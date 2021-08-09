@@ -51,6 +51,9 @@ class ContentTypes extends AbstractDecoratorWriter
         // XML
         $this->writeDefaultContentType($objWriter, 'xml', 'application/xml');
 
+        // SVG
+        $this->writeDefaultContentType($objWriter, 'svg', 'image/svg+xml');
+
         // Presentation
         $this->writeOverrideContentType($objWriter, '/ppt/presentation.xml', 'application/vnd.openxmlformats-officedocument.presentationml.presentation.main+xml');
 

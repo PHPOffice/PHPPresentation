@@ -117,6 +117,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(36, $oShape->getHeight());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(10, $oShape->getOffsetY());
+        $this->assertEquals('image/png', $oShape->getMimeType());
         $this->assertTrue($oShape->getShadow()->isVisible());
         $this->assertEquals(45, $oShape->getShadow()->getDirection());
         $this->assertEquals(10, $oShape->getShadow()->getDistance());
@@ -175,6 +176,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(36, $oShape->getHeight());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(10, $oShape->getOffsetY());
+        $this->assertEquals('image/png', $oShape->getMimeType());
         $this->assertTrue($oShape->getShadow()->isVisible());
         $this->assertEquals(45, $oShape->getShadow()->getDirection());
         $this->assertEquals(10, $oShape->getShadow()->getDistance());
@@ -288,6 +290,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(36, $oShape->getHeight());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(10, $oShape->getOffsetY());
+        $this->assertEquals('image/png', $oShape->getMimeType());
         $this->assertTrue($oShape->getShadow()->isVisible());
         $this->assertEquals(45, $oShape->getShadow()->getDirection());
         $this->assertEquals(10, $oShape->getShadow()->getDistance());
@@ -479,6 +482,7 @@ class ODPresentationTest extends TestCase
         $this->assertEquals(36, $oShape->getHeight());
         $this->assertEquals(10, $oShape->getOffsetX());
         $this->assertEquals(10, $oShape->getOffsetY());
+        $this->assertEquals('image/png', $oShape->getMimeType());
         $this->assertTrue($oShape->getShadow()->isVisible());
         $this->assertEquals(45, $oShape->getShadow()->getDirection());
         $this->assertEquals(10, $oShape->getShadow()->getDistance());
