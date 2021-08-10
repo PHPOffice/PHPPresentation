@@ -14,7 +14,7 @@ $chartShape = $slide->createChartShape();
 
 You can define how blank values are displayed with the method `setDisplayBlankAs`.
 
-![Slideshow type](/images/libreoffice_chart_displayblankas.png)
+![Slideshow type](../../images/libreoffice_chart_displayblankas.png)
 
 Differents types are available:
 
@@ -321,10 +321,10 @@ TODO
 
 #### Gap Width
 
-You can define the gap width between bar or columns clusters. It is defined in percent.
+You can define the gap width between bar or columns clusters. It is relatively defined as percentage of a bars width.
 The default value is 150%. The value must be defined between 0 and 500.
 
-``` php
+```php
 <?php
 
 $barChart = new Bar();
@@ -333,17 +333,24 @@ $barChart->setGapWidthPercent(250);
 
 #### Overlap
 
-You can define the bar overlap within bars or columns clusters. It is defined in percent.
-The default value is `100%` for stacked and `0%` for grouped bar charts. The value must be defined between -100 and 100.
+You can define the bar overlap within bar or column clusters. It is relatively defined as percentage of a bars width.
+The default value is `100%` for stacked and `0%` for grouped bar charts. The value must be defined between `-100` and `100`.
 
-When defining the bar grouping type, the default overlap values will be set. Any changes to the overlap must be made after setting the bar grouping type through `setBarGrouping`.
+When setting the bar grouping type, the default overlap values will be set. Any change to the overlap must be made after setting the bar grouping type through `setBarGrouping`.
 
-``` php
-<?php
-
+```php
 $barChart = new Bar();
-$barChart->setOverlapWidthPercent(-10);
+// will set the overlap to the default value for grouped bars: 0
+$barChart->setBarGrouping(Bar::GROUPING_CLUSTERED);
+
+// a positive value will result in an overlapping
+$barChart->setOverlapWidthPercent(25);
+
+// a negative value will result in a gap
+$barChart->setOverlapWidthPercent(-25);
 ```
+
+![Bar Overlap](../../images/chart_bar_overlap.png)
 
 #### Stacking
 
@@ -363,18 +370,11 @@ $barChart->setBarGrouping(Bar::GROUPING_STACKED);
 $barChart->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
 ```
 
-- Bar::GROUPING_CLUSTERED
-
-![Bar::GROUPING_CLUSTERED](/images/chart_columns_52x60.png)
-
-- Bar::GROUPING_STACKED
-
-![Bar::GROUPING_STACKED](/images/chart_columnstack_52x60.png)
-
-- Bar::GROUPING_PERCENTSTACKED
-
-![Bar::GROUPING_PERCENTSTACKED](/images/chart_columnpercent_52x60.png)
-
+|                                                                             | Type         | Constant                     |
+| --------------------------------------------------------------------------- | ------------ | ---------------------------- |
+| ![Bar::GROUPING_CLUSTERED](../../images/chart_columns_52x60.png)            | Grouped Bars | Bar::GROUPING_CLUSTERED      |
+| ![Bar::GROUPING_STACKED](../../images/chart_columnstack_52x60.png)          | Stacked Bars | Bar::GROUPING_STACKED        |
+| ![Bar::GROUPING_PERCENTSTACKED](../../images/chart_columnpercent_52x60.png) | Grouped Bars | Bar::GROUPING_PERCENTSTACKED |
 
 ### Line
 
