@@ -12,7 +12,7 @@
         <link rel="canonical" href="https://phpoffice.github.io/PHPPresentation/index.html">
       
       <link rel="icon" href="assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.2">
+      <meta name="generator" content="mkdocs-1.2.2, mkdocs-material-7.2.3">
     
     
       
@@ -20,10 +20,10 @@
       
     
     
-      <link rel="stylesheet" href="assets/stylesheets/main.1118c9be.min.css">
+      <link rel="stylesheet" href="assets/stylesheets/main.f7f47774.min.css">
       
         
-        <link rel="stylesheet" href="assets/stylesheets/palette.ba0d045b.min.css">
+        <link rel="stylesheet" href="assets/stylesheets/palette.3f5d1f46.min.css">
         
           
           
@@ -444,6 +444,18 @@
     <li class="md-nav__item">
       <a href="usage/shapes/introduction.html" class="md-nav__link">
         Introduction
+      </a>
+    </li>
+  
+
+          
+            
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="usage/shapes/autoshape.html" class="md-nav__link">
+        AutoShape
       </a>
     </li>
   
@@ -924,7 +936,19 @@ Documentation.</p>
 <li>Supports hyperlinks and rich-text strings</li>
 <li>Add images with different styles (positioning, rotation, shadow)</li>
 <li>Set printing options (header, footer, page margins, paper size, orientation)</li>
-<li>Output to different file formats: PowerPoint 2007 (.pptx), OpenDocument Presentation (.odp), Serialized Spreadsheet)</li>
+<li>Input from different file formats:<ul>
+<li>PowerPoint 97 (.ppt)</li>
+<li>PowerPoint 2007 (.pptx)</li>
+<li>OpenDocument Presentation (.odp)</li>
+<li>Serialized Spreadsheet</li>
+</ul>
+</li>
+<li>Output to different file formats:<ul>
+<li>PowerPoint 2007 (.pptx)</li>
+<li>OpenDocument Presentation (.odp)</li>
+<li>Serialized Spreadsheet</li>
+</ul>
+</li>
 <li>... and lots of other things!</li>
 </ul>
 <h2 id="file-formats">File formats</h2>
@@ -984,6 +1008,14 @@ Documentation.</p>
 </tr>
 <tr>
 <td><strong>Element Shape</strong></td>
+<td>AutoShape</td>
+<td></td>
+<td></td>
+<td></td>
+<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
+</tr>
+<tr>
+<td></td>
 <td>Image</td>
 <td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
@@ -1118,9 +1150,7 @@ Documentation.</p>
 <tr>
 <th>Features</th>
 <th></th>
-<th>HTML</th>
 <th>ODP</th>
-<th>PDF</th>
 <th>PPT</th>
 <th>PPTX</th>
 </tr>
@@ -1131,34 +1161,26 @@ Documentation.</p>
 <td>Mark as final</td>
 <td></td>
 <td></td>
-<td></td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 </tr>
 <tr>
 <td><strong>Document Properties</strong></td>
 <td>Standard</td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
-<td></td>
 <td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 </tr>
 <tr>
 <td></td>
 <td>Custom</td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
-<td></td>
 <td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 </tr>
 <tr>
 <td><strong>Slides</strong></td>
 <td></td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
-<td></td>
 <td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 </tr>
@@ -1168,33 +1190,32 @@ Documentation.</p>
 <td></td>
 <td></td>
 <td></td>
+</tr>
+<tr>
+<td><strong>Element Shape</strong></td>
+<td>AutoShape</td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
 <tr>
-<td><strong>Element Shape</strong></td>
+<td></td>
 <td>Image</td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 </tr>
 <tr>
 <td></td>
 <td>Hyperlink</td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 </tr>
 <tr>
 <td></td>
 <td>RichText</td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 </tr>
@@ -1204,23 +1225,17 @@ Documentation.</p>
 <td></td>
 <td></td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td></td>
 <td>Text</td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
-<td></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 <td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 7 9 19l-5.5-5.5 1.41-1.41L9 16.17 19.59 5.59 21 7z"/></svg></span></td>
 </tr>
 <tr>
 <td><strong>Charts</strong></td>
 <td>Area</td>
-<td></td>
-<td></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1231,14 +1246,10 @@ Documentation.</p>
 <td></td>
 <td></td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td></td>
 <td>Bar3D</td>
-<td></td>
-<td></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1249,14 +1260,10 @@ Documentation.</p>
 <td></td>
 <td></td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td></td>
 <td>Line</td>
-<td></td>
-<td></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1267,14 +1274,10 @@ Documentation.</p>
 <td></td>
 <td></td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td></td>
 <td>Pie3D</td>
-<td></td>
-<td></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1285,14 +1288,10 @@ Documentation.</p>
 <td></td>
 <td></td>
 <td></td>
-<td></td>
-<td></td>
 </tr>
 <tr>
 <td></td>
 <td>Scatter</td>
-<td></td>
-<td></td>
 <td></td>
 <td></td>
 <td></td>
@@ -1365,7 +1364,7 @@ Documentation.</p>
     <script id="__config" type="application/json">{"base": ".", "features": ["search.highlight", "search.suggest"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "assets/javascripts/workers/search.709b4209.min.js", "version": null}</script>
     
     
-      <script src="assets/javascripts/bundle.2b46852b.min.js"></script>
+      <script src="assets/javascripts/bundle.29db7785.min.js"></script>
       
     
   </body>
