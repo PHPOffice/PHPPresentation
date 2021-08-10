@@ -3,6 +3,7 @@
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
 use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Media;
@@ -123,6 +124,22 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testAutoShape(): void
+    {
+        $autoShape = new AutoShape();
+        $autoShape->setText('AlphaBeta');
+        $this->oPresentation->getActiveSlide()->addShape($autoShape);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:spPr/a:prstGeom';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $element, 'prst');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'prst', AutoShape::TYPE_HEART);
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:t';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlElementEquals('ppt/slides/slide1.xml', $element, 'AlphaBeta');
         $this->assertIsSchemaECMA376Valid();
     }
 

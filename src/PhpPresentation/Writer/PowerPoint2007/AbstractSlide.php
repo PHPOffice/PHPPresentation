@@ -24,6 +24,7 @@ use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
+use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
@@ -142,6 +143,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeShapeChart($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof AbstractGraphic) {
                 $this->writeShapePic($objWriter, $shape, $shapeId);
+            } elseif ($shape instanceof AutoShape) {
+                $this->writeShapeAutoShape($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Group) {
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Comment) {
@@ -1081,7 +1084,104 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     }
 
     /**
-     * Write chart.
+     * Write AutoShape
+     *
+     * @param XMLWriter $objWriter XML Writer
+     * @param AutoShape $shape
+     * @param int $shapeId
+     */
+    protected function writeShapeAutoShape(XMLWriter $objWriter, AutoShape $shape, int $shapeId): void
+    {
+        // p:sp
+        $objWriter->startElement('p:sp');
+
+        // p:sp\p:nvSpPr
+        $objWriter->startElement('p:nvSpPr');
+        // p:sp\p:nvSpPr\p:cNvPr
+        $objWriter->startElement('p:cNvPr');
+        $objWriter->writeAttribute('id', $shapeId);
+        $objWriter->writeAttribute('name', '');
+        $objWriter->writeAttribute('descr', '');
+        // p:sp\p:nvSpPr\p:cNvPr\
+        $objWriter->endElement();
+        // p:sp\p:nvSpPr\p:cNvSpPr
+        $objWriter->writeElement('p:cNvSpPr');
+        // p:sp\p:nvSpPr\p:nvPr
+        $objWriter->writeElement('p:nvPr');
+        // p:sp\p:nvSpPr\
+        $objWriter->endElement();
+
+        // p:sp\p:spPr
+        $objWriter->startElement('p:spPr');
+
+        // p:sp\p:spPr\a:xfrm
+        $objWriter->startElement('a:xfrm');
+        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        // p:sp\p:spPr\a:xfrm\a:off
+        $objWriter->startElement('a:off');
+        $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
+        $objWriter->writeAttribute('y', CommonDrawing::pixelsToEmu($shape->getOffsetY()));
+        $objWriter->endElement();
+        // p:sp\p:spPr\a:xfrm\a:ext
+        $objWriter->startElement('a:ext');
+        $objWriter->writeAttribute('cx', CommonDrawing::pixelsToEmu($shape->getWidth()));
+        $objWriter->writeAttribute('cy', CommonDrawing::pixelsToEmu($shape->getHeight()));
+        $objWriter->endElement();
+        // p:sp\p:spPr\a:xfrm\
+        $objWriter->endElement();
+
+        // p:sp\p:spPr\a:prstGeom
+        $objWriter->startElement('a:prstGeom');
+        $objWriter->writeAttribute('prst', $shape->getType());
+        // p:sp\p:spPr\a:prstGeom\a:avLst
+        $objWriter->writeElement('a:avLst');
+        // p:sp\p:spPr\a:prstGeom\
+        $objWriter->endElement();
+        // Fill
+        $this->writeFill($objWriter, $shape->getFill());
+        // Outline
+        $this->writeOutline($objWriter, $shape->getOutline());
+
+        // p:sp\p:spPr\
+        $objWriter->endElement();
+        // p:sp\p:txBody
+        $objWriter->startElement('p:txBody');
+        // p:sp\p:txBody\a:bodyPr
+        $objWriter->startElement('a:bodyPr');
+        $objWriter->writeAttribute('vertOverflow', 'clip');
+        $objWriter->writeAttribute('rtlCol', '0');
+        $objWriter->writeAttribute('anchor', 'ctr');
+        // p:sp\p:txBody\a:bodyPr\
+        $objWriter->endElement();
+
+        // p:sp\p:txBody\a:lstStyle
+        $objWriter->writeElement('a:lstStyle');
+
+        // p:sp\p:txBody\a:p
+        $objWriter->startElement('a:p');
+
+        // p:sp\p:txBody\a:p\a:pPr
+        $objWriter->writeElementBlock('a:pPr', [
+            'algn' => 'ctr',
+        ]);
+        // p:sp\p:txBody\a:p\a:r
+        $objWriter->startElement('a:r');
+        // p:sp\p:txBody\a:p\a:r\a:t
+        $objWriter->startElement('a:t');
+        $objWriter->writeCData(Text::controlCharacterPHP2OOXML($shape->getText()));
+        $objWriter->endElement();
+        // p:sp\p:txBody\a:p\a:r\
+        $objWriter->endElement();
+        // p:sp\p:txBody\a:p\
+        $objWriter->endElement();
+        // p:sp\p:txBody\
+        $objWriter->endElement();
+        // p:sp\
+        $objWriter->endElement();
+    }
+
+    /**
+     * Write chart
      *
      * @param XMLWriter $objWriter XML Writer
      */

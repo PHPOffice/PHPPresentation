@@ -54,6 +54,7 @@ nav:
       - Layouts: 'usage/slides/layout.md'
     - Shapes: 
       - Introduction: 'usage/shapes/introduction.md'
+      - AutoShape: 'usage/shapes/autoshape.md'
       - Chart: 'usage/shapes/chart.md'
       - Comment: 'usage/shapes/comment.md'
       - Drawing: 'usage/shapes/drawing.md'

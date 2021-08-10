@@ -27,7 +27,15 @@ Documentation.
 - Supports hyperlinks and rich-text strings
 - Add images with different styles (positioning, rotation, shadow)
 - Set printing options (header, footer, page margins, paper size, orientation)
-- Output to different file formats: PowerPoint 2007 (.pptx), OpenDocument Presentation (.odp), Serialized Spreadsheet)
+- Input from different file formats:
+    - PowerPoint 97 (.ppt)
+    - PowerPoint 2007 (.pptx)
+    - OpenDocument Presentation (.odp)
+    - Serialized Spreadsheet
+- Output to different file formats:
+    - PowerPoint 2007 (.pptx)
+    - OpenDocument Presentation (.odp)
+    - Serialized Spreadsheet
 - ... and lots of other things!
 
 ## File formats
@@ -44,7 +52,8 @@ Below are the supported features for each file formats.
 |                           | Custom               |       | :material-check: |       | :material-check: |
 | **Slides**                |                      |       | :material-check: |       | :material-check: |
 |                           | Name                 |       | :material-check: |       |       |
-| **Element Shape**         | Image                |       | :material-check: |       | :material-check: |
+| **Element Shape**         | AutoShape            |       |       |       | :material-check: |
+|                           | Image                |       | :material-check: |       | :material-check: |
 |                           | Hyperlink            |       | :material-check: |       | :material-check: |
 |                           | Line                 |       | :material-check: |       | :material-check: |
 |                           | MemoryImage          |       | :material-check: |       | :material-check: |
@@ -64,27 +73,28 @@ Below are the supported features for each file formats.
 
 ### Readers
 
-| Features                  |                      | HTML   | ODP   | PDF   | PPT   | PPTX  |
-|---------------------------|----------------------|--------|-------|-------|-------|-------|
-| **Document**              | Mark as final        |        |       |       |       | :material-check: |
-| **Document Properties**   | Standard             |        | :material-check: |       |       | :material-check: |
-|                           | Custom               |        | :material-check: |       |       | :material-check: |
-| **Slides**                |                      |        | :material-check: |       |       | :material-check: |
-|                           | Name                 |        |       |       |       |        | :material-check: |       |
-| **Element Shape**         | Image                |        | :material-check: |       | :material-check: | :material-check: |
-|                           | Hyperlink            |        | :material-check: |       | :material-check: | :material-check: |
-|                           | RichText             |        | :material-check: |       | :material-check: | :material-check: |
-|                           | Table                |        |       |       |       |       |
-|                           | Text                 |        | :material-check: |       | :material-check: | :material-check: |
-| **Charts**                | Area                 |        |       |       |       |       |
-|                           | Bar                  |        |       |       |       |       |
-|                           | Bar3D                |        |       |       |       |       |
-|                           | Doughnut             |        |       |       |       |       |
-|                           | Line                 |        |       |       |       |       |
-|                           | Pie                  |        |       |       |       |       |
-|                           | Pie3D                |        |       |       |       |       |
-|                           | Radar                |        |       |       |       |       |
-|                           | Scatter              |        |       |       |       |       |
+| Features                  |                      | ODP   | PPT   | PPTX  |
+|---------------------------|----------------------|-------|-------|-------|
+| **Document**              | Mark as final        |       |       | :material-check: |
+| **Document Properties**   | Standard             | :material-check: |       | :material-check: |
+|                           | Custom               | :material-check: |       | :material-check: |
+| **Slides**                |                      | :material-check: |       | :material-check: |
+|                           | Name                 |       |       |       |
+| **Element Shape**         | AutoShape            |       |       |       |
+|                           | Image                | :material-check: | :material-check: | :material-check: |
+|                           | Hyperlink            | :material-check: | :material-check: | :material-check: |
+|                           | RichText             | :material-check: | :material-check: | :material-check: |
+|                           | Table                |       |       |       |
+|                           | Text                 | :material-check: | :material-check: | :material-check: |
+| **Charts**                | Area                 |       |       |       |
+|                           | Bar                  |       |       |       |
+|                           | Bar3D                |       |       |       |
+|                           | Doughnut             |       |       |       |
+|                           | Line                 |       |       |       |
+|                           | Pie                  |       |       |       |
+|                           | Pie3D                |       |       |       |
+|                           | Radar                |       |       |       |
+|                           | Scatter              |       |       |       |
 
 
 ## Contributing
