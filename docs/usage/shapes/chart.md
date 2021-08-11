@@ -374,7 +374,7 @@ $barChart->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
 | --------------------------------------------------------------------------- | ------------ | ---------------------------- |
 | ![Bar::GROUPING_CLUSTERED](../../images/chart_columns_52x60.png)            | Grouped Bars | Bar::GROUPING_CLUSTERED      |
 | ![Bar::GROUPING_STACKED](../../images/chart_columnstack_52x60.png)          | Stacked Bars | Bar::GROUPING_STACKED        |
-| ![Bar::GROUPING_PERCENTSTACKED](../../images/chart_columnpercent_52x60.png) | Grouped Bars | Bar::GROUPING_PERCENTSTACKED |
+| ![Bar::GROUPING_PERCENTSTACKED](../../images/chart_columnpercent_52x60.png) | Stacked Bars 100% | Bar::GROUPING_PERCENTSTACKED |
 
 ### Line
 
