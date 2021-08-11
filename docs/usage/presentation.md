@@ -177,7 +177,7 @@ $state = $presentation->isMarkedAsFinal();
 
 You can define the type of slideshow you can with the method `setSlideshowType`.
 
-![Slideshow type](/images/presentation_slideshow_type.png)
+![Slideshow type](../images/presentation_slideshow_type.png)
 
 Differents types are available:
 
