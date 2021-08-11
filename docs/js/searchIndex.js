@@ -5411,6 +5411,16 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#method_setGapWidthPercent"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeBar\u003A\u003AgetOverlapWidthPercent\u0028\u0029",
+            "name": "getOverlapWidthPercent",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#method_getOverlapWidthPercent"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeBar\u003A\u003AsetOverlapWidthPercent\u0028\u0029",
+            "name": "setOverlapWidthPercent",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#method_setOverlapWidthPercent"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeBar\u003A\u003AgetHashCode\u0028\u0029",
             "name": "getHashCode",
             "summary": "Get\u0020hash\u0020code.",
@@ -5455,6 +5465,11 @@ Search.appendIndex(
             "name": "gapWidthPercent",
             "summary": "Space\u0020between\u0020bar\u0020or\u0020columns\u0020clusters.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#property_gapWidthPercent"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeBar\u003A\u003A\u0024overlapWidthPercent",
+            "name": "overlapWidthPercent",
+            "summary": "Overlap\u0020within\u0020bar\u0020or\u0020columns\u0020clusters.\u0020Value\u0020between\u0020100\u0020and\u0020\u002D100\u0020percent.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#property_overlapWidthPercent"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeLine",
             "name": "AbstractTypeLine",

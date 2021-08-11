@@ -213,6 +213,13 @@
 </dt>
 <dd>Has Axis Y?</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -property -protected">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#property_overlapWidthPercent">$overlapWidthPercent</a>
+    <span>
+                &nbsp;: int            </span>
+</dt>
+<dd>Overlap within bar or columns clusters. Value between 100 and -100 percent.</dd>
+
             <dt class="phpdocumentor-table-of-contents__entry -property -private">
     <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#property_hashIndex">$hashIndex</a>
     <span>
@@ -277,6 +284,13 @@
 <dd>Get hash index.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#method_getOverlapWidthPercent">getOverlapWidthPercent()</a>
+    <span>
+                        &nbsp;: int    </span>
+</dt>
+<dd></dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#method_getSeries">getSeries()</a>
     <span>
                         &nbsp;: array&lt;int, <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Series.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Series">Series</abbr></a>&gt;    </span>
@@ -324,6 +338,13 @@
                         &nbsp;: <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType">AbstractType</abbr></a>    </span>
 </dt>
 <dd>Set hash index.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -public">
+    <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#method_setOverlapWidthPercent">setOverlapWidthPercent()</a>
+    <span>
+                        &nbsp;: self    </span>
+</dt>
+<dd></dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html#method_setSeries">setSeries()</a>
@@ -664,6 +685,41 @@
         class="
             phpdocumentor-element
             -property
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="property_overlapWidthPercent">
+        $overlapWidthPercent
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#property_overlapWidthPercent" class="headerlink"><i class="fas fa-link"></i></a>
+        <span class="phpdocumentor-element__modifiers">
+                                </span>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">62</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Overlap within bar or columns clusters. Value between 100 and -100 percent.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+        <span class="phpdocumentor-signature__type">int</span>
+    <span class="phpdocumentor-signature__name">$overlapWidthPercent</span>
+     = <span class="phpdocumentor-signature__default-value">0</span></code>
+
+        <section class="phpdocumentor-description"><p>For stacked bar charts, the default overlap will be 100, for grouped bar charts 0.</p>
+</section>
+
+    
+    
+
+</article>
+                    <article
+        class="
+            phpdocumentor-element
+            -property
             -private
                                                         "
 >
@@ -835,7 +891,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">75</span>
+    <span class="phpdocumentor-element-found-in__line">83</span>
 
     </aside>
 
@@ -868,7 +924,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">99</span>
+    <span class="phpdocumentor-element-found-in__line">112</span>
 
     </aside>
 
@@ -901,7 +957,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">107</span>
+    <span class="phpdocumentor-element-found-in__line">120</span>
 
     </aside>
 
@@ -991,6 +1047,38 @@ while doing a write of a workbook and when changes are not allowed.</p>
             <section class="phpdocumentor-description"><p>Hash index</p>
 </section>
 
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_getOverlapWidthPercent">
+        getOverlapWidthPercent()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#method_getOverlapWidthPercent" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">146</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">getOverlapWidthPercent</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">int</span></code>
+
+    
+    
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">int</span>
+            &mdash;
+        
     
 </article>
                     <article
@@ -1105,7 +1193,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">63</span>
+    <span class="phpdocumentor-element-found-in__line">71</span>
 
     </aside>
 
@@ -1148,7 +1236,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">87</span>
+    <span class="phpdocumentor-element-found-in__line">95</span>
 
     </aside>
 
@@ -1191,7 +1279,7 @@ while doing a write of a workbook and when changes are not allowed.</p>
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">117</span>
+    <span class="phpdocumentor-element-found-in__line">130</span>
 
     </aside>
 
@@ -1264,6 +1352,50 @@ while doing a write of a workbook and when changes are not allowed.</p>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractType.html"><abbr title="\PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType">AbstractType</abbr></a></span>
+            &mdash;
+        
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -public
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_setOverlapWidthPercent">
+        setOverlapWidthPercent()
+        <a href="classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeBar.html#method_setOverlapWidthPercent" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php"><a href="files/src-phppresentation-shape-chart-type-abstracttypebar.html"><abbr title="src/PhpPresentation/Shape/Chart/Type/AbstractTypeBar.php">AbstractTypeBar.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">156</span>
+
+    </aside>
+
+    
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">public</span>
+                <span class="phpdocumentor-signature__name">setOverlapWidthPercent</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__name">$value</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">self</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$value</span>
+                : <span class="phpdocumentor-signature__argument__return-type">int</span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                    <section class="phpdocumentor-description"><p>overlap width percentage</p>
+</section>
+
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">self</span>
             &mdash;
         
     

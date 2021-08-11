@@ -650,6 +650,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#overlap" class="md-nav__link">
+    Overlap
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#stacking" class="md-nav__link">
     Stacking
   </a>
@@ -1329,6 +1336,13 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#overlap" class="md-nav__link">
+    Overlap
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#stacking" class="md-nav__link">
     Stacking
   </a>
@@ -1425,7 +1439,7 @@
 <h2 id="customization">Customization</h2>
 <h3 id="manage-how-blank-values-are-displayed">Manage how blank values are displayed</h3>
 <p>You can define how blank values are displayed with the method <code>setDisplayBlankAs</code>.</p>
-<p><img alt="Slideshow type" src="/images/libreoffice_chart_displayblankas.png" /></p>
+<p><img alt="Slideshow type" src="../../images/libreoffice_chart_displayblankas.png" /></p>
 <p>Differents types are available:</p>
 <ul>
 <li><code>Chart::BLANKAS_GAP</code> for <strong>Leave a gap</strong></li>
@@ -1664,13 +1678,28 @@ Each position is described in <a href="https://msdn.microsoft.com/en-us/library/
 <p>TODO</p>
 <h3 id="bar-bar3d">Bar &amp; Bar3D</h3>
 <h4 id="gap-width">Gap Width</h4>
-<p>You can define the gap width between bar or columns clusters. It is defined in percent.
+<p>You can define the gap width between bar or columns clusters. It is relatively defined as percentage of a bars width.
 The default value is 150%. The value must be defined between 0 and 500.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
 
 <span class="nv">$barChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Bar</span><span class="p">();</span>
 <span class="nv">$barChart</span><span class="o">-&gt;</span><span class="na">setGapWidthPercent</span><span class="p">(</span><span class="mi">250</span><span class="p">);</span>
 </code></pre></div>
+<h4 id="overlap">Overlap</h4>
+<p>You can define the bar overlap within bar or column clusters. It is relatively defined as percentage of a bars width.
+The default value is <code>100%</code> for stacked and <code>0%</code> for grouped bar charts. The value must be defined between <code>-100</code> and <code>100</code>.</p>
+<p>When setting the bar grouping type, the default overlap values will be set. Any change to the overlap must be made after setting the bar grouping type through <code>setBarGrouping</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="x">$barChart = new Bar();</span>
+<span class="x">// will set the overlap to the default value for grouped bars: 0</span>
+<span class="x">$barChart-&gt;setBarGrouping(Bar::GROUPING_CLUSTERED);</span>
+
+<span class="x">// a positive value will result in an overlapping</span>
+<span class="x">$barChart-&gt;setOverlapWidthPercent(25);</span>
+
+<span class="x">// a negative value will result in a gap</span>
+<span class="x">$barChart-&gt;setOverlapWidthPercent(-25);</span>
+</code></pre></div>
+<p><img alt="Bar Overlap" src="../../images/chart_bar_overlap.png" /></p>
 <h4 id="stacking">Stacking</h4>
 <p>You can stack multiples series in a same chart. After adding multiples series, you can define the bar grouping with <code>setBarGrouping</code> method of AbstractTypeBar.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
@@ -1685,18 +1714,32 @@ The default value is 150%. The value must be defined between 0 and 500.</p>
 <span class="c1">// OR</span>
 <span class="nv">$barChart</span><span class="o">-&gt;</span><span class="na">setBarGrouping</span><span class="p">(</span><span class="nx">Bar</span><span class="o">::</span><span class="na">GROUPING_PERCENTSTACKED</span><span class="p">);</span>
 </code></pre></div>
-<ul>
-<li>Bar::GROUPING_CLUSTERED</li>
-</ul>
-<p><img alt="Bar::GROUPING_CLUSTERED" src="/images/chart_columns_52x60.png" /></p>
-<ul>
-<li>Bar::GROUPING_STACKED</li>
-</ul>
-<p><img alt="Bar::GROUPING_STACKED" src="/images/chart_columnstack_52x60.png" /></p>
-<ul>
-<li>Bar::GROUPING_PERCENTSTACKED</li>
-</ul>
-<p><img alt="Bar::GROUPING_PERCENTSTACKED" src="/images/chart_columnpercent_52x60.png" /></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Type</th>
+<th>Constant</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="Bar::GROUPING_CLUSTERED" src="../../images/chart_columns_52x60.png" /></td>
+<td>Grouped Bars</td>
+<td>Bar::GROUPING_CLUSTERED</td>
+</tr>
+<tr>
+<td><img alt="Bar::GROUPING_STACKED" src="../../images/chart_columnstack_52x60.png" /></td>
+<td>Stacked Bars</td>
+<td>Bar::GROUPING_STACKED</td>
+</tr>
+<tr>
+<td><img alt="Bar::GROUPING_PERCENTSTACKED" src="../../images/chart_columnpercent_52x60.png" /></td>
+<td>Grouped Bars</td>
+<td>Bar::GROUPING_PERCENTSTACKED</td>
+</tr>
+</tbody>
+</table>
 <h3 id="line">Line</h3>
 <h4 id="smooth-line">Smooth line</h4>
 <p>You can enable or disable the smooth line with <code>setIsSmooth</code> method from <code>AbstractTypeLine</code>.
