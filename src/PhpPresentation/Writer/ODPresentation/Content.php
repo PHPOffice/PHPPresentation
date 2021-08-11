@@ -474,6 +474,20 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
         $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
         $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        if ($shape->getRotation() != 0) {
+            $rotRad = deg2rad($shape->getRotation());
+
+            $translateX = Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth() / 2), 3). 'cm';
+            $translateY = Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX() / 2), 3). 'cm';
+            $objWriter->writeAttribute(
+                'draw:transform',
+                'rotate (-'.$rotRad.')' .
+                'translate (' .
+                    $translateX. 
+                    '-' . $translateY
+                .')'
+            );
+        }
         // draw:text-box
         $objWriter->startElement('draw:text-box');
 
@@ -611,6 +625,38 @@ class Content extends AbstractDecoratorWriter
                 // text:list
                 $objWriter->endElement();
             }
+        }
+
+        if ($shape->getRotation() != 0) {
+            $objWriter->startElement('draw:enhanced-geometry');
+            $objWriter->writeAttribute('draw:mirror-horizontal', 'false');
+            $objWriter->writeAttribute('draw:mirror-vertical', 'false');
+            $objWriter->writeAttribute('svg:viewBox', '0 0 0 0');
+            $objWriter->writeAttribute('draw:text-areas', '0 0 ?f3 ?f2');
+            $objWriter->writeAttribute('draw:type', 'ooxml-rect');
+            $objWriter->writeAttribute('draw:enhanced-path', 'M 0 0 L ?f3 0 ?f3 ?f2 0 ?f2 Z N');
+
+            $objWriter->startElement('draw:equation');
+            $objWriter->writeAttribute('draw:name', 'f0');
+            $objWriter->writeAttribute('draw:formula', 'logwidth/2');
+            $objWriter->endElement();
+
+            $objWriter->startElement('draw:equation');
+            $objWriter->writeAttribute('draw:name', 'f1');
+            $objWriter->writeAttribute('draw:formula', 'logheight/2');
+            $objWriter->endElement();
+
+            $objWriter->startElement('draw:equation');
+            $objWriter->writeAttribute('draw:name', 'f2');
+            $objWriter->writeAttribute('draw:formula', 'logheight');
+            $objWriter->endElement();
+
+            $objWriter->startElement('draw:equation');
+            $objWriter->writeAttribute('draw:name', 'f3');
+            $objWriter->writeAttribute('draw:formula', 'logwidth');
+            $objWriter->endElement();
+
+            $objWriter->endElement();
         }
 
         // > draw:text-box
