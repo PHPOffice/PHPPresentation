@@ -985,13 +985,8 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         // c:overlap
-        $barGrouping = $subject->getBarGrouping();
         $objWriter->startElement('c:overlap');
-        if (Bar::GROUPING_CLUSTERED === $barGrouping) {
-            $objWriter->writeAttribute('val', '0');
-        } elseif (Bar::GROUPING_STACKED === $barGrouping || Bar::GROUPING_PERCENTSTACKED === $barGrouping) {
-            $objWriter->writeAttribute('val', '100');
-        }
+        $objWriter->writeAttribute('val', $subject->getOverlapWidthPercent());
         $objWriter->endElement();
 
         // c:axId

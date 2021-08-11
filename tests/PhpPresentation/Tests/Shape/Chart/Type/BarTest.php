@@ -90,6 +90,32 @@ class BarTest extends TestCase
         $this->assertEquals(500, $object->getGapWidthPercent());
     }
 
+    public function testOverlapWidthPercentDefaults(): void
+    {
+        $object = new Bar();
+        $this->assertEquals(0, $object->getOverlapWidthPercent());
+
+        $object->setBarGrouping(Bar::GROUPING_STACKED);
+        $this->assertEquals(100, $object->getOverlapWidthPercent());
+        $object->setBarGrouping(Bar::GROUPING_CLUSTERED);
+        $this->assertEquals(0, $object->getOverlapWidthPercent());
+        $object->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
+        $this->assertEquals(100, $object->getOverlapWidthPercent());
+    }
+
+    public function testOverlapWidthPercent(): void
+    {
+        $value = mt_rand(-100, 100);
+        $object = new Bar();
+        $this->assertEquals(0, $object->getOverlapWidthPercent());
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent($value));
+        $this->assertEquals($value, $object->getOverlapWidthPercent());
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent(101));
+        $this->assertEquals(100, $object->getOverlapWidthPercent());
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent(-101));
+        $this->assertEquals(-100, $object->getOverlapWidthPercent());
+    }
+
     public function testHashCode(): void
     {
         $oSeries = new Series();
