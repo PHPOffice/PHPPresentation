@@ -53,13 +53,6 @@ abstract class AbstractType implements ComparableInterface
     private $series = [];
 
     /**
-     * Returns xml element name for a chart type implementation
-     *
-     * @return string
-     */
-    abstract public function getXmlElementName(): string;
-
-    /**
      * Has Axis X?
      */
     public function hasAxisX(): bool

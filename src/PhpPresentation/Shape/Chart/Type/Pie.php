@@ -34,9 +34,4 @@ class Pie extends AbstractTypePie implements ComparableInterface
     {
         return md5(parent::getHashCode() . __CLASS__);
     }
-
-    public function getXmlElementName(): string
-    {
-        return 'c:pieChart';
-    }
 }

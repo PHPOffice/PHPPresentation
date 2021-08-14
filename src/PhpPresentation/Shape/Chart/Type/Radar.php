@@ -36,9 +36,4 @@ class Radar extends AbstractType implements ComparableInterface
 
         return md5($hash . __CLASS__);
     }
-
-    public function getXmlElementName(): string
-    {
-        return 'c:radarChart';
-    }
 }

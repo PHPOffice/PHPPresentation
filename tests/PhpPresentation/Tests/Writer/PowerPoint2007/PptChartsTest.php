@@ -85,7 +85,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @dataProvider dataProviderIncludedSpreadsheet
      */
-    public function testChartIncludeSpreadsheet(string $chartType): void
+    public function testChartIncludeSpreadsheet(string $chartType, string $chartElementName): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
@@ -96,7 +96,6 @@ class PptChartsTest extends PhpPresentationTestCase
         $oChart->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oChart);
 
-        $chartElementName = $oChart->getXmlElementName();
         $chartBaseXmlPath = sprintf('/c:chartSpace/c:chart/c:plotArea/%s', $chartElementName);
 
         $this->assertTrue($oShape->hasIncludedSpreadsheet());
@@ -1497,23 +1496,23 @@ class PptChartsTest extends PhpPresentationTestCase
     }
 
     /**
-     * @return array<array<string>>
+     * @return array<array<string, string>>
      */
     public function dataProviderIncludedSpreadsheet(): iterable
     {
         $chartTypes = [
-            Area::class,
-            Bar::class,
-            Bar3D::class,
-            Doughnut::class,
-            Pie::class,
-            Pie3D::class,
-            Line::class,
-            Radar::class,
-            Scatter::class,
+            [Area::class, 'c:areaChart'],
+            [Bar::class, 'c:barChart'],
+            [Bar3D::class, 'c:bar3DChart'],
+            [Doughnut::class, 'c:doughnutChart'],
+            [Pie::class, 'c:pieChart'],
+            [Pie3D::class, 'c:pie3DChart'],
+            [Line::class, 'c:lineChart'],
+            [Radar::class, 'c:radarChart'],
+            [Scatter::class, 'c:scatterChart'],
         ];
         foreach ($chartTypes as $chartType) {
-            yield [$chartType];
+            yield $chartType;
         }
     }
 }

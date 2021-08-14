@@ -701,7 +701,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypeArea(XMLWriter $objWriter, Area $subject, bool $includeSheet = false): void
     {
         // c:lineChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:areaChart');
 
         // c:grouping
         $objWriter->startElement('c:grouping');
@@ -804,7 +804,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, bool $includeSheet = false): void
     {
         // c:barChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:barChart');
 
         // c:barDir
         $objWriter->startElement('c:barDir');
@@ -1017,7 +1017,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, bool $includeSheet = false): void
     {
         // c:bar3DChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:bar3DChart');
 
         // c:barDir
         $objWriter->startElement('c:barDir');
@@ -1210,7 +1210,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypeDoughnut(XMLWriter $objWriter, Doughnut $subject, bool $includeSheet = false): void
     {
         // c:pieChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:doughnutChart');
 
         // c:varyColors
         $objWriter->startElement('c:varyColors');
@@ -1369,7 +1369,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypePie(XMLWriter $objWriter, Pie $subject, bool $includeSheet = false): void
     {
         // c:pieChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:pieChart');
 
         // c:varyColors
         $objWriter->startElement('c:varyColors');
@@ -1534,7 +1534,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, bool $includeSheet = false): void
     {
         // c:pie3DChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:pie3DChart');
 
         // c:varyColors
         $objWriter->startElement('c:varyColors');
@@ -1693,7 +1693,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypeLine(XMLWriter $objWriter, Line $subject, bool $includeSheet = false): void
     {
         // c:lineChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:lineChart');
 
         // c:grouping
         $objWriter->startElement('c:grouping');
@@ -1864,7 +1864,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypeRadar(XMLWriter $objWriter, Radar $subject, bool $includeSheet = false): void
     {
         // c:scatterChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:radarChart');
 
         // c:radarStyle
         $objWriter->startElement('c:radarStyle');
@@ -2028,7 +2028,7 @@ class PptCharts extends AbstractDecoratorWriter
     protected function writeTypeScatter(XMLWriter $objWriter, Scatter $subject, bool $includeSheet = false): void
     {
         // c:scatterChart
-        $objWriter->startElement($subject->getXmlElementName());
+        $objWriter->startElement('c:scatterChart');
 
         // c:scatterStyle
         $objWriter->startElement('c:scatterStyle');

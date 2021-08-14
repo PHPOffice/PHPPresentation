@@ -34,9 +34,4 @@ class Bar extends AbstractTypeBar implements ComparableInterface
     {
         return md5(parent::getHashCode() . __CLASS__);
     }
-
-    public function getXmlElementName(): string
-    {
-        return 'c:barChart';
-    }
 }
