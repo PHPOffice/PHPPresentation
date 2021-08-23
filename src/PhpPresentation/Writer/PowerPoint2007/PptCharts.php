@@ -340,7 +340,7 @@ class PptCharts extends AbstractDecoratorWriter
         $referenceType = ($isReference ? 'Ref' : 'Lit');
         
         // get data type from first non-null value
-        $dataType = null;
+        $dataType = 'num';
         foreach($values as $value){
             if ( !isset($value) ){
                 continue;
