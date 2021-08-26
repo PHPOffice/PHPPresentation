@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
@@ -163,8 +181,8 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->startElement('office:chart');
         // office:chart
         $this->xmlContent->startElement('chart:chart');
-        $this->xmlContent->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getWidth()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getHeight()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $chart->getWidth()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $chart->getHeight()), 3) . 'cm');
         $this->xmlContent->writeAttribute('xlink:href', '.');
         $this->xmlContent->writeAttribute('xlink:type', 'simple');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleChart');
@@ -458,8 +476,8 @@ class ObjectsChart extends AbstractDecoratorWriter
                 break;
         }
         $this->xmlContent->writeAttribute('chart:legend-position', $position);
-        $this->xmlContent->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetX()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($chart->getLegend()->getOffsetY()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $chart->getLegend()->getOffsetX()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $chart->getLegend()->getOffsetY()), 3) . 'cm');
         $this->xmlContent->writeAttribute('style:legend-expansion', 'high');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleLegend');
         // > chart:legend
@@ -913,8 +931,8 @@ class ObjectsChart extends AbstractDecoratorWriter
         }
         // chart:title
         $this->xmlContent->startElement('chart:title');
-        $this->xmlContent->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetX()), 3) . 'cm');
-        $this->xmlContent->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($oTitle->getOffsetY()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $oTitle->getOffsetX()), 3) . 'cm');
+        $this->xmlContent->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $oTitle->getOffsetY()), 3) . 'cm');
         $this->xmlContent->writeAttribute('chart:style-name', 'styleTitle');
         // > text:p
         $this->xmlContent->startElement('text:p');

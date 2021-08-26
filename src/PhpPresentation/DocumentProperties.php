@@ -16,6 +16,8 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation;
 
 /**
@@ -398,9 +400,9 @@ class DocumentProperties
      *
      * @param string $propertyName
      *
-     * @return string|null
+     * @return mixed|null
      */
-    public function getCustomPropertyValue(string $propertyName): ?string
+    public function getCustomPropertyValue(string $propertyName)
     {
         if ($this->isCustomPropertySet($propertyName)) {
             return $this->customProperties[$propertyName]['value'];

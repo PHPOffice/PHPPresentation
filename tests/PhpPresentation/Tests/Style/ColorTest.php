@@ -10,11 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- *
- * @see        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
@@ -49,7 +51,7 @@ class ColorTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
         $this->assertEquals(100, $object->getAlpha());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB('AA0000FF'));
-        $this->assertEquals(66.67, $object->getAlpha());
+        $this->assertEquals(67, $object->getAlpha());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
         $this->assertEquals(100, $object->getAlpha());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setAlpha($randAlpha));

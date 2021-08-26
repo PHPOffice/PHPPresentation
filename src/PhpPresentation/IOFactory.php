@@ -16,6 +16,8 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation;
 
 use PhpOffice\PhpPresentation\Reader\ReaderInterface;
@@ -51,7 +53,7 @@ class IOFactory
      *
      * @throws \Exception
      */
-    public static function createReader(string $name = ''): ReaderInterface
+    public static function createReader(string $name): ReaderInterface
     {
         $class = 'PhpOffice\\PhpPresentation\\Reader\\' . $name;
 

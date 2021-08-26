@@ -16,6 +16,8 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation;
 
 use PhpOffice\Common\Drawing;
@@ -224,7 +226,7 @@ class DocumentLayout
                 $value /= 914400;
                 break;
             case self::UNIT_PIXEL:
-                $value = Drawing::emuToPixels($value);
+                $value = Drawing::emuToPixels((int) $value);
                 break;
             case self::UNIT_POINT:
                 $value /= 12700;

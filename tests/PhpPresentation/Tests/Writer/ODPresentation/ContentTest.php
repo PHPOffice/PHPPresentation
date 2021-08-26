@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
@@ -268,10 +286,10 @@ class ContentTest extends PhpPresentationTestCase
             ->setOffsetY($expectedY);
         $this->oPresentation->getActiveSlide()->addShape($oMedia);
 
-        $expectedWidth = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedWidth), 3) . 'cm';
-        $expectedHeight = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedHeight), 3) . 'cm';
-        $expectedX = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedX), 3) . 'cm';
-        $expectedY = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedY), 3) . 'cm';
+        $expectedWidth = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $expectedWidth), 3) . 'cm';
+        $expectedHeight = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $expectedHeight), 3) . 'cm';
+        $expectedX = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $expectedX), 3) . 'cm';
+        $expectedY = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $expectedY), 3) . 'cm';
 
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
         $this->assertZipXmlElementExists('content.xml', $element);
@@ -512,9 +530,9 @@ class ContentTest extends PhpPresentationTestCase
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '0cm');
             } else {
                 if ($inc > 90 && $inc < 270) {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
+                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '-' . Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 } else {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', Drawing::pixelsToCentimeters($randDistance) . 'cm');
+                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 }
             }
             // Y
@@ -522,9 +540,9 @@ class ContentTest extends PhpPresentationTestCase
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '0cm');
             } else {
                 if (($inc > 0 && $inc < 180) || 360 == $inc) {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', Drawing::pixelsToCentimeters($randDistance) . 'cm');
+                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 } else {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
+                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '-' . Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 }
             }
             $this->assertIsSchemaOpenDocumentValid('1.2');
