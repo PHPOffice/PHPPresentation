@@ -373,7 +373,7 @@ class PptCharts extends AbstractDecoratorWriter
                 // c:pt
                 $objWriter->startElement('c:pt');
                 $objWriter->writeAttribute('idx', $i);
-                $objWriter->writeElement('c:v', $values[$i]);
+                $objWriter->writeElement('c:v', strval($values[$i]));
                 $objWriter->endElement();
             }
         } else {
@@ -391,7 +391,7 @@ class PptCharts extends AbstractDecoratorWriter
                 // c:pt
                 $objWriter->startElement('c:pt');
                 $objWriter->writeAttribute('idx', $i);
-                $objWriter->writeElement('c:v', $values[$i]);
+                $objWriter->writeElement('c:v', strval($values[$i]));
                 $objWriter->endElement();
             }
 
