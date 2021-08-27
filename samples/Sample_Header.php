@@ -88,12 +88,17 @@ if ($handle = opendir('.')) {
             $name = str_replace('_', ' ', preg_replace('/(Sample_|\.php)/', '', $file));
             $group = substr($name, 0, 1);
             if (!isset($files[$group])) {
-                $files[$group] = '';
+                $files[$group] = array();
             }
-            $files[$group] .= "<li><a href='{$file}'>{$name}</a></li>";
+            $files[$group][$name] = "<li><a href='{$file}'>{$name}</a></li>";
         }
     }
     closedir($handle);
+
+    foreach ($files as $group => $a) {
+        natsort($files[$group]);
+    }
+    ksort($files);
 }
 
 /**
@@ -497,10 +502,10 @@ class PhpPptTree
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <?php foreach ($files as $key => $fileStr) { ?>
+                <?php foreach ($files as $key => $groupfiles) { ?>
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key; ?>x<strong class="caret"></strong></a>
-                    <ul class="dropdown-menu"><?php echo $fileStr; ?></ul>
+                    <ul class="dropdown-menu"><?php echo implode('', $groupfiles); ?></ul>
                 </li>
                 <?php } ?>
             </ul>
