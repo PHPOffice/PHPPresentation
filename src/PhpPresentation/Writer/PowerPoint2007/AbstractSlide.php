@@ -16,6 +16,8 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
 use ArrayObject;
@@ -206,7 +208,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         if (!$shape->isPlaceholder()) {
             // p:sp\p:spPr\a:xfrm
             $objWriter->startElement('a:xfrm');
-            $objWriter->writeAttributeIf(0 != $shape->getRotation(), 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+            $objWriter->writeAttributeIf(0 != $shape->getRotation(), 'rot', CommonDrawing::degreesToAngle((int) $shape->getRotation()));
             // p:sp\p:spPr\a:xfrm\a:off
             $objWriter->startElement('a:off');
             $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
@@ -763,7 +765,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('a:outerShdw');
         $objWriter->writeAttribute('blurRad', CommonDrawing::pixelsToEmu($oShadow->getBlurRadius()));
         $objWriter->writeAttribute('dist', CommonDrawing::pixelsToEmu($oShadow->getDistance()));
-        $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle($oShadow->getDirection()));
+        $objWriter->writeAttribute('dir', CommonDrawing::degreesToAngle((int) $oShadow->getDirection()));
         $objWriter->writeAttribute('algn', $oShadow->getAlignment());
         $objWriter->writeAttribute('rotWithShape', '0');
 
@@ -1116,7 +1118,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
         // p:sp\p:spPr\a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttributeIf($shape->getRotation() != 0, 'rot', CommonDrawing::degreesToAngle((int) $shape->getRotation()));
         // p:sp\p:spPr\a:xfrm\a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
@@ -1210,7 +1212,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->endElement();
         // p:xfrm
         $objWriter->startElement('p:xfrm');
-        $objWriter->writeAttributeIf(0 != $shape->getRotation(), 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttributeIf(0 != $shape->getRotation(), 'rot', CommonDrawing::degreesToAngle((int) $shape->getRotation()));
         // a:off
         $objWriter->startElement('a:off');
         $objWriter->writeAttribute('x', CommonDrawing::pixelsToEmu($shape->getOffsetX()));
@@ -1377,7 +1379,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         $objWriter->startElement('p:spPr');
         // a:xfrm
         $objWriter->startElement('a:xfrm');
-        $objWriter->writeAttributeIf(0 != $shape->getRotation(), 'rot', CommonDrawing::degreesToAngle($shape->getRotation()));
+        $objWriter->writeAttributeIf(0 != $shape->getRotation(), 'rot', CommonDrawing::degreesToAngle((int) $shape->getRotation()));
 
         // a:off
         $objWriter->startElement('a:off');

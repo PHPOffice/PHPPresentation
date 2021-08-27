@@ -16,6 +16,8 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Reader;
 
 use PhpOffice\Common\Microsoft\OLERead;
@@ -31,6 +33,7 @@ use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Font;
 
 /**
  * Serialized format reader.
@@ -1654,7 +1657,9 @@ class PowerPoint97 implements ReaderInterface
                             $txtRun->getFont()->setItalic($clientTextbox['part' . $inc]['italic']);
                         }
                         if (isset($clientTextbox['part' . $inc]['underline'])) {
-                            $txtRun->getFont()->setUnderline($clientTextbox['part' . $inc]['underline']);
+                            $txtRun->getFont()->setUnderline(
+                                $clientTextbox['part' . $inc]['underline'] ? Font::UNDERLINE_SINGLE : Font::UNDERLINE_NONE
+                            );
                         }
                         if (isset($clientTextbox['part' . $inc]['fontName'])) {
                             $txtRun->getFont()->setName($clientTextbox['part' . $inc]['fontName']);
@@ -1953,7 +1958,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * The OfficeArtFOPT record specifies a table of OfficeArtRGFOPTE records.
      *
-     * @return array<string, int>
+     * @return array<string, int|string|bool>
      *
      * @see https://msdn.microsoft.com/en-us/library/dd943404(v=office.12).aspx
      */
@@ -2004,22 +2009,22 @@ class PowerPoint97 implements ReaderInterface
                     case 0x0081:
                         // Text : dxTextLeft
                         //@link : http://msdn.microsoft.com/en-us/library/dd953234(v=office.12).aspx
-                        $arrayReturn['insetLeft'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
+                        $arrayReturn['insetLeft'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
                         break;
                     case 0x0082:
                         // Text : dyTextTop
                         //@link : http://msdn.microsoft.com/en-us/library/dd925068(v=office.12).aspx
-                        $arrayReturn['insetTop'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
+                        $arrayReturn['insetTop'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
                         break;
                     case 0x0083:
                         // Text : dxTextRight
                         //@link : http://msdn.microsoft.com/en-us/library/dd906782(v=office.12).aspx
-                        $arrayReturn['insetRight'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
+                        $arrayReturn['insetRight'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
                         break;
                     case 0x0084:
                         // Text : dyTextBottom
                         //@link : http://msdn.microsoft.com/en-us/library/dd772858(v=office.12).aspx
-                        $arrayReturn['insetBottom'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
+                        $arrayReturn['insetBottom'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
                         break;
                     case 0x0085:
                         // Text : WrapText
@@ -2139,12 +2144,12 @@ class PowerPoint97 implements ReaderInterface
                     case 0x0193:
                         // Fill : fillRectRight
                         //@link : http://msdn.microsoft.com/en-us/library/dd951294(v=office.12).aspx
-                        // echo 'fillRectRight  : '.\PhpOffice\Common\Drawing::emuToPixels($opt['op']).EOL;
+                        // echo 'fillRectRight  : '.\PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']).EOL;
                         break;
                     case 0x0194:
                         // Fill : fillRectBottom
                         //@link : http://msdn.microsoft.com/en-us/library/dd910194(v=office.12).aspx
-                        // echo 'fillRectBottom   : '.\PhpOffice\Common\Drawing::emuToPixels($opt['op']).EOL;
+                        // echo 'fillRectBottom   : '.\PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']).EOL;
                         break;
                     case 0x01BF:
                         // Fill : Fill Style Boolean Properties
@@ -2170,7 +2175,7 @@ class PowerPoint97 implements ReaderInterface
                     case 0x01CB:
                         // Line Style : lineWidth
                         //@link : http://msdn.microsoft.com/en-us/library/dd926964(v=office.12).aspx
-                        $arrayReturn['lineWidth'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
+                        $arrayReturn['lineWidth'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
                         break;
                     case 0x01D6:
                         // Line Style : lineJoinStyle
@@ -2195,12 +2200,12 @@ class PowerPoint97 implements ReaderInterface
                     case 0x0205:
                         // Shadow Style : shadowOffsetX
                         //@link : http://msdn.microsoft.com/en-us/library/dd945280(v=office.12).aspx
-                        $arrayReturn['shadowOffsetX'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
+                        $arrayReturn['shadowOffsetX'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
                         break;
                     case 0x0206:
                         // Shadow Style : shadowOffsetY
                         //@link : http://msdn.microsoft.com/en-us/library/dd907855(v=office.12).aspx
-                        $arrayReturn['shadowOffsetY'] = \PhpOffice\Common\Drawing::emuToPixels($opt['op']);
+                        $arrayReturn['shadowOffsetY'] = \PhpOffice\Common\Drawing::emuToPixels((int) $opt['op']);
                         break;
                     case 0x023F:
                         // Shadow Style : Shadow Style Boolean Properties

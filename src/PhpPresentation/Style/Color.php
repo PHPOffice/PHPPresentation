@@ -16,6 +16,8 @@
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
@@ -95,12 +97,12 @@ class Color implements ComparableInterface
      *
      * @return int
      */
-    public function getAlpha()
+    public function getAlpha(): int
     {
         $alpha = 100;
         if (strlen($this->argb) >= 6) {
             $dec = hexdec(substr($this->argb, 0, 2));
-            $alpha = number_format(($dec / 255) * 100, 2);
+            $alpha = (int) number_format(($dec / 255) * 100, 0);
         }
 
         return $alpha;
@@ -113,7 +115,7 @@ class Color implements ComparableInterface
      *
      * @return $this
      */
-    public function setAlpha($alpha = 100)
+    public function setAlpha(int $alpha = 100): self
     {
         if ($alpha < 0) {
             $alpha = 0;
