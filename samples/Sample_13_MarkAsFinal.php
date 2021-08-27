@@ -9,7 +9,7 @@ echo date('H:i:s') . ' Create new PHPPresentation object' . EOL;
 $objPHPPresentation = new PhpPresentation();
 
 // Mark the document as final
-$objPHPPresentation->markAsFinal(true);
+$objPHPPresentation->getPresentationProperties()->markAsFinal(true);
 
 // Create slide
 echo date('H:i:s') . ' Create slide' . EOL;
