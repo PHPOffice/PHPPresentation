@@ -88,7 +88,7 @@ if ($handle = opendir('.')) {
             $name = str_replace('_', ' ', preg_replace('/(Sample_|\.php)/', '', $file));
             $group = substr($name, 0, 1);
             if (!isset($files[$group])) {
-                $files[$group] = array();
+                $files[$group] = [];
             }
             $files[$group][$name] = "<li><a href='{$file}'>{$name}</a></li>";
         }
