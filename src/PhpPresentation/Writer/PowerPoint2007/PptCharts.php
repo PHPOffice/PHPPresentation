@@ -2298,6 +2298,7 @@ class PptCharts extends AbstractDecoratorWriter
         }
 
         $crossesAt = $oAxis->getCrossesAt();
+        $orientation = $oAxis->isReversedOrder() ? 'maxMin' : 'minMax';
 
         if (Chart\Axis::AXIS_X == $typeAxis) {
             $mainElement = 'c:catAx';
@@ -2324,7 +2325,7 @@ class PptCharts extends AbstractDecoratorWriter
 
         // $mainElement > c:scaling > c:orientation
         $objWriter->startElement('c:orientation');
-        $objWriter->writeAttribute('val', 'minMax');
+        $objWriter->writeAttribute('val', $orientation);
         $objWriter->endElement();
 
         if (null != $oAxis->getMaxBounds()) {

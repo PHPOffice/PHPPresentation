@@ -70,6 +70,16 @@ class AxisTest extends TestCase
         $this->assertEquals(Axis::CROSSES_MAX, $object->getCrossesAt());
     }
 
+    public function testIsReversedOrder(): void
+    {
+        $object = new Axis();
+        $this->assertFalse($object->isReversedOrder());
+        $this->assertInstanceOf(Axis::class, $object->setIsReversedOrder(true));
+        $this->assertTrue($object->isReversedOrder());
+        $this->assertInstanceOf(Axis::class, $object->setIsReversedOrder(false));
+        $this->assertFalse($object->isReversedOrder());
+    }
+
     public function testFont(): void
     {
         $object = new Axis();

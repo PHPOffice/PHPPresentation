@@ -324,6 +324,35 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testIsReversedOrder(): void
+    {
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:scaling/c:orientation';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oLine = new Line();
+        $oShape->getPlotArea()->setType($oLine);
+
+        // default
+        $this->assertFalse($oShape->getPlotArea()->getAxisX()->isReversedOrder());
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 'minMax');
+        $this->assertIsSchemaECMA376Valid();
+
+        // reversed order
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(true));
+        $this->resetPresentationFile();
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 'maxMin');
+        $this->assertIsSchemaECMA376Valid();
+
+        // reset reversed order
+        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(false));
+        $this->resetPresentationFile();
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 'minMax');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testAxisFont(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

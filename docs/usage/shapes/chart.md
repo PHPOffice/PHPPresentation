@@ -121,6 +121,31 @@ $shape->getPlotArea()->getAxisY()->setCrossesAt('3');
 | `AXIS::CROSSES_MIN`  | Axis crosses at minimum. |
 | `AXIS::CROSSES_MAX`  | Axis crosses at maximum. |
 
+#### Reversed Order
+
+You can reverse the order of a categorial or value axis trought `setIsReversedOrder`.
+
+Notice: If you reverse the order of a axis, this automatically changes the position of the other axis.
+To reset this effect, the axis intersection point on the other axis must be set to `Axis::CROSSES_MAX` using `setCrossesAt`.
+
+``` php
+use PhpOffice\PhpPresentation\Shape\Axis;
+
+$bar = new Bar();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($bar);
+
+// default value, will return false
+$shape->getPlotArea()->getAxisY()->isReversedOrder()
+
+// reverse order
+$shape->getPlotArea()->getAxisY()->setIsReversedOrder(true);
+
+// revert the automatic intersection switch on x axis
+$shape->getPlotArea()->getAxisX()->setCrossesAt(Axis::CROSSES_MAX);
+```
+
 #### Outline
 
 You can define outline for each axis (X & Y).

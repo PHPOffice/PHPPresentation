@@ -94,6 +94,11 @@ class Axis implements ComparableInterface
     protected $crossesAt = self::CROSSES_AUTO;
 
     /**
+     * @var bool
+     */
+    protected $isReversedOrder = false;
+
+    /**
      * @var string
      */
     protected $minorTickMark = self::TICK_MARK_NONE;
@@ -268,6 +273,26 @@ class Axis implements ComparableInterface
     public function setCrossesAt(string $value = self::CROSSES_AUTO): self
     {
         $this->crossesAt = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReversedOrder(): bool
+    {
+        return $this->isReversedOrder;
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function setIsReversedOrder(bool $value = false): self
+    {
+        $this->isReversedOrder = $value;
 
         return $this;
     }
