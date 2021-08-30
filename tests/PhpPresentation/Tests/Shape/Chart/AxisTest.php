@@ -61,6 +61,15 @@ class AxisTest extends TestCase
         $this->assertNull($object->getMaxBounds());
     }
 
+    public function testCrossesAt(): void
+    {
+        $object = new Axis();
+
+        $this->assertEquals(Axis::CROSSES_AUTO, $object->getCrossesAt());
+        $this->assertInstanceOf(Axis::class, $object->setCrossesAt(Axis::CROSSES_MAX));
+        $this->assertEquals(Axis::CROSSES_MAX, $object->getCrossesAt());
+    }
+
     public function testFont(): void
     {
         $object = new Axis();

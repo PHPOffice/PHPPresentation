@@ -95,6 +95,32 @@ $shape->getPlotArea()->getAxisX()->setMinBounds(0);
 $shape->getPlotArea()->getAxisX()->setMaxBounds(200);
 ```
 
+#### Crossing
+
+For Axis, you can define where it should be crossed by the perpendicular/ horizontal axis trought `setCrossesAt`.
+The property can be defined by one of the three given constants or as an absolute value on the target axis.
+
+``` php
+use PhpOffice\PhpPresentation\Shape\Axis;
+
+$bar = new Bar();
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($bar);
+
+// Usage of constant: Horizontal axis will cross the Y-Axis at `0`
+$shape->getPlotArea()->getAxisY()->setCrossesAt(Axis::CROSSES_AUTO);
+
+// Usage of individual value: Horizontal axis will cross the Y-Axis at `3`
+$shape->getPlotArea()->getAxisY()->setCrossesAt('3');
+```
+
+| Constant             | Description              |
+| -------------------- | ------------------------ |
+| `AXIS::CROSSES_AUTO` | Axis crosses at zero.    |
+| `AXIS::CROSSES_MIN`  | Axis crosses at minimum. |
+| `AXIS::CROSSES_MAX`  | Axis crosses at maximum. |
+
 #### Outline
 
 You can define outline for each axis (X & Y).

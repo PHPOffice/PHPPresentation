@@ -276,6 +276,54 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testAxisCrosses(): void
+    {
+        $oSeries = new Series('Downloads', $this->seriesData);
+        $oSeries->getFill()->setStartColor(new Color('FFAABBCC'));
+        $oLine = new Line();
+        $oLine->addSeries($oSeries);
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+
+        $elementCrosses = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:crosses';
+        $elementCrossesAt = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:crossesAt';
+        $elementAxPos = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:axPos';
+
+        // Default autoZero
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrosses);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrosses, 'val', 'autoZero');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementAxPos, 'val', 'b');
+        $this->assertIsSchemaECMA376Valid();
+
+        // Crosses max
+        $oShape->getPlotArea()->getAxisX()->setCrossesAt(Axis::CROSSES_MAX);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrosses);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrosses, 'val', 'max');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementAxPos, 'val', 't');
+        $this->assertIsSchemaECMA376Valid();
+
+        // Crosses min
+        $oShape->getPlotArea()->getAxisX()->setCrossesAt(Axis::CROSSES_MIN);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrosses);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrosses, 'val', 'min');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementAxPos, 'val', 'b');
+        $this->assertIsSchemaECMA376Valid();
+
+        // Crosses custom value
+        $oShape->getPlotArea()->getAxisX()->setCrossesAt('10');
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrosses);
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrossesAt);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementCrossesAt, 'val', '10');
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementAxPos, 'val', 'b');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testAxisFont(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();

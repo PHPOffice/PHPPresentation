@@ -38,6 +38,10 @@ class Axis implements ComparableInterface
     public const TICK_LABEL_POSITION_HIGH = 'high';
     public const TICK_LABEL_POSITION_LOW = 'low';
 
+    public const CROSSES_AUTO = 'autoZero';
+    public const CROSSES_MIN = 'min';
+    public const CROSSES_MAX = 'max';
+
     /**
      * Title.
      *
@@ -83,6 +87,11 @@ class Axis implements ComparableInterface
      * @var int
      */
     protected $maxBounds;
+
+    /**
+     * @var string
+     */
+    protected $crossesAt = self::CROSSES_AUTO;
 
     /**
      * @var string
@@ -239,6 +248,26 @@ class Axis implements ComparableInterface
     public function setMaxBounds(int $maxBounds = null): self
     {
         $this->maxBounds = is_null($maxBounds) ? null : $maxBounds;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCrossesAt(): string
+    {
+        return $this->crossesAt;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return self
+     */
+    public function setCrossesAt(string $value = self::CROSSES_AUTO): self
+    {
+        $this->crossesAt = $value;
 
         return $this;
     }

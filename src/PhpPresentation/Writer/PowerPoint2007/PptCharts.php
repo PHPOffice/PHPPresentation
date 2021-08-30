@@ -2297,15 +2297,17 @@ class PptCharts extends AbstractDecoratorWriter
             return;
         }
 
+        $crossesAt = $oAxis->getCrossesAt();
+
         if (Chart\Axis::AXIS_X == $typeAxis) {
             $mainElement = 'c:catAx';
             $axIdVal = '52743552';
-            $axPosVal = 'b';
+            $axPosVal = $crossesAt === 'max' ? 't' : 'b';
             $crossAxVal = '52749440';
         } else {
             $mainElement = 'c:valAx';
             $axIdVal = '52749440';
-            $axPosVal = 'l';
+            $axPosVal = $crossesAt === 'max' ? 'r' : 'l';
             $crossAxVal = '52743552';
         }
 
@@ -2485,10 +2487,16 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('val', $crossAxVal);
         $objWriter->endElement();
 
-        // c:crosses
-        $objWriter->startElement('c:crosses');
-        $objWriter->writeAttribute('val', 'autoZero');
-        $objWriter->endElement();
+        // c:crosses "autoZero" | "min" | "max" | custom string value
+        if (in_array($crossesAt, ['autoZero', 'min', 'max'])) {
+            $objWriter->startElement('c:crosses');
+            $objWriter->writeAttribute('val', $crossesAt);
+            $objWriter->endElement();
+        } else {
+            $objWriter->startElement('c:crossesAt');
+            $objWriter->writeAttribute('val', $crossesAt);
+            $objWriter->endElement();
+        }
 
         if (Chart\Axis::AXIS_X == $typeAxis) {
             // c:lblAlgn
