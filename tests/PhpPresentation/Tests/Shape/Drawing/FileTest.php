@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 use PHPUnit\Framework\TestCase;
 
@@ -38,8 +39,8 @@ class FileTest extends TestCase
 
     public function testPathBasic(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('File  not found!');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
 
         $object = new File();
         $this->assertInstanceOf(File::class, $object->setPath());

@@ -28,9 +28,6 @@ use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Slide;
 
-/**
- * Note class.
- */
 class Note implements ComparableInterface, ShapeContainerInterface
 {
     /**
@@ -120,10 +117,8 @@ class Note implements ComparableInterface, ShapeContainerInterface
      * Add shape to slide.
      *
      * @return AbstractShape
-     *
-     * @throws \Exception
      */
-    public function addShape(AbstractShape $shape)
+    public function addShape(AbstractShape $shape): AbstractShape
     {
         $shape->setContainer($this);
 
@@ -132,8 +127,6 @@ class Note implements ComparableInterface, ShapeContainerInterface
 
     /**
      * Create rich text shape.
-     *
-     * @throws \Exception
      */
     public function createRichTextShape(): RichText
     {

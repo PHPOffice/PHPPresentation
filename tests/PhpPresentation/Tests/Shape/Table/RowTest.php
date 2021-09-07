@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Table;
 
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
+use PhpOffice\PhpPresentation\Shape\Table\Cell;
 use PhpOffice\PhpPresentation\Shape\Table\Row;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PHPUnit\Framework\TestCase;
@@ -38,26 +40,25 @@ class RowTest extends TestCase
     {
         $object = new Row();
         $this->assertCount(1, $object->getCells());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        $this->assertInstanceOf(Fill::class, $object->getFill());
 
         $value = mt_rand(1, 100);
         $object = new Row($value);
         $this->assertCount($value, $object->getCells());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        $this->assertInstanceOf(Fill::class, $object->getFill());
     }
 
     public function testGetCell(): void
     {
         $object = new Row();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->getCell(0));
-        $this->assertNull($object->getCell(1000, true));
+        $this->assertInstanceOf(Cell::class, $object->getCell(0));
     }
 
     public function testGetCellException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Cell number out of bounds.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
 
         $object = new Row();
         $object->getCell(1);
@@ -67,13 +68,13 @@ class RowTest extends TestCase
     {
         $object = new Row(2);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Cell', $object->nextCell());
+        $this->assertInstanceOf(Cell::class, $object->nextCell());
     }
 
     public function testNextCellException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Cell count out of bounds.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
 
         $object = new Row();
         $object->nextCell();
@@ -96,7 +97,7 @@ class RowTest extends TestCase
         $object = new Row();
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setFill(new Fill()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        $this->assertInstanceOf(Fill::class, $object->getFill());
     }
 
     public function testGetSetHeight(): void

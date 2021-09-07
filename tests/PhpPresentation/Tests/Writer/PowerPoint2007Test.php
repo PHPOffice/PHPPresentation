@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
+use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
@@ -63,35 +65,11 @@ class PowerPoint2007Test extends PhpPresentationTestCase
      */
     public function testSaveEmptyException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Filename is empty');
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('The parameter pFilename can\'t have the value ""');
 
         $object = new PowerPoint2007($this->oPresentation);
         $object->save('');
-    }
-
-    /**
-     * Test save with empty assignation.
-     */
-    public function testSaveUnassignedException(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('No PhpPresentation assigned.');
-
-        $object = new PowerPoint2007();
-        $object->save('filename.pptx');
-    }
-
-    /**
-     * Test get PhpPresentation exception.
-     */
-    public function testGetPhpPresentationException(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('No PhpPresentation assigned.');
-
-        $object = new PowerPoint2007();
-        $object->getPhpPresentation();
     }
 
     /**
@@ -116,8 +94,8 @@ class PowerPoint2007Test extends PhpPresentationTestCase
      */
     public function testCachingException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Directory does not exist: foo');
+        $this->expectException(DirectoryNotFoundException::class);
+        $this->expectExceptionMessage('The directory foo doesn\'t exist');
 
         $object = new PowerPoint2007($this->oPresentation);
         $object->setUseDiskCaching(true, 'foo');

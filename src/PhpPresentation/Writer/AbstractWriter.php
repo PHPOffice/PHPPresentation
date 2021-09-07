@@ -41,7 +41,7 @@ abstract class AbstractWriter
     /**
      * Private PhpPresentation.
      *
-     * @var PhpPresentation
+     * @var PhpPresentation|null
      */
     protected $oPresentation;
 
@@ -60,15 +60,9 @@ abstract class AbstractWriter
 
     /**
      * Get PhpPresentation object.
-     *
-     * @throws \Exception
      */
-    public function getPhpPresentation(): PhpPresentation
+    public function getPhpPresentation(): ?PhpPresentation
     {
-        if (empty($this->oPresentation)) {
-            throw new \Exception('No PhpPresentation assigned.');
-        }
-
         return $this->oPresentation;
     }
 
@@ -76,8 +70,6 @@ abstract class AbstractWriter
      * Get PhpPresentation object.
      *
      * @param PhpPresentation|null $pPhpPresentation PhpPresentation object
-     *
-     * @throws \Exception
      *
      * @return self
      */
@@ -104,8 +96,6 @@ abstract class AbstractWriter
      * Get an array of all drawings.
      *
      * @return array<int, AbstractShape>
-     *
-     * @throws \Exception
      */
     protected function allDrawings(): array
     {

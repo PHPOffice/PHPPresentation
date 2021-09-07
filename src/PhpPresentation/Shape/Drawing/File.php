@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
 use PhpOffice\Common\File as CommonFile;
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 
 class File extends AbstractDrawingAdapter
 {
@@ -43,15 +44,15 @@ class File extends AbstractDrawingAdapter
      * @param string $pValue File path
      * @param bool $pVerifyFile Verify file
      *
-     * @throws \Exception
+     * @throws FileNotFoundException
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
+     * @return self
      */
-    public function setPath(string $pValue = '', $pVerifyFile = true): self
+    public function setPath(string $pValue = '', bool $pVerifyFile = true): self
     {
         if ($pVerifyFile) {
             if (!file_exists($pValue)) {
-                throw new \Exception("File $pValue not found!");
+                throw new FileNotFoundException($pValue);
             }
         }
         $this->path = $pValue;
@@ -76,12 +77,12 @@ class File extends AbstractDrawingAdapter
     }
 
     /**
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     public function getMimeType(): string
     {
         if (!CommonFile::fileExists($this->getPath())) {
-            throw new \Exception('File ' . $this->getPath() . ' does not exist');
+            throw new FileNotFoundException($this->getPath());
         }
         $image = getimagesizefromstring(CommonFile::fileGetContents($this->getPath()));
 

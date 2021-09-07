@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Comment\Author;
@@ -29,11 +30,9 @@ class Relationships extends AbstractDecoratorWriter
     /**
      * Add relationships to ZIP file.
      *
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     *
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function render()
+    public function render(): ZipInterface
     {
         $this->getZip()->addFromString('_rels/.rels', $this->writeRelationships());
         $this->getZip()->addFromString('ppt/_rels/presentation.xml.rels', $this->writePresentationRelationships());
@@ -45,10 +44,8 @@ class Relationships extends AbstractDecoratorWriter
      * Write relationships to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    public function writeRelationships()
+    protected function writeRelationships(): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -91,10 +88,8 @@ class Relationships extends AbstractDecoratorWriter
      * Write presentation relationships to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    public function writePresentationRelationships()
+    protected function writePresentationRelationships(): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);

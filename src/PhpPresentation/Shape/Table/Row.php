@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Shape\Table;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Style\Fill;
 
 /**
@@ -31,14 +32,14 @@ class Row implements ComparableInterface
     /**
      * Cells.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Table\Cell[]
+     * @var Cell[]
      */
-    private $cells;
+    private $cells = [];
 
     /**
      * Fill.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Fill
+     * @var Fill
      */
     private $fill;
 
@@ -64,40 +65,48 @@ class Row implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Table\Row instance.
-     *
      * @param int $columns Number of columns
      */
-    public function __construct($columns = 1)
+    public function __construct(int $columns = 1)
     {
-        // Initialise variables
-        $this->cells = [];
-        for ($i = 0; $i < $columns; ++$i) {
+        // Fill
+        $this->fill = new Fill();
+        // Cells
+        for ($inc = 0; $inc < $columns; ++$inc) {
             $this->cells[] = new Cell();
         }
-
-        // Set fill
-        $this->fill = new Fill();
     }
 
     /**
      * Get cell.
      *
      * @param int $cell Cell number
-     * @param bool $exceptionAsNull Return a null value instead of an exception?
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
-    public function getCell($cell = 0, $exceptionAsNull = false): ?Cell
+    public function getCell(int $cell = 0): Cell
     {
         if (!isset($this->cells[$cell])) {
-            if ($exceptionAsNull) {
-                return null;
-            }
-            throw new \Exception('Cell number out of bounds.');
+            throw new OutOfBoundsException(
+                0,
+                (count($this->cells) - 1) < 0 ? count($this->cells) - 1 : 0,
+                $cell
+            );
         }
 
         return $this->cells[$cell];
+    }
+
+    /**
+     * Get cell.
+     *
+     * @param int $cell Cell number
+     *
+     * @return bool
+     */
+    public function hasCell(int $cell): bool
+    {
+        return isset($this->cells[$cell]);
     }
 
     /**
@@ -113,11 +122,11 @@ class Row implements ComparableInterface
     /**
      * Next cell (moves one cell to the right).
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @return Cell
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
-    public function nextCell()
+    public function nextCell(): Cell
     {
         ++$this->activeCellIndex;
         if (isset($this->cells[$this->activeCellIndex])) {
@@ -125,15 +134,20 @@ class Row implements ComparableInterface
 
             return $this->cells[$this->activeCellIndex];
         }
-        throw new \Exception('Cell count out of bounds.');
+
+        throw new OutOfBoundsException(
+            0,
+            (count($this->cells) - 1) < 0 ? count($this->cells) - 1 : 0,
+            $this->activeCellIndex
+        );
     }
 
     /**
      * Get fill.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return Fill
      */
-    public function getFill()
+    public function getFill(): Fill
     {
         return $this->fill;
     }
@@ -141,9 +155,9 @@ class Row implements ComparableInterface
     /**
      * Set fill.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
+     * @return self
      */
-    public function setFill(Fill $fill)
+    public function setFill(Fill $fill): self
     {
         $this->fill = $fill;
 
@@ -155,7 +169,7 @@ class Row implements ComparableInterface
      *
      * @return int
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }
@@ -165,9 +179,9 @@ class Row implements ComparableInterface
      *
      * @param int $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
+     * @return self
      */
-    public function setHeight($value = 0)
+    public function setHeight(int $value = 0): self
     {
         $this->height = $value;
 

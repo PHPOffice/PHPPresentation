@@ -25,6 +25,8 @@ use DOMElement;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\DocumentProperties;
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
@@ -76,8 +78,6 @@ class ODPresentation implements ReaderInterface
 
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
-     *
-     * @throws \Exception
      */
     public function canRead(string $pFilename): bool
     {
@@ -87,13 +87,13 @@ class ODPresentation implements ReaderInterface
     /**
      * Does a file support UnserializePhpPresentation ?
      *
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
+            throw new FileNotFoundException($pFilename);
         }
 
         $oZip = new ZipArchive();
@@ -112,13 +112,13 @@ class ODPresentation implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\ODPresentation: " . $pFilename . '.');
+            throw new InvalidFileFormatException($pFilename, ODPresentation::class);
         }
 
         return $this->loadFile($pFilename);
@@ -129,9 +129,7 @@ class ODPresentation implements ReaderInterface
      *
      * @param string $pFilename
      *
-     * @return \PhpOffice\PhpPresentation\PhpPresentation
-     *
-     * @throws \Exception
+     * @return PhpPresentation
      */
     protected function loadFile($pFilename)
     {
@@ -159,7 +157,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Document Properties.
+     * Read Document Properties
      */
     protected function loadDocumentProperties(): void
     {
@@ -219,7 +217,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Extract all slides.
+     * Extract all slides
      */
     protected function loadSlides(): void
     {
@@ -246,13 +244,9 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Extract style.
-     *
-     * @return bool
-     *
-     * @throws \Exception
+     * Extract style
      */
-    protected function loadStyle(DOMElement $nodeStyle)
+    protected function loadStyle(DOMElement $nodeStyle): bool
     {
         $keyStyle = $nodeStyle->getAttribute('style:name');
 
@@ -493,9 +487,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Slide.
-     *
-     * @throws \Exception
+     * Read Slide
      */
     protected function loadSlide(DOMElement $nodeSlide): bool
     {
@@ -528,9 +520,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Shape Drawing.
-     *
-     * @throws \Exception
+     * Read Shape Drawing
      */
     protected function loadShapeDrawing(DOMElement $oNodeFrame): void
     {
@@ -587,9 +577,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Shape RichText.
-     *
-     * @throws \Exception
+     * Read Shape RichText
      */
     protected function loadShapeRichText(DOMElement $oNodeFrame): void
     {
@@ -620,9 +608,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Paragraph.
-     *
-     * @throws \Exception
+     * Read Paragraph
      */
     protected function readParagraph(RichText $oShape, DOMElement $oNodeParent): void
     {
@@ -660,9 +646,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Paragraph Item.
-     *
-     * @throws \Exception
+     * Read Paragraph Item
      */
     protected function readParagraphItem(Paragraph $oParagraph, DOMElement $oNodeParent): void
     {
@@ -689,9 +673,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read List.
-     *
-     * @throws \Exception
+     * Read List
      */
     protected function readList(RichText $oShape, DOMElement $oNodeParent): void
     {
@@ -710,9 +692,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read List Item.
-     *
-     * @throws \Exception
+     * Read List Item
      */
     protected function readListItem(RichText $oShape, DOMElement $oNodeParent, DOMElement $oNodeParagraph): void
     {

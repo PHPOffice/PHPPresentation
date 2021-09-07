@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Slide\Background;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PHPUnit\Framework\TestCase;
 
@@ -52,8 +53,8 @@ class ImageTest extends TestCase
 
     public function testPathException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('File not found :');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "pathDoesntExist" doesn\'t exist');
 
         $object = new Image();
         $object->setPath('pathDoesntExist', true);

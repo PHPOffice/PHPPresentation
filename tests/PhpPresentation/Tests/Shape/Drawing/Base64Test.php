@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
+use PhpOffice\PhpPresentation\Exception\UnauthorizedMimetypeException;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PHPUnit\Framework\TestCase;
 
@@ -63,8 +64,8 @@ class Base64Test extends TestCase
 
     public function testExtensionException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Type Mime not found : "fake/fake"');
+        $this->expectException(UnauthorizedMimetypeException::class);
+        $this->expectExceptionMessage('The mime type fake/fake is not found in autorized values (jpg, png, gif, svg)');
 
         $imgData = str_replace('image/jpeg', 'fake/fake', $this->imageDataPNG);
 

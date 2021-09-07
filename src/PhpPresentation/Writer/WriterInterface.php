@@ -26,9 +26,7 @@ namespace PhpOffice\PhpPresentation\Writer;
 interface WriterInterface
 {
     /**
-     * Save PhpPresentation to file.
-     *
-     * @throws \Exception
+     * Save PhpPresentation to file
      */
     public function save(string $pFilename): void;
 }

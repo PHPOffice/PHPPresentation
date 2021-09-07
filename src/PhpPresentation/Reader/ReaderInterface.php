@@ -34,8 +34,6 @@ interface ReaderInterface
 
     /**
      * Loads PhpPresentation from file.
-     *
-     * @throws \Exception
      */
     public function load(string $pFilename): PhpPresentation;
 }

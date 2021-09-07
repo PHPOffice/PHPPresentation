@@ -28,6 +28,9 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
+use PhpOffice\PhpPresentation\Exception\FeatureNotImplementedException;
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
@@ -87,8 +90,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
-     *
-     * @throws \Exception
      */
     public function canRead(string $pFilename): bool
     {
@@ -98,13 +99,13 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Does a file support UnserializePhpPresentation ?
      *
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
+            throw new FileNotFoundException($pFilename);
         }
 
         $oZip = new ZipArchive();
@@ -123,13 +124,13 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007: " . $pFilename . '.');
+            throw new InvalidFileFormatException($pFilename, PowerPoint2007::class);
         }
 
         return $this->loadFile($pFilename);
@@ -137,8 +138,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Load PhpPresentation Serialized file.
-     *
-     * @throws \Exception
      */
     protected function loadFile(string $pFilename): PhpPresentation
     {
@@ -341,9 +340,7 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Extract all slides.
-     *
-     * @throws \Exception
+     * Extract all slides
      */
     protected function loadSlides(string $sPart): void
     {
@@ -379,9 +376,7 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Extract all MasterSlides.
-     *
-     * @throws \Exception
+     * Extract all MasterSlides
      */
     protected function loadMasterSlides(XMLReader $xmlReader, string $fileRels): void
     {
@@ -405,9 +400,7 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Extract data from slide.
-     *
-     * @throws \Exception
+     * Extract data from slide
      */
     protected function loadSlide(string $sPart, string $baseFile): void
     {
@@ -492,9 +485,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadMasterSlide(string $sPart, string $baseFile): void
     {
         $xmlReader = new XMLReader();
@@ -631,9 +621,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadLayoutSlide(string $sPart, string $baseFile, SlideMaster $oSlideMaster): ?SlideLayout
     {
         $xmlReader = new XMLReader();
@@ -700,9 +687,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadSlideBackground(XMLReader $xmlReader, DOMElement $oElement, AbstractSlide $oSlide): void
     {
         // Background color
@@ -759,9 +743,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadSlideNote(string $baseFile, Slide $oSlide): void
     {
         $sPart = $this->oZip->getFromName('ppt/notesSlides/' . $baseFile);
@@ -775,9 +756,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadShapeDrawing(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
         // Core
@@ -907,9 +885,6 @@ class PowerPoint2007 implements ReaderInterface
         $oSlide->addShape($oShape);
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadShapeRichText(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
         if (!$document->elementExists('p:txBody/a:p/a:r', $node)) {
@@ -968,9 +943,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadShapeTable(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
         $this->fileRels = $oSlide->getRelsIndex();
@@ -1021,8 +993,9 @@ class PowerPoint2007 implements ReaderInterface
             if (!($oElementRow instanceof DOMElement)) {
                 continue;
             }
-            $oRow = $oShape->getRow($keyRow, true);
-            if (is_null($oRow)) {
+            if ($oShape->hasRow($keyRow)) {
+                $oRow = $oShape->getRow($keyRow);
+            } else {
                 $oRow = $oShape->createRow();
             }
             if ($oElementRow->hasAttribute('h')) {
@@ -1110,8 +1083,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * @param Cell|RichText $oShape
-     *
-     * @throws \Exception
      */
     protected function loadParagraph(XMLReader $document, DOMElement $oElement, $oShape): void
     {
@@ -1278,9 +1249,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadStyleBorder(XMLReader $xmlReader, DOMElement $oElement, Border $oBorder): void
     {
         if ($oElement->hasAttribute('w')) {
@@ -1319,9 +1287,6 @@ class PowerPoint2007 implements ReaderInterface
         return $oColor;
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadStyleFill(XMLReader $xmlReader, DOMElement $oElement): ?Fill
     {
         // Gradient fill
@@ -1389,7 +1354,7 @@ class PowerPoint2007 implements ReaderInterface
      * @param AbstractSlide|Note $oSlide
      * @param DOMNodeList<DOMNode> $oElements
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @internal param $baseFile
      */
@@ -1410,7 +1375,7 @@ class PowerPoint2007 implements ReaderInterface
                     $this->loadShapeRichText($xmlReader, $oNode, $oSlide);
                     break;
                 default:
-                    //var_export($oNode->tagName);
+                    //throw new FeatureNotImplementedException();
             }
         }
     }

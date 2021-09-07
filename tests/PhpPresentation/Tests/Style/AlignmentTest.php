@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PHPUnit\Framework\TestCase;
 
@@ -90,8 +91,8 @@ class AlignmentTest extends TestCase
      */
     public function testSetGetLevelExceptionMin(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid value should be more than 0.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (-1) is out of bounds (0, Infinite)');
 
         $object = new Alignment();
         $object->setLevel(-1);

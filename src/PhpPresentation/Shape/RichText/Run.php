@@ -57,9 +57,7 @@ class Run extends TextElement implements TextElementInterface
     /**
      * Set font.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Font $pFont Font
-     *
-     * @throws \Exception
+     * @param Font|null $pFont Font
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */

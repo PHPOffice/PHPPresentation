@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Slide;
@@ -30,11 +31,9 @@ use PhpOffice\PhpPresentation\Style\ColorMap;
 class PptSlideLayouts extends AbstractSlide
 {
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     *
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function render()
+    public function render(): ZipInterface
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
             foreach ($oSlideMaster->getAllSlideLayouts() as $oSlideLayout) {
@@ -56,10 +55,8 @@ class PptSlideLayouts extends AbstractSlide
      * Write slide layout relationships to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    public function writeSlideLayoutRelationships(SlideLayout $oSlideLayout)
+    protected function writeSlideLayoutRelationships(SlideLayout $oSlideLayout): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -98,10 +95,8 @@ class PptSlideLayouts extends AbstractSlide
      * Write slide to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    public function writeSlideLayout(SlideLayout $pSlideLayout)
+    protected function writeSlideLayout(SlideLayout $pSlideLayout): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);

@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\Reader\PowerPoint97;
 use PHPUnit\Framework\TestCase;
 
@@ -54,8 +56,8 @@ class PowerPoint97Test extends TestCase
 
     public function testLoadFileNotExists(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
 
         $object = new PowerPoint97();
         $object->load('');
@@ -63,18 +65,21 @@ class PowerPoint97Test extends TestCase
 
     public function testLoadFileBadFormat(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97:');
-
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_01_Simple.pptx';
+        $this->expectException(InvalidFileFormatException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file %s is not in the format supported by class PhpOffice\PhpPresentation\Reader\PowerPoint97',
+            $file
+        ));
+
         $object = new PowerPoint97();
         $object->load($file);
     }
 
     public function testFileSupportsNotExists(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
 
         $object = new PowerPoint97();
         $object->fileSupportsUnserializePhpPresentation('');

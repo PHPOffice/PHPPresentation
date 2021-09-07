@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Table;
 
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PhpOffice\PhpPresentation\Shape\Table\Cell;
@@ -68,8 +69,8 @@ class CellTest extends TestCase
 
     public function testActiveParagraphException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid paragraph count.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1000) is out of bounds (0, 1)');
 
         $object = new Cell();
         $object->setActiveParagraph(1000);
@@ -77,8 +78,8 @@ class CellTest extends TestCase
 
     public function testGetParagraphException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid paragraph count.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1000) is out of bounds (0, 1)');
 
         $object = new Cell();
         $object->getParagraph(1000);

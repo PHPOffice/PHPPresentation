@@ -28,10 +28,8 @@ class Pictures extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
-     *
-     * @throws \Exception
      */
-    public function render()
+    public function render(): ZipInterface
     {
         $arrMedia = [];
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {

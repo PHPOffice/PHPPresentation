@@ -29,7 +29,7 @@ abstract class AbstractDecoratorWriter
     /**
      * @return ZipInterface
      */
-    abstract public function render();
+    abstract public function render(): ZipInterface;
 
     /**
      * @var \PhpOffice\PhpPresentation\HashTable

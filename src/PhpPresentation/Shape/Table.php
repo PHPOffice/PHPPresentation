@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Shape;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Shape\Table\Row;
 
 /**
@@ -31,9 +32,9 @@ class Table extends AbstractGraphic implements ComparableInterface
     /**
      * Rows.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Table\Row[]
+     * @var array<int, Row>
      */
-    private $rows;
+    private $rows = [];
 
     /**
      * Number of columns.
@@ -49,8 +50,6 @@ class Table extends AbstractGraphic implements ComparableInterface
      */
     public function __construct($columns = 1)
     {
-        // Initialise variables
-        $this->rows = [];
         $this->columnCount = $columns;
 
         // Initialize parent
@@ -64,20 +63,30 @@ class Table extends AbstractGraphic implements ComparableInterface
      * Get row.
      *
      * @param int $row Row number
-     * @param bool $exceptionAsNull Return a null value instead of an exception?
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
-    public function getRow($row = 0, $exceptionAsNull = false): ?Row
+    public function getRow(int $row = 0): Row
     {
         if (!isset($this->rows[$row])) {
-            if ($exceptionAsNull) {
-                return null;
-            }
-            throw new \Exception('Row number out of bounds.');
+            throw new OutOfBoundsException(
+                0,
+                (count($this->rows) - 1) < 0 ? 0 : count($this->rows) - 1,
+                $row
+            );
         }
 
         return $this->rows[$row];
+    }
+
+    /**
+     * @param int $row
+     *
+     * @return bool
+     */
+    public function hasRow(int $row): bool
+    {
+        return isset($this->rows[$row]);
     }
 
     /**
@@ -85,7 +94,7 @@ class Table extends AbstractGraphic implements ComparableInterface
      *
      * @return Row[]
      */
-    public function getRows()
+    public function getRows(): array
     {
         return $this->rows;
     }
@@ -93,9 +102,9 @@ class Table extends AbstractGraphic implements ComparableInterface
     /**
      * Create row.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
+     * @return Row
      */
-    public function createRow()
+    public function createRow(): Row
     {
         $row = new Row($this->columnCount);
         $this->rows[] = $row;
@@ -106,7 +115,7 @@ class Table extends AbstractGraphic implements ComparableInterface
     /**
      * @return int
      */
-    public function getNumColumns()
+    public function getNumColumns(): int
     {
         return $this->columnCount;
     }
@@ -114,9 +123,9 @@ class Table extends AbstractGraphic implements ComparableInterface
     /**
      * @param int $numColumn
      *
-     * @return Table
+     * @return self
      */
-    public function setNumColumns($numColumn)
+    public function setNumColumns(int $numColumn): self
     {
         $this->columnCount = $numColumn;
 

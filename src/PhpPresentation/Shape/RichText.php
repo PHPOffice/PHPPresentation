@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Shape;
 
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface;
 
@@ -179,7 +180,6 @@ class RichText extends AbstractShape implements ComparableInterface
         $this->richTextParagraphs = [
             new Paragraph(),
         ];
-        $this->activeParagraph = 0;
 
         // Initialize parent
         parent::__construct();
@@ -203,12 +203,12 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Set active paragraph.
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
     public function setActiveParagraph(int $index = 0): Paragraph
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception('Invalid paragraph count.');
+            throw new OutOfBoundsException(0, count($this->richTextParagraphs), $index);
         }
 
         $this->activeParagraph = $index;
@@ -219,12 +219,12 @@ class RichText extends AbstractShape implements ComparableInterface
     /**
      * Get paragraph.
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
     public function getParagraph(int $index = 0): Paragraph
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception('Invalid paragraph count.');
+            throw new OutOfBoundsException(0, count($this->richTextParagraphs), $index);
         }
 
         return $this->richTextParagraphs[$index];
@@ -232,8 +232,6 @@ class RichText extends AbstractShape implements ComparableInterface
 
     /**
      * Create paragraph.
-     *
-     * @throws \Exception
      */
     public function createParagraph(): Paragraph
     {
@@ -265,8 +263,6 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param TextElementInterface|null $pText Rich text element
      *
-     * @throws \Exception
-     *
      * @return self
      */
     public function addText(TextElementInterface $pText = null): self
@@ -282,8 +278,6 @@ class RichText extends AbstractShape implements ComparableInterface
      * @param string $pText Text
      *
      * @return RichText\TextElement
-     *
-     * @throws \Exception
      */
     public function createText(string $pText = ''): RichText\TextElement
     {
@@ -294,8 +288,6 @@ class RichText extends AbstractShape implements ComparableInterface
      * Create break.
      *
      * @return RichText\BreakElement
-     *
-     * @throws \Exception
      */
     public function createBreak(): RichText\BreakElement
     {
@@ -308,8 +300,6 @@ class RichText extends AbstractShape implements ComparableInterface
      * @param string $pText Text
      *
      * @return RichText\Run
-     *
-     * @throws \Exception
      */
     public function createTextRun(string $pText = ''): RichText\Run
     {
@@ -357,8 +347,6 @@ class RichText extends AbstractShape implements ComparableInterface
      * Set paragraphs.
      *
      * @param array<Paragraph> $paragraphs Array of paragraphs
-     *
-     * @throws \Exception
      */
     public function setParagraphs(array $paragraphs = []): self
     {
@@ -553,14 +541,14 @@ class RichText extends AbstractShape implements ComparableInterface
      *
      * @param int $value
      *
-     * @throws \Exception
-     *
      * @return self
+     *
+     * @throws OutOfBoundsException
      */
     public function setColumns(int $value = 1): self
     {
         if ($value > 16 || $value < 1) {
-            throw new \Exception('Number of columns should be 1-16');
+            throw new OutOfBoundsException(1, 16, $value);
         }
 
         $this->columns = $value;

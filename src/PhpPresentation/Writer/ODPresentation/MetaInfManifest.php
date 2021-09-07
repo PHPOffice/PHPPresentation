@@ -29,10 +29,8 @@ class MetaInfManifest extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
-     *
-     * @throws \Exception
      */
-    public function render()
+    public function render(): ZipInterface
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);

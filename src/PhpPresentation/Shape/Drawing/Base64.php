@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
+use PhpOffice\PhpPresentation\Exception\UnauthorizedMimetypeException;
+
 class Base64 extends AbstractDrawingAdapter
 {
     /**
@@ -80,7 +82,7 @@ class Base64 extends AbstractDrawingAdapter
     }
 
     /**
-     * @throws \Exception
+     * @throws UnauthorizedMimetypeException
      */
     public function getExtension(): string
     {
@@ -88,15 +90,12 @@ class Base64 extends AbstractDrawingAdapter
         list(, $mime) = explode(':', $data);
 
         if (!array_key_exists($mime, $this->arrayMimeExtension)) {
-            throw new \Exception('Type Mime not found : "' . $mime . '"');
+            throw new UnauthorizedMimetypeException($mime, $this->arrayMimeExtension);
         }
 
         return $this->arrayMimeExtension[$mime];
     }
 
-    /**
-     * @throws \Exception
-     */
     public function getIndexedFilename(): string
     {
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();

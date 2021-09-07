@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
 use PhpOffice\Common\File as CommonFile;
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 
 class ZipFile extends AbstractDrawingAdapter
 {
@@ -52,12 +53,12 @@ class ZipFile extends AbstractDrawingAdapter
     }
 
     /**
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     public function getContents(): string
     {
         if (!CommonFile::fileExists($this->getZipFileOut())) {
-            throw new \Exception('File ' . $this->getZipFileOut() . ' does not exist');
+            throw new FileNotFoundException($this->getZipFileOut());
         }
 
         $imageZip = new \ZipArchive();
@@ -75,12 +76,12 @@ class ZipFile extends AbstractDrawingAdapter
     }
 
     /**
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     public function getMimeType(): string
     {
         if (!CommonFile::fileExists($this->getZipFileOut())) {
-            throw new \Exception('File ' . $this->getZipFileOut() . ' does not exist');
+            throw new FileNotFoundException($this->getZipFileOut());
         }
         $oArchive = new \ZipArchive();
         $oArchive->open($this->getZipFileOut());
