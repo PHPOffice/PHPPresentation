@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -30,11 +31,9 @@ use PhpOffice\PhpPresentation\Style\SchemeColor;
 class PptSlideMasters extends AbstractSlide
 {
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     *
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function render()
+    public function render(): ZipInterface
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oMasterSlide) {
             // Add the relations from the masterSlide to the ZIP file
@@ -55,13 +54,11 @@ class PptSlideMasters extends AbstractSlide
     /**
      * Write slide master relationships to XML format.
      *
+     * @todo Set method in protected
+     *
      * @return string XML Output
-     *
-     * @throws \Exception
-     *
-     * @internal param int $masterId Master slide id
      */
-    public function writeSlideMasterRelationships(SlideMaster $oMasterSlide)
+    public function writeSlideMasterRelationships(SlideMaster $oMasterSlide): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -104,10 +101,8 @@ class PptSlideMasters extends AbstractSlide
      * Write slide to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    public function writeSlideMaster(SlideMaster $pSlide)
+    protected function writeSlideMaster(SlideMaster $pSlide): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);

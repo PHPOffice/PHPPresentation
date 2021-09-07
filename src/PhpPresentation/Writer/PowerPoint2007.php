@@ -22,8 +22,14 @@ namespace PhpOffice\PhpPresentation\Writer;
 
 use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
+use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
+use PhpOffice\PhpPresentation\Exception\FileCopyException;
+use PhpOffice\PhpPresentation\Exception\FileRemoveException;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter;
+use ReflectionClass;
 
 /**
  * \PhpOffice\PhpPresentation\Writer\PowerPoint2007.
@@ -48,13 +54,11 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
      * Create a new PowerPoint2007 file.
      *
      * @param PhpPresentation $pPhpPresentation
-     *
-     * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
     {
         // Assign PhpPresentation
-        $this->setPhpPresentation($pPhpPresentation);
+        $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
 
         // Set up disk caching location
         $this->diskCachingDir = './';
@@ -68,12 +72,14 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Save PhpPresentation to file.
      *
-     * @throws \Exception
+     * @throws FileCopyException
+     * @throws FileRemoveException
+     * @throws InvalidParameterException
      */
     public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
-            throw new \Exception('Filename is empty');
+            throw new InvalidParameterException('pFilename', '');
         }
         $oPresentation = $this->getPhpPresentation();
 
@@ -100,9 +106,9 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
             }
 
             $class = __NAMESPACE__ . '\\PowerPoint2007\\' . $oFile->getBasename('.php');
-            $class = new \ReflectionClass($class);
+            $class = new ReflectionClass($class);
 
-            if ($class->isAbstract() || !$class->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')) {
+            if ($class->isAbstract() || !$class->isSubclassOf(AbstractDecoratorWriter::class)) {
                 continue;
             }
             $arrayFiles[$oFile->getBasename('.php')] = $class;
@@ -125,10 +131,10 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         // If a temporary file was used, copy it to the correct file stream
         if ($originalFilename != $pFilename) {
             if (false === copy($pFilename, $originalFilename)) {
-                throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
+                throw new FileCopyException($pFilename, $originalFilename);
             }
             if (false === @unlink($pFilename)) {
-                throw new \Exception('The file ' . $pFilename . ' could not be removed.');
+                throw new FileRemoveException($pFilename);
             }
         }
     }
@@ -146,22 +152,22 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param bool $pValue
-     * @param string $pDirectory Disk caching directory
+     * @param bool $useDiskCaching
+     * @param string $directory Disk caching directory
      *
-     * @throws \Exception
+     * @throws DirectoryNotFoundException
      *
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
      */
-    public function setUseDiskCaching($pValue = false, $pDirectory = null)
+    public function setUseDiskCaching(bool $useDiskCaching = false, string $directory = null)
     {
-        $this->useDiskCaching = $pValue;
+        $this->useDiskCaching = $useDiskCaching;
 
-        if (!is_null($pDirectory)) {
-            if (!is_dir($pDirectory)) {
-                throw new \Exception("Directory does not exist: $pDirectory");
+        if (!is_null($directory)) {
+            if (!is_dir($directory)) {
+                throw new DirectoryNotFoundException($directory);
             }
-            $this->diskCachingDir = $pDirectory;
+            $this->diskCachingDir = $directory;
         }
 
         return $this;

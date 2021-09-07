@@ -69,9 +69,6 @@ class ObjectsChart extends AbstractDecoratorWriter
      */
     protected $rangeCol;
 
-    /**
-     * @throws \Exception
-     */
     public function render(): ZipInterface
     {
         foreach ($this->getArrayChart() as $keyChart => $shapeChart) {
@@ -85,9 +82,6 @@ class ObjectsChart extends AbstractDecoratorWriter
         return $this->getZip();
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function writeContentPart(Chart $chart): string
     {
         $this->xmlContent = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -213,10 +207,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         return $this->xmlContent->getData();
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function writeAxis(Chart $chart): void
+    protected function writeAxis(Chart $chart): void
     {
         $chartType = $chart->getPlotArea()->getType();
 
@@ -285,8 +276,6 @@ class ObjectsChart extends AbstractDecoratorWriter
     }
 
     /**
-     * @throws \Exception
-     *
      * @todo Set function in \PhpPresentation\Shape\Chart\Axis for defining width and color of the axis
      */
     protected function writeAxisStyle(Chart $chart): void
@@ -318,7 +307,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMinorGridlines(), 'styleAxisYGridlinesMinor');
     }
 
-    private function writeAxisMainStyle(Chart\Axis $axis, string $styleName, AbstractType $chartType): void
+    protected function writeAxisMainStyle(Chart\Axis $axis, string $styleName, AbstractType $chartType): void
     {
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -367,7 +356,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeAxisTitleStyle(Chart\Axis $axis, string $styleName): void
+    protected function writeAxisTitleStyle(Chart\Axis $axis, string $styleName): void
     {
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -409,7 +398,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeChartStyle(Chart $chart): void
+    protected function writeChartStyle(Chart $chart): void
     {
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -425,7 +414,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeFloor(): void
+    protected function writeFloor(): void
     {
         // chart:floor
         $this->xmlContent->startElement('chart:floor');
@@ -434,7 +423,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeFloorStyle(): void
+    protected function writeFloorStyle(): void
     {
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -453,7 +442,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeLegend(Chart $chart): void
+    protected function writeLegend(Chart $chart): void
     {
         // chart:legend
         $this->xmlContent->startElement('chart:legend');
@@ -484,7 +473,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeLegendStyle(Chart $chart): void
+    protected function writeLegendStyle(Chart $chart): void
     {
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -507,10 +496,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function writePlotArea(Chart $chart): void
+    protected function writePlotArea(Chart $chart): void
     {
         $chartType = $chart->getPlotArea()->getType();
 
@@ -563,11 +549,9 @@ class ObjectsChart extends AbstractDecoratorWriter
     }
 
     /**
-     * @throws \Exception
-     *
      * @see : http://books.evc-cit.info/odbook/ch08.html#chart-plot-area-section
      */
-    private function writePlotAreaStyle(Chart $chart): void
+    protected function writePlotAreaStyle(Chart $chart): void
     {
         $chartType = $chart->getPlotArea()->getType();
 
@@ -629,10 +613,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function writeSeries(Chart $chart, Chart\Series $series): void
+    protected function writeSeries(Chart $chart, Chart\Series $series): void
     {
         $chartType = $chart->getPlotArea()->getType();
 
@@ -695,10 +676,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function writeSeriesStyle(Chart $chart, Chart\Series $series): void
+    protected function writeSeriesStyle(Chart $chart, Chart\Series $series): void
     {
         $chartType = $chart->getPlotArea()->getType();
 
@@ -830,7 +808,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         }
     }
 
-    private function writeTable(): void
+    protected function writeTable(): void
     {
         // table:table
         $this->xmlContent->startElement('table:table');
@@ -924,7 +902,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeTitle(Title $oTitle): void
+    protected function writeTitle(Title $oTitle): void
     {
         if (!$oTitle->isVisible()) {
             return;
@@ -942,7 +920,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeTitleStyle(Title $oTitle): void
+    protected function writeTitleStyle(Title $oTitle): void
     {
         if (!$oTitle->isVisible()) {
             return;
@@ -963,7 +941,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    private function writeWall(): void
+    protected function writeWall(): void
     {
         // chart:wall
         $this->xmlContent->startElement('chart:wall');
@@ -971,10 +949,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    /**
-     * @throws \Exception
-     */
-    private function writeWallStyle(Chart $chart): void
+    protected function writeWallStyle(Chart $chart): void
     {
         $chartType = $chart->getPlotArea()->getType();
 

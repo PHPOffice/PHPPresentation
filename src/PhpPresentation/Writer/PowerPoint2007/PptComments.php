@@ -30,10 +30,8 @@ class PptComments extends AbstractDecoratorWriter
 {
     /**
      * @return ZipInterface
-     *
-     * @throws \Exception
      */
-    public function render()
+    public function render(): ZipInterface
     {
         foreach ($this->getPresentation()->getAllSlides() as $numSlide => $oSlide) {
             $contentXml = $this->writeSlideComments($oSlide);
@@ -49,7 +47,7 @@ class PptComments extends AbstractDecoratorWriter
     /**
      * @return string
      */
-    protected function writeSlideComments(Slide $oSlide)
+    protected function writeSlideComments(Slide $oSlide): string
     {
         /**
          * @var Comment[]

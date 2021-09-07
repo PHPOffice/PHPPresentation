@@ -25,6 +25,7 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
 use PhpOffice\PhpPresentation\Shape\AbstractGraphic;
 use PhpOffice\PhpPresentation\Shape\AutoShape;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
@@ -55,8 +56,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 {
     /**
      * @return mixed
-     *
-     * @throws \Exception
      */
     protected function writeDrawingRelations(AbstractSlideAlias $pSlideMaster, XMLWriter $objWriter, int $relId)
     {
@@ -124,7 +123,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapes
      * @param int $shapeId
      *
-     * @throws \Exception
+     * @throws UndefinedChartTypeException
      */
     protected function writeShapeCollection(XMLWriter $objWriter, $shapes = [], &$shapeId = 0): void
     {
@@ -151,7 +150,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $this->writeShapeGroup($objWriter, $shape, $shapeId);
             } elseif ($shape instanceof Comment) {
             } else {
-                throw new \Exception(sprintf('Unknown Shape type: %s', get_class($shape)));
+                throw new UndefinedChartTypeException();
             }
         }
     }
@@ -160,8 +159,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write txt.
      *
      * @param XMLWriter $objWriter XML Writer
-     *
-     * @throws \Exception
+     * @param RichText $shape
+     * @param int $shapeId
      */
     protected function writeShapeText(XMLWriter $objWriter, RichText $shape, int $shapeId): void
     {
@@ -312,8 +311,8 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write table.
      *
      * @param XMLWriter $objWriter XML Writer
-     *
-     * @throws \Exception
+     * @param ShapeTable $shape
+     * @param int $shapeId
      */
     protected function writeShapeTable(XMLWriter $objWriter, ShapeTable $shape, int $shapeId): void
     {
@@ -406,13 +405,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 // Current cell
                 $currentCell = $shape->getRow($row)->getCell($cell);
                 // Next cell right
-                $nextCellRight = $shape->getRow($row)->getCell($cell + 1, true);
+                $hasNextCellRight = $shape->getRow($row)->hasCell($cell + 1);
                 // Next cell below
-                $nextRowBelow = $shape->getRow($row + 1, true);
-                $nextCellBelow = null;
-                if (null != $nextRowBelow) {
-                    $nextCellBelow = $nextRowBelow->getCell($cell, true);
-                }
+                $hasNextRowBelow = $shape->hasRow($row + 1);
                 // a:tc
                 $objWriter->startElement('a:tc');
                 // Colspan
@@ -476,15 +471,18 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $borderDiagonalDown = $currentCell->getBorders()->getDiagonalDown();
                 $borderDiagonalUp = $currentCell->getBorders()->getDiagonalUp();
                 // Fix PowerPoint implementation
-                if (!is_null($nextCellRight)
-                    && $nextCellRight->getBorders()->getRight()->getHashCode() != $defaultBorder->getHashCode()
-                ) {
-                    $borderRight = $nextCellRight->getBorders()->getLeft();
+                if ($hasNextCellRight) {
+                    $nextCellRight = $shape->getRow($row)->getCell($cell + 1);
+                    if ($nextCellRight->getBorders()->getRight()->getHashCode() != $defaultBorder->getHashCode()) {
+                        $borderRight = $nextCellRight->getBorders()->getLeft();
+                    }
                 }
-                if (!is_null($nextCellBelow)
-                    && $nextCellBelow->getBorders()->getBottom()->getHashCode() != $defaultBorder->getHashCode()
-                ) {
-                    $borderBottom = $nextCellBelow->getBorders()->getTop();
+                if ($hasNextRowBelow) {
+                    $nextRowBelow = $shape->getRow($row + 1);
+                    $nextCellBelow = $nextRowBelow->getCell($cell);
+                    if ($nextCellBelow->getBorders()->getBottom()->getHashCode() != $defaultBorder->getHashCode()) {
+                        $borderBottom = $nextCellBelow->getBorders()->getTop();
+                    }
                 }
                 // Write borders
                 $this->writeBorder($objWriter, $borderLeft, 'L');
@@ -511,8 +509,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      *
      * @param XMLWriter $objWriter XML Writer
      * @param array<Paragraph> $paragraphs
-     *
-     * @throws \Exception
      */
     protected function writeParagraphs(XMLWriter $objWriter, array $paragraphs, bool $bIsPlaceholder = false): void
     {
@@ -655,8 +651,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write Line Shape.
      *
      * @param XMLWriter $objWriter XML Writer
-     *
-     * @throws \Exception
      */
     protected function writeShapeLine(XMLWriter $objWriter, Line $shape, int $shapeId): void
     {
@@ -781,8 +775,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      *
      * @param XMLWriter $objWriter XML Writer
      * @param AbstractShape|TextElement $shape
-     *
-     * @throws \Exception
      */
     protected function writeHyperlink(XMLWriter $objWriter, $shape): void
     {
@@ -801,8 +793,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
 
     /**
      * Write Note Slide.
-     *
-     * @throws \Exception
      */
     protected function writeNote(Note $pNote): string
     {
@@ -1244,8 +1234,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write pic.
      *
      * @param XMLWriter $objWriter XML Writer
-     *
-     * @throws \Exception
      */
     protected function writeShapePic(XMLWriter $objWriter, AbstractGraphic $shape, int $shapeId): void
     {
@@ -1416,8 +1404,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write group.
      *
      * @param XMLWriter $objWriter XML Writer
-     *
-     * @throws \Exception
      */
     protected function writeShapeGroup(XMLWriter $objWriter, Group $group, int &$shapeId): void
     {

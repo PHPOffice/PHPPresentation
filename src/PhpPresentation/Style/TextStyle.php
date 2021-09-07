@@ -22,9 +22,6 @@ namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph as RichTextParagraph;
 
-/**
- * Class TextStyle.
- */
 class TextStyle
 {
     /**
@@ -44,10 +41,8 @@ class TextStyle
      * TextStyle constructor.
      *
      * @param bool $default
-     *
-     * @throws \Exception
      */
-    public function __construct($default = true)
+    public function __construct(bool $default = true)
     {
         if ($default) {
             $oColorLT1 = new SchemeColor();

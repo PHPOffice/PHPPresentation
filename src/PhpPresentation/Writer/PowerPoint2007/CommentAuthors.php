@@ -27,12 +27,7 @@ use PhpOffice\PhpPresentation\Shape\Comment\Author;
 
 class CommentAuthors extends AbstractDecoratorWriter
 {
-    /**
-     * @return ZipInterface
-     *
-     * @throws \Exception
-     */
-    public function render()
+    public function render(): ZipInterface
     {
         /**
          * @var Author[]

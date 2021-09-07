@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 
 /**
@@ -90,12 +91,12 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * @throws \Exception
+     * @throws UndefinedChartTypeException
      */
     public function getType(): AbstractType
     {
         if (is_null($this->type)) {
-            throw new \Exception('Chart type has not been set.');
+            throw new UndefinedChartTypeException();
         }
 
         return $this->type;

@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
 use PhpOffice\PhpPresentation\Shape\Comment;
@@ -30,12 +31,7 @@ use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
  */
 class ContentTypes extends AbstractDecoratorWriter
 {
-    /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     *
-     * @throws \Exception
-     */
-    public function render()
+    public function render(): ZipInterface
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -127,7 +123,11 @@ class ContentTypes extends AbstractDecoratorWriter
             $shapeIndex = $this->getDrawingHashTable()->getByIndex($i);
             if ($shapeIndex instanceof ShapeChart) {
                 // Chart content type
-                $this->writeOverrideContentType($objWriter, '/ppt/charts/chart' . $shapeIndex->getImageIndex() . '.xml', 'application/vnd.openxmlformats-officedocument.drawingml.chart+xml');
+                $this->writeOverrideContentType(
+                    $objWriter,
+                    '/ppt/charts/chart' . $shapeIndex->getImageIndex() . '.xml',
+                    'application/vnd.openxmlformats-officedocument.drawingml.chart+xml'
+                );
             } elseif ($shapeIndex instanceof AbstractDrawingAdapter) {
                 $extension = strtolower($shapeIndex->getExtension());
                 $mimeType = $shapeIndex->getMimeType();
@@ -153,14 +153,9 @@ class ContentTypes extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter XML Writer
      * @param string $pPartname Part name
      * @param string $pContentType Content type
-     *
-     * @throws \Exception
      */
-    private function writeDefaultContentType(XMLWriter $objWriter, string $pPartname = '', string $pContentType = ''): void
+    protected function writeDefaultContentType(XMLWriter $objWriter, string $pPartname, string $pContentType): void
     {
-        if ('' == $pPartname || '' == $pContentType) {
-            throw new \Exception('Invalid parameters passed.');
-        }
         // Write content type
         $objWriter->startElement('Default');
         $objWriter->writeAttribute('Extension', $pPartname);
@@ -174,14 +169,9 @@ class ContentTypes extends AbstractDecoratorWriter
      * @param XMLWriter $objWriter XML Writer
      * @param string $pPartname Part name
      * @param string $pContentType Content type
-     *
-     * @throws \Exception
      */
-    private function writeOverrideContentType(XMLWriter $objWriter, string $pPartname = '', string $pContentType = ''): void
+    protected function writeOverrideContentType(XMLWriter $objWriter, string $pPartname, string $pContentType): void
     {
-        if ('' == $pPartname || '' == $pContentType) {
-            throw new \Exception('Invalid parameters passed.');
-        }
         // Write content type
         $objWriter->startElement('Override');
         $objWriter->writeAttribute('PartName', $pPartname);

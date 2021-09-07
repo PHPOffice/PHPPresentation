@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Shape\Drawing\ZipFile;
 use PHPUnit\Framework\TestCase;
 
@@ -56,8 +57,11 @@ class ZipFileTest extends TestCase
 
     public function testContentsException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('fileNotExist.pptx does not exist');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file "%s" doesn\'t exist',
+            str_replace(['zip://', '#ppt/media/phppowerpoint_logo1.gif'], '', $this->fileKoZip)
+        ));
 
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileKoZip);

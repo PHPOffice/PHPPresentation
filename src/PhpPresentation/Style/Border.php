@@ -22,9 +22,6 @@ namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 
-/**
- * \PhpOffice\PhpPresentation\Style\Border.
- */
 class Border implements ComparableInterface
 {
     /* Line style */
@@ -60,19 +57,19 @@ class Border implements ComparableInterface
      *
      * @var string
      */
-    private $lineStyle;
+    private $lineStyle = self::LINE_SINGLE;
 
     /**
      * Dash style.
      *
      * @var string
      */
-    private $dashStyle;
+    private $dashStyle = self::DASH_SOLID;
 
     /**
      * Border color.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Color
+     * @var Color
      */
     private $color;
 
@@ -83,15 +80,8 @@ class Border implements ComparableInterface
      */
     private $hashIndex;
 
-    /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Border.
-     */
     public function __construct()
     {
-        // Initialise values
-        $this->lineWidth = 1;
-        $this->lineStyle = self::LINE_SINGLE;
-        $this->dashStyle = self::DASH_SOLID;
         $this->color = new Color(Color::COLOR_BLACK);
     }
 
@@ -100,7 +90,7 @@ class Border implements ComparableInterface
      *
      * @return int
      */
-    public function getLineWidth()
+    public function getLineWidth(): int
     {
         return $this->lineWidth;
     }
@@ -110,9 +100,9 @@ class Border implements ComparableInterface
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return self
      */
-    public function setLineWidth($pValue = 1)
+    public function setLineWidth(int $pValue = 1): self
     {
         $this->lineWidth = $pValue;
 
@@ -124,7 +114,7 @@ class Border implements ComparableInterface
      *
      * @return string
      */
-    public function getLineStyle()
+    public function getLineStyle(): string
     {
         return $this->lineStyle;
     }
@@ -134,9 +124,9 @@ class Border implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return self
      */
-    public function setLineStyle($pValue = self::LINE_SINGLE)
+    public function setLineStyle(string $pValue = self::LINE_SINGLE): self
     {
         if ('' == $pValue) {
             $pValue = self::LINE_SINGLE;
@@ -151,7 +141,7 @@ class Border implements ComparableInterface
      *
      * @return string
      */
-    public function getDashStyle()
+    public function getDashStyle(): string
     {
         return $this->dashStyle;
     }
@@ -161,9 +151,9 @@ class Border implements ComparableInterface
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return self
      */
-    public function setDashStyle($pValue = self::DASH_SOLID)
+    public function setDashStyle(string $pValue = self::DASH_SOLID): self
     {
         if ('' == $pValue) {
             $pValue = self::DASH_SOLID;
@@ -176,9 +166,9 @@ class Border implements ComparableInterface
     /**
      * Get Border Color.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Color
+     * @return Color
      */
-    public function getColor()
+    public function getColor(): ?Color
     {
         return $this->color;
     }
@@ -186,13 +176,11 @@ class Border implements ComparableInterface
     /**
      * Set Border Color.
      *
-     * @param \PhpOffice\PhpPresentation\Style\Color $color
+     * @param Color|null $color
      *
-     * @throws \Exception
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Border
+     * @return self
      */
-    public function setColor(Color $color = null)
+    public function setColor(Color $color = null): self
     {
         $this->color = $color;
 

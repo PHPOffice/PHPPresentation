@@ -128,8 +128,6 @@ class Paragraph implements ComparableInterface
      * Set font.
      *
      * @param Font|null $pFont Font
-     *
-     * @throws \Exception
      */
     public function setFont(Font $pFont = null): self
     {
@@ -147,9 +145,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Set bullet style.
-     *
-     * @throws \Exception
+     * Set bullet style
      */
     public function setBulletStyle(Bullet $style = null): self
     {
@@ -162,8 +158,6 @@ class Paragraph implements ComparableInterface
      * Create text (can not be formatted !).
      *
      * @param string $pText Text
-     *
-     * @throws \Exception
      */
     public function createText(string $pText = ''): TextElement
     {
@@ -177,8 +171,6 @@ class Paragraph implements ComparableInterface
      * Add text.
      *
      * @param TextElementInterface|null $pText Rich text element
-     *
-     * @throws \Exception
      */
     public function addText(TextElementInterface $pText = null): self
     {
@@ -189,8 +181,6 @@ class Paragraph implements ComparableInterface
 
     /**
      * Create break.
-     *
-     * @throws \Exception
      */
     public function createBreak(): BreakElement
     {
@@ -204,8 +194,6 @@ class Paragraph implements ComparableInterface
      * Create text run (can be formatted).
      *
      * @param string $pText Text
-     *
-     * @throws \Exception
      */
     public function createTextRun(string $pText = ''): Run
     {

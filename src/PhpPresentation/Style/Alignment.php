@@ -21,10 +21,8 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 
-/**
- * \PhpOffice\PhpPresentation\Style\Alignment.
- */
 class Alignment implements ComparableInterface
 {
     /* Horizontal alignment */
@@ -62,14 +60,14 @@ class Alignment implements ComparableInterface
      *
      * @var string
      */
-    private $horizontal;
+    private $horizontal = self::HORIZONTAL_LEFT;
 
     /**
      * Vertical.
      *
      * @var string
      */
-    private $vertical;
+    private $vertical = self::VERTICAL_BASE;
 
     /**
      * Text Direction.
@@ -135,16 +133,6 @@ class Alignment implements ComparableInterface
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Alignment.
-     */
-    public function __construct()
-    {
-        // Initialise values
-        $this->horizontal = self::HORIZONTAL_LEFT;
-        $this->vertical = self::VERTICAL_BASE;
-    }
-
-    /**
      * Get Horizontal.
      */
     public function getHorizontal(): string
@@ -199,12 +187,12 @@ class Alignment implements ComparableInterface
      *
      * @param int $pValue Ranging 0 - 8
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
     public function setLevel(int $pValue = 0): self
     {
         if ($pValue < 0) {
-            throw new \Exception('Invalid value should be more than 0.');
+            throw new OutOfBoundsException(0, null, $pValue);
         }
         $this->level = $pValue;
 

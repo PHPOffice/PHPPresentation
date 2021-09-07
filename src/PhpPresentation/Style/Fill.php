@@ -22,9 +22,6 @@ namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 
-/**
- * \PhpOffice\PhpPresentation\Style\Fill.
- */
 class Fill implements ComparableInterface
 {
     /* Fill types */
@@ -158,8 +155,6 @@ class Fill implements ComparableInterface
      * Set Start Color.
      *
      * @param Color $pValue
-     *
-     * @throws \Exception
      *
      * @return self
      */

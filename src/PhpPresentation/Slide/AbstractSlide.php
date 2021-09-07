@@ -127,10 +127,8 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * Add shape to slide.
      *
      * @return AbstractShape
-     *
-     * @throws \Exception
      */
-    public function addShape(AbstractShape $shape)
+    public function addShape(AbstractShape $shape): AbstractShape
     {
         $shape->setContainer($this);
 
@@ -235,8 +233,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      * Create rich text shape.
-     *
-     * @throws \Exception
      */
     public function createRichTextShape(): RichText
     {
@@ -253,8 +249,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * @param int $fromY Starting point y offset
      * @param int $toX Ending point x offset
      * @param int $toY Ending point y offset
-     *
-     * @throws \Exception
      */
     public function createLineShape(int $fromX, int $fromY, int $toX, int $toY): Line
     {
@@ -266,8 +260,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      * Create chart shape.
-     *
-     * @throws \Exception
      */
     public function createChartShape(): Chart
     {
@@ -279,8 +271,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      * Create drawing shape.
-     *
-     * @throws \Exception
      */
     public function createDrawingShape(): File
     {
@@ -294,8 +284,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * Create table shape.
      *
      * @param int $columns Number of columns
-     *
-     * @throws \Exception
      */
     public function createTableShape(int $columns = 1): Table
     {
@@ -307,8 +295,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      * Creates a group within this slide.
-     *
-     * @throws \Exception
      */
     public function createGroup(): Group
     {
@@ -328,8 +314,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
 
     /**
      * Re-bind parent.
-     *
-     * @throws \Exception
      */
     public function rebindParent(PhpPresentation $parent): AbstractSlide
     {
@@ -344,9 +328,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
         return $this->background;
     }
 
-    /**
-     * @param AbstractBackground $background
-     */
     public function setBackground(AbstractBackground $background = null): AbstractSlide
     {
         $this->background = $background;

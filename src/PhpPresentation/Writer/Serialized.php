@@ -22,6 +22,8 @@ namespace PhpOffice\PhpPresentation\Writer;
 
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
@@ -35,13 +37,11 @@ class Serialized extends AbstractWriter implements WriterInterface
      * Create a new \PhpOffice\PhpPresentation\Writer\Serialized.
      *
      * @param \PhpOffice\PhpPresentation\PhpPresentation $pPhpPresentation
-     *
-     * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
     {
         // Set PhpPresentation
-        $this->setPhpPresentation($pPhpPresentation);
+        $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
 
         // Set ZIP Adapter
         $this->setZipAdapter(new ZipArchiveAdapter());
@@ -50,15 +50,16 @@ class Serialized extends AbstractWriter implements WriterInterface
     /**
      * Save PhpPresentation to file.
      *
-     * @throws \Exception
+     * @throws DirectoryNotFoundException
+     * @throws InvalidParameterException
      */
     public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
-            throw new \Exception('Filename is empty.');
+            throw new InvalidParameterException('pFilename', '');
         }
         if (!is_dir(dirname($pFilename))) {
-            throw new \Exception(sprintf('Could not open %s for writing.', $pFilename));
+            throw new DirectoryNotFoundException(dirname($pFilename));
         }
         $oPresentation = $this->getPhpPresentation();
 
@@ -92,14 +93,12 @@ class Serialized extends AbstractWriter implements WriterInterface
     /**
      * Serialize PhpPresentation object to XML.
      *
-     * @param PhpPresentation $pPhpPresentation
+     * @param PhpPresentation|null $pPhpPresentation
      * @param string $pFilename
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    private function writeSerialized(PhpPresentation $pPhpPresentation = null, $pFilename = '')
+    protected function writeSerialized(PhpPresentation $pPhpPresentation = null, $pFilename = '')
     {
         // Clone $pPhpPresentation
         $pPhpPresentation = clone $pPhpPresentation;

@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\PowerPoint2007;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 
@@ -44,12 +45,17 @@ class PptMediaTest extends PhpPresentationTestCase
 
     public function testDrawingException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('does not exist');
+        $path = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/filedoesntexist.png';
+
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file "%s" doesn\'t exist',
+            $path
+        ));
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/filedoesntexist.png', false);
+        $oShape->setPath($path, false);
 
         $this->writePresentationFile($this->oPresentation, 'PowerPoint2007');
     }
@@ -67,11 +73,16 @@ class PptMediaTest extends PhpPresentationTestCase
 
     public function testDrawingZipException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('does not exist');
+        $path = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/filedoesntexist.png';
+
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file "%s" doesn\'t exist',
+            $path
+        ));
 
         $oDrawing = new Drawing\ZipFile();
-        $oDrawing->setPath('zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'filedoesntexist.zip#secondpath');
+        $oDrawing->setPath('zip://' . $path . '#secondpath');
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oSlide->addShape($oDrawing);

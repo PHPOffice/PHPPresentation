@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Shape\Table;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface;
 use PhpOffice\PhpPresentation\Style\Borders;
@@ -128,12 +129,12 @@ class Cell implements ComparableInterface
      *
      * @param int $index
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
     public function setActiveParagraph($index = 0): Paragraph
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception('Invalid paragraph count.');
+            throw new OutOfBoundsException(0, count($this->richTextParagraphs), $index);
         }
 
         $this->activeParagraph = $index;
@@ -146,12 +147,12 @@ class Cell implements ComparableInterface
      *
      * @param int $index
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
-    public function getParagraph($index = 0): Paragraph
+    public function getParagraph(int $index = 0): Paragraph
     {
         if ($index >= count($this->richTextParagraphs)) {
-            throw new \Exception('Invalid paragraph count.');
+            throw new OutOfBoundsException(0, count($this->richTextParagraphs), $index);
         }
 
         return $this->richTextParagraphs[$index];
@@ -159,8 +160,6 @@ class Cell implements ComparableInterface
 
     /**
      * Create paragraph.
-     *
-     * @throws \Exception
      */
     public function createParagraph(): Paragraph
     {
@@ -184,9 +183,7 @@ class Cell implements ComparableInterface
     /**
      * Add text.
      *
-     * @param \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface $pText Rich text element
-     *
-     * @throws \Exception
+     * @param TextElementInterface $pText Rich text element
      *
      * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
      */
@@ -203,8 +200,6 @@ class Cell implements ComparableInterface
      * @param string $pText Text
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
-     *
-     * @throws \Exception
      */
     public function createText($pText = '')
     {
@@ -215,8 +210,6 @@ class Cell implements ComparableInterface
      * Create break.
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\BreakElement
-     *
-     * @throws \Exception
      */
     public function createBreak()
     {
@@ -229,10 +222,8 @@ class Cell implements ComparableInterface
      * @param string $pText Text
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\Run
-     *
-     * @throws \Exception
      */
-    public function createTextRun($pText = '')
+    public function createTextRun(string $pText = '')
     {
         return $this->richTextParagraphs[$this->activeParagraph]->createTextRun($pText);
     }

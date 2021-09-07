@@ -20,7 +20,9 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Shape\Table\Row;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -43,7 +45,7 @@ class TableTest extends TestCase
         $object = new Table();
 
         $this->assertEquals(1, $object->getNumColumns());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table', $object->setNumColumns($value));
+        $this->assertInstanceOf(Table::class, $object->setNumColumns($value));
         $this->assertEquals($value, $object->getNumColumns());
     }
 
@@ -51,20 +53,19 @@ class TableTest extends TestCase
     {
         $object = new Table();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->createRow());
+        $this->assertInstanceOf(Row::class, $object->createRow());
         $this->assertCount(1, $object->getRows());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->getRow(0));
-        $this->assertNull($object->getRow(1, true));
+        $this->assertInstanceOf(Row::class, $object->getRow(0));
     }
 
     public function testGetRowException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Row number out of bounds.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
 
         $object = new Table();
-        $object->getRow();
+        $object->getRow(1);
     }
 
     public function testHashCode(): void

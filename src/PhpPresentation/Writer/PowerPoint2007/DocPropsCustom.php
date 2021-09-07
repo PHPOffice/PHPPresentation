@@ -20,17 +20,13 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\DocumentProperties;
 
 class DocPropsCustom extends AbstractDecoratorWriter
 {
-    /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     *
-     * @throws \Exception
-     */
-    public function render()
+    public function render(): ZipInterface
     {
         // Variables
         $pId = 0;

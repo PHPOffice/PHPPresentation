@@ -235,8 +235,6 @@ class Title implements ComparableInterface
      * Set font.
      *
      * @param Font|null $pFont Font
-     *
-     * @throws \Exception
      */
     public function setFont(Font $pFont = null): self
     {

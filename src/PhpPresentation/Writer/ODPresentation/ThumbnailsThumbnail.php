@@ -20,14 +20,11 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
+
 class ThumbnailsThumbnail extends AbstractDecoratorWriter
 {
-    /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     *
-     * @throws \Exception
-     */
-    public function render()
+    public function render(): ZipInterface
     {
         $pathThumbnail = $this->getPresentation()->getPresentationProperties()->getThumbnailPath();
         if ($pathThumbnail) {

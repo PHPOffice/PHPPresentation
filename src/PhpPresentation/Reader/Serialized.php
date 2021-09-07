@@ -20,8 +20,9 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Reader;
 
-use Exception;
 use PhpOffice\Common\File;
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Drawing\File as DrawingFile;
@@ -34,8 +35,6 @@ class Serialized implements ReaderInterface
 {
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
-     *
-     * @throws \Exception
      */
     public function canRead(string $pFilename): bool
     {
@@ -45,13 +44,13 @@ class Serialized implements ReaderInterface
     /**
      * Does a file support UnserializePhpPresentation ?
      *
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
-    public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
+    public function fileSupportsUnserializePhpPresentation(string $pFilename): bool
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
+            throw new FileNotFoundException($pFilename);
         }
 
         // File exists, does it contain PhpPresentation.xml?
@@ -61,18 +60,19 @@ class Serialized implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      *
-     * @throws \Exception
+     * @throws FileNotFoundException
+     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
+            throw new FileNotFoundException($pFilename);
         }
 
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized: " . $pFilename . '.');
+            throw new InvalidFileFormatException($pFilename, Serialized::class);
         }
 
         return $this->loadSerialized($pFilename);
@@ -80,17 +80,19 @@ class Serialized implements ReaderInterface
 
     /**
      * Load PhpPresentation Serialized file.
+     *
+     * @throws InvalidFileFormatException
      */
     private function loadSerialized(string $pFilename): PhpPresentation
     {
         $oArchive = new ZipArchive();
         if (true !== $oArchive->open($pFilename)) {
-            throw new Exception('');
+            throw new InvalidFileFormatException($pFilename, Serialized::class);
         }
 
         $xmlContent = $oArchive->getFromName('PhpPresentation.xml');
         if (empty($xmlContent)) {
-            throw new Exception(sprintf('The file %s in the serialized file %s is malformed', 'PhpPresentation.xml', $pFilename));
+            throw new InvalidFileFormatException($pFilename, Serialized::class, 'The file PhpPresentation.xml is malformed');
         }
 
         $xmlData = simplexml_load_string($xmlContent);

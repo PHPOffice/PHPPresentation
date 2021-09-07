@@ -29,29 +29,26 @@ use PhpOffice\PhpPresentation\Style\ColorMap;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
 
-/**
- * Class SlideMaster.
- */
 class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
     /**
      * Collection of Slide objects.
      *
-     * @var \PhpOffice\PhpPresentation\Slide\SlideLayout[]
+     * @var array<SlideLayout>
      */
     protected $slideLayouts = [];
     /**
      * Mapping of colors to the theme.
      *
-     * @var \PhpOffice\PhpPresentation\Style\ColorMap
+     * @var ColorMap
      */
     public $colorMap;
     /**
-     * @var \PhpOffice\PhpPresentation\Style\TextStyle
+     * @var TextStyle
      */
     protected $textStyles;
     /**
-     * @var \PhpOffice\PhpPresentation\Style\SchemeColor[]
+     * @var array<SchemeColor>
      */
     protected $arraySchemeColor = [];
     /**
@@ -74,8 +71,6 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
 
     /**
      * Create a new slideMaster.
-     *
-     * @throws \Exception
      */
     public function __construct(PhpPresentation $pParent = null)
     {
@@ -104,11 +99,9 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * Create a slideLayout and add it to this presentation.
      *
-     * @return \PhpOffice\PhpPresentation\Slide\SlideLayout
-     *
-     * @throws \Exception
+     * @return SlideLayout
      */
-    public function createSlideLayout()
+    public function createSlideLayout(): SlideLayout
     {
         $newSlideLayout = new SlideLayout($this);
         $this->addSlideLayout($newSlideLayout);
@@ -119,13 +112,11 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * Add slideLayout.
      *
-     * @param \PhpOffice\PhpPresentation\Slide\SlideLayout $slideLayout
+     * @param SlideLayout|null $slideLayout
      *
-     * @throws \Exception
-     *
-     * @return \PhpOffice\PhpPresentation\Slide\SlideLayout
+     * @return SlideLayout
      */
-    public function addSlideLayout(SlideLayout $slideLayout = null)
+    public function addSlideLayout(SlideLayout $slideLayout = null): SlideLayout
     {
         $this->slideLayouts[] = $slideLayout;
 
@@ -133,9 +124,9 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     }
 
     /**
-     * @return SlideLayout[]
+     * @return array<SlideLayout>
      */
-    public function getAllSlideLayouts()
+    public function getAllSlideLayouts(): array
     {
         return $this->slideLayouts;
     }
@@ -143,15 +134,15 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * @return TextStyle
      */
-    public function getTextStyles()
+    public function getTextStyles(): TextStyle
     {
         return $this->textStyles;
     }
 
     /**
-     * @return $this
+     * @return self
      */
-    public function setTextStyles(TextStyle $textStyle)
+    public function setTextStyles(TextStyle $textStyle): self
     {
         $this->textStyles = $textStyle;
 
@@ -159,9 +150,9 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     }
 
     /**
-     * @return $this
+     * @return self
      */
-    public function addSchemeColor(SchemeColor $schemeColor)
+    public function addSchemeColor(SchemeColor $schemeColor): self
     {
         $this->arraySchemeColor[$schemeColor->getValue()] = $schemeColor;
 
@@ -169,9 +160,9 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     }
 
     /**
-     * @return \PhpOffice\PhpPresentation\Style\SchemeColor[]
+     * @return array<SchemeColor>
      */
-    public function getAllSchemeColors()
+    public function getAllSchemeColors(): array
     {
         return $this->arraySchemeColor;
     }

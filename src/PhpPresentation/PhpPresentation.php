@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation;
 
 use ArrayObject;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Slide\Iterator;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 
@@ -155,8 +156,6 @@ class PhpPresentation
 
     /**
      * Create slide and add it to this presentation.
-     *
-     * @throws \Exception
      */
     public function createSlide(): Slide
     {
@@ -168,8 +167,6 @@ class PhpPresentation
 
     /**
      * Add slide.
-     *
-     * @throws \Exception
      */
     public function addSlide(Slide $slide): Slide
     {
@@ -183,12 +180,12 @@ class PhpPresentation
      *
      * @param int $index Slide index
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
     public function removeSlideByIndex(int $index = 0): self
     {
         if ($index > count($this->slideCollection) - 1) {
-            throw new \Exception('Slide index is out of bounds.');
+            throw new OutOfBoundsException(0, count($this->slideCollection) - 1, $index);
         }
         array_splice($this->slideCollection, $index, 1);
 
@@ -200,12 +197,12 @@ class PhpPresentation
      *
      * @param int $index Slide index
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
     public function getSlide(int $index = 0): Slide
     {
         if ($index > count($this->slideCollection) - 1) {
-            throw new \Exception('Slide index is out of bounds.');
+            throw new OutOfBoundsException(0, count($this->slideCollection) - 1, $index);
         }
 
         return $this->slideCollection[$index];
@@ -223,8 +220,6 @@ class PhpPresentation
 
     /**
      * Get index for slide.
-     *
-     * @throws \Exception
      */
     public function getIndex(Slide\AbstractSlide $slide): ?int
     {
@@ -263,12 +258,12 @@ class PhpPresentation
      *
      * @param int $index Active slide index
      *
-     * @throws \Exception
+     * @throws OutOfBoundsException
      */
     public function setActiveSlideIndex(int $index = 0): Slide
     {
         if ($index > count($this->slideCollection) - 1) {
-            throw new \Exception('Active slide index is out of bounds.');
+            throw new OutOfBoundsException(0, count($this->slideCollection) - 1, $index);
         }
         $this->activeSlideIndex = $index;
 
@@ -279,8 +274,6 @@ class PhpPresentation
      * Add external slide.
      *
      * @param Slide $slide External slide to add
-     *
-     * @throws \Exception
      */
     public function addExternalSlide(Slide $slide): Slide
     {
@@ -301,8 +294,6 @@ class PhpPresentation
 
     /**
      * Create a masterslide and add it to this presentation.
-     *
-     * @throws \Exception
      */
     public function createMasterSlide(): SlideMaster
     {
@@ -314,8 +305,6 @@ class PhpPresentation
 
     /**
      * Add masterslide.
-     *
-     * @throws \Exception
      */
     public function addMasterSlide(SlideMaster $slide): SlideMaster
     {
@@ -326,8 +315,6 @@ class PhpPresentation
 
     /**
      * Copy presentation (!= clone!).
-     *
-     * @throws \Exception
      */
     public function copy(): PhpPresentation
     {

@@ -20,17 +20,16 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Slide;
 
 class PptTheme extends AbstractDecoratorWriter
 {
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     *
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function render()
+    public function render(): ZipInterface
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oMasterSlide) {
             $this->getZip()->addFromString('ppt/theme/theme' . $oMasterSlide->getRelsIndex() . '.xml', $this->writeTheme($oMasterSlide));
@@ -44,7 +43,7 @@ class PptTheme extends AbstractDecoratorWriter
      *
      * @return string XML Output
      */
-    protected function writeTheme(Slide\SlideMaster $oMasterSlide)
+    protected function writeTheme(Slide\SlideMaster $oMasterSlide): string
     {
         $arrayFont = [
             'Jpan' => 'ＭＳ Ｐゴシック',

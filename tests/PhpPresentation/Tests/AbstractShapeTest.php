@@ -21,6 +21,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\Exception\ShapeContainerAlreadyAssignedException;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
@@ -204,8 +205,8 @@ class AbstractShapeTest extends TestCase
         $this->assertNull($object->getContainer());
         $this->assertInstanceOf(AbstractShape::class, $object->setContainer($oSlide));
         $this->assertInstanceOf(Slide::class, $object->getContainer());
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('A PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one PhpOffice\PhpPresentation\ShapeContainerInterface.');
+        $this->expectException(ShapeContainerAlreadyAssignedException::class);
+        $this->expectExceptionMessage('The shape PhpOffice\PhpPresentation\AbstractShape has already a container assigned');
         $object->setContainer(null);
     }
 }

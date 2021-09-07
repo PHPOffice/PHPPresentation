@@ -65,10 +65,8 @@ class Hyperlink
      *
      * @param string $pUrl Url to link the shape to
      * @param string $pTooltip Tooltip to display on the hyperlink
-     *
-     * @throws \Exception
      */
-    public function __construct($pUrl = '', $pTooltip = '')
+    public function __construct(string $pUrl = '', string $pTooltip = '')
     {
         // Initialise member variables
         $this->setUrl($pUrl);
@@ -80,7 +78,7 @@ class Hyperlink
      *
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -90,9 +88,9 @@ class Hyperlink
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @return self
      */
-    public function setUrl($value = '')
+    public function setUrl(string $value = ''): self
     {
         $this->url = $value;
 
@@ -104,7 +102,7 @@ class Hyperlink
      *
      * @return string
      */
-    public function getTooltip()
+    public function getTooltip(): string
     {
         return $this->tooltip;
     }
@@ -114,9 +112,9 @@ class Hyperlink
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @return self
      */
-    public function setTooltip($value = '')
+    public function setTooltip(string $value = ''): self
     {
         $this->tooltip = $value;
 
@@ -128,7 +126,7 @@ class Hyperlink
      *
      * @return int
      */
-    public function getSlideNumber()
+    public function getSlideNumber(): int
     {
         return $this->slideNumber;
     }
@@ -138,9 +136,9 @@ class Hyperlink
      *
      * @param int $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @return self
      */
-    public function setSlideNumber($value = 1)
+    public function setSlideNumber(int $value = 1): self
     {
         $this->url = 'ppaction://hlinksldjump';
         $this->slideNumber = $value;
@@ -153,7 +151,7 @@ class Hyperlink
      *
      * @return bool
      */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return false !== strpos($this->url, 'ppaction://');
     }
