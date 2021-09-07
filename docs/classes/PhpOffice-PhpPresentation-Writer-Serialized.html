@@ -113,7 +113,7 @@
         <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/Serialized.php"><a href="files/src-phppresentation-writer-serialized.html"><abbr title="src/PhpPresentation/Writer/Serialized.php">Serialized.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">32</span>
+    <span class="phpdocumentor-element-found-in__line">34</span>
 
     </aside>
 
@@ -154,7 +154,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -property -protected">
     <a href="classes/PhpOffice-PhpPresentation-Writer-AbstractWriter.html#property_oPresentation">$oPresentation</a>
     <span>
-                &nbsp;: <a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>            </span>
+                &nbsp;: <a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>|null            </span>
 </dt>
 <dd>Private PhpPresentation.</dd>
 
@@ -182,7 +182,7 @@
             <dt class="phpdocumentor-table-of-contents__entry -method -public">
     <a href="classes/PhpOffice-PhpPresentation-Writer-AbstractWriter.html#method_getPhpPresentation">getPhpPresentation()</a>
     <span>
-                        &nbsp;: <a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>    </span>
+                        &nbsp;: <a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>|null    </span>
 </dt>
 <dd>Get PhpPresentation object.</dd>
 
@@ -221,19 +221,19 @@
 </dt>
 <dd>Get an array of all drawings.</dd>
 
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/PhpOffice-PhpPresentation-Writer-Serialized.html#method_writeSerialized">writeSerialized()</a>
+    <span>
+                        &nbsp;: string    </span>
+</dt>
+<dd>Serialize PhpPresentation object to XML.</dd>
+
             <dt class="phpdocumentor-table-of-contents__entry -method -private">
     <a href="classes/PhpOffice-PhpPresentation-Writer-AbstractWriter.html#method_iterateCollection">iterateCollection()</a>
     <span>
                         &nbsp;: array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;    </span>
 </dt>
 <dd></dd>
-
-            <dt class="phpdocumentor-table-of-contents__entry -method -private">
-    <a href="classes/PhpOffice-PhpPresentation-Writer-Serialized.html#method_writeSerialized">writeSerialized()</a>
-    <span>
-                        &nbsp;: string    </span>
-</dt>
-<dd>Serialize PhpPresentation object to XML.</dd>
 
         </dl>
 
@@ -304,7 +304,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-        <span class="phpdocumentor-signature__type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a></span>
+        <span class="phpdocumentor-signature__type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>|null</span>
     <span class="phpdocumentor-signature__name">$oPresentation</span>
     </code>
 
@@ -388,20 +388,6 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">mixed</span>
@@ -455,7 +441,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/AbstractWriter.php"><a href="files/src-phppresentation-writer-abstractwriter.html"><abbr title="src/PhpPresentation/Writer/AbstractWriter.php">AbstractWriter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">66</span>
+    <span class="phpdocumentor-element-found-in__line">64</span>
 
     </aside>
 
@@ -463,28 +449,14 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">public</span>
-                <span class="phpdocumentor-signature__name">getPhpPresentation</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a></span></code>
+                <span class="phpdocumentor-signature__name">getPhpPresentation</span><span>(</span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>|null</span></code>
 
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a></span>
+    <span class="phpdocumentor-signature__response_type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>|null</span>
             &mdash;
         
     
@@ -502,7 +474,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/AbstractWriter.php"><a href="files/src-phppresentation-writer-abstractwriter.html"><abbr title="src/PhpPresentation/Writer/AbstractWriter.php">AbstractWriter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">98</span>
+    <span class="phpdocumentor-element-found-in__line">90</span>
 
     </aside>
 
@@ -535,7 +507,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/Serialized.php"><a href="files/src-phppresentation-writer-serialized.html"><abbr title="src/PhpPresentation/Writer/Serialized.php">Serialized.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">55</span>
+    <span class="phpdocumentor-element-found-in__line">56</span>
 
     </aside>
 
@@ -568,7 +540,15 @@
                     <span class="phpdocumentor-tag__name">throws</span>
                 </dt>
                 <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/PhpOffice-PhpPresentation-Exception-DirectoryNotFoundException.html"><abbr title="\PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException">DirectoryNotFoundException</abbr></a></span>
+                                                            
+                                             
+                                    </dd>
+                            <dt class="phpdocumentor-tag-list__entry">
+                    <span class="phpdocumentor-tag__name">throws</span>
+                </dt>
+                <dd class="phpdocumentor-tag-list__definition">
+                                                                <span class="phpdocumentor-tag-link"><a href="classes/PhpOffice-PhpPresentation-Exception-InvalidParameterException.html"><abbr title="\PhpOffice\PhpPresentation\Exception\InvalidParameterException">InvalidParameterException</abbr></a></span>
                                                             
                                              
                                     </dd>
@@ -593,7 +573,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/AbstractWriter.php"><a href="files/src-phppresentation-writer-abstractwriter.html"><abbr title="src/PhpPresentation/Writer/AbstractWriter.php">AbstractWriter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">84</span>
+    <span class="phpdocumentor-element-found-in__line">76</span>
 
     </aside>
 
@@ -618,20 +598,6 @@
             </dl>
 
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">self</span>
@@ -652,7 +618,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/AbstractWriter.php"><a href="files/src-phppresentation-writer-abstractwriter.html"><abbr title="src/PhpPresentation/Writer/AbstractWriter.php">AbstractWriter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">91</span>
+    <span class="phpdocumentor-element-found-in__line">83</span>
 
     </aside>
 
@@ -696,7 +662,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/AbstractWriter.php"><a href="files/src-phppresentation-writer-abstractwriter.html"><abbr title="src/PhpPresentation/Writer/AbstractWriter.php">AbstractWriter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">110</span>
+    <span class="phpdocumentor-element-found-in__line">100</span>
 
     </aside>
 
@@ -709,25 +675,63 @@
     
     
     
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                        </dl>
 
         <h5 class="phpdocumentor-return-value__heading">Return values</h5>
     <span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
             &mdash;
         
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_writeSerialized">
+        writeSerialized()
+        <a href="classes/PhpOffice-PhpPresentation-Writer-Serialized.html#method_writeSerialized" class="headerlink"><i class="fas fa-link"></i></a>
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/Serialized.php"><a href="files/src-phppresentation-writer-serialized.html"><abbr title="src/PhpPresentation/Writer/Serialized.php">Serialized.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">101</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Serialize PhpPresentation object to XML.</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                <span class="phpdocumentor-signature__name">writeSerialized</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>|null&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pPhpPresentation</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pFilename</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
+
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$pPhpPresentation</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>|null</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$pFilename</span>
+                : <span class="phpdocumentor-signature__argument__return-type">string</span>
+                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
+    <span class="phpdocumentor-signature__response_type">string</span>
+            &mdash;
+            <section class="phpdocumentor-description"><p>XML Output</p>
+</section>
+
     
 </article>
                     <article
@@ -743,7 +747,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/AbstractWriter.php"><a href="files/src-phppresentation-writer-abstractwriter.html"><abbr title="src/PhpPresentation/Writer/AbstractWriter.php">AbstractWriter.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">142</span>
+    <span class="phpdocumentor-element-found-in__line">132</span>
 
     </aside>
 
@@ -770,72 +774,6 @@
     <span class="phpdocumentor-signature__response_type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;</span>
             &mdash;
         
-    
-</article>
-                    <article
-        class="phpdocumentor-element
-            -method
-            -private
-                                                        "
->
-    <h4 class="phpdocumentor-element__name" id="method_writeSerialized">
-        writeSerialized()
-        <a href="classes/PhpOffice-PhpPresentation-Writer-Serialized.html#method_writeSerialized" class="headerlink"><i class="fas fa-link"></i></a>
-    </h4>
-    <aside class="phpdocumentor-element-found-in">
-    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/Serialized.php"><a href="files/src-phppresentation-writer-serialized.html"><abbr title="src/PhpPresentation/Writer/Serialized.php">Serialized.php</abbr></a></abbr>
-    :
-    <span class="phpdocumentor-element-found-in__line">102</span>
-
-    </aside>
-
-        <p class="phpdocumentor-summary">Serialize PhpPresentation object to XML.</p>
-
-    <code class="phpdocumentor-code phpdocumentor-signature ">
-    <span class="phpdocumentor-signature__visibility">private</span>
-                <span class="phpdocumentor-signature__name">writeSerialized</span><span>(</span><span class="phpdocumentor-signature__argument"><span>[</span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pPhpPresentation</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">null</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">string&nbsp;</span><span class="phpdocumentor-signature__argument__name">$pFilename</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">string</span></code>
-
-    
-        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
-    <dl class="phpdocumentor-argument-list">
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$pPhpPresentation</span>
-                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-PhpPresentation.html"><abbr title="\PhpOffice\PhpPresentation\PhpPresentation">PhpPresentation</abbr></a></span>
-                 = <span class="phpdocumentor-signature__argument__default-value">null</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-                    <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$pFilename</span>
-                : <span class="phpdocumentor-signature__argument__return-type">string</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">&#039;&#039;</span>            </dt>
-            <dd class="phpdocumentor-argument-list__definition">
-                
-            </dd>
-            </dl>
-
-    
-    <h5 class="phpdocumentor-tag-list__heading" id="tags">
-        Tags
-        <a href="#tags" class="headerlink"><i class="fas fa-link"></i></a>
-    </h5>
-    <dl class="phpdocumentor-tag-list">
-                                    <dt class="phpdocumentor-tag-list__entry">
-                    <span class="phpdocumentor-tag__name">throws</span>
-                </dt>
-                <dd class="phpdocumentor-tag-list__definition">
-                                                                <span class="phpdocumentor-tag-link"><abbr title="\Exception">Exception</abbr></span>
-                                                            
-                                             
-                                    </dd>
-                        </dl>
-
-        <h5 class="phpdocumentor-return-value__heading">Return values</h5>
-    <span class="phpdocumentor-signature__response_type">string</span>
-            &mdash;
-            <section class="phpdocumentor-description"><p>XML Output</p>
-</section>
-
     
 </article>
             </section>
