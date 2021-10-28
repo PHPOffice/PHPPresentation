@@ -788,6 +788,19 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
         if ($shape->getHyperlink()->isInternal()) {
             $objWriter->writeAttribute('action', $shape->getHyperlink()->getUrl());
         }
+
+        if ($shape->getHyperlink()->getUseTextColor()) {
+            $objWriter->startElement('a:extLst');
+            $objWriter->startElement('a:ext');
+            $objWriter->writeAttribute('uri', '{A12FA001-AC4F-418D-AE19-62706E023703}');
+            $objWriter->startElement('ahyp:hlinkClr');
+            $objWriter->writeAttribute('xmlns:ahyp', 'http://schemas.microsoft.com/office/drawing/2018/hyperlinkcolor');
+            $objWriter->writeAttribute('val', 'tx');
+            $objWriter->endElement();
+            $objWriter->endElement();
+            $objWriter->endElement();
+        }
+
         $objWriter->endElement();
     }
 
