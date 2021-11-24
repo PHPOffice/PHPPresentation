@@ -10,23 +10,27 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Comment;
 
 use PhpOffice\PhpPresentation\Shape\Comment\Author;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Author element
+ * Test class for Author element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Comment\Author
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Comment\Author
  */
-class AuthorTest extends \PHPUnit_Framework_TestCase
+class AuthorTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Author();
 
@@ -35,9 +39,9 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($object->getInitials());
     }
 
-    public function testGetSetIndex()
+    public function testGetSetIndex(): void
     {
-        $expectedVal = rand(1, 100);
+        $expectedVal = mt_rand(1, 100);
 
         $object = new Author();
         $this->assertNull($object->getIndex());
@@ -45,7 +49,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedVal, $object->getIndex());
     }
 
-    public function testGetSetInitials()
+    public function testGetSetInitials(): void
     {
         $expectedVal = 'AABBCCDD';
 
@@ -55,7 +59,7 @@ class AuthorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedVal, $object->getInitials());
     }
 
-    public function testGetSetName()
+    public function testGetSetName(): void
     {
         $expectedVal = 'AABBCCDD';
 

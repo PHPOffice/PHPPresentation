@@ -10,42 +10,44 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation;
 
 /**
- * Autoloader
+ * Autoloader.
  */
 class Autoloader
 {
     /** @const string */
-    const NAMESPACE_PREFIX = 'PhpOffice\\PhpPresentation\\';
+    public const NAMESPACE_PREFIX = 'PhpOffice\\PhpPresentation\\';
 
     /**
-     * Register
-     *
-     * @return void
+     * Register.
      */
-    public static function register()
+    public static function register(): void
     {
-        spl_autoload_register(array(new self, 'autoload'));
+        spl_autoload_register([new self(), 'autoload']);
     }
 
     /**
-     * Autoload
-     *
-     * @param string $class
+     * Autoload.
      */
-    public static function autoload($class)
+    public static function autoload(string $class): void
     {
         $prefixLength = strlen(self::NAMESPACE_PREFIX);
         if (0 === strncmp(self::NAMESPACE_PREFIX, $class, $prefixLength)) {
             $file = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, $prefixLength));
             $file = realpath(__DIR__ . (empty($file) ? '' : DIRECTORY_SEPARATOR) . $file . '.php');
+            if (!$file) {
+                return;
+            }
             if (file_exists($file)) {
                 /** @noinspection PhpIncludeInspection Dynamic includes */
                 require_once $file;

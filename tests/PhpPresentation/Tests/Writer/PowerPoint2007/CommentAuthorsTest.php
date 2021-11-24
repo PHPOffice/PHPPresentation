@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
@@ -9,7 +27,7 @@ class CommentAuthorsTest extends PhpPresentationTestCase
 {
     protected $writerName = 'PowerPoint2007';
 
-    public function testComments()
+    public function testComments(): void
     {
         $expectedElement = '/p:cmAuthorLst/p:cmAuthor';
         $expectedName = 'Name';
@@ -27,22 +45,25 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'id', 0);
         $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'name', $expectedName);
         $this->assertZipXmlAttributeEquals('ppt/commentAuthors.xml', $expectedElement, 'initials', $expectedInitials);
+        $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testWithoutComment()
+    public function testWithoutComment(): void
     {
         $this->assertZipFileNotExists('ppt/commentAuthors.xml');
+        $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testWithoutCommentAuthor()
+    public function testWithoutCommentAuthor(): void
     {
         $oComment = new Comment();
         $this->oPresentation->getActiveSlide()->addShape($oComment);
 
         $this->assertZipFileNotExists('ppt/commentAuthors.xml');
+        $this->assertIsSchemaECMA376Valid();
     }
 
-    public function testWithSameAuthor()
+    public function testWithSameAuthor(): void
     {
         $expectedElement = '/p:cmAuthorLst/p:cmAuthor';
 
@@ -58,5 +79,6 @@ class CommentAuthorsTest extends PhpPresentationTestCase
         $this->assertZipFileExists('ppt/commentAuthors.xml');
         $this->assertZipXmlElementExists('ppt/commentAuthors.xml', $expectedElement);
         $this->assertZipXmlElementCount('ppt/commentAuthors.xml', $expectedElement, 1);
+        $this->assertIsSchemaECMA376Valid();
     }
 }

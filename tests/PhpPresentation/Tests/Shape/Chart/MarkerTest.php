@@ -10,23 +10,29 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\Marker;
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Fill;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Legend element
+ * Test class for Legend element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Marker
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Marker
  */
-class MarkerTest extends \PHPUnit_Framework_TestCase
+class MarkerTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Marker();
 
@@ -34,22 +40,38 @@ class MarkerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(5, $object->getSize());
     }
 
-    public function testSymbol()
+    public function testBorder(): void
     {
         $object = new Marker();
 
-        $expected = array_rand(Marker::$arraySymbol);
-
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->setSymbol($expected));
-        $this->assertEquals($expected, $object->getSymbol());
+        $this->assertInstanceOf(Border::class, $object->getBorder());
+        $this->assertInstanceOf(Marker::class, $object->setBorder(new Border()));
     }
 
-    public function testSize()
+    public function testFill(): void
     {
         $object = new Marker();
-        $value = rand(1, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Marker', $object->setSize($value));
+        $this->assertInstanceOf(Fill::class, $object->getFill());
+        $this->assertInstanceOf(Marker::class, $object->setFill(new Fill()));
+    }
+
+    public function testSize(): void
+    {
+        $object = new Marker();
+        $value = mt_rand(1, 100);
+
+        $this->assertInstanceOf(Marker::class, $object->setSize($value));
         $this->assertEquals($value, $object->getSize());
+    }
+
+    public function testSymbol(): void
+    {
+        $object = new Marker();
+
+        $expected = Marker::$arraySymbol[array_rand(Marker::$arraySymbol)];
+
+        $this->assertInstanceOf(Marker::class, $object->setSymbol($expected));
+        $this->assertEquals($expected, $object->getSymbol());
     }
 }

@@ -10,58 +10,56 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation;
 
+use ArrayObject;
+
 /**
- * PhpOffice\PhpPresentation\ShapeContainerInterface
+ * PhpOffice\PhpPresentation\ShapeContainerInterface.
  */
 interface ShapeContainerInterface
 {
     /**
-    * Get collection of shapes
-    *
-    * @return \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[]
-    */
+     * Get collection of shapes.
+     *
+     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
+     */
     public function getShapeCollection();
 
     /**
-    * Add shape to slide
-    *
-    * @param  \PhpOffice\PhpPresentation\AbstractShape $shape
-    * @return \PhpOffice\PhpPresentation\AbstractShape
-    */
+     * Add shape to slide.
+     *
+     * @return AbstractShape
+     */
     public function addShape(AbstractShape $shape);
 
     /**
-    * Get X Offset
-    *
-    * @return int
-    */
-    public function getOffsetX();
+     * Get X Offset.
+     */
+    public function getOffsetX(): int;
 
     /**
-    * Get Y Offset
-    *
-    * @return int
-    */
-    public function getOffsetY();
+     * Get Y Offset.
+     */
+    public function getOffsetY(): int;
 
     /**
-    * Get X Extent
-    *
-    * @return int
-    */
-    public function getExtentX();
+     * Get X Extent.
+     */
+    public function getExtentX(): int;
 
     /**
-    * Get Y Extent
-    *
-    * @return int
-    */
-    public function getExtentY();
+     * Get Y Extent.
+     */
+    public function getExtentY(): int;
+
+    public function getHashCode(): string;
 }

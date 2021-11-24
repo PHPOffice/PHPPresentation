@@ -10,32 +10,36 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Placeholder;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Table element
+ * Test class for Table element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Table
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Table
  */
-class PlaceholderTest extends \PHPUnit_Framework_TestCase
+class PlaceholderTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Placeholder(Placeholder::PH_TYPE_BODY);
         $this->assertEquals(Placeholder::PH_TYPE_BODY, $object->getType());
         $this->assertNull($object->getIdx());
     }
 
-    public function testIdx()
+    public function testIdx(): void
     {
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $object = new Placeholder(Placeholder::PH_TYPE_BODY);
         $this->assertNull($object->getIdx());
@@ -43,7 +47,7 @@ class PlaceholderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getIdx());
     }
 
-    public function testType()
+    public function testType(): void
     {
         $rcPlaceholder = new \ReflectionClass('PhpOffice\PhpPresentation\Shape\Placeholder');
         $arrayConstants = $rcPlaceholder->getConstants();

@@ -10,34 +10,38 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Area;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Bar3D element
+ * Test class for Bar3D element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D
  */
-class AreaTest extends \PHPUnit_Framework_TestCase
+class AreaTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Area();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setSeries());
         $this->assertEmpty($object->getSeries());
@@ -45,7 +49,7 @@ class AreaTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Area();
 
@@ -53,13 +57,13 @@ class AreaTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 
         $object = new Area();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

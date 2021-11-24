@@ -10,28 +10,31 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Style\Alignment;
+use PhpOffice\PhpPresentation\Style\SchemeColor;
 use PhpOffice\PhpPresentation\Style\TextStyle;
+use PHPUnit\Framework\TestCase;
 
-class TextStyleTest extends \PHPUnit_Framework_TestCase
+class TextStyleTest extends TestCase
 {
-    public function testConstructDefaultTrue()
+    public function testConstructDefaultTrue(): void
     {
-        /**
-         * @var \PhpOffice\PhpPresentation\Shape\RichText\Paragraph $oParagraph
-         */
+        /** @var TextStyle $object */
         $object = new TextStyle();
 
         $arrayBodyStyle = $object->getBodyStyle();
-        $this->assertInternalType('array', $arrayBodyStyle);
+        $this->assertIsArray($arrayBodyStyle);
         $this->assertCount(1, $arrayBodyStyle);
         $this->assertArrayHasKey(1, $arrayBodyStyle);
         $this->assertNull($object->getBodyStyleAtLvl(0));
@@ -42,11 +45,13 @@ class TextStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals((-324900 / 9525), $oParagraph->getAlignment()->getIndent());
         $this->assertEquals(0, $oParagraph->getAlignment()->getMarginLeft());
         $this->assertEquals(32, $oParagraph->getFont()->getSize());
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\SchemeColor', $oParagraph->getFont()->getColor());
-        $this->assertEquals('tx1', $oParagraph->getFont()->getColor()->getValue());
+        /** @var SchemeColor $color */
+        $color = $oParagraph->getFont()->getColor();
+        $this->assertInstanceOf(SchemeColor::class, $color);
+        $this->assertEquals('tx1', $color->getValue());
 
         $arrayOtherStyle = $object->getOtherStyle();
-        $this->assertInternalType('array', $arrayOtherStyle);
+        $this->assertIsArray($arrayOtherStyle);
         $this->assertCount(1, $arrayOtherStyle);
         $this->assertArrayHasKey(0, $arrayOtherStyle);
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\RichText\Paragraph', $object->getOtherStyleAtLvl(0));
@@ -55,11 +60,13 @@ class TextStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\RichText\Paragraph', $oParagraph);
         $this->assertEquals(Alignment::HORIZONTAL_CENTER, $oParagraph->getAlignment()->getHorizontal());
         $this->assertEquals(10, $oParagraph->getFont()->getSize());
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\SchemeColor', $oParagraph->getFont()->getColor());
-        $this->assertEquals('tx1', $oParagraph->getFont()->getColor()->getValue());
+        /** @var SchemeColor $color */
+        $color = $oParagraph->getFont()->getColor();
+        $this->assertInstanceOf(SchemeColor::class, $color);
+        $this->assertEquals('tx1', $color->getValue());
 
         $arrayTitleStyle = $object->getTitleStyle();
-        $this->assertInternalType('array', $arrayTitleStyle);
+        $this->assertIsArray($arrayTitleStyle);
         $this->assertCount(1, $arrayTitleStyle);
         $this->assertArrayHasKey(1, $arrayTitleStyle);
         $this->assertNull($object->getTitleStyleAtLvl(0));
@@ -68,30 +75,32 @@ class TextStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\RichText\Paragraph', $oParagraph);
         $this->assertEquals(Alignment::HORIZONTAL_CENTER, $oParagraph->getAlignment()->getHorizontal());
         $this->assertEquals(44, $oParagraph->getFont()->getSize());
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Style\SchemeColor', $oParagraph->getFont()->getColor());
-        $this->assertEquals('lt1', $oParagraph->getFont()->getColor()->getValue());
+        /** @var SchemeColor $color */
+        $color = $oParagraph->getFont()->getColor();
+        $this->assertInstanceOf(SchemeColor::class, $color);
+        $this->assertEquals('lt1', $color->getValue());
     }
 
-    public function testConstructDefaultFalse()
+    public function testConstructDefaultFalse(): void
     {
         $object = new TextStyle(false);
 
-        $this->assertInternalType('array', $object->getBodyStyle());
+        $this->assertIsArray($object->getBodyStyle());
         $this->assertCount(0, $object->getBodyStyle());
-        $this->assertInternalType('array', $object->getOtherStyle());
+        $this->assertIsArray($object->getOtherStyle());
         $this->assertCount(0, $object->getOtherStyle());
-        $this->assertInternalType('array', $object->getTitleStyle());
+        $this->assertIsArray($object->getTitleStyle());
         $this->assertCount(0, $object->getTitleStyle());
     }
 
-    public function testLevel()
+    public function testLevel(): void
     {
-        $value = rand(0, 9);
+        $value = mt_rand(0, 9);
         $object = new TextStyle(false);
         $oParagraph = new Paragraph();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setBodyStyleAtLvl($oParagraph, ''));
-        $this->assertNull($object->getBodyStyleAtLvl(''));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setBodyStyleAtLvl($oParagraph, null));
+        $this->assertNull($object->getBodyStyleAtLvl(null));
         $this->assertCount(0, $object->getBodyStyle());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setBodyStyleAtLvl($oParagraph, 10));
         $this->assertNull($object->getBodyStyleAtLvl(10));
@@ -100,8 +109,8 @@ class TextStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\RichText\Paragraph', $object->getBodyStyleAtLvl($value));
         $this->assertCount(1, $object->getBodyStyle());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setOtherStyleAtLvl($oParagraph, ''));
-        $this->assertNull($object->getOtherStyleAtLvl(''));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setOtherStyleAtLvl($oParagraph, null));
+        $this->assertNull($object->getOtherStyleAtLvl(null));
         $this->assertCount(0, $object->getOtherStyle());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setOtherStyleAtLvl($oParagraph, 10));
         $this->assertNull($object->getOtherStyleAtLvl(10));
@@ -110,8 +119,8 @@ class TextStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\RichText\Paragraph', $object->getOtherStyleAtLvl($value));
         $this->assertCount(1, $object->getOtherStyle());
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setTitleStyleAtLvl($oParagraph, ''));
-        $this->assertNull($object->getTitleStyleAtLvl(''));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setTitleStyleAtLvl($oParagraph, null));
+        $this->assertNull($object->getTitleStyleAtLvl(null));
         $this->assertCount(0, $object->getTitleStyle());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\TextStyle', $object->setTitleStyleAtLvl($oParagraph, 10));
         $this->assertNull($object->getTitleStyleAtLvl(10));

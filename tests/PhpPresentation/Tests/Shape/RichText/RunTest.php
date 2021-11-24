@@ -10,27 +10,31 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
 
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Style\Font;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Run element
+ * Test class for Run element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\Run
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText\Run
  */
-class RunTest extends \PHPUnit_Framework_TestCase
+class RunTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Run();
         $this->assertEquals('', $object->getText());
@@ -41,14 +45,14 @@ class RunTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
-    public function testFont()
+    public function testFont(): void
     {
         $object = new Run();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setFont(new Font()));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
-    public function testLanguage()
+    public function testLanguage(): void
     {
         $object = new Run();
         $this->assertNull($object->getLanguage());
@@ -56,7 +60,7 @@ class RunTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('en-US', $object->getLanguage());
     }
 
-    public function testText()
+    public function testText(): void
     {
         $object = new Run();
         $this->assertEquals('', $object->getText());
@@ -70,11 +74,11 @@ class RunTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Run();
-        $this->assertEquals(md5($object->getFont()->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($object->getFont()->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

@@ -10,134 +10,133 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * \PhpOffice\PhpPresentation\Style\Bullet
+ * \PhpOffice\PhpPresentation\Style\Bullet.
  */
 class Bullet implements ComparableInterface
 {
     /* Bullet types */
-    const TYPE_NONE                         = 'none';
-    const TYPE_BULLET                       = 'bullet';
-    const TYPE_NUMERIC                      = 'numeric';
+    public const TYPE_NONE = 'none';
+    public const TYPE_BULLET = 'bullet';
+    public const TYPE_NUMERIC = 'numeric';
 
     /* Numeric bullet styles */
-    const NUMERIC_DEFAULT                   = 'arabicPeriod';
-    const NUMERIC_ALPHALCPARENBOTH          = 'alphaLcParenBoth';
-    const NUMERIC_ALPHAUCPARENBOTH          = 'alphaUcParenBoth';
-    const NUMERIC_ALPHALCPARENR             = 'alphaLcParenR';
-    const NUMERIC_ALPHAUCPARENR             = 'alphaUcParenR';
-    const NUMERIC_ALPHALCPERIOD             = 'alphaLcPeriod';
-    const NUMERIC_ALPHAUCPERIOD             = 'alphaUcPeriod';
-    const NUMERIC_ARABICPARENBOTH           = 'arabicParenBoth';
-    const NUMERIC_ARABICPARENR              = 'arabicParenR';
-    const NUMERIC_ARABICPERIOD              = 'arabicPeriod';
-    const NUMERIC_ARABICPLAIN               = 'arabicPlain';
-    const NUMERIC_ROMANLCPARENBOTH          = 'romanLcParenBoth';
-    const NUMERIC_ROMANUCPARENBOTH          = 'romanUcParenBoth';
-    const NUMERIC_ROMANLCPARENR             = 'romanLcParenR';
-    const NUMERIC_ROMANUCPARENR             = 'romanUcParenR';
-    const NUMERIC_ROMANLCPERIOD             = 'romanLcPeriod';
-    const NUMERIC_ROMANUCPERIOD             = 'romanUcPeriod';
-    const NUMERIC_CIRCLENUMDBPLAIN          = 'circleNumDbPlain';
-    const NUMERIC_CIRCLENUMWDBLACKPLAIN     = 'circleNumWdBlackPlain';
-    const NUMERIC_CIRCLENUMWDWHITEPLAIN     = 'circleNumWdWhitePlain';
-    const NUMERIC_ARABICDBPERIOD            = 'arabicDbPeriod';
-    const NUMERIC_ARABICDBPLAIN             = 'arabicDbPlain';
-    const NUMERIC_EA1CHSPERIOD              = 'ea1ChsPeriod';
-    const NUMERIC_EA1CHSPLAIN               = 'ea1ChsPlain';
-    const NUMERIC_EA1CHTPERIOD              = 'ea1ChtPeriod';
-    const NUMERIC_EA1CHTPLAIN               = 'ea1ChtPlain';
-    const NUMERIC_EA1JPNCHSDBPERIOD         = 'ea1JpnChsDbPeriod';
-    const NUMERIC_EA1JPNKORPLAIN            = 'ea1JpnKorPlain';
-    const NUMERIC_EA1JPNKORPERIOD           = 'ea1JpnKorPeriod';
-    const NUMERIC_ARABIC1MINUS              = 'arabic1Minus';
-    const NUMERIC_ARABIC2MINUS              = 'arabic2Minus';
-    const NUMERIC_HEBREW2MINUS              = 'hebrew2Minus';
-    const NUMERIC_THAIALPHAPERIOD           = 'thaiAlphaPeriod';
-    const NUMERIC_THAIALPHAPARENR           = 'thaiAlphaParenR';
-    const NUMERIC_THAIALPHAPARENBOTH        = 'thaiAlphaParenBoth';
-    const NUMERIC_THAINUMPERIOD             = 'thaiNumPeriod';
-    const NUMERIC_THAINUMPARENR             = 'thaiNumParenR';
-    const NUMERIC_THAINUMPARENBOTH          = 'thaiNumParenBoth';
-    const NUMERIC_HINDIALPHAPERIOD          = 'hindiAlphaPeriod';
-    const NUMERIC_HINDINUMPERIOD            = 'hindiNumPeriod';
-    const NUMERIC_HINDINUMPARENR            = 'hindiNumParenR';
-    const NUMERIC_HINDIALPHA1PERIOD         = 'hindiAlpha1Period';
+    public const NUMERIC_DEFAULT = 'arabicPeriod';
+    public const NUMERIC_ALPHALCPARENBOTH = 'alphaLcParenBoth';
+    public const NUMERIC_ALPHAUCPARENBOTH = 'alphaUcParenBoth';
+    public const NUMERIC_ALPHALCPARENR = 'alphaLcParenR';
+    public const NUMERIC_ALPHAUCPARENR = 'alphaUcParenR';
+    public const NUMERIC_ALPHALCPERIOD = 'alphaLcPeriod';
+    public const NUMERIC_ALPHAUCPERIOD = 'alphaUcPeriod';
+    public const NUMERIC_ARABICPARENBOTH = 'arabicParenBoth';
+    public const NUMERIC_ARABICPARENR = 'arabicParenR';
+    public const NUMERIC_ARABICPERIOD = 'arabicPeriod';
+    public const NUMERIC_ARABICPLAIN = 'arabicPlain';
+    public const NUMERIC_ROMANLCPARENBOTH = 'romanLcParenBoth';
+    public const NUMERIC_ROMANUCPARENBOTH = 'romanUcParenBoth';
+    public const NUMERIC_ROMANLCPARENR = 'romanLcParenR';
+    public const NUMERIC_ROMANUCPARENR = 'romanUcParenR';
+    public const NUMERIC_ROMANLCPERIOD = 'romanLcPeriod';
+    public const NUMERIC_ROMANUCPERIOD = 'romanUcPeriod';
+    public const NUMERIC_CIRCLENUMDBPLAIN = 'circleNumDbPlain';
+    public const NUMERIC_CIRCLENUMWDBLACKPLAIN = 'circleNumWdBlackPlain';
+    public const NUMERIC_CIRCLENUMWDWHITEPLAIN = 'circleNumWdWhitePlain';
+    public const NUMERIC_ARABICDBPERIOD = 'arabicDbPeriod';
+    public const NUMERIC_ARABICDBPLAIN = 'arabicDbPlain';
+    public const NUMERIC_EA1CHSPERIOD = 'ea1ChsPeriod';
+    public const NUMERIC_EA1CHSPLAIN = 'ea1ChsPlain';
+    public const NUMERIC_EA1CHTPERIOD = 'ea1ChtPeriod';
+    public const NUMERIC_EA1CHTPLAIN = 'ea1ChtPlain';
+    public const NUMERIC_EA1JPNCHSDBPERIOD = 'ea1JpnChsDbPeriod';
+    public const NUMERIC_EA1JPNKORPLAIN = 'ea1JpnKorPlain';
+    public const NUMERIC_EA1JPNKORPERIOD = 'ea1JpnKorPeriod';
+    public const NUMERIC_ARABIC1MINUS = 'arabic1Minus';
+    public const NUMERIC_ARABIC2MINUS = 'arabic2Minus';
+    public const NUMERIC_HEBREW2MINUS = 'hebrew2Minus';
+    public const NUMERIC_THAIALPHAPERIOD = 'thaiAlphaPeriod';
+    public const NUMERIC_THAIALPHAPARENR = 'thaiAlphaParenR';
+    public const NUMERIC_THAIALPHAPARENBOTH = 'thaiAlphaParenBoth';
+    public const NUMERIC_THAINUMPERIOD = 'thaiNumPeriod';
+    public const NUMERIC_THAINUMPARENR = 'thaiNumParenR';
+    public const NUMERIC_THAINUMPARENBOTH = 'thaiNumParenBoth';
+    public const NUMERIC_HINDIALPHAPERIOD = 'hindiAlphaPeriod';
+    public const NUMERIC_HINDINUMPERIOD = 'hindiNumPeriod';
+    public const NUMERIC_HINDINUMPARENR = 'hindiNumParenR';
+    public const NUMERIC_HINDIALPHA1PERIOD = 'hindiAlpha1Period';
 
     /**
-     * Bullet type
+     * Bullet type.
      *
      * @var string
      */
     private $bulletType = self::TYPE_NONE;
 
     /**
-     * Bullet font
+     * Bullet font.
      *
      * @var string
      */
     private $bulletFont;
 
     /**
-     * Bullet char
+     * Bullet char.
      *
      * @var string
      */
     private $bulletChar = '-';
 
     /**
-     * Bullet char
+     * Bullet char.
      *
      * @var Color
      */
     private $bulletColor;
 
     /**
-     * Bullet numeric style
+     * Bullet numeric style.
      *
      * @var string
      */
     private $bulletNumericStyle = self::NUMERIC_DEFAULT;
 
     /**
-     * Bullet numeric start at
+     * Bullet numeric start at.
+     *
+     * @var int|string
+     */
+    private $bulletNumericStartAt;
+
+    /**
+     * Hash index.
      *
      * @var int
      */
-    private $bulletNumericStartAt = 1;
-
-    /**
-     * Hash index
-     *
-     * @var string
-     */
     private $hashIndex;
 
-    /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Bullet
-     */
     public function __construct()
     {
-        // Initialise values
-        $this->bulletType              = self::TYPE_NONE;
-        $this->bulletFont              = 'Calibri';
-        $this->bulletChar              = '-';
-        $this->bulletColor             = new Color();
-        $this->bulletNumericStyle      = self::NUMERIC_DEFAULT;
-        $this->bulletNumericStartAt    = 1;
+        $this->bulletType = self::TYPE_NONE;
+        $this->bulletFont = 'Calibri';
+        $this->bulletChar = '-';
+        $this->bulletColor = new Color();
+        $this->bulletNumericStyle = self::NUMERIC_DEFAULT;
+        $this->bulletNumericStartAt = 1;
     }
 
     /**
-     * Get bullet type
+     * Get bullet type.
      *
      * @return string
      */
@@ -147,9 +146,10 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Set bullet type
+     * Set bullet type.
      *
-     * @param  string                     $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Bullet
      */
     public function setBulletType($pValue = self::TYPE_NONE)
@@ -160,7 +160,7 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Get bullet font
+     * Get bullet font.
      *
      * @return string
      */
@@ -170,14 +170,15 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Set bullet font
+     * Set bullet font.
      *
-     * @param  string                     $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Bullet
      */
     public function setBulletFont($pValue = 'Calibri')
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = 'Calibri';
         }
         $this->bulletFont = $pValue;
@@ -186,7 +187,7 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Get bullet char
+     * Get bullet char.
      *
      * @return string
      */
@@ -196,9 +197,10 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Set bullet char
+     * Set bullet char.
      *
-     * @param  string                     $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Bullet
      */
     public function setBulletChar($pValue = '-')
@@ -209,7 +211,7 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Get bullet numeric style
+     * Get bullet numeric style.
      *
      * @return string
      */
@@ -219,9 +221,10 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Set bullet numeric style
+     * Set bullet numeric style.
      *
-     * @param  string                     $pValue
+     * @param string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Bullet
      */
     public function setBulletNumericStyle($pValue = self::NUMERIC_DEFAULT)
@@ -232,9 +235,9 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Get bullet numeric start at
+     * Get bullet numeric start at.
      *
-     * @return string
+     * @return int|string
      */
     public function getBulletNumericStartAt()
     {
@@ -242,9 +245,10 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Set bullet numeric start at
+     * Set bullet numeric start at.
      *
      * @param int|string $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Style\Bullet
      */
     public function setBulletNumericStartAt($pValue = 1)
@@ -255,11 +259,11 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(
             $this->bulletType
@@ -272,29 +276,33 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
+        return $this;
     }
 
     /**
@@ -306,12 +314,12 @@ class Bullet implements ComparableInterface
     }
 
     /**
-     * @param Color $bulletColor
      * @return Bullet
      */
     public function setBulletColor(Color $bulletColor)
     {
         $this->bulletColor = $bulletColor;
+
         return $this;
     }
 }

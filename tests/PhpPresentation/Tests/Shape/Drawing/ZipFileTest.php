@@ -10,71 +10,73 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Drawing;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Shape\Drawing\ZipFile;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Drawing element
+ * Test class for Drawing element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Drawing
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Drawing
  */
-class ZipFileTest extends \PHPUnit_Framework_TestCase
+class ZipFileTest extends TestCase
 {
+    /**
+     * @var string
+     */
     protected $fileOk;
+
+    /**
+     * @var string
+     */
     protected $fileKoZip;
+
+    /**
+     * @var string
+     */
     protected $fileKoFile;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        DrawingTest::$getimagesizefromstringExists = true;
-
-        $this->fileOk = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif';
-        $this->fileKoZip = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'fileNotExist.pptx#ppt/media/phppowerpoint_logo1.gif';
-        $this->fileKoFile = 'zip://'.PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'Sample_01_Simple.pptx#ppt/media/filenotexists.gif';
+        $this->fileOk = 'zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'Sample_01_Simple.pptx#ppt/media/phppowerpoint_logo1.gif';
+        $this->fileKoZip = 'zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'fileNotExist.pptx#ppt/media/phppowerpoint_logo1.gif';
+        $this->fileKoFile = 'zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'Sample_01_Simple.pptx#ppt/media/filenotexists.gif';
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage fileNotExist.pptx does not exist
-     */
-    public function testContentsException()
+    public function testContentsException(): void
     {
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file "%s" doesn\'t exist',
+            str_replace(['zip://', '#ppt/media/phppowerpoint_logo1.gif'], '', $this->fileKoZip)
+        ));
+
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileKoZip);
         $oDrawing->getContents();
     }
 
-    public function testExtension()
+    public function testExtension(): void
     {
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileOk);
         $this->assertEquals('gif', $oDrawing->getExtension());
     }
 
-    /**
-     * @requires PHP 5.4
-     */
-    public function testMimeType()
+    public function testMimeType(): void
     {
-        $oDrawing = new ZipFile();
-        $oDrawing->setPath($this->fileOk);
-        $this->assertEquals('image/gif', $oDrawing->getMimeType());
-    }
-
-    /**
-     * @requires PHP 5.4
-     */
-    public function testMimeTypeFunctionNotExists()
-    {
-        DrawingTest::$getimagesizefromstringExists = false;
         $oDrawing = new ZipFile();
         $oDrawing->setPath($this->fileOk);
         $this->assertEquals('image/gif', $oDrawing->getMimeType());

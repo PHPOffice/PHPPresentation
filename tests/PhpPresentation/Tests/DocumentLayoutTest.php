@@ -10,26 +10,30 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for DocumentLayout
+ * Test class for DocumentLayout.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\DocumentLayout
+ * @coversDefaultClass \PhpOffice\PhpPresentation\DocumentLayout
  */
-class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
+class DocumentLayoutTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new DocumentLayout();
 
@@ -39,24 +43,24 @@ class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test set custom layout
+     * Test set custom layout.
      */
-    public function testSetCustomLayout()
+    public function testSetCustomLayout(): void
     {
         $object = new DocumentLayout();
-        $object->setDocumentLayout(array('cx' => 6858000, 'cy' => 9144000), false);
+        $object->setDocumentLayout(['cx' => 6858000, 'cy' => 9144000], false);
         $this->assertEquals(DocumentLayout::LAYOUT_CUSTOM, $object->getDocumentLayout());
         $this->assertEquals(9144000, $object->getCX());
         $this->assertEquals(6858000, $object->getCY());
-        $object->setDocumentLayout(array('cx' => 6858000, 'cy' => 9144000), true);
+        $object->setDocumentLayout(['cx' => 6858000, 'cy' => 9144000], true);
         $this->assertEquals(DocumentLayout::LAYOUT_CUSTOM, $object->getDocumentLayout());
         $this->assertEquals(6858000, $object->getCX());
         $this->assertEquals(9144000, $object->getCY());
     }
 
-    public function testCX()
+    public function testCX(): void
     {
-        $value = rand(1, 100000);
+        $value = mt_rand(1, 100000);
         $object = new DocumentLayout();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentLayout', $object->setCX($value));
         $this->assertEquals($value, $object->getCX());
@@ -74,9 +78,9 @@ class DocumentLayoutTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getCX(DocumentLayout::UNIT_PIXEL));
     }
 
-    public function testCY()
+    public function testCY(): void
     {
-        $value = rand(1, 100000);
+        $value = mt_rand(1, 100000);
         $object = new DocumentLayout();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentLayout', $object->setCY($value));
         $this->assertEquals($value, $object->getCY());

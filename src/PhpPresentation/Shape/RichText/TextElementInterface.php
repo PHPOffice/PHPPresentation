@@ -10,35 +10,39 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Shape\RichText;
 
 /**
- * Rich text element interface
+ * Rich text element interface.
  */
 interface TextElementInterface
 {
     /**
-     * Get text
+     * Get text.
      *
      * @return string Text
      */
     public function getText();
 
     /**
-     * Set text
+     * Set text.
      *
-     * @param                                            $pText string   Text
+     * @param string $pText Text value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */
     public function setText($pText = '');
 
     /**
-     * Get font
+     * Get font.
      *
      * @return \PhpOffice\PhpPresentation\Style\Font
      */
@@ -51,14 +55,15 @@ interface TextElementInterface
 
     /**
      * @param string $lang
+     *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */
     public function setLanguage($lang);
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode();
+    public function getHashCode(): string;
 }

@@ -10,56 +10,74 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Chart;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Chart element
+ * Test class for Chart element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart
  */
-class ChartTest extends \PHPUnit_Framework_TestCase
+class ChartTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Chart();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->getTitle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $object->getLegend());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->getPlotArea());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->getView3D());
+        $this->assertInstanceOf(Chart\Title::class, $object->getTitle());
+        $this->assertInstanceOf(Chart\Legend::class, $object->getLegend());
+        $this->assertInstanceOf(Chart\PlotArea::class, $object->getPlotArea());
+        $this->assertInstanceOf(Chart\View3D::class, $object->getView3D());
     }
-    
 
-    public function testClone()
+    public function testClone(): void
     {
         $object = new Chart();
-        
+
         $oClone = clone $object;
-    
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $oClone);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $oClone->getTitle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Legend', $oClone->getLegend());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $oClone->getPlotArea());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $oClone->getView3D());
+
+        $this->assertInstanceOf(Chart::class, $oClone);
+        $this->assertInstanceOf(Chart\Title::class, $oClone->getTitle());
+        $this->assertInstanceOf(Chart\Legend::class, $oClone->getLegend());
+        $this->assertInstanceOf(Chart\PlotArea::class, $oClone->getPlotArea());
+        $this->assertInstanceOf(Chart\View3D::class, $oClone->getView3D());
     }
 
-    public function testIncludeSpreadsheet()
+    public function testDisplayBlankAs(): void
+    {
+        $object = new Chart();
+
+        $this->assertEquals(Chart::BLANKAS_ZERO, $object->getDisplayBlankAs());
+        $this->assertInstanceOf(Chart::class, $object->setDisplayBlankAs(Chart::BLANKAS_GAP));
+        $this->assertEquals(Chart::BLANKAS_GAP, $object->getDisplayBlankAs());
+        $this->assertInstanceOf(Chart::class, $object->setDisplayBlankAs(Chart::BLANKAS_ZERO));
+        $this->assertEquals(Chart::BLANKAS_ZERO, $object->getDisplayBlankAs());
+        $this->assertInstanceOf(Chart::class, $object->setDisplayBlankAs(Chart::BLANKAS_SPAN));
+        $this->assertEquals(Chart::BLANKAS_SPAN, $object->getDisplayBlankAs());
+        $this->assertInstanceOf(Chart::class, $object->setDisplayBlankAs('Unauthorized value'));
+        $this->assertEquals(Chart::BLANKAS_SPAN, $object->getDisplayBlankAs());
+    }
+
+    public function testIncludeSpreadsheet(): void
     {
         $object = new Chart();
 
         $this->assertFalse($object->hasIncludedSpreadsheet());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $object->setIncludeSpreadsheet());
+        $this->assertInstanceOf(Chart::class, $object->setIncludeSpreadsheet());
         $this->assertFalse($object->hasIncludedSpreadsheet());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $object->setIncludeSpreadsheet(false));
+        $this->assertInstanceOf(Chart::class, $object->setIncludeSpreadsheet(false));
         $this->assertFalse($object->hasIncludedSpreadsheet());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart', $object->setIncludeSpreadsheet(true));
+        $this->assertInstanceOf(Chart::class, $object->setIncludeSpreadsheet(true));
         $this->assertTrue($object->hasIncludedSpreadsheet());
     }
 }

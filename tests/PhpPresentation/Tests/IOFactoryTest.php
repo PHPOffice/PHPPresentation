@@ -10,27 +10,33 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests;
 
+use PhpOffice\PhpPresentation\Exception\InvalidClassException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for IOFactory
+ * Test class for IOFactory.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\IOFactory
+ * @coversDefaultClass \PhpOffice\PhpPresentation\IOFactory
  */
-class IOFactoryTest extends \PHPUnit_Framework_TestCase
+class IOFactoryTest extends TestCase
 {
     /**
-     * Test create writer
+     * Test create writer.
      */
-    public function testCreateWriter()
+    public function testCreateWriter(): void
     {
         $class = 'PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007';
 
@@ -38,9 +44,9 @@ class IOFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test create reader
+     * Test create reader.
      */
-    public function testCreateReader()
+    public function testCreateReader(): void
     {
         $class = 'PhpOffice\\PhpPresentation\\Reader\\ReaderInterface';
 
@@ -48,29 +54,31 @@ class IOFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test load class exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage is not a valid reader
+     * Test load class exception.
      */
-    public function testLoadClassException()
+    public function testLoadClassException(): void
     {
-        IOFactory::createReader();
+        $this->expectException(InvalidClassException::class);
+        $this->expectExceptionMessage('The class PhpOffice\PhpPresentation\Reader\ is invalid (Reader: The class doesn\'t exist)');
+        IOFactory::createReader('');
     }
 
-    public function testLoad()
+    public function testLoad(): void
     {
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'files'.DIRECTORY_SEPARATOR.'serialized.phppt'));
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'serialized.phppt'));
     }
 
     /**
-     * Test load class exception
-     *
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.
+     * Test load class exception.
      */
-    public function testLoadException()
+    public function testLoadException(): void
     {
-        IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR.DIRECTORY_SEPARATOR.'resources'.DIRECTORY_SEPARATOR.'images'.DIRECTORY_SEPARATOR.'PhpPresentationLogo.png');
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
+        $this->expectException(InvalidFileFormatException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file %s is not in the format supported by class PhpOffice\PhpPresentation\IOFactory (Could not automatically determine the good PhpOffice\PhpPresentation\Reader\ReaderInterface)',
+            $file
+        ));
+        IOFactory::load($file);
     }
 }

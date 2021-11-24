@@ -10,27 +10,31 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Font;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
-class FontTest extends \PHPUnit_Framework_TestCase
+class FontTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Font();
         $this->assertEquals('Calibri', $object->getName());
@@ -47,181 +51,193 @@ class FontTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get/set color
-     * @expectedException \Exception
-     * @expectedExceptionMessage $pValue must be an instance of \PhpOffice\PhpPresentation\Style\Color
+     * Test get/set Character Spacing.
      */
-    public function testSetGetColorException()
-    {
-        $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor());
-    }
-
-    /**
-     * Test get/set Character Spacing
-     */
-    public function testSetGetCharacterSpacing()
+    public function testCharacterSpacing(): void
     {
         $object = new Font();
         $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(0));
+        $this->assertInstanceOf(Font::class, $object->setCharacterSpacing(0));
         $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing(10));
+        $this->assertInstanceOf(Font::class, $object->setCharacterSpacing(10));
         $this->assertEquals(1000, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setCharacterSpacing());
+        $this->assertInstanceOf(Font::class, $object->setCharacterSpacing());
         $this->assertEquals(0, $object->getCharacterSpacing());
     }
 
     /**
-     * Test get/set color
+     * Test get/set color.
      */
-    public function testSetGetColor()
+    public function testColor(): void
     {
         $object = new Font();
         $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setColor(new Color(Color::COLOR_BLUE)));
+        $this->assertInstanceOf(Font::class, $object->setColor(new Color(Color::COLOR_BLUE)));
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
         $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
     }
 
     /**
-     * Test get/set name
+     * Test get/set name.
      */
-    public function testSetGetName()
+    public function testFormat(): void
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName());
+        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        $this->assertInstanceOf(Font::class, $object->setFormat());
+        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        $this->assertInstanceOf(Font::class, $object->setFormat('UnAuthorized'));
+        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        $this->assertInstanceOf(Font::class, $object->setFormat(Font::FORMAT_EAST_ASIAN));
+        $this->assertEquals(Font::FORMAT_EAST_ASIAN, $object->getFormat());
+        $this->assertInstanceOf(Font::class, $object->setFormat(Font::FORMAT_COMPLEX_SCRIPT));
+        $this->assertEquals(Font::FORMAT_COMPLEX_SCRIPT, $object->getFormat());
+    }
+
+    /**
+     * Test get/set name.
+     */
+    public function testName(): void
+    {
+        $object = new Font();
+        $this->assertInstanceOf(Font::class, $object->setName());
         $this->assertEquals('Calibri', $object->getName());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName(''));
+        $this->assertInstanceOf(Font::class, $object->setName(''));
         $this->assertEquals('Calibri', $object->getName());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setName('Arial'));
+        $this->assertInstanceOf(Font::class, $object->setName('Arial'));
         $this->assertEquals('Arial', $object->getName());
     }
 
     /**
-     * Test get/set size
+     * Test get/set size.
      */
-    public function testSetGetSize()
+    public function testSize(): void
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize());
+        $this->assertInstanceOf(Font::class, $object->setSize());
         $this->assertEquals(10, $object->getSize());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize(''));
-        $this->assertEquals(10, $object->getSize());
-        $value = rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSize($value));
+        $value = mt_rand(1, 100);
+        $this->assertInstanceOf(Font::class, $object->setSize($value));
         $this->assertEquals($value, $object->getSize());
     }
 
     /**
-     * Test get/set underline
+     * Test get/set underline.
      */
-    public function testSetGetUnderline()
+    public function testUnderline(): void
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline());
+        $this->assertInstanceOf(Font::class, $object->setUnderline());
         $this->assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(''));
+        $this->assertInstanceOf(Font::class, $object->setUnderline(''));
         $this->assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setUnderline(FONT::UNDERLINE_DASH));
+        $this->assertInstanceOf(Font::class, $object->setUnderline(FONT::UNDERLINE_DASH));
         $this->assertEquals(FONT::UNDERLINE_DASH, $object->getUnderline());
     }
 
     /**
-     * Test get/set bold
+     * Test get/set bold.
      */
-    public function testSetIsBold()
+    public function testSetIsBold(): void
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold());
+        $this->assertInstanceOf(Font::class, $object->setBold());
         $this->assertFalse($object->isBold());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(''));
+        $this->assertInstanceOf(Font::class, $object->setBold(false));
         $this->assertFalse($object->isBold());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(false));
-        $this->assertFalse($object->isBold());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setBold(true));
+        $this->assertInstanceOf(Font::class, $object->setBold(true));
         $this->assertTrue($object->isBold());
     }
 
     /**
-     * Test get/set italic
+     * Test get/set italic.
      */
-    public function testSetIsItalic()
+    public function testSetIsItalic(): void
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic());
+        $this->assertInstanceOf(Font::class, $object->setItalic());
         $this->assertFalse($object->isItalic());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(''));
+        $this->assertInstanceOf(Font::class, $object->setItalic(false));
         $this->assertFalse($object->isItalic());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(false));
-        $this->assertFalse($object->isItalic());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setItalic(true));
+        $this->assertInstanceOf(Font::class, $object->setItalic(true));
         $this->assertTrue($object->isItalic());
     }
 
     /**
-     * Test get/set strikethrough
+     * Test get/set strikethrough.
      */
-    public function testSetIsStriketrough()
+    public function testSetIsStriketrough(): void
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough());
+        $this->assertInstanceOf(Font::class, $object->setStrikethrough());
         $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(''));
+        $this->assertInstanceOf(Font::class, $object->setStrikethrough(false));
         $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(false));
-        $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setStrikethrough(true));
+        $this->assertInstanceOf(Font::class, $object->setStrikethrough(true));
         $this->assertTrue($object->isStrikethrough());
     }
 
     /**
-     * Test get/set subscript
+     * Test get/set subscript.
      */
-    public function testSetIsSubScript()
+    public function testSetIsSubScript(): void
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript());
+        $this->assertInstanceOf(Font::class, $object->setSubScript());
         $this->assertFalse($object->isSubScript());
-        $this->assertTrue($object->isSuperScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(''));
+        $this->assertInstanceOf(Font::class, $object->setSubScript(false));
         $this->assertFalse($object->isSubScript());
-        $this->assertTrue($object->isSuperScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(false));
-        $this->assertFalse($object->isSubScript());
-        $this->assertTrue($object->isSuperScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSubScript(true));
+        $this->assertInstanceOf(Font::class, $object->setSubScript(true));
         $this->assertTrue($object->isSubScript());
-        $this->assertFalse($object->isSuperScript());
+
+        // Test toggle of SubScript
+        $this->assertInstanceOf(Font::class, $object->setSubScript(false));
+        $this->assertInstanceOf(Font::class, $object->setSuperScript(false));
+        $this->assertFalse($object->isSubScript());
+
+        $this->assertInstanceOf(Font::class, $object->setSubScript(true));
+        $this->assertInstanceOf(Font::class, $object->setSuperScript(true));
+        $this->assertFalse($object->isSubScript());
+
+        $this->assertInstanceOf(Font::class, $object->setSubScript(true));
+        $this->assertInstanceOf(Font::class, $object->setSuperScript(false));
+        $this->assertTrue($object->isSubScript());
     }
 
     /**
-     * Test get/set superscript
+     * Test get/set superscript.
      */
-    public function testSetIsSuperScript()
+    public function testSetIsSuperScript(): void
     {
         $object = new Font();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript());
+        $this->assertInstanceOf(Font::class, $object->setSuperScript());
         $this->assertFalse($object->isSuperScript());
-        $this->assertTrue($object->isSubScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(''));
+        $this->assertInstanceOf(Font::class, $object->setSuperScript(false));
         $this->assertFalse($object->isSuperScript());
-        $this->assertTrue($object->isSubScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(false));
-        $this->assertFalse($object->isSuperScript());
-        $this->assertTrue($object->isSubScript());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->setSuperScript(true));
+        $this->assertInstanceOf(Font::class, $object->setSuperScript(true));
         $this->assertTrue($object->isSuperScript());
-        $this->assertFalse($object->isSubScript());
+
+        // Test toggle of SubScript
+        $this->assertInstanceOf(Font::class, $object->setSuperScript(false));
+        $this->assertInstanceOf(Font::class, $object->setSubScript(false));
+        $this->assertFalse($object->isSuperScript());
+
+        $this->assertInstanceOf(Font::class, $object->setSuperScript(true));
+        $this->assertInstanceOf(Font::class, $object->setSubScript(true));
+        $this->assertFalse($object->isSuperScript());
+
+        $this->assertInstanceOf(Font::class, $object->setSuperScript(true));
+        $this->assertInstanceOf(Font::class, $object->setSubScript(false));
+        $this->assertTrue($object->isSuperScript());
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testSetGetHashIndex()
+    public function testHashIndex(): void
     {
         $object = new Font();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object->setHashIndex($value);
         $this->assertEquals($value, $object->getHashIndex());
     }

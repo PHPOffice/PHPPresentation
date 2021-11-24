@@ -10,29 +10,33 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Style\Border;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for memory drawing element
+ * Test class for memory drawing element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Line
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Line
  */
-class LineTest extends \PHPUnit_Framework_TestCase
+class LineTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
         $object = new Line($value, $value, $value, $value);
 
         $this->assertEquals(Border::LINE_SINGLE, $object->getBorder()->getLineStyle());
@@ -40,6 +44,6 @@ class LineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getOffsetY());
         $this->assertEquals(0, $object->getWidth());
         $this->assertEquals(0, $object->getHeight());
-        $this->assertInternalType('string', $object->getHashCode());
+        $this->assertIsString($object->getHashCode());
     }
 }

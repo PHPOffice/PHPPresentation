@@ -10,30 +10,36 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @copyright   2010-2014 PhpPresentation contributors
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests;
 
-use PhpOffice\PhpPresentation\Shape\Placeholder;
-use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\Exception\ShapeContainerAlreadyAssignedException;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
+use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Autoloader
+ * Test class for Autoloader.
  */
-class AbstractShapeTest extends \PHPUnit_Framework_TestCase
+class AbstractShapeTest extends TestCase
 {
     /**
-     * Register
+     * Register.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new RichText();
 
@@ -42,141 +48,141 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $object->getHeight());
         $this->assertEquals(0, $object->getRotation());
         $this->assertEquals(0, $object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getBorder());
+        $this->assertInstanceOf(Border::class, $object->getBorder());
         $this->assertEquals(Border::LINE_NONE, $object->getBorder()->getLineStyle());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->getShadow());
+        $this->assertInstanceOf(Fill::class, $object->getFill());
+        $this->assertInstanceOf(Shadow::class, $object->getShadow());
     }
 
-    public function testFill()
+    public function testFill(): void
     {
         $object = new RichText();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setFill());
+        $this->assertInstanceOf(AbstractShape::class, $object->setFill());
         $this->assertNull($object->getFill());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setFill(new Fill()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Fill', $object->getFill());
+        $this->assertInstanceOf(AbstractShape::class, $object->setFill(new Fill()));
+        $this->assertInstanceOf(Fill::class, $object->getFill());
     }
 
-    public function testHeight()
+    public function testHeight(): void
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setHeight());
+        $value = mt_rand(1, 100);
+        $this->assertInstanceOf(AbstractShape::class, $object->setHeight());
         $this->assertEquals(0, $object->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setHeight($value));
+        $this->assertInstanceOf(AbstractShape::class, $object->setHeight($value));
         $this->assertEquals($value, $object->getHeight());
     }
 
-    public function testHyperlink()
+    public function testHyperlink(): void
     {
         $object = new RichText();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setHyperlink());
+        $this->assertInstanceOf(AbstractShape::class, $object->setHyperlink());
         $this->assertFalse($object->hasHyperlink());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->getHyperlink());
+        $this->assertInstanceOf(Hyperlink::class, $object->getHyperlink());
         $this->assertTrue($object->hasHyperlink());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setHyperlink(new Hyperlink('http://www.google.fr')));
+        $this->assertInstanceOf(AbstractShape::class, $object->setHyperlink(new Hyperlink('http://www.google.fr')));
         $this->assertTrue($object->hasHyperlink());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->getHyperlink());
+        $this->assertInstanceOf(Hyperlink::class, $object->getHyperlink());
         $this->assertTrue($object->hasHyperlink());
     }
 
-    public function testOffsetX()
+    public function testOffsetX(): void
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setOffsetX());
+        $value = mt_rand(1, 100);
+        $this->assertInstanceOf(AbstractShape::class, $object->setOffsetX());
         $this->assertEquals(0, $object->getOffsetX());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setOffsetX($value));
+        $this->assertInstanceOf(AbstractShape::class, $object->setOffsetX($value));
         $this->assertEquals($value, $object->getOffsetX());
     }
 
-    public function testOffsetY()
+    public function testOffsetY(): void
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setOffsetY());
+        $value = mt_rand(1, 100);
+        $this->assertInstanceOf(AbstractShape::class, $object->setOffsetY());
         $this->assertEquals(0, $object->getOffsetY());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setOffsetY($value));
+        $this->assertInstanceOf(AbstractShape::class, $object->setOffsetY($value));
         $this->assertEquals($value, $object->getOffsetY());
     }
 
-    public function testRotation()
+    public function testRotation(): void
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setRotation());
+        $value = mt_rand(1, 100);
+        $this->assertInstanceOf(AbstractShape::class, $object->setRotation());
         $this->assertEquals(0, $object->getRotation());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setRotation($value));
+        $this->assertInstanceOf(AbstractShape::class, $object->setRotation($value));
         $this->assertEquals($value, $object->getRotation());
     }
 
-    public function testShadow()
+    public function testShadow(): void
     {
         $object = new RichText();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setShadow());
+        $this->assertInstanceOf(AbstractShape::class, $object->setShadow());
         $this->assertNull($object->getShadow());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setShadow(new Shadow()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Shadow', $object->getShadow());
+        $this->assertInstanceOf(AbstractShape::class, $object->setShadow(new Shadow()));
+        $this->assertInstanceOf(Shadow::class, $object->getShadow());
     }
 
-    public function testWidth()
+    public function testWidth(): void
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setWidth());
+        $value = mt_rand(1, 100);
+        $this->assertInstanceOf(AbstractShape::class, $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setWidth($value));
+        $this->assertInstanceOf(AbstractShape::class, $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());
     }
 
-    public function testWidthAndHeight()
+    public function testWidthAndHeight(): void
     {
         $object = new RichText();
 
-        $value = rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setWidthAndHeight());
+        $value = mt_rand(1, 100);
+        $this->assertInstanceOf(AbstractShape::class, $object->setWidthAndHeight());
         $this->assertEquals(0, $object->getWidth());
         $this->assertEquals(0, $object->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setWidthAndHeight($value));
+        $this->assertInstanceOf(AbstractShape::class, $object->setWidthAndHeight($value));
         $this->assertEquals($value, $object->getWidth());
         $this->assertEquals(0, $object->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setWidthAndHeight($value, $value));
+        $this->assertInstanceOf(AbstractShape::class, $object->setWidthAndHeight($value, $value));
         $this->assertEquals($value, $object->getWidth());
         $this->assertEquals($value, $object->getHeight());
     }
 
-    public function testPlaceholder()
+    public function testPlaceholder(): void
     {
         $object = new RichText();
         $this->assertFalse($object->isPlaceholder(), 'Standard Shape should not be a placeholder object');
         $this->assertNull($object->getPlaceholder());
         $this->assertInstanceOf(
-            'PhpOffice\\PhpPresentation\\AbstractShape',
+            AbstractShape::class,
             $object->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_TITLE))
         );
         $this->assertTrue($object->isPlaceholder());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Placeholder', $object->getPlaceholder());
+        $this->assertInstanceOf(Placeholder::class, $object->getPlaceholder());
         $this->assertEquals('title', $object->getPlaceholder()->getType());
 
         $object = new RichText();
         $this->assertFalse($object->isPlaceholder(), 'Standard Shape should not be a placeholder object');
         $placeholder = new Placeholder(Placeholder::PH_TYPE_TITLE);
         $placeholder->setType(Placeholder::PH_TYPE_SUBTITLE);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setPlaceHolder($placeholder));
+        $this->assertInstanceOf(AbstractShape::class, $object->setPlaceHolder($placeholder));
         $this->assertTrue($object->isPlaceholder());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Placeholder', $object->getPlaceholder());
+        $this->assertInstanceOf(Placeholder::class, $object->getPlaceholder());
         $this->assertEquals('subTitle', $object->getPlaceholder()->getType());
     }
 
-    public function testContainer()
+    public function testContainer(): void
     {
         $object = new RichText();
         $object2 = new RichText();
@@ -185,24 +191,22 @@ class AbstractShapeTest extends \PHPUnit_Framework_TestCase
         $oSlide->addShape($object2);
 
         $this->assertNull($object->getContainer());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer($oSlide));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getContainer());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer(null, true));
+        $this->assertInstanceOf(AbstractShape::class, $object->setContainer($oSlide));
+        $this->assertInstanceOf(Slide::class, $object->getContainer());
+        $this->assertInstanceOf(AbstractShape::class, $object->setContainer(null, true));
         $this->assertNull($object->getContainer());
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage A \PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPresentation\ShapeContainerInterface.
-     */
-    public function testContainerException()
+    public function testContainerException(): void
     {
         $object = new RichText();
         $oSlide = new Slide();
 
         $this->assertNull($object->getContainer());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer($oSlide));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getContainer());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\AbstractShape', $object->setContainer(null));
+        $this->assertInstanceOf(AbstractShape::class, $object->setContainer($oSlide));
+        $this->assertInstanceOf(Slide::class, $object->getContainer());
+        $this->expectException(ShapeContainerAlreadyAssignedException::class);
+        $this->expectExceptionMessage('The shape PhpOffice\PhpPresentation\AbstractShape has already a container assigned');
+        $object->setContainer(null);
     }
 }

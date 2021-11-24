@@ -10,36 +10,40 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @copyright   2010-2014 PhpPresentation contributors
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\Autoloader;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Autoloader
+ * Test class for Autoloader.
  */
-class AutoloaderTest extends \PHPUnit_Framework_TestCase
+class AutoloaderTest extends TestCase
 {
     /**
-     * Register
+     * Register.
      */
-    public function testRegister()
+    public function testRegister(): void
     {
         Autoloader::register();
         $this->assertContains(
-            array('PhpOffice\\PhpPresentation\\Autoloader', 'autoload'),
+            ['PhpOffice\\PhpPresentation\\Autoloader', 'autoload'],
             spl_autoload_functions()
         );
     }
 
     /**
-     * Autoload
+     * Autoload.
      */
-    public function testAutoload()
+    public function testAutoload(): void
     {
         $declared = get_declared_classes();
         $declaredCount = count($declared);

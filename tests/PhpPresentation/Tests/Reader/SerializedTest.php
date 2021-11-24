@@ -10,73 +10,87 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\Reader\Serialized;
+use PHPUnit\Framework\TestCase;
+use ZipArchive;
 
 /**
- * Test class for serialized reader
+ * Test class for serialized reader.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Reader\Serialized
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Reader\Serialized
  */
-class SerializedTest extends \PHPUnit_Framework_TestCase
+class SerializedTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testCanRead()
+    public function testCanRead(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/serialized.phppt';
         $object = new Serialized();
 
         $this->assertTrue($object->canRead($file));
     }
-    
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
-    public function testLoadFileNotExists()
+
+    public function testLoadFileNotExists(): void
     {
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
+
         $object = new Serialized();
         $object->load('');
     }
-    
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Invalid file format for PhpOffice\PhpPresentation\Reader\Serialized:
-     */
-    public function testLoadFileBadFormat()
+
+    public function testLoadFileBadFormat(): void
     {
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_01_Simple.pptx';
+        $this->expectException(InvalidFileFormatException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file %s is not in the format supported by class PhpOffice\PhpPresentation\Reader\Serialized',
+            $file
+        ));
+
         $object = new Serialized();
         $object->load($file);
     }
-    
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage Could not open  for reading! File does not exist.
-     */
-    public function testFileSupportsNotExists()
+
+    public function testFileSupportsNotExists(): void
     {
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
+
         $object = new Serialized();
         $object->fileSupportsUnserializePhpPresentation('');
     }
-    
-    public function testLoadSerializedFileNotExists()
+
+    public function testLoadSerializedFileNotExists(): void
     {
         $file = tempnam(sys_get_temp_dir(), 'PhpPresentation_Serialized');
-        $oArchive = new \ZipArchive();
-        $oArchive->open($file, \ZipArchive::CREATE);
+
+        $this->expectException(InvalidFileFormatException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file %s is not in the format supported by class PhpOffice\PhpPresentation\Reader\Serialized (The file PhpPresentation.xml is malformed)',
+            $file
+        ));
+
+        $oArchive = new ZipArchive();
+        $oArchive->open($file, ZipArchive::CREATE);
         $oArchive->addFromString('PhpPresentation.xml', '');
         $oArchive->close();
-        
+
         $object = new Serialized();
-        $this->assertNull($object->load($file));
+        $object->load($file);
     }
 }

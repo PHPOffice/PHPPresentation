@@ -10,26 +10,30 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
 use PhpOffice\PhpPresentation\Shape\Chart\View3D;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for View3D element
+ * Test class for View3D element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\View3D
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\View3D
  */
-class View3DTest extends \PHPUnit_Framework_TestCase
+class View3DTest extends TestCase
 {
-    public function testDepthPercent()
+    public function testDepthPercent(): void
     {
         $object = new View3D();
-        $value = rand(20, 20000);
+        $value = mt_rand(20, 20000);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setDepthPercent());
         $this->assertEquals(100, $object->getDepthPercent());
@@ -37,20 +41,20 @@ class View3DTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getDepthPercent());
     }
 
-    public function testHashIndex()
+    public function testHashIndex(): void
     {
         $object = new View3D();
-        $value = rand(1, 100);
+        $value = mt_rand(1, 100);
 
         $this->assertEmpty($object->getHashIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setHashIndex($value));
         $this->assertEquals($value, $object->getHashIndex());
     }
 
-    public function testHeightPercent()
+    public function testHeightPercent(): void
     {
         $object = new View3D();
-        $value = rand(5, 500);
+        $value = mt_rand(5, 500);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setHeightPercent());
         $this->assertEquals(100, $object->getHeightPercent());
@@ -58,10 +62,10 @@ class View3DTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getHeightPercent());
     }
 
-    public function testPerspective()
+    public function testPerspective(): void
     {
         $object = new View3D();
-        $value = rand(0, 100);
+        $value = mt_rand(0, 100);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setPerspective());
         $this->assertEquals(30, $object->getPerspective());
@@ -69,7 +73,7 @@ class View3DTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getPerspective());
     }
 
-    public function testRightAngleAxes()
+    public function testRightAngleAxes(): void
     {
         $object = new View3D();
 
@@ -81,10 +85,10 @@ class View3DTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($object->hasRightAngleAxes());
     }
 
-    public function testRotationX()
+    public function testRotationX(): void
     {
         $object = new View3D();
-        $value = rand(-90, 90);
+        $value = mt_rand(-90, 90);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationX());
         $this->assertEquals(0, $object->getRotationX());
@@ -92,10 +96,10 @@ class View3DTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getRotationX());
     }
 
-    public function testRotationY()
+    public function testRotationY(): void
     {
         $object = new View3D();
-        $value = rand(-90, 90);
+        $value = mt_rand(-90, 90);
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationY());
         $this->assertEquals(0, $object->getRotationY());

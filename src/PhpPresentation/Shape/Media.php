@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape;
 
@@ -21,15 +24,11 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Drawing\File;
 
 /**
- * Media element
+ * Media element.
  */
 class Media extends File implements ComparableInterface
 {
-
-    /**
-     * @return string
-     */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         switch (strtolower($this->getExtension())) {
             case 'mp4':
@@ -44,6 +43,7 @@ class Media extends File implements ComparableInterface
             default:
                 $mimetype = 'application/octet-stream';
         }
+
         return $mimetype;
     }
 }

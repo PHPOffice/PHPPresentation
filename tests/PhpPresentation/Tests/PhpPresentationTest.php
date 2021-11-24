@@ -10,29 +10,34 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
-class PhpPresentationTest extends \PHPUnit_Framework_TestCase
+class PhpPresentationTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new PhpPresentation();
         $slide = $object->getSlide();
@@ -40,27 +45,22 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(new DocumentProperties(), $object->getDocumentProperties());
         $this->assertEquals(new DocumentLayout(), $object->getLayout());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getSlide());
-        $this->assertEquals(1, count($object->getAllSlides()));
+        $this->assertCount(1, $object->getAllSlides());
         $this->assertEquals(0, $object->getIndex($slide));
         $this->assertEquals(1, $object->getSlideCount());
         $this->assertEquals(0, $object->getActiveSlideIndex());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Iterator', $object->getSlideIterator());
     }
 
-    public function testProperties()
+    public function testProperties(): void
     {
         $object = new PhpPresentation();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setProperties(new DocumentProperties()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setDocumentProperties(new DocumentProperties()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getProperties());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
     }
 
-    public function testPresentationProperties()
+    public function testPresentationProperties(): void
     {
         $object = new PhpPresentation();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->getPresentationProperties());
@@ -69,9 +69,9 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test add external slide
+     * Test add external slide.
      */
-    public function testAddExternalSlide()
+    public function testAddExternalSlide(): void
     {
         $origin = new PhpPresentation();
         $slide = $origin->getSlide();
@@ -82,75 +82,47 @@ class PhpPresentationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test copy presentation
+     * Test copy presentation.
      */
-    public function testCopy()
+    public function testCopy(): void
     {
         $object = new PhpPresentation();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->copy());
     }
 
     /**
-     * Test remove slide by index exception
-     *
-     * @expectedException Exception
-     * @expectedExceptionMessage Slide index is out of bounds.
+     * Test remove slide by index exception.
      */
-    public function testRemoveSlideByIndexException()
+    public function testRemoveSlideByIndexException(): void
     {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
+
         $object = new PhpPresentation();
         $object->removeSlideByIndex(1);
     }
 
     /**
-     * Test get slide exception
-     *
-     * @expectedException Exception
-     * @expectedExceptionMessage Slide index is out of bounds.
+     * Test get slide exception.
      */
-    public function testGetSlideException()
+    public function testGetSlideException(): void
     {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
+
         $object = new PhpPresentation();
         $object->getSlide(1);
     }
 
     /**
-     * Test set active slide index exception
-     *
-     * @expectedException Exception
-     * @expectedExceptionMessage Active slide index is out of bounds.
+     * Test set active slide index exception.
      */
-    public function testSetActiveSlideIndexException()
+    public function testSetActiveSlideIndexException(): void
     {
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
+
         $object = new PhpPresentation();
         $object->setActiveSlideIndex(1);
-    }
-
-    /**
-     * @deprecated
-     */
-    public function testMarkAsFinal()
-    {
-        $object = new PhpPresentation();
-        $this->assertFalse($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal(true));
-        $this->assertTrue($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal(false));
-        $this->assertFalse($object->isMarkedAsFinal());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->markAsFinal());
-        $this->assertTrue($object->isMarkedAsFinal());
-    }
-
-    /**
-     * @deprecated
-     */
-    public function testZoom()
-    {
-        $object = new PhpPresentation();
-        $this->assertEquals(1, $object->getZoom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setZoom(0.3));
-        $this->assertEquals(0.3, $object->getZoom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->setZoom());
-        $this->assertEquals(1, $object->getZoom());
     }
 }

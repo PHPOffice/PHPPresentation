@@ -10,27 +10,31 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
 
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for TextElement element
+ * Test class for TextElement element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\TextElement
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText\TextElement
  */
-class TextElementTest extends \PHPUnit_Framework_TestCase
+class TextElementTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new TextElement();
         $this->assertEquals('', $object->getText());
@@ -39,13 +43,13 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('AAA', $object->getText());
     }
 
-    public function testFont()
+    public function testFont(): void
     {
         $object = new TextElement();
         $this->assertNull($object->getFont());
     }
 
-    public function testHyperlink()
+    public function testHyperlink(): void
     {
         $object = new TextElement();
         $this->assertFalse($object->hasHyperlink());
@@ -58,7 +62,7 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->getHyperlink());
     }
 
-    public function testLanguage()
+    public function testLanguage(): void
     {
         $object = new TextElement();
         $this->assertNull($object->getLanguage());
@@ -66,7 +70,7 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('en-US', $object->getLanguage());
     }
 
-    public function testText()
+    public function testText(): void
     {
         $object = new TextElement();
         $this->assertEquals('', $object->getText());
@@ -77,9 +81,9 @@ class TextElementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new TextElement();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());

@@ -10,34 +10,38 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D;
+use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Pie3D element
+ * Test class for Pie3D element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Pie3D
  */
-class Pie3DTest extends \PHPUnit_Framework_TestCase
+class Pie3DTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Pie3D();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Pie3D', $object->setSeries());
         $this->assertEmpty($object->getSeries());
@@ -45,7 +49,7 @@ class Pie3DTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Pie3D();
 
@@ -53,10 +57,9 @@ class Pie3DTest extends \PHPUnit_Framework_TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testExplosion()
+    public function testExplosion(): void
     {
-        $value = rand(0, 100);
-        
+        $value = mt_rand(0, 100);
         $object = new Pie3D();
 
         $this->assertEquals(0, $object->getExplosion());
@@ -64,13 +67,13 @@ class Pie3DTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($value, $object->getExplosion());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 
         $object = new Pie3D();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

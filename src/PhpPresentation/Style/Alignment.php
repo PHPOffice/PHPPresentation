@@ -10,136 +10,142 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 
-/**
- * \PhpOffice\PhpPresentation\Style\Alignment
- */
 class Alignment implements ComparableInterface
 {
     /* Horizontal alignment */
-    const HORIZONTAL_GENERAL                = 'l';
-    const HORIZONTAL_LEFT                   = 'l';
-    const HORIZONTAL_RIGHT                  = 'r';
-    const HORIZONTAL_CENTER                 = 'ctr';
-    const HORIZONTAL_JUSTIFY                = 'just';
-    const HORIZONTAL_DISTRIBUTED            = 'dist';
+    public const HORIZONTAL_GENERAL = 'l';
+    public const HORIZONTAL_LEFT = 'l';
+    public const HORIZONTAL_RIGHT = 'r';
+    public const HORIZONTAL_CENTER = 'ctr';
+    public const HORIZONTAL_JUSTIFY = 'just';
+    public const HORIZONTAL_DISTRIBUTED = 'dist';
 
     /* Vertical alignment */
-    const VERTICAL_BASE                     = 'base';
-    const VERTICAL_AUTO                     = 'auto';
-    const VERTICAL_BOTTOM                   = 'b';
-    const VERTICAL_TOP                      = 't';
-    const VERTICAL_CENTER                   = 'ctr';
+    public const VERTICAL_BASE = 'base';
+    public const VERTICAL_AUTO = 'auto';
+    public const VERTICAL_BOTTOM = 'b';
+    public const VERTICAL_TOP = 't';
+    public const VERTICAL_CENTER = 'ctr';
 
     /* Text direction */
-    const TEXT_DIRECTION_HORIZONTAL = 'horz';
-    const TEXT_DIRECTION_VERTICAL_90 = 'vert';
-    const TEXT_DIRECTION_VERTICAL_270 = 'vert270';
-    const TEXT_DIRECTION_STACKED = 'wordArtVert';
+    public const TEXT_DIRECTION_HORIZONTAL = 'horz';
+    public const TEXT_DIRECTION_VERTICAL_90 = 'vert';
+    public const TEXT_DIRECTION_VERTICAL_270 = 'vert270';
+    public const TEXT_DIRECTION_STACKED = 'wordArtVert';
 
-    private $supportedStyles = array(
+    /**
+     * @var array<int, string>
+     */
+    private $supportedStyles = [
         self::HORIZONTAL_GENERAL,
         self::HORIZONTAL_LEFT,
         self::HORIZONTAL_RIGHT,
-    );
+    ];
 
     /**
-     * Horizontal
+     * Horizontal.
+     *
      * @var string
      */
-    private $horizontal;
+    private $horizontal = self::HORIZONTAL_LEFT;
 
     /**
-     * Vertical
+     * Vertical.
+     *
      * @var string
      */
-    private $vertical;
+    private $vertical = self::VERTICAL_BASE;
 
     /**
-     * Text Direction
+     * Text Direction.
+     *
      * @var string
      */
     private $textDirection = self::TEXT_DIRECTION_HORIZONTAL;
 
     /**
-     * Level
+     * Level.
+     *
      * @var int
      */
     private $level = 0;
 
     /**
-     * Indent - only possible with horizontal alignment left and right
-     * @var int
+     * Indent - only possible with horizontal alignment left and right.
+     *
+     * @var float
      */
     private $indent = 0;
 
     /**
-     * Margin left - only possible with horizontal alignment left and right
-     * @var int
+     * Margin left - only possible with horizontal alignment left and right.
+     *
+     * @var float
      */
     private $marginLeft = 0;
 
     /**
-     * Margin right - only possible with horizontal alignment left and right
-     * @var int
+     * Margin right - only possible with horizontal alignment left and right.
+     *
+     * @var float
      */
     private $marginRight = 0;
 
     /**
-     * Margin top
-     * @var int
+     * Margin top.
+     *
+     * @var float
      */
     private $marginTop = 0;
 
     /**
-     * Margin bottom
-     * @var int
+     * Margin bottom.
+     *
+     * @var float
      */
     private $marginBottom = 0;
 
     /**
-     * Hash index
-     * @var string
+     * RTL Direction Support
+     *
+     * @var bool
+     */
+    private $isRTL = false;
+
+    /**
+     * Hash index.
+     *
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Style\Alignment
+     * Get Horizontal.
      */
-    public function __construct()
-    {
-        // Initialise values
-        $this->horizontal          = self::HORIZONTAL_LEFT;
-        $this->vertical            = self::VERTICAL_BASE;
-    }
-
-    /**
-     * Get Horizontal
-     *
-     * @return string
-     */
-    public function getHorizontal()
+    public function getHorizontal(): string
     {
         return $this->horizontal;
     }
 
     /**
-     * Set Horizontal
-     *
-     * @param  string                        $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * Set Horizontal.
      */
-    public function setHorizontal($pValue = self::HORIZONTAL_LEFT)
+    public function setHorizontal(string $pValue = self::HORIZONTAL_LEFT): self
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = self::HORIZONTAL_LEFT;
         }
         $this->horizontal = $pValue;
@@ -148,24 +154,19 @@ class Alignment implements ComparableInterface
     }
 
     /**
-     * Get Vertical
-     *
-     * @return string
+     * Get Vertical.
      */
-    public function getVertical()
+    public function getVertical(): string
     {
         return $this->vertical;
     }
 
     /**
-     * Set Vertical
-     *
-     * @param  string                        $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * Set Vertical.
      */
-    public function setVertical($pValue = self::VERTICAL_BASE)
+    public function setVertical(string $pValue = self::VERTICAL_BASE): self
     {
-        if ($pValue == '') {
+        if ('' == $pValue) {
             $pValue = self::VERTICAL_BASE;
         }
         $this->vertical = $pValue;
@@ -174,26 +175,24 @@ class Alignment implements ComparableInterface
     }
 
     /**
-     * Get Level
-     *
-     * @return int
+     * Get Level.
      */
-    public function getLevel()
+    public function getLevel(): int
     {
         return $this->level;
     }
 
     /**
-     * Set Level
+     * Set Level.
      *
-     * @param  int                           $pValue Ranging 0 - 8
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * @param int $pValue Ranging 0 - 8
+     *
+     * @throws OutOfBoundsException
      */
-    public function setLevel($pValue = 0)
+    public function setLevel(int $pValue = 0): self
     {
         if ($pValue < 0) {
-            throw new \Exception("Invalid value should be more than 0.");
+            throw new OutOfBoundsException(0, null, $pValue);
         }
         $this->level = $pValue;
 
@@ -201,22 +200,17 @@ class Alignment implements ComparableInterface
     }
 
     /**
-     * Get indent
-     *
-     * @return int
+     * Get indent.
      */
-    public function getIndent()
+    public function getIndent(): float
     {
         return $this->indent;
     }
 
     /**
-     * Set indent
-     *
-     * @param  int                           $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * Set indent.
      */
-    public function setIndent($pValue = 0)
+    public function setIndent(float $pValue = 0): self
     {
         if ($pValue > 0 && !in_array($this->getHorizontal(), $this->supportedStyles)) {
             $pValue = 0; // indent not supported
@@ -228,22 +222,17 @@ class Alignment implements ComparableInterface
     }
 
     /**
-     * Get margin left
-     *
-     * @return int
+     * Get margin left.
      */
-    public function getMarginLeft()
+    public function getMarginLeft(): float
     {
         return $this->marginLeft;
     }
 
     /**
-     * Set margin left
-     *
-     * @param  int                           $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * Set margin left.
      */
-    public function setMarginLeft($pValue = 0)
+    public function setMarginLeft(float $pValue = 0): self
     {
         if ($pValue > 0 && !in_array($this->getHorizontal(), $this->supportedStyles)) {
             $pValue = 0; // margin left not supported
@@ -255,22 +244,17 @@ class Alignment implements ComparableInterface
     }
 
     /**
-     * Get margin right
-     *
-     * @return int
+     * Get margin right.
      */
-    public function getMarginRight()
+    public function getMarginRight(): float
     {
         return $this->marginRight;
     }
 
     /**
-     * Set margin ight
-     *
-     * @param  int                           $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * Set margin ight.
      */
-    public function setMarginRight($pValue = 0)
+    public function setMarginRight(float $pValue = 0): self
     {
         if ($pValue > 0 && !in_array($this->getHorizontal(), $this->supportedStyles)) {
             $pValue = 0; // margin right not supported
@@ -282,22 +266,17 @@ class Alignment implements ComparableInterface
     }
 
     /**
-     * Get margin top
-     *
-     * @return int
+     * Get margin top.
      */
-    public function getMarginTop()
+    public function getMarginTop(): float
     {
         return $this->marginTop;
     }
 
     /**
-     * Set margin top
-     *
-     * @param  int                           $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * Set margin top.
      */
-    public function setMarginTop($pValue = 0)
+    public function setMarginTop(float $pValue = 0): self
     {
         $this->marginTop = $pValue;
 
@@ -305,55 +284,64 @@ class Alignment implements ComparableInterface
     }
 
     /**
-     * Get margin bottom
-     *
-     * @return int
+     * Get margin bottom.
      */
-    public function getMarginBottom()
+    public function getMarginBottom(): float
     {
         return $this->marginBottom;
     }
 
     /**
-     * Set margin bottom
-     *
-     * @param  int                           $pValue
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * Set margin bottom.
      */
-    public function setMarginBottom($pValue = 0)
+    public function setMarginBottom(float $pValue = 0): self
     {
         $this->marginBottom = $pValue;
 
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getTextDirection()
+    public function getTextDirection(): string
     {
         return $this->textDirection;
     }
 
-    /**
-     * @param string $pValue
-     * @return Alignment
-     */
-    public function setTextDirection($pValue = self::TEXT_DIRECTION_HORIZONTAL)
+    public function setTextDirection(string $pValue = self::TEXT_DIRECTION_HORIZONTAL): self
     {
         if (empty($pValue)) {
             $pValue = self::TEXT_DIRECTION_HORIZONTAL;
         }
         $this->textDirection = $pValue;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * @return bool
+     */
+    public function isRTL(): bool
+    {
+        return $this->isRTL;
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function setIsRTL(bool $value = false): self
+    {
+        $this->isRTL = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(
             $this->horizontal
@@ -362,33 +350,38 @@ class Alignment implements ComparableInterface
             . $this->indent
             . $this->marginLeft
             . $this->marginRight
+            . ($this->isRTL ? '1' : '0')
             . __CLASS__
         );
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
+        return $this;
     }
 }

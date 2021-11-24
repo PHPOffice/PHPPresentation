@@ -10,83 +10,90 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation;
 
 use PhpOffice\Common\Drawing;
 
 /**
- * \PhpOffice\PhpPresentation\DocumentLayout
+ * \PhpOffice\PhpPresentation\DocumentLayout.
  */
 class DocumentLayout
 {
-    const LAYOUT_CUSTOM = '';
-    const LAYOUT_SCREEN_4X3 = 'screen4x3';
-    const LAYOUT_SCREEN_16X10 = 'screen16x10';
-    const LAYOUT_SCREEN_16X9 = 'screen16x9';
-    const LAYOUT_35MM = '35mm';
-    const LAYOUT_A3 = 'A3';
-    const LAYOUT_A4 = 'A4';
-    const LAYOUT_B4ISO = 'B4ISO';
-    const LAYOUT_B5ISO = 'B5ISO';
-    const LAYOUT_BANNER = 'banner';
-    const LAYOUT_LETTER = 'letter';
-    const LAYOUT_OVERHEAD = 'overhead';
+    public const LAYOUT_CUSTOM = '';
+    public const LAYOUT_SCREEN_4X3 = 'screen4x3';
+    public const LAYOUT_SCREEN_16X10 = 'screen16x10';
+    public const LAYOUT_SCREEN_16X9 = 'screen16x9';
+    public const LAYOUT_35MM = '35mm';
+    public const LAYOUT_A3 = 'A3';
+    public const LAYOUT_A4 = 'A4';
+    public const LAYOUT_B4ISO = 'B4ISO';
+    public const LAYOUT_B5ISO = 'B5ISO';
+    public const LAYOUT_BANNER = 'banner';
+    public const LAYOUT_LETTER = 'letter';
+    public const LAYOUT_OVERHEAD = 'overhead';
 
-    const UNIT_EMU = 'emu';
-    const UNIT_CENTIMETER = 'cm';
-    const UNIT_INCH = 'in';
-    const UNIT_MILLIMETER = 'mm';
-    const UNIT_PIXEL = 'px';
-    const UNIT_POINT = 'pt';
+    public const UNIT_EMU = 'emu';
+    public const UNIT_CENTIMETER = 'cm';
+    public const UNIT_INCH = 'in';
+    public const UNIT_MILLIMETER = 'mm';
+    public const UNIT_PIXEL = 'px';
+    public const UNIT_POINT = 'pt';
 
     /**
-     * Dimension types
+     * Dimension types.
      *
      * 1 px = 9525 EMU @ 96dpi (which is seems to be the default)
      * Absolute distances are specified in English Metric Units (EMUs),
      * occasionally referred to as A units; there are 360000 EMUs per
      * centimeter, 914400 EMUs per inch, 12700 EMUs per point.
+     *
+     * @var array<string, array<string, int>>
      */
-    private $dimension = array(
-        self::LAYOUT_SCREEN_4X3 => array('cx' => 9144000, 'cy' => 6858000),
-        self::LAYOUT_SCREEN_16X10 => array('cx' => 9144000, 'cy' => 5715000),
-        self::LAYOUT_SCREEN_16X9 => array('cx' => 9144000, 'cy' => 5143500),
-        self::LAYOUT_35MM => array('cx' => 10287000, 'cy' => 6858000),
-        self::LAYOUT_A3 => array('cx' => 15120000, 'cy' => 10692000),
-        self::LAYOUT_A4 => array('cx' => 10692000, 'cy' => 7560000),
-        self::LAYOUT_B4ISO => array('cx' => 10826750, 'cy' => 8120063),
-        self::LAYOUT_B5ISO => array('cx' => 7169150, 'cy' => 5376863),
-        self::LAYOUT_BANNER => array('cx' => 7315200, 'cy' => 914400),
-        self::LAYOUT_LETTER => array('cx' => 9144000, 'cy' => 6858000),
-        self::LAYOUT_OVERHEAD => array('cx' => 9144000, 'cy' => 6858000),
-    );
+    private $dimension = [
+        self::LAYOUT_SCREEN_4X3 => ['cx' => 9144000, 'cy' => 6858000],
+        self::LAYOUT_SCREEN_16X10 => ['cx' => 9144000, 'cy' => 5715000],
+        self::LAYOUT_SCREEN_16X9 => ['cx' => 9144000, 'cy' => 5143500],
+        self::LAYOUT_35MM => ['cx' => 10287000, 'cy' => 6858000],
+        self::LAYOUT_A3 => ['cx' => 15120000, 'cy' => 10692000],
+        self::LAYOUT_A4 => ['cx' => 10692000, 'cy' => 7560000],
+        self::LAYOUT_B4ISO => ['cx' => 10826750, 'cy' => 8120063],
+        self::LAYOUT_B5ISO => ['cx' => 7169150, 'cy' => 5376863],
+        self::LAYOUT_BANNER => ['cx' => 7315200, 'cy' => 914400],
+        self::LAYOUT_LETTER => ['cx' => 9144000, 'cy' => 6858000],
+        self::LAYOUT_OVERHEAD => ['cx' => 9144000, 'cy' => 6858000],
+    ];
 
     /**
-     * Layout name
+     * Layout name.
      *
      * @var string
      */
     private $layout;
 
     /**
-     * Layout X dimension
+     * Layout X dimension.
+     *
      * @var float
      */
     private $dimensionX;
 
     /**
-     * Layout Y dimension
+     * Layout Y dimension.
+     *
      * @var float
      */
     private $dimensionY;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\DocumentLayout
+     * Create a new \PhpOffice\PhpPresentation\DocumentLayout.
      */
     public function __construct()
     {
@@ -94,23 +101,20 @@ class DocumentLayout
     }
 
     /**
-     * Get Document Layout
-     *
-     * @return string
+     * Get Document Layout.
      */
-    public function getDocumentLayout()
+    public function getDocumentLayout(): string
     {
         return $this->layout;
     }
 
     /**
-     * Set Document Layout
+     * Set Document Layout.
      *
-     * @param array|string $pValue
-     * @param  boolean $isLandscape
-     * @return \PhpOffice\PhpPresentation\DocumentLayout
+     * @param array<string, int>|string $pValue
+     * @param bool $isLandscape
      */
-    public function setDocumentLayout($pValue = self::LAYOUT_SCREEN_4X3, $isLandscape = true)
+    public function setDocumentLayout($pValue = self::LAYOUT_SCREEN_4X3, $isLandscape = true): self
     {
         switch ($pValue) {
             case self::LAYOUT_SCREEN_4X3:
@@ -146,63 +150,47 @@ class DocumentLayout
     }
 
     /**
-     * Get Document Layout cx
-     *
-     * @param string $unit
-     * @return integer
+     * Get Document Layout cx.
      */
-    public function getCX($unit = self::UNIT_EMU)
+    public function getCX(string $unit = self::UNIT_EMU): float
     {
         return $this->convertUnit($this->dimensionX, self::UNIT_EMU, $unit);
     }
 
     /**
-     * Get Document Layout cy
-     *
-     * @param string $unit
-     * @return integer
+     * Get Document Layout cy.
      */
-    public function getCY($unit = self::UNIT_EMU)
+    public function getCY(string $unit = self::UNIT_EMU): float
     {
         return $this->convertUnit($this->dimensionY, self::UNIT_EMU, $unit);
     }
 
     /**
-     * Get Document Layout cx
-     *
-     * @param float $value
-     * @param string $unit
-     * @return DocumentLayout
+     * Get Document Layout cx.
      */
-    public function setCX($value, $unit = self::UNIT_EMU)
+    public function setCX(float $value, string $unit = self::UNIT_EMU): self
     {
         $this->layout = self::LAYOUT_CUSTOM;
         $this->dimensionX = $this->convertUnit($value, $unit, self::UNIT_EMU);
+
         return $this;
     }
 
     /**
-     * Get Document Layout cy
-     *
-     * @param float $value
-     * @param string $unit
-     * @return DocumentLayout
+     * Get Document Layout cy.
      */
-    public function setCY($value, $unit = self::UNIT_EMU)
+    public function setCY(float $value, string $unit = self::UNIT_EMU): self
     {
         $this->layout = self::LAYOUT_CUSTOM;
         $this->dimensionY = $this->convertUnit($value, $unit, self::UNIT_EMU);
+
         return $this;
     }
 
     /**
-     * Convert EMUs to differents units
-     * @param float $value
-     * @param string $fromUnit
-     * @param string $toUnit
-     * @return float
+     * Convert EMUs to differents units.
      */
-    protected function convertUnit($value, $fromUnit, $toUnit)
+    protected function convertUnit(float $value, string $fromUnit, string $toUnit): float
     {
         // Convert from $fromUnit to EMU
         switch ($fromUnit) {
@@ -238,7 +226,7 @@ class DocumentLayout
                 $value /= 914400;
                 break;
             case self::UNIT_PIXEL:
-                $value = Drawing::emuToPixels($value);
+                $value = Drawing::emuToPixels((int) $value);
                 break;
             case self::UNIT_POINT:
                 $value /= 12700;
@@ -247,6 +235,7 @@ class DocumentLayout
             default:
             // no changes
         }
+
         return $value;
     }
 }
