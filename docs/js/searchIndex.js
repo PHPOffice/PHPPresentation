@@ -1431,6 +1431,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint2007.html#method_loadParagraph"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadHyperlink\u0028\u0029",
+            "name": "loadHyperlink",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint2007.html#method_loadHyperlink"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadStyleBorder\u0028\u0029",
             "name": "loadStyleBorder",
             "summary": "",
@@ -6590,6 +6595,16 @@ Search.appendIndex(
             "name": "setHashIndex",
             "summary": "Set\u0020hash\u0020index.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Hyperlink.html#method_setHashIndex"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Hyperlink\u003A\u003A\u0024isTextColorUsed",
+            "name": "isTextColorUsed",
+            "summary": "If\u0020true,\u0020uses\u0020the\u0020text\u0020color,\u0020instead\u0020of\u0020theme\u0020color",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Hyperlink.html#property_isTextColorUsed"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Hyperlink\u003A\u003AsetIsTextColorUsed\u0028\u0029",
+            "name": "setIsTextColorUsed",
+            "summary": "Set\u0020whether\u0020or\u0020not\u0020to\u0020use\u0020text\u0020color\u0020for\u0020a\u0020hyperlink,\u0020instead\u0020of\u0020theme\u0020color.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Hyperlink.html#method_setIsTextColorUsed"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Hyperlink\u003A\u003A\u0024url",
             "name": "url",

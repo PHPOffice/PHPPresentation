@@ -529,6 +529,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hyperlink" class="md-nav__link">
+    Hyperlink
+  </a>
+  
+    <nav class="md-nav" aria-label="Hyperlink">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-of-text-color" class="md-nav__link">
+    Use of Text Color
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#paragraph" class="md-nav__link">
     Paragraph
   </a>
@@ -711,8 +731,22 @@
   
   
     <li class="md-nav__item">
+      <a href="../../changes/1.1.0.html" class="md-nav__link">
+        1.1.0 (WIP)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../changes/1.0.0.html" class="md-nav__link">
-        1.0.0 (WIP)
+        1.0.0
       </a>
     </li>
   
@@ -962,6 +996,26 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hyperlink" class="md-nav__link">
+    Hyperlink
+  </a>
+  
+    <nav class="md-nav" aria-label="Hyperlink">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#use-of-text-color" class="md-nav__link">
+    Use of Text Color
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#paragraph" class="md-nav__link">
     Paragraph
   </a>
@@ -1062,6 +1116,31 @@ Each paragraph can contain:
 <span class="nv">$richText</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RichText</span><span class="p">();</span>
 <span class="nv">$richText</span><span class="o">-&gt;</span><span class="na">setColumnSpacing</span><span class="p">(</span><span class="mi">200</span><span class="p">);</span>
 <span class="nv">$columnSpacing</span> <span class="o">=</span> <span class="nv">$richText</span><span class="o">-&gt;</span><span class="na">getColumnSpacing</span><span class="p">();</span>
+</code></pre></div>
+<h2 id="hyperlink">Hyperlink</h2>
+<p>For a rich text, you can define the hyperlink.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\RichText</span><span class="p">;</span>
+
+<span class="nv">$richText</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RichText</span><span class="p">();</span>
+<span class="nv">$richText</span><span class="o">-&gt;</span><span class="na">getHyperlink</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setUrl</span><span class="p">(</span><span class="s1">&#39;https://phpoffice.github.io/PHPPresentation/&#39;</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="use-of-text-color">Use of Text Color</h3>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Available only on the PowerPoint2007 Reader/Writer</p>
+</div>
+<p>Hyperlinks can be set to use the text color instead of the default theme color.</p>
+<p>Example:</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\RichText</span><span class="p">;</span>
+
+<span class="nv">$richText</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RichText</span><span class="p">();</span>
+<span class="nv">$richText</span><span class="o">-&gt;</span><span class="na">getHyperlink</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setUrl</span><span class="p">(</span><span class="s1">&#39;https://phpoffice.github.io/PHPPresentation/&#39;</span><span class="p">);</span>
+<span class="nv">$richText</span><span class="o">-&gt;</span><span class="na">getHyperlink</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setIsTextColorUsed</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
 </code></pre></div>
 <h2 id="paragraph">Paragraph</h2>
 <h3 id="bullet">Bullet</h3>
