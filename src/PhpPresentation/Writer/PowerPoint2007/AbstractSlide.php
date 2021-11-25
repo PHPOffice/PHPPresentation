@@ -789,7 +789,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('action', $shape->getHyperlink()->getUrl());
         }
 
-        if ($shape->getHyperlink()->getUseTextColor()) {
+        if ($shape->getHyperlink()->isTextColorUsed()) {
             $objWriter->startElement('a:extLst');
             $objWriter->startElement('a:ext');
             $objWriter->writeAttribute('uri', '{A12FA001-AC4F-418D-AE19-62706E023703}');

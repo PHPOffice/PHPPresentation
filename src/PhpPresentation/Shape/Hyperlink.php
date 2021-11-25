@@ -65,7 +65,7 @@ class Hyperlink
      *
      * @var bool
      */
-    private $useTextColor = false;
+    private $isTextColorUsed = false;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Hyperlink.
@@ -75,7 +75,6 @@ class Hyperlink
      */
     public function __construct(string $pUrl = '', string $pTooltip = '')
     {
-        // Initialise member variables
         $this->setUrl($pUrl);
         $this->setTooltip($pTooltip);
     }
@@ -210,9 +209,9 @@ class Hyperlink
      *
      * @return bool Whether or not to use text color for a hyperlink, instead of theme color.
      */
-    public function getUseTextColor(): bool
+    public function isTextColorUsed(): bool
     {
-        return $this->useTextColor;
+        return $this->isTextColorUsed;
     }
 
     /**
@@ -220,13 +219,13 @@ class Hyperlink
      *
      * @see https://docs.microsoft.com/en-us/openspecs/office_standards/ms-odrawxml/014fbc20-3705-4812-b8cd-93f5af05b504
      *
-     * @param bool $useTextColor
+     * @param bool $isTextColorUsed
      *
      * @return self
      */
-    public function setUseTextColor(bool $useTextColor): self
+    public function setIsTextColorUsed(bool $isTextColorUsed): self
     {
-        $this->useTextColor = $useTextColor;
+        $this->isTextColorUsed = $isTextColorUsed;
 
         return $this;
     }
