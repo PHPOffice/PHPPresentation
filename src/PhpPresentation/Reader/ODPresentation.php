@@ -60,11 +60,11 @@ class ODPresentation implements ReaderInterface
      */
     protected $oZip;
     /**
-     * @var array[]
+     * @var array<string, array{alignment: Alignment|null, background: null, shadow: Shadow|null, fill: Fill|null, spacingAfter: int|null, spacingBefore: int|null, lineSpacingMode: null, lineSpacing: null, font: null, listStyle: null}>
      */
     protected $arrayStyles = [];
     /**
-     * @var array[]
+     * @var array<string, array<string, string|null>>
      */
     protected $arrayCommonStyles = [];
     /**
