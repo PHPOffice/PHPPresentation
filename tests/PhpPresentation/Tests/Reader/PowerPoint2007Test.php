@@ -568,6 +568,7 @@ class PowerPoint2007Test extends TestCase
         $this->assertTrue($oRichText->hasHyperlink());
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getHyperlink()->getUrl());
         $this->assertEquals('PHPPresentation', $oRichText->getHyperlink()->getTooltip());
+        $this->assertFalse($oRichText->getHyperlink()->isTextColorUsed());
         $this->assertEquals('Calibri', $oRichText->getFont()->getName());
         $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
     }
