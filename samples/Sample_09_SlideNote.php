@@ -24,7 +24,7 @@ echo date('H:i:s') . ' Create a shape (drawing)' . EOL;
 $shape = $currentSlide->createDrawingShape();
 $shape->setName('PHPPresentation logo')
     ->setDescription('PHPPresentation logo')
-    ->setPath('./resources/phppowerpoint_logo.gif')
+    ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
     ->setHeight(36)
     ->setOffsetX(10)
     ->setOffsetY(10);

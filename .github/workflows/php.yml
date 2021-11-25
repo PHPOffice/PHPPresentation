@@ -93,3 +93,26 @@ jobs:
             wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
             chmod +x php-coveralls.phar
             php php-coveralls.phar --coverage_clover=build/clover.xml --json_path=build/coveralls-upload.json -vvv
+
+  samples:
+    name: Check samples
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+    steps:
+      -   name: Setup PHP
+          uses: shivammathur/setup-php@v2
+          with:
+              php-version: ${{ matrix.php }}
+              extensions: gd, xml, zip
+              coverage: xdebug
+
+      -   uses: actions/checkout@v2
+
+      -   name: Composer Install
+          run: composer install --ansi --prefer-dist --no-interaction --no-progress
+
+      -   name: Generate samples files
+          run: composer run samples
