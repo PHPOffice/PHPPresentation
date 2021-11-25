@@ -3051,16 +3051,6 @@ Search.appendIndex(
             "summary": "Stream\u0020\u0022Current\u0020User\u0022.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint97.html#property_streamCurrentUser"
         },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint97\u003A\u003A\u0024streamSummaryInformation",
-            "name": "streamSummaryInformation",
-            "summary": "Stream\u0020\u0022Summary\u0020Information\u0022.",
-            "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint97.html#property_streamSummaryInformation"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint97\u003A\u003A\u0024streamDocumentSummaryInformation",
-            "name": "streamDocumentSummaryInformation",
-            "summary": "Stream\u0020\u0022Document\u0020Summary\u0020Information\u0022.",
-            "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint97.html#property_streamDocumentSummaryInformation"
-        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint97\u003A\u003A\u0024streamPictures",
             "name": "streamPictures",
             "summary": "Stream\u0020\u0022Pictures\u0022.",
