@@ -207,7 +207,7 @@ class Hyperlink
      *
      * @see https://docs.microsoft.com/en-us/openspecs/office_standards/ms-odrawxml/014fbc20-3705-4812-b8cd-93f5af05b504
      *
-     * @return bool Whether or not to use text color for a hyperlink, instead of theme color.
+     * @return bool whether or not to use text color for a hyperlink, instead of theme color
      */
     public function isTextColorUsed(): bool
     {
