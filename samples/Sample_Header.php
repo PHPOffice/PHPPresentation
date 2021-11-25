@@ -45,11 +45,6 @@ if (false === is_writable(__DIR__ . DIRECTORY_SEPARATOR)) {
 // Set writers
 $writers = ['PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp'];
 
-// Return to the caller script when runs by CLI
-if (CLI) {
-    return;
-}
-
 // Set titles and names
 $pageHeading = str_replace('_', ' ', SCRIPT_FILENAME);
 $pageTitle = IS_INDEX ? 'Welcome to ' : "{$pageHeading} - ";
@@ -59,7 +54,7 @@ $pageHeading = IS_INDEX ? '' : "<h1>{$pageHeading}</h1>";
 $oShapeDrawing = new Drawing\File();
 $oShapeDrawing->setName('PHPPresentation logo')
     ->setDescription('PHPPresentation logo')
-    ->setPath('./resources/phppowerpoint_logo.gif')
+    ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
     ->setHeight(36)
     ->setOffsetX(10)
     ->setOffsetY(10);
@@ -79,6 +74,11 @@ $textRun = $oShapeRichText->createTextRun('Thank you for using PHPPresentation!'
 $textRun->getFont()->setBold(true)
     ->setSize(60)
     ->setColor(new Color('FFE06B20'));
+
+// Return to the caller script when runs by CLI
+if (CLI) {
+    return;
+}
 
 // Populate samples
 $files = [];
