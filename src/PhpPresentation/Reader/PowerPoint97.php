@@ -362,18 +362,6 @@ class PowerPoint97 implements ReaderInterface
      */
     private $streamCurrentUser;
     /**
-     * Stream "Summary Information".
-     *
-     * @var string
-     */
-    private $streamSummaryInformation;
-    /**
-     * Stream "Document Summary Information".
-     *
-     * @var string
-     */
-    private $streamDocumentSummaryInformation;
-    /**
      * Stream "Pictures".
      *
      * @var string
@@ -476,12 +464,6 @@ class PowerPoint97 implements ReaderInterface
 
         // Current User Stream
         $this->streamCurrentUser = $oOLE->getStream($oOLE->currentUser);
-
-        // Get summary information data
-        $this->streamSummaryInformation = $oOLE->getStream($oOLE->summaryInformation);
-
-        // Get additional document summary information data
-        $this->streamDocumentSummaryInformation = $oOLE->getStream($oOLE->docSummaryInfos);
 
         // Get pictures data
         $this->streamPictures = $oOLE->getStream($oOLE->pictures);
@@ -1343,7 +1325,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A container record that specifies text related data for a shape.
      *
-     * @return array{'length': int, 'text': string, 'numParts': int, 'numTexts': int, 'hyperlink': array<int, array<string, int>>, 'part': array}
+     * @return array{'length': int, 'alignH': string|null, 'text': string, 'numParts': int, 'numTexts': int, 'hyperlink': array<int, array<string, int>>, 'part': array{'length': int, 'strLenRT': int, 'partLength': int|float, 'bold': bool, 'italic': bool, 'underline': bool, 'fontName': string, 'fontSize': int, 'color': Color}}
      *
      * @throws FeatureNotImplementedException
      *
@@ -1645,7 +1627,7 @@ class PowerPoint97 implements ReaderInterface
                             // Is there a hyperlink ?
                             if (!empty($clientTextbox['hyperlink'])) {
                                 foreach ($clientTextbox['hyperlink'] as $itmHyperlink) {
-                                    if ($itmHyperlink['start'] == $start && ($itmHyperlink['end'] - $itmHyperlink['start']) == $clientTextbox['part' . $inc]['partLength']) {
+                                    if ($itmHyperlink['start'] == $start && ($itmHyperlink['end'] - $itmHyperlink['start']) == (float) $clientTextbox['part' . $inc]['partLength']) {
                                         $sText = $this->arrayHyperlinks[$itmHyperlink['id']]['text'];
                                         $sHyperlinkURL = $this->arrayHyperlinks[$itmHyperlink['id']]['url'];
                                         break;
@@ -3135,7 +3117,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A structure that specifies the paragraph-level formatting of a run of text.
      *
-     * @return array{'length': int, 'strLenRT': int, 'alignH': string, 'bulletChar': string, 'leftMargin': int, 'indent': int}
+     * @return array{'length': int, 'strLenRT': int, 'alignH': string|null, 'bulletChar': string, 'leftMargin': int, 'indent': int}
      *
      * @throws FeatureNotImplementedException
      *

@@ -59,6 +59,7 @@ class Iterator extends IteratorIterator
     /**
      * Rewind iterator.
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 0;
@@ -87,6 +88,7 @@ class Iterator extends IteratorIterator
     /**
      * Next value.
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->position;
@@ -97,6 +99,7 @@ class Iterator extends IteratorIterator
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->position < $this->subject->getSlideCount();

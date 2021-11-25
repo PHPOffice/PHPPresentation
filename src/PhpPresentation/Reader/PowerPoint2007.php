@@ -72,7 +72,7 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected $oZip;
     /**
-     * @var array[]
+     * @var array<string, array<string, array<string, string>>>
      */
     protected $arrayRels = [];
     /**
