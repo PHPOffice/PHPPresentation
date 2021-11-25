@@ -121,4 +121,16 @@ class HyperlinkTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setUrl('http://www.github.com'));
         $this->assertFalse($object->isInternal());
     }
+
+    public function testIsTextColorUsed(): void
+    {
+        $object = new Hyperlink();
+        $this->assertFalse($object->isTextColorUsed());
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setIsTextColorUsed(true));
+        $this->assertTrue($object->isTextColorUsed());
+
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Hyperlink', $object->setIsTextColorUsed(false));
+        $this->assertFalse($object->isTextColorUsed());
+    }
 }

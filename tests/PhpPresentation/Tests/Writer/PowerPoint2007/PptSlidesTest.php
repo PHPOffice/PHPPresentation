@@ -452,6 +452,36 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testHyperlinkTextColorUsed(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Delta');
+        $oRun->getHyperlink()->setIsTextColorUsed(true);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick/a:extLst';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick/a:extLst/a:ext';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'uri', '{A12FA001-AC4F-418D-AE19-62706E023703}');
+
+        $this->assertIsSchemaECMA376Valid();
+
+        $this->resetPresentationFile();
+
+        $oRun->getHyperlink()->setIsTextColorUsed(false);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:hlinkClick/a:extLst';
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $element);
+    }
+
     public function testListBullet(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
