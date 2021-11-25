@@ -17,7 +17,10 @@ $currentSlide = $objPHPPresentation->getActiveSlide();
 $shape = new Media();
 $shape->setName('Video')
     ->setDescription('Video')
-    ->setPath('WIN' === strtoupper(substr(PHP_OS, 0, 3)) ? './resources/sintel_trailer-480p.wmv' : './resources/sintel_trailer-480p.ogv')
+    ->setPath(
+        __DIR__ . '/resources/sintel_trailer-480p' .
+        ('WIN' === strtoupper(substr(PHP_OS, 0, 3)) ? '.wmv' : '.ogv')
+    )
     ->setResizeProportional(false)
     ->setHeight(90)
     ->setWidth(90)

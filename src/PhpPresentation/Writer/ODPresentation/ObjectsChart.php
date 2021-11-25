@@ -886,7 +886,7 @@ class ObjectsChart extends AbstractDecoratorWriter
                     $this->xmlContent->writeAttributeIf($cellValueTypeFloat, 'office:value', is_null($cell) ? 'NaN' : $cell);
                     // text:p
                     $this->xmlContent->startElement('text:p');
-                    $this->xmlContent->text(is_null($cell) ? 'NaN' : $cell);
+                    $this->xmlContent->text(is_null($cell) ? 'NaN' : (string) $cell);
                     $this->xmlContent->endElement();
                     // > table:table-cell
                     $this->xmlContent->endElement();
