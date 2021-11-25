@@ -50,6 +50,42 @@ $richText->setColumnSpacing(200);
 $columnSpacing = $richText->getColumnSpacing();
 ```
 
+## Hyperlink
+
+For a rich text, you can define the hyperlink.
+
+Example:
+
+```php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText;
+
+$richText = new RichText();
+$richText->getHyperlink()->setUrl('https://phpoffice.github.io/PHPPresentation/');
+
+```
+
+### Use of Text Color
+
+!!! warning
+    Available only on the PowerPoint2007 Reader/Writer
+
+Hyperlinks can be set to use the text color instead of the default theme color.
+
+Example:
+
+```php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\RichText;
+
+$richText = new RichText();
+$richText->getHyperlink()->setUrl('https://phpoffice.github.io/PHPPresentation/');
+$richText->getHyperlink()->setIsTextColorUsed(true);
+
+```
+
 ## Paragraph
 ### Bullet
 
