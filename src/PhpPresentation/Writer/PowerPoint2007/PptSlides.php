@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
@@ -40,11 +41,9 @@ class PptSlides extends AbstractSlide
     /**
      * Add slides (drawings, ...) and slide relationships (drawings, ...).
      *
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     *
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function render()
+    public function render(): ZipInterface
     {
         foreach ($this->oPresentation->getAllSlides() as $idx => $oSlide) {
             $this->oZip->addFromString('ppt/slides/_rels/slide' . ($idx + 1) . '.xml.rels', $this->writeSlideRelationships($oSlide));
@@ -71,10 +70,8 @@ class PptSlides extends AbstractSlide
      * Write slide relationships to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    protected function writeSlideRelationships(Slide $pSlide)
+    protected function writeSlideRelationships(Slide $pSlide): string
     {
         //@todo Group all getShapeCollection()->getIterator
 
@@ -369,10 +366,8 @@ class PptSlides extends AbstractSlide
      * Write slide to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    public function writeSlide(Slide $pSlide): string
+    protected function writeSlide(Slide $pSlide): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);

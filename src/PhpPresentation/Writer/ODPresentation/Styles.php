@@ -46,9 +46,6 @@ class Styles extends AbstractDecoratorWriter
      */
     protected $arrayStrokeDash = [];
 
-    /**
-     * @throws \Exception
-     */
     public function render(): ZipInterface
     {
         $this->getZip()->addFromString('styles.xml', $this->writePart());
@@ -60,8 +57,6 @@ class Styles extends AbstractDecoratorWriter
      * Write Meta file to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
     protected function writePart(): string
     {

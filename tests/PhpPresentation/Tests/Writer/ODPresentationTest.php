@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Writer;
 
+use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
 use PhpOffice\PhpPresentation\Writer\ODPresentation;
@@ -74,23 +76,11 @@ class ODPresentationTest extends PhpPresentationTestCase
      */
     public function testSaveEmpty(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Filename is empty');
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('The parameter pFilename can\'t have the value ""');
 
         $object = new ODPresentation();
         $object->save('');
-    }
-
-    /**
-     * Test get PhpPresentation exception.
-     */
-    public function testGetPhpPresentationException(): void
-    {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('No PhpPresentation assigned.');
-
-        $object = new ODPresentation();
-        $object->getPhpPresentation();
     }
 
     /**
@@ -111,7 +101,7 @@ class ODPresentationTest extends PhpPresentationTestCase
      */
     public function testSetUseDiskCachingException(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(DirectoryNotFoundException::class);
 
         $object = new ODPresentation($this->oPresentation);
         $object->setUseDiskCaching(true, 'foo');

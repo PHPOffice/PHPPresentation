@@ -37,15 +37,9 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param string $pType Relationship type
      * @param string $pTarget Relationship target
      * @param string $pTargetMode Relationship target mode
-     *
-     * @throws \Exception
      */
-    protected function writeRelationship(XMLWriter $objWriter, int $pId = 1, string $pType = '', string $pTarget = '', string $pTargetMode = ''): void
+    protected function writeRelationship(XMLWriter $objWriter, int $pId, string $pType, string $pTarget, string $pTargetMode = ''): void
     {
-        if ('' == $pType || '' == $pTarget) {
-            throw new \Exception('Invalid parameters passed.');
-        }
-
         // Write relationship
         $objWriter->startElement('Relationship');
         $objWriter->writeAttribute('Id', 'rId' . (string) $pId);
@@ -66,8 +60,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param Border $pBorder Border
      * @param string $pElementName Element name
      * @param bool $isMarker
-     *
-     * @throws \Exception
      */
     protected function writeBorder(XMLWriter $objWriter, Border $pBorder, string $pElementName = 'L', bool $isMarker = false): void
     {
@@ -154,8 +146,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      *
      * @param XMLWriter $objWriter XML Writer
      * @param Fill|null $pFill Fill style
-     *
-     * @throws \Exception
      */
     protected function writeFill(XMLWriter $objWriter, ?Fill $pFill): void
     {
@@ -193,8 +183,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      *
      * @param XMLWriter $objWriter XML Writer
      * @param Fill $pFill Fill style
-     *
-     * @throws \Exception
      */
     protected function writeSolidFill(XMLWriter $objWriter, Fill $pFill): void
     {
@@ -209,8 +197,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      *
      * @param XMLWriter $objWriter XML Writer
      * @param Fill $pFill Fill style
-     *
-     * @throws \Exception
      */
     protected function writeGradientFill(XMLWriter $objWriter, Fill $pFill): void
     {
@@ -247,8 +233,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      *
      * @param XMLWriter $objWriter XML Writer
      * @param Fill $pFill Fill style
-     *
-     * @throws \Exception
      */
     protected function writePatternFill(XMLWriter $objWriter, Fill $pFill): void
     {
@@ -273,9 +257,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Write Outline.
-     *
-     * @throws \Exception
+     * Write Outline
      */
     protected function writeOutline(XMLWriter $objWriter, ?Outline $oOutline): void
     {
@@ -283,8 +265,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
             return;
         }
         // Width : pts
-        $width = $oOutline->getWidth() ?? 0;
-        $width = CommonDrawing::pointsToEmu($width);
+        $width = CommonDrawing::pointsToEmu($oOutline->getWidth());
 
         // a:ln
         $objWriter->startElement('a:ln');

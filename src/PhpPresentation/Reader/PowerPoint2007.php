@@ -28,10 +28,14 @@ use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLReader;
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
+use PhpOffice\PhpPresentation\Exception\FeatureNotImplementedException;
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Drawing\Base64;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
+use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
@@ -69,7 +73,7 @@ class PowerPoint2007 implements ReaderInterface
      */
     protected $oZip;
     /**
-     * @var array[]
+     * @var array<string, array<string, array<string, string>>>
      */
     protected $arrayRels = [];
     /**
@@ -87,8 +91,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
-     *
-     * @throws \Exception
      */
     public function canRead(string $pFilename): bool
     {
@@ -98,13 +100,13 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Does a file support UnserializePhpPresentation ?
      *
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
+            throw new FileNotFoundException($pFilename);
         }
 
         $oZip = new ZipArchive();
@@ -123,13 +125,13 @@ class PowerPoint2007 implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007: " . $pFilename . '.');
+            throw new InvalidFileFormatException($pFilename, PowerPoint2007::class);
         }
 
         return $this->loadFile($pFilename);
@@ -137,8 +139,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Load PhpPresentation Serialized file.
-     *
-     * @throws \Exception
      */
     protected function loadFile(string $pFilename): PhpPresentation
     {
@@ -341,9 +341,7 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Extract all slides.
-     *
-     * @throws \Exception
+     * Extract all slides
      */
     protected function loadSlides(string $sPart): void
     {
@@ -379,9 +377,7 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Extract all MasterSlides.
-     *
-     * @throws \Exception
+     * Extract all MasterSlides
      */
     protected function loadMasterSlides(XMLReader $xmlReader, string $fileRels): void
     {
@@ -405,9 +401,7 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Extract data from slide.
-     *
-     * @throws \Exception
+     * Extract data from slide
      */
     protected function loadSlide(string $sPart, string $baseFile): void
     {
@@ -492,9 +486,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadMasterSlide(string $sPart, string $baseFile): void
     {
         $xmlReader = new XMLReader();
@@ -631,9 +622,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadLayoutSlide(string $sPart, string $baseFile, SlideMaster $oSlideMaster): ?SlideLayout
     {
         $xmlReader = new XMLReader();
@@ -700,9 +688,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadSlideBackground(XMLReader $xmlReader, DOMElement $oElement, AbstractSlide $oSlide): void
     {
         // Background color
@@ -759,9 +744,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadSlideNote(string $baseFile, Slide $oSlide): void
     {
         $sPart = $this->oZip->getFromName('ppt/notesSlides/' . $baseFile);
@@ -775,9 +757,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadShapeDrawing(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
         // Core
@@ -799,12 +778,9 @@ class PowerPoint2007 implements ReaderInterface
             // Hyperlink
             $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElement);
             if (is_object($oElementHlinkClick)) {
-                if ($oElementHlinkClick->hasAttribute('tooltip')) {
-                    $oShape->getHyperlink()->setTooltip($oElementHlinkClick->getAttribute('tooltip'));
-                }
-                if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target'])) {
-                    $oShape->getHyperlink()->setUrl($this->arrayRels[$fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target']);
-                }
+                $oShape->setHyperlink(
+                    $this->loadHyperlink($document, $oElementHlinkClick, $oShape->getHyperlink())
+                );
             }
         }
 
@@ -907,9 +883,6 @@ class PowerPoint2007 implements ReaderInterface
         $oSlide->addShape($oShape);
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadShapeRichText(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
         if (!$document->elementExists('p:txBody/a:p/a:r', $node)) {
@@ -968,9 +941,6 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadShapeTable(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
         $this->fileRels = $oSlide->getRelsIndex();
@@ -1021,8 +991,9 @@ class PowerPoint2007 implements ReaderInterface
             if (!($oElementRow instanceof DOMElement)) {
                 continue;
             }
-            $oRow = $oShape->getRow($keyRow, true);
-            if (is_null($oRow)) {
+            if ($oShape->hasRow($keyRow)) {
+                $oRow = $oShape->getRow($keyRow);
+            } else {
                 $oRow = $oShape->createRow();
             }
             if ($oElementRow->hasAttribute('h')) {
@@ -1110,8 +1081,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * @param Cell|RichText $oShape
-     *
-     * @throws \Exception
      */
     protected function loadParagraph(XMLReader $document, DOMElement $oElement, $oShape): void
     {
@@ -1240,12 +1209,9 @@ class PowerPoint2007 implements ReaderInterface
                     // Hyperlink
                     $oElementHlinkClick = $document->getElement('a:hlinkClick', $oElementrPr);
                     if (is_object($oElementHlinkClick)) {
-                        if ($oElementHlinkClick->hasAttribute('tooltip')) {
-                            $oText->getHyperlink()->setTooltip($oElementHlinkClick->getAttribute('tooltip'));
-                        }
-                        if ($oElementHlinkClick->hasAttribute('r:id') && isset($this->arrayRels[$this->fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target'])) {
-                            $oText->getHyperlink()->setUrl($this->arrayRels[$this->fileRels][$oElementHlinkClick->getAttribute('r:id')]['Target']);
-                        }
+                        $oText->setHyperlink(
+                            $this->loadHyperlink($document, $oElementHlinkClick, $oText->getHyperlink())
+                        );
                     }
                     // Font
                     $oElementFontFormat = null;
@@ -1278,9 +1244,23 @@ class PowerPoint2007 implements ReaderInterface
         }
     }
 
-    /**
-     * @throws \Exception
-     */
+    protected function loadHyperlink(XMLReader $xmlReader, DOMElement $element, Hyperlink $hyperlink): Hyperlink
+    {
+        if ($element->hasAttribute('tooltip')) {
+            $hyperlink->setTooltip($element->getAttribute('tooltip'));
+        }
+        if ($element->hasAttribute('r:id') && isset($this->arrayRels[$this->fileRels][$element->getAttribute('r:id')]['Target'])) {
+            $hyperlink->setUrl($this->arrayRels[$this->fileRels][$element->getAttribute('r:id')]['Target']);
+        }
+        if ($subElementExt = $xmlReader->getElement('a:extLst/a:ext', $element)) {
+            if ($subElementExt->hasAttribute('uri') && $subElementExt->getAttribute('uri') == '{A12FA001-AC4F-418D-AE19-62706E023703}') {
+                $hyperlink->setIsTextColorUsed(true);
+            }
+        }
+
+        return $hyperlink;
+    }
+
     protected function loadStyleBorder(XMLReader $xmlReader, DOMElement $oElement, Border $oBorder): void
     {
         if ($oElement->hasAttribute('w')) {
@@ -1319,9 +1299,6 @@ class PowerPoint2007 implements ReaderInterface
         return $oColor;
     }
 
-    /**
-     * @throws \Exception
-     */
     protected function loadStyleFill(XMLReader $xmlReader, DOMElement $oElement): ?Fill
     {
         // Gradient fill
@@ -1389,7 +1366,7 @@ class PowerPoint2007 implements ReaderInterface
      * @param AbstractSlide|Note $oSlide
      * @param DOMNodeList<DOMNode> $oElements
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @internal param $baseFile
      */
@@ -1410,7 +1387,7 @@ class PowerPoint2007 implements ReaderInterface
                     $this->loadShapeRichText($xmlReader, $oNode, $oSlide);
                     break;
                 default:
-                    //var_export($oNode->tagName);
+                    //throw new FeatureNotImplementedException();
             }
         }
     }

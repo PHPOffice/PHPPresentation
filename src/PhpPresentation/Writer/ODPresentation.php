@@ -22,6 +22,10 @@ namespace PhpOffice\PhpPresentation\Writer;
 
 use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
+use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
+use PhpOffice\PhpPresentation\Exception\FileCopyException;
+use PhpOffice\PhpPresentation\Exception\FileRemoveException;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
 
@@ -53,13 +57,11 @@ class ODPresentation extends AbstractWriter implements WriterInterface
      * Create a new \PhpOffice\PhpPresentation\Writer\ODPresentation.
      *
      * @param PhpPresentation $pPhpPresentation
-     *
-     * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
     {
         // Assign PhpPresentation
-        $this->setPhpPresentation($pPhpPresentation);
+        $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
 
         // Set up disk caching location
         $this->diskCachingDirectory = './';
@@ -73,12 +75,14 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     /**
      * Save PhpPresentation to file.
      *
-     * @throws \Exception
+     * @throws FileCopyException
+     * @throws FileRemoveException
+     * @throws InvalidParameterException
      */
     public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
-            throw new \Exception('Filename is empty');
+            throw new InvalidParameterException('pFilename', '');
         }
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
@@ -135,10 +139,10 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         // If a temporary file was used, copy it to the correct file stream
         if ($originalFilename != $pFilename) {
             if (false === copy($pFilename, $originalFilename)) {
-                throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
+                throw new FileCopyException($pFilename, $originalFilename);
             }
             if (false === @unlink($pFilename)) {
-                throw new \Exception('The file ' . $pFilename . ' could not be removed.');
+                throw new FileRemoveException($pFilename);
             }
         }
     }
@@ -157,21 +161,21 @@ class ODPresentation extends AbstractWriter implements WriterInterface
      * Set use disk caching where possible?
      *
      * @param bool $pValue
-     * @param string $pDirectory Disk caching directory
+     * @param string $directory Disk caching directory
      *
-     * @throws \Exception
+     * @throws DirectoryNotFoundException
      *
      * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
      */
-    public function setUseDiskCaching($pValue = false, $pDirectory = null)
+    public function setUseDiskCaching(bool $pValue = false, string $directory = null)
     {
         $this->useDiskCaching = $pValue;
 
-        if (!is_null($pDirectory)) {
-            if (!is_dir($pDirectory)) {
-                throw new \Exception("Directory does not exist: $pDirectory");
+        if (!is_null($directory)) {
+            if (!is_dir($directory)) {
+                throw new DirectoryNotFoundException($directory);
             }
-            $this->diskCachingDirectory = $pDirectory;
+            $this->diskCachingDirectory = $directory;
         }
 
         return $this;

@@ -61,16 +61,20 @@ class Hyperlink
     private $hashIndex;
 
     /**
+     * If true, uses the text color, instead of theme color
+     *
+     * @var bool
+     */
+    private $isTextColorUsed = false;
+
+    /**
      * Create a new \PhpOffice\PhpPresentation\Shape\Hyperlink.
      *
      * @param string $pUrl Url to link the shape to
      * @param string $pTooltip Tooltip to display on the hyperlink
-     *
-     * @throws \Exception
      */
-    public function __construct($pUrl = '', $pTooltip = '')
+    public function __construct(string $pUrl = '', string $pTooltip = '')
     {
-        // Initialise member variables
         $this->setUrl($pUrl);
         $this->setTooltip($pTooltip);
     }
@@ -80,7 +84,7 @@ class Hyperlink
      *
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->url;
     }
@@ -90,9 +94,9 @@ class Hyperlink
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @return self
      */
-    public function setUrl($value = '')
+    public function setUrl(string $value = ''): self
     {
         $this->url = $value;
 
@@ -104,7 +108,7 @@ class Hyperlink
      *
      * @return string
      */
-    public function getTooltip()
+    public function getTooltip(): string
     {
         return $this->tooltip;
     }
@@ -114,9 +118,9 @@ class Hyperlink
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @return self
      */
-    public function setTooltip($value = '')
+    public function setTooltip(string $value = ''): self
     {
         $this->tooltip = $value;
 
@@ -128,7 +132,7 @@ class Hyperlink
      *
      * @return int
      */
-    public function getSlideNumber()
+    public function getSlideNumber(): int
     {
         return $this->slideNumber;
     }
@@ -138,9 +142,9 @@ class Hyperlink
      *
      * @param int $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @return self
      */
-    public function setSlideNumber($value = 1)
+    public function setSlideNumber(int $value = 1): self
     {
         $this->url = 'ppaction://hlinksldjump';
         $this->slideNumber = $value;
@@ -153,7 +157,7 @@ class Hyperlink
      *
      * @return bool
      */
-    public function isInternal()
+    public function isInternal(): bool
     {
         return false !== strpos($this->url, 'ppaction://');
     }
@@ -194,6 +198,34 @@ class Hyperlink
     public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
+        return $this;
+    }
+
+    /**
+     * Get whether or not to use text color for a hyperlink, instead of theme color.
+     *
+     * @see https://docs.microsoft.com/en-us/openspecs/office_standards/ms-odrawxml/014fbc20-3705-4812-b8cd-93f5af05b504
+     *
+     * @return bool whether or not to use text color for a hyperlink, instead of theme color
+     */
+    public function isTextColorUsed(): bool
+    {
+        return $this->isTextColorUsed;
+    }
+
+    /**
+     * Set whether or not to use text color for a hyperlink, instead of theme color.
+     *
+     * @see https://docs.microsoft.com/en-us/openspecs/office_standards/ms-odrawxml/014fbc20-3705-4812-b8cd-93f5af05b504
+     *
+     * @param bool $isTextColorUsed
+     *
+     * @return self
+     */
+    public function setIsTextColorUsed(bool $isTextColorUsed): self
+    {
+        $this->isTextColorUsed = $isTextColorUsed;
 
         return $this;
     }

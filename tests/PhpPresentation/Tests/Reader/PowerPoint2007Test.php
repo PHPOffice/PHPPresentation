@@ -21,6 +21,8 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\PowerPoint2007;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
@@ -57,8 +59,8 @@ class PowerPoint2007Test extends TestCase
 
     public function testLoadFileNotExists(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
 
         $object = new PowerPoint2007();
         $object->load('');
@@ -66,18 +68,21 @@ class PowerPoint2007Test extends TestCase
 
     public function testLoadFileBadFormat(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint2007:');
-
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
+        $this->expectException(InvalidFileFormatException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file %s is not in the format supported by class PhpOffice\PhpPresentation\Reader\PowerPoint2007',
+            $file
+        ));
+
         $object = new PowerPoint2007();
         $object->load($file);
     }
 
     public function testFileSupportsNotExists(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
 
         $object = new PowerPoint2007();
         $object->fileSupportsUnserializePhpPresentation('');
@@ -563,6 +568,7 @@ class PowerPoint2007Test extends TestCase
         $this->assertTrue($oRichText->hasHyperlink());
         $this->assertEquals('https://github.com/PHPOffice/PHPPresentation/', $oRichText->getHyperlink()->getUrl());
         $this->assertEquals('PHPPresentation', $oRichText->getHyperlink()->getTooltip());
+        $this->assertFalse($oRichText->getHyperlink()->isTextColorUsed());
         $this->assertEquals('Calibri', $oRichText->getFont()->getName());
         $this->assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
     }

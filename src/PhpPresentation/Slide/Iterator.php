@@ -23,9 +23,6 @@ namespace PhpOffice\PhpPresentation\Slide;
 use IteratorIterator;
 use PhpOffice\PhpPresentation\PhpPresentation;
 
-/**
- * Used to iterate slides in PhpPresentation.
- */
 // @phpstan-ignore-next-line
 class Iterator extends IteratorIterator
 {
@@ -62,6 +59,7 @@ class Iterator extends IteratorIterator
     /**
      * Rewind iterator.
      */
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 0;
@@ -71,8 +69,6 @@ class Iterator extends IteratorIterator
      * Current \PhpOffice\PhpPresentation\Slide.
      *
      * @return \PhpOffice\PhpPresentation\Slide
-     *
-     * @throws \Exception
      */
     public function current()
     {
@@ -92,6 +88,7 @@ class Iterator extends IteratorIterator
     /**
      * Next value.
      */
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->position;
@@ -102,6 +99,7 @@ class Iterator extends IteratorIterator
      *
      * @return bool
      */
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         return $this->position < $this->subject->getSlideCount();

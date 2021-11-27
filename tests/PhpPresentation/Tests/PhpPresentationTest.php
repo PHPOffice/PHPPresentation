@@ -22,6 +22,7 @@ namespace PhpOffice\PhpPresentation\Tests;
 
 use PhpOffice\PhpPresentation\DocumentLayout;
 use PhpOffice\PhpPresentation\DocumentProperties;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PHPUnit\Framework\TestCase;
@@ -94,8 +95,8 @@ class PhpPresentationTest extends TestCase
      */
     public function testRemoveSlideByIndexException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Slide index is out of bounds.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
 
         $object = new PhpPresentation();
         $object->removeSlideByIndex(1);
@@ -106,8 +107,8 @@ class PhpPresentationTest extends TestCase
      */
     public function testGetSlideException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Slide index is out of bounds.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
 
         $object = new PhpPresentation();
         $object->getSlide(1);
@@ -118,8 +119,8 @@ class PhpPresentationTest extends TestCase
      */
     public function testSetActiveSlideIndexException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Active slide index is out of bounds.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1) is out of bounds (0, 0)');
 
         $object = new PhpPresentation();
         $object->setActiveSlideIndex(1);

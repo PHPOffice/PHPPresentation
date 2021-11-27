@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation;
 
+use PhpOffice\PhpPresentation\Exception\ShapeContainerAlreadyAssignedException;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Style\Border;
@@ -146,7 +147,7 @@ abstract class AbstractShape implements ComparableInterface
      * @param ShapeContainerInterface $pValue
      * @param bool $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
      *
-     * @throws \Exception
+     * @throws ShapeContainerAlreadyAssignedException
      *
      * @return $this
      */
@@ -175,7 +176,7 @@ abstract class AbstractShape implements ComparableInterface
                 // Set new \PhpOffice\PhpPresentation\Slide
                 $this->setContainer($pValue);
             } else {
-                throw new \Exception(sprintf('A %s has already been assigned. Shapes can only exist on one %s.', ShapeContainerInterface::class, ShapeContainerInterface::class));
+                throw new ShapeContainerAlreadyAssignedException(self::class);
             }
         }
 
@@ -328,8 +329,6 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * @throws \Exception
-     *
      * @return $this
      */
     public function setShadow(Shadow $pValue = null)
@@ -350,9 +349,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Hyperlink.
-     *
-     * @throws \Exception
+     * Get Hyperlink
      */
     public function getHyperlink(): Hyperlink
     {
@@ -364,9 +361,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Hyperlink.
-     *
-     * @throws \Exception
+     * Set Hyperlink
      */
     public function setHyperlink(Hyperlink $pHyperlink = null): self
     {

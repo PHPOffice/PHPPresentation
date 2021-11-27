@@ -70,10 +70,8 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * Add shape to slide.
      *
      * @return AbstractShape
-     *
-     * @throws \Exception
      */
-    public function addShape(AbstractShape $shape)
+    public function addShape(AbstractShape $shape): AbstractShape
     {
         $shape->setContainer($this);
 
@@ -179,11 +177,9 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
      * Create rich text shape.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText
-     *
-     * @throws \Exception
+     * @return RichText
      */
-    public function createRichTextShape()
+    public function createRichTextShape(): RichText
     {
         $shape = new RichText();
         $this->addShape($shape);
@@ -199,11 +195,9 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * @param int $toX Ending point x offset
      * @param int $toY Ending point y offset
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Line
-     *
-     * @throws \Exception
+     * @return Line
      */
-    public function createLineShape($fromX, $fromY, $toX, $toY)
+    public function createLineShape(int $fromX, int $fromY, int $toX, int $toY): Line
     {
         $shape = new Line($fromX, $fromY, $toX, $toY);
         $this->addShape($shape);
@@ -214,11 +208,9 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
      * Create chart shape.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart
-     *
-     * @throws \Exception
+     * @return Chart
      */
-    public function createChartShape()
+    public function createChartShape(): Chart
     {
         $shape = new Chart();
         $this->addShape($shape);
@@ -229,11 +221,9 @@ class Group extends AbstractShape implements ShapeContainerInterface
     /**
      * Create drawing shape.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Drawing\File
-     *
-     * @throws \Exception
+     * @return Drawing\File
      */
-    public function createDrawingShape()
+    public function createDrawingShape(): Drawing\File
     {
         $shape = new Drawing\File();
         $this->addShape($shape);
@@ -246,11 +236,9 @@ class Group extends AbstractShape implements ShapeContainerInterface
      *
      * @param int $columns Number of columns
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table
-     *
-     * @throws \Exception
+     * @return Table
      */
-    public function createTableShape($columns = 1)
+    public function createTableShape(int $columns = 1): Table
     {
         $shape = new Table($columns);
         $this->addShape($shape);

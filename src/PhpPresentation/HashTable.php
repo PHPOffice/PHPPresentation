@@ -43,8 +43,6 @@ class HashTable
      * Create a new \PhpOffice\PhpPresentation\HashTable.
      *
      * @param array<int, ComparableInterface> $pSource Optional source array to create HashTable from
-     *
-     * @throws \Exception
      */
     public function __construct(array $pSource = [])
     {
@@ -92,8 +90,6 @@ class HashTable
      * Remove HashTable item.
      *
      * @param ComparableInterface $pSource Item to remove
-     *
-     * @throws \Exception
      */
     public function remove(ComparableInterface $pSource): void
     {

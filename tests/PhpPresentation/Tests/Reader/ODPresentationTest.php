@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Reader;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Reader\ODPresentation;
 use PhpOffice\PhpPresentation\Shape\Drawing\Gd;
@@ -59,8 +61,8 @@ class ODPresentationTest extends TestCase
 
     public function testLoadFileNotExists(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
 
         $object = new ODPresentation();
         $object->load('');
@@ -68,18 +70,21 @@ class ODPresentationTest extends TestCase
 
     public function testLoadFileBadFormat(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid file format for PhpOffice\PhpPresentation\Reader\ODPresentation:');
-
         $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Sample_00_01.ppt';
+        $this->expectException(InvalidFileFormatException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file %s is not in the format supported by class PhpOffice\PhpPresentation\Reader\ODPresentation',
+            $file
+        ));
+
         $object = new ODPresentation();
         $object->load($file);
     }
 
     public function testFileSupportsNotExists(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Could not open  for reading! File does not exist.');
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage('The file "" doesn\'t exist');
 
         $object = new ODPresentation();
         $object->fileSupportsUnserializePhpPresentation('');

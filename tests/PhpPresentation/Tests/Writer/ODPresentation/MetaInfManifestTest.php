@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Shape\Drawing;
 use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
@@ -48,11 +49,15 @@ class MetaInfManifestTest extends PhpPresentationTestCase
 
     public function testDrawingException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('does not exist');
+        $path = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/filedoesntexist.png';
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file "%s" doesn\'t exist',
+            $path
+        ));
 
         $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/filedoesntexist.png', false);
+        $oShape->setPath($path, false);
 
         $this->writePresentationFile($this->oPresentation, 'ODPresentation');
     }
@@ -92,11 +97,15 @@ class MetaInfManifestTest extends PhpPresentationTestCase
 
     public function testDrawingZipException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('does not exist');
+        $path = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'filedoesntexist.zip';
+        $this->expectException(FileNotFoundException::class);
+        $this->expectExceptionMessage(sprintf(
+            'The file "%s" doesn\'t exist',
+            $path
+        ));
 
         $oShape = new Drawing\ZipFile();
-        $oShape->setPath('zip://' . PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'filedoesntexist.zip');
+        $oShape->setPath('zip://' . $path);
         $this->oPresentation->getActiveSlide()->addShape($oShape);
 
         $this->writePresentationFile($this->oPresentation, 'ODPresentation');

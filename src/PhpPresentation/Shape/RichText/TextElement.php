@@ -95,9 +95,6 @@ class TextElement implements TextElementInterface
         return !is_null($this->hyperlink);
     }
 
-    /**
-     * @throws \Exception
-     */
     public function getHyperlink(): Hyperlink
     {
         if (is_null($this->hyperlink)) {
@@ -109,8 +106,6 @@ class TextElement implements TextElementInterface
 
     /**
      * Set Hyperlink.
-     *
-     * @throws \Exception
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
      */

@@ -20,9 +20,13 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Reader;
 
+use Exception;
 use PhpOffice\Common\Microsoft\OLERead;
 use PhpOffice\Common\Text;
 use PhpOffice\PhpPresentation\AbstractShape;
+use PhpOffice\PhpPresentation\Exception\FeatureNotImplementedException;
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape;
 use PhpOffice\PhpPresentation\Shape\Drawing;
@@ -358,18 +362,6 @@ class PowerPoint97 implements ReaderInterface
      */
     private $streamCurrentUser;
     /**
-     * Stream "Summary Information".
-     *
-     * @var string
-     */
-    private $streamSummaryInformation;
-    /**
-     * Stream "Document Summary Information".
-     *
-     * @var string
-     */
-    private $streamDocumentSummaryInformation;
-    /**
      * Stream "Pictures".
      *
      * @var string
@@ -385,9 +377,12 @@ class PowerPoint97 implements ReaderInterface
     private $currentNote;
 
     /**
+     * @var string|null
+     */
+    private $filename;
+
+    /**
      * Can the current \PhpOffice\PhpPresentation\Reader\ReaderInterface read the file?
-     *
-     * @throws \Exception
      */
     public function canRead(string $pFilename): bool
     {
@@ -397,13 +392,13 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Does a file support UnserializePhpPresentation ?
      *
-     * @throws \Exception
+     * @throws FileNotFoundException
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
         // Check if file exists
         if (!file_exists($pFilename)) {
-            throw new \Exception('Could not open ' . $pFilename . ' for reading! File does not exist.');
+            throw new FileNotFoundException($pFilename);
         }
 
         try {
@@ -413,7 +408,7 @@ class PowerPoint97 implements ReaderInterface
             $ole->read($pFilename);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
     }
@@ -421,30 +416,30 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Loads PhpPresentation Serialized file.
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new \Exception("Invalid file format for PhpOffice\PhpPresentation\Reader\PowerPoint97: " . $pFilename . '.');
+            throw new InvalidFileFormatException($pFilename, PowerPoint97::class);
         }
 
-        return $this->loadFile($pFilename);
+        $this->filename = $pFilename;
+
+        return $this->loadFile();
     }
 
     /**
-     * Load PhpPresentation Serialized file.
-     *
-     * @throws \Exception
+     * Load PhpPresentation Serialized file
      */
-    private function loadFile(string $pFilename): PhpPresentation
+    private function loadFile(): PhpPresentation
     {
         $this->oPhpPresentation = new PhpPresentation();
         $this->oPhpPresentation->removeSlideByIndex();
 
         // Read OLE Blocks
-        $this->loadOLE($pFilename);
+        $this->loadOLE();
         // Read pictures in the Pictures Stream
         $this->loadPicturesStream();
         // Read information in the Current User Stream
@@ -456,15 +451,13 @@ class PowerPoint97 implements ReaderInterface
     }
 
     /**
-     * Read OLE Part.
-     *
-     * @throws \Exception
+     * Read OLE Part
      */
-    private function loadOLE(string $pFilename): void
+    private function loadOLE(): void
     {
         // OLE reader
         $oOLE = new OLERead();
-        $oOLE->read($pFilename);
+        $oOLE->read($this->filename);
 
         // PowerPoint Document Stream
         $this->streamPowerpointDocument = $oOLE->getStream($oOLE->powerpointDocument);
@@ -472,18 +465,14 @@ class PowerPoint97 implements ReaderInterface
         // Current User Stream
         $this->streamCurrentUser = $oOLE->getStream($oOLE->currentUser);
 
-        // Get summary information data
-        $this->streamSummaryInformation = $oOLE->getStream($oOLE->summaryInformation);
-
-        // Get additional document summary information data
-        $this->streamDocumentSummaryInformation = $oOLE->getStream($oOLE->docSummaryInfos);
-
         // Get pictures data
         $this->streamPictures = $oOLE->getStream($oOLE->pictures);
     }
 
     /**
      * Stream Pictures.
+     *
+     * @throws FeatureNotImplementedException
      *
      * @see http://msdn.microsoft.com/en-us/library/dd920746(v=office.12).aspx
      */
@@ -500,7 +489,7 @@ class PowerPoint97 implements ReaderInterface
                 //@link : http://msdn.microsoft.com/en-us/library/dd950560(v=office.12).aspx
                 if (0xF007 == $arrayRH['recType']) {
                     // OfficeArtFBSE
-                    throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+                    throw new FeatureNotImplementedException();
                 }
                 if ($arrayRH['recType'] >= 0xF018 && $arrayRH['recType'] <= 0xF117) {
                     $arrayRecord = $this->readRecordOfficeArtBlip($stream, $pos - 8);
@@ -517,6 +506,9 @@ class PowerPoint97 implements ReaderInterface
     /**
      * Stream Current User.
      *
+     * @throws FeatureNotImplementedException
+     * @throws InvalidFileFormatException
+     *
      * @see http://msdn.microsoft.com/en-us/library/dd908567(v=office.12).aspx
      */
     private function loadCurrentUserStream(): void
@@ -530,21 +522,22 @@ class PowerPoint97 implements ReaderInterface
         $rHeader = $this->loadRecordHeader($this->streamCurrentUser, $pos);
         $pos += 8;
         if (0x0 != $rHeader['recVer'] || 0x000 != $rHeader['recInstance'] || self::RT_CURRENTUSERATOM != $rHeader['recType']) {
-            throw new \Exception('File PowerPoint 97 in error (Location : CurrentUserAtom > RecordHeader).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : CurrentUserAtom > RecordHeader');
         }
 
         // Size
         $size = self::getInt4d($this->streamCurrentUser, $pos);
         $pos += 4;
         if (0x00000014 != $size) {
-            throw new \Exception('File PowerPoint 97 in error (Location : CurrentUserAtom > Size).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : CurrentUserAtom > Size');
         }
 
         // headerToken
         $headerToken = self::getInt4d($this->streamCurrentUser, $pos);
         $pos += 4;
         if (0xF3D1C4DF == $headerToken && 0xE391C05F != $headerToken) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ') : Encrypted file');
+            // Encrypted file
+            throw new FeatureNotImplementedException();
         }
 
         // offsetToCurrentEdit
@@ -555,28 +548,28 @@ class PowerPoint97 implements ReaderInterface
         $lenUserName = self::getInt2d($this->streamCurrentUser, $pos);
         $pos += 2;
         if ($lenUserName > 255) {
-            throw new \Exception('File PowerPoint 97 in error (Location : CurrentUserAtom > lenUserName).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : CurrentUserAtom > lenUserName');
         }
 
         // docFileVersion
         $docFileVersion = self::getInt2d($this->streamCurrentUser, $pos);
         $pos += 2;
         if (0x03F4 != $docFileVersion) {
-            throw new \Exception('File PowerPoint 97 in error (Location : CurrentUserAtom > docFileVersion).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : CurrentUserAtom > docFileVersion');
         }
 
         // majorVersion
         $majorVersion = self::getInt1d($this->streamCurrentUser, $pos);
         ++$pos;
         if (0x03 != $majorVersion) {
-            throw new \Exception('File PowerPoint 97 in error (Location : CurrentUserAtom > majorVersion).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : CurrentUserAtom > majorVersion');
         }
 
         // minorVersion
         $minorVersion = self::getInt1d($this->streamCurrentUser, $pos);
         ++$pos;
         if (0x00 != $minorVersion) {
-            throw new \Exception('File PowerPoint 97 in error (Location : CurrentUserAtom > minorVersion).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : CurrentUserAtom > minorVersion');
         }
 
         // unused
@@ -598,7 +591,7 @@ class PowerPoint97 implements ReaderInterface
         $relVersion = self::getInt4d($this->streamCurrentUser, $pos);
         $pos += 4;
         if (0x00000008 != $relVersion && 0x00000009 != $relVersion) {
-            throw new \Exception('File PowerPoint 97 in error (Location : CurrentUserAtom > relVersion).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : CurrentUserAtom > relVersion');
         }
 
         // unicodeUserName
@@ -642,7 +635,6 @@ class PowerPoint97 implements ReaderInterface
                     $this->readRecordSlideContainer($this->streamPowerpointDocument, $pos);
                     break;
                 default:
-                    // throw new \Exception('Feature not implemented : l.'.__LINE__.'('.dechex($rh['recType']).')');
                     break;
             }
         }
@@ -707,7 +699,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd772900(v=office.12).aspx
      */
@@ -723,7 +715,7 @@ class PowerPoint97 implements ReaderInterface
             $arrayReturn['length'] += 8;
             // animationAtom
             // animationSound
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
 
         return $arrayReturn;
@@ -732,7 +724,8 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A container record that specifies information about the document.
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
+     * @throws InvalidFileFormatException
      *
      * @see http://msdn.microsoft.com/en-us/library/dd947357(v=office.12).aspx
      */
@@ -741,7 +734,7 @@ class PowerPoint97 implements ReaderInterface
         $documentAtom = $this->loadRecordHeader($stream, $pos);
         $pos += 8;
         if (0x1 != $documentAtom['recVer'] || 0x000 != $documentAtom['recInstance'] || self::RT_DOCUMENTATOM != $documentAtom['recType']) {
-            throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > DocumentAtom).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : RTDocument > DocumentAtom');
         }
         $pos += $documentAtom['recLen'];
 
@@ -751,7 +744,7 @@ class PowerPoint97 implements ReaderInterface
             // exObjListAtom > rh
             $exObjListAtom = $this->loadRecordHeader($stream, $pos);
             if (0x0 != $exObjListAtom['recVer'] || 0x000 != $exObjListAtom['recInstance'] || self::RT_EXTERNALOBJECTLISTATOM != $exObjListAtom['recType'] || 0x00000004 != $exObjListAtom['recLen']) {
-                throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > DocumentAtom > exObjList > exObjListAtom).');
+                throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : RTDocument > DocumentAtom > exObjList > exObjListAtom');
             }
             $pos += 8;
             // exObjListAtom > exObjIdSeed
@@ -768,7 +761,7 @@ class PowerPoint97 implements ReaderInterface
                         // exHyperlinkAtom > rh
                         $exHyperlinkAtom = $this->loadRecordHeader($stream, $pos);
                         if (0x0 != $exHyperlinkAtom['recVer'] || 0x000 != $exHyperlinkAtom['recInstance'] || self::RT_EXTERNALHYPERLINKATOM != $exHyperlinkAtom['recType'] || 0x00000004 != $exObjListAtom['recLen']) {
-                            throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > DocumentAtom > exObjList > rgChildRec > RT_ExternalHyperlink).');
+                            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : RTDocument > DocumentAtom > exObjList > rgChildRec > RT_ExternalHyperlink');
                         }
                         $pos += 8;
                         $exObjList['recLen'] -= 8;
@@ -819,7 +812,8 @@ class PowerPoint97 implements ReaderInterface
                         }
                         break;
                     default:
-                        throw new \Exception('Feature not implemented (l.' . __LINE__ . ' : ' . dechex((int) $childRec['recType']) . ')');
+                        // var_dump(dechex((int) $childRec['recType']));
+                        throw new FeatureNotImplementedException();
                 }
             } while ($exObjList['recLen'] > 0);
         }
@@ -844,7 +838,7 @@ class PowerPoint97 implements ReaderInterface
                     $pos += 8;
                     $fontCollection['recLen'] -= 8;
                     if (0x0 != $fontEntityAtom['recVer'] || $fontEntityAtom['recInstance'] > 128 || self::RT_FONTENTITYATOM != $fontEntityAtom['recType']) {
-                        throw new \Exception('File PowerPoint 97 in error (Location : RTDocument > RT_Environment > RT_FontCollection > RT_FontEntityAtom).');
+                        throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : RTDocument > RT_Environment > RT_FontCollection > RT_FontEntityAtom');
                     }
                     $string = '';
                     for ($inc = 0; $inc < 32; ++$inc) {
@@ -1020,8 +1014,6 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
-     *
      * @see https://msdn.microsoft.com/en-us/library/dd923801(v=office.12).aspx
      */
     private function readRecordDrawingContainer(string $stream, int $pos): array
@@ -1188,7 +1180,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd925811(v=office.12).aspx
      */
@@ -1204,7 +1196,7 @@ class PowerPoint97 implements ReaderInterface
             $arrayReturn['length'] += 8;
             // interactiveInfoAtom
             // macroNameAtom
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
 
         return $arrayReturn;
@@ -1215,7 +1207,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array{'length': int, 'picture': null|string}
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd910081(v=office.12).aspx
      */
@@ -1250,7 +1242,8 @@ class PowerPoint97 implements ReaderInterface
                     $arrayReturn['length'] += $data['recLen'];
                     break;
                 default:
-                    throw new \Exception('Feature not implemented (l.' . __LINE__ . ' : ' . dechex((int) $data['recType']) . ')');
+                    // var_dump(dechex((int) $data['recType']))
+                    throw new FeatureNotImplementedException();
             }
         }
 
@@ -1293,7 +1286,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd922797(v=office.12).aspx
      */
@@ -1321,7 +1314,8 @@ class PowerPoint97 implements ReaderInterface
                     $pos += 8;
                     break;
                 case 0x00000010:
-                    throw new \Exception('PowerPoint97 Reader : record OfficeArtClientAnchor (0x00000010)');
+                    // record OfficeArtClientAnchor (0x00000010)
+                    throw new FeatureNotImplementedException();
             }
         }
 
@@ -1331,9 +1325,9 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A container record that specifies text related data for a shape.
      *
-     * @return array{'length': int, 'text': string, 'numParts': int, 'numTexts': int, 'hyperlink': array<int, array<string, int>>, 'part': array}
+     * @return array{'length': int, 'alignH': string|null, 'text': string, 'numParts': int, 'numTexts': int, 'hyperlink': array<int, array<string, int>>, 'part': array{'length': int, 'strLenRT': int, 'partLength': int|float, 'bold': bool, 'italic': bool, 'underline': bool, 'fontName': string, 'fontSize': int, 'color': Color}}
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd910958(v=office.12).aspx
      */
@@ -1444,7 +1438,7 @@ class PowerPoint97 implements ReaderInterface
                             $arrayReturn['length'] += 4;
                         }
                         if (0x0001 == $rhChild['recInstance']) {
-                            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+                            throw new FeatureNotImplementedException();
                         }
                         break;
                     case self::RT_TEXTSPECIALINFOATOM:
@@ -1470,7 +1464,6 @@ class PowerPoint97 implements ReaderInterface
                     default:
                         $arrayReturn['length'] += 8;
                         $arrayReturn['length'] += $rhChild['recLen'];
-                    // throw new \Exception('Feature not implemented (l.'.__LINE__.' : 0x'.dechex($rhChild['recType']).')');
                 }
             } while (($data['recLen'] - $arrayReturn['length']) > 0);
         }
@@ -1483,7 +1476,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array{'length': int, 'shape': null|AbstractShape}
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd943794(v=office.12).aspx
      */
@@ -1505,7 +1498,7 @@ class PowerPoint97 implements ReaderInterface
             // shapeProp
             $shapeProp = $this->readRecordOfficeArtFSP($stream, $pos + $arrayReturn['length']);
             if (0 == $shapeProp['length']) {
-                throw new \Exception('PowerPoint97 Reader : record OfficeArtFSP');
+                throw new InvalidFileFormatException($this->filename, PowerPoint97::class);
             }
             $arrayReturn['length'] += $shapeProp['length'];
 
@@ -1634,7 +1627,7 @@ class PowerPoint97 implements ReaderInterface
                             // Is there a hyperlink ?
                             if (!empty($clientTextbox['hyperlink'])) {
                                 foreach ($clientTextbox['hyperlink'] as $itmHyperlink) {
-                                    if ($itmHyperlink['start'] == $start && ($itmHyperlink['end'] - $itmHyperlink['start']) == $clientTextbox['part' . $inc]['partLength']) {
+                                    if ($itmHyperlink['start'] == $start && ($itmHyperlink['end'] - $itmHyperlink['start']) == (float) $clientTextbox['part' . $inc]['partLength']) {
                                         $sText = $this->arrayHyperlinks[$itmHyperlink['id']]['text'];
                                         $sHyperlinkURL = $this->arrayHyperlinks[$itmHyperlink['id']]['url'];
                                         break;
@@ -1753,7 +1746,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      *
      * @see : https://msdn.microsoft.com/en-us/library/dd910416(v=office.12).aspx
      */
@@ -1770,7 +1763,7 @@ class PowerPoint97 implements ReaderInterface
             do {
                 $rhFileBlock = $this->loadRecordHeader($stream, $pos + $arrayReturn['length']);
                 if (!(0xF == $rhFileBlock['recVer'] && 0x0000 == $rhFileBlock['recInstance'] && (0xF003 == $rhFileBlock['recType'] || 0xF004 == $rhFileBlock['recType']))) {
-                    throw new \Exception('PowerPoint97 Reader : readRecordOfficeArtSpgrContainer.');
+                    throw new InvalidFileFormatException($this->filename, PowerPoint97::class);
                 }
 
                 switch ($rhFileBlock['recType']) {
@@ -1828,7 +1821,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd950206(v=office.12).aspx
      */
@@ -1882,7 +1875,8 @@ class PowerPoint97 implements ReaderInterface
                         //@link : https://msdn.microsoft.com/en-us/library/dd951605(v=office.12).aspx
                         break;
                     default:
-                        throw new \Exception('Feature not implemented (l.' . __LINE__ . ' : 0x' . dechex($opt['opid']) . ')');
+                        // var_dump('0x' . dechex($opt['opid']));
+                        throw new FeatureNotImplementedException();
                 }
             }
         }
@@ -1894,8 +1888,6 @@ class PowerPoint97 implements ReaderInterface
      * The OfficeArtDgContainer record specifies the container for all the file records for the objects in a drawing.
      *
      * @return array<string, int>
-     *
-     * @throws \Exception
      *
      * @see : https://msdn.microsoft.com/en-us/library/dd924455(v=office.12).aspx
      */
@@ -2232,7 +2224,6 @@ class PowerPoint97 implements ReaderInterface
                         //@link : http://msdn.microsoft.com/en-us/library/dd949807(v=office.12).aspx
                         break;
                     default:
-                        // throw new \Exception('Feature not implemented (l.'.__LINE__.' : 0x'.dechex($opt['opid']).')');
                 }
             }
             if ($data['recLen'] > 0) {
@@ -2353,7 +2344,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see : https://msdn.microsoft.com/en-us/library/dd950927(v=office.12).aspx
      */
@@ -2423,7 +2414,8 @@ class PowerPoint97 implements ReaderInterface
                             $arrayReturn['length'] += $dataRG['length'];
                             break;
                         default:
-                            throw new \Exception('Feature not implemented (l.' . __LINE__ . ' : 0x' . dechex($dataHeaderRG['recType']) . ')');
+                            // var_dump('0x' . dechex($dataHeaderRG['recType']));
+                            throw new FeatureNotImplementedException();
                     }
                 }
             } while (in_array($dataHeaderRG['recType'], $array));
@@ -2437,14 +2429,14 @@ class PowerPoint97 implements ReaderInterface
      *
      * @see http://msdn.microsoft.com/en-us/library/dd952680(v=office.12).aspx
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
     private function readRecordPersistDirectoryAtom(string $stream, int $pos): void
     {
         $rHeader = $this->loadRecordHeader($stream, $pos);
         $pos += 8;
         if (0x0 != $rHeader['recVer'] || 0x000 != $rHeader['recInstance'] || self::RT_PERSISTDIRECTORYATOM != $rHeader['recType']) {
-            throw new \Exception('File PowerPoint 97 in error (Location : PersistDirectoryAtom > RecordHeader).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : PersistDirectoryAtom > RecordHeader');
         }
         // rgPersistDirEntry
         // @link : http://msdn.microsoft.com/en-us/library/dd947347(v=office.12).aspx
@@ -2686,7 +2678,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd911266(v=office.12).aspx
      */
@@ -2711,7 +2703,8 @@ class PowerPoint97 implements ReaderInterface
                         break;
                     //case self::RT_PROGSTRINGTAG:
                     default:
-                        throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+                        // var_dump('0x' . dechex($dataHeaderRG['recType']));
+                        throw new FeatureNotImplementedException();
                 }
             } while ($length < $data['recLen']);
             // Datas
@@ -2763,7 +2756,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A container record that specifies a presentation slide or title master slide.
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      *
      * @see http://msdn.microsoft.com/en-us/library/dd946323(v=office.12).aspx
      */
@@ -2776,7 +2769,7 @@ class PowerPoint97 implements ReaderInterface
         // *** slideAtom (32 bytes)
         $slideAtom = $this->readRecordSlideAtom($stream, $pos);
         if (0 == $slideAtom['length']) {
-            throw new \Exception('PowerPoint97 Reader : record SlideAtom');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class);
         }
         $pos += $slideAtom['length'];
 
@@ -2799,7 +2792,8 @@ class PowerPoint97 implements ReaderInterface
         // *** slideSchemeColorSchemeAtom (40 bytes)
         $slideSchemeColorAtom = $this->readRecordSlideSchemeColorSchemeAtom($stream, $pos);
         if (0 == $slideSchemeColorAtom['length']) {
-            throw new \Exception('PowerPoint97 Reader : record SlideSchemeColorSchemeAtom');
+            // Record SlideSchemeColorSchemeAtom
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class);
         }
         $pos += $slideSchemeColorAtom['length'];
 
@@ -2953,14 +2947,14 @@ class PowerPoint97 implements ReaderInterface
      *
      * @see http://msdn.microsoft.com/en-us/library/dd945746(v=office.12).aspx
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
     private function readRecordUserEditAtom(string $stream, int $pos): void
     {
         $rHeader = $this->loadRecordHeader($stream, $pos);
         $pos += 8;
         if (0x0 != $rHeader['recVer'] || 0x000 != $rHeader['recInstance'] || self::RT_USEREDITATOM != $rHeader['recType'] || (0x0000001C != $rHeader['recLen'] && 0x00000020 != $rHeader['recLen'])) {
-            throw new \Exception('File PowerPoint 97 in error (Location : UserEditAtom > RecordHeader).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : UserEditAtom > RecordHeader');
         }
 
         // lastSlideIdRef
@@ -2972,14 +2966,14 @@ class PowerPoint97 implements ReaderInterface
         $minorVersion = self::getInt1d($stream, $pos);
         ++$pos;
         if (0x00 != $minorVersion) {
-            throw new \Exception('File PowerPoint 97 in error (Location : UserEditAtom > minorVersion).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : UserEditAtom > minorVersion');
         }
 
         // majorVersion
         $majorVersion = self::getInt1d($stream, $pos);
         ++$pos;
         if (0x03 != $majorVersion) {
-            throw new \Exception('File PowerPoint 97 in error (Location : UserEditAtom > majorVersion).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : UserEditAtom > majorVersion');
         }
 
         // offsetLastEdit
@@ -2992,7 +2986,7 @@ class PowerPoint97 implements ReaderInterface
         $docPersistIdRef = self::getInt4d($stream, $pos);
         $pos += 4;
         if (0x00000001 != $docPersistIdRef) {
-            throw new \Exception('File PowerPoint 97 in error (Location : UserEditAtom > docPersistIdRef).');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : UserEditAtom > docPersistIdRef');
         }
 
         // persistIdSeed
@@ -3008,7 +3002,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array{'length': int, 'strLenRT': int, 'partLength': int, 'bold': bool, 'italic': bool, 'underline': bool, 'fontName': string, 'fontSize': int, 'color': Color}
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd945870(v=office.12).aspx
      */
@@ -3114,7 +3108,7 @@ class PowerPoint97 implements ReaderInterface
             }
         }
         if (1 == $masksData['position']) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
 
         return $arrayReturn;
@@ -3123,9 +3117,9 @@ class PowerPoint97 implements ReaderInterface
     /**
      * A structure that specifies the paragraph-level formatting of a run of text.
      *
-     * @return array{'length': int, 'strLenRT': int, 'alignH': string, 'bulletChar': string, 'leftMargin': int, 'indent': int}
+     * @return array{'length': int, 'strLenRT': int, 'alignH': string|null, 'bulletChar': string, 'leftMargin': int, 'indent': int}
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd923535(v=office.12).aspx
      */
@@ -3270,7 +3264,7 @@ class PowerPoint97 implements ReaderInterface
             $arrayReturn['length'] += 2;
         }
         if (1 == $masksData['tabStops']) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
         if (1 == $masksData['fontAlign']) {
             // $data = self::getInt2d($stream, $pos + $arrayReturn['length']);
@@ -3281,7 +3275,7 @@ class PowerPoint97 implements ReaderInterface
             $arrayReturn['length'] += 2;
         }
         if (1 == $masksData['textDirection']) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
 
         return $arrayReturn;
@@ -3292,7 +3286,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd909603(v=office.12).aspx
      */
@@ -3337,13 +3331,13 @@ class PowerPoint97 implements ReaderInterface
             $arrayReturn['length'] += 2;
         }
         if (1 == $masksData['fBidi']) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
         if (1 == $masksData['fPp10ext']) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
         if (1 == $masksData['smartTag']) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
 
         return $arrayReturn;
@@ -3354,7 +3348,7 @@ class PowerPoint97 implements ReaderInterface
      *
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws FeatureNotImplementedException
      *
      * @see https://msdn.microsoft.com/en-us/library/dd922749(v=office.12).aspx
      */
@@ -3383,10 +3377,10 @@ class PowerPoint97 implements ReaderInterface
         $masksData['fIndent5'] = ($data >> 12) & bindec('1');
 
         if (1 == $masksData['fCLevels']) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
         if (1 == $masksData['fDefaultTabSize']) {
-            throw new \Exception('Feature not implemented (l.' . __LINE__ . ')');
+            throw new FeatureNotImplementedException();
         }
         if (1 == $masksData['fTabStops']) {
             $count = self::getInt2d($stream, $pos + $arrayReturn['length']);
@@ -3447,9 +3441,6 @@ class PowerPoint97 implements ReaderInterface
         return $arrayReturn;
     }
 
-    /**
-     * @throws \Exception
-     */
     private function readRecordNotesContainer(string $stream, int $pos): void
     {
         // notesAtom
@@ -3469,7 +3460,7 @@ class PowerPoint97 implements ReaderInterface
     /**
      * @return array<string, int>
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
     private function readRecordNotesAtom(string $stream, int $pos): array
     {
@@ -3479,7 +3470,7 @@ class PowerPoint97 implements ReaderInterface
 
         $data = $this->loadRecordHeader($stream, $pos);
         if (0x1 != $data['recVer'] || 0x000 != $data['recInstance'] || self::RT_NOTESATOM != $data['recType'] || 0x00000008 != $data['recLen']) {
-            throw new \Exception('File PowerPoint 97 in error (Location : NotesAtom > RecordHeader)');
+            throw new InvalidFileFormatException($this->filename, PowerPoint97::class, 'Location : NotesAtom > RecordHeader)');
         }
         // Record Header
         $arrayReturn['length'] += 8;

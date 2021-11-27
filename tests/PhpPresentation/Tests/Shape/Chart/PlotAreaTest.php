@@ -20,7 +20,10 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart;
 
+use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\PlotArea;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar3D;
 use PHPUnit\Framework\TestCase;
 
@@ -35,8 +38,8 @@ class PlotAreaTest extends TestCase
     {
         $object = new PlotArea();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->getAxisX());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis', $object->getAxisY());
+        $this->assertInstanceOf(Axis::class, $object->getAxisX());
+        $this->assertInstanceOf(Axis::class, $object->getAxisY());
     }
 
     public function testHashIndex(): void
@@ -45,7 +48,7 @@ class PlotAreaTest extends TestCase
         $value = mt_rand(1, 100);
 
         $this->assertEmpty($object->getHashIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setHashIndex($value));
+        $this->assertInstanceOf(PlotArea::class, $object->setHashIndex($value));
         $this->assertEquals($value, $object->getHashIndex());
     }
 
@@ -54,9 +57,9 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setHeight());
+        $this->assertInstanceOf(PlotArea::class, $object->setHeight());
         $this->assertEquals(0, $object->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setHeight($value));
+        $this->assertInstanceOf(PlotArea::class, $object->setHeight($value));
         $this->assertEquals($value, $object->getHeight());
     }
 
@@ -65,9 +68,9 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setOffsetX());
+        $this->assertInstanceOf(PlotArea::class, $object->setOffsetX());
         $this->assertEquals(0, $object->getOffsetX());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setOffsetX($value));
+        $this->assertInstanceOf(PlotArea::class, $object->setOffsetX($value));
         $this->assertEquals($value, $object->getOffsetX());
     }
 
@@ -76,9 +79,9 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setOffsetY());
+        $this->assertInstanceOf(PlotArea::class, $object->setOffsetY());
         $this->assertEquals(0, $object->getOffsetY());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setOffsetY($value));
+        $this->assertInstanceOf(PlotArea::class, $object->setOffsetY($value));
         $this->assertEquals($value, $object->getOffsetY());
     }
 
@@ -86,14 +89,14 @@ class PlotAreaTest extends TestCase
     {
         $object = new PlotArea();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setType(new Bar3D()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractType', $object->getType());
+        $this->assertInstanceOf(PlotArea::class, $object->setType(new Bar3D()));
+        $this->assertInstanceOf(AbstractType::class, $object->getType());
     }
 
     public function testTypeException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Chart type has not been set.');
+        $this->expectException(UndefinedChartTypeException::class);
+        $this->expectExceptionMessage('The chart type has not been defined');
 
         $object = new PlotArea();
         $object->getType();
@@ -104,9 +107,9 @@ class PlotAreaTest extends TestCase
         $object = new PlotArea();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setWidth());
+        $this->assertInstanceOf(PlotArea::class, $object->setWidth());
         $this->assertEquals(0, $object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\PlotArea', $object->setWidth($value));
+        $this->assertInstanceOf(PlotArea::class, $object->setWidth($value));
         $this->assertEquals($value, $object->getWidth());
     }
 }

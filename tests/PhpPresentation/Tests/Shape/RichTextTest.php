@@ -20,8 +20,11 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Shape\RichText;
+use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
+use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
 use PHPUnit\Framework\TestCase;
 
@@ -56,8 +59,8 @@ class RichTextTest extends TestCase
 
     public function testActiveParagraphException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid paragraph count.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1000) is out of bounds (0, 1)');
 
         $object = new RichText();
         $object->setActiveParagraph(1000);
@@ -65,8 +68,8 @@ class RichTextTest extends TestCase
 
     public function testGetParagraphException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Invalid paragraph count.');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1000) is out of bounds (0, 1)');
 
         $object = new RichText();
         $object->getParagraph(1000);
@@ -95,8 +98,8 @@ class RichTextTest extends TestCase
 
     public function testColumnsException(): void
     {
-        $this->expectException(\Exception::class);
-        $this->expectExceptionMessage('Number of columns should be 1-16');
+        $this->expectException(OutOfBoundsException::class);
+        $this->expectExceptionMessage('The expected value (1000) is out of bounds (1, 16)');
 
         $object = new RichText();
         $object->setColumns(1000);
@@ -124,15 +127,15 @@ class RichTextTest extends TestCase
         $this->assertCount(1, $object->getActiveParagraph()->getRichTextElements());
         $this->assertInstanceOf(RichText::class, $object->addText(new TextElement()));
         $this->assertCount(2, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText());
+        $this->assertInstanceOf(TextElement::class, $object->createText());
         $this->assertCount(3, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\TextElement', $object->createText('ALPHA'));
+        $this->assertInstanceOf(TextElement::class, $object->createText('ALPHA'));
         $this->assertCount(4, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->createBreak());
+        $this->assertInstanceOf(BreakElement::class, $object->createBreak());
         $this->assertCount(5, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun());
+        $this->assertInstanceOf(Run::class, $object->createTextRun());
         $this->assertCount(6, $object->getActiveParagraph()->getRichTextElements());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->createTextRun('BETA'));
+        $this->assertInstanceOf(Run::class, $object->createTextRun('BETA'));
         $this->assertCount(7, $object->getActiveParagraph()->getRichTextElements());
         $this->assertEquals('ALPHA' . "\r\n" . 'BETA', $object->getPlainText());
         $this->assertEquals('ALPHA' . "\r\n" . 'BETA', (string) $object);

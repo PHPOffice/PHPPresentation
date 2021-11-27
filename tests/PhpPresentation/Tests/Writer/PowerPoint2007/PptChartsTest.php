@@ -20,8 +20,8 @@ declare(strict_types=1);
 
 namespace PhpPresentation\Tests\Writer\PowerPoint2007;
 
-use Exception;
 use PhpOffice\Common\Drawing;
+use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Chart\Axis;
 use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
@@ -176,8 +176,8 @@ class PptChartsTest extends PhpPresentationTestCase
 
     public function testPlotAreaBadType(): void
     {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('The chart type provided could not be rendered');
+        $this->expectException(UndefinedChartTypeException::class);
+        $this->expectExceptionMessage('The chart type has not been defined');
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();

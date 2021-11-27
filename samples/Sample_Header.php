@@ -45,11 +45,6 @@ if (false === is_writable(__DIR__ . DIRECTORY_SEPARATOR)) {
 // Set writers
 $writers = ['PowerPoint2007' => 'pptx', 'ODPresentation' => 'odp'];
 
-// Return to the caller script when runs by CLI
-if (CLI) {
-    return;
-}
-
 // Set titles and names
 $pageHeading = str_replace('_', ' ', SCRIPT_FILENAME);
 $pageTitle = IS_INDEX ? 'Welcome to ' : "{$pageHeading} - ";
@@ -59,7 +54,7 @@ $pageHeading = IS_INDEX ? '' : "<h1>{$pageHeading}</h1>";
 $oShapeDrawing = new Drawing\File();
 $oShapeDrawing->setName('PHPPresentation logo')
     ->setDescription('PHPPresentation logo')
-    ->setPath('./resources/phppowerpoint_logo.gif')
+    ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
     ->setHeight(36)
     ->setOffsetX(10)
     ->setOffsetY(10);
@@ -80,6 +75,11 @@ $textRun->getFont()->setBold(true)
     ->setSize(60)
     ->setColor(new Color('FFE06B20'));
 
+// Return to the caller script when runs by CLI
+if (CLI) {
+    return;
+}
+
 // Populate samples
 $files = [];
 if ($handle = opendir('.')) {
@@ -88,12 +88,17 @@ if ($handle = opendir('.')) {
             $name = str_replace('_', ' ', preg_replace('/(Sample_|\.php)/', '', $file));
             $group = substr($name, 0, 1);
             if (!isset($files[$group])) {
-                $files[$group] = '';
+                $files[$group] = [];
             }
-            $files[$group] .= "<li><a href='{$file}'>{$name}</a></li>";
+            $files[$group][$name] = "<li><a href='{$file}'>{$name}</a></li>";
         }
     }
     closedir($handle);
+
+    foreach ($files as $group => $a) {
+        natsort($files[$group]);
+    }
+    ksort($files);
 }
 
 /**
@@ -497,10 +502,10 @@ class PhpPptTree
         </div>
         <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <?php foreach ($files as $key => $fileStr) { ?>
+                <?php foreach ($files as $key => $groupfiles) { ?>
                 <li class="dropdown active">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-code fa-lg"></i>&nbsp;Samples <?php echo $key; ?>x<strong class="caret"></strong></a>
-                    <ul class="dropdown-menu"><?php echo $fileStr; ?></ul>
+                    <ul class="dropdown-menu"><?php echo implode('', $groupfiles); ?></ul>
                 </li>
                 <?php } ?>
             </ul>

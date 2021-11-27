@@ -20,6 +20,8 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation;
 
+use PhpOffice\PhpPresentation\Exception\InvalidClassException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
 use PhpOffice\PhpPresentation\Reader\ReaderInterface;
 use PhpOffice\PhpPresentation\Writer\WriterInterface;
 use ReflectionClass;
@@ -39,31 +41,28 @@ class IOFactory
     /**
      * Create writer.
      *
-     * @throws \Exception
+     * @param PhpPresentation $phpPresentation
+     * @param string $name
      */
     public static function createWriter(PhpPresentation $phpPresentation, string $name = 'PowerPoint2007'): WriterInterface
     {
-        $class = 'PhpOffice\\PhpPresentation\\Writer\\' . $name;
-
-        return self::loadClass($class, $name, 'writer', $phpPresentation);
+        return self::loadClass('PhpOffice\\PhpPresentation\\Writer\\' . $name, 'Writer', $phpPresentation);
     }
 
     /**
      * Create reader.
      *
-     * @throws \Exception
+     * @param string $name
      */
     public static function createReader(string $name): ReaderInterface
     {
-        $class = 'PhpOffice\\PhpPresentation\\Reader\\' . $name;
-
-        return self::loadClass($class, $name, 'reader');
+        return self::loadClass('PhpOffice\\PhpPresentation\\Reader\\' . $name, 'Reader');
     }
 
     /**
-     * Loads PhpPresentation from file using automatic \PhpOffice\PhpPresentation\Reader\ReaderInterface resolution.
+     * Loads PhpPresentation from file using automatic ReaderInterface resolution.
      *
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
     public static function load(string $pFilename): PhpPresentation
     {
@@ -75,33 +74,41 @@ class IOFactory
             }
         }
 
-        throw new \Exception("Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.");
+        throw new InvalidFileFormatException(
+            $pFilename,
+            IOFactory::class,
+            'Could not automatically determine the good ' . ReaderInterface::class
+        );
     }
 
     /**
-     * Load class.
+     * Load class
      *
-     * @return mixed
+     * @param string $class
+     * @param string $type
+     * @param PhpPresentation|null $phpPresentation
      *
-     * @throws \ReflectionException
+     * @return object
+     *
+     * @throws InvalidClassException
      */
-    private static function loadClass(string $class, string $name, string $type, PhpPresentation $phpPresentation = null)
+    private static function loadClass(string $class, string $type, PhpPresentation $phpPresentation = null)
     {
-        if (class_exists($class) && self::isConcreteClass($class)) {
-            if (is_null($phpPresentation)) {
-                return new $class();
-            } else {
-                return new $class($phpPresentation);
-            }
-        } else {
-            throw new \Exception('"' . $name . '" is not a valid ' . $type . '.');
+        if (!class_exists($class)) {
+            throw new InvalidClassException($class, $type . ': The class doesn\'t exist');
         }
+        if (!self::isConcreteClass($class)) {
+            throw new InvalidClassException($class, $type . ': The class is an abstract class or an interface');
+        }
+        if (is_null($phpPresentation)) {
+            return new $class();
+        }
+
+        return new $class($phpPresentation);
     }
 
     /**
      * Is it a concrete class?
-     *
-     * @throws \ReflectionException
      */
     private static function isConcreteClass(string $class): bool
     {

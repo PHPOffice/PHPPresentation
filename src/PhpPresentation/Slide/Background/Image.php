@@ -20,6 +20,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide\Background;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 
 class Image extends AbstractBackground
@@ -51,7 +52,7 @@ class Image extends AbstractBackground
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): ?string
     {
         return $this->path;
     }
@@ -62,15 +63,15 @@ class Image extends AbstractBackground
      * @param string $pValue File path
      * @param bool $pVerifyFile Verify file
      *
-     * @throws \Exception
+     * @throws FileNotFoundException
      *
-     * @return \PhpOffice\PhpPresentation\Slide\Background\Image
+     * @return self
      */
     public function setPath(string $pValue = '', bool $pVerifyFile = true)
     {
         if ($pVerifyFile) {
             if (!file_exists($pValue)) {
-                throw new \Exception("File not found : $pValue");
+                throw new FileNotFoundException($pValue);
             }
 
             if (0 == $this->width && 0 == $this->height) {

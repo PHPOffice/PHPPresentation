@@ -77,9 +77,6 @@ class Content extends AbstractDecoratorWriter
      */
     protected $shapeId;
 
-    /**
-     * @throws \Exception
-     */
     public function render(): ZipInterface
     {
         $this->getZip()->addFromString('content.xml', $this->writeContent());
@@ -91,10 +88,8 @@ class Content extends AbstractDecoratorWriter
      * Write content file to XML format.
      *
      * @return string XML Output
-     *
-     * @throws \Exception
      */
-    public function writeContent(): string
+    protected function writeContent(): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -387,7 +382,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * Write picture.
      */
-    public function writeShapeMedia(XMLWriter $objWriter, Media $shape): void
+    protected function writeShapeMedia(XMLWriter $objWriter, Media $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -433,10 +428,8 @@ class Content extends AbstractDecoratorWriter
      * Write picture.
      *
      * @param AbstractDrawingAdapter $shape
-     *
-     * @throws \Exception
      */
-    public function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape): void
+    protected function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -480,10 +473,8 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * Write text.
-     *
-     * @throws \Exception
      */
-    public function writeShapeTxt(XMLWriter $objWriter, RichText $shape): void
+    protected function writeShapeTxt(XMLWriter $objWriter, RichText $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -640,7 +631,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * Write Comment.
      */
-    public function writeShapeComment(XMLWriter $objWriter, Comment $oShape): void
+    protected function writeShapeComment(XMLWriter $objWriter, Comment $oShape): void
     {
         /*
          * Note : This element is not valid in the Schema 1.2
@@ -660,7 +651,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-    public function writeShapeLine(XMLWriter $objWriter, Line $shape): void
+    protected function writeShapeLine(XMLWriter $objWriter, Line $shape): void
     {
         // draw:line
         $objWriter->startElement('draw:line');
@@ -678,10 +669,8 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * Write table Shape.
-     *
-     * @throws \Exception
      */
-    public function writeShapeTable(XMLWriter $objWriter, Table $shape): void
+    protected function writeShapeTable(XMLWriter $objWriter, Table $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
@@ -774,10 +763,8 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * Write table Chart.
-     *
-     * @throws \Exception
      */
-    public function writeShapeChart(XMLWriter $objWriter, Chart $shape): void
+    protected function writeShapeChart(XMLWriter $objWriter, Chart $shape): void
     {
         $arrayChart = $this->getArrayChart();
         $arrayChart[$this->shapeId] = $shape;
@@ -805,10 +792,8 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * Writes a group of shapes.
-     *
-     * @throws \Exception
      */
-    public function writeShapeGroup(XMLWriter $objWriter, Group $group): void
+    protected function writeShapeGroup(XMLWriter $objWriter, Group $group): void
     {
         // draw:g
         $objWriter->startElement('draw:g');
@@ -840,7 +825,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * Writes the style information for a group of shapes.
      */
-    public function writeGroupStyle(XMLWriter $objWriter, Group $group): void
+    protected function writeGroupStyle(XMLWriter $objWriter, Group $group): void
     {
         $shapes = $group->getShapeCollection();
         foreach ($shapes as $shape) {
@@ -866,7 +851,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * Write the default style information for a RichText shape.
      */
-    public function writeTxtStyle(XMLWriter $objWriter, RichText $shape): void
+    protected function writeTxtStyle(XMLWriter $objWriter, RichText $shape): void
     {
         // style:style
         $objWriter->startElement('style:style');
@@ -974,7 +959,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * Write the default style information for an AbstractDrawingAdapter.
      */
-    public function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawingAdapter $shape): void
+    protected function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawingAdapter $shape): void
     {
         // style:style
         $objWriter->startElement('style:style');
@@ -996,7 +981,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * Write the default style information for a Line shape.
      */
-    public function writeLineStyle(XMLWriter $objWriter, Line $shape): void
+    protected function writeLineStyle(XMLWriter $objWriter, Line $shape): void
     {
         // style:style
         $objWriter->startElement('style:style');
@@ -1028,7 +1013,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * Write the default style information for a Table shape.
      */
-    public function writeTableStyle(XMLWriter $objWriter, Table $shape): void
+    protected function writeTableStyle(XMLWriter $objWriter, Table $shape): void
     {
         foreach ($shape->getRows() as $keyRow => $shapeRow) {
             // style:style
@@ -1140,10 +1125,8 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * Write the slide note.
-     *
-     * @throws \Exception
      */
-    public function writeSlideNote(XMLWriter $objWriter, Note $note): void
+    protected function writeSlideNote(XMLWriter $objWriter, Note $note): void
     {
         $shapesNote = $note->getShapeCollection();
         if (count($shapesNote) > 0) {
@@ -1165,7 +1148,7 @@ class Content extends AbstractDecoratorWriter
     /**
      * Write style of a slide.
      */
-    public function writeStyleSlide(XMLWriter $objWriter, Slide $slide, int $incPage): void
+    protected function writeStyleSlide(XMLWriter $objWriter, Slide $slide, int $incPage): void
     {
         // style:style
         $objWriter->startElement('style:style');
