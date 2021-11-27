@@ -97,7 +97,9 @@ $shape->getPlotArea()->getAxisX()->setMaxBounds(200);
 
 #### Crossing
 
-For Axis, you can define where it should be crossed by the perpendicular/ horizontal axis trought `setCrossesAt`.
+> **⚠ NOTICE: only available in 'PowerPoint2007' Writer.**  
+
+For Axis, `setCrossesAt` can be used to define where it should be crossed by the perpendicular/ horizontal axis.
 The property can be defined by one of the three given constants or as an absolute value on the target axis.
 
 ``` php
