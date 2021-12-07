@@ -4241,6 +4241,26 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_setMaxBounds"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetCrossesAt\u0028\u0029",
+            "name": "getCrossesAt",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_getCrossesAt"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AsetCrossesAt\u0028\u0029",
+            "name": "setCrossesAt",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_setCrossesAt"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024isReversedOrder",
+            "name": "isReversedOrder",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_isReversedOrder"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AsetIsReversedOrder\u0028\u0029",
+            "name": "setIsReversedOrder",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_setIsReversedOrder"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetMajorGridlines\u0028\u0029",
             "name": "getMajorGridlines",
             "summary": "",
@@ -4401,6 +4421,21 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_TICK_LABEL_POSITION_LOW"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003ACROSSES_AUTO",
+            "name": "CROSSES_AUTO",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_CROSSES_AUTO"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003ACROSSES_MIN",
+            "name": "CROSSES_MIN",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_CROSSES_MIN"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003ACROSSES_MAX",
+            "name": "CROSSES_MAX",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_CROSSES_MAX"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024title",
             "name": "title",
             "summary": "Title.",
@@ -4440,6 +4475,11 @@ Search.appendIndex(
             "name": "maxBounds",
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_maxBounds"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024crossesAt",
+            "name": "crossesAt",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_crossesAt"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024minorTickMark",
             "name": "minorTickMark",
