@@ -97,13 +97,15 @@ $shape->getPlotArea()->getAxisX()->setMaxBounds(200);
 
 #### Crossing
 
-> **⚠ NOTICE: only available in 'PowerPoint2007' Writer.**  
+!!! warning
+    Available only on the PowerPoint2007 Writer
 
 For Axis, `setCrossesAt` can be used to define where it should be crossed by the perpendicular/ horizontal axis.
 The property can be defined by one of the three given constants or as an absolute value on the target axis.
 
 ``` php
 use PhpOffice\PhpPresentation\Shape\Axis;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 
 $bar = new Bar();
 
@@ -132,6 +134,7 @@ To reset this effect, the axis intersection point on the other axis must be set 
 
 ``` php
 use PhpOffice\PhpPresentation\Shape\Axis;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 
 $bar = new Bar();
 

@@ -339,15 +339,17 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         // reversed order
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(true));
+        $this->assertInstanceOf(Axis::class, $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(true));
         $this->resetPresentationFile();
+
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 'maxMin');
         $this->assertIsSchemaECMA376Valid();
 
         // reset reversed order
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(false));
+        $this->assertInstanceOf(Axis::class, $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(false));
         $this->resetPresentationFile();
+
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 'minMax');
         $this->assertIsSchemaECMA376Valid();
