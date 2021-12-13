@@ -22,7 +22,6 @@ namespace PhpOffice\PhpPresentation\Shape;
 
 use ArrayObject;
 use PhpOffice\PhpPresentation\AbstractShape;
-use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 
 class Group extends AbstractShape implements ShapeContainerInterface
@@ -33,20 +32,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
      */
     private $shapeCollection;
-
-    /**
-     * Extent X.
-     *
-     * @var int
-     */
-    protected $extentX;
-
-    /**
-     * Extent Y.
-     *
-     * @var int
-     */
-    protected $extentY;
 
     public function __construct()
     {
@@ -83,22 +68,33 @@ class Group extends AbstractShape implements ShapeContainerInterface
      */
     public function getOffsetX(): int
     {
-        if (empty($this->offsetX)) {
-            $offsets = GeometryCalculator::calculateOffsets($this);
-            $this->offsetX = $offsets[GeometryCalculator::X];
-            $this->offsetY = $offsets[GeometryCalculator::Y];
+        $offsetX = null;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            if ($offsetX === null) {
+                $offsetX = $shape->getOffsetX();
+            } else {
+                $offsetX = \min($offsetX, $shape->getOffsetX());
+            }
         }
 
-        return $this->offsetX;
+        return $offsetX ?? 0;
     }
 
     /**
-     * Ignores setting the X Offset, preserving the default behavior.
+     * Change the X offset by moving all contained shapes
      *
      * @return $this
      */
-    public function setOffsetX(int $pValue = 0)
+    public function setOffsetX(int $pValue = 0): self
     {
+        $offsetX = $this->getOffsetX();
+        $diff = $pValue - $offsetX;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            $shape->setOffsetX($shape->getOffsetX() + $diff);
+        }
+
         return $this;
     }
 
@@ -107,22 +103,33 @@ class Group extends AbstractShape implements ShapeContainerInterface
      */
     public function getOffsetY(): int
     {
-        if (empty($this->offsetY)) {
-            $offsets = GeometryCalculator::calculateOffsets($this);
-            $this->offsetX = $offsets[GeometryCalculator::X];
-            $this->offsetY = $offsets[GeometryCalculator::Y];
+        $offsetY = null;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            if ($offsetY === null) {
+                $offsetY = $shape->getOffsetY();
+            } else {
+                $offsetY = \min($offsetY, $shape->getOffsetY());
+            }
         }
 
-        return $this->offsetY;
+        return $offsetY ?? 0;
     }
 
     /**
-     * Ignores setting the Y Offset, preserving the default behavior.
+     * Change the Y offset by moving all contained shapes
      *
      * @return $this
      */
-    public function setOffsetY(int $pValue = 0)
+    public function setOffsetY(int $pValue = 0): self
     {
+        $offsetY = $this->getOffsetY();
+        $diff = $pValue - $offsetY;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            $shape->setOffsetY($shape->getOffsetY() + $diff);
+        }
+
         return $this;
     }
 
@@ -131,13 +138,13 @@ class Group extends AbstractShape implements ShapeContainerInterface
      */
     public function getExtentX(): int
     {
-        if (null === $this->extentX) {
-            $extents = GeometryCalculator::calculateExtents($this);
-            $this->extentX = $extents[GeometryCalculator::X] - $this->getOffsetX();
-            $this->extentY = $extents[GeometryCalculator::Y] - $this->getOffsetY();
+        $extentX = 0;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            $extentX = \max($extentX, $shape->getOffsetX() + $shape->getWidth());
         }
 
-        return $this->extentX;
+        return $extentX - $this->getOffsetX();
     }
 
     /**
@@ -145,21 +152,41 @@ class Group extends AbstractShape implements ShapeContainerInterface
      */
     public function getExtentY(): int
     {
-        if (null === $this->extentY) {
-            $extents = GeometryCalculator::calculateExtents($this);
-            $this->extentX = $extents[GeometryCalculator::X] - $this->getOffsetX();
-            $this->extentY = $extents[GeometryCalculator::Y] - $this->getOffsetY();
+        $extentY = 0;
+
+        foreach ($this->getShapeCollection() as $shape) {
+            $extentY = \max($extentY, $shape->getOffsetY() + $shape->getHeight());
         }
 
-        return $this->extentY;
+        return $extentY - $this->getOffsetY();
+    }
+
+    /**
+     * Calculate the width based on the size/position of the contained shapes
+     *
+     * @return int
+     */
+    public function getWidth(): int
+    {
+        return $this->getExtentX();
+    }
+
+    /**
+     * Calculate the height based on the size/position of the contained shapes
+     *
+     * @return int
+     */
+    public function getHeight(): int
+    {
+        return $this->getExtentY();
     }
 
     /**
      * Ignores setting the width, preserving the default behavior.
      *
-     * @return self
+     * @return $this
      */
-    public function setWidth(int $pValue = 0)
+    public function setWidth(int $pValue = 0): self
     {
         return $this;
     }
@@ -169,7 +196,7 @@ class Group extends AbstractShape implements ShapeContainerInterface
      *
      * @return $this
      */
-    public function setHeight(int $pValue = 0)
+    public function setHeight(int $pValue = 0): self
     {
         return $this;
     }
