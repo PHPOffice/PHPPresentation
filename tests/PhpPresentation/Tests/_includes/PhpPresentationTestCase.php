@@ -190,6 +190,7 @@ class PhpPresentationTestCase extends TestCase
 
         if (null === $this->xmlXPath) {
             $this->xmlXPath = new DOMXPath($this->xmlDom);
+            $this->xmlXPath->registerNamespace('p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
         }
 
         return $this->xmlXPath->query($xpath);

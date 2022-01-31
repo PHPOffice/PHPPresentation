@@ -589,9 +589,14 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:nvPr/a:videoFile';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:link', 'rId2');
         $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:nvPr/p:extLst/p:ext';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'uri', '{DAA4B4D4-6D71-4841-9C94-3DE7FCFB9230}');
+        $element = '/p:sld/p:cSld/p:spTree/p:pic/p:nvPicPr/p:nvPr/p:extLst/p:ext/p14:media';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'r:embed', 'rId3');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'xmlns:p14', 'http://schemas.microsoft.com/office/powerpoint/2010/main');
 
         $this->assertIsSchemaECMA376Valid();
     }
