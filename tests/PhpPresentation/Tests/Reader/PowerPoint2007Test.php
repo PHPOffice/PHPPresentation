@@ -643,4 +643,12 @@ class PowerPoint2007Test extends TestCase
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
         self::assertEquals(1, $oPhpPresentation->getSlideCount());
     }
+
+    public function testLoadingFileWithNoteInSlide(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_SlideNoteWithRichText.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+    }
 }
