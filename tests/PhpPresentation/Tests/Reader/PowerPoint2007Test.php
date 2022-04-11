@@ -615,4 +615,13 @@ class PowerPoint2007Test extends TestCase
         self::assertCount(11, $masterSlides[1]->getAllSlideLayouts());
         self::assertCount(11, $masterSlides[2]->getAllSlideLayouts());
     }
+
+    public function testLoadFileWithInvalidImages(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/PPTX_InvalidImage.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        self::assertEquals(1, $oPhpPresentation->getSlideCount());
+    }
 }
