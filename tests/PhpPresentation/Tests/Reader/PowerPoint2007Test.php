@@ -615,4 +615,13 @@ class PowerPoint2007Test extends TestCase
         $this->assertCount(11, $masterSlides[1]->getAllSlideLayouts());
         $this->assertCount(11, $masterSlides[2]->getAllSlideLayouts());
     }
+
+    public function testLoadFileIssue354(): void
+    {
+        $file = PHPPRESENTATION_TESTS_BASE_DIR . '/resources/files/Issue_354.pptx';
+        $object = new PowerPoint2007();
+        $oPhpPresentation = $object->load($file);
+        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $oPhpPresentation);
+        $this->assertEquals(1, $oPhpPresentation->getSlideCount());
+    }
 }
