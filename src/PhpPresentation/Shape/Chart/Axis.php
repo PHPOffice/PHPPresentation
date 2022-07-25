@@ -69,6 +69,13 @@ class Axis implements ComparableInterface
     private $font;
 
     /**
+     * Tick lable font.
+     *
+     * @var Font
+     */
+    private $tickLabelFont;
+
+    /**
      * @var Gridlines|null
      */
     protected $majorGridlines;
@@ -143,6 +150,7 @@ class Axis implements ComparableInterface
         $this->title = $title;
         $this->outline = new Outline();
         $this->font = new Font();
+        $this->tickLabelFont = new Font();
     }
 
     /**
@@ -177,6 +185,30 @@ class Axis implements ComparableInterface
     public function getFont(): ?Font
     {
         return $this->font;
+    }
+
+    /**
+     * Set tick label font.
+     *
+     * @param Font|null $font
+     *
+     * @return self
+     */
+    public function setTickLabelFont(Font $font = null): self
+    {
+        $this->tickLabelFont = $font;
+
+        return $this;
+    }
+
+    /**
+     * Get tick label font.
+     *
+     * @return Font|null
+     */
+    public function getTickLabelFont(): ?Font
+    {
+        return $this->tickLabelFont;
     }
 
     /**
