@@ -450,15 +450,13 @@ class DocumentProperties
             self::PROPERTY_TYPE_DATE,
             self::PROPERTY_TYPE_BOOLEAN,
         ])) {
-            if (is_float($propertyValue)) {
-                $propertyType = self::PROPERTY_TYPE_FLOAT;
-            } elseif (is_int($propertyValue)) {
-                $propertyType = self::PROPERTY_TYPE_INTEGER;
-            } elseif (is_bool($propertyValue)) {
-                $propertyType = self::PROPERTY_TYPE_BOOLEAN;
-            } else {
-                $propertyType = self::PROPERTY_TYPE_STRING;
-            }
+            $map = [
+                "string"  => self::PROPERTY_TYPE_STRING,
+                "integer" => self::PROPERTY_TYPE_INTEGER,
+                "double"  => self::PROPERTY_TYPE_FLOAT,
+                "boolean" => self::PROPERTY_TYPE_BOOLEAN,
+            ];
+            $propertyType = $map[gettype($propertyValue)] ?? self::PROPERTY_TYPE_STRING;
         }
         $this->customProperties[$propertyName] = [
             'value' => $propertyValue,
