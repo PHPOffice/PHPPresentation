@@ -160,7 +160,9 @@ abstract class AbstractShape implements ComparableInterface
                 $this->container->getShapeCollection()->append($this);
             }
         } else {
-            if ($pOverrideOld) {
+            if (!$pOverrideOld) {
+                throw new ShapeContainerAlreadyAssignedException(self::class);
+            }else{
                 // Remove drawing from old ShapeContainerInterface
                 $iterator = $this->container->getShapeCollection()->getIterator();
 
@@ -175,8 +177,6 @@ abstract class AbstractShape implements ComparableInterface
 
                 // Set new \PhpOffice\PhpPresentation\Slide
                 $this->setContainer($pValue);
-            } else {
-                throw new ShapeContainerAlreadyAssignedException(self::class);
             }
         }
 
