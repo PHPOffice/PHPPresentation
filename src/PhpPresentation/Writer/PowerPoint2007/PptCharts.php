@@ -452,6 +452,7 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
         $objWriter->writeAttributeIf($subject->getFont()->isSuperScript(), 'baseline', '300000');
         $objWriter->writeAttributeIf($subject->getFont()->isSubScript(), 'baseline', '-250000');
+        $objWriter->writeAttribute('cap', $subject->getFont()->getCapitalization());
 
         // Font - a:solidFill
         $objWriter->startElement('a:solidFill');

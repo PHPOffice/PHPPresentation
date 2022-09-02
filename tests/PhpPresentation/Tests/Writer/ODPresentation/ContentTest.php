@@ -763,6 +763,40 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
+    public function testStyleFontCapitalization(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_ALL);
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:text-transform');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-transform', 'uppercase');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_SMALL);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:text-transform');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-transform', 'lowercase');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_NONE);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:text-transform');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-transform', 'none');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
     public function testStyleFontName(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
