@@ -94,6 +94,13 @@ class Font implements ComparableInterface
     private $subScript = false;
 
     /**
+     * SmallCaps.
+     *
+     * @var bool
+     */
+    private $smallCaps = false;
+
+    /**
      * Underline.
      *
      * @var string
@@ -288,6 +295,29 @@ class Font implements ComparableInterface
         if (true === $pValue) {
             $this->superScript = false;
         }
+
+        return $this;
+    }
+
+    /**
+     * Get SmallCaps
+     * 
+     * @return bool
+     */
+    public function isSmallCaps(): bool
+    {
+        return $this->smallCaps;
+    }
+
+    /**
+     * Set SmallCaps
+     * 
+     * @param bool $pValue
+     * @return $this
+     */
+    public function setSmallCaps(bool $pValue = false): self
+    {
+        $this->smallCaps = $pValue;
 
         return $this;
     }
