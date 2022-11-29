@@ -982,7 +982,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     public function testTypeLineSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
+        $expectedWidthCm = number_format(CommonDrawing::pixelsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
 
@@ -1155,7 +1155,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     public function testTypeRadarSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
+        $expectedWidthCm = number_format(CommonDrawing::pixelsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
 
@@ -1273,7 +1273,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
     public function testTypeScatterSeriesOutline(): void
     {
         $expectedWidth = mt_rand(1, 100);
-        $expectedWidthCm = number_format(CommonDrawing::pointsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
+        $expectedWidthCm = number_format(CommonDrawing::pixelsToCentimeters($expectedWidth), 3, '.', '') . 'cm';
 
         $expectedElement = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleSeries0\'][@style:family=\'chart\']/style:graphic-properties';
 
