@@ -10,30 +10,36 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
-/**
- * \PhpOffice\PhpPresentation\Shape\Chart\Axis
- */
+use PhpOffice\PhpPresentation\Style\Border;
+use PhpOffice\PhpPresentation\Style\Fill;
+
 class Marker
 {
-    const SYMBOL_CIRCLE = 'circle';
-    const SYMBOL_DASH = 'dash';
-    const SYMBOL_DIAMOND = 'diamond';
-    const SYMBOL_DOT = 'dot';
-    const SYMBOL_NONE = 'none';
-    const SYMBOL_PLUS = 'plus';
-    const SYMBOL_SQUARE = 'square';
-    const SYMBOL_STAR = 'star';
-    const SYMBOL_TRIANGLE = 'triangle';
-    const SYMBOL_X = 'x';
+    public const SYMBOL_CIRCLE = 'circle';
+    public const SYMBOL_DASH = 'dash';
+    public const SYMBOL_DIAMOND = 'diamond';
+    public const SYMBOL_DOT = 'dot';
+    public const SYMBOL_NONE = 'none';
+    public const SYMBOL_PLUS = 'plus';
+    public const SYMBOL_SQUARE = 'square';
+    public const SYMBOL_STAR = 'star';
+    public const SYMBOL_TRIANGLE = 'triangle';
+    public const SYMBOL_X = 'x';
 
-    public static $arraySymbol = array(
+    /**
+     * @var array<int, string>
+     */
+    public static $arraySymbol = [
         self::SYMBOL_CIRCLE,
         self::SYMBOL_DASH,
         self::SYMBOL_DIAMOND,
@@ -43,8 +49,8 @@ class Marker
         self::SYMBOL_SQUARE,
         self::SYMBOL_STAR,
         self::SYMBOL_TRIANGLE,
-        self::SYMBOL_X
-    );
+        self::SYMBOL_X,
+    ];
 
     /**
      * @var string
@@ -57,38 +63,82 @@ class Marker
     protected $size = 5;
 
     /**
-     * @return string
+     * @var Fill
      */
-    public function getSymbol()
+    protected $fill;
+
+    /**
+     * @var Border
+     */
+    protected $border;
+
+    public function __construct()
+    {
+        $this->fill = new Fill();
+        $this->border = new Border();
+    }
+
+    public function getSymbol(): string
     {
         return $this->symbol;
     }
 
-    /**
-     * @param string $symbol
-     * @return $this
-     */
-    public function setSymbol($symbol = self::SYMBOL_NONE)
+    public function setSymbol(string $symbol = self::SYMBOL_NONE): self
     {
         $this->symbol = $symbol;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getSize()
+    public function getSize(): int
     {
         return $this->size;
     }
 
-    /**
-     * @param int $size
-     * @return $this
-     */
-    public function setSize($size = 5)
+    public function setSize(int $size = 5): self
     {
         $this->size = $size;
+
+        return $this;
+    }
+
+    /**
+     * @return Fill
+     */
+    public function getFill(): Fill
+    {
+        return $this->fill;
+    }
+
+    /**
+     * @param Fill $fill
+     *
+     * @return self
+     */
+    public function setFill(Fill $fill): self
+    {
+        $this->fill = $fill;
+
+        return $this;
+    }
+
+    /**
+     * @return Border
+     */
+    public function getBorder(): Border
+    {
+        return $this->border;
+    }
+
+    /**
+     * @param Border $border
+     *
+     * @return self
+     */
+    public function setBorder(Border $border): self
+    {
+        $this->border = $border;
+
         return $this;
     }
 }

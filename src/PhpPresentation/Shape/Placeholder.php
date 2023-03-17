@@ -10,86 +10,75 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape;
 
 class Placeholder
 {
     /** Placeholder Type constants */
-    const PH_TYPE_BODY = 'body';
-    const PH_TYPE_CHART = 'chart';
-    const PH_TYPE_SUBTITLE = 'subTitle';
-    const PH_TYPE_TITLE = 'title';
-    const PH_TYPE_FOOTER = 'ftr';
-    const PH_TYPE_DATETIME = 'dt';
-    const PH_TYPE_SLIDENUM = 'sldNum';
+    public const PH_TYPE_BODY = 'body';
+    public const PH_TYPE_CHART = 'chart';
+    public const PH_TYPE_SUBTITLE = 'subTitle';
+    public const PH_TYPE_TITLE = 'title';
+    public const PH_TYPE_FOOTER = 'ftr';
+    public const PH_TYPE_DATETIME = 'dt';
+    public const PH_TYPE_SLIDENUM = 'sldNum';
+
     /**
-     * hasCustomPrompt
      * Indicates whether the placeholder should have a customer prompt.
      *
      * @var bool
      */
     protected $hasCustomPrompt;
+
     /**
-     * idx
      * Specifies the index of the placeholder. This is used when applying templates or changing layouts to
      * match a placeholder on one template or master to another.
      *
-     * @var int
+     * @var int|null
      */
     protected $idx;
+
     /**
-     * type
-     * Specifies what content type the placeholder is to contains
+     * Specifies what content type the placeholder is to contains.
+     *
+     * @var string
      */
     protected $type;
 
-    /**
-     * Placeholder constructor.
-     * @param $type
-     */
-    public function __construct($type)
+    public function __construct(string $type)
     {
         $this->type = $type;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getType()
+    public function getType(): string
     {
         return $this->type;
     }
 
-    /**
-     * @param mixed $type
-     * @return Placeholder
-     */
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
+
         return $this;
     }
 
-    /**
-     * @return int
-     */
-    public function getIdx()
+    public function getIdx(): ?int
     {
         return $this->idx;
     }
 
-    /**
-     * @param int $idx
-     * @return Placeholder
-     */
-    public function setIdx($idx)
+    public function setIdx(int $idx): self
     {
         $this->idx = $idx;
+
         return $this;
     }
 }

@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 
@@ -21,151 +24,127 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\Type
+ * \PhpOffice\PhpPresentation\Shape\Chart\Type.
  */
 abstract class AbstractType implements ComparableInterface
 {
     /**
      * Has Axis X?
      *
-     * @var boolean
+     * @var bool
      */
     protected $hasAxisX = true;
 
     /**
      * Has Axis Y?
      *
-     * @var boolean
+     * @var bool
      */
     protected $hasAxisY = true;
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
-    
+
     /**
-     * Data
-     *
-     * @var array
+     * @var array<int, Series>
      */
-    private $data = array();
+    private $series = [];
 
     /**
      * Has Axis X?
-     *
-     * @return boolean
      */
-    public function hasAxisX()
+    public function hasAxisX(): bool
     {
         return $this->hasAxisX;
     }
 
     /**
      * Has Axis Y?
-     *
-     * @return boolean
      */
-    public function hasAxisY()
+    public function hasAxisY(): bool
     {
         return $this->hasAxisY;
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
      * @return AbstractType
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
     /**
-     * Add Series
+     * Add Series.
      *
-     * @param  \PhpOffice\PhpPresentation\Shape\Chart\Series $value
      * @return $this
      */
     public function addSeries(Series $value)
     {
-        $this->data[] = $value;
+        $this->series[] = $value;
+
         return $this;
     }
 
     /**
-     * Get Series
+     * Get Series.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series[]
+     * @return array<int, Series>
      */
-    public function getSeries()
+    public function getSeries(): array
     {
-        return $this->data;
+        return $this->series;
     }
 
     /**
-     * Set Series
+     * Set Series.
      *
-     * @param  array $value Array of \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param array<int, Series> $series
+     *
      * @return $this
      */
-    public function setSeries($value = array())
+    public function setSeries(array $series = [])
     {
-        $this->data = $value;
+        $this->series = $series;
+
         return $this;
     }
 
     /**
-     * Get Data
-     *
-     * @deprecated getSeries
-     */
-    public function getData()
-    {
-        return $this->getSeries();
-    }
-
-    /**
-     * Set Data
-     *
-     * @deprecated setSeries
-     * @param array $value
-     * @return AbstractType
-     */
-    public function setData($value = array())
-    {
-        return $this->setSeries($value);
-    }
-
-    /**
-     * @link http://php.net/manual/en/language.oop5.cloning.php
+     * @see http://php.net/manual/en/language.oop5.cloning.php
      */
     public function __clone()
     {
-        $arrayClone = array();
-        foreach ($this->data as $itemSeries) {
+        $arrayClone = [];
+        foreach ($this->series as $itemSeries) {
             $arrayClone[] = clone $itemSeries;
         }
-        $this->data = $arrayClone;
+        $this->series = $arrayClone;
     }
 }

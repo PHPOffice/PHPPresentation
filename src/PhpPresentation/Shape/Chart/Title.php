@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
@@ -22,88 +25,88 @@ use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Font;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\Title
+ * \PhpOffice\PhpPresentation\Shape\Chart\Title.
  */
 class Title implements ComparableInterface
 {
     /**
-     * Visible
+     * Visible.
      *
-     * @var boolean
+     * @var bool
      */
     private $visible = true;
 
     /**
-     * Text
+     * Text.
      *
      * @var string
      */
     private $text = 'Chart Title';
 
     /**
-     * OffsetX (as a fraction of the chart)
+     * OffsetX (as a fraction of the chart).
      *
      * @var float
      */
     private $offsetX = 0.01;
 
     /**
-     * OffsetY (as a fraction of the chart)
+     * OffsetY (as a fraction of the chart).
      *
      * @var float
      */
     private $offsetY = 0.01;
 
     /**
-     * Width (as a fraction of the chart)
+     * Width (as a fraction of the chart).
      *
      * @var float
      */
     private $width = 0;
 
     /**
-     * Height (as a fraction of the chart)
+     * Height (as a fraction of the chart).
      *
      * @var float
      */
     private $height = 0;
 
     /**
-     * Alignment
+     * Alignment.
      *
      * @var \PhpOffice\PhpPresentation\Style\Alignment
      */
     private $alignment;
 
     /**
-     * Font
+     * Font.
      *
      * @var \PhpOffice\PhpPresentation\Style\Font
      */
     private $font;
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Title instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Title instance.
      */
     public function __construct()
     {
         $this->alignment = new Alignment();
-        $this->font      = new Font();
+        $this->font = new Font();
         $this->font->setName('Calibri');
         $this->font->setSize(18);
     }
 
     /**
-     * Get Visible
+     * Get Visible.
      *
-     * @return boolean
+     * @return bool
      */
     public function isVisible()
     {
@@ -111,9 +114,10 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set Visible
+     * Set Visible.
      *
-     * @param  boolean                         $value
+     * @param bool $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setVisible($value = true)
@@ -124,7 +128,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get Text
+     * Get Text.
      *
      * @return string
      */
@@ -134,9 +138,10 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set Text
+     * Set Text.
      *
-     * @param  string                          $value
+     * @param string $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setText($value = null)
@@ -147,22 +152,17 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get OffsetX (as a fraction of the chart)
-     *
-     * @return float
+     * Get OffsetX (as a fraction of the chart).
      */
-    public function getOffsetX()
+    public function getOffsetX(): float
     {
         return $this->offsetX;
     }
 
     /**
-     * Set OffsetX (as a fraction of the chart)
-     *
-     * @param  float                           $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * Set OffsetX (as a fraction of the chart).
      */
-    public function setOffsetX($value = 0.01)
+    public function setOffsetX(float $value = 0.01): self
     {
         $this->offsetX = $value;
 
@@ -170,92 +170,73 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get OffsetY (as a fraction of the chart)
-     *
-     * @return float
+     * Get OffsetY (as a fraction of the chart).
      */
-    public function getOffsetY()
+    public function getOffsetY(): float
     {
         return $this->offsetY;
     }
 
     /**
-     * Set OffsetY (as a fraction of the chart)
-     *
-     * @param  float                           $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * Set OffsetY (as a fraction of the chart).
      */
-    public function setOffsetY($value = 0.01)
+    public function setOffsetY(float $pValue = 0.01): self
     {
-        $this->offsetY = $value;
+        $this->offsetY = $pValue;
 
         return $this;
     }
 
     /**
-     * Get Width (as a fraction of the chart)
-     *
-     * @return float
+     * Get Width (as a fraction of the chart).
      */
-    public function getWidth()
+    public function getWidth(): float
     {
         return $this->width;
     }
 
     /**
-     * Set Width (as a fraction of the chart)
-     *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * Set Width (as a fraction of the chart).
      */
-    public function setWidth($value = 0)
+    public function setWidth(float $pValue = 0): self
     {
-        $this->width = (double)$value;
+        $this->width = $pValue;
 
         return $this;
     }
 
     /**
-     * Get Height (as a fraction of the chart)
-     *
-     * @return float
+     * Get Height (as a fraction of the chart).
      */
-    public function getHeight()
+    public function getHeight(): float
     {
         return $this->height;
     }
 
     /**
-     * Set Height (as a fraction of the chart)
-     *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * Set Height (as a fraction of the chart).
      */
-    public function setHeight($value = 0)
+    public function setHeight(float $value = 0): self
     {
-        $this->height = (double)$value;
+        $this->height = $value;
 
         return $this;
     }
 
     /**
-     * Get font
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * Get font.
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return $this->font;
     }
 
     /**
-     * Set font
+     * Set font.
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
+     * @param Font|null $pFont Font
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(Font $pFont = null): self
     {
         $this->font = $pFont;
 
@@ -263,7 +244,7 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get alignment
+     * Get alignment.
      *
      * @return \PhpOffice\PhpPresentation\Style\Alignment
      */
@@ -273,9 +254,8 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Set alignment
+     * Set alignment.
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Alignment   $alignment
      * @return \PhpOffice\PhpPresentation\Shape\Chart\Title
      */
     public function setAlignment(Alignment $alignment)
@@ -286,40 +266,42 @@ class Title implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->text . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->font->getHashCode() . $this->alignment->getHashCode() . ($this->visible ? 't' : 'f') . __CLASS__);
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
      * @return Title
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

@@ -10,22 +10,26 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Shape\RichText;
 
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
+use PhpOffice\PhpPresentation\Style\Font;
 
 /**
- * Rich text text element
+ * Rich text text element.
  */
 class TextElement implements TextElementInterface
 {
     /**
-     * Text
+     * Text.
      *
      * @var string
      */
@@ -37,14 +41,14 @@ class TextElement implements TextElementInterface
     protected $language;
 
     /**
-     * Hyperlink
+     * Hyperlink.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @var Hyperlink|null
      */
     protected $hyperlink;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\TextElement instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\TextElement instance.
      *
      * @param string $pText Text
      */
@@ -55,7 +59,7 @@ class TextElement implements TextElementInterface
     }
 
     /**
-     * Get text
+     * Get text.
      *
      * @return string Text
      */
@@ -65,9 +69,10 @@ class TextElement implements TextElementInterface
     }
 
     /**
-     * Set text
+     * Set text.
      *
-     * @param                                            $pText string   Text
+     * @param string $pText Text value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */
     public function setText($pText = '')
@@ -78,32 +83,19 @@ class TextElement implements TextElementInterface
     }
 
     /**
-     * Get font
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * Get font.
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return null;
     }
 
-    /**
-     * Has Hyperlink?
-     *
-     * @return boolean
-     */
-    public function hasHyperlink()
+    public function hasHyperlink(): bool
     {
         return !is_null($this->hyperlink);
     }
 
-    /**
-     * Get Hyperlink
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
-     * @throws \Exception
-     */
-    public function getHyperlink()
+    public function getHyperlink(): Hyperlink
     {
         if (is_null($this->hyperlink)) {
             $this->hyperlink = new Hyperlink();
@@ -113,10 +105,8 @@ class TextElement implements TextElementInterface
     }
 
     /**
-     * Set Hyperlink
+     * Set Hyperlink.
      *
-     * @param  \PhpOffice\PhpPresentation\Shape\Hyperlink $pHyperlink
-     * @throws \Exception
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElement
      */
     public function setHyperlink(Hyperlink $pHyperlink = null)
@@ -127,7 +117,8 @@ class TextElement implements TextElementInterface
     }
 
     /**
-     * Get language
+     * Get language.
+     *
      * @return string
      */
     public function getLanguage()
@@ -136,22 +127,25 @@ class TextElement implements TextElementInterface
     }
 
     /**
-     * Set language
+     * Set language.
+     *
      * @param string $language
+     *
      * @return TextElement
      */
     public function setLanguage($language)
     {
         $this->language = $language;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->text . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }

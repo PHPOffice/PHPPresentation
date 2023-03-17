@@ -10,108 +10,99 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\UndefinedChartTypeException;
 use PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
+ * \PhpOffice\PhpPresentation\Shape\Chart\PlotArea.
  */
 class PlotArea implements ComparableInterface
 {
     /**
-     * Type
+     * Type.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType
+     * @var AbstractType|null
      */
     private $type;
 
     /**
-     * Axis X
+     * Axis X.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @var Axis
      */
     private $axisX;
 
     /**
-     * Axis Y
+     * Axis Y.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @var Axis
      */
     private $axisY;
 
     /**
-     * OffsetX (as a fraction of the chart)
+     * OffsetX (as a fraction of the chart).
      *
      * @var float
      */
     private $offsetX = 0;
 
     /**
-     * OffsetY (as a fraction of the chart)
+     * OffsetY (as a fraction of the chart).
      *
      * @var float
      */
     private $offsetY = 0;
 
     /**
-     * Width (as a fraction of the chart)
+     * Width (as a fraction of the chart).
      *
      * @var float
      */
     private $width = 0;
 
     /**
-     * Height (as a fraction of the chart)
+     * Height (as a fraction of the chart).
      *
      * @var float
      */
     private $height = 0;
 
-    /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\PlotArea instance
-     */
     public function __construct()
     {
-        $this->type  = null;
         $this->axisX = new Axis();
         $this->axisY = new Axis();
     }
-    
+
     public function __clone()
     {
-        $this->axisX     = clone $this->axisX;
-        $this->axisY     = clone $this->axisY;
+        $this->axisX = clone $this->axisX;
+        $this->axisY = clone $this->axisY;
     }
 
     /**
-     * Get type
-     *
-     * @return AbstractType
-     * @throws \Exception
+     * @throws UndefinedChartTypeException
      */
-    public function getType()
+    public function getType(): AbstractType
     {
         if (is_null($this->type)) {
-            throw new \Exception('Chart type has not been set.');
+            throw new UndefinedChartTypeException();
         }
 
         return $this->type;
     }
 
-    /**
-     * Set type
-     *
-     * @param \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractType $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
-     */
-    public function setType(Type\AbstractType $value)
+    public function setType(AbstractType $value): self
     {
         $this->type = $value;
 
@@ -119,159 +110,141 @@ class PlotArea implements ComparableInterface
     }
 
     /**
-     * Get Axis X
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * Get Axis X.
      */
-    public function getAxisX()
+    public function getAxisX(): Axis
     {
         return $this->axisX;
     }
 
     /**
-     * Get Axis Y
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * Get Axis Y.
      */
-    public function getAxisY()
+    public function getAxisY(): Axis
     {
         return $this->axisY;
     }
 
     /**
-     * Get OffsetX (as a fraction of the chart)
-     *
-     * @return float
+     * Get OffsetX (as a fraction of the chart).
      */
-    public function getOffsetX()
+    public function getOffsetX(): float
     {
         return $this->offsetX;
     }
 
     /**
-     * Set OffsetX (as a fraction of the chart)
-     *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
+     * Set OffsetX (as a fraction of the chart).
      */
-    public function setOffsetX($value = 0)
+    public function setOffsetX(float $pValue = 0): self
     {
-        $this->offsetX = (double)$value;
+        $this->offsetX = $pValue;
 
         return $this;
     }
 
     /**
-     * Get OffsetY (as a fraction of the chart)
-     *
-     * @return float
+     * Get OffsetY (as a fraction of the chart).
      */
-    public function getOffsetY()
+    public function getOffsetY(): float
     {
         return $this->offsetY;
     }
 
     /**
-     * Set OffsetY (as a fraction of the chart)
+     * Set OffsetY (as a fraction of the chart).
      *
-     * @param float|int $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
-    public function setOffsetY($value = 0)
+    public function setOffsetY(float $pValue = 0): self
     {
-        $this->offsetY = (double)$value;
+        $this->offsetY = $pValue;
 
         return $this;
     }
 
     /**
-     * Get Width (as a fraction of the chart)
-     *
-     * @return float
+     * Get Width (as a fraction of the chart).
      */
-    public function getWidth()
+    public function getWidth(): float
     {
         return $this->width;
     }
 
     /**
-     * Set Width (as a fraction of the chart)
-     *
-     * @param float|int $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
+     * Set Width (as a fraction of the chart).
      */
-    public function setWidth($value = 0)
+    public function setWidth(int $pValue = 0): self
     {
-        $this->width = (double)$value;
+        $this->width = $pValue;
 
         return $this;
     }
 
     /**
-     * Get Height (as a fraction of the chart)
-     *
-     * @return float
+     * Get Height (as a fraction of the chart).
      */
-    public function getHeight()
+    public function getHeight(): float
     {
         return $this->height;
     }
 
     /**
-     * Set Height (as a fraction of the chart)
+     * Set Height (as a fraction of the chart).
      *
-     * @param float|int $value
      * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
-    public function setHeight($value = 0)
+    public function setHeight(float $value = 0): self
     {
-        $this->height = (double)$value;
+        $this->height = $value;
 
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5((is_null($this->type) ? 'null' : $this->type->getHashCode()) . $this->axisX->getHashCode() . $this->axisY->getHashCode() . $this->offsetX . $this->offsetY . $this->width . $this->height . __CLASS__);
     }
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
      * @return PlotArea
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

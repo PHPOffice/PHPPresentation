@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
@@ -21,16 +24,16 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class ColorTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Color();
         $this->assertEquals(Color::COLOR_BLACK, $object->getARGB());
@@ -39,16 +42,16 @@ class ColorTest extends TestCase
     }
 
     /**
-     * Test Alpha
+     * Test Alpha.
      */
-    public function testAlpha()
+    public function testAlpha(): void
     {
         $randAlpha = mt_rand(0, 100);
         $object = new Color();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
         $this->assertEquals(100, $object->getAlpha());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB('AA0000FF'));
-        $this->assertEquals(66.67, $object->getAlpha());
+        $this->assertEquals(67, $object->getAlpha());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB(Color::COLOR_BLUE));
         $this->assertEquals(100, $object->getAlpha());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setAlpha($randAlpha));
@@ -56,9 +59,9 @@ class ColorTest extends TestCase
     }
 
     /**
-     * Test get/set ARGB
+     * Test get/set ARGB.
      */
-    public function testSetGetARGB()
+    public function testSetGetARGB(): void
     {
         $object = new Color();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setARGB());
@@ -70,9 +73,9 @@ class ColorTest extends TestCase
     }
 
     /**
-     * Test get/set RGB
+     * Test get/set RGB.
      */
-    public function testSetGetRGB()
+    public function testSetGetRGB(): void
     {
         $object = new Color();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->setRGB());
@@ -90,9 +93,9 @@ class ColorTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Color();
         $value = mt_rand(1, 100);

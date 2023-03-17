@@ -10,28 +10,31 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Slide;
 
 /**
- * \PhpOffice\PhpPresentation\Slide\Layout
+ * \PhpOffice\PhpPresentation\Slide\Layout.
  */
 class Layout
 {
     /** Layout constants */
-    const TITLE_SLIDE = 'Title Slide';
-    const TITLE_AND_CONTENT = 'Title and Content';
-    const SECTION_HEADER = 'Section Header';
-    const TWO_CONTENT = 'Two Content';
-    const COMPARISON = 'Comparison';
-    const TITLE_ONLY = 'Title Only';
-    const BLANK = 'Blank';
-    const CONTENT_WITH_CAPTION = 'Content with Caption';
-    const PICTURE_WITH_CAPTION = 'Picture with Caption';
-    const TITLE_AND_VERTICAL_TEXT = 'Title and Vertical Text';
-    const VERTICAL_TITLE_AND_TEXT = 'Vertical Title and Text';
+    public const TITLE_SLIDE = 'Title Slide';
+    public const TITLE_AND_CONTENT = 'Title and Content';
+    public const SECTION_HEADER = 'Section Header';
+    public const TWO_CONTENT = 'Two Content';
+    public const COMPARISON = 'Comparison';
+    public const TITLE_ONLY = 'Title Only';
+    public const BLANK = 'Blank';
+    public const CONTENT_WITH_CAPTION = 'Content with Caption';
+    public const PICTURE_WITH_CAPTION = 'Picture with Caption';
+    public const TITLE_AND_VERTICAL_TEXT = 'Title and Vertical Text';
+    public const VERTICAL_TITLE_AND_TEXT = 'Vertical Title and Text';
 }

@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
@@ -22,54 +25,49 @@ use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 
-/**
- * \PhpOffice\PhpPresentation\Shape\Chart\Series
- */
 class Series implements ComparableInterface
 {
     /* Label positions */
-    const LABEL_BESTFIT = 'bestFit';
-    const LABEL_BOTTOM = 'b';
-    const LABEL_CENTER = 'ctr';
-    const LABEL_INSIDEBASE = 'inBase';
-    const LABEL_INSIDEEND = 'inEnd';
-    const LABEL_LEFT = 'i';
-    const LABEL_OUTSIDEEND = 'outEnd';
-    const LABEL_RIGHT = 'r';
-    const LABEL_TOP = 't';
+    public const LABEL_BESTFIT = 'bestFit';
+    public const LABEL_BOTTOM = 'b';
+    public const LABEL_CENTER = 'ctr';
+    public const LABEL_INSIDEBASE = 'inBase';
+    public const LABEL_INSIDEEND = 'inEnd';
+    public const LABEL_LEFT = 'i';
+    public const LABEL_OUTSIDEEND = 'outEnd';
+    public const LABEL_RIGHT = 'r';
+    public const LABEL_TOP = 't';
 
     /**
-     * DataPointFills (key/value)
-     * @var array
+     * DataPointFills (key/value).
+     *
+     * @var array<int, Fill>
      */
-    protected $dataPointFills = array();
+    protected $dataPointFills = [];
 
     /**
-     * Data Label Number Format
+     * Data Label Number Format.
+     *
      * @var string
      */
     protected $DlblNumFormat = '';
 
     /**
-     * Separator
-     * @var string
+     * @var string|null
      */
-    protected $separator = null;
+    protected $separator;
 
     /**
-     * Fill
-     * @var \PhpOffice\PhpPresentation\Style\Fill
+     * @var Fill|null
      */
     protected $fill;
 
     /**
-     * Font
-     * @var \PhpOffice\PhpPresentation\Style\Font
+     * @var Font|null
      */
     protected $font;
 
     /**
-     * Label position
      * @var string
      */
     protected $labelPosition = 'ctr';
@@ -80,98 +78,101 @@ class Series implements ComparableInterface
     protected $marker;
 
     /**
-     * @var Outline
+     * @var Outline|null
      */
     protected $outline;
 
     /**
-     * Show Category Name
-     * @var boolean
+     * Show Category Name.
+     *
+     * @var bool
      */
     private $showCategoryName = false;
 
     /**
-     * Show Leader Lines
-     * @var boolean
+     * Show Leader Lines.
+     *
+     * @var bool
      */
     private $showLeaderLines = true;
 
     /**
-     * Show Legend Key
-     * @var boolean
+     * Show Legend Key.
+     *
+     * @var bool
      */
     private $showLegendKey = false;
 
     /**
-     * ShowPercentage
-     * @var boolean
+     * ShowPercentage.
+     *
+     * @var bool
      */
     private $showPercentage = false;
 
     /**
-     * ShowSeriesName
-     * @var boolean
+     * ShowSeriesName.
+     *
+     * @var bool
      */
     private $showSeriesName = false;
 
     /**
-     * ShowValue
-     * @var boolean
+     * ShowValue.
+     *
+     * @var bool
      */
     private $showValue = true;
 
     /**
-     * Title
+     * Title.
+     *
      * @var string
      */
     private $title = 'Series Title';
 
     /**
-     * Values (key/value)
-     * @var array
+     * Values (key/value).
+     *
+     * @var array<string, string|null>
      */
-    private $values = array();
+    private $values = [];
 
     /**
-     * Hash index
-     * @var string
+     * Hash index.
+     *
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Series instance
-     *
-     * @param string $title  Title
-     * @param array  $values Values
+     * @param string $title
+     * @param array<string, string|null> $values
      */
-    public function __construct($title = 'Series Title', $values = array())
+    public function __construct(string $title = 'Series Title', array $values = [])
     {
         $this->fill = new Fill();
         $this->font = new Font();
         $this->font->setName('Calibri');
         $this->font->setSize(9);
-        $this->title  = $title;
-        $this->values = $values;
         $this->marker = new Marker();
+
+        $this->title = $title;
+        $this->values = $values;
     }
 
     /**
-     * Get Title
-     *
-     * @return string
+     * Get Title.
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * Set Title
-     *
-     * @param  string                           $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * Set Title.
      */
-    public function setTitle($value = 'Series Title')
+    public function setTitle(string $value = 'Series Title'): self
     {
         $this->title = $value;
 
@@ -179,66 +180,50 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get Data Label NumFormat
-     *
-     * @return string
+     * Get Data Label NumFormat.
      */
-    public function getDlblNumFormat()
+    public function getDlblNumFormat(): string
     {
         return $this->DlblNumFormat;
     }
 
     /**
-     * Has Data Label NumFormat
-     *
-     * @return string
+     * Has Data Label NumFormat.
      */
-    public function hasDlblNumFormat()
+    public function hasDlblNumFormat(): bool
     {
         return !empty($this->DlblNumFormat);
     }
 
     /**
-     * Set Data Label NumFormat
-     *
-     * @param  string $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * Set Data Label NumFormat.
      */
-    public function setDlblNumFormat($value = '')
+    public function setDlblNumFormat(string $value = ''): self
     {
         $this->DlblNumFormat = $value;
+
         return $this;
     }
 
     /**
-     * Get Fill
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return Fill
      */
-    public function getFill()
+    public function getFill(): ?Fill
     {
         return $this->fill;
     }
 
-    /**
-     * Set Fill
-     *
-     * @param \PhpOffice\PhpPresentation\Style\Fill $fill
-     * @return Series
-     */
-    public function setFill(Fill $fill = null)
+    public function setFill(Fill $fill = null): self
     {
         $this->fill = $fill;
+
         return $this;
     }
 
     /**
-     * Get DataPointFill
-     *
-     * @param  int                      $dataPointIndex Data point index.
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @param int $dataPointIndex data point index
      */
-    public function getDataPointFill($dataPointIndex)
+    public function getDataPointFill(int $dataPointIndex): Fill
     {
         if (!isset($this->dataPointFills[$dataPointIndex])) {
             $this->dataPointFills[$dataPointIndex] = new Fill();
@@ -248,46 +233,44 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get DataPointFills
-     *
      * @return Fill[]
      */
-    public function getDataPointFills()
+    public function getDataPointFills(): array
     {
         return $this->dataPointFills;
     }
 
     /**
-     * Get Values
+     * Get Values.
      *
-     * @return array
+     * @return array<string, string|null>
      */
-    public function getValues()
+    public function getValues(): array
     {
         return $this->values;
     }
 
     /**
-     * Set Values
+     * Set Values.
      *
-     * @param  array                            $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param array<string, string|null> $values
      */
-    public function setValues($value = array())
+    public function setValues(array $values = []): self
     {
-        $this->values = $value;
+        $this->values = $values;
 
         return $this;
     }
 
     /**
-     * Add Value
+     * Add Value.
      *
-     * @param  mixed                            $key
-     * @param  mixed                            $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param string $key
+     * @param string|null $value
+     *
+     * @return self
      */
-    public function addValue($key, $value)
+    public function addValue(string $key, ?string $value): self
     {
         $this->values[$key] = $value;
 
@@ -295,22 +278,17 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowSeriesName
-     *
-     * @return boolean
+     * Get ShowSeriesName.
      */
-    public function hasShowSeriesName()
+    public function hasShowSeriesName(): bool
     {
         return $this->showSeriesName;
     }
 
     /**
-     * Set ShowSeriesName
-     *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * Set ShowSeriesName.
      */
-    public function setShowSeriesName($value)
+    public function setShowSeriesName(bool $value): self
     {
         $this->showSeriesName = $value;
 
@@ -318,22 +296,17 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowCategoryName
-     *
-     * @return boolean
+     * Get ShowCategoryName.
      */
-    public function hasShowCategoryName()
+    public function hasShowCategoryName(): bool
     {
         return $this->showCategoryName;
     }
 
     /**
-     * Set ShowCategoryName
-     *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * Set ShowCategoryName.
      */
-    public function setShowCategoryName($value)
+    public function setShowCategoryName(bool $value): self
     {
         $this->showCategoryName = $value;
 
@@ -341,45 +314,35 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowValue
-     *
-     * @return boolean
+     * Get ShowValue.
      */
-    public function hasShowLegendKey()
+    public function hasShowLegendKey(): bool
     {
         return $this->showLegendKey;
     }
 
     /**
-     * Set ShowValue
-     *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * Set ShowValue.
      */
-    public function setShowLegendKey($value)
+    public function setShowLegendKey(bool $value): self
     {
-        $this->showLegendKey = (bool)$value;
+        $this->showLegendKey = $value;
 
         return $this;
     }
 
     /**
-     * Get ShowValue
-     *
-     * @return boolean
+     * Get ShowValue.
      */
-    public function hasShowValue()
+    public function hasShowValue(): bool
     {
         return $this->showValue;
     }
 
     /**
-     * Set ShowValue
-     *
-     * @param  boolean $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * Set ShowValue.
      */
-    public function setShowValue($value)
+    public function setShowValue(bool $value): self
     {
         $this->showValue = $value;
 
@@ -387,73 +350,54 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get ShowPercentage
-     *
-     * @return boolean
+     * Get ShowPercentage.
      */
-    public function hasShowPercentage()
+    public function hasShowPercentage(): bool
     {
         return $this->showPercentage;
     }
 
     /**
-     * Set ShowPercentage
-     *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * Set ShowPercentage.
      */
-    public function setShowPercentage($value)
+    public function setShowPercentage(bool $value): self
     {
         $this->showPercentage = $value;
 
         return $this;
     }
 
-    /**
-     * Get ShowLeaderLines
-     *
-     * @return boolean
-     */
-    public function hasShowSeparator()
+    public function hasShowSeparator(): bool
     {
         return !is_null($this->separator);
     }
 
-    /**
-     * Set Separator
-     * @param  string $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
-     */
-    public function setSeparator($pValue)
+    public function setSeparator(?string $pValue): self
     {
         $this->separator = $pValue;
+
         return $this;
     }
 
-    /**
-     * Get Separator
-     * @return string
-     */
-    public function getSeparator()
+    public function getSeparator(): ?string
     {
         return $this->separator;
     }
 
     /**
-     * Get ShowLeaderLines
-     *
-     * @return boolean
+     * Get ShowLeaderLines.
      */
-    public function hasShowLeaderLines()
+    public function hasShowLeaderLines(): bool
     {
         return $this->showLeaderLines;
     }
 
     /**
-     * Set ShowLeaderLines
+     * Set ShowLeaderLines.
      *
-     * @param  boolean                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param bool $value
+     *
+     * @return self
      */
     public function setShowLeaderLines($value)
     {
@@ -463,23 +407,21 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get font
+     * Get font.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return Font
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return $this->font;
     }
 
     /**
-     * Set font
+     * Set font.
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param Font|null $pFont Font
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(Font $pFont = null): self
     {
         $this->font = $pFont;
 
@@ -487,105 +429,87 @@ class Series implements ComparableInterface
     }
 
     /**
-     * Get label position
-     *
-     * @return string
+     * Get label position.
      */
-    public function getLabelPosition()
+    public function getLabelPosition(): string
     {
         return $this->labelPosition;
     }
 
     /**
-     * Set label position
-     *
-     * @param  string                           $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * Set label position.
      */
-    public function setLabelPosition($value)
+    public function setLabelPosition(string $value): self
     {
         $this->labelPosition = $value;
 
         return $this;
     }
 
-    /**
-     * @return Marker
-     */
-    public function getMarker()
+    public function getMarker(): Marker
     {
         return $this->marker;
     }
 
-    /**
-     * @param Marker $marker
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
-     */
-    public function setMarker(Marker $marker)
+    public function setMarker(Marker $marker): self
     {
         $this->marker = $marker;
+
         return $this;
     }
 
-    /**
-     * @return Outline
-     */
-    public function getOutline()
+    public function getOutline(): ?Outline
     {
         return $this->outline;
     }
 
-    /**
-     * @param Outline $outline
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
-     */
-    public function setOutline(Outline $outline)
+    public function setOutline(?Outline $outline): self
     {
         $this->outline = $outline;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5((is_null($this->fill) ? 'null' : $this->fill->getHashCode()) . (is_null($this->font) ? 'null' : $this->font->getHashCode()) . var_export($this->values, true) . var_export($this, true) . __CLASS__);
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Series
+     * @param int $value Hash index
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value): self
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
-
     /**
-     * @link http://php.net/manual/en/language.oop5.cloning.php
+     * @see http://php.net/manual/en/language.oop5.cloning.php
      */
     public function __clone()
     {

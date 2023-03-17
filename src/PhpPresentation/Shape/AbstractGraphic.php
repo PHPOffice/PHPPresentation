@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape;
 
@@ -21,80 +24,80 @@ use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * Abstract drawing
+ * Abstract drawing.
  */
 abstract class AbstractGraphic extends AbstractShape implements ComparableInterface
 {
     /**
-     * Image counter
+     * Image counter.
      *
      * @var int
      */
     private static $imageCounter = 0;
 
     /**
-     * Image index
+     * Image index.
      *
      * @var int
      */
     private $imageIndex = 0;
 
     /**
-     * Name
+     * Name.
      *
      * @var string
      */
     protected $name;
 
     /**
-     * Description
+     * Description.
      *
      * @var string
      */
     protected $description;
 
     /**
-     * Proportional resize
+     * Proportional resize.
      *
-     * @var boolean
+     * @var bool
      */
     protected $resizeProportional;
 
     /**
-     * Slide relation ID (should not be used by user code!)
+     * Slide relation ID (should not be used by user code!).
      *
      * @var string
      */
     public $relationId = null;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Slide\AbstractDrawing
+     * Create a new \PhpOffice\PhpPresentation\Slide\AbstractDrawing.
      */
     public function __construct()
     {
         // Initialise values
-        $this->name               = '';
-        $this->description        = '';
+        $this->name = '';
+        $this->description = '';
         $this->resizeProportional = true;
 
         // Set image index
-        self::$imageCounter++;
+        ++self::$imageCounter;
         $this->imageIndex = self::$imageCounter;
 
         // Initialize parent
         parent::__construct();
     }
-    
+
     public function __clone()
     {
         parent::__clone();
-        
-        self::$imageCounter++;
+
+        ++self::$imageCounter;
         $this->imageIndex = self::$imageCounter;
     }
 
     /**
-     * Get image index
+     * Get image index.
      *
      * @return int
      */
@@ -104,7 +107,7 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Get Name
+     * Get Name.
      *
      * @return string
      */
@@ -114,19 +117,21 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Set Name
+     * Set Name.
      *
-     * @param  string $pValue
+     * @param string $pValue
+     *
      * @return $this
      */
     public function setName($pValue = '')
     {
         $this->name = $pValue;
+
         return $this;
     }
 
     /**
-     * Get Description
+     * Get Description.
      *
      * @return string
      */
@@ -136,9 +141,10 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Set Description
+     * Set Description.
      *
-     * @param  string $pValue
+     * @param string $pValue
+     *
      * @return $this
      */
     public function setDescription($pValue = '')
@@ -149,16 +155,15 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Set Width
+     * Set Width.
      *
-     * @param  int $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     * @return self
      */
-    public function setWidth($pValue = 0)
+    public function setWidth(int $pValue = 0)
     {
         // Resize proportional?
-        if ($this->resizeProportional && $pValue != 0 && $this->width != 0) {
-            $ratio         = $this->height / $this->width;
+        if ($this->resizeProportional && 0 != $pValue && 0 != $this->width) {
+            $ratio = $this->height / $this->width;
             $this->height = (int) round($ratio * $pValue);
         }
 
@@ -169,16 +174,15 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Set Height
+     * Set Height.
      *
-     * @param  int $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     * @return self
      */
-    public function setHeight($pValue = 0)
+    public function setHeight(int $pValue = 0)
     {
         // Resize proportional?
-        if ($this->resizeProportional && $pValue != 0 && $this->height != 0) {
-            $ratio        = $this->width / $this->height;
+        if ($this->resizeProportional && 0 != $pValue && 0 != $this->height) {
+            $ratio = $this->width / $this->height;
             $this->width = (int) round($ratio * $pValue);
         }
 
@@ -189,22 +193,22 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Set width and height with proportional resize
+     * Set width and height with proportional resize.
+     *
      * @author Vincent@luo MSN:kele_100@hotmail.com
-     * @param  int $width
-     * @param  int $height
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     *
+     * @return self
      */
-    public function setWidthAndHeight($width = 0, $height = 0)
+    public function setWidthAndHeight(int $width = 0, int $height = 0)
     {
         $xratio = $width / $this->width;
         $yratio = $height / $this->height;
-        if ($this->resizeProportional && !($width == 0 || $height == 0)) {
+        if ($this->resizeProportional && !(0 == $width || 0 == $height)) {
             if (($xratio * $this->height) < $height) {
                 $this->height = (int) ceil($xratio * $this->height);
-                $this->width  = $width;
+                $this->width = $width;
             } else {
-                $this->width  = (int) ceil($yratio * $this->width);
+                $this->width = (int) ceil($yratio * $this->width);
                 $this->height = $height;
             }
         }
@@ -213,9 +217,9 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Get ResizeProportional
+     * Get ResizeProportional.
      *
-     * @return boolean
+     * @return bool
      */
     public function isResizeProportional()
     {
@@ -223,12 +227,11 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Set ResizeProportional
+     * Set ResizeProportional.
      *
-     * @param  boolean                         $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     * @param bool $pValue
      */
-    public function setResizeProportional($pValue = true)
+    public function setResizeProportional($pValue = true): self
     {
         $this->resizeProportional = $pValue;
 
@@ -236,11 +239,11 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->name . $this->description . parent::getHashCode() . __CLASS__);
     }

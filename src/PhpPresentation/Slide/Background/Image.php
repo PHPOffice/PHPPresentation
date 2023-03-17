@@ -1,7 +1,26 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide\Background;
 
+use PhpOffice\PhpPresentation\Exception\FileNotFoundException;
 use PhpOffice\PhpPresentation\Slide\AbstractBackground;
 
 class Image extends AbstractBackground
@@ -12,7 +31,7 @@ class Image extends AbstractBackground
     public $relationId;
 
     /**
-     * Path
+     * Path.
      *
      * @var string
      */
@@ -29,65 +48,69 @@ class Image extends AbstractBackground
     protected $width;
 
     /**
-     * Get Path
+     * Get Path.
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): ?string
     {
         return $this->path;
     }
 
     /**
-     * Set Path
+     * Set Path.
      *
-     * @param  string                      $pValue      File path
-     * @param  boolean                     $pVerifyFile Verify file
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Slide\Background\Image
+     * @param string $pValue File path
+     * @param bool $pVerifyFile Verify file
+     *
+     * @throws FileNotFoundException
+     *
+     * @return self
      */
-    public function setPath($pValue = '', $pVerifyFile = true)
+    public function setPath(string $pValue = '', bool $pVerifyFile = true)
     {
         if ($pVerifyFile) {
             if (!file_exists($pValue)) {
-                throw new \Exception("File not found : $pValue");
+                throw new FileNotFoundException($pValue);
             }
 
-            if ($this->width == 0 && $this->height == 0) {
+            if (0 == $this->width && 0 == $this->height) {
                 // Get width/height
                 list($this->width, $this->height) = getimagesize($pValue);
             }
         }
         $this->path = $pValue;
+
         return $this;
     }
 
     /**
-     * Get Filename
+     * Get Filename.
      *
      * @return string
      */
-    public function getFilename()
+    public function getFilename(): string
     {
-        return basename($this->path);
+        return $this->path ? basename($this->path) : '';
     }
 
     /**
-     * Get Extension
+     * Get Extension.
      *
      * @return string
      */
-    public function getExtension()
+    public function getExtension(): string
     {
-        $exploded = explode('.', basename($this->path));
+        $exploded = explode('.', $this->getFilename());
 
         return $exploded[count($exploded) - 1];
     }
 
     /**
-     * Get indexed filename (using image index)
+     * Get indexed filename (using image index).
      *
-     * @param integer $numSlide
+     * @param string $numSlide
+     *
      * @return string
      */
     public function getIndexedFilename($numSlide)

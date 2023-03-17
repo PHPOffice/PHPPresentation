@@ -1,4 +1,22 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
@@ -6,24 +24,27 @@ use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Shape\Comment;
-use PhpOffice\PhpPresentation\Shape\Media;
-use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Chart;
-use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
+use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
+use PhpOffice\PhpPresentation\Shape\Drawing as ShapeDrawing;
 use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Line;
+use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElement;
-use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
+use PhpOffice\PhpPresentation\Slide;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Shadow;
 
 class Content extends AbstractDecoratorWriter
@@ -31,50 +52,44 @@ class Content extends AbstractDecoratorWriter
     /**
      * Stores bullet styles for text shapes that include lists.
      *
-     * @var []
+     * @var array<string, array<string, mixed>>
      */
-    protected $arrStyleBullet    = array();
+    protected $arrStyleBullet = [];
 
     /**
      * Stores paragraph information for text shapes.
      *
-     * @var array
+     * @var array<string, Paragraph>
      */
-    protected $arrStyleParagraph = array();
+    protected $arrStyleParagraph = [];
 
     /**
      * Stores font styles for text shapes that include lists.
      *
-     * @var Run[]
+     * @var array<string, Run>
      */
-    protected $arrStyleTextFont  = array();
+    protected $arrStyleTextFont = [];
 
     /**
      * Used to track the current shape ID.
      *
-     * @var integer
+     * @var int
      */
     protected $shapeId;
 
-    /**
-     * @return ZipInterface
-     * @throws \Exception
-     */
-    public function render()
+    public function render(): ZipInterface
     {
         $this->getZip()->addFromString('content.xml', $this->writeContent());
+
         return $this->getZip();
     }
 
-
-
     /**
-     * Write content file to XML format
+     * Write content file to XML format.
      *
-     * @return string        XML Output
-     * @throws \Exception
+     * @return string XML Output
      */
-    public function writeContent()
+    protected function writeContent(): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -113,12 +128,13 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xmlns:rdfa', 'http://docs.oasis-open.org/opendocument/meta/rdfa#');
         $objWriter->writeAttribute('xmlns:field', 'urn:openoffice:names:experimental:ooo-ms-interop:xmlns:field:1.0');
         $objWriter->writeAttribute('xmlns:officeooo', 'http://openoffice.org/2009/office');
+        $objWriter->writeAttribute('xmlns:loext', 'urn:org:documentfoundation:names:experimental:office:xmlns:loext:1.0');
         $objWriter->writeAttribute('office:version', '1.2');
 
         // office:automatic-styles
         $objWriter->startElement('office:automatic-styles');
 
-        $this->shapeId    = 0;
+        $this->shapeId = 0;
         $incSlide = 0;
         foreach ($this->getPresentation()->getAllSlides() as $pSlide) {
             // Slides
@@ -148,31 +164,31 @@ class Content extends AbstractDecoratorWriter
                 }
             }
 
-            $incSlide++;
+            ++$incSlide;
         }
         // Style : Bullet
         if (!empty($this->arrStyleBullet)) {
             foreach ($this->arrStyleBullet as $key => $item) {
-                $oStyle   = $item['oStyle'];
+                $oStyle = $item['oStyle'];
                 $arrLevel = explode(';', $item['level']);
                 // style:style
                 $objWriter->startElement('text:list-style');
                 $objWriter->writeAttribute('style:name', 'L_' . $key);
                 foreach ($arrLevel as $level) {
-                    if ($level != '') {
+                    if ('' != $level) {
                         $oAlign = $item['oAlign_' . $level];
                         // text:list-level-style-bullet
                         $objWriter->startElement('text:list-level-style-bullet');
-                        $objWriter->writeAttribute('text:level', $level + 1);
+                        $objWriter->writeAttribute('text:level', intval($level) + 1);
                         $objWriter->writeAttribute('text:bullet-char', $oStyle->getBulletChar());
                         // style:list-level-properties
                         $objWriter->startElement('style:list-level-properties');
                         if ($oAlign->getIndent() < 0) {
-                            $objWriter->writeAttribute('text:space-before', CommonDrawing::pixelsToCentimeters($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent())) . 'cm');
-                            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters(-1 * $oAlign->getIndent()) . 'cm');
+                            $objWriter->writeAttribute('text:space-before', CommonDrawing::pixelsToCentimeters((int) ($oAlign->getMarginLeft() - (-1 * $oAlign->getIndent()))) . 'cm');
+                            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters((int) (-1 * $oAlign->getIndent())) . 'cm');
                         } else {
-                            $objWriter->writeAttribute('text:space-before', (CommonDrawing::pixelsToCentimeters($oAlign->getMarginLeft() - $oAlign->getIndent())) . 'cm');
-                            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters($oAlign->getIndent()) . 'cm');
+                            $objWriter->writeAttribute('text:space-before', (CommonDrawing::pixelsToCentimeters((int) ($oAlign->getMarginLeft() - $oAlign->getIndent()))) . 'cm');
+                            $objWriter->writeAttribute('text:min-label-width', CommonDrawing::pixelsToCentimeters((int) $oAlign->getIndent()) . 'cm');
                         }
 
                         $objWriter->endElement();
@@ -198,6 +214,24 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:family', 'paragraph');
                 // style:paragraph-properties
                 $objWriter->startElement('style:paragraph-properties');
+                $objWriter->writeAttributeIf(
+                    $item->getLineSpacingMode() === Paragraph::LINE_SPACING_MODE_PERCENT,
+                    'fo:line-height',
+                    $item->getLineSpacing() . '%'
+                );
+                $objWriter->writeAttributeIf(
+                    $item->getLineSpacingMode() === Paragraph::LINE_SPACING_MODE_POINT,
+                    'fo:line-height',
+                    $item->getLineSpacing() . 'pt'
+                );
+                $objWriter->writeAttribute(
+                    'fo:margin-top',
+                    Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingBefore()), 3) . 'cm'
+                );
+                $objWriter->writeAttribute(
+                    'fo:margin-bottom',
+                    Text::numberFormat(CommonDrawing::pointstoCentimeters($item->getSpacingAfter()), 3) . 'cm'
+                );
                 switch ($item->getAlignment()->getHorizontal()) {
                     case Alignment::HORIZONTAL_LEFT:
                         $objWriter->writeAttribute('fo:text-align', 'left');
@@ -218,6 +252,10 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttribute('fo:text-align', 'left');
                         break;
                 }
+                $objWriter->writeAttribute(
+                    'style:writing-mode',
+                    $item->getAlignment()->isRTL() ? 'rl-tb' : 'lr-tb'
+                );
                 $objWriter->endElement();
                 $objWriter->endElement();
             }
@@ -229,19 +267,37 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->startElement('style:style');
                 $objWriter->writeAttribute('style:name', 'T_' . $key);
                 $objWriter->writeAttribute('style:family', 'text');
-                // style:text-properties
+
+                // style:style > style:text-properties
                 $objWriter->startElement('style:text-properties');
                 $objWriter->writeAttribute('fo:color', '#' . $item->getFont()->getColor()->getRGB());
-                $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
-                $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
-                // @todo : fo:font-style
-                if ($item->getFont()->isBold()) {
-                    $objWriter->writeAttribute('fo:font-weight', 'bold');
+                switch ($item->getFont()->getFormat()) {
+                    case Font::FORMAT_LATIN:
+                        $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());
+                        $objWriter->writeAttribute('fo:font-size', $item->getFont()->getSize() . 'pt');
+                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
+                        $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                        $objWriter->writeAttribute('style:script-type', 'latin');
+                        break;
+                    case Font::FORMAT_EAST_ASIAN:
+                        $objWriter->writeAttribute('style:font-family-asian', $item->getFont()->getName());
+                        $objWriter->writeAttribute('style:font-size-asian', $item->getFont()->getSize() . 'pt');
+                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-asian', 'bold');
+                        $objWriter->writeAttribute('style:language-asian', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                        $objWriter->writeAttribute('style:script-type', 'asian');
+                        break;
+                    case Font::FORMAT_COMPLEX_SCRIPT:
+                        $objWriter->writeAttribute('style:font-family-complex', $item->getFont()->getName());
+                        $objWriter->writeAttribute('style:font-size-complex', $item->getFont()->getSize() . 'pt');
+                        $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-complex', 'bold');
+                        $objWriter->writeAttribute('style:language-complex', ($item->getLanguage() ? $item->getLanguage() : 'en'));
+                        $objWriter->writeAttribute('style:script-type', 'complex');
+                        break;
                 }
-                $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en'));
 
-                // @todo : style:text-underline-style
+                // > style:style > style:text-properties
                 $objWriter->endElement();
+                // > style:style
                 $objWriter->endElement();
             }
         }
@@ -252,12 +308,12 @@ class Content extends AbstractDecoratorWriter
         //===============================================
         // office:body
         $objWriter->startElement('office:body');
-        // office:presentation
+        // office:body > office:presentation
         $objWriter->startElement('office:presentation');
 
         // Write slides
         $slideCount = $this->getPresentation()->getSlideCount();
-        $this->shapeId    = 0;
+        $this->shapeId = 0;
         for ($i = 0; $i < $slideCount; ++$i) {
             $pSlide = $this->getPresentation()->getSlide($i);
             $objWriter->startElement('draw:page');
@@ -300,13 +356,18 @@ class Content extends AbstractDecoratorWriter
             $objWriter->endElement();
         }
 
+        // office:document-content > office:body > office:presentation > presentation:settings
+        $objWriter->startElement('presentation:settings');
         if ($this->getPresentation()->getPresentationProperties()->isLoopContinuouslyUntilEsc()) {
-            $objWriter->startElement('presentation:settings');
             $objWriter->writeAttribute('presentation:endless', 'true');
-            $objWriter->writeAttribute('presentation:pause', 'P0s');
+            $objWriter->writeAttribute('presentation:pause', 'PT0S');
             $objWriter->writeAttribute('presentation:mouse-visible', 'false');
-            $objWriter->endElement();
         }
+        if ($this->getPresentation()->getPresentationProperties()->getSlideshowType() === PresentationProperties::SLIDESHOW_TYPE_BROWSE) {
+            $objWriter->writeAttribute('presentation:full-screen', 'false');
+        }
+        $objWriter->endElement();
+
         // > office:presentation
         $objWriter->endElement();
         // > office:body
@@ -319,20 +380,17 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write picture
-     *
-     * @param \PhpOffice\Common\XMLWriter $objWriter
-     * @param \PhpOffice\PhpPresentation\Shape\Media $shape
+     * Write picture.
      */
-    public function writeShapeMedia(XMLWriter $objWriter, Media $shape)
+    protected function writeShapeMedia(XMLWriter $objWriter, Media $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:name', $shape->getName());
-        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         // draw:frame > draw:plugin
         $objWriter->startElement('draw:plugin');
@@ -367,21 +425,19 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write picture
+     * Write picture.
      *
-     * @param \PhpOffice\Common\XMLWriter $objWriter
      * @param AbstractDrawingAdapter $shape
-     * @throws \Exception
      */
-    public function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape)
+    protected function writeShapeDrawing(XMLWriter $objWriter, ShapeDrawing\AbstractDrawingAdapter $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:name', $shape->getName());
-        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
         // draw:image
         $objWriter->startElement('draw:image');
@@ -391,6 +447,7 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
         $objWriter->writeAttribute('xlink:actuate', 'onLoad');
+        $objWriter->writeAttribute('loext:mime-type', $shape->getMimeType());
         $objWriter->writeElement('text:p');
         $objWriter->endElement();
 
@@ -415,34 +472,30 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write text
-     *
-     * @param \PhpOffice\Common\XMLWriter $objWriter
-     * @param \PhpOffice\PhpPresentation\Shape\RichText $shape
-     * @throws \Exception
+     * Write text.
      */
-    public function writeShapeTxt(XMLWriter $objWriter, RichText $shape)
+    protected function writeShapeTxt(XMLWriter $objWriter, RichText $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
-        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
         // draw:text-box
         $objWriter->startElement('draw:text-box');
 
-        $paragraphs             = $shape->getParagraphs();
-        $paragraphId            = 0;
-        $sCstShpLastBullet      = '';
-        $iCstShpLastBulletLvl   = 0;
-        $bCstShpHasBullet       = false;
+        $paragraphs = $shape->getParagraphs();
+        $paragraphId = 0;
+        $sCstShpLastBullet = '';
+        $iCstShpLastBulletLvl = 0;
+        $bCstShpHasBullet = false;
 
         foreach ($paragraphs as $paragraph) {
             // Close the bullet list
-            if ($sCstShpLastBullet != 'bullet' && $bCstShpHasBullet === true) {
-                for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; $iInc--) {
+            if ('bullet' != $sCstShpLastBullet && true === $bCstShpHasBullet) {
+                for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; --$iInc) {
                     // text:list-item
                     $objWriter->endElement();
                     // text:list
@@ -452,24 +505,24 @@ class Content extends AbstractDecoratorWriter
             //===============================================
             // Paragraph
             //===============================================
-            if ($paragraph->getBulletStyle()->getBulletType() == 'none') {
+            if ('none' == $paragraph->getBulletStyle()->getBulletType()) {
                 ++$paragraphId;
                 // text:p
                 $objWriter->startElement('text:p');
                 $objWriter->writeAttribute('text:style-name', 'P_' . $paragraph->getHashCode());
 
                 // Loop trough rich text elements
-                $richtexts  = $paragraph->getRichTextElements();
+                $richtexts = $paragraph->getRichTextElements();
                 $richtextId = 0;
                 foreach ($richtexts as $richtext) {
                     ++$richtextId;
-                    if ($richtext instanceof TextElement || $richtext instanceof Run) {
+                    if ($richtext instanceof TextElement) {
                         // text:span
                         $objWriter->startElement('text:span');
                         if ($richtext instanceof Run) {
                             $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getHashCode());
                         }
-                        if ($richtext->hasHyperlink() === true && $richtext->getHyperlink()->getUrl() != '') {
+                        if (true === $richtext->hasHyperlink() && '' != $richtext->getHyperlink()->getUrl()) {
                             // text:a
                             $objWriter->startElement('text:a');
                             $objWriter->writeAttribute('xlink:type', 'simple');
@@ -490,18 +543,18 @@ class Content extends AbstractDecoratorWriter
                     }
                 }
                 $objWriter->endElement();
-                //===============================================
-                // Bullet list
-                //===============================================
-            } elseif ($paragraph->getBulletStyle()->getBulletType() == 'bullet') {
+            //===============================================
+            // Bullet list
+            //===============================================
+            } elseif ('bullet' == $paragraph->getBulletStyle()->getBulletType()) {
                 $bCstShpHasBullet = true;
                 // Open the bullet list
-                if ($sCstShpLastBullet != 'bullet' || ($sCstShpLastBullet == $paragraph->getBulletStyle()->getBulletType() && $iCstShpLastBulletLvl < $paragraph->getAlignment()->getLevel())) {
+                if ('bullet' != $sCstShpLastBullet || ($sCstShpLastBullet == $paragraph->getBulletStyle()->getBulletType() && $iCstShpLastBulletLvl < $paragraph->getAlignment()->getLevel())) {
                     // text:list
                     $objWriter->startElement('text:list');
                     $objWriter->writeAttribute('text:style-name', 'L_' . $paragraph->getBulletStyle()->getHashCode());
                 }
-                if ($sCstShpLastBullet == 'bullet') {
+                if ('bullet' == $sCstShpLastBullet) {
                     if ($iCstShpLastBulletLvl == $paragraph->getAlignment()->getLevel()) {
                         // text:list-item
                         $objWriter->endElement();
@@ -523,17 +576,17 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('text:style-name', 'P_' . $paragraph->getHashCode());
 
                 // Loop trough rich text elements
-                $richtexts  = $paragraph->getRichTextElements();
+                $richtexts = $paragraph->getRichTextElements();
                 $richtextId = 0;
                 foreach ($richtexts as $richtext) {
                     ++$richtextId;
-                    if ($richtext instanceof TextElement || $richtext instanceof Run) {
+                    if ($richtext instanceof TextElement) {
                         // text:span
                         $objWriter->startElement('text:span');
                         if ($richtext instanceof Run) {
                             $objWriter->writeAttribute('text:style-name', 'T_' . $richtext->getHashCode());
                         }
-                        if ($richtext->hasHyperlink() === true && $richtext->getHyperlink()->getUrl() != '') {
+                        if (true === $richtext->hasHyperlink() && '' != $richtext->getHyperlink()->getUrl()) {
                             // text:a
                             $objWriter->startElement('text:a');
                             $objWriter->writeAttribute('xlink:type', 'simple');
@@ -555,13 +608,13 @@ class Content extends AbstractDecoratorWriter
                 }
                 $objWriter->endElement();
             }
-            $sCstShpLastBullet      = $paragraph->getBulletStyle()->getBulletType();
+            $sCstShpLastBullet = $paragraph->getBulletStyle()->getBulletType();
             $iCstShpLastBulletLvl = $paragraph->getAlignment()->getLevel();
         }
 
         // Close the bullet list
-        if ($sCstShpLastBullet == 'bullet' && $bCstShpHasBullet === true) {
-            for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; $iInc--) {
+        if ('bullet' == $sCstShpLastBullet && true === $bCstShpHasBullet) {
+            for ($iInc = $iCstShpLastBulletLvl; $iInc >= 0; --$iInc) {
                 // text:list-item
                 $objWriter->endElement();
                 // text:list
@@ -574,20 +627,19 @@ class Content extends AbstractDecoratorWriter
         // > draw:frame
         $objWriter->endElement();
     }
+
     /**
-     * Write Comment
-     * @param XMLWriter $objWriter
-     * @param Comment $oShape
+     * Write Comment.
      */
-    public function writeShapeComment(XMLWriter $objWriter, Comment $oShape)
+    protected function writeShapeComment(XMLWriter $objWriter, Comment $oShape): void
     {
-        /**
+        /*
          * Note : This element is not valid in the Schema 1.2
          */
         // officeooo:annotation
         $objWriter->startElement('officeooo:annotation');
-        $objWriter->writeAttribute('svg:x', number_format(CommonDrawing::pixelsToCentimeters($oShape->getOffsetX()), 2, '.', '').'cm');
-        $objWriter->writeAttribute('svg:y', number_format(CommonDrawing::pixelsToCentimeters($oShape->getOffsetY()), 2, '.', '').'cm');
+        $objWriter->writeAttribute('svg:x', number_format(CommonDrawing::pixelsToCentimeters((int) $oShape->getOffsetX()), 2, '.', '') . 'cm');
+        $objWriter->writeAttribute('svg:y', number_format(CommonDrawing::pixelsToCentimeters((int) $oShape->getOffsetY()), 2, '.', '') . 'cm');
 
         if ($oShape->getAuthor() instanceof Comment\Author) {
             $objWriter->writeElement('dc:creator', $oShape->getAuthor()->getName());
@@ -599,19 +651,15 @@ class Content extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-    /**
-     * @param XMLWriter $objWriter
-     * @param Line $shape
-     */
-    public function writeShapeLine(XMLWriter $objWriter, Line $shape)
+    protected function writeShapeLine(XMLWriter $objWriter, Line $shape): void
     {
         // draw:line
         $objWriter->startElement('draw:line');
         $objWriter->writeAttribute('draw:style-name', 'gr' . $this->shapeId);
-        $objWriter->writeAttribute('svg:x1', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y1', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:x2', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()+$shape->getWidth()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y2', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()+$shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y1', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX() + $shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y2', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY() + $shape->getHeight()), 3) . 'cm');
 
         // text:p
         $objWriter->writeElement('text:p');
@@ -620,19 +668,16 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write table Shape
-     * @param XMLWriter $objWriter
-     * @param Table $shape
-     * @throws \Exception
+     * Write table Shape.
      */
-    public function writeShapeTable(XMLWriter $objWriter, Table $shape)
+    protected function writeShapeTable(XMLWriter $objWriter, Table $shape): void
     {
         // draw:frame
         $objWriter->startElement('draw:frame');
-        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
 
         $arrayRows = $shape->getRows();
         if (!empty($arrayRows)) {
@@ -647,15 +692,15 @@ class Content extends AbstractDecoratorWriter
             foreach ($arrayRows as $keyRow => $shapeRow) {
                 // table:table-row
                 $objWriter->startElement('table:table-row');
-                $objWriter->writeAttribute('table:style-name', 'gr'.$this->shapeId.'r'.$keyRow);
+                $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId . 'r' . $keyRow);
                 //@todo getFill
 
                 $numColspan = 0;
                 foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
-                    if ($numColspan == 0) {
+                    if (0 == $numColspan) {
                         // table:table-cell
                         $objWriter->startElement('table:table-cell');
-                        $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
+                        $objWriter->writeAttribute('table:style-name', 'gr' . $this->shapeId . 'r' . $keyRow . 'c' . $keyCell);
                         if ($shapeCell->getColspan() > 1) {
                             $objWriter->writeAttribute('table:number-columns-spanned', $shapeCell->getColspan());
                             $numColspan = $shapeCell->getColspan() - 1;
@@ -673,7 +718,7 @@ class Content extends AbstractDecoratorWriter
                                     if ($shapeRichText instanceof Run) {
                                         $objWriter->writeAttribute('text:style-name', 'T_' . $shapeRichText->getHashCode());
                                     }
-                                    if ($shapeRichText->hasHyperlink() === true && $shapeRichText->getHyperlink()->getUrl() !== '') {
+                                    if (true === $shapeRichText->hasHyperlink() && '' !== $shapeRichText->getHyperlink()->getUrl()) {
                                         // text:a
                                         $objWriter->startElement('text:a');
                                         $objWriter->writeAttribute('xlink:type', 'simple');
@@ -703,7 +748,7 @@ class Content extends AbstractDecoratorWriter
                     } else {
                         // table:covered-table-cell
                         $objWriter->writeElement('table:covered-table-cell');
-                        $numColspan--;
+                        --$numColspan;
                     }
                 }
                 // > table:table-row
@@ -717,12 +762,9 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write table Chart
-     * @param XMLWriter $objWriter
-     * @param Chart $shape
-     * @throws \Exception
+     * Write table Chart.
      */
-    public function writeShapeChart(XMLWriter $objWriter, Chart $shape)
+    protected function writeShapeChart(XMLWriter $objWriter, Chart $shape): void
     {
         $arrayChart = $this->getArrayChart();
         $arrayChart[$this->shapeId] = $shape;
@@ -731,14 +773,14 @@ class Content extends AbstractDecoratorWriter
         // draw:frame
         $objWriter->startElement('draw:frame');
         $objWriter->writeAttribute('draw:name', $shape->getTitle()->getText());
-        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetX()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getOffsetY()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getHeight()), 3) . 'cm');
-        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters($shape->getWidth()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:x', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetX()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:y', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getOffsetY()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:height', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getHeight()), 3) . 'cm');
+        $objWriter->writeAttribute('svg:width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $shape->getWidth()), 3) . 'cm');
 
         // draw:object
         $objWriter->startElement('draw:object');
-        $objWriter->writeAttribute('xlink:href', './Object '.$this->shapeId);
+        $objWriter->writeAttribute('xlink:href', './Object ' . $this->shapeId);
         $objWriter->writeAttribute('xlink:type', 'simple');
         $objWriter->writeAttribute('xlink:show', 'embed');
 
@@ -749,13 +791,9 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Writes a group of shapes
-     *
-     * @param XMLWriter $objWriter
-     * @param Group $group
-     * @throws \Exception
+     * Writes a group of shapes.
      */
-    public function writeShapeGroup(XMLWriter $objWriter, Group $group)
+    protected function writeShapeGroup(XMLWriter $objWriter, Group $group): void
     {
         // draw:g
         $objWriter->startElement('draw:g');
@@ -785,12 +823,9 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Writes the style information for a group of shapes
-     *
-     * @param XMLWriter $objWriter
-     * @param Group $group
+     * Writes the style information for a group of shapes.
      */
-    public function writeGroupStyle(XMLWriter $objWriter, Group $group)
+    protected function writeGroupStyle(XMLWriter $objWriter, Group $group): void
     {
         $shapes = $group->getShapeCollection();
         foreach ($shapes as $shape) {
@@ -814,12 +849,9 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the default style information for a RichText shape
-     *
-     * @param \PhpOffice\Common\XMLWriter $objWriter
-     * @param \PhpOffice\PhpPresentation\Shape\RichText $shape
+     * Write the default style information for a RichText shape.
      */
-    public function writeTxtStyle(XMLWriter $objWriter, RichText $shape)
+    protected function writeTxtStyle(XMLWriter $objWriter, RichText $shape): void
     {
         // style:style
         $objWriter->startElement('style:style');
@@ -841,24 +873,24 @@ class Content extends AbstractDecoratorWriter
             case Fill::FILL_GRADIENT_LINEAR:
             case Fill::FILL_GRADIENT_PATH:
                 $objWriter->writeAttribute('draw:fill', 'gradient');
-                $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_'.$shape->getFill()->getHashCode());
+                $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shape->getFill()->getHashCode());
                 break;
             case Fill::FILL_SOLID:
                 $objWriter->writeAttribute('draw:fill', 'solid');
-                $objWriter->writeAttribute('draw:fill-color', '#'.$shape->getFill()->getStartColor()->getRGB());
+                $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
                 break;
             case Fill::FILL_NONE:
             default:
                 $objWriter->writeAttribute('draw:fill', 'none');
-                $objWriter->writeAttribute('draw:fill-color', '#'.$shape->getFill()->getStartColor()->getRGB());
+                $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
                 break;
         }
         // Border
-        if ($shape->getBorder()->getLineStyle() == Border::LINE_NONE) {
+        if (Border::LINE_NONE == $shape->getBorder()->getLineStyle()) {
             $objWriter->writeAttribute('draw:stroke', 'none');
         } else {
-            $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
-            $objWriter->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '').'cm');
+            $objWriter->writeAttribute('svg:stroke-color', '#' . $shape->getBorder()->getColor()->getRGB());
+            $objWriter->writeAttribute('svg:stroke-width', number_format(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3, '.', '') . 'cm');
             switch ($shape->getBorder()->getDashStyle()) {
                 case Border::DASH_SOLID:
                     $objWriter->writeAttribute('draw:stroke', 'solid');
@@ -874,7 +906,7 @@ class Content extends AbstractDecoratorWriter
                 case Border::DASH_SYSDASHDOTDOT:
                 case Border::DASH_SYSDOT:
                     $objWriter->writeAttribute('draw:stroke', 'dash');
-                    $objWriter->writeAttribute('draw:stroke-dash', 'strokeDash_'.$shape->getBorder()->getDashStyle());
+                    $objWriter->writeAttribute('draw:stroke-dash', 'strokeDash_' . $shape->getBorder()->getDashStyle());
                     break;
                 default:
                     $objWriter->writeAttribute('draw:stroke', 'none');
@@ -888,7 +920,7 @@ class Content extends AbstractDecoratorWriter
         // > style:style
         $objWriter->endElement();
 
-        $paragraphs  = $shape->getParagraphs();
+        $paragraphs = $shape->getParagraphs();
         $paragraphId = 0;
         foreach ($paragraphs as $paragraph) {
             ++$paragraphId;
@@ -902,14 +934,14 @@ class Content extends AbstractDecoratorWriter
             $bulletStyleHashCode = $paragraph->getBulletStyle()->getHashCode();
             if (!isset($this->arrStyleBullet[$bulletStyleHashCode])) {
                 $this->arrStyleBullet[$bulletStyleHashCode]['oStyle'] = $paragraph->getBulletStyle();
-                $this->arrStyleBullet[$bulletStyleHashCode]['level']  = '';
+                $this->arrStyleBullet[$bulletStyleHashCode]['level'] = '';
             }
-            if (strpos($this->arrStyleBullet[$bulletStyleHashCode]['level'], ';' . $paragraph->getAlignment()->getLevel()) === false) {
+            if (false === strpos($this->arrStyleBullet[$bulletStyleHashCode]['level'], ';' . $paragraph->getAlignment()->getLevel())) {
                 $this->arrStyleBullet[$bulletStyleHashCode]['level'] .= ';' . $paragraph->getAlignment()->getLevel();
                 $this->arrStyleBullet[$bulletStyleHashCode]['oAlign_' . $paragraph->getAlignment()->getLevel()] = $paragraph->getAlignment();
             }
 
-            $richtexts  = $paragraph->getRichTextElements();
+            $richtexts = $paragraph->getRichTextElements();
             $richtextId = 0;
             foreach ($richtexts as $richtext) {
                 ++$richtextId;
@@ -925,12 +957,9 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the default style information for an AbstractDrawingAdapter
-     *
-     * @param \PhpOffice\Common\XMLWriter $objWriter
-     * @param AbstractDrawingAdapter $shape
+     * Write the default style information for an AbstractDrawingAdapter.
      */
-    public function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawingAdapter $shape)
+    protected function writeDrawingStyle(XMLWriter $objWriter, AbstractDrawingAdapter $shape): void
     {
         // style:style
         $objWriter->startElement('style:style');
@@ -951,11 +980,8 @@ class Content extends AbstractDecoratorWriter
 
     /**
      * Write the default style information for a Line shape.
-     *
-     * @param XMLWriter $objWriter
-     * @param Line $shape
      */
-    public function writeLineStyle(XMLWriter $objWriter, Line $shape)
+    protected function writeLineStyle(XMLWriter $objWriter, Line $shape): void
     {
         // style:style
         $objWriter->startElement('style:style');
@@ -977,30 +1003,27 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('draw:stroke', 'none');
                 break;
         }
-        $objWriter->writeAttribute('svg:stroke-color', '#'.$shape->getBorder()->getColor()->getRGB());
-        $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pixelsToCentimeters((CommonDrawing::pointsToPixels($shape->getBorder()->getLineWidth()))), 3).'cm');
+        $objWriter->writeAttribute('svg:stroke-color', '#' . $shape->getBorder()->getColor()->getRGB());
+        $objWriter->writeAttribute('svg:stroke-width', Text::numberFormat(CommonDrawing::pointsToCentimeters($shape->getBorder()->getLineWidth()), 3) . 'cm');
         $objWriter->endElement();
 
         $objWriter->endElement();
     }
 
     /**
-     * Write the default style information for a Table shape
-     *
-     * @param XMLWriter $objWriter
-     * @param Table $shape
+     * Write the default style information for a Table shape.
      */
-    public function writeTableStyle(XMLWriter $objWriter, Table $shape)
+    protected function writeTableStyle(XMLWriter $objWriter, Table $shape): void
     {
         foreach ($shape->getRows() as $keyRow => $shapeRow) {
             // style:style
             $objWriter->startElement('style:style');
-            $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId.'r'.$keyRow);
+            $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId . 'r' . $keyRow);
             $objWriter->writeAttribute('style:family', 'table-row');
 
             // style:table-row-properties
             $objWriter->startElement('style:table-row-properties');
-            $objWriter->writeAttribute('style:row-height', Text::numberFormat(CommonDrawing::pixelsToCentimeters(CommonDrawing::pointsToPixels($shapeRow->getHeight())), 3).'cm');
+            $objWriter->writeAttribute('style:row-height', Text::numberFormat(CommonDrawing::pointsToCentimeters($shapeRow->getHeight()), 3) . 'cm');
             $objWriter->endElement();
 
             $objWriter->endElement();
@@ -1008,22 +1031,22 @@ class Content extends AbstractDecoratorWriter
             foreach ($shapeRow->getCells() as $keyCell => $shapeCell) {
                 // style:style
                 $objWriter->startElement('style:style');
-                $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId.'r'.$keyRow.'c'.$keyCell);
+                $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId . 'r' . $keyRow . 'c' . $keyCell);
                 $objWriter->writeAttribute('style:family', 'table-cell');
 
-                /**
+                /*
                  * Note : This element is not valid in the Schema 1.2
                  */
                 // style:graphic-properties
-                if ($shapeCell->getFill()->getFillType() != Fill::FILL_NONE) {
+                if (Fill::FILL_NONE != $shapeCell->getFill()->getFillType()) {
                     $objWriter->startElement('style:graphic-properties');
-                    if ($shapeCell->getFill()->getFillType() == Fill::FILL_SOLID) {
+                    if (Fill::FILL_SOLID == $shapeCell->getFill()->getFillType()) {
                         $objWriter->writeAttribute('draw:fill', 'solid');
-                        $objWriter->writeAttribute('draw:fill-color', '#'.$shapeCell->getFill()->getStartColor()->getRGB());
+                        $objWriter->writeAttribute('draw:fill-color', '#' . $shapeCell->getFill()->getStartColor()->getRGB());
                     }
-                    if ($shapeCell->getFill()->getFillType() == Fill::FILL_GRADIENT_LINEAR) {
+                    if (Fill::FILL_GRADIENT_LINEAR == $shapeCell->getFill()->getFillType()) {
                         $objWriter->writeAttribute('draw:fill', 'gradient');
-                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_'.$shapeCell->getFill()->getHashCode());
+                        $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shapeCell->getFill()->getHashCode());
                     }
                     $objWriter->endElement();
                 }
@@ -1043,7 +1066,7 @@ class Content extends AbstractDecoratorWriter
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
-                    $objWriter->writeAttribute('fo:border', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                    $objWriter->writeAttribute('fo:border', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
                 } else {
                     $lineStyle = 'none';
                     $lineWidth = Text::numberFormat($cellBorders->getBottom()->getLineWidth() / 1.75, 2);
@@ -1052,7 +1075,7 @@ class Content extends AbstractDecoratorWriter
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
-                    $objWriter->writeAttribute('fo:border-bottom', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                    $objWriter->writeAttribute('fo:border-bottom', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
                     // TOP
                     $lineStyle = 'none';
                     $lineWidth = Text::numberFormat($cellBorders->getTop()->getLineWidth() / 1.75, 2);
@@ -1061,7 +1084,7 @@ class Content extends AbstractDecoratorWriter
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
-                    $objWriter->writeAttribute('fo:border-top', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                    $objWriter->writeAttribute('fo:border-top', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
                     // RIGHT
                     $lineStyle = 'none';
                     $lineWidth = Text::numberFormat($cellBorders->getRight()->getLineWidth() / 1.75, 2);
@@ -1070,7 +1093,7 @@ class Content extends AbstractDecoratorWriter
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
-                    $objWriter->writeAttribute('fo:border-right', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                    $objWriter->writeAttribute('fo:border-right', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
                     // LEFT
                     $lineStyle = 'none';
                     $lineWidth = Text::numberFormat($cellBorders->getLeft()->getLineWidth() / 1.75, 2);
@@ -1079,7 +1102,7 @@ class Content extends AbstractDecoratorWriter
                         case Border::LINE_SINGLE:
                             $lineStyle = 'solid';
                     }
-                    $objWriter->writeAttribute('fo:border-left', $lineWidth.'pt '.$lineStyle.' #'.$lineColor);
+                    $objWriter->writeAttribute('fo:border-left', $lineWidth . 'pt ' . $lineStyle . ' #' . $lineColor);
                 }
                 // >style:paragraph-properties
                 $objWriter->endElement();
@@ -1101,12 +1124,9 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write the slide note
-     * @param XMLWriter $objWriter
-     * @param \PhpOffice\PhpPresentation\Slide\Note $note
-     * @throws \Exception
+     * Write the slide note.
      */
-    public function writeSlideNote(XMLWriter $objWriter, Note $note)
+    protected function writeSlideNote(XMLWriter $objWriter, Note $note): void
     {
         $shapesNote = $note->getShapeCollection();
         if (count($shapesNote) > 0) {
@@ -1126,22 +1146,19 @@ class Content extends AbstractDecoratorWriter
     }
 
     /**
-     * Write style of a slide
-     * @param XMLWriter $objWriter
-     * @param Slide $slide
-     * @param int $incPage
+     * Write style of a slide.
      */
-    public function writeStyleSlide(XMLWriter $objWriter, Slide $slide, $incPage)
+    protected function writeStyleSlide(XMLWriter $objWriter, Slide $slide, int $incPage): void
     {
         // style:style
         $objWriter->startElement('style:style');
         $objWriter->writeAttribute('style:family', 'drawing-page');
-        $objWriter->writeAttribute('style:name', 'stylePage'.$incPage);
+        $objWriter->writeAttribute('style:name', 'stylePage' . $incPage);
         // style:style/style:drawing-page-properties
         $objWriter->startElement('style:drawing-page-properties');
         $objWriter->writeAttributeIf(!$slide->isVisible(), 'presentation:visibility', 'hidden');
         if (!is_null($oTransition = $slide->getTransition())) {
-            $objWriter->writeAttribute('presentation:duration', 'PT'.number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '').'S');
+            $objWriter->writeAttribute('presentation:duration', 'PT' . number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '') . 'S');
             $objWriter->writeAttributeIf($oTransition->hasManualTrigger(), 'presentation:transition-type', 'manual');
             $objWriter->writeAttributeIf($oTransition->hasTimeTrigger(), 'presentation:transition-type', 'automatic');
             switch ($oTransition->getSpeed()) {
@@ -1156,7 +1173,7 @@ class Content extends AbstractDecoratorWriter
                     break;
             }
 
-            /**
+            /*
              * http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#property-presentation_transition-style
              */
             switch ($oTransition->getTransitionType()) {
@@ -1312,7 +1329,7 @@ class Content extends AbstractDecoratorWriter
             }
             if ($oBackground instanceof Slide\Background\Image) {
                 $objWriter->writeAttribute('draw:fill', 'bitmap');
-                $objWriter->writeAttribute('draw:fill-image-name', 'background_'.$incPage);
+                $objWriter->writeAttribute('draw:fill-image-name', 'background_' . $incPage);
                 $objWriter->writeAttribute('style:repeat', 'stretch');
             }
         }
@@ -1321,14 +1338,9 @@ class Content extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-
-    /**
-     * @param XMLWriter $objWriter
-     * @param Fill $oFill
-     */
-    protected function writeStylePartFill(XMLWriter $objWriter, $oFill)
+    protected function writeStylePartFill(XMLWriter $objWriter, ?Fill $oFill): void
     {
-        if (!($oFill instanceof Fill)) {
+        if (!$oFill) {
             return;
         }
         switch ($oFill->getFillType()) {
@@ -1343,13 +1355,10 @@ class Content extends AbstractDecoratorWriter
         }
     }
 
-
     /**
-     * @param XMLWriter $objWriter
-     * @param Shadow $oShadow
      * @todo Improve for supporting any direction (https://sinepost.wordpress.com/2012/02/16/theyve-got-atan-you-want-atan2/)
      */
-    protected function writeStylePartShadow(XMLWriter $objWriter, Shadow $oShadow)
+    protected function writeStylePartShadow(XMLWriter $objWriter, Shadow $oShadow): void
     {
         if (!$oShadow->isVisible()) {
             return;
@@ -1357,29 +1366,29 @@ class Content extends AbstractDecoratorWriter
         $objWriter->writeAttribute('draw:shadow', 'visible');
         $objWriter->writeAttribute('draw:shadow-color', '#' . $oShadow->getColor()->getRGB());
 
-        $distanceCms = CommonDrawing::pixelsToCentimeters($oShadow->getDistance());
-        if ($oShadow->getDirection() == 0 || $oShadow->getDirection() == 360) {
+        $distanceCms = CommonDrawing::pixelsToCentimeters((int) $oShadow->getDistance());
+        if (0 == $oShadow->getDirection() || 360 == $oShadow->getDirection()) {
             $objWriter->writeAttribute('draw:shadow-offset-x', $distanceCms . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
-        } elseif ($oShadow->getDirection() == 45) {
+        } elseif (45 == $oShadow->getDirection()) {
             $objWriter->writeAttribute('draw:shadow-offset-x', $distanceCms . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', $distanceCms . 'cm');
-        } elseif ($oShadow->getDirection() == 90) {
+        } elseif (90 == $oShadow->getDirection()) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', $distanceCms . 'cm');
-        } elseif ($oShadow->getDirection() == 135) {
+        } elseif (135 == $oShadow->getDirection()) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '-' . $distanceCms . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', $distanceCms . 'cm');
-        } elseif ($oShadow->getDirection() == 180) {
+        } elseif (180 == $oShadow->getDirection()) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '-' . $distanceCms . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '0cm');
-        } elseif ($oShadow->getDirection() == 225) {
+        } elseif (225 == $oShadow->getDirection()) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '-' . $distanceCms . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '-' . $distanceCms . 'cm');
-        } elseif ($oShadow->getDirection() == 270) {
+        } elseif (270 == $oShadow->getDirection()) {
             $objWriter->writeAttribute('draw:shadow-offset-x', '0cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '-' . $distanceCms . 'cm');
-        } elseif ($oShadow->getDirection() == 315) {
+        } elseif (315 == $oShadow->getDirection()) {
             $objWriter->writeAttribute('draw:shadow-offset-x', $distanceCms . 'cm');
             $objWriter->writeAttribute('draw:shadow-offset-y', '-' . $distanceCms . 'cm');
         }

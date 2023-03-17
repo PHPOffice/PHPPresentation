@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\RichText;
 
@@ -21,16 +24,16 @@ use PhpOffice\PhpPresentation\Shape\RichText\BreakElement;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for BreakElement element
+ * Test class for BreakElement element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\RichText\BreakElement
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\RichText\BreakElement
  */
 class BreakElementTest extends TestCase
 {
     /**
-     * Test can read
+     * Test can read.
      */
-    public function testText()
+    public function testText(): void
     {
         $object = new BreakElement();
         $this->assertEquals("\r\n", $object->getText());
@@ -40,13 +43,13 @@ class BreakElementTest extends TestCase
         $this->assertEquals("\r\n", $object->getText());
     }
 
-    public function testFont()
+    public function testFont(): void
     {
         $object = new BreakElement();
         $this->assertNull($object->getFont());
     }
 
-    public function testLanguage()
+    public function testLanguage(): void
     {
         $object = new BreakElement();
         $this->assertNull($object->getLanguage());
@@ -55,9 +58,9 @@ class BreakElementTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new BreakElement();
         $this->assertEquals(md5(get_class($object)), $object->getHashCode());

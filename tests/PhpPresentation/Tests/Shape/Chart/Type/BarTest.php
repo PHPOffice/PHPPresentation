@@ -10,35 +10,38 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape\Chart\Type;
 
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Bar;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Bar element
+ * Test class for Bar element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Chart\Type\Bar
  */
 class BarTest extends TestCase
 {
-    public function testData()
+    public function testData(): void
     {
         $object = new Bar();
 
-        $this->assertInternalType('array', $object->getSeries());
+        $this->assertIsArray($object->getSeries());
         $this->assertEmpty($object->getSeries());
 
-        $array = array(
+        $array = [
             new Series(),
             new Series(),
-        );
+        ];
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Bar', $object->setSeries());
         $this->assertEmpty($object->getSeries());
@@ -46,7 +49,7 @@ class BarTest extends TestCase
         $this->assertCount(count($array), $object->getSeries());
     }
 
-    public function testSeries()
+    public function testSeries(): void
     {
         $object = new Bar();
 
@@ -54,7 +57,7 @@ class BarTest extends TestCase
         $this->assertCount(1, $object->getSeries());
     }
 
-    public function testBarDirection()
+    public function testBarDirection(): void
     {
         $object = new Bar();
         $this->assertEquals(Bar::DIRECTION_VERTICAL, $object->getBarDirection());
@@ -64,7 +67,7 @@ class BarTest extends TestCase
         $this->assertEquals(Bar::DIRECTION_VERTICAL, $object->getBarDirection());
     }
 
-    public function testBarGrouping()
+    public function testBarGrouping(): void
     {
         $object = new Bar();
         $this->assertEquals(Bar::GROUPING_CLUSTERED, $object->getBarGrouping());
@@ -76,7 +79,7 @@ class BarTest extends TestCase
         $this->assertEquals(Bar::GROUPING_PERCENTSTACKED, $object->getBarGrouping());
     }
 
-    public function testGapWidthPercent()
+    public function testGapWidthPercent(): void
     {
         $value = mt_rand(0, 500);
         $object = new Bar();
@@ -89,13 +92,39 @@ class BarTest extends TestCase
         $this->assertEquals(500, $object->getGapWidthPercent());
     }
 
-    public function testHashCode()
+    public function testOverlapWidthPercentDefaults(): void
+    {
+        $object = new Bar();
+        $this->assertEquals(0, $object->getOverlapWidthPercent());
+
+        $object->setBarGrouping(Bar::GROUPING_STACKED);
+        $this->assertEquals(100, $object->getOverlapWidthPercent());
+        $object->setBarGrouping(Bar::GROUPING_CLUSTERED);
+        $this->assertEquals(0, $object->getOverlapWidthPercent());
+        $object->setBarGrouping(Bar::GROUPING_PERCENTSTACKED);
+        $this->assertEquals(100, $object->getOverlapWidthPercent());
+    }
+
+    public function testOverlapWidthPercent(): void
+    {
+        $value = mt_rand(-100, 100);
+        $object = new Bar();
+        $this->assertEquals(0, $object->getOverlapWidthPercent());
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent($value));
+        $this->assertEquals($value, $object->getOverlapWidthPercent());
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent(101));
+        $this->assertEquals(100, $object->getOverlapWidthPercent());
+        $this->assertInstanceOf(Bar::class, $object->setOverlapWidthPercent(-101));
+        $this->assertEquals(-100, $object->getOverlapWidthPercent());
+    }
+
+    public function testHashCode(): void
     {
         $oSeries = new Series();
 
         $object = new Bar();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode().get_class($object)), $object->getHashCode());
+        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

@@ -10,127 +10,120 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation;
 
+use PhpOffice\PhpPresentation\Exception\ShapeContainerAlreadyAssignedException;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
+use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
 
 /**
- * Abstract shape
+ * Abstract shape.
  */
 abstract class AbstractShape implements ComparableInterface
 {
     /**
-     * Container
+     * Container.
      *
-     * @var \PhpOffice\PhpPresentation\ShapeContainerInterface
+     * @var ShapeContainerInterface|null
      */
     protected $container;
 
     /**
-     * Offset X
+     * Offset X.
      *
      * @var int
      */
     protected $offsetX;
 
     /**
-     * Offset Y
+     * Offset Y.
      *
      * @var int
      */
     protected $offsetY;
 
     /**
-     * Width
+     * Width.
      *
      * @var int
      */
     protected $width;
 
     /**
-     * Height
+     * Height.
      *
      * @var int
      */
     protected $height;
 
     /**
-     * Fill
-     *
-     * @var \PhpOffice\PhpPresentation\Style\Fill
+     * @var Fill|null
      */
     private $fill;
 
     /**
-     * Border
+     * Border.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Border
+     * @var Border
      */
     private $border;
 
     /**
-     * Rotation
+     * Rotation.
      *
      * @var int
      */
     protected $rotation;
 
     /**
-     * Shadow
+     * Shadow.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Shadow
+     * @var Shadow|null
      */
     protected $shadow;
 
     /**
-     * Hyperlink
-     *
-     * @var \PhpOffice\PhpPresentation\Shape\Hyperlink
+     * @var Hyperlink|null
      */
     protected $hyperlink;
 
     /**
-     * PlaceHolder
-     * @var \PhpOffice\PhpPresentation\Shape\Placeholder
+     * @var Placeholder|null
      */
     protected $placeholder;
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new self
+     * Create a new self.
      */
     public function __construct()
     {
-        // Initialise values
-        $this->container = null;
-        $this->offsetX = 0;
-        $this->offsetY = 0;
-        $this->width = 0;
-        $this->height = 0;
-        $this->rotation = 0;
-        $this->fill = new Style\Fill();
-        $this->border = new Style\Border();
-        $this->shadow = new Style\Shadow();
-
+        $this->offsetX = $this->offsetY = $this->width = $this->height = $this->rotation = 0;
+        $this->fill = new Fill();
+        $this->shadow = new Shadow();
+        $this->border = new Border();
         $this->border->setLineStyle(Style\Border::LINE_NONE);
     }
 
     /**
-     * Magic Method : clone
+     * Magic Method : clone.
      */
     public function __clone()
     {
@@ -141,34 +134,34 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Container, Slide or Group
-     *
-     * @return \PhpOffice\PhpPresentation\ShapeContainerInterface
+     * Get Container, Slide or Group.
      */
-    public function getContainer()
+    public function getContainer(): ?ShapeContainerInterface
     {
         return $this->container;
     }
 
     /**
-     * Set Container, Slide or Group
+     * Set Container, Slide or Group.
      *
-     * @param  \PhpOffice\PhpPresentation\ShapeContainerInterface $pValue
-     * @param  bool $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
-     * @throws \Exception
+     * @param ShapeContainerInterface $pValue
+     * @param bool $pOverrideOld If a Slide has already been assigned, overwrite it and remove image from old Slide?
+     *
+     * @throws ShapeContainerAlreadyAssignedException
+     *
      * @return $this
      */
     public function setContainer(ShapeContainerInterface $pValue = null, $pOverrideOld = false)
     {
         if (is_null($this->container)) {
-            // Add drawing to \PhpOffice\PhpPresentation\ShapeContainerInterface
+            // Add drawing to ShapeContainerInterface
             $this->container = $pValue;
             if (!is_null($this->container)) {
                 $this->container->getShapeCollection()->append($this);
             }
         } else {
             if ($pOverrideOld) {
-                // Remove drawing from old \PhpOffice\PhpPresentation\ShapeContainerInterface
+                // Remove drawing from old ShapeContainerInterface
                 $iterator = $this->container->getShapeCollection()->getIterator();
 
                 while ($iterator->valid()) {
@@ -183,7 +176,7 @@ abstract class AbstractShape implements ComparableInterface
                 // Set new \PhpOffice\PhpPresentation\Slide
                 $this->setContainer($pValue);
             } else {
-                throw new \Exception("A \PhpOffice\PhpPresentation\ShapeContainerInterface has already been assigned. Shapes can only exist on one \PhpOffice\PhpPresentation\ShapeContainerInterface.");
+                throw new ShapeContainerAlreadyAssignedException(self::class);
             }
         }
 
@@ -191,22 +184,19 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get OffsetX
-     *
-     * @return int
+     * Get OffsetX.
      */
-    public function getOffsetX()
+    public function getOffsetX(): int
     {
         return $this->offsetX;
     }
 
     /**
-     * Set OffsetX
+     * Set OffsetX.
      *
-     * @param  int $pValue
      * @return $this
      */
-    public function setOffsetX($pValue = 0)
+    public function setOffsetX(int $pValue = 0)
     {
         $this->offsetX = $pValue;
 
@@ -214,7 +204,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get OffsetY
+     * Get OffsetY.
      *
      * @return int
      */
@@ -224,12 +214,11 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set OffsetY
+     * Set OffsetY.
      *
-     * @param  int $pValue
      * @return $this
      */
-    public function setOffsetY($pValue = 0)
+    public function setOffsetY(int $pValue = 0)
     {
         $this->offsetY = $pValue;
 
@@ -237,7 +226,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Width
+     * Get Width.
      *
      * @return int
      */
@@ -247,19 +236,19 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Width
+     * Set Width.
      *
-     * @param  int $pValue
      * @return $this
      */
-    public function setWidth($pValue = 0)
+    public function setWidth(int $pValue = 0)
     {
         $this->width = $pValue;
+
         return $this;
     }
 
     /**
-     * Get Height
+     * Get Height.
      *
      * @return int
      */
@@ -269,34 +258,32 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Height
+     * Set Height.
      *
-     * @param  int $pValue
      * @return $this
      */
-    public function setHeight($pValue = 0)
+    public function setHeight(int $pValue = 0)
     {
         $this->height = $pValue;
+
         return $this;
     }
 
     /**
-     * Set width and height with proportional resize
+     * Set width and height with proportional resize.
      *
-     * @param  int $width
-     * @param  int $height
-     * @example $objDrawing->setWidthAndHeight(160,120);
-     * @return $this
+     * @return self
      */
-    public function setWidthAndHeight($width = 0, $height = 0)
+    public function setWidthAndHeight(int $width = 0, int $height = 0)
     {
         $this->width = $width;
         $this->height = $height;
+
         return $this;
     }
 
     /**
-     * Get Rotation
+     * Get Rotation.
      *
      * @return int
      */
@@ -306,75 +293,55 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Rotation
+     * Set Rotation.
      *
-     * @param  int $pValue
+     * @param int $pValue
+     *
      * @return $this
      */
     public function setRotation($pValue = 0)
     {
         $this->rotation = $pValue;
+
         return $this;
     }
 
-    /**
-     * Get Fill
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
-     */
-    public function getFill()
+    public function getFill(): ?Fill
     {
         return $this->fill;
     }
 
-    /**
-     * Set Fill
-     * @param \PhpOffice\PhpPresentation\Style\Fill $pValue
-     * @return \PhpOffice\PhpPresentation\AbstractShape
-     */
-    public function setFill(Fill $pValue = null)
+    public function setFill(Fill $pValue = null): self
     {
         $this->fill = $pValue;
+
         return $this;
     }
 
-    /**
-     * Get Border
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Border
-     */
-    public function getBorder()
+    public function getBorder(): Border
     {
         return $this->border;
     }
 
-    /**
-     * Get Shadow
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Shadow
-     */
-    public function getShadow()
+    public function getShadow(): ?Shadow
     {
         return $this->shadow;
     }
 
     /**
-     * Set Shadow
-     *
-     * @param  \PhpOffice\PhpPresentation\Style\Shadow $pValue
-     * @throws \Exception
      * @return $this
      */
     public function setShadow(Shadow $pValue = null)
     {
         $this->shadow = $pValue;
+
         return $this;
     }
 
     /**
      * Has Hyperlink?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasHyperlink()
     {
@@ -383,87 +350,84 @@ abstract class AbstractShape implements ComparableInterface
 
     /**
      * Get Hyperlink
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Hyperlink
-     * @throws \Exception
      */
-    public function getHyperlink()
+    public function getHyperlink(): Hyperlink
     {
         if (is_null($this->hyperlink)) {
             $this->hyperlink = new Hyperlink();
         }
+
         return $this->hyperlink;
     }
 
     /**
      * Set Hyperlink
-     *
-     * @param  \PhpOffice\PhpPresentation\Shape\Hyperlink $pHyperlink
-     * @throws \Exception
-     * @return $this
      */
-    public function setHyperlink(Hyperlink $pHyperlink = null)
+    public function setHyperlink(Hyperlink $pHyperlink = null): self
     {
         $this->hyperlink = $pHyperlink;
+
         return $this;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5((is_object($this->container) ? $this->container->getHashCode() : '') . $this->offsetX . $this->offsetY . $this->width . $this->height . $this->rotation . (is_null($this->getFill()) ? '' : $this->getFill()->getHashCode()) . (is_null($this->shadow) ? '' : $this->shadow->getHashCode()) . (is_null($this->hyperlink) ? '' : $this->hyperlink->getHashCode()) . __CLASS__);
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
+        return $this;
     }
 
-    public function isPlaceholder()
+    public function isPlaceholder(): bool
     {
         return !is_null($this->placeholder);
     }
 
-    public function getPlaceholder()
+    public function getPlaceholder(): ?Placeholder
     {
         if (!$this->isPlaceholder()) {
             return null;
         }
+
         return $this->placeholder;
     }
 
-    /**
-     * @param \PhpOffice\PhpPresentation\Shape\Placeholder $placeholder
-     * @return $this
-     */
-    public function setPlaceHolder(Placeholder $placeholder)
+    public function setPlaceHolder(Placeholder $placeholder): self
     {
         $this->placeholder = $placeholder;
+
         return $this;
     }
 }

@@ -1,11 +1,32 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Writer\ODPresentation;
 
+use PhpOffice\Common\Drawing;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\Text;
+use PhpOffice\PhpPresentation\PresentationProperties;
 use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\Media;
+use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\Run;
 use PhpOffice\PhpPresentation\Slide\Transition;
 use PhpOffice\PhpPresentation\Style\Alignment;
@@ -13,55 +34,19 @@ use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Bullet;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
-use PhpOffice\PhpPresentation\Writer\ODPresentation;
-use PhpOffice\Common\Drawing;
 
 /**
- * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * Test class for PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Writer\ODPresentation\Manifest
  */
 class ContentTest extends PhpPresentationTestCase
 {
     protected $writerName = 'ODPresentation';
 
-    public function testDrawingWithHyperlink()
-    {
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
-        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
-    
-        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
-        $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
-        $this->assertIsSchemaOpenDocumentValid('1.2');
-    }
-
-    public function testDrawingShapeFill()
-    {
-        $oSlide = $this->oPresentation->getActiveSlide();
-        $oShape = $oSlide->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
-
-        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
-        $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'none');
-
-        $oColor = new Color(Color::COLOR_DARKRED);
-        $oColor->setAlpha(rand(0, 100));
-        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
-        $this->resetPresentationFile();
-
-        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
-        $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'solid');
-        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:fill-color', '#');
-        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:fill-color', $oColor->getRGB());
-    }
-
-    public function testComment()
+    public function testComment(): void
     {
         $expectedName = 'Name';
         $expectedText = 'Text';
@@ -87,7 +72,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testCommentWithoutAuthor()
+    public function testCommentWithoutAuthor(): void
     {
         $oComment = new Comment();
         $this->oPresentation->getActiveSlide()->addShape($oComment);
@@ -98,7 +83,68 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
 
-    public function testFillGradientLinearRichText()
+    public function testDrawingMimetype(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:image';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'loext:mime-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'loext:mime-type', 'image/png');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $this->resetPresentationFile();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/tiger.svg');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:image';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'loext:mime-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'loext:mime-type', 'image/svg+xml');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testDrawingShapeFill(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+
+        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'none');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+
+        $oColor = new Color(Color::COLOR_DARKRED);
+        $oColor->setAlpha(rand(0, 100));
+        $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
+        $this->resetPresentationFile();
+
+        $element = '/office:document-content/office:automatic-styles/style:style/style:graphic-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:fill', 'solid');
+        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:fill-color', '#');
+        $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:fill-color', $oColor->getRGB());
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testDrawingWithHyperlink(): void
+    {
+        $oShape = $this->oPresentation->getActiveSlide()->createDrawingShape();
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
+        $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
+
+        $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/office:event-listeners/presentation:event-listener';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
+    }
+
+    public function testFillGradientLinearRichText(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oShape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setStartColor(new Color('FFFF7700'))->setEndColor(new Color('FFFFFFFF'));
@@ -113,7 +159,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testFillSolidRichText()
+    public function testFillSolidRichText(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oShape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF4672A8'));
@@ -126,21 +172,22 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testGroup()
+    public function testGroup(): void
     {
         $oShapeGroup = $this->oPresentation->getActiveSlide()->createGroup();
         $oShape = $oShapeGroup->createDrawingShape();
-        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR.'/resources/images/PhpPresentationLogo.png');
+        $oShape->setPath(PHPPRESENTATION_TESTS_BASE_DIR . '/resources/images/PhpPresentationLogo.png');
         $oShape->getHyperlink()->setUrl('https://github.com/PHPOffice/PHPPresentation/');
-    
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g';
         $this->assertZipXmlElementExists('content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:g/draw:frame/office:event-listeners/presentation:event-listener';
         $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertIsSchemaOpenDocumentValid('1.2');
+        // Invalid because `draw:image` has attribute `loext:mime-type`
+        $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
-    
-    public function testList()
+
+    public function testList(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
@@ -148,7 +195,7 @@ class ContentTest extends PhpPresentationTestCase
         $oRichText->createParagraph()->createTextRun('Beta');
         $oRichText->createParagraph()->createTextRun('Delta');
         $oRichText->createParagraph()->createTextRun('Epsilon');
-        
+
         $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-bullet';
         $this->assertZipXmlElementExists('content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
@@ -158,25 +205,25 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testInnerList()
+    public function testInnerList(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getAlignment()->setHorizontal(Alignment::HORIZONTAL_LEFT)->setMarginLeft(25)->setIndent(-25);
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
-        
+
         $oRichText->createTextRun('Alpha');
         $oRichText->createParagraph()->getAlignment()->setLevel(1)->setMarginLeft(75)->setIndent(-25);
         $oRichText->createTextRun('Alpha.Alpha');
         $oRichText->createParagraph()->createTextRun('Alpha.Beta');
         $oRichText->createParagraph()->createTextRun('Alpha.Delta');
-        
+
         $oRichText->createParagraph()->getAlignment()->setLevel(0)->setMarginLeft(25)->setIndent(-25);
         $oRichText->createTextRun('Beta');
         $oRichText->createParagraph()->getAlignment()->setLevel(1)->setMarginLeft(75)->setIndent(-25);
         $oRichText->createTextRun('Beta.Alpha');
         $oRichText->createParagraph()->createTextRun('Beta.Beta');
         $oRichText->createParagraph()->createTextRun('Beta.Delta');
-        
+
         $element = '/office:document-content/office:automatic-styles/text:list-style/text:list-level-style-bullet';
         $this->assertZipXmlElementExists('content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box';
@@ -186,7 +233,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testParagraphRichText()
+    public function testParagraphRichText(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->createTextRun('Alpha');
@@ -195,17 +242,17 @@ class ContentTest extends PhpPresentationTestCase
         $oRichText->createBreak();
         $oRun = $oRichText->createTextRun('Delta');
         $oRun->getHyperlink()->setUrl('http://www.google.fr');
-        
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:line-break';
         $this->assertZipXmlElementExists('content.xml', $element);
-        
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:p/text:span/text:a';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'http://www.google.fr');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testListWithRichText()
+    public function testListWithRichText(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->getActiveParagraph()->getBulletStyle()->setBulletType(Bullet::TYPE_BULLET);
@@ -213,7 +260,7 @@ class ContentTest extends PhpPresentationTestCase
         $oRun->getHyperlink()->setUrl('http://www.google.fr');
         $oRichText->createBreak();
         $oRichText->createTextRun('Beta');
-        
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span/text:a';
         $this->assertZipXmlElementExists('content.xml', $element);
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/draw:text-box/text:list/text:list-item/text:p/text:span/text:line-break';
@@ -221,7 +268,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testMedia()
+    public function testMedia(): void
     {
         $expectedName = 'MyName';
         $expectedWidth = mt_rand(1, 100);
@@ -239,10 +286,10 @@ class ContentTest extends PhpPresentationTestCase
             ->setOffsetY($expectedY);
         $this->oPresentation->getActiveSlide()->addShape($oMedia);
 
-        $expectedWidth = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedWidth), 3) . 'cm';
-        $expectedHeight = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedHeight), 3) . 'cm';
-        $expectedX = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedX), 3) . 'cm';
-        $expectedY = Text::numberFormat(CommonDrawing::pixelsToCentimeters($expectedY), 3) . 'cm';
+        $expectedWidth = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $expectedWidth), 3) . 'cm';
+        $expectedHeight = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $expectedHeight), 3) . 'cm';
+        $expectedX = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $expectedX), 3) . 'cm';
+        $expectedY = Text::numberFormat(CommonDrawing::pixelsToCentimeters((int) $expectedY), 3) . 'cm';
 
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame';
         $this->assertZipXmlElementExists('content.xml', $element);
@@ -260,7 +307,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testNote()
+    public function testNote(): void
     {
         $oNote = $this->oPresentation->getActiveSlide()->getNote();
         $oRichText = $oNote->createRichTextShape()->setHeight(300)->setWidth(600);
@@ -273,7 +320,48 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testRichTextAutoShrink()
+    public function testParagraphLineSpacing(): void
+    {
+        $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $richText->getActiveParagraph()->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_PERCENT);
+        $richText->getActiveParagraph()->setLineSpacing(200);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $richText->getActiveParagraph()->getHashCode() . '\']/style:paragraph-properties';
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:line-height');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:line-height', '200%');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $richText->getActiveParagraph()->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_POINT);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:line-height');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:line-height', '200pt');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testParagraphSpacingBefore(): void
+    {
+        $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $richText->getActiveParagraph()->setSpacingBefore(123);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $richText->getActiveParagraph()->getHashCode() . '\']/style:paragraph-properties';
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:margin-top');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:margin-top', '4.339cm');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testParagraphSpacingAfter(): void
+    {
+        $richText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $richText->getActiveParagraph()->setSpacingAfter(123);
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $richText->getActiveParagraph()->getHashCode() . '\']/style:paragraph-properties';
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:margin-bottom');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:margin-bottom', '4.339cm');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testRichTextAutoShrink(): void
     {
         $oRichText1 = $this->oPresentation->getActiveSlide()->createRichTextShape();
 
@@ -303,31 +391,88 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testRichTextRunLanguage()
+    public function testRichTextRunLanguage(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
-        $oRun = $oRichText->createTextRun('MyText');
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
 
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $oRun->getHashCode() . '\']/style:text-properties';
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:language');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'en');
         $this->assertIsSchemaOpenDocumentValid('1.2');
 
-        $oRun->setLanguage('de');
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
         $this->resetPresentationFile();
 
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-asian', 'en');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-complex', 'en');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->setLanguage('de');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:language');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:language', 'de');
         $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-asian', 'de');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:language');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:language-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:language-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:language-complex', 'de');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testRichTextBorder()
+    public function testRichTextBorder(): void
     {
         $oRichText1 = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_NONE);
-        
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeNotExists('content.xml', $element, 'svg:stroke-color');
@@ -335,7 +480,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('content.xml', $element, 'draw:stroke');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:stroke', 'none');
         $this->assertIsSchemaOpenDocumentValid('1.2');
-        
+
         $oRichText1->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_SINGLE);
         $this->resetPresentationFile();
 
@@ -343,7 +488,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('content.xml', $element, 'svg:stroke-color');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'svg:stroke-color', '#' . $oRichText1->getBorder()->getColor()->getRGB());
         $this->assertZipXmlAttributeExists('content.xml', $element, 'svg:stroke-width');
-        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'svg:stroke-width', (string)number_format(CommonDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''));
+        $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'svg:stroke-width', (string) number_format(CommonDrawing::pointsToCentimeters($oRichText1->getBorder()->getLineWidth()), 3, '.', ''));
         $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'svg:stroke-width', 'cm');
         $this->assertZipXmlAttributeExists('content.xml', $element, 'draw:stroke');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:stroke', 'solid');
@@ -359,14 +504,14 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:stroke-dash', $oRichText1->getBorder()->getDashStyle());
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
-    public function testRichTextShadow()
+
+    public function testRichTextShadow(): void
     {
         $randAlpha = mt_rand(0, 100);
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRichText->createTextRun('AAA');
         $oRichText->getShadow()->setVisible(true)->setAlpha($randAlpha)->setBlurRadius(2);
-        
+
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'gr1\']/style:graphic-properties';
         for ($inc = 0; $inc <= 360; $inc += 45) {
             $randDistance = mt_rand(0, 100);
@@ -376,28 +521,28 @@ class ContentTest extends PhpPresentationTestCase
             $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow', 'visible');
             $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:mirror', 'none');
             // Opacity
-            $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:shadow-opacity', (string)(100 - $randAlpha));
+            $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:shadow-opacity', (string) (100 - $randAlpha));
             $this->assertZipXmlAttributeEndsWith('content.xml', $element, 'draw:shadow-opacity', '%');
             // Color
             $this->assertZipXmlAttributeStartsWith('content.xml', $element, 'draw:shadow-color', '#');
             // X
-            if ($inc == 90 || $inc == 270) {
+            if (90 == $inc || 270 == $inc) {
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '0cm');
             } else {
                 if ($inc > 90 && $inc < 270) {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
+                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', '-' . Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 } else {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', Drawing::pixelsToCentimeters($randDistance) . 'cm');
+                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-x', Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 }
             }
             // Y
-            if ($inc == 0 || $inc == 180 || $inc == 360) {
+            if (0 == $inc || 180 == $inc || 360 == $inc) {
                 $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '0cm');
             } else {
-                if (($inc > 0 && $inc < 180) || $inc == 360) {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', Drawing::pixelsToCentimeters($randDistance) . 'cm');
+                if (($inc > 0 && $inc < 180) || 360 == $inc) {
+                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 } else {
-                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '-' . Drawing::pixelsToCentimeters($randDistance) . 'cm');
+                    $this->assertZipXmlAttributeEquals('content.xml', $element, 'draw:shadow-offset-y', '-' . Drawing::pixelsToCentimeters((int) $randDistance) . 'cm');
                 }
             }
             $this->assertIsSchemaOpenDocumentValid('1.2');
@@ -405,7 +550,7 @@ class ContentTest extends PhpPresentationTestCase
         }
     }
 
-    public function testSlideName()
+    public function testSlideName(): void
     {
         $element = '/office:document-content/office:body/office:presentation/draw:page';
 
@@ -429,7 +574,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testStyleAlignment()
+    public function testStyleAlignment(): void
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oRichText1 = $oSlide->createRichTextShape();
@@ -457,50 +602,250 @@ class ContentTest extends PhpPresentationTestCase
         $p4HashCode = $oRichText4->getActiveParagraph()->getHashCode();
         $p5HashCode = $oRichText5->getActiveParagraph()->getHashCode();
         $p6HashCode = $oRichText6->getActiveParagraph()->getHashCode();
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p1HashCode.'\']/style:paragraph-properties';
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p1HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'center');
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p2HashCode.'\']/style:paragraph-properties';
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p2HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'justify');
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p3HashCode.'\']/style:paragraph-properties';
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p3HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'left');
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p4HashCode.'\']/style:paragraph-properties';
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p4HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'justify');
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p5HashCode.'\']/style:paragraph-properties';
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p5HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'left');
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_'.$p6HashCode.'\']/style:paragraph-properties';
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p6HashCode . '\']/style:paragraph-properties';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:text-align', 'right');
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
-    public function testStyleFont()
+
+    public function testStyleAlignmentRTL(): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText1 = $oSlide->createRichTextShape();
+        $oRichText1->getActiveParagraph()->getAlignment()->setIsRTL(true);
+        $oRichText1->createTextRun('Run1');
+        $oRichText2 = $oSlide->createRichTextShape();
+        $oRichText2->getActiveParagraph()->getAlignment()->setIsRTL(false);
+        $oRichText2->createTextRun('Run2');
+
+        $p1HashCode = $oRichText1->getActiveParagraph()->getHashCode();
+        $p2HashCode = $oRichText2->getActiveParagraph()->getHashCode();
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p1HashCode . '\']/style:paragraph-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:writing-mode', 'rl-tb');
+
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'P_' . $p2HashCode . '\']/style:paragraph-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:writing-mode', 'lr-tb');
+
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleFontBold(): void
     {
         $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
         $oRun = $oRichText->createTextRun('Run1');
         $oRun->getFont()->setBold(true);
-        
-        $expectedHashCode = $oRun->getHashCode();
-        
-        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_'.$expectedHashCode.'\']/style:text-properties';
-        $this->assertZipXmlElementExists('content.xml', $element);
-        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-weight', 'bold');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
 
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-weight', 'bold');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-weight-asian', 'bold');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-weight-complex', 'bold');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setBold(false);
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-weight');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-weight-complex');
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
-    public function testTable()
+
+    public function testStyleFontFormat(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:script-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:script-type', 'latin');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:script-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:script-type', 'asian');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:script-type');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:script-type', 'complex');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleFontName(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setName('Calibri');
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-family-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-family-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:font-family');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-family', 'Calibri');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-family');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-family-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-family-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-family-asian', 'Calibri');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-family');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-family-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-family-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-family-complex', 'Calibri');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testStyleFontSize(): void
+    {
+        $oRichText = $this->oPresentation->getActiveSlide()->createRichTextShape();
+        $oRun = $oRichText->createTextRun('Run1');
+        $oRun->getFont()->setSize(12);
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-size-asian');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-size-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'fo:font-size');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'fo:font-size', '12pt');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-size');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-size-complex');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-size-asian');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-size-asian', '12pt');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $expectedHashCode = $oRun->getHashCode();
+        $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'T_' . $expectedHashCode . '\']/style:text-properties';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'fo:font-size');
+        $this->assertZipXmlAttributeNotExists('content.xml', $element, 'style:font-size-asian');
+        $this->assertZipXmlAttributeExists('content.xml', $element, 'style:font-size-complex');
+        $this->assertZipXmlAttributeEquals('content.xml', $element, 'style:font-size-complex', '12pt');
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    public function testTable(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createTableShape();
         $oShape->createRow();
@@ -511,7 +856,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testTableEmpty()
+    public function testTableEmpty(): void
     {
         $this->oPresentation->getActiveSlide()->createTableShape();
 
@@ -520,12 +865,12 @@ class ContentTest extends PhpPresentationTestCase
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
-    public function testTableCellFill()
+
+    public function testTableCellFill(): void
     {
         $oColor = new Color();
         $oColor->setRGB(Color::COLOR_BLUE);
-        
+
         $oFill = new Fill();
         $oFill->setFillType(Fill::FILL_SOLID)->setStartColor($oColor);
 
@@ -546,8 +891,8 @@ class ContentTest extends PhpPresentationTestCase
 
         $this->assertIsSchemaOpenDocumentNotValid('1.2');
     }
-    
-    public function testTableWithColspan()
+
+    public function testTableWithColspan(): void
     {
         $value = mt_rand(2, 100);
 
@@ -562,11 +907,11 @@ class ContentTest extends PhpPresentationTestCase
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
+
     /**
-     * @link : https://github.com/PHPOffice/PHPPresentation/issues/70
+     * @see : https://github.com/PHPOffice/PHPPresentation/issues/70
      */
-    public function testTableWithHyperlink()
+    public function testTableWithHyperlink(): void
     {
         $oShape = $this->oPresentation->getActiveSlide()->createTableShape(4);
         $oShape->setHeight(200)->setWidth(600)->setOffsetX(150)->setOffsetY(300);
@@ -575,15 +920,15 @@ class ContentTest extends PhpPresentationTestCase
         $oTextRun = $oCell->createTextRun('AAA');
         $oHyperlink = $oTextRun->getHyperlink();
         $oHyperlink->setUrl('https://github.com/PHPOffice/PHPPresentation/');
-    
+
         $element = '/office:document-content/office:body/office:presentation/draw:page/draw:frame/table:table/table:table-row/table:table-cell/text:p/text:span/text:a';
         $this->assertZipXmlElementExists('content.xml', $element);
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'xlink:href', 'https://github.com/PHPOffice/PHPPresentation/');
 
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
-    
-    public function testTableWithText()
+
+    public function testTableWithText(): void
     {
         $oRun = new Run();
         $oRun->setText('Test');
@@ -603,7 +948,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testTransition()
+    public function testTransition(): void
     {
         $value = mt_rand(1000, 5000);
 
@@ -647,7 +992,7 @@ class ContentTest extends PhpPresentationTestCase
         $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
         foreach ($arrayConstants as $key => $value) {
-            if (strpos($key, 'TRANSITION_') !== 0) {
+            if (0 !== strpos($key, 'TRANSITION_')) {
                 continue;
             }
             $this->resetPresentationFile();
@@ -809,7 +1154,7 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertIsSchemaOpenDocumentValid('1.2');
     }
 
-    public function testVisibility()
+    public function testVisibility(): void
     {
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'stylePage0\']/style:drawing-page-properties';
 
@@ -825,5 +1170,85 @@ class ContentTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:visibility');
         $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:visibility', 'hidden');
         $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @dataProvider dataProviderShowType
+     */
+    public function testShowType(string $slideshowType, bool $withAttribute): void
+    {
+        $this->oPresentation->getPresentationProperties()->setSlideshowType($slideshowType);
+
+        $this->assertZipFileExists('content.xml');
+        $element = '/office:document-content/office:body/office:presentation/presentation:settings';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        if ($withAttribute) {
+            $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:full-screen');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:full-screen', 'false');
+        } else {
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'presentation:full-screen');
+        }
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @return array<array<string|bool>>
+     */
+    public function dataProviderShowType(): array
+    {
+        return [
+            [
+                PresentationProperties::SLIDESHOW_TYPE_PRESENT,
+                false,
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_BROWSE,
+                true,
+            ],
+            [
+                PresentationProperties::SLIDESHOW_TYPE_KIOSK,
+                false,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider dataProviderLoopContinuouslyUntilEsc
+     */
+    public function testLoopContinuouslyUntilEsc(bool $isLoopContinuouslyUntilEsc): void
+    {
+        $this->oPresentation->getPresentationProperties()->setLoopContinuouslyUntilEsc($isLoopContinuouslyUntilEsc);
+
+        $this->assertZipFileExists('content.xml');
+        $element = '/office:document-content/office:body/office:presentation/presentation:settings';
+        $this->assertZipXmlElementExists('content.xml', $element);
+        if ($isLoopContinuouslyUntilEsc) {
+            $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:endless');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:endless', 'true');
+            $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:pause');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:pause', 'PT0S');
+            $this->assertZipXmlAttributeExists('content.xml', $element, 'presentation:mouse-visible');
+            $this->assertZipXmlAttributeEquals('content.xml', $element, 'presentation:mouse-visible', 'false');
+        } else {
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'presentation:endless');
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'presentation:pause');
+            $this->assertZipXmlAttributeNotExists('content.xml', $element, 'presentation:mouse-visible');
+        }
+        $this->assertIsSchemaOpenDocumentValid('1.2');
+    }
+
+    /**
+     * @return array<array<bool>>
+     */
+    public function dataProviderLoopContinuouslyUntilEsc(): array
+    {
+        return [
+            [
+                true,
+            ],
+            [
+                false,
+            ],
+        ];
     }
 }

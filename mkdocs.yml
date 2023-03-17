@@ -1,0 +1,84 @@
+site_name: PHPPresentation
+site_url: https://phpoffice.github.io/PHPPresentation
+repo_url: https://github.com/PHPOffice/PHPPresentation
+repo_name: PHPOffice/PHPPresentation
+edit_uri: edit/develop/docs/
+
+## Theme
+theme:
+  name: material
+  palette:
+    primary: orange
+  features:
+    - search.highlight
+    - search.suggest
+
+## Plugins
+plugins:
+  - search
+  - autolink_references:
+      autolinks:
+        - reference_prefix: GP-
+          target_url: https://github.com/<num>
+        - reference_prefix: GH-
+          target_url: https://github.com/PHPOffice/PHPPresentation/issues/<num>
+        - reference_prefix: CP-
+          target_url: https://archive.codeplex.com/?p=phppowerpoint&<num>
+
+## Config
+extra:
+  generator: false
+markdown_extensions:
+  ## Syntax highlighting
+  - pymdownx.highlight
+  - pymdownx.superfences
+  ## Support for emojis
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  ## Support for call-outs
+  - admonition
+  - pymdownx.details
+use_directory_urls: false
+
+## Navigation
+nav:
+  - Introduction: 'index.md'
+  - Install: 'install.md'
+  - Usage:
+    - Introduction: 'usage/introduction.md'
+    - Presentation: 'usage/presentation.md'
+    - Slides:
+      - Introduction: 'usage/slides/introduction.md'
+      - Animations: 'usage/slides/animation.md'
+      - Layouts: 'usage/slides/layout.md'
+    - Shapes: 
+      - Introduction: 'usage/shapes/introduction.md'
+      - AutoShape: 'usage/shapes/autoshape.md'
+      - Chart: 'usage/shapes/chart.md'
+      - Comment: 'usage/shapes/comment.md'
+      - Drawing: 'usage/shapes/drawing.md'
+      - Media: 'usage/shapes/media.md'
+      - Richtext: 'usage/shapes/richtext.md'
+      - Table: 'usage/shapes/table.md'
+    - Styles: 'usage/styles.md'
+    - Readers: 'usage/readers.md'
+    - Writers: 'usage/writers.md'
+  - FAQ: 'faq.md'
+  - Credits: 'credits.md'
+  - Releases:
+      - '1.1.0 (WIP)': 'changes/1.1.0.md'
+      - '1.0.0': 'changes/1.0.0.md'
+      - '0.9.0': 'changes/0.9.0.md'
+      - '0.8.0': 'changes/0.8.0.md'
+      - '0.7.0': 'changes/0.7.0.md'
+      - '0.6.0': 'changes/0.6.0.md'
+      - '0.5.0': 'changes/0.5.0.md'
+      - '0.4.0': 'changes/0.4.0.md'
+      - '0.3.0': 'changes/0.3.0.md'
+      - '0.2.0': 'changes/0.2.0.md'
+      - '0.1.0': 'changes/0.1.0.md'
+  - Developers:
+    - 'Coveralls': 'https://coveralls.io/github/PHPOffice/PHPPresentation'
+    - 'Code Coverage': 'coverage/index.html'
+    - 'PHPDoc': 'docs/index.html'

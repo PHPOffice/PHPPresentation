@@ -1,25 +1,39 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\Drawing as CommonDrawing;
 use PhpOffice\Common\XMLWriter;
-use PhpOffice\PhpPresentation\Shape\AbstractDrawing;
-use PhpOffice\PhpPresentation\Shape\Chart as ShapeChart;
-use PhpOffice\PhpPresentation\Shape\Comment;
 use PhpOffice\PhpPresentation\Shape\RichText;
-use PhpOffice\PhpPresentation\Shape\Table as ShapeTable;
-use PhpOffice\PhpPresentation\Slide;
+use PhpOffice\PhpPresentation\Slide\Background\Image;
 use PhpOffice\PhpPresentation\Slide\SlideMaster;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
-use PhpOffice\PhpPresentation\Slide\Background\Image;
 
 class PptSlideMasters extends AbstractSlide
 {
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function render()
+    public function render(): ZipInterface
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oMasterSlide) {
             // Add the relations from the masterSlide to the ZIP file
@@ -38,14 +52,13 @@ class PptSlideMasters extends AbstractSlide
     }
 
     /**
-     * Write slide master relationships to XML format
+     * Write slide master relationships to XML format.
      *
-     * @param SlideMaster $oMasterSlide
+     * @todo Set method in protected
+     *
      * @return string XML Output
-     * @throws \Exception
-     * @internal param int $masterId Master slide id
      */
-    public function writeSlideMasterRelationships(SlideMaster $oMasterSlide)
+    public function writeSlideMasterRelationships(SlideMaster $oMasterSlide): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -72,7 +85,7 @@ class PptSlideMasters extends AbstractSlide
             $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/image', '../media/' . $oBackground->getIndexedFilename($oMasterSlide->getRelsIndex()));
             $oBackground->relationId = 'rId' . $relId;
 
-            $relId++;
+            ++$relId;
         }
 
         // TODO: Write hyperlink relationships?
@@ -85,13 +98,11 @@ class PptSlideMasters extends AbstractSlide
     }
 
     /**
-     * Write slide to XML format
+     * Write slide to XML format.
      *
-     * @param  \PhpOffice\PhpPresentation\Slide\SlideMaster $pSlide
      * @return string XML Output
-     * @throws \Exception
      */
-    public function writeSlideMaster(SlideMaster $pSlide)
+    protected function writeSlideMaster(SlideMaster $pSlide): string
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -178,35 +189,35 @@ class PptSlideMasters extends AbstractSlide
 
         // p:sldMaster\p:txStyles
         $objWriter->startElement('p:txStyles');
-        foreach (array(
-                     'p:titleStyle' => $pSlide->getTextStyles()->getTitleStyle(),
-                     'p:bodyStyle' => $pSlide->getTextStyles()->getBodyStyle(),
-                     'p:otherStyle' => $pSlide->getTextStyles()->getOtherStyle()
-                 ) as $startElement => $stylesArray) {
+        foreach ([
+            'p:titleStyle' => $pSlide->getTextStyles()->getTitleStyle(),
+            'p:bodyStyle' => $pSlide->getTextStyles()->getBodyStyle(),
+            'p:otherStyle' => $pSlide->getTextStyles()->getOtherStyle(),
+        ] as $startElement => $stylesArray) {
             // titleStyle
             $objWriter->startElement($startElement);
             foreach ($stylesArray as $lvl => $oParagraph) {
                 /** @var RichText\Paragraph $oParagraph */
-                $elementName = ($lvl == 0 ? 'a:defPPr' : 'a:lvl' . $lvl . 'pPr');
+                $elementName = (0 == $lvl ? 'a:defPPr' : 'a:lvl' . $lvl . 'pPr');
                 $objWriter->startElement($elementName);
                 $objWriter->writeAttribute('algn', $oParagraph->getAlignment()->getHorizontal());
                 $objWriter->writeAttributeIf(
-                    $oParagraph->getAlignment()->getMarginLeft() != 0,
+                    0 != $oParagraph->getAlignment()->getMarginLeft(),
                     'marL',
                     CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getMarginLeft())
                 );
                 $objWriter->writeAttributeIf(
-                    $oParagraph->getAlignment()->getMarginRight() != 0,
+                    0 != $oParagraph->getAlignment()->getMarginRight(),
                     'marR',
                     CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getMarginRight())
                 );
                 $objWriter->writeAttributeIf(
-                    $oParagraph->getAlignment()->getIndent() != 0,
+                    0 != $oParagraph->getAlignment()->getIndent(),
                     'indent',
                     CommonDrawing::pixelsToEmu($oParagraph->getAlignment()->getIndent())
                 );
                 $objWriter->startElement('a:defRPr');
-                $objWriter->writeAttributeIf($oParagraph->getFont()->getSize() != 10, 'sz', $oParagraph->getFont()->getSize() * 100);
+                $objWriter->writeAttributeIf(10 != $oParagraph->getFont()->getSize(), 'sz', $oParagraph->getFont()->getSize() * 100);
                 $objWriter->writeAttributeIf($oParagraph->getFont()->isBold(), 'b', 1);
                 $objWriter->writeAttributeIf($oParagraph->getFont()->isItalic(), 'i', 1);
                 $objWriter->writeAttribute('kern', '1200');

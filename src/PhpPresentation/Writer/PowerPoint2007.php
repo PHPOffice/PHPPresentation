@@ -10,62 +10,58 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer;
 
 use DirectoryIterator;
 use PhpOffice\Common\Adapter\Zip\ZipArchiveAdapter;
+use PhpOffice\PhpPresentation\Exception\DirectoryNotFoundException;
+use PhpOffice\PhpPresentation\Exception\FileCopyException;
+use PhpOffice\PhpPresentation\Exception\FileRemoveException;
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack;
-use PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\PackDefault;
+use PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter;
+use ReflectionClass;
 
 /**
- * \PhpOffice\PhpPresentation\Writer\PowerPoint2007
+ * \PhpOffice\PhpPresentation\Writer\PowerPoint2007.
  */
 class PowerPoint2007 extends AbstractWriter implements WriterInterface
 {
     /**
      * Use disk caching where possible?
      *
-     * @var boolean
+     * @var bool
      */
     protected $useDiskCaching = false;
 
     /**
-     * Disk caching directory
+     * Disk caching directory.
      *
      * @var string
      */
     protected $diskCachingDir;
 
     /**
-     * Layout pack to use
-     * @deprecated 0.7
-     * @var \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
-     */
-    protected $layoutPack;
-
-    /**
-     * Create a new PowerPoint2007 file
+     * Create a new PowerPoint2007 file.
      *
      * @param PhpPresentation $pPhpPresentation
-     * @throws \Exception
      */
     public function __construct(PhpPresentation $pPhpPresentation = null)
     {
         // Assign PhpPresentation
-        $this->setPhpPresentation($pPhpPresentation);
+        $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
 
         // Set up disk caching location
         $this->diskCachingDir = './';
-
-        // Set layout pack
-        $this->layoutPack = new PackDefault();
 
         // Set HashTable variables
         $this->oDrawingHashTable = new HashTable();
@@ -74,23 +70,24 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     }
 
     /**
-     * Save PhpPresentation to file
+     * Save PhpPresentation to file.
      *
-     * @param  string    $pFilename
-     * @throws \Exception
+     * @throws FileCopyException
+     * @throws FileRemoveException
+     * @throws InvalidParameterException
      */
-    public function save($pFilename)
+    public function save(string $pFilename): void
     {
         if (empty($pFilename)) {
-            throw new \Exception("Filename is empty");
+            throw new InvalidParameterException('pFilename', '');
         }
         $oPresentation = $this->getPhpPresentation();
 
         // If $pFilename is php://output or php://stdout, make it a temporary file...
         $originalFilename = $pFilename;
-        if (strtolower($pFilename) == 'php://output' || strtolower($pFilename) == 'php://stdout') {
+        if ('php://output' == strtolower($pFilename) || 'php://stdout' == strtolower($pFilename)) {
             $pFilename = @tempnam('./', 'phppttmp');
-            if ($pFilename == '') {
+            if ('' == $pFilename) {
                 $pFilename = $originalFilename;
             }
         }
@@ -101,20 +98,20 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
         $oZip = $this->getZipAdapter();
         $oZip->open($pFilename);
 
-        $oDir = new DirectoryIterator(dirname(__FILE__).DIRECTORY_SEPARATOR.'PowerPoint2007');
-        $arrayFiles = array();
+        $oDir = new DirectoryIterator(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'PowerPoint2007');
+        $arrayFiles = [];
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;
             }
 
             $class = __NAMESPACE__ . '\\PowerPoint2007\\' . $oFile->getBasename('.php');
-            $o = new \ReflectionClass($class);
+            $class = new ReflectionClass($class);
 
-            if ($o->isAbstract() || !$o->isSubclassOf('PhpOffice\PhpPresentation\Writer\PowerPoint2007\AbstractDecoratorWriter')) {
+            if ($class->isAbstract() || !$class->isSubclassOf(AbstractDecoratorWriter::class)) {
                 continue;
             }
-            $arrayFiles[$oFile->getBasename('.php')] = $o;
+            $arrayFiles[$oFile->getBasename('.php')] = $class;
         }
 
         ksort($arrayFiles);
@@ -133,11 +130,11 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
 
         // If a temporary file was used, copy it to the correct file stream
         if ($originalFilename != $pFilename) {
-            if (copy($pFilename, $originalFilename) === false) {
-                throw new \Exception("Could not copy temporary zip file $pFilename to $originalFilename.");
+            if (false === copy($pFilename, $originalFilename)) {
+                throw new FileCopyException($pFilename, $originalFilename);
             }
-            if (@unlink($pFilename) === false) {
-                throw new \Exception('The file '.$pFilename.' could not be removed.');
+            if (false === @unlink($pFilename)) {
+                throw new FileRemoveException($pFilename);
             }
         }
     }
@@ -145,7 +142,7 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Get use disk caching where possible?
      *
-     * @return boolean
+     * @return bool
      */
     public function hasDiskCaching()
     {
@@ -155,57 +152,34 @@ class PowerPoint2007 extends AbstractWriter implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param  boolean $pValue
-     * @param  string $pDirectory Disk caching directory
-     * @throws \Exception
+     * @param bool $useDiskCaching
+     * @param string $directory Disk caching directory
+     *
+     * @throws DirectoryNotFoundException
+     *
      * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
      */
-    public function setUseDiskCaching($pValue = false, $pDirectory = null)
+    public function setUseDiskCaching(bool $useDiskCaching = false, string $directory = null)
     {
-        $this->useDiskCaching = $pValue;
+        $this->useDiskCaching = $useDiskCaching;
 
-        if (!is_null($pDirectory)) {
-            if (!is_dir($pDirectory)) {
-                throw new \Exception("Directory does not exist: $pDirectory");
+        if (!is_null($directory)) {
+            if (!is_dir($directory)) {
+                throw new DirectoryNotFoundException($directory);
             }
-            $this->diskCachingDir = $pDirectory;
+            $this->diskCachingDir = $directory;
         }
 
         return $this;
     }
 
     /**
-     * Get disk caching directory
+     * Get disk caching directory.
      *
      * @return string
      */
     public function getDiskCachingDirectory()
     {
         return $this->diskCachingDir;
-    }
-
-    /**
-     * Get layout pack to use
-     *
-     * @deprecated 0.7
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack
-     */
-    public function getLayoutPack()
-    {
-        return $this->layoutPack;
-    }
-
-    /**
-     * Set layout pack to use
-     *
-     * @deprecated 0.7
-     * @param \PhpOffice\PhpPresentation\Writer\PowerPoint2007\LayoutPack\AbstractLayoutPack $pValue
-     * @return \PhpOffice\PhpPresentation\Writer\PowerPoint2007
-     */
-    public function setLayoutPack(AbstractLayoutPack $pValue = null)
-    {
-        $this->layoutPack = $pValue;
-
-        return $this;
     }
 }

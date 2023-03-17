@@ -1,0 +1,26 @@
+parameters:
+  level: 6
+  bootstrapFiles:
+    - tests/bootstrap.php
+  paths:
+    - src
+    - tests
+  reportUnmatchedIgnoredErrors: false
+  ignoreErrors:
+    ## Relative to Common
+    - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:angleToDegrees\(\) expects int, string given\.#'
+    - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:centimetersToPixels\(\) expects int, string given\.#'
+    - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:degreesToAngle\(\) expects int, float given\.#'
+    - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:emuToPixels\(\) expects int, float given\.#'
+    - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:emuToPixels\(\) expects int, string given\.#'
+    - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:pixelsToCentimeters\(\) expects int, float given\.#'
+    - '#^Parameter \#1 \$pValue of static method PhpOffice\\Common\\Drawing\:\:pixelsToEmu\(\) expects int, float given\.#'
+    ## PHP 8.0 & GdImage
+    - '#^Parameter \#1 \$value of method PhpOffice\\PhpPresentation\\Shape\\Drawing\\Gd::setImageResource\(\) expects resource\|null, GdImage\|false given\.#'
+    - '#^Parameter \#1 \$image of function imagesx expects GdImage, resource given\.#'
+    - '#^Parameter \#1 \$image of function imagesy expects GdImage, resource given\.#'
+    - '#^Parameter \#1 \$image of function imagealphablending expects GdImage, resource given\.#'
+    - '#^Parameter \#1 \$image of function imagesavealpha expects GdImage, resource given\.#'
+
+  ## Remove after remove ArrayObject
+  treatPhpDocTypesAsCertain: false

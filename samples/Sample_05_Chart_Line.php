@@ -3,11 +3,15 @@
 include_once 'Sample_Header.php';
 
 use PhpOffice\PhpPresentation\PhpPresentation;
-use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
+use PhpOffice\PhpPresentation\Shape\Chart;
+use PhpOffice\PhpPresentation\Shape\Chart\Gridlines;
+use PhpOffice\PhpPresentation\Shape\Chart\Marker;
 use PhpOffice\PhpPresentation\Shape\Chart\Series;
+use PhpOffice\PhpPresentation\Shape\Chart\Type\Line;
 use PhpOffice\PhpPresentation\Style\Border;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
+use PhpOffice\PhpPresentation\Style\Outline;
 use PhpOffice\PhpPresentation\Style\Shadow;
 
 // Create new PHPPresentation object
@@ -31,15 +35,22 @@ $oShadow->setVisible(true)->setDirection(45)->setDistance(10);
 
 // Generate sample data for chart
 echo date('H:i:s') . ' Generate sample data for chart' . EOL;
-$seriesData = array(
-    'Monday' => 12,
-    'Tuesday' => 15,
-    'Wednesday' => 13,
-    'Thursday' => 17,
-    'Friday' => 14,
-    'Saturday' => 9,
-    'Sunday' => 7
-);
+$seriesData = [
+    'Monday 01' => 12,
+    'Tuesday 02' => 15,
+    'Wednesday 03' => 13,
+    'Thursday 04' => 17,
+    'Friday 05' => 14,
+    'Saturday 06' => 9,
+    'Sunday 07' => 7,
+    'Monday 08' => 8,
+    'Tuesday 09' => 8,
+    'Wednesday 10' => 15,
+    'Thursday 11' => 16,
+    'Friday 12' => 14,
+    'Saturday 13' => 14,
+    'Sunday 14' => 13,
+];
 
 // Create templated slide
 echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
@@ -67,13 +78,15 @@ $shape->getView3D()->setRotationX(30);
 $shape->getView3D()->setPerspective(30);
 $shape->getLegend()->getBorder()->setLineStyle(Border::LINE_SINGLE);
 $shape->getLegend()->getFont()->setItalic(true);
+$shape->getPlotArea()->getAxisX()->setMajorUnit(3);
+$shape->getPlotArea()->getAxisY()->setMajorUnit(5);
 
 // Create templated slide
 echo EOL . date('H:i:s') . ' Create templated slide' . EOL;
 $currentSlide = createTemplatedSlide($objPHPPresentation);
 
 // Create a line chart (that should be inserted in a shape)
-$oOutline = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutline = new Outline();
 $oOutline->getFill()->setFillType(Fill::FILL_SOLID);
 $oOutline->getFill()->setStartColor(new Color(Color::COLOR_YELLOW));
 $oOutline->setWidth(2);
@@ -82,7 +95,7 @@ echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart s
 $lineChart1 = clone $lineChart;
 $series1 = $lineChart1->getSeries();
 $series1[0]->setOutline($oOutline);
-$series1[0]->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_DIAMOND);
+$series1[0]->getMarker()->setSymbol(Marker::SYMBOL_DIAMOND);
 $series1[0]->getMarker()->setSize(7);
 $lineChart1->setSeries($series1);
 
@@ -106,7 +119,7 @@ echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart s
 $lineChart2 = clone $lineChart;
 $series2 = $lineChart2->getSeries();
 $series2[0]->getFont()->setSize(25);
-$series2[0]->getMarker()->setSymbol(\PhpOffice\PhpPresentation\Shape\Chart\Marker::SYMBOL_TRIANGLE);
+$series2[0]->getMarker()->setSymbol(Marker::SYMBOL_TRIANGLE);
 $series2[0]->getMarker()->setSize(10);
 $lineChart2->setSeries($series2);
 
@@ -129,11 +142,11 @@ $currentSlide = createTemplatedSlide($objPHPPresentation);
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
 $lineChart3 = clone $lineChart;
 
-$oGridLines1 = new \PhpOffice\PhpPresentation\Shape\Chart\Gridlines();
+$oGridLines1 = new Gridlines();
 $oGridLines1->getOutline()->setWidth(10);
 $oGridLines1->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
 
-$oGridLines2 = new \PhpOffice\PhpPresentation\Shape\Chart\Gridlines();
+$oGridLines2 = new Gridlines();
 $oGridLines2->getOutline()->setWidth(1);
 $oGridLines2->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_DARKGREEN));
 
@@ -156,12 +169,12 @@ $currentSlide = createTemplatedSlide($objPHPPresentation);
 echo date('H:i:s') . ' Create a line chart (that should be inserted in a chart shape)' . EOL;
 $lineChart4 = clone $lineChart;
 
-$oOutlineAxisX = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutlineAxisX = new Outline();
 $oOutlineAxisX->setWidth(2);
 $oOutlineAxisX->getFill()->setFillType(Fill::FILL_SOLID);
 $oOutlineAxisX->getFill()->getStartColor()->setRGB('012345');
 
-$oOutlineAxisY = new \PhpOffice\PhpPresentation\Style\Outline();
+$oOutlineAxisY = new Outline();
 $oOutlineAxisY->setWidth(5);
 $oOutlineAxisY->getFill()->setFillType(Fill::FILL_SOLID);
 $oOutlineAxisY->getFill()->getStartColor()->setRGB('ABCDEF');
@@ -174,7 +187,9 @@ $shape4->setName('Shape 4');
 $shape4->getTitle()->setText('Chart with Outline on Axis');
 $shape4->getPlotArea()->setType($lineChart4);
 $shape4->getPlotArea()->getAxisX()->setOutline($oOutlineAxisX);
+$shape4->getPlotArea()->getAxisX()->setTitleRotation(45);
 $shape4->getPlotArea()->getAxisY()->setOutline($oOutlineAxisY);
+$shape4->getPlotArea()->getAxisY()->setTitleRotation(135);
 $currentSlide->addShape($shape4);
 
 // Create templated slide
@@ -188,6 +203,26 @@ $shape5 = clone $shape;
 $shape5->getPlotArea()->getAxisY()->setMinBounds(5);
 $shape5->getPlotArea()->getAxisY()->setMaxBounds(20);
 $currentSlide->addShape($shape5);
+
+// Create templated slide
+echo EOL . date('H:i:s') . ' Create templated slide #6' . EOL;
+$currentSlide = createTemplatedSlide($objPHPPresentation);
+
+// Create a shape (chart)
+echo date('H:i:s') . ' Create a shape (chart6)' . EOL;
+echo date('H:i:s') . ' Feature : DisplayBlankAs' . EOL;
+$shape6 = clone $shape;
+$lineChart6 = clone $lineChart;
+$series6 = clone $series;
+$seriesData6 = $seriesData;
+$seriesData6['Thursday'] = null;
+
+$series6->setValues($seriesData6);
+$lineChart6->setSeries([$series6]);
+$shape6->getPlotArea()->setType($lineChart6);
+$shape6->setDisplayBlankAs(Chart::BLANKAS_GAP);
+$currentSlide->addShape($shape6);
+
 // Save file
 echo EOL . write($objPHPPresentation, basename(__FILE__, '.php'), $writers);
 

@@ -10,27 +10,31 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation;
 
-/**
- * \PhpOffice\PhpPresentation\PresentationProperties
- */
 class PresentationProperties
 {
-    const VIEW_HANDOUT = 'handoutView';
-    const VIEW_NOTES = 'notesView';
-    const VIEW_NOTES_MASTER = 'notesMasterView';
-    const VIEW_OUTLINE = 'outlineView';
-    const VIEW_SLIDE = 'sldView';
-    const VIEW_SLIDE_MASTER = 'sldMasterView';
-    const VIEW_SLIDE_SORTER = 'sldSorterView';
-    const VIEW_SLIDE_THUMBNAIL = 'sldThumbnailView';
+    public const VIEW_HANDOUT = 'handoutView';
+    public const VIEW_NOTES = 'notesView';
+    public const VIEW_NOTES_MASTER = 'notesMasterView';
+    public const VIEW_OUTLINE = 'outlineView';
+    public const VIEW_SLIDE = 'sldView';
+    public const VIEW_SLIDE_MASTER = 'sldMasterView';
+    public const VIEW_SLIDE_SORTER = 'sldSorterView';
+    public const VIEW_SLIDE_THUMBNAIL = 'sldThumbnailView';
 
-    protected $arrayView = array(
+    /**
+     * @var array<int, string>
+     */
+    protected $arrayView = [
         self::VIEW_HANDOUT,
         self::VIEW_NOTES,
         self::VIEW_NOTES_MASTER,
@@ -39,163 +43,189 @@ class PresentationProperties
         self::VIEW_SLIDE_MASTER,
         self::VIEW_SLIDE_SORTER,
         self::VIEW_SLIDE_THUMBNAIL,
-    );
+    ];
 
-    /*
-     * @var boolean
+    public const SLIDESHOW_TYPE_PRESENT = 'present';
+    public const SLIDESHOW_TYPE_BROWSE = 'browse';
+    public const SLIDESHOW_TYPE_KIOSK = 'kiosk';
+
+    /**
+     * @var array<int, string>
+     */
+    protected $arraySlideshowTypes = [
+        self::SLIDESHOW_TYPE_PRESENT,
+        self::SLIDESHOW_TYPE_BROWSE,
+        self::SLIDESHOW_TYPE_KIOSK,
+    ];
+
+    /**
+     * @var bool
      */
     protected $isLoopUntilEsc = false;
 
     /**
-     * Mark as final
+     * Mark as final.
+     *
      * @var bool
      */
     protected $markAsFinal = false;
 
-    /*
-     * @var string
+    /**
+     * @var string|null
      */
     protected $thumbnail;
 
     /**
-     * Zoom
+     * Zoom.
+     *
      * @var float
      */
-    protected $zoom = 1;
+    protected $zoom = 1.0;
 
-    /*
+    /**
      * @var string
      */
     protected $lastView = self::VIEW_SLIDE;
 
-    /*
-     * @var boolean
+    /**
+     * @var string
+     */
+    protected $slideshowType = self::SLIDESHOW_TYPE_PRESENT;
+
+    /**
+     * @var bool
      */
     protected $isCommentVisible = false;
-    
-    /**
-     * @return bool
-     */
-    public function isLoopContinuouslyUntilEsc()
+
+    public function isLoopContinuouslyUntilEsc(): bool
     {
         return $this->isLoopUntilEsc;
     }
-    
-    /**
-     * @param bool $value
-     * @return \PhpOffice\PhpPresentation\PresentationProperties
-     */
-    public function setLoopContinuouslyUntilEsc($value = false)
+
+    public function setLoopContinuouslyUntilEsc(bool $value = false): self
     {
-        if (is_bool($value)) {
-            $this->isLoopUntilEsc = $value;
-        }
+        $this->isLoopUntilEsc = $value;
+
         return $this;
     }
-    
+
     /**
-     * Return the thumbnail file path
-     * @return string
+     * Return the thumbnail file path.
+     *
+     * @return string|null
      */
-    public function getThumbnailPath()
+    public function getThumbnailPath(): ?string
     {
         return $this->thumbnail;
     }
-    
+
     /**
-     * Define the path for the thumbnail file / preview picture
+     * Define the path for the thumbnail file / preview picture.
+     *
      * @param string $path
-     * @return \PhpOffice\PhpPresentation\PresentationProperties
+     *
+     * @return self
      */
-    public function setThumbnailPath($path = '')
+    public function setThumbnailPath(string $path = ''): self
     {
         if (file_exists($path)) {
             $this->thumbnail = $path;
         }
+
         return $this;
     }
 
     /**
-     * Mark a document as final
-     * @param bool $state
-     * @return PresentationProperties
+     * Mark a document as final.
      */
-    public function markAsFinal($state = true)
+    public function markAsFinal(bool $state = true): self
     {
-        if (is_bool($state)) {
-            $this->markAsFinal = $state;
-        }
+        $this->markAsFinal = $state;
+
         return $this;
     }
 
     /**
-     * Return if this document is marked as final
+     * Return if this document is marked as final.
+     *
      * @return bool
      */
-    public function isMarkedAsFinal()
+    public function isMarkedAsFinal(): bool
     {
         return $this->markAsFinal;
     }
 
     /**
-     * Set the zoom of the document (in percentage)
-     * @param float $zoom
-     * @return PresentationProperties
+     * Set the zoom of the document (in percentage).
      */
-    public function setZoom($zoom = 1.0)
+    public function setZoom(float $zoom = 1.0): self
     {
-        if (is_numeric($zoom)) {
-            $this->zoom = (float)$zoom;
-        }
+        $this->zoom = $zoom;
+
         return $this;
     }
 
     /**
-     * Return the zoom (in percentage)
-     * @return float
+     * Return the zoom (in percentage).
      */
-    public function getZoom()
+    public function getZoom(): float
     {
         return $this->zoom;
     }
 
     /**
      * @param string $value
-     * @return $this
+     *
+     * @return self
      */
-    public function setLastView($value = self::VIEW_SLIDE)
+    public function setLastView(string $value = self::VIEW_SLIDE): self
     {
         if (in_array($value, $this->arrayView)) {
             $this->lastView = $value;
         }
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getLastView()
+    public function getLastView(): string
     {
         return $this->lastView;
     }
 
-    /**
-     * @param bool $value
-     * @return $this
-     */
-    public function setCommentVisible($value = false)
+    public function setCommentVisible(bool $value = false): self
     {
-        if (is_bool($value)) {
-            $this->isCommentVisible = $value;
-        }
+        $this->isCommentVisible = $value;
+
         return $this;
+    }
+
+    public function isCommentVisible(): bool
+    {
+        return $this->isCommentVisible;
     }
 
     /**
      * @return string
      */
-    public function isCommentVisible()
+    public function getSlideshowType(): string
     {
-        return $this->isCommentVisible;
+        return $this->slideshowType;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return self
+     */
+    public function setSlideshowType(string $value = self::SLIDESHOW_TYPE_PRESENT): self
+    {
+        if (in_array($value, $this->arraySlideshowTypes)) {
+            $this->slideshowType = $value;
+        }
+
+        return $this;
     }
 }

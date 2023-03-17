@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape;
 
@@ -22,12 +25,12 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Shape\Comment\Author;
 
 /**
- * Comment shape
+ * Comment shape.
  */
 class Comment extends AbstractShape implements ComparableInterface
 {
     /**
-     * @var Author
+     * @var Author|null
      */
     protected $author;
 
@@ -47,21 +50,15 @@ class Comment extends AbstractShape implements ComparableInterface
         $this->setDate(time());
     }
 
-    /**
-     * @return Author
-     */
-    public function getAuthor()
+    public function getAuthor(): ?Author
     {
         return $this->author;
     }
 
-    /**
-     * @param Author $author
-     * @return Comment
-     */
-    public function setAuthor(Author $author)
+    public function setAuthor(Author $author): self
     {
         $this->author = $author;
+
         return $this;
     }
 
@@ -75,11 +72,13 @@ class Comment extends AbstractShape implements ComparableInterface
 
     /**
      * @param int $dtComment timestamp of the comment
+     *
      * @return Comment
      */
     public function setDate($dtComment)
     {
-        $this->dtComment = (int)$dtComment;
+        $this->dtComment = (int) $dtComment;
+
         return $this;
     }
 
@@ -93,18 +92,20 @@ class Comment extends AbstractShape implements ComparableInterface
 
     /**
      * @param string $text
+     *
      * @return Comment
      */
     public function setText($text = '')
     {
         $this->text = $text;
+
         return $this;
     }
 
     /**
-     * Comment has not height
+     * Comment has not height.
      *
-     * @return null
+     * @return int|null
      */
     public function getHeight()
     {
@@ -112,20 +113,19 @@ class Comment extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Height
+     * Set Height.
      *
-     * @param  int $pValue
      * @return $this
      */
-    public function setHeight($pValue = 0)
+    public function setHeight(int $pValue = 0)
     {
         return $this;
     }
 
     /**
-     * Comment has not width
+     * Comment has not width.
      *
-     * @return null
+     * @return int|null
      */
     public function getWidth()
     {
@@ -133,12 +133,11 @@ class Comment extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Width
+     * Set Width.
      *
-     * @param  int $pValue
-     * @return $this
+     * @return self
      */
-    public function setWidth($pValue = 0)
+    public function setWidth(int $pValue = 0)
     {
         return $this;
     }

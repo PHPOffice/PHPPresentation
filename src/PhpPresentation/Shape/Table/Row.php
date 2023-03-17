@@ -10,136 +10,154 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Shape\Table;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Style\Fill;
 
 /**
- * Table row
+ * Table row.
  */
 class Row implements ComparableInterface
 {
     /**
-     * Cells
+     * Cells.
      *
-     * @var \PhpOffice\PhpPresentation\Shape\Table\Cell[]
+     * @var Cell[]
      */
-    private $cells;
+    private $cells = [];
 
     /**
-     * Fill
+     * Fill.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Fill
+     * @var Fill
      */
     private $fill;
 
     /**
-     * Height (in pixels)
+     * Height (in pixels).
      *
      * @var int
      */
     private $height = 38;
 
     /**
-     * Active cell index
+     * Active cell index.
      *
      * @var int
      */
     private $activeCellIndex = -1;
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Table\Row instance
-     *
      * @param int $columns Number of columns
      */
-    public function __construct($columns = 1)
+    public function __construct(int $columns = 1)
     {
-        // Initialise variables
-        $this->cells = array();
-        for ($i = 0; $i < $columns; $i++) {
+        // Fill
+        $this->fill = new Fill();
+        // Cells
+        for ($inc = 0; $inc < $columns; ++$inc) {
             $this->cells[] = new Cell();
         }
-
-        // Set fill
-        $this->fill = new Fill();
     }
 
     /**
-     * Get cell
+     * Get cell.
      *
-     * @param  int $cell Cell number
-     * @param  boolean $exceptionAsNull Return a null value instead of an exception?
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
+     * @param int $cell Cell number
+     *
+     * @throws OutOfBoundsException
      */
-    public function getCell($cell = 0, $exceptionAsNull = false)
+    public function getCell(int $cell = 0): Cell
     {
         if (!isset($this->cells[$cell])) {
-            if ($exceptionAsNull) {
-                return null;
-            }
-            throw new \Exception('Cell number out of bounds.');
+            throw new OutOfBoundsException(
+                0,
+                (count($this->cells) - 1) < 0 ? count($this->cells) - 1 : 0,
+                $cell
+            );
         }
 
         return $this->cells[$cell];
     }
 
     /**
-     * Get cells
+     * Get cell.
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell[]
+     * @param int $cell Cell number
+     *
+     * @return bool
      */
-    public function getCells()
+    public function hasCell(int $cell): bool
+    {
+        return isset($this->cells[$cell]);
+    }
+
+    /**
+     * Get cells.
+     *
+     * @return array<Cell>
+     */
+    public function getCells(): array
     {
         return $this->cells;
     }
 
     /**
-     * Next cell (moves one cell to the right)
+     * Next cell (moves one cell to the right).
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Cell
-     * @throws \Exception
+     * @return Cell
+     *
+     * @throws OutOfBoundsException
      */
-    public function nextCell()
+    public function nextCell(): Cell
     {
-        $this->activeCellIndex++;
+        ++$this->activeCellIndex;
         if (isset($this->cells[$this->activeCellIndex])) {
             $this->cells[$this->activeCellIndex]->setFill(clone $this->getFill());
+
             return $this->cells[$this->activeCellIndex];
         }
-        throw new \Exception("Cell count out of bounds.");
+
+        throw new OutOfBoundsException(
+            0,
+            (count($this->cells) - 1) < 0 ? count($this->cells) - 1 : 0,
+            $this->activeCellIndex
+        );
     }
 
     /**
-     * Get fill
+     * Get fill.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Fill
+     * @return Fill
      */
-    public function getFill()
+    public function getFill(): Fill
     {
         return $this->fill;
     }
 
     /**
-     * Set fill
+     * Set fill.
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Fill      $fill
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
+     * @return self
      */
-    public function setFill(Fill $fill)
+    public function setFill(Fill $fill): self
     {
         $this->fill = $fill;
 
@@ -147,22 +165,23 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Get height
+     * Get height.
      *
      * @return int
      */
-    public function getHeight()
+    public function getHeight(): int
     {
         return $this->height;
     }
 
     /**
-     * Set height
+     * Set height.
      *
-     * @param  int                          $value
-     * @return \PhpOffice\PhpPresentation\Shape\Table\Row
+     * @param int $value
+     *
+     * @return self
      */
-    public function setHeight($value = 0)
+    public function setHeight(int $value = 0): self
     {
         $this->height = $value;
 
@@ -170,11 +189,11 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         $hashElements = '';
         foreach ($this->cells as $cell) {
@@ -185,28 +204,32 @@ class Row implements ComparableInterface
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
+     * @return $this
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
+        return $this;
     }
 }

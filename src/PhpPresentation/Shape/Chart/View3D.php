@@ -10,78 +10,81 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
 
 /**
- * \PhpOffice\PhpPresentation\Shape\Chart\View3D
+ * \PhpOffice\PhpPresentation\Shape\Chart\View3D.
  */
 class View3D implements ComparableInterface
 {
     /**
-     * Rotation X
+     * Rotation X.
      *
      * @var int
      */
     protected $rotationX = 0;
 
     /**
-     * Rotation Y
+     * Rotation Y.
      *
      * @var int
      */
     protected $rotationY = 0;
 
     /**
-     * Right Angle Axes
+     * Right Angle Axes.
      *
-     * @var boolean
+     * @var bool
      */
     private $rightAngleAxes = true;
 
     /**
-     * Perspective
+     * Perspective.
      *
      * @var int
      */
     private $perspective = 30;
 
     /**
-     * Height Percent
+     * Height Percent.
      *
-     * @var int
+     * @var int|null
      */
     private $heightPercent = 100;
 
     /**
-     * Depth Percent
+     * Depth Percent.
      *
      * @var int
      */
     private $depthPercent = 100;
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\View3D instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\View3D instance.
      */
     public function __construct()
     {
     }
 
     /**
-     * Get Rotation X
+     * Get Rotation X.
      *
      * @return int
      */
@@ -91,9 +94,10 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Set Rotation X (-90 to 90)
+     * Set Rotation X (-90 to 90).
      *
-     * @param  int                              $pValue
+     * @param int $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     public function setRotationX($pValue = 0)
@@ -104,7 +108,7 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Get Rotation Y
+     * Get Rotation Y.
      *
      * @return int
      */
@@ -114,9 +118,10 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Set Rotation Y (-90 to 90)
+     * Set Rotation Y (-90 to 90).
      *
-     * @param  int                              $pValue
+     * @param int $pValue
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     public function setRotationY($pValue = 0)
@@ -127,9 +132,9 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Get RightAngleAxes
+     * Get RightAngleAxes.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasRightAngleAxes()
     {
@@ -137,9 +142,10 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Set RightAngleAxes
+     * Set RightAngleAxes.
      *
-     * @param  boolean                          $value
+     * @param bool $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     public function setRightAngleAxes($value = true)
@@ -150,7 +156,7 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Get Perspective
+     * Get Perspective.
      *
      * @return int
      */
@@ -160,9 +166,10 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Set Perspective (0 to 100)
+     * Set Perspective (0 to 100).
      *
-     * @param  int                              $value
+     * @param int $value
+     *
      * @return \PhpOffice\PhpPresentation\Shape\Chart\View3D
      */
     public function setPerspective($value = 30)
@@ -173,7 +180,7 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Get HeightPercent
+     * Get HeightPercent.
      *
      * @return int
      */
@@ -183,12 +190,9 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Set HeightPercent (5 to 500)
-     *
-     * @param  int  $value
-     * @return $this
+     * Set HeightPercent (5 to 500).
      */
-    public function setHeightPercent($value = 100)
+    public function setHeightPercent(?int $value = 100): self
     {
         $this->heightPercent = $value;
 
@@ -196,19 +200,18 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Get DepthPercent
-     *
-     * @return int
+     * Get DepthPercent.
      */
-    public function getDepthPercent()
+    public function getDepthPercent(): ?int
     {
         return $this->depthPercent;
     }
 
     /**
-     * Set DepthPercent (20 to 2000)
+     * Set DepthPercent (20 to 2000).
      *
-     * @param  int  $value
+     * @param int $value
+     *
      * @return $this
      */
     public function setDepthPercent($value = 100)
@@ -219,40 +222,42 @@ class View3D implements ComparableInterface
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->rotationX . $this->rotationY . ($this->rightAngleAxes ? 't' : 'f') . $this->perspective . $this->heightPercent . $this->depthPercent . __CLASS__);
     }
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
+     * @param int $value Hash index
+     *
      * @return View3D
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 }

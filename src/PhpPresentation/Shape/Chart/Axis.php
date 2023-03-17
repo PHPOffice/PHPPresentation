@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Chart;
 
@@ -21,25 +24,35 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\Outline;
 
-/**
- * \PhpOffice\PhpPresentation\Shape\Chart\Axis
- */
 class Axis implements ComparableInterface
 {
-    const AXIS_X = 'x';
-    const AXIS_Y = 'y';
+    public const AXIS_X = 'x';
+    public const AXIS_Y = 'y';
 
-    const TICK_MARK_NONE = 'none';
-    const TICK_MARK_CROSS = 'cross';
-    const TICK_MARK_INSIDE = 'in';
-    const TICK_MARK_OUTSIDE = 'out';
+    public const TICK_MARK_NONE = 'none';
+    public const TICK_MARK_CROSS = 'cross';
+    public const TICK_MARK_INSIDE = 'in';
+    public const TICK_MARK_OUTSIDE = 'out';
+
+    public const TICK_LABEL_POSITION_NEXT_TO = 'nextTo';
+    public const TICK_LABEL_POSITION_HIGH = 'high';
+    public const TICK_LABEL_POSITION_LOW = 'low';
+
+    public const CROSSES_AUTO = 'autoZero';
+    public const CROSSES_MIN = 'min';
+    public const CROSSES_MAX = 'max';
 
     /**
-     * Title
+     * Title.
      *
      * @var string
      */
     private $title = 'Axis Title';
+
+    /**
+     * @var int
+     */
+    private $titleRotation = 0;
 
     /**
      * Format code
@@ -49,19 +62,19 @@ class Axis implements ComparableInterface
     private $formatCode = '';
 
     /**
-     * Font
+     * Font.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Font
+     * @var Font
      */
     private $font;
 
     /**
-     * @var Gridlines
+     * @var Gridlines|null
      */
     protected $majorGridlines;
 
     /**
-     * @var Gridlines
+     * @var Gridlines|null
      */
     protected $minorGridlines;
 
@@ -78,12 +91,27 @@ class Axis implements ComparableInterface
     /**
      * @var string
      */
+    protected $crossesAt = self::CROSSES_AUTO;
+
+    /**
+     * @var bool
+     */
+    protected $isReversedOrder = false;
+
+    /**
+     * @var string
+     */
     protected $minorTickMark = self::TICK_MARK_NONE;
 
     /**
      * @var string
      */
     protected $majorTickMark = self::TICK_MARK_NONE;
+
+    /**
+     * @var string
+     */
+    protected $tickLabelPosition = self::TICK_LABEL_POSITION_NEXT_TO;
 
     /**
      * @var float
@@ -101,39 +129,40 @@ class Axis implements ComparableInterface
     protected $outline;
 
     /**
-     * @var boolean
+     * @var bool
      */
     protected $isVisible = true;
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\Chart\Axis instance.
      *
      * @param string $title Title
      */
-    public function __construct($title = 'Axis Title')
+    public function __construct(string $title = 'Axis Title')
     {
         $this->title = $title;
         $this->outline = new Outline();
-        $this->font  = new Font();
+        $this->font = new Font();
     }
 
     /**
-     * Get Title
+     * Get Title.
      *
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * Set Title
+     * Set Title.
      *
-     * @param  string                         $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @param string $value
+     *
+     * @return self
      */
-    public function setTitle($value = 'Axis Title')
+    public function setTitle(string $value = 'Axis Title'): self
     {
         $this->title = $value;
 
@@ -141,45 +170,47 @@ class Axis implements ComparableInterface
     }
 
     /**
-     * Get font
+     * Get font.
      *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * @return Font|null
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return $this->font;
     }
 
     /**
-     * Set font
+     * Set font.
      *
-     * @param  \PhpOffice\PhpPresentation\Style\Font               $pFont Font
-     * @throws \Exception
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @param Font|null $font
+     *
+     * @return self
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(Font $font = null): self
     {
-        $this->font = $pFont;
+        $this->font = $font;
+
         return $this;
     }
 
     /**
-     * Get Format Code
+     * Get Format Code.
      *
      * @return string
      */
-    public function getFormatCode()
+    public function getFormatCode(): string
     {
         return $this->formatCode;
     }
 
     /**
-     * Set Format Code
+     * Set Format Code.
      *
-     * @param  string                         $value
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Axis
+     * @param string $value
+     *
+     * @return self
      */
-    public function setFormatCode($value = '')
+    public function setFormatCode(string $value = ''): self
     {
         $this->formatCode = $value;
 
@@ -189,162 +220,230 @@ class Axis implements ComparableInterface
     /**
      * @return int|null
      */
-    public function getMinBounds()
+    public function getMinBounds(): ?int
     {
         return $this->minBounds;
     }
 
     /**
      * @param int|null $minBounds
-     * @return Axis
+     *
+     * @return self
      */
-    public function setMinBounds($minBounds = null)
+    public function setMinBounds(int $minBounds = null): self
     {
-        $this->minBounds = is_null($minBounds) ? null : (int)$minBounds;
+        $this->minBounds = is_null($minBounds) ? null : $minBounds;
+
         return $this;
     }
 
     /**
      * @return int|null
      */
-    public function getMaxBounds()
+    public function getMaxBounds(): ?int
     {
         return $this->maxBounds;
     }
 
     /**
      * @param int|null $maxBounds
-     * @return Axis
+     *
+     * @return self
      */
-    public function setMaxBounds($maxBounds = null)
+    public function setMaxBounds(int $maxBounds = null): self
     {
-        $this->maxBounds = is_null($maxBounds) ? null : (int)$maxBounds;
-        return $this;
-    }
+        $this->maxBounds = is_null($maxBounds) ? null : $maxBounds;
 
-    /**
-     * @return Gridlines
-     */
-    public function getMajorGridlines()
-    {
-        return $this->majorGridlines;
-    }
-
-    /**
-     * @param Gridlines $majorGridlines
-     * @return Axis
-     */
-    public function setMajorGridlines(Gridlines $majorGridlines)
-    {
-        $this->majorGridlines = $majorGridlines;
-        return $this;
-    }
-
-    /**
-     * @return Gridlines
-     */
-    public function getMinorGridlines()
-    {
-        return $this->minorGridlines;
-    }
-
-    /**
-     * @param Gridlines $minorGridlines
-     * @return Axis
-     */
-    public function setMinorGridlines(Gridlines $minorGridlines)
-    {
-        $this->minorGridlines = $minorGridlines;
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getMinorTickMark()
+    public function getCrossesAt(): string
+    {
+        return $this->crossesAt;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return self
+     */
+    public function setCrossesAt(string $value = self::CROSSES_AUTO): self
+    {
+        $this->crossesAt = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isReversedOrder(): bool
+    {
+        return $this->isReversedOrder;
+    }
+
+    /**
+     * @param bool $value
+     *
+     * @return self
+     */
+    public function setIsReversedOrder(bool $value = false): self
+    {
+        $this->isReversedOrder = $value;
+
+        return $this;
+    }
+
+    public function getMajorGridlines(): ?Gridlines
+    {
+        return $this->majorGridlines;
+    }
+
+    public function setMajorGridlines(Gridlines $majorGridlines): self
+    {
+        $this->majorGridlines = $majorGridlines;
+
+        return $this;
+    }
+
+    public function getMinorGridlines(): ?Gridlines
+    {
+        return $this->minorGridlines;
+    }
+
+    public function setMinorGridlines(Gridlines $minorGridlines): self
+    {
+        $this->minorGridlines = $minorGridlines;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMinorTickMark(): string
     {
         return $this->minorTickMark;
     }
 
     /**
-     * @param string $pTickMark
-     * @return Axis
+     * @param string $tickMark
+     *
+     * @return self
      */
-    public function setMinorTickMark($pTickMark = self::TICK_MARK_NONE)
+    public function setMinorTickMark(string $tickMark = self::TICK_MARK_NONE): self
     {
-        $this->minorTickMark = $pTickMark;
+        $this->minorTickMark = $tickMark;
+
         return $this;
     }
 
     /**
      * @return string
      */
-    public function getMajorTickMark()
+    public function getMajorTickMark(): string
     {
         return $this->majorTickMark;
     }
 
     /**
-     * @param string $pTickMark
-     * @return Axis
+     * @param string $tickMark
+     *
+     * @return self
      */
-    public function setMajorTickMark($pTickMark = self::TICK_MARK_NONE)
+    public function setMajorTickMark(string $tickMark = self::TICK_MARK_NONE): self
     {
-        $this->majorTickMark = $pTickMark;
+        $this->majorTickMark = $tickMark;
+
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getMinorUnit()
+    public function getMinorUnit(): ?float
     {
         return $this->minorUnit;
     }
 
     /**
-     * @param float $pUnit
-     * @return Axis
+     * @param float|null $unit
+     *
+     * @return self
      */
-    public function setMinorUnit($pUnit = null)
+    public function setMinorUnit($unit = null): self
     {
-        $this->minorUnit = $pUnit;
+        $this->minorUnit = $unit;
+
         return $this;
     }
 
     /**
-     * @return float
+     * @return float|null
      */
-    public function getMajorUnit()
+    public function getMajorUnit(): ?float
     {
         return $this->majorUnit;
     }
 
     /**
-     * @param float $pUnit
-     * @return Axis
+     * @param float|null $unit
+     *
+     * @return self
      */
-    public function setMajorUnit($pUnit = null)
+    public function setMajorUnit(float $unit = null): self
     {
-        $this->majorUnit = $pUnit;
+        $this->majorUnit = $unit;
+
         return $this;
     }
 
     /**
      * @return Outline
      */
-    public function getOutline()
+    public function getOutline(): Outline
     {
         return $this->outline;
     }
 
     /**
      * @param Outline $outline
-     * @return Axis
+     *
+     * @return self
      */
-    public function setOutline(Outline $outline)
+    public function setOutline(Outline $outline): self
     {
         $this->outline = $outline;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTitleRotation(): int
+    {
+        return $this->titleRotation;
+    }
+
+    /**
+     * @param int $titleRotation
+     *
+     * @return self
+     */
+    public function setTitleRotation(int $titleRotation): self
+    {
+        if ($titleRotation < 0) {
+            $titleRotation = 0;
+        }
+        if ($titleRotation > 360) {
+            $titleRotation = 360;
+        }
+        $this->titleRotation = $titleRotation;
+
         return $this;
     }
 
@@ -353,64 +452,95 @@ class Axis implements ComparableInterface
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5($this->title . $this->formatCode . __CLASS__);
     }
 
     /**
-     * Hash index
+     * Hash index.
      *
-     * @var string
+     * @var int
      */
     private $hashIndex;
 
     /**
-     * Get hash index
+     * Get hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return string Hash index
+     * @return int|null Hash index
      */
-    public function getHashIndex()
+    public function getHashIndex(): ?int
     {
         return $this->hashIndex;
     }
 
     /**
-     * Set hash index
+     * Set hash index.
      *
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @param string $value Hash index
-     * @return $this
+     * @param int $value Hash index
+     *
+     * @return self
      */
-    public function setHashIndex($value)
+    public function setHashIndex(int $value)
     {
         $this->hashIndex = $value;
+
         return $this;
     }
 
     /**
      * Axis is hidden ?
-     * @return boolean
+     *
+     * @return bool
      */
-    public function isVisible()
+    public function isVisible(): bool
     {
         return $this->isVisible;
     }
 
     /**
-     * Hide an axis
+     * Hide an axis.
      *
-     * @param boolean $value delete
-     * @return $this
+     * @param bool $value delete
+     *
+     * @return self
      */
-    public function setIsVisible($value)
+    public function setIsVisible(bool $value): self
     {
-        $this->isVisible = (bool)$value;
+        $this->isVisible = $value;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTickLabelPosition(): string
+    {
+        return $this->tickLabelPosition;
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return self
+     */
+    public function setTickLabelPosition(string $value = self::TICK_LABEL_POSITION_NEXT_TO): self
+    {
+        if (in_array($value, [
+            self::TICK_LABEL_POSITION_HIGH,
+            self::TICK_LABEL_POSITION_LOW,
+            self::TICK_LABEL_POSITION_NEXT_TO,
+        ])) {
+            $this->tickLabelPosition = $value;
+        }
+
         return $this;
     }
 }

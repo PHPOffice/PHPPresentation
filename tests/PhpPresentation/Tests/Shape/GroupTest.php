@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Shape;
 
@@ -22,13 +25,13 @@ use PhpOffice\PhpPresentation\Shape\Line;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for Group element
+ * Test class for Group element.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\Shape\Group
+ * @coversDefaultClass \PhpOffice\PhpPresentation\Shape\Group
  */
 class GroupTest extends TestCase
 {
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Group();
 
@@ -41,7 +44,7 @@ class GroupTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Group', $object->setHeight(rand(1, 100)));
     }
 
-    public function testAdd()
+    public function testAdd(): void
     {
         $object = new Group();
 
@@ -53,28 +56,28 @@ class GroupTest extends TestCase
         $this->assertEquals(5, $object->getShapeCollection()->count());
     }
 
-    public function testExtentX()
+    public function testExtentX(): void
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 50);
+        $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(20, $object->getExtentX());
     }
 
-    public function testExtentY()
+    public function testExtentY(): void
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 50);
+        $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(30, $object->getExtentY());
     }
 
-    public function testOffsetX()
+    public function testOffsetX(): void
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 50);
+        $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(10, $object->getOffsetX());
@@ -83,10 +86,10 @@ class GroupTest extends TestCase
         $this->assertEquals(10, $object->getOffsetX());
     }
 
-    public function testOffsetY()
+    public function testOffsetY(): void
     {
         $object = new Group();
-        $line1  = new Line(10, 20, 30, 50);
+        $line1 = new Line(10, 20, 30, 50);
         $object->addShape($line1);
 
         $this->assertEquals(20, $object->getOffsetY());
@@ -95,7 +98,7 @@ class GroupTest extends TestCase
         $this->assertEquals(20, $object->getOffsetY());
     }
 
-    public function testExtentsAndOffsetsForOneShape()
+    public function testExtentsAndOffsetsForOneShape(): void
     {
         // We record initial values here because
         // PhpOffice\PhpPresentation\Shape\Line subtracts the offsets
@@ -108,7 +111,7 @@ class GroupTest extends TestCase
         $extentY = $endY - $offsetY;
 
         $object = new Group();
-        $line1  = new Line($offsetX, $offsetY, $endX, $endY);
+        $line1 = new Line($offsetX, $offsetY, $endX, $endY);
         $object->addShape($line1);
 
         $this->assertEquals($offsetX, $object->getOffsetX());
@@ -117,7 +120,7 @@ class GroupTest extends TestCase
         $this->assertEquals($extentY, $object->getExtentY());
     }
 
-    public function testExtentsAndOffsetsForTwoShapes()
+    public function testExtentsAndOffsetsForTwoShapes(): void
     {
         // Since Groups and Slides cache offsets and extents on first
         // calculation, this test is separate from the above.
@@ -131,12 +134,12 @@ class GroupTest extends TestCase
         $extentX = ($endX - $offsetX) + $increase;
         $extentY = ($endY - $offsetY) + $increase;
 
-        $line1  = new Line($offsetX, $offsetY, $endX, $endY);
+        $line1 = new Line($offsetX, $offsetY, $endX, $endY);
         $line2 = new Line(
-            $offsetX+$increase,
-            $offsetY+$increase,
-            $endX+$increase,
-            $endY+$increase
+            $offsetX + $increase,
+            $offsetY + $increase,
+            $endX + $increase,
+            $endY + $increase
         );
 
         $object = new Group();

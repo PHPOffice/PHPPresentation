@@ -1,16 +1,35 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\ODPresentation;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
+use PhpOffice\PhpPresentation\DocumentProperties;
 
 class Meta extends AbstractDecoratorWriter
 {
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function render()
+    public function render(): ZipInterface
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -51,6 +70,38 @@ class Meta extends AbstractDecoratorWriter
         // meta:keyword
         $objWriter->writeElement('meta:keyword', $this->getPresentation()->getDocumentProperties()->getKeywords());
 
+        // meta:user-defined
+        $oDocumentProperties = $this->oPresentation->getDocumentProperties();
+        foreach ($oDocumentProperties->getCustomProperties() as $customProperty) {
+            $propertyValue = $oDocumentProperties->getCustomPropertyValue($customProperty);
+            $propertyType = $oDocumentProperties->getCustomPropertyType($customProperty);
+
+            $objWriter->startElement('meta:user-defined');
+            $objWriter->writeAttribute('meta:name', $customProperty);
+            switch ($propertyType) {
+                case DocumentProperties::PROPERTY_TYPE_INTEGER:
+                case DocumentProperties::PROPERTY_TYPE_FLOAT:
+                    $objWriter->writeAttribute('meta:value-type', 'float');
+                    $objWriter->writeRaw((string) $propertyValue);
+                    break;
+                case DocumentProperties::PROPERTY_TYPE_BOOLEAN:
+                    $objWriter->writeAttribute('meta:value-type', 'boolean');
+                    $objWriter->writeRaw($propertyValue ? 'true' : 'false');
+                    break;
+                case DocumentProperties::PROPERTY_TYPE_DATE:
+                    $objWriter->writeAttribute('meta:value-type', 'date');
+                    $objWriter->writeRaw(date(DATE_W3C, (int) $propertyValue));
+                    break;
+                case DocumentProperties::PROPERTY_TYPE_STRING:
+                case DocumentProperties::PROPERTY_TYPE_UNKNOWN:
+                default:
+                    $objWriter->writeAttribute('meta:value-type', 'string');
+                    $objWriter->writeRaw((string) $propertyValue);
+                    break;
+            }
+            $objWriter->endElement();
+        }
+
         // @todo : Where these properties are written ?
         // $this->getPresentation()->getDocumentProperties()->getCategory()
         // $this->getPresentation()->getDocumentProperties()->getCompany()
@@ -58,8 +109,9 @@ class Meta extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         $objWriter->endElement();
-        
+
         $this->getZip()->addFromString('meta.xml', $objWriter->getData());
+
         return $this->getZip();
     }
 }

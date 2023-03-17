@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests;
 
@@ -23,13 +26,13 @@ use PhpOffice\PhpPresentation\Slide\Note;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class NoteTest extends TestCase
 {
-    public function testParent()
+    public function testParent(): void
     {
         $object = new Note();
         $this->assertNull($object->getParent());
@@ -40,7 +43,7 @@ class NoteTest extends TestCase
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getParent());
     }
 
-    public function testExtent()
+    public function testExtent(): void
     {
         $object = new Note();
         $this->assertNotNull($object->getExtentX());
@@ -49,13 +52,13 @@ class NoteTest extends TestCase
         $this->assertNotNull($object->getExtentY());
     }
 
-    public function testHashCode()
+    public function testHashCode(): void
     {
         $object = new Note();
-        $this->assertInternalType('string', $object->getHashCode());
+        $this->assertIsString($object->getHashCode());
     }
 
-    public function testOffset()
+    public function testOffset(): void
     {
         $object = new Note();
         $this->assertNotNull($object->getOffsetX());
@@ -64,7 +67,7 @@ class NoteTest extends TestCase
         $this->assertNotNull($object->getOffsetY());
     }
 
-    public function testShape()
+    public function testShape(): void
     {
         $object = new Note();
         $this->assertEquals(0, $object->getShapeCollection()->count());
@@ -77,9 +80,9 @@ class NoteTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Note();
         $value = mt_rand(1, 100);

@@ -10,10 +10,13 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
- * @link        https://github.com/PHPOffice/PHPPresentation
  */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
@@ -22,16 +25,16 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Test class for PhpPresentation
+ * Test class for PhpPresentation.
  *
- * @coversDefaultClass PhpOffice\PhpPresentation\PhpPresentation
+ * @coversDefaultClass \PhpOffice\PhpPresentation\PhpPresentation
  */
 class BorderTest extends TestCase
 {
     /**
-     * Test create new instance
+     * Test create new instance.
      */
-    public function testConstruct()
+    public function testConstruct(): void
     {
         $object = new Border();
         $this->assertEquals(1, $object->getLineWidth());
@@ -42,9 +45,9 @@ class BorderTest extends TestCase
     }
 
     /**
-     * Test get/set color
+     * Test get/set color.
      */
-    public function testSetGetColor()
+    public function testSetGetColor(): void
     {
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setColor());
@@ -55,9 +58,9 @@ class BorderTest extends TestCase
     }
 
     /**
-     * Test get/set dash style
+     * Test get/set dash style.
      */
-    public function testSetGetDashStyle()
+    public function testSetGetDashStyle(): void
     {
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setDashStyle());
@@ -69,9 +72,9 @@ class BorderTest extends TestCase
     }
 
     /**
-     * Test get/set hash index
+     * Test get/set hash index.
      */
-    public function testSetGetHashIndex()
+    public function testSetGetHashIndex(): void
     {
         $object = new Border();
         $value = mt_rand(1, 100);
@@ -80,9 +83,9 @@ class BorderTest extends TestCase
     }
 
     /**
-     * Test get/set line style
+     * Test get/set line style.
      */
-    public function testSetGetLineStyle()
+    public function testSetGetLineStyle(): void
     {
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineStyle());
@@ -94,9 +97,9 @@ class BorderTest extends TestCase
     }
 
     /**
-     * Test get/set line width
+     * Test get/set line width.
      */
-    public function testSetGetLineWidth()
+    public function testSetGetLineWidth(): void
     {
         $object = new Border();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->setLineWidth());

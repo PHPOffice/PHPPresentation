@@ -10,72 +10,72 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Slide;
 
-use PhpOffice\PhpPresentation\Slide;
-use PhpOffice\PhpPresentation\Shape\RichText;
-
 /**
- * Transition class
+ * Transition class.
  */
 class Transition
 {
-    const SPEED_FAST = 'fast';
-    const SPEED_MEDIUM = 'med';
-    const SPEED_SLOW = 'slow';
+    public const SPEED_FAST = 'fast';
+    public const SPEED_MEDIUM = 'med';
+    public const SPEED_SLOW = 'slow';
 
-    const TRANSITION_BLINDS_HORIZONTAL = 'blinds_horz';
-    const TRANSITION_BLINDS_VERTICAL = 'blinds_vert';
-    const TRANSITION_CHECKER_HORIZONTAL = 'checker_horz';
-    const TRANSITION_CHECKER_VERTICAL = 'checker_vert';
-    const TRANSITION_CIRCLE = 'circle';
-    const TRANSITION_COMB_HORIZONTAL = 'comb_horz';
-    const TRANSITION_COMB_VERTICAL = 'comb_vert';
-    const TRANSITION_COVER_DOWN = 'cover_d';
-    const TRANSITION_COVER_LEFT = 'cover_l';
-    const TRANSITION_COVER_LEFT_DOWN = 'cover_ld';
-    const TRANSITION_COVER_LEFT_UP = 'cover_lu';
-    const TRANSITION_COVER_RIGHT = 'cover_r';
-    const TRANSITION_COVER_RIGHT_DOWN = 'cover_rd';
-    const TRANSITION_COVER_RIGHT_UP = 'cover_ru';
-    const TRANSITION_COVER_UP = 'cover_u';
-    const TRANSITION_CUT = 'cut';
-    const TRANSITION_DIAMOND = 'diamond';
-    const TRANSITION_DISSOLVE = 'dissolve';
-    const TRANSITION_FADE = 'fade';
-    const TRANSITION_NEWSFLASH = 'newsflash';
-    const TRANSITION_PLUS = 'plus';
-    const TRANSITION_PULL_DOWN = 'pull_d';
-    const TRANSITION_PULL_LEFT = 'pull_l';
-    const TRANSITION_PULL_RIGHT = 'pull_r';
-    const TRANSITION_PULL_UP = 'pull_u';
-    const TRANSITION_PUSH_DOWN = 'push_d';
-    const TRANSITION_PUSH_LEFT = 'push_l';
-    const TRANSITION_PUSH_RIGHT = 'push_r';
-    const TRANSITION_PUSH_UP = 'push_u';
-    const TRANSITION_RANDOM = 'random';
-    const TRANSITION_RANDOMBAR_HORIZONTAL = 'randomBar_horz';
-    const TRANSITION_RANDOMBAR_VERTICAL = 'randomBar_vert';
-    const TRANSITION_SPLIT_IN_HORIZONTAL = 'split_in_horz';
-    const TRANSITION_SPLIT_OUT_HORIZONTAL = 'split_out_horz';
-    const TRANSITION_SPLIT_IN_VERTICAL = 'split_in_vert';
-    const TRANSITION_SPLIT_OUT_VERTICAL = 'split_out_vert';
-    const TRANSITION_STRIPS_LEFT_DOWN = 'strips_ld';
-    const TRANSITION_STRIPS_LEFT_UP = 'strips_lu';
-    const TRANSITION_STRIPS_RIGHT_DOWN = 'strips_rd';
-    const TRANSITION_STRIPS_RIGHT_UP = 'strips_ru';
-    const TRANSITION_WEDGE = 'wedge';
-    const TRANSITION_WIPE_DOWN = 'wipe_d';
-    const TRANSITION_WIPE_LEFT = 'wipe_l';
-    const TRANSITION_WIPE_RIGHT = 'wipe_r';
-    const TRANSITION_WIPE_UP = 'wipe_u';
-    const TRANSITION_ZOOM_IN = 'zoom_in';
-    const TRANSITION_ZOOM_OUT = 'zoom_out';
+    public const TRANSITION_BLINDS_HORIZONTAL = 'blinds_horz';
+    public const TRANSITION_BLINDS_VERTICAL = 'blinds_vert';
+    public const TRANSITION_CHECKER_HORIZONTAL = 'checker_horz';
+    public const TRANSITION_CHECKER_VERTICAL = 'checker_vert';
+    public const TRANSITION_CIRCLE = 'circle';
+    public const TRANSITION_COMB_HORIZONTAL = 'comb_horz';
+    public const TRANSITION_COMB_VERTICAL = 'comb_vert';
+    public const TRANSITION_COVER_DOWN = 'cover_d';
+    public const TRANSITION_COVER_LEFT = 'cover_l';
+    public const TRANSITION_COVER_LEFT_DOWN = 'cover_ld';
+    public const TRANSITION_COVER_LEFT_UP = 'cover_lu';
+    public const TRANSITION_COVER_RIGHT = 'cover_r';
+    public const TRANSITION_COVER_RIGHT_DOWN = 'cover_rd';
+    public const TRANSITION_COVER_RIGHT_UP = 'cover_ru';
+    public const TRANSITION_COVER_UP = 'cover_u';
+    public const TRANSITION_CUT = 'cut';
+    public const TRANSITION_DIAMOND = 'diamond';
+    public const TRANSITION_DISSOLVE = 'dissolve';
+    public const TRANSITION_FADE = 'fade';
+    public const TRANSITION_NEWSFLASH = 'newsflash';
+    public const TRANSITION_PLUS = 'plus';
+    public const TRANSITION_PULL_DOWN = 'pull_d';
+    public const TRANSITION_PULL_LEFT = 'pull_l';
+    public const TRANSITION_PULL_RIGHT = 'pull_r';
+    public const TRANSITION_PULL_UP = 'pull_u';
+    public const TRANSITION_PUSH_DOWN = 'push_d';
+    public const TRANSITION_PUSH_LEFT = 'push_l';
+    public const TRANSITION_PUSH_RIGHT = 'push_r';
+    public const TRANSITION_PUSH_UP = 'push_u';
+    public const TRANSITION_RANDOM = 'random';
+    public const TRANSITION_RANDOMBAR_HORIZONTAL = 'randomBar_horz';
+    public const TRANSITION_RANDOMBAR_VERTICAL = 'randomBar_vert';
+    public const TRANSITION_SPLIT_IN_HORIZONTAL = 'split_in_horz';
+    public const TRANSITION_SPLIT_OUT_HORIZONTAL = 'split_out_horz';
+    public const TRANSITION_SPLIT_IN_VERTICAL = 'split_in_vert';
+    public const TRANSITION_SPLIT_OUT_VERTICAL = 'split_out_vert';
+    public const TRANSITION_STRIPS_LEFT_DOWN = 'strips_ld';
+    public const TRANSITION_STRIPS_LEFT_UP = 'strips_lu';
+    public const TRANSITION_STRIPS_RIGHT_DOWN = 'strips_rd';
+    public const TRANSITION_STRIPS_RIGHT_UP = 'strips_ru';
+    public const TRANSITION_WEDGE = 'wedge';
+    public const TRANSITION_WIPE_DOWN = 'wipe_d';
+    public const TRANSITION_WIPE_LEFT = 'wipe_l';
+    public const TRANSITION_WIPE_RIGHT = 'wipe_r';
+    public const TRANSITION_WIPE_UP = 'wipe_u';
+    public const TRANSITION_ZOOM_IN = 'zoom_in';
+    public const TRANSITION_ZOOM_OUT = 'zoom_out';
 
     /**
      * @var bool
@@ -86,25 +86,21 @@ class Transition
      */
     protected $hasTimeTrigger = false;
     /**
-     * @var int
+     * @var int|null
      */
     protected $advanceTimeTrigger = null;
     /**
-     * @var null|self::SPEED_SLOW|self::SPEED_MEDIUM|self::SPEED_FAST
+     * @var string|null
      */
     protected $speed = null;
     /**
-     * @var null|self::TRANSITION_*
+     * @var string|null
      */
     protected $transitionType = null;
-    /**
-     * @var array
-     */
-    protected $transitionOptions = array();
 
-    public function setSpeed($speed = self::SPEED_MEDIUM)
+    public function setSpeed(?string $speed = self::SPEED_MEDIUM): self
     {
-        if (in_array($speed, array(self::SPEED_FAST, self::SPEED_MEDIUM, self::SPEED_SLOW))) {
+        if (in_array($speed, [self::SPEED_FAST, self::SPEED_MEDIUM, self::SPEED_SLOW])) {
             $this->speed = $speed;
         } else {
             $this->speed = null;
@@ -113,53 +109,49 @@ class Transition
         return $this;
     }
 
-    public function getSpeed()
+    public function getSpeed(): ?string
     {
         return $this->speed;
     }
 
-    public function setManualTrigger($value = false)
+    public function setManualTrigger(bool $value = false): self
     {
-        if (is_bool($value)) {
-            $this->hasManualTrigger = $value;
-        }
+        $this->hasManualTrigger = $value;
+
         return $this;
     }
 
-    public function hasManualTrigger()
+    public function hasManualTrigger(): bool
     {
         return $this->hasManualTrigger;
     }
 
-    public function setTimeTrigger($value = false, $advanceTime = 1000)
+    public function setTimeTrigger(bool $value = false, int $advanceTime = 1000): self
     {
-        if (is_bool($value)) {
-            $this->hasTimeTrigger = $value;
-        }
-        $this->advanceTimeTrigger = null;
-        if ($this->hasTimeTrigger === true) {
-            $this->advanceTimeTrigger = (int) $advanceTime;
-        }
+        $this->hasTimeTrigger = $value;
+        $this->advanceTimeTrigger = true === $value ? $advanceTime : null;
+
         return $this;
     }
 
-    public function hasTimeTrigger()
+    public function hasTimeTrigger(): bool
     {
         return $this->hasTimeTrigger;
     }
 
-    public function getAdvanceTimeTrigger()
+    public function getAdvanceTimeTrigger(): ?int
     {
         return $this->advanceTimeTrigger;
     }
 
-    public function setTransitionType($type = null)
+    public function setTransitionType(string $type = null): self
     {
         $this->transitionType = $type;
+
         return $this;
     }
 
-    public function getTransitionType()
+    public function getTransitionType(): ?string
     {
         return $this->transitionType;
     }

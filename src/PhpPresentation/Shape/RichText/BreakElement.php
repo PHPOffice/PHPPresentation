@@ -10,27 +10,32 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation\Shape\RichText;
 
+use PhpOffice\PhpPresentation\Style\Font;
+
 /**
- * Rich text break
+ * Rich text break.
  */
 class BreakElement implements TextElementInterface
 {
     /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Break instance
+     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Break instance.
      */
     public function __construct()
     {
     }
 
     /**
-     * Get text
+     * Get text.
      *
      * @return string Text
      */
@@ -40,53 +45,47 @@ class BreakElement implements TextElementInterface
     }
 
     /**
-     * Set text
+     * Set text.
      *
-     * @param                                            $pText string   Text
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @param string $pText Text value
      */
-    public function setText($pText = '')
+    public function setText($pText = ''): self
     {
         return $this;
     }
 
     /**
-     * Get font
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Font
+     * Get font.
      */
-    public function getFont()
+    public function getFont(): ?Font
     {
         return null;
     }
 
     /**
-     * Set language
+     * Set language.
      *
-     * @param $lang
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @param string $lang
      */
-    public function setLanguage($lang)
+    public function setLanguage($lang): self
     {
         return $this;
     }
 
     /**
-     * Get language
-     *
-     * @return string Language
+     * Get language.
      */
-    public function getLanguage()
+    public function getLanguage(): ?string
     {
         return null;
     }
 
     /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */
-    public function getHashCode()
+    public function getHashCode(): string
     {
         return md5(__CLASS__);
     }

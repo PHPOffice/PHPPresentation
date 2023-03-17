@@ -10,60 +10,61 @@
  * file that was distributed with this source code. For the full list of
  * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
  *
- * @link        https://github.com/PHPOffice/PHPPresentation
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
  * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
+declare(strict_types=1);
+
 namespace PhpOffice\PhpPresentation;
 
+use PhpOffice\PhpPresentation\Exception\InvalidClassException;
+use PhpOffice\PhpPresentation\Exception\InvalidFileFormatException;
+use PhpOffice\PhpPresentation\Reader\ReaderInterface;
+use PhpOffice\PhpPresentation\Writer\WriterInterface;
+use ReflectionClass;
+
 /**
- * IOFactory
+ * IOFactory.
  */
 class IOFactory
 {
     /**
-     * Autoresolve classes
+     * Autoresolve classes.
      *
-     * @var array
+     * @var array<int, string>
      */
-    private static $autoResolveClasses = array('Serialized', 'ODPresentation', 'PowerPoint97', 'PowerPoint2007');
+    private static $autoResolveClasses = ['Serialized', 'ODPresentation', 'PowerPoint97', 'PowerPoint2007'];
 
     /**
-     * Create writer
+     * Create writer.
      *
      * @param PhpPresentation $phpPresentation
      * @param string $name
-     * @return \PhpOffice\PhpPresentation\Writer\WriterInterface
-     * @throws \Exception
      */
-    public static function createWriter(PhpPresentation $phpPresentation, $name = 'PowerPoint2007')
+    public static function createWriter(PhpPresentation $phpPresentation, string $name = 'PowerPoint2007'): WriterInterface
     {
-        $class = 'PhpOffice\\PhpPresentation\\Writer\\' . $name;
-        return self::loadClass($class, $name, 'writer', $phpPresentation);
+        return self::loadClass('PhpOffice\\PhpPresentation\\Writer\\' . $name, 'Writer', $phpPresentation);
     }
 
     /**
-     * Create reader
+     * Create reader.
      *
-     * @param  string $name
-     * @return \PhpOffice\PhpPresentation\Reader\ReaderInterface
-     * @throws \Exception
+     * @param string $name
      */
-    public static function createReader($name = '')
+    public static function createReader(string $name): ReaderInterface
     {
-        $class = 'PhpOffice\\PhpPresentation\\Reader\\' . $name;
-        return self::loadClass($class, $name, 'reader');
+        return self::loadClass('PhpOffice\\PhpPresentation\\Reader\\' . $name, 'Reader');
     }
 
     /**
-     * Loads PhpPresentation from file using automatic \PhpOffice\PhpPresentation\Reader\ReaderInterface resolution
+     * Loads PhpPresentation from file using automatic ReaderInterface resolution.
      *
-     * @param  string        $pFilename
-     * @return PhpPresentation
-     * @throws \Exception
+     * @throws InvalidFileFormatException
      */
-    public static function load($pFilename)
+    public static function load(string $pFilename): PhpPresentation
     {
         // Try loading using self::$autoResolveClasses
         foreach (self::$autoResolveClasses as $autoResolveClass) {
@@ -73,42 +74,45 @@ class IOFactory
             }
         }
 
-        throw new \Exception("Could not automatically determine \PhpOffice\PhpPresentation\Reader\ReaderInterface for file.");
+        throw new InvalidFileFormatException(
+            $pFilename,
+            IOFactory::class,
+            'Could not automatically determine the good ' . ReaderInterface::class
+        );
     }
 
     /**
      * Load class
      *
      * @param string $class
-     * @param string $name
      * @param string $type
-     * @param \PhpOffice\PhpPresentation\PhpPresentation $phpPresentation
-     * @return mixed
-     * @throws \ReflectionException
+     * @param PhpPresentation|null $phpPresentation
+     *
+     * @return object
+     *
+     * @throws InvalidClassException
      */
-    private static function loadClass($class, $name, $type, PhpPresentation $phpPresentation = null)
+    private static function loadClass(string $class, string $type, PhpPresentation $phpPresentation = null)
     {
-        if (class_exists($class) && self::isConcreteClass($class)) {
-            if (is_null($phpPresentation)) {
-                return new $class();
-            } else {
-                return new $class($phpPresentation);
-            }
-        } else {
-            throw new \Exception('"'.$name.'" is not a valid '.$type.'.');
+        if (!class_exists($class)) {
+            throw new InvalidClassException($class, $type . ': The class doesn\'t exist');
         }
+        if (!self::isConcreteClass($class)) {
+            throw new InvalidClassException($class, $type . ': The class is an abstract class or an interface');
+        }
+        if (is_null($phpPresentation)) {
+            return new $class();
+        }
+
+        return new $class($phpPresentation);
     }
 
     /**
      * Is it a concrete class?
-     *
-     * @param string $class
-     * @return bool
-     * @throws \ReflectionException
      */
-    private static function isConcreteClass($class)
+    private static function isConcreteClass(string $class): bool
     {
-        $reflection = new \ReflectionClass($class);
+        $reflection = new ReflectionClass($class);
 
         return !$reflection->isAbstract() && !$reflection->isInterface();
     }

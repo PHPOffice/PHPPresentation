@@ -1,17 +1,35 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer\PowerPoint2007;
 
+use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\Common\XMLWriter;
 use PhpOffice\PhpPresentation\DocumentLayout;
 
 class PptPresentation extends AbstractDecoratorWriter
 {
     /**
-     * @return \PhpOffice\Common\Adapter\Zip\ZipInterface
-     * @throws \Exception
+     * @return ZipInterface
      */
-    public function render()
+    public function render(): ZipInterface
     {
         // Create XML writer
         $objWriter = new XMLWriter(XMLWriter::STORAGE_MEMORY);
@@ -29,11 +47,11 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->startElement('p:sldMasterIdLst');
 
         // Add slide masters
-        $relationId    = 1;
+        $relationId = 1;
         $slideMasterId = 2147483648;
 
         $countMasterSlides = count($this->oPresentation->getAllMasterSlides());
-        for ($inc = 1; $inc <= $countMasterSlides; $inc++) {
+        for ($inc = 1; $inc <= $countMasterSlides; ++$inc) {
             // p:sldMasterId
             $objWriter->startElement('p:sldMasterId');
             $objWriter->writeAttribute('id', $slideMasterId);
@@ -46,7 +64,7 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->endElement();
 
         // theme
-        $relationId++;
+        ++$relationId;
 
         // p:sldIdLst
         $objWriter->startElement('p:sldIdLst');
@@ -65,7 +83,7 @@ class PptPresentation extends AbstractDecoratorWriter
         $objWriter->startElement('p:sldSz');
         $objWriter->writeAttribute('cx', $this->oPresentation->getLayout()->getCX());
         $objWriter->writeAttribute('cy', $this->oPresentation->getLayout()->getCY());
-        if ($this->oPresentation->getLayout()->getDocumentLayout() != DocumentLayout::LAYOUT_CUSTOM) {
+        if (DocumentLayout::LAYOUT_CUSTOM != $this->oPresentation->getLayout()->getDocumentLayout()) {
             $objWriter->writeAttribute('type', $this->oPresentation->getLayout()->getDocumentLayout());
         }
         $objWriter->endElement();

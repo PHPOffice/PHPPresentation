@@ -1,51 +1,69 @@
 <?php
+/**
+ * This file is part of PHPPresentation - A pure PHP library for reading and writing
+ * presentations documents.
+ *
+ * PHPPresentation is free software distributed under the terms of the GNU Lesser
+ * General Public License version 3 as published by the Free Software Foundation.
+ *
+ * For the full copyright and license information, please read the LICENSE
+ * file that was distributed with this source code. For the full list of
+ * contributors, visit https://github.com/PHPOffice/PHPPresentation/contributors.
+ *
+ * @see        https://github.com/PHPOffice/PHPPresentation
+ *
+ * @copyright   2009-2015 PHPPresentation contributors
+ * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
+ */
+
+declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Drawing;
 
 class Gd extends AbstractDrawingAdapter
 {
     /* Rendering functions */
-    const RENDERING_DEFAULT = 'imagepng';
-    const RENDERING_PNG = 'imagepng';
-    const RENDERING_GIF = 'imagegif';
-    const RENDERING_JPEG = 'imagejpeg';
+    public const RENDERING_DEFAULT = 'imagepng';
+    public const RENDERING_PNG = 'imagepng';
+    public const RENDERING_GIF = 'imagegif';
+    public const RENDERING_JPEG = 'imagejpeg';
 
     /* MIME types */
-    const MIMETYPE_DEFAULT = 'image/png';
-    const MIMETYPE_PNG = 'image/png';
-    const MIMETYPE_GIF = 'image/gif';
-    const MIMETYPE_JPEG = 'image/jpeg';
+    public const MIMETYPE_DEFAULT = 'image/png';
+    public const MIMETYPE_PNG = 'image/png';
+    public const MIMETYPE_GIF = 'image/gif';
+    public const MIMETYPE_JPEG = 'image/jpeg';
 
     /**
-     * Image resource
+     * Image resource.
      *
      * @var resource
      */
     protected $imageResource;
 
     /**
-     * Rendering function
+     * Rendering function.
      *
      * @var string
      */
     protected $renderingFunction = self::RENDERING_DEFAULT;
 
     /**
-     * Mime type
+     * Mime type.
      *
      * @var string
      */
     protected $mimeType = self::MIMETYPE_DEFAULT;
 
     /**
-     * Unique name
+     * Unique name.
      *
      * @var string
      */
     protected $uniqueName;
 
     /**
-     * Gd constructor
+     * Gd constructor.
      */
     public function __construct()
     {
@@ -54,7 +72,7 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Get image resource
+     * Get image resource.
      *
      * @return resource
      */
@@ -64,9 +82,10 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Set image resource
+     * Set image resource.
      *
-     * @param $value resource
+     * @param resource $value
+     *
      * @return $this
      */
     public function setImageResource($value = null)
@@ -75,7 +94,7 @@ class Gd extends AbstractDrawingAdapter
 
         if (!is_null($this->imageResource)) {
             // Get width/height
-            $this->width  = imagesx($this->imageResource);
+            $this->width = imagesx($this->imageResource);
             $this->height = imagesy($this->imageResource);
         }
 
@@ -83,7 +102,7 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Get rendering function
+     * Get rendering function.
      *
      * @return string
      */
@@ -93,71 +112,86 @@ class Gd extends AbstractDrawingAdapter
     }
 
     /**
-     * Set rendering function
+     * Set rendering function.
      *
-     * @param  string                            $value
+     * @param string $value
+     *
      * @return $this
      */
     public function setRenderingFunction($value = self::RENDERING_DEFAULT)
     {
         $this->renderingFunction = $value;
+
         return $this;
     }
 
     /**
-     * Get mime type
-     *
-     * @return string
+     * Get mime type.
      */
-    public function getMimeType()
+    public function getMimeType(): string
     {
         return $this->mimeType;
     }
 
     /**
-     * Set mime type
+     * Set mime type.
      *
-     * @param  string $value
+     * @param string $value
+     *
      * @return $this
      */
     public function setMimeType($value = self::MIMETYPE_DEFAULT)
     {
         $this->mimeType = $value;
+
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getContents()
+    public function getContents(): string
     {
         ob_start();
-        if ($this->getMimeType() === self::MIMETYPE_DEFAULT) {
+        if (self::MIMETYPE_DEFAULT === $this->getMimeType()) {
             imagealphablending($this->getImageResource(), false);
             imagesavealpha($this->getImageResource(), true);
         }
         call_user_func($this->getRenderingFunction(), $this->getImageResource());
         $imageContents = ob_get_contents();
         ob_end_clean();
+
         return $imageContents;
     }
 
-    /**
-     * @return string
-     */
-    public function getExtension()
+    public function getExtension(): string
     {
         $extension = strtolower($this->getMimeType());
         $extension = explode('/', $extension);
         $extension = $extension[1];
+
         return $extension;
     }
 
-    /**
-     * @return string
-     */
-    public function getIndexedFilename()
+    public function getIndexedFilename(): string
     {
         return $this->uniqueName . $this->getImageIndex() . '.' . $this->getExtension();
+    }
+
+    /**
+     * @var string
+     */
+    protected $path;
+
+    /**
+     * Get Path.
+     */
+    public function getPath(): string
+    {
+        return $this->path;
+    }
+
+    public function setPath(string $path): self
+    {
+        $this->path = $path;
+
+        return $this;
     }
 }
