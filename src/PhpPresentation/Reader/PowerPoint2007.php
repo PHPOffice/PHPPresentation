@@ -885,7 +885,7 @@ class PowerPoint2007 implements ReaderInterface
 
     protected function loadShapeRichText(XMLReader $document, DOMElement $node, AbstractSlide $oSlide): void
     {
-        if (!$document->elementExists('p:txBody/a:p/a:r', $node)) {
+        if (!$document->elementExists('p:txBody/a:p/a:r', $node) || !$oSlide instanceof AbstractSlide) {
             return;
         }
         // Core
