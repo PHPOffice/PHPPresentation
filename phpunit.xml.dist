@@ -6,7 +6,8 @@
          convertNoticesToExceptions="false"
          convertWarningsToExceptions="false"
          processIsolation="false"
-         stopOnFailure="false">
+         stopOnFailure="false"
+         failOnWarning="false">
     <testsuites>
         <testsuite name="PHPPresentation Test Suite, Edited for Ethisphere">
             <directory>./tests/PhpPresentation</directory>
