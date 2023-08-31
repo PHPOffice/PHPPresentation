@@ -50,7 +50,7 @@ class Series implements ComparableInterface
      *
      * @var string
      */
-    protected $DlblNumFormat = '';
+    protected $dlblNumFormat = '';
 
     /**
      * @var string|null
@@ -184,7 +184,7 @@ class Series implements ComparableInterface
      */
     public function getDlblNumFormat(): string
     {
-        return $this->DlblNumFormat;
+        return $this->dlblNumFormat;
     }
 
     /**
@@ -192,7 +192,7 @@ class Series implements ComparableInterface
      */
     public function hasDlblNumFormat(): bool
     {
-        return !empty($this->DlblNumFormat);
+        return !empty($this->dlblNumFormat);
     }
 
     /**
@@ -200,7 +200,7 @@ class Series implements ComparableInterface
      */
     public function setDlblNumFormat(string $value = ''): self
     {
-        $this->DlblNumFormat = $value;
+        $this->dlblNumFormat = $value;
 
         return $this;
     }
