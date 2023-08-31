@@ -7,6 +7,7 @@ parameters:
     - tests
   excludePaths:
     - src/PhpPresentation/Writer/ODPresentation/*
+    - tests/PhpPresentation/Tests/Writer/ODPresentation/*
   reportUnmatchedIgnoredErrors: false
   ignoreErrors:
     ## Relative to Common
