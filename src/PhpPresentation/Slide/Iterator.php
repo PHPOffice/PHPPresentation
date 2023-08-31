@@ -70,6 +70,7 @@ class Iterator extends IteratorIterator
      *
      * @return \PhpOffice\PhpPresentation\Slide
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->subject->getSlide($this->position);
@@ -80,6 +81,7 @@ class Iterator extends IteratorIterator
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;

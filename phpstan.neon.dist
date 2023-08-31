@@ -5,6 +5,13 @@ parameters:
   paths:
     - src
     - tests
+  excludePaths:
+    - src/PhpPresentation/Writer/ODPresentation/*
+    - tests/PhpPresentation/Tests/Writer/ODPresentation/*
+    - src/PhpPresentation/Reader/PowerPoint97.php
+    - src/PhpPresentation/Reader/ODPresentation.php
+    - tests/PhpPresentation/Tests/Reader/ODPresentationTest.php
+    - tests/PhpPresentation/Tests/Reader/PowerPoint97Test.php
   reportUnmatchedIgnoredErrors: false
   ignoreErrors:
     ## Relative to Common

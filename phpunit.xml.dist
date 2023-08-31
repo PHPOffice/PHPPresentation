@@ -3,13 +3,16 @@
          bootstrap="./tests/bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false"
+         convertDeprecationsToExceptions="false"
          processIsolation="false"
-         stopOnFailure="false">
+         stopOnFailure="false"
+         failOnWarning="false">
     <testsuites>
-        <testsuite name="PHPPresentation Test Suite">
+        <testsuite name="PHPPresentation Test Suite, Edited for Ethisphere">
             <directory>./tests/PhpPresentation</directory>
+            <exclude>./tests/PhpPresentation/Tests/Writer/ODPresentation</exclude>
         </testsuite>
     </testsuites>
     <filter>

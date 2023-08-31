@@ -1616,7 +1616,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @return array<array<string>>
      */
-    public function dataProviderMarkerSymbol(): iterable
+    static public function dataProviderMarkerSymbol(): iterable
     {
         foreach (Marker::$arraySymbol as $symbol) {
             if ($symbol === Marker::SYMBOL_NONE) {

@@ -334,7 +334,7 @@ class PowerPoint2007 implements ReaderInterface
             $oElement = $xmlReader->getElement($pathZoom);
             if ($oElement instanceof DOMElement) {
                 if ($oElement->hasAttribute('d') && $oElement->hasAttribute('n')) {
-                    $this->oPhpPresentation->getPresentationProperties()->setZoom($oElement->getAttribute('n') / $oElement->getAttribute('d'));
+                    $this->oPhpPresentation->getPresentationProperties()->setZoom(intval($oElement->getAttribute('n')) / intval($oElement->getAttribute('d')));
                 }
             }
         }
@@ -557,7 +557,7 @@ class PowerPoint2007 implements ReaderInterface
                     $oElementLvlDefRPR = $xmlReader->getElement('a:defRPr', $oElementLvl);
                     if ($oElementLvlDefRPR instanceof DOMElement) {
                         if ($oElementLvlDefRPR->hasAttribute('sz')) {
-                            $oRTParagraph->getFont()->setSize((int) ($oElementLvlDefRPR->getAttribute('sz') / 100));
+                            $oRTParagraph->getFont()->setSize(intval($oElementLvlDefRPR->getAttribute('sz')) / 100);
                         }
                         if ($oElementLvlDefRPR->hasAttribute('b') && 1 == $oElementLvlDefRPR->getAttribute('b')) {
                             $oRTParagraph->getFont()->setBold(true);
@@ -1115,20 +1115,20 @@ class PowerPoint2007 implements ReaderInterface
             $oElementLineSpacingPoints = $document->getElement('a:lnSpc/a:spcPts', $oSubElement);
             if ($oElementLineSpacingPoints instanceof DOMElement) {
                 $oParagraph->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_POINT);
-                $oParagraph->setLineSpacing($oElementLineSpacingPoints->getAttribute('val') / 100);
+                $oParagraph->setLineSpacing(intval($oElementLineSpacingPoints->getAttribute('val')) / 100);
             }
             $oElementLineSpacingPercent = $document->getElement('a:lnSpc/a:spcPct', $oSubElement);
             if ($oElementLineSpacingPercent instanceof DOMElement) {
                 $oParagraph->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_PERCENT);
-                $oParagraph->setLineSpacing($oElementLineSpacingPercent->getAttribute('val') / 1000);
+                $oParagraph->setLineSpacing(intval($oElementLineSpacingPercent->getAttribute('val')) / 1000);
             }
             $oElementSpacingBefore = $document->getElement('a:spcBef/a:spcPts', $oSubElement);
             if ($oElementSpacingBefore instanceof DOMElement) {
-                $oParagraph->setSpacingBefore($oElementSpacingBefore->getAttribute('val') / 100);
+                $oParagraph->setSpacingBefore(intval($oElementSpacingBefore->getAttribute('val')) / 100);
             }
             $oElementSpacingAfter = $document->getElement('a:spcAft/a:spcPts', $oSubElement);
             if ($oElementSpacingAfter instanceof DOMElement) {
-                $oParagraph->setSpacingAfter($oElementSpacingAfter->getAttribute('val') / 100);
+                $oParagraph->setSpacingAfter(intval($oElementSpacingAfter->getAttribute('val'))/ 100);
             }
 
             $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
@@ -1194,7 +1194,7 @@ class PowerPoint2007 implements ReaderInterface
                         $oText->getFont()->setStrikethrough('noStrike' == $oElementrPr->getAttribute('strike') ? false : true);
                     }
                     if ($oElementrPr->hasAttribute('sz')) {
-                        $oText->getFont()->setSize((int) ($oElementrPr->getAttribute('sz') / 100));
+                        $oText->getFont()->setSize(intval($oElementrPr->getAttribute('sz')) / 100);
                     }
                     if ($oElementrPr->hasAttribute('u')) {
                         $oText->getFont()->setUnderline($oElementrPr->getAttribute('u'));
@@ -1264,7 +1264,7 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadStyleBorder(XMLReader $xmlReader, DOMElement $oElement, Border $oBorder): void
     {
         if ($oElement->hasAttribute('w')) {
-            $oBorder->setLineWidth((int) ($oElement->getAttribute('w') / 12700));
+            $oBorder->setLineWidth(intval($oElement->getAttribute('w')) / 12700);
         }
         if ($oElement->hasAttribute('cmpd')) {
             $oBorder->setLineStyle($oElement->getAttribute('cmpd'));
@@ -1292,7 +1292,7 @@ class PowerPoint2007 implements ReaderInterface
         $oColor->setRGB($oElement->getAttribute('val'));
         $oElementAlpha = $xmlReader->getElement('a:alpha', $oElement);
         if ($oElementAlpha instanceof DOMElement && $oElementAlpha->hasAttribute('val')) {
-            $alpha = strtoupper(dechex((($oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
+            $alpha = strtoupper(dechex(((intval($oElementAlpha->getAttribute('val')) / 1000) / 100) * 255));
             $oColor->setRGB($oElement->getAttribute('val'), $alpha);
         }
 
