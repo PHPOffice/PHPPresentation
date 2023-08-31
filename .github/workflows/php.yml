@@ -45,14 +45,14 @@ jobs:
       -   name: Run phpunit
           run: ./vendor/bin/phpunit -c phpunit.xml.dist --coverage-clover build/clover.xml
 
-      -   name: Upload coverage results to Coveralls
-          if: matrix.php == '7.3'
-          env:
-            COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: |
-            wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
-            chmod +x php-coveralls.phar
-            php php-coveralls.phar --coverage_clover=build/clover.xml --json_path=build/coveralls-upload.json -vvv
+#      -   name: Upload coverage results to Coveralls
+#          if: matrix.php == '7.3'
+#          env:
+#            COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          run: |
+#            wget https://github.com/php-coveralls/php-coveralls/releases/download/v2.4.3/php-coveralls.phar
+#            chmod +x php-coveralls.phar
+#            php php-coveralls.phar --coverage_clover=build/clover.xml --json_path=build/coveralls-upload.json -vvv
 
   samples:
     name: Check samples

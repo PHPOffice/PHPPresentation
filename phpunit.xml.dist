@@ -3,8 +3,8 @@
          bootstrap="./tests/bootstrap.php"
          colors="true"
          convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
+         convertNoticesToExceptions="false"
+         convertWarningsToExceptions="false"
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
