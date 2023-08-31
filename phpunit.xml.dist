@@ -10,7 +10,7 @@
     <testsuites>
         <testsuite name="PHPPresentation Test Suite, Edited for Ethisphere">
             <directory>./tests/PhpPresentation</directory>
-            <exclude>Tests/Writer/ODPresentation</exclude>
+            <exclude>./tests/PhpPresentation/Tests/Writer/ODPresentation</exclude>
         </testsuite>
     </testsuites>
     <filter>
