@@ -5,8 +5,8 @@ parameters:
   paths:
     - src
     - tests
-    excludePaths:
-      - src/PhpPresentation/Writer/ODPresentation/*
+  excludePaths:
+    - src/PhpPresentation/Writer/ODPresentation/*
   reportUnmatchedIgnoredErrors: false
   ignoreErrors:
     ## Relative to Common
