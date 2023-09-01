@@ -37,7 +37,7 @@ class FontTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Font();
-        $this->assertEquals('Calibri', $object->getName());
+        $this->assertEquals('Lato', $object->getName());
         $this->assertEquals(10, $object->getSize());
         $this->assertFalse($object->isBold());
         $this->assertFalse($object->isItalic());
@@ -101,9 +101,9 @@ class FontTest extends TestCase
     {
         $object = new Font();
         $this->assertInstanceOf(Font::class, $object->setName());
-        $this->assertEquals('Calibri', $object->getName());
+        $this->assertEquals('Lato', $object->getName());
         $this->assertInstanceOf(Font::class, $object->setName(''));
-        $this->assertEquals('Calibri', $object->getName());
+        $this->assertEquals('Lato', $object->getName());
         $this->assertInstanceOf(Font::class, $object->setName('Arial'));
         $this->assertEquals('Arial', $object->getName());
     }

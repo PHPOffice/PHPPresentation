@@ -86,7 +86,7 @@ class ObjectsChartTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:color', '#AABBCC');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-style', 'italic');
         $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-size', '10pt');
-        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Calibri');
+        $this->assertZipXmlAttributeEquals('Object 1/content.xml', $element, 'fo:font-family', 'Lato');
 
         $element = '/office:document-content/office:automatic-styles/style:style[@style:name=\'styleAxisY\']/style:text-properties';
         $this->assertZipXmlElementExists('Object 1/content.xml', $element);

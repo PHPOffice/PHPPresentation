@@ -128,7 +128,7 @@ class Bullet implements ComparableInterface
     public function __construct()
     {
         $this->bulletType = self::TYPE_NONE;
-        $this->bulletFont = 'Calibri';
+        $this->bulletFont = 'Lato';
         $this->bulletChar = '-';
         $this->bulletColor = new Color();
         $this->bulletNumericStyle = self::NUMERIC_DEFAULT;
@@ -176,10 +176,10 @@ class Bullet implements ComparableInterface
      *
      * @return \PhpOffice\PhpPresentation\Style\Bullet
      */
-    public function setBulletFont($pValue = 'Calibri')
+    public function setBulletFont($pValue = 'Lato')
     {
         if ('' == $pValue) {
-            $pValue = 'Calibri';
+            $pValue = 'Lato';
         }
         $this->bulletFont = $pValue;
 

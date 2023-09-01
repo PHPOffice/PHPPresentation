@@ -38,7 +38,7 @@ class TitleTest extends TestCase
 
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
-        $this->assertEquals('Calibri', $object->getFont()->getName());
+        $this->assertEquals('Lato', $object->getFont()->getName());
         $this->assertEquals(18, $object->getFont()->getSize());
     }
 

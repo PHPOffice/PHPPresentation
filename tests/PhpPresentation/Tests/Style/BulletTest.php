@@ -38,7 +38,7 @@ class BulletTest extends TestCase
     {
         $object = new Bullet();
         $this->assertEquals(Bullet::TYPE_NONE, $object->getBulletType());
-        $this->assertEquals('Calibri', $object->getBulletFont());
+        $this->assertEquals('Lato', $object->getBulletFont());
         $this->assertEquals('-', $object->getBulletChar());
         $this->assertEquals(Bullet::NUMERIC_DEFAULT, $object->getBulletNumericStyle());
         $this->assertEquals(1, $object->getBulletNumericStartAt());
@@ -81,9 +81,9 @@ class BulletTest extends TestCase
     {
         $object = new Bullet();
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont());
-        $this->assertEquals('Calibri', $object->getBulletFont());
+        $this->assertEquals('Lato', $object->getBulletFont());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont(''));
-        $this->assertEquals('Calibri', $object->getBulletFont());
+        $this->assertEquals('Lato', $object->getBulletFont());
         $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Bullet', $object->setBulletFont('Arial'));
         $this->assertEquals('Arial', $object->getBulletFont());
     }

@@ -40,7 +40,7 @@ class SeriesTest extends TestCase
 
         $this->assertInstanceOf(Fill::class, $object->getFill());
         $this->assertInstanceOf(Font::class, $object->getFont());
-        $this->assertEquals('Calibri', $object->getFont()->getName());
+        $this->assertEquals('Lato', $object->getFont()->getName());
         $this->assertEquals(9, $object->getFont()->getSize());
         $this->assertEquals('Series Title', $object->getTitle());
         $this->assertIsArray($object->getValues());
