@@ -153,7 +153,7 @@ class Series implements ComparableInterface
     {
         $this->fill = new Fill();
         $this->font = new Font();
-        $this->font->setName('Calibri');
+        $this->font->setName();
         $this->font->setSize(9);
         $this->marker = new Marker();
 

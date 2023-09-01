@@ -56,7 +56,7 @@ class Font implements ComparableInterface
      *
      * @var string
      */
-    private $name = 'Calibri';
+    private $name = 'Lato';
 
     /**
      * Font Size.
@@ -157,10 +157,10 @@ class Font implements ComparableInterface
      *
      * @return self
      */
-    public function setName(string $pValue = 'Calibri'): self
+    public function setName(string $pValue = 'Lato'): self
     {
         if ('' == $pValue) {
-            $pValue = 'Calibri';
+            $pValue = 'Lato';
         }
         $this->name = $pValue;
 

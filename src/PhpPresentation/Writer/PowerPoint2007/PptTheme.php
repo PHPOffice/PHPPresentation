@@ -130,7 +130,7 @@ class PptTheme extends AbstractDecoratorWriter
 
         // a:theme/a:themeElements/a:fontScheme/a:majorFont/a:latin
         $objWriter->startElement('a:latin');
-        $objWriter->writeAttribute('typeface', 'Calibri');
+        $objWriter->writeAttribute('typeface', 'Lato');
         $objWriter->endElement();
 
         // a:theme/a:themeElements/a:fontScheme/a:majorFont/a:ea
@@ -159,7 +159,7 @@ class PptTheme extends AbstractDecoratorWriter
 
         // a:theme/a:themeElements/a:fontScheme/a:majorFont/a:latin
         $objWriter->startElement('a:latin');
-        $objWriter->writeAttribute('typeface', 'Calibri');
+        $objWriter->writeAttribute('typeface', 'Lato');
         $objWriter->endElement();
 
         // a:theme/a:themeElements/a:fontScheme/a:majorFont/a:ea

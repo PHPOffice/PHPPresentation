@@ -778,7 +778,7 @@ class PptSlidesTest extends PhpPresentationTestCase
 
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $latinElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'typeface');
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Lato');
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
         $this->assertIsSchemaECMA376Valid();
@@ -789,7 +789,7 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $eastAsianElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'typeface');
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Lato');
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
         $this->assertIsSchemaECMA376Valid();
 
@@ -800,7 +800,7 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
-        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Lato');
         $this->assertIsSchemaECMA376Valid();
     }
 

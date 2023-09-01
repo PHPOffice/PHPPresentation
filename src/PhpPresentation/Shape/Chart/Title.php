@@ -99,7 +99,7 @@ class Title implements ComparableInterface
     {
         $this->alignment = new Alignment();
         $this->font = new Font();
-        $this->font->setName('Calibri');
+        $this->font->setName();
         $this->font->setSize(18);
     }
 
