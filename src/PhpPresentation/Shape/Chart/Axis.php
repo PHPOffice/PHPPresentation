@@ -42,6 +42,8 @@ class Axis implements ComparableInterface
     public const CROSSES_MIN = 'min';
     public const CROSSES_MAX = 'max';
 
+    public const DEFAULT_FORMAT_CODE = 'general';
+
     /**
      * Title.
      *
@@ -59,7 +61,7 @@ class Axis implements ComparableInterface
      *
      * @var string
      */
-    private $formatCode = '';
+    private $formatCode = self::DEFAULT_FORMAT_CODE;
 
     /**
      * Font.
