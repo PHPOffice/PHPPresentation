@@ -261,7 +261,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Width.
+     * Get Width (in pixels).
      *
      * @return int
      */
@@ -271,7 +271,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Width.
+     * Set Width (in pixels).
      *
      * @return $this
      */
@@ -283,7 +283,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Height.
+     * Get Height (in pixels).
      *
      * @return int
      */
@@ -293,7 +293,7 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Set Height.
+     * Set Height (in pixels).
      *
      * @return $this
      */
@@ -369,10 +369,8 @@ abstract class AbstractShape implements ComparableInterface
 
     /**
      * Has Hyperlink?
-     *
-     * @return bool
      */
-    public function hasHyperlink()
+    public function hasHyperlink(): bool
     {
         return null !== $this->hyperlink;
     }

@@ -35,6 +35,8 @@ Documentation.
 - Output to different file formats:
     - PowerPoint 2007 (.pptx)
     - OpenDocument Presentation (.odp)
+    - HTML (.html)
+    - PDF (.pdf)
     - Serialized Spreadsheet
 - ... and lots of other things!
 
@@ -50,15 +52,15 @@ Below are the supported features for each file formats.
 | **Document**              | Mark as final        |       |       |       | :material-check: |
 | **Document Properties**   | Standard             |       | :material-check: |       | :material-check: |
 |                           | Custom               |       | :material-check: |       | :material-check: |
-| **Slides**                |                      |       | :material-check: |       | :material-check: |
+| **Slides**                |                      | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Name                 |       | :material-check: |       |       |
 | **Element Shape**         | AutoShape            |       |       |       | :material-check: |
-|                           | Image                |       | :material-check: |       | :material-check: |
-|                           | Hyperlink            |       | :material-check: |       | :material-check: |
+|                           | Image                | :material-check: | :material-check: | :material-check: | :material-check: |
+|                           | Hyperlink            | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Line                 |       | :material-check: |       | :material-check: |
-|                           | MemoryImage          |       | :material-check: |       | :material-check: |
+|                           | MemoryImage          | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | RichText             |       | :material-check: |       | :material-check: |
-|                           | Table                |       | :material-check: |       | :material-check: |
+|                           | Table                | :material-check: | :material-check: | :material-check: | :material-check: |
 |                           | Text                 |       | :material-check: |       | :material-check: |
 | **Charts**                | Area                 |       | :material-check: |       | :material-check: |
 |                           | Bar                  |       | :material-check: |       | :material-check: |

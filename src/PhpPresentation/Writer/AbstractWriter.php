@@ -27,6 +27,7 @@ use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\Shape\Chart;
 use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 use PhpOffice\PhpPresentation\Shape\Group;
+use PhpOffice\PhpPresentation\Writer\PDF\PDFWriterInterface;
 
 abstract class AbstractWriter
 {
@@ -45,6 +46,11 @@ abstract class AbstractWriter
     protected $oPresentation;
 
     /**
+     * @var null|PDFWriterInterface
+     */
+    protected $pdfAdapter;
+
+    /**
      * @var null|ZipInterface
      */
     protected $oZipAdapter;
@@ -57,12 +63,24 @@ abstract class AbstractWriter
         return $this->oDrawingHashTable;
     }
 
+    public function getPDFAdapter(): ?PDFWriterInterface
+    {
+        return $this->pdfAdapter;
+    }
+
     /**
      * Get PhpPresentation object.
      */
     public function getPhpPresentation(): ?PhpPresentation
     {
         return $this->oPresentation;
+    }
+
+    public function setPDFAdapter(PDFWriterInterface $pdfAdapter): self
+    {
+        $this->pdfAdapter = $pdfAdapter;
+
+        return $this;
     }
 
     /**

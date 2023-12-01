@@ -1,5 +1,15 @@
 # Writers
 
+## HTML
+The name of the writer is `HTML`.
+
+``` php
+<?php
+
+$writer = IOFactory::createWriter($oPhpPresentation, 'HTML');
+$writer->save(__DIR__ . '/sample.html');
+```
+
 ## ODPresentation
 The name of the writer is `ODPresentation`.
 
@@ -8,6 +18,19 @@ The name of the writer is `ODPresentation`.
 
 $writer = IOFactory::createWriter($oPhpPresentation, 'PowerPoint2007');
 $writer->save(__DIR__ . '/sample.pptx');
+```
+
+## PDF
+The name of the writer is `PDF`.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Writer\PDF\DomPDF;
+
+$writer = IOFactory::createWriter($oPhpPresentation, 'PDF');
+$writer->setPDFAdapter(new DomPDF());
+$writer->save(__DIR__ . '/sample.pdf');
 ```
 
 ## PowerPoint2007
