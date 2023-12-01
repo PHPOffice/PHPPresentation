@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -68,8 +67,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
 
     /**
      * Add shape to slide.
-     *
-     * @return AbstractShape
      */
     public function addShape(AbstractShape $shape): AbstractShape
     {
@@ -176,8 +173,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
 
     /**
      * Create rich text shape.
-     *
-     * @return RichText
      */
     public function createRichTextShape(): RichText
     {
@@ -194,8 +189,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * @param int $fromY Starting point y offset
      * @param int $toX Ending point x offset
      * @param int $toY Ending point y offset
-     *
-     * @return Line
      */
     public function createLineShape(int $fromX, int $fromY, int $toX, int $toY): Line
     {
@@ -207,8 +200,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
 
     /**
      * Create chart shape.
-     *
-     * @return Chart
      */
     public function createChartShape(): Chart
     {
@@ -220,8 +211,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
 
     /**
      * Create drawing shape.
-     *
-     * @return Drawing\File
      */
     public function createDrawingShape(): Drawing\File
     {
@@ -235,8 +224,6 @@ class Group extends AbstractShape implements ShapeContainerInterface
      * Create table shape.
      *
      * @param int $columns Number of columns
-     *
-     * @return Table
      */
     public function createTableShape(int $columns = 1): Table
     {

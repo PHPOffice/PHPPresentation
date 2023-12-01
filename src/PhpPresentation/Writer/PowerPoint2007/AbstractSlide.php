@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -122,8 +121,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     /**
      * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapes
      * @param int $shapeId
-     *
-     * @throws UndefinedChartTypeException
      */
     protected function writeShapeCollection(XMLWriter $objWriter, $shapes = [], &$shapeId = 0): void
     {
@@ -159,8 +156,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write txt.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param RichText $shape
-     * @param int $shapeId
      */
     protected function writeShapeText(XMLWriter $objWriter, RichText $shape, int $shapeId): void
     {
@@ -191,7 +186,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->startElement('p:nvPr');
             $objWriter->startElement('p:ph');
             $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
-            if (!is_null($shape->getPlaceholder()->getIdx())) {
+            if (null !== $shape->getPlaceholder()->getIdx()) {
                 $objWriter->writeAttribute('idx', $shape->getPlaceholder()->getIdx());
             }
             $objWriter->endElement();
@@ -272,10 +267,10 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             // a:spAutoFit
             $objWriter->startElement('a:' . $shape->getAutoFit());
             if (RichText::AUTOFIT_NORMAL == $shape->getAutoFit()) {
-                if (!is_null($shape->getFontScale())) {
+                if (null !== $shape->getFontScale()) {
                     $objWriter->writeAttribute('fontScale', $shape->getFontScale() * 1000);
                 }
-                if (!is_null($shape->getLineSpaceReduction())) {
+                if (null !== $shape->getLineSpaceReduction()) {
                     $objWriter->writeAttribute('lnSpcReduction', $shape->getLineSpaceReduction() * 1000);
                 }
             }
@@ -311,8 +306,6 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
      * Write table.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param ShapeTable $shape
-     * @param int $shapeId
      */
     protected function writeShapeTable(XMLWriter $objWriter, ShapeTable $shape, int $shapeId): void
     {
@@ -1089,11 +1082,9 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     }
 
     /**
-     * Write AutoShape
+     * Write AutoShape.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param AutoShape $shape
-     * @param int $shapeId
      */
     protected function writeShapeAutoShape(XMLWriter $objWriter, AutoShape $shape, int $shapeId): void
     {
@@ -1186,7 +1177,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     }
 
     /**
-     * Write chart
+     * Write chart.
      *
      * @param XMLWriter $objWriter XML Writer
      */
@@ -1300,9 +1291,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             $objWriter->writeAttribute('type', $shape->getPlaceholder()->getType());
             $objWriter->endElement();
         }
-        /*
-         * @link : https://github.com/stefslon/exportToPPTX/blob/master/exportToPPTX.m#L2128
-         */
+        // @link : https://github.com/stefslon/exportToPPTX/blob/master/exportToPPTX.m#L2128
         if ($shape instanceof Media) {
             // p:nvPr > a:videoFile
             $objWriter->startElement('a:videoFile');
@@ -1514,9 +1503,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             // > p:bgPr
             $objWriter->endElement();
         }
-        /*
-         * @link : http://www.officeopenxml.com/prSlide-background.php
-         */
+        // @link : http://www.officeopenxml.com/prSlide-background.php
         if ($oBackground instanceof Slide\Background\SchemeColor) {
             // p:bgRef
             $objWriter->startElement('p:bgRef');
@@ -1543,7 +1530,7 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
             return;
         }
         $objWriter->startElement('p:transition');
-        if (!is_null($transition->getSpeed())) {
+        if (null !== $transition->getSpeed()) {
             $objWriter->writeAttribute('spd', $transition->getSpeed());
         }
         $objWriter->writeAttribute('advClick', $transition->hasManualTrigger() ? '1' : '0');
@@ -1556,222 +1543,269 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
                 $objWriter->startElement('p:blinds');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_BLINDS_VERTICAL:
                 $objWriter->startElement('p:blinds');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_CHECKER_HORIZONTAL:
                 $objWriter->startElement('p:checker');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_CHECKER_VERTICAL:
                 $objWriter->startElement('p:checker');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_CIRCLE:
                 $objWriter->writeElement('p:circle');
+
                 break;
             case Slide\Transition::TRANSITION_COMB_HORIZONTAL:
                 $objWriter->startElement('p:comb');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COMB_VERTICAL:
                 $objWriter->startElement('p:comb');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COVER_DOWN:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'd');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COVER_LEFT:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'l');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COVER_LEFT_DOWN:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'ld');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COVER_LEFT_UP:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'lu');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COVER_RIGHT:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'r');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COVER_RIGHT_DOWN:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'rd');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COVER_RIGHT_UP:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'ru');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_COVER_UP:
                 $objWriter->startElement('p:cover');
                 $objWriter->writeAttribute('dir', 'u');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_CUT:
                 $objWriter->writeElement('p:cut');
+
                 break;
             case Slide\Transition::TRANSITION_DIAMOND:
                 $objWriter->writeElement('p:diamond');
+
                 break;
             case Slide\Transition::TRANSITION_DISSOLVE:
                 $objWriter->writeElement('p:dissolve');
+
                 break;
             case Slide\Transition::TRANSITION_FADE:
                 $objWriter->writeElement('p:fade');
+
                 break;
             case Slide\Transition::TRANSITION_NEWSFLASH:
                 $objWriter->writeElement('p:newsflash');
+
                 break;
             case Slide\Transition::TRANSITION_PLUS:
                 $objWriter->writeElement('p:plus');
+
                 break;
             case Slide\Transition::TRANSITION_PULL_DOWN:
                 $objWriter->startElement('p:pull');
                 $objWriter->writeAttribute('dir', 'd');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_PULL_LEFT:
                 $objWriter->startElement('p:pull');
                 $objWriter->writeAttribute('dir', 'l');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_PULL_RIGHT:
                 $objWriter->startElement('p:pull');
                 $objWriter->writeAttribute('dir', 'r');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_PULL_UP:
                 $objWriter->startElement('p:pull');
                 $objWriter->writeAttribute('dir', 'u');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_PUSH_DOWN:
                 $objWriter->startElement('p:push');
                 $objWriter->writeAttribute('dir', 'd');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_PUSH_LEFT:
                 $objWriter->startElement('p:push');
                 $objWriter->writeAttribute('dir', 'l');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_PUSH_RIGHT:
                 $objWriter->startElement('p:push');
                 $objWriter->writeAttribute('dir', 'r');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_PUSH_UP:
                 $objWriter->startElement('p:push');
                 $objWriter->writeAttribute('dir', 'u');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_RANDOM:
                 $objWriter->writeElement('p:random');
+
                 break;
             case Slide\Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
                 $objWriter->startElement('p:randomBar');
                 $objWriter->writeAttribute('dir', 'horz');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_RANDOMBAR_VERTICAL:
                 $objWriter->startElement('p:randomBar');
                 $objWriter->writeAttribute('dir', 'vert');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
                 $objWriter->startElement('p:split');
                 $objWriter->writeAttribute('dir', 'in');
                 $objWriter->writeAttribute('orient', 'horz');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
                 $objWriter->startElement('p:split');
                 $objWriter->writeAttribute('dir', 'out');
                 $objWriter->writeAttribute('orient', 'horz');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_SPLIT_IN_VERTICAL:
                 $objWriter->startElement('p:split');
                 $objWriter->writeAttribute('dir', 'in');
                 $objWriter->writeAttribute('orient', 'vert');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_SPLIT_OUT_VERTICAL:
                 $objWriter->startElement('p:split');
                 $objWriter->writeAttribute('dir', 'out');
                 $objWriter->writeAttribute('orient', 'vert');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_STRIPS_LEFT_DOWN:
                 $objWriter->startElement('p:strips');
                 $objWriter->writeAttribute('dir', 'ld');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_STRIPS_LEFT_UP:
                 $objWriter->startElement('p:strips');
                 $objWriter->writeAttribute('dir', 'lu');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_STRIPS_RIGHT_DOWN:
                 $objWriter->startElement('p:strips');
                 $objWriter->writeAttribute('dir', 'rd');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_STRIPS_RIGHT_UP:
                 $objWriter->startElement('p:strips');
                 $objWriter->writeAttribute('dir', 'ru');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_WEDGE:
                 $objWriter->writeElement('p:wedge');
+
                 break;
             case Slide\Transition::TRANSITION_WIPE_DOWN:
                 $objWriter->startElement('p:wipe');
                 $objWriter->writeAttribute('dir', 'd');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_WIPE_LEFT:
                 $objWriter->startElement('p:wipe');
                 $objWriter->writeAttribute('dir', 'l');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_WIPE_RIGHT:
                 $objWriter->startElement('p:wipe');
                 $objWriter->writeAttribute('dir', 'r');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_WIPE_UP:
                 $objWriter->startElement('p:wipe');
                 $objWriter->writeAttribute('dir', 'u');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_ZOOM_IN:
                 $objWriter->startElement('p:zoom');
                 $objWriter->writeAttribute('dir', 'in');
                 $objWriter->endElement();
+
                 break;
             case Slide\Transition::TRANSITION_ZOOM_OUT:
                 $objWriter->startElement('p:zoom');
                 $objWriter->writeAttribute('dir', 'out');
                 $objWriter->endElement();
+
                 break;
         }
 
@@ -1782,19 +1816,18 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     {
         if (function_exists('com_create_guid')) {
             return com_create_guid();
-        } else {
-            mt_srand(intval(microtime(true) * 10000));
-            $charid = strtoupper(md5(uniqid((string) rand(), true)));
-            $hyphen = chr(45); // "-"
-            $uuid = chr(123)// "{"
-                . substr($charid, 0, 8) . $hyphen
-                . substr($charid, 8, 4) . $hyphen
-                . substr($charid, 12, 4) . $hyphen
-                . substr($charid, 16, 4) . $hyphen
-                . substr($charid, 20, 12)
-                . chr(125); // "}"
-
-            return $uuid;
         }
+        mt_srand((int) (microtime(true) * 10000));
+        $charid = strtoupper(md5(uniqid((string) mt_rand(), true)));
+        $hyphen = chr(45); // "-"
+        $uuid = chr(123)// "{"
+            . substr($charid, 0, 8) . $hyphen
+            . substr($charid, 8, 4) . $hyphen
+            . substr($charid, 12, 4) . $hyphen
+            . substr($charid, 16, 4) . $hyphen
+            . substr($charid, 20, 12)
+            . chr(125); // "}"
+
+        return $uuid;
     }
 }

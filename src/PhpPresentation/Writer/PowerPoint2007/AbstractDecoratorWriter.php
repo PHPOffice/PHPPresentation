@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -59,7 +58,6 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * @param XMLWriter $objWriter XML Writer
      * @param Border $pBorder Border
      * @param string $pElementName Element name
-     * @param bool $isMarker
      */
     protected function writeBorder(XMLWriter $objWriter, Border $pBorder, string $pElementName = 'L', bool $isMarker = false): void
     {
@@ -125,7 +123,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
 
     protected function writeColor(XMLWriter $objWriter, Color $color, ?int $alpha = null): void
     {
-        if (is_null($alpha)) {
+        if (null === $alpha) {
             $alpha = $color->getAlpha();
         }
 
@@ -145,7 +143,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
      * Write Fill.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Fill|null $pFill Fill style
+     * @param null|Fill $pFill Fill style
      */
     protected function writeFill(XMLWriter $objWriter, ?Fill $pFill): void
     {
@@ -257,7 +255,7 @@ abstract class AbstractDecoratorWriter extends \PhpOffice\PhpPresentation\Writer
     }
 
     /**
-     * Write Outline
+     * Write Outline.
      */
     protected function writeOutline(XMLWriter $objWriter, ?Outline $oOutline): void
     {

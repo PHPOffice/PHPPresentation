@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -110,7 +109,7 @@ class DocumentProperties
     private $customProperties = [];
 
     /**
-     * Create a new \PhpOffice\PhpPresentation\DocumentProperties
+     * Create a new \PhpOffice\PhpPresentation\DocumentProperties.
      */
     public function __construct()
     {
@@ -194,7 +193,7 @@ class DocumentProperties
      */
     public function setCreated($pValue = null)
     {
-        if (is_null($pValue)) {
+        if (null === $pValue) {
             $pValue = time();
         }
         $this->created = $pValue;
@@ -221,7 +220,7 @@ class DocumentProperties
      */
     public function setModified($pValue = null)
     {
-        if (is_null($pValue)) {
+        if (null === $pValue) {
             $pValue = time();
         }
         $this->modified = $pValue;
@@ -385,10 +384,6 @@ class DocumentProperties
 
     /**
      * Check if a Custom Property is defined.
-     *
-     * @param string $propertyName
-     *
-     * @return bool
      */
     public function isCustomPropertySet(string $propertyName): bool
     {
@@ -398,9 +393,7 @@ class DocumentProperties
     /**
      * Get a Custom Property Value.
      *
-     * @param string $propertyName
-     *
-     * @return mixed|null
+     * @return null|mixed
      */
     public function getCustomPropertyValue(string $propertyName)
     {
@@ -413,10 +406,6 @@ class DocumentProperties
 
     /**
      * Get a Custom Property Type.
-     *
-     * @param string $propertyName
-     *
-     * @return string|null
      */
     public function getCustomPropertyType(string $propertyName): ?string
     {
@@ -430,16 +419,13 @@ class DocumentProperties
     /**
      * Set a Custom Property.
      *
-     * @param string $propertyName
      * @param mixed $propertyValue
-     * @param string|null $propertyType
+     * @param null|string $propertyType
      *                                  'i' : Integer
      *                                  'f' : Floating Point
      *                                  's' : String
      *                                  'd' : Date/Time
      *                                  'b' : Boolean
-     *
-     * @return self
      */
     public function setCustomProperty(string $propertyName, $propertyValue = '', ?string $propertyType = null): self
     {

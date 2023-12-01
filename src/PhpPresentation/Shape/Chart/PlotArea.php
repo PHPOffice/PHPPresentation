@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -32,7 +31,7 @@ class PlotArea implements ComparableInterface
     /**
      * Type.
      *
-     * @var AbstractType|null
+     * @var null|AbstractType
      */
     private $type;
 
@@ -90,12 +89,9 @@ class PlotArea implements ComparableInterface
         $this->axisY = clone $this->axisY;
     }
 
-    /**
-     * @throws UndefinedChartTypeException
-     */
     public function getType(): AbstractType
     {
-        if (is_null($this->type)) {
+        if (null === $this->type) {
             throw new UndefinedChartTypeException();
         }
 
@@ -153,8 +149,6 @@ class PlotArea implements ComparableInterface
 
     /**
      * Set OffsetY (as a fraction of the chart).
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     public function setOffsetY(float $pValue = 0): self
     {
@@ -191,8 +185,6 @@ class PlotArea implements ComparableInterface
 
     /**
      * Set Height (as a fraction of the chart).
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\PlotArea
      */
     public function setHeight(float $value = 0): self
     {
@@ -208,7 +200,7 @@ class PlotArea implements ComparableInterface
      */
     public function getHashCode(): string
     {
-        return md5((is_null($this->type) ? 'null' : $this->type->getHashCode()) . $this->axisX->getHashCode() . $this->axisY->getHashCode() . $this->offsetX . $this->offsetY . $this->width . $this->height . __CLASS__);
+        return md5((null === $this->type ? 'null' : $this->type->getHashCode()) . $this->axisX->getHashCode() . $this->axisY->getHashCode() . $this->offsetX . $this->offsetY . $this->width . $this->height . __CLASS__);
     }
 
     /**
@@ -224,7 +216,7 @@ class PlotArea implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

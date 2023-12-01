@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -43,8 +42,6 @@ class Serialized implements ReaderInterface
 
     /**
      * Does a file support UnserializePhpPresentation ?
-     *
-     * @throws FileNotFoundException
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename): bool
     {
@@ -59,9 +56,6 @@ class Serialized implements ReaderInterface
 
     /**
      * Loads PhpPresentation Serialized file.
-     *
-     * @throws FileNotFoundException
-     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
@@ -72,7 +66,7 @@ class Serialized implements ReaderInterface
 
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new InvalidFileFormatException($pFilename, Serialized::class);
+            throw new InvalidFileFormatException($pFilename, self::class);
         }
 
         return $this->loadSerialized($pFilename);
@@ -80,19 +74,17 @@ class Serialized implements ReaderInterface
 
     /**
      * Load PhpPresentation Serialized file.
-     *
-     * @throws InvalidFileFormatException
      */
     private function loadSerialized(string $pFilename): PhpPresentation
     {
         $oArchive = new ZipArchive();
         if (true !== $oArchive->open($pFilename)) {
-            throw new InvalidFileFormatException($pFilename, Serialized::class);
+            throw new InvalidFileFormatException($pFilename, self::class);
         }
 
         $xmlContent = $oArchive->getFromName('PhpPresentation.xml');
         if (empty($xmlContent)) {
-            throw new InvalidFileFormatException($pFilename, Serialized::class, 'The file PhpPresentation.xml is malformed');
+            throw new InvalidFileFormatException($pFilename, self::class, 'The file PhpPresentation.xml is malformed');
         }
 
         $xmlData = simplexml_load_string($xmlContent);

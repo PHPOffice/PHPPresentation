@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -24,7 +23,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 
 class Border implements ComparableInterface
 {
-    /* Line style */
+    // Line style
     public const LINE_NONE = 'none';
     public const LINE_SINGLE = 'sng';
     public const LINE_DOUBLE = 'dbl';
@@ -32,7 +31,7 @@ class Border implements ComparableInterface
     public const LINE_THINTHICK = 'thinThick';
     public const LINE_TRI = 'tri';
 
-    /* Dash style */
+    // Dash style
     public const DASH_DASH = 'dash';
     public const DASH_DASHDOT = 'dashDot';
     public const DASH_DOT = 'dot';
@@ -87,8 +86,6 @@ class Border implements ComparableInterface
 
     /**
      * Get line width (in points).
-     *
-     * @return int
      */
     public function getLineWidth(): int
     {
@@ -97,10 +94,6 @@ class Border implements ComparableInterface
 
     /**
      * Set line width (in points).
-     *
-     * @param int $pValue
-     *
-     * @return self
      */
     public function setLineWidth(int $pValue = 1): self
     {
@@ -111,8 +104,6 @@ class Border implements ComparableInterface
 
     /**
      * Get line style.
-     *
-     * @return string
      */
     public function getLineStyle(): string
     {
@@ -121,10 +112,6 @@ class Border implements ComparableInterface
 
     /**
      * Set line style.
-     *
-     * @param string $pValue
-     *
-     * @return self
      */
     public function setLineStyle(string $pValue = self::LINE_SINGLE): self
     {
@@ -138,8 +125,6 @@ class Border implements ComparableInterface
 
     /**
      * Get dash style.
-     *
-     * @return string
      */
     public function getDashStyle(): string
     {
@@ -148,10 +133,6 @@ class Border implements ComparableInterface
 
     /**
      * Set dash style.
-     *
-     * @param string $pValue
-     *
-     * @return self
      */
     public function setDashStyle(string $pValue = self::DASH_SOLID): self
     {
@@ -165,8 +146,6 @@ class Border implements ComparableInterface
 
     /**
      * Get Border Color.
-     *
-     * @return Color
      */
     public function getColor(): ?Color
     {
@@ -175,12 +154,8 @@ class Border implements ComparableInterface
 
     /**
      * Set Border Color.
-     *
-     * @param Color|null $color
-     *
-     * @return self
      */
-    public function setColor(Color $color = null): self
+    public function setColor(?Color $color = null): self
     {
         $this->color = $color;
 
@@ -209,7 +184,7 @@ class Border implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

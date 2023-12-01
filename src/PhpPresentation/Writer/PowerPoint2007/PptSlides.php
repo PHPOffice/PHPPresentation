@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -40,8 +39,6 @@ class PptSlides extends AbstractSlide
 {
     /**
      * Add slides (drawings, ...) and slide relationships (drawings, ...).
-     *
-     * @return ZipInterface
      */
     public function render(): ZipInterface
     {
@@ -331,12 +328,14 @@ class PptSlides extends AbstractSlide
             while ($iterator->valid()) {
                 if ($iterator->current() instanceof Comment) {
                     $hasSlideComment = true;
+
                     break;
                 } elseif ($iterator->current() instanceof Group) {
                     $iterator2 = $iterator->current()->getShapeCollection()->getIterator();
                     while ($iterator2->valid()) {
                         if ($iterator2->current() instanceof Comment) {
                             $hasSlideComment = true;
+
                             break 2;
                         }
                         $iterator2->next();

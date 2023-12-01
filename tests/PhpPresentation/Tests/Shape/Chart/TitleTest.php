@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,28 +35,28 @@ class TitleTest extends TestCase
     {
         $object = new Title();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
-        $this->assertEquals('Calibri', $object->getFont()->getName());
-        $this->assertEquals(18, $object->getFont()->getSize());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        self::assertEquals('Calibri', $object->getFont()->getName());
+        self::assertEquals(18, $object->getFont()->getSize());
     }
 
     public function testAlignment(): void
     {
         $object = new Title();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setAlignment(new Alignment()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setAlignment(new Alignment()));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Alignment', $object->getAlignment());
     }
 
     public function testFont(): void
     {
         $object = new Title();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setFont());
-        $this->assertNull($object->getFont());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setFont(new Font()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setFont());
+        self::assertNull($object->getFont());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setFont(new Font()));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
     public function testHashIndex(): void
@@ -65,9 +64,9 @@ class TitleTest extends TestCase
         $object = new Title();
         $value = mt_rand(1, 100);
 
-        $this->assertEmpty($object->getHashIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setHashIndex($value));
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEmpty($object->getHashIndex());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setHashIndex($value));
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     public function testHeight(): void
@@ -75,10 +74,10 @@ class TitleTest extends TestCase
         $object = new Title();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setHeight());
-        $this->assertEquals(0, $object->getHeight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setHeight($value));
-        $this->assertEquals($value, $object->getHeight());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setHeight());
+        self::assertEquals(0, $object->getHeight());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setHeight($value));
+        self::assertEquals($value, $object->getHeight());
     }
 
     public function testOffsetX(): void
@@ -86,10 +85,10 @@ class TitleTest extends TestCase
         $object = new Title();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetX());
-        $this->assertEquals(0.01, $object->getOffsetX());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetX($value));
-        $this->assertEquals($value, $object->getOffsetX());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetX());
+        self::assertEquals(0.01, $object->getOffsetX());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetX($value));
+        self::assertEquals($value, $object->getOffsetX());
     }
 
     public function testOffsetY(): void
@@ -97,32 +96,32 @@ class TitleTest extends TestCase
         $object = new Title();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetY());
-        $this->assertEquals(0.01, $object->getOffsetY());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetY($value));
-        $this->assertEquals($value, $object->getOffsetY());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetY());
+        self::assertEquals(0.01, $object->getOffsetY());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setOffsetY($value));
+        self::assertEquals($value, $object->getOffsetY());
     }
 
     public function testText(): void
     {
         $object = new Title();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setText());
-        $this->assertNull($object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setText('AAAA'));
-        $this->assertEquals('AAAA', $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setText());
+        self::assertNull($object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setText('AAAA'));
+        self::assertEquals('AAAA', $object->getText());
     }
 
     public function testVisible(): void
     {
         $object = new Title();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setVisible());
-        $this->assertTrue($object->isVisible());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setVisible(true));
-        $this->assertTrue($object->isVisible());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setVisible(false));
-        $this->assertFalse($object->isVisible());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setVisible());
+        self::assertTrue($object->isVisible());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setVisible(true));
+        self::assertTrue($object->isVisible());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setVisible(false));
+        self::assertFalse($object->isVisible());
     }
 
     public function testWidth(): void
@@ -130,9 +129,9 @@ class TitleTest extends TestCase
         $object = new Title();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setWidth());
-        $this->assertEquals(0, $object->getWidth());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setWidth($value));
-        $this->assertEquals($value, $object->getWidth());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setWidth());
+        self::assertEquals(0, $object->getWidth());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Title', $object->setWidth($value));
+        self::assertEquals($value, $object->getWidth());
     }
 }

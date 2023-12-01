@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -59,7 +58,7 @@ class StylesTest extends PhpPresentationTestCase
     public function testCustomDocumentLayout(): void
     {
         $oDocumentLayout = new DocumentLayout();
-        $oDocumentLayout->setDocumentLayout(['cx' => rand(1, 100), 'cy' => rand(1, 100)]);
+        $oDocumentLayout->setDocumentLayout(['cx' => mt_rand(1, 100), 'cy' => mt_rand(1, 100)]);
         $this->oPresentation->setLayout($oDocumentLayout);
 
         $element = '/office:document-styles/office:automatic-styles/style:page-layout';
@@ -118,12 +117,14 @@ class StylesTest extends PhpPresentationTestCase
                 case Border::DASH_SYSDOT:
                     $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots1');
                     $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots1-length');
+
                     break;
                 case Border::DASH_DASH:
                 case Border::DASH_LARGEDASH:
                 case Border::DASH_SYSDASH:
                     $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2');
                     $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2-length');
+
                     break;
                 case Border::DASH_DASHDOT:
                 case Border::DASH_LARGEDASHDOT:
@@ -134,6 +135,7 @@ class StylesTest extends PhpPresentationTestCase
                     $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots1-length');
                     $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2');
                     $this->assertZipXmlAttributeExists('styles.xml', $element, 'draw:dots2-length');
+
                     break;
             }
             $this->assertIsSchemaOpenDocumentValid('1.2');

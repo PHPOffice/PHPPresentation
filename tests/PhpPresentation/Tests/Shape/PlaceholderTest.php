@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -22,6 +21,7 @@ namespace PhpOffice\PhpPresentation\Tests\Shape;
 
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 
 /**
  * Test class for Table element.
@@ -33,8 +33,8 @@ class PlaceholderTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Placeholder(Placeholder::PH_TYPE_BODY);
-        $this->assertEquals(Placeholder::PH_TYPE_BODY, $object->getType());
-        $this->assertNull($object->getIdx());
+        self::assertEquals(Placeholder::PH_TYPE_BODY, $object->getType());
+        self::assertNull($object->getIdx());
     }
 
     public function testIdx(): void
@@ -42,20 +42,20 @@ class PlaceholderTest extends TestCase
         $value = mt_rand(0, 100);
 
         $object = new Placeholder(Placeholder::PH_TYPE_BODY);
-        $this->assertNull($object->getIdx());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Placeholder', $object->setIdx($value));
-        $this->assertEquals($value, $object->getIdx());
+        self::assertNull($object->getIdx());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Placeholder', $object->setIdx($value));
+        self::assertEquals($value, $object->getIdx());
     }
 
     public function testType(): void
     {
-        $rcPlaceholder = new \ReflectionClass('PhpOffice\PhpPresentation\Shape\Placeholder');
+        $rcPlaceholder = new ReflectionClass('PhpOffice\PhpPresentation\Shape\Placeholder');
         $arrayConstants = $rcPlaceholder->getConstants();
         $value = array_rand($arrayConstants);
 
         $object = new Placeholder(Placeholder::PH_TYPE_BODY);
-        $this->assertEquals(Placeholder::PH_TYPE_BODY, $object->getType());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Placeholder', $object->setType($value));
-        $this->assertEquals($value, $object->getType());
+        self::assertEquals(Placeholder::PH_TYPE_BODY, $object->getType());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Placeholder', $object->setType($value));
+        self::assertEquals($value, $object->getType());
     }
 }

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -103,9 +102,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * How missing/blank values are displayed on chart (dispBlanksAs property)
-     *
-     * @return string
+     * How missing/blank values are displayed on chart (dispBlanksAs property).
      */
     public function getDisplayBlankAs(): string
     {
@@ -114,8 +111,6 @@ class Chart extends AbstractGraphic implements ComparableInterface
 
     /**
      * Get Title.
-     *
-     * @return Title
      */
     public function getTitle(): Title
     {
@@ -124,8 +119,6 @@ class Chart extends AbstractGraphic implements ComparableInterface
 
     /**
      * Get Legend.
-     *
-     * @return Legend
      */
     public function getLegend(): Legend
     {
@@ -134,8 +127,6 @@ class Chart extends AbstractGraphic implements ComparableInterface
 
     /**
      * Get PlotArea.
-     *
-     * @return PlotArea
      */
     public function getPlotArea(): PlotArea
     {
@@ -144,8 +135,6 @@ class Chart extends AbstractGraphic implements ComparableInterface
 
     /**
      * Get View3D.
-     *
-     * @return View3D
      */
     public function getView3D(): View3D
     {
@@ -154,8 +143,6 @@ class Chart extends AbstractGraphic implements ComparableInterface
 
     /**
      * Is the spreadsheet included for editing data ?
-     *
-     * @return bool
      */
     public function hasIncludedSpreadsheet(): bool
     {
@@ -163,11 +150,7 @@ class Chart extends AbstractGraphic implements ComparableInterface
     }
 
     /**
-     * Define a way to display missing/blank values (dispBlanksAs property)
-     *
-     * @param string $value
-     *
-     * @return self
+     * Define a way to display missing/blank values (dispBlanksAs property).
      */
     public function setDisplayBlankAs(string $value): self
     {
@@ -180,10 +163,6 @@ class Chart extends AbstractGraphic implements ComparableInterface
 
     /**
      * Is the spreadsheet included for editing data ?
-     *
-     * @param bool $value
-     *
-     * @return self
      */
     public function setIncludeSpreadsheet(bool $value = false): self
     {
@@ -194,8 +173,6 @@ class Chart extends AbstractGraphic implements ComparableInterface
 
     /**
      * Get indexed filename (using image index).
-     *
-     * @return string
      */
     public function getIndexedFilename(): string
     {

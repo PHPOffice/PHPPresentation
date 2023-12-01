@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -88,10 +87,8 @@ class Note implements ComparableInterface, ShapeContainerInterface
 
     /**
      * Create a new note.
-     *
-     * @param Slide $pParent
      */
-    public function __construct(Slide $pParent = null)
+    public function __construct(?Slide $pParent = null)
     {
         // Set parent
         $this->parent = $pParent;
@@ -100,7 +97,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
         $this->shapeCollection = new ArrayObject();
 
         // Set identifier
-        $this->identifier = md5(rand(0, 9999) . time());
+        $this->identifier = md5(mt_rand(0, 9999) . time());
     }
 
     /**
@@ -115,8 +112,6 @@ class Note implements ComparableInterface, ShapeContainerInterface
 
     /**
      * Add shape to slide.
-     *
-     * @return AbstractShape
      */
     public function addShape(AbstractShape $shape): AbstractShape
     {
@@ -230,7 +225,7 @@ class Note implements ComparableInterface, ShapeContainerInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

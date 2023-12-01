@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -26,7 +25,7 @@ namespace PhpOffice\PhpPresentation\Writer;
 interface WriterInterface
 {
     /**
-     * Save PhpPresentation to file
+     * Save PhpPresentation to file.
      */
     public function save(string $pFilename): void;
 }

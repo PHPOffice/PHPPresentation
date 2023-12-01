@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,10 +29,10 @@ class AutoShapeTest extends TestCase
     {
         $object = new AutoShape();
 
-        $this->assertEquals(AutoShape::TYPE_HEART, $object->getType());
-        $this->assertEquals('', $object->getText());
-        $this->assertInstanceOf(Outline::class, $object->getOutline());
-        $this->assertIsString($object->getHashCode());
+        self::assertEquals(AutoShape::TYPE_HEART, $object->getType());
+        self::assertEquals('', $object->getText());
+        self::assertInstanceOf(Outline::class, $object->getOutline());
+        self::assertIsString($object->getHashCode());
     }
 
     public function testOutline(): void
@@ -42,26 +41,26 @@ class AutoShapeTest extends TestCase
         $mock = $this->getMockBuilder(Outline::class)->getMock();
 
         $object = new AutoShape();
-        $this->assertInstanceOf(Outline::class, $object->getOutline());
-        $this->assertInstanceOf(AutoShape::class, $object->setOutline($mock));
-        $this->assertInstanceOf(Outline::class, $object->getOutline());
+        self::assertInstanceOf(Outline::class, $object->getOutline());
+        self::assertInstanceOf(AutoShape::class, $object->setOutline($mock));
+        self::assertInstanceOf(Outline::class, $object->getOutline());
     }
 
     public function testText(): void
     {
         $object = new AutoShape();
 
-        $this->assertEquals('', $object->getText());
-        $this->assertInstanceOf(AutoShape::class, $object->setText('Text'));
-        $this->assertEquals('Text', $object->getText());
+        self::assertEquals('', $object->getText());
+        self::assertInstanceOf(AutoShape::class, $object->setText('Text'));
+        self::assertEquals('Text', $object->getText());
     }
 
     public function testType(): void
     {
         $object = new AutoShape();
 
-        $this->assertEquals(AutoShape::TYPE_HEART, $object->getType());
-        $this->assertInstanceOf(AutoShape::class, $object->setType(AutoShape::TYPE_HEXAGON));
-        $this->assertEquals(AutoShape::TYPE_HEXAGON, $object->getType());
+        self::assertEquals(AutoShape::TYPE_HEART, $object->getType());
+        self::assertInstanceOf(AutoShape::class, $object->setType(AutoShape::TYPE_HEXAGON));
+        self::assertEquals(AutoShape::TYPE_HEXAGON, $object->getType());
     }
 }

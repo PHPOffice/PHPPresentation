@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,6 +19,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
+use ArrayObject;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
 use PhpOffice\PhpPresentation\Style\ColorMap;
@@ -30,30 +30,35 @@ class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeCon
      * @var SlideMaster
      */
     protected $slideMaster;
+
     /**
      * Slide relation ID (should not be used by user code!).
      *
      * @var string
      */
     public $relationId;
+
     /**
      * Slide layout NR (should not be used by user code!).
      *
      * @var int
      */
     public $layoutNr;
+
     /**
      * Slide layout ID (should not be used by user code!).
      *
      * @var int
      */
     public $layoutId;
+
     /**
      * Slide layout ID (should not be used by user code!).
      *
-     * @var string|null
+     * @var null|string
      */
     protected $layoutName;
+
     /**
      * Mapping of colors to the theme.
      *
@@ -69,9 +74,9 @@ class SlideLayout extends AbstractSlide implements ComparableInterface, ShapeCon
         // Set parent
         $this->slideMaster = $pSlideMaster;
         // Shape collection
-        $this->shapeCollection = new \ArrayObject();
+        $this->shapeCollection = new ArrayObject();
         // Set identifier
-        $this->identifier = md5(rand(0, 9999) . time());
+        $this->identifier = md5(mt_rand(0, 9999) . time());
         // Set a basic colorMap
         $this->colorMap = new ColorMap();
     }

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,17 +36,17 @@ class FontTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Font();
-        $this->assertEquals('Calibri', $object->getName());
-        $this->assertEquals(10, $object->getSize());
-        $this->assertFalse($object->isBold());
-        $this->assertFalse($object->isItalic());
-        $this->assertFalse($object->isSuperScript());
-        $this->assertFalse($object->isSubScript());
-        $this->assertFalse($object->isStrikethrough());
-        $this->assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+        self::assertEquals('Calibri', $object->getName());
+        self::assertEquals(10, $object->getSize());
+        self::assertFalse($object->isBold());
+        self::assertFalse($object->isItalic());
+        self::assertFalse($object->isSuperScript());
+        self::assertFalse($object->isSubScript());
+        self::assertFalse($object->isStrikethrough());
+        self::assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
+        self::assertEquals(0, $object->getCharacterSpacing());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        self::assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
     }
 
     /**
@@ -56,13 +55,13 @@ class FontTest extends TestCase
     public function testCharacterSpacing(): void
     {
         $object = new Font();
-        $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf(Font::class, $object->setCharacterSpacing(0));
-        $this->assertEquals(0, $object->getCharacterSpacing());
-        $this->assertInstanceOf(Font::class, $object->setCharacterSpacing(10));
-        $this->assertEquals(1000, $object->getCharacterSpacing());
-        $this->assertInstanceOf(Font::class, $object->setCharacterSpacing());
-        $this->assertEquals(0, $object->getCharacterSpacing());
+        self::assertEquals(0, $object->getCharacterSpacing());
+        self::assertInstanceOf(Font::class, $object->setCharacterSpacing(0));
+        self::assertEquals(0, $object->getCharacterSpacing());
+        self::assertInstanceOf(Font::class, $object->setCharacterSpacing(10));
+        self::assertEquals(1000, $object->getCharacterSpacing());
+        self::assertInstanceOf(Font::class, $object->setCharacterSpacing());
+        self::assertEquals(0, $object->getCharacterSpacing());
     }
 
     /**
@@ -71,10 +70,10 @@ class FontTest extends TestCase
     public function testColor(): void
     {
         $object = new Font();
-        $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
-        $this->assertInstanceOf(Font::class, $object->setColor(new Color(Color::COLOR_BLUE)));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
+        self::assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+        self::assertInstanceOf(Font::class, $object->setColor(new Color(Color::COLOR_BLUE)));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        self::assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
     }
 
     /**
@@ -83,15 +82,15 @@ class FontTest extends TestCase
     public function testFormat(): void
     {
         $object = new Font();
-        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
-        $this->assertInstanceOf(Font::class, $object->setFormat());
-        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
-        $this->assertInstanceOf(Font::class, $object->setFormat('UnAuthorized'));
-        $this->assertEquals(Font::FORMAT_LATIN, $object->getFormat());
-        $this->assertInstanceOf(Font::class, $object->setFormat(Font::FORMAT_EAST_ASIAN));
-        $this->assertEquals(Font::FORMAT_EAST_ASIAN, $object->getFormat());
-        $this->assertInstanceOf(Font::class, $object->setFormat(Font::FORMAT_COMPLEX_SCRIPT));
-        $this->assertEquals(Font::FORMAT_COMPLEX_SCRIPT, $object->getFormat());
+        self::assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        self::assertInstanceOf(Font::class, $object->setFormat());
+        self::assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        self::assertInstanceOf(Font::class, $object->setFormat('UnAuthorized'));
+        self::assertEquals(Font::FORMAT_LATIN, $object->getFormat());
+        self::assertInstanceOf(Font::class, $object->setFormat(Font::FORMAT_EAST_ASIAN));
+        self::assertEquals(Font::FORMAT_EAST_ASIAN, $object->getFormat());
+        self::assertInstanceOf(Font::class, $object->setFormat(Font::FORMAT_COMPLEX_SCRIPT));
+        self::assertEquals(Font::FORMAT_COMPLEX_SCRIPT, $object->getFormat());
     }
 
     /**
@@ -100,12 +99,12 @@ class FontTest extends TestCase
     public function testName(): void
     {
         $object = new Font();
-        $this->assertInstanceOf(Font::class, $object->setName());
-        $this->assertEquals('Calibri', $object->getName());
-        $this->assertInstanceOf(Font::class, $object->setName(''));
-        $this->assertEquals('Calibri', $object->getName());
-        $this->assertInstanceOf(Font::class, $object->setName('Arial'));
-        $this->assertEquals('Arial', $object->getName());
+        self::assertInstanceOf(Font::class, $object->setName());
+        self::assertEquals('Calibri', $object->getName());
+        self::assertInstanceOf(Font::class, $object->setName(''));
+        self::assertEquals('Calibri', $object->getName());
+        self::assertInstanceOf(Font::class, $object->setName('Arial'));
+        self::assertEquals('Arial', $object->getName());
     }
 
     /**
@@ -114,11 +113,11 @@ class FontTest extends TestCase
     public function testSize(): void
     {
         $object = new Font();
-        $this->assertInstanceOf(Font::class, $object->setSize());
-        $this->assertEquals(10, $object->getSize());
+        self::assertInstanceOf(Font::class, $object->setSize());
+        self::assertEquals(10, $object->getSize());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf(Font::class, $object->setSize($value));
-        $this->assertEquals($value, $object->getSize());
+        self::assertInstanceOf(Font::class, $object->setSize($value));
+        self::assertEquals($value, $object->getSize());
     }
 
     /**
@@ -127,12 +126,12 @@ class FontTest extends TestCase
     public function testUnderline(): void
     {
         $object = new Font();
-        $this->assertInstanceOf(Font::class, $object->setUnderline());
-        $this->assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertInstanceOf(Font::class, $object->setUnderline(''));
-        $this->assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
-        $this->assertInstanceOf(Font::class, $object->setUnderline(FONT::UNDERLINE_DASH));
-        $this->assertEquals(FONT::UNDERLINE_DASH, $object->getUnderline());
+        self::assertInstanceOf(Font::class, $object->setUnderline());
+        self::assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
+        self::assertInstanceOf(Font::class, $object->setUnderline(''));
+        self::assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
+        self::assertInstanceOf(Font::class, $object->setUnderline(FONT::UNDERLINE_DASH));
+        self::assertEquals(FONT::UNDERLINE_DASH, $object->getUnderline());
     }
 
     /**
@@ -141,12 +140,12 @@ class FontTest extends TestCase
     public function testSetIsBold(): void
     {
         $object = new Font();
-        $this->assertInstanceOf(Font::class, $object->setBold());
-        $this->assertFalse($object->isBold());
-        $this->assertInstanceOf(Font::class, $object->setBold(false));
-        $this->assertFalse($object->isBold());
-        $this->assertInstanceOf(Font::class, $object->setBold(true));
-        $this->assertTrue($object->isBold());
+        self::assertInstanceOf(Font::class, $object->setBold());
+        self::assertFalse($object->isBold());
+        self::assertInstanceOf(Font::class, $object->setBold(false));
+        self::assertFalse($object->isBold());
+        self::assertInstanceOf(Font::class, $object->setBold(true));
+        self::assertTrue($object->isBold());
     }
 
     /**
@@ -155,12 +154,12 @@ class FontTest extends TestCase
     public function testSetIsItalic(): void
     {
         $object = new Font();
-        $this->assertInstanceOf(Font::class, $object->setItalic());
-        $this->assertFalse($object->isItalic());
-        $this->assertInstanceOf(Font::class, $object->setItalic(false));
-        $this->assertFalse($object->isItalic());
-        $this->assertInstanceOf(Font::class, $object->setItalic(true));
-        $this->assertTrue($object->isItalic());
+        self::assertInstanceOf(Font::class, $object->setItalic());
+        self::assertFalse($object->isItalic());
+        self::assertInstanceOf(Font::class, $object->setItalic(false));
+        self::assertFalse($object->isItalic());
+        self::assertInstanceOf(Font::class, $object->setItalic(true));
+        self::assertTrue($object->isItalic());
     }
 
     /**
@@ -169,12 +168,12 @@ class FontTest extends TestCase
     public function testSetIsStriketrough(): void
     {
         $object = new Font();
-        $this->assertInstanceOf(Font::class, $object->setStrikethrough());
-        $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf(Font::class, $object->setStrikethrough(false));
-        $this->assertFalse($object->isStrikethrough());
-        $this->assertInstanceOf(Font::class, $object->setStrikethrough(true));
-        $this->assertTrue($object->isStrikethrough());
+        self::assertInstanceOf(Font::class, $object->setStrikethrough());
+        self::assertFalse($object->isStrikethrough());
+        self::assertInstanceOf(Font::class, $object->setStrikethrough(false));
+        self::assertFalse($object->isStrikethrough());
+        self::assertInstanceOf(Font::class, $object->setStrikethrough(true));
+        self::assertTrue($object->isStrikethrough());
     }
 
     /**
@@ -183,25 +182,25 @@ class FontTest extends TestCase
     public function testSetIsSubScript(): void
     {
         $object = new Font();
-        $this->assertInstanceOf(Font::class, $object->setSubScript());
-        $this->assertFalse($object->isSubScript());
-        $this->assertInstanceOf(Font::class, $object->setSubScript(false));
-        $this->assertFalse($object->isSubScript());
-        $this->assertInstanceOf(Font::class, $object->setSubScript(true));
-        $this->assertTrue($object->isSubScript());
+        self::assertInstanceOf(Font::class, $object->setSubScript());
+        self::assertFalse($object->isSubScript());
+        self::assertInstanceOf(Font::class, $object->setSubScript(false));
+        self::assertFalse($object->isSubScript());
+        self::assertInstanceOf(Font::class, $object->setSubScript(true));
+        self::assertTrue($object->isSubScript());
 
         // Test toggle of SubScript
-        $this->assertInstanceOf(Font::class, $object->setSubScript(false));
-        $this->assertInstanceOf(Font::class, $object->setSuperScript(false));
-        $this->assertFalse($object->isSubScript());
+        self::assertInstanceOf(Font::class, $object->setSubScript(false));
+        self::assertInstanceOf(Font::class, $object->setSuperScript(false));
+        self::assertFalse($object->isSubScript());
 
-        $this->assertInstanceOf(Font::class, $object->setSubScript(true));
-        $this->assertInstanceOf(Font::class, $object->setSuperScript(true));
-        $this->assertFalse($object->isSubScript());
+        self::assertInstanceOf(Font::class, $object->setSubScript(true));
+        self::assertInstanceOf(Font::class, $object->setSuperScript(true));
+        self::assertFalse($object->isSubScript());
 
-        $this->assertInstanceOf(Font::class, $object->setSubScript(true));
-        $this->assertInstanceOf(Font::class, $object->setSuperScript(false));
-        $this->assertTrue($object->isSubScript());
+        self::assertInstanceOf(Font::class, $object->setSubScript(true));
+        self::assertInstanceOf(Font::class, $object->setSuperScript(false));
+        self::assertTrue($object->isSubScript());
     }
 
     /**
@@ -210,25 +209,25 @@ class FontTest extends TestCase
     public function testSetIsSuperScript(): void
     {
         $object = new Font();
-        $this->assertInstanceOf(Font::class, $object->setSuperScript());
-        $this->assertFalse($object->isSuperScript());
-        $this->assertInstanceOf(Font::class, $object->setSuperScript(false));
-        $this->assertFalse($object->isSuperScript());
-        $this->assertInstanceOf(Font::class, $object->setSuperScript(true));
-        $this->assertTrue($object->isSuperScript());
+        self::assertInstanceOf(Font::class, $object->setSuperScript());
+        self::assertFalse($object->isSuperScript());
+        self::assertInstanceOf(Font::class, $object->setSuperScript(false));
+        self::assertFalse($object->isSuperScript());
+        self::assertInstanceOf(Font::class, $object->setSuperScript(true));
+        self::assertTrue($object->isSuperScript());
 
         // Test toggle of SubScript
-        $this->assertInstanceOf(Font::class, $object->setSuperScript(false));
-        $this->assertInstanceOf(Font::class, $object->setSubScript(false));
-        $this->assertFalse($object->isSuperScript());
+        self::assertInstanceOf(Font::class, $object->setSuperScript(false));
+        self::assertInstanceOf(Font::class, $object->setSubScript(false));
+        self::assertFalse($object->isSuperScript());
 
-        $this->assertInstanceOf(Font::class, $object->setSuperScript(true));
-        $this->assertInstanceOf(Font::class, $object->setSubScript(true));
-        $this->assertFalse($object->isSuperScript());
+        self::assertInstanceOf(Font::class, $object->setSuperScript(true));
+        self::assertInstanceOf(Font::class, $object->setSubScript(true));
+        self::assertFalse($object->isSuperScript());
 
-        $this->assertInstanceOf(Font::class, $object->setSuperScript(true));
-        $this->assertInstanceOf(Font::class, $object->setSubScript(false));
-        $this->assertTrue($object->isSuperScript());
+        self::assertInstanceOf(Font::class, $object->setSuperScript(true));
+        self::assertInstanceOf(Font::class, $object->setSubScript(false));
+        self::assertTrue($object->isSuperScript());
     }
 
     /**
@@ -239,6 +238,6 @@ class FontTest extends TestCase
         $object = new Font();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEquals($value, $object->getHashIndex());
     }
 }

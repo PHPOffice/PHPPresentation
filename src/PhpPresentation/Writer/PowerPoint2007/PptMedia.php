@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -25,9 +24,6 @@ use PhpOffice\PhpPresentation\Shape\Drawing\AbstractDrawingAdapter;
 
 class PptMedia extends AbstractDecoratorWriter
 {
-    /**
-     * @return ZipInterface
-     */
     public function render(): ZipInterface
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {

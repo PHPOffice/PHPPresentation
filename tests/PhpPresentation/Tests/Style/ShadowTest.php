@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,14 +36,14 @@ class ShadowTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Shadow();
-        $this->assertFalse($object->isVisible());
-        $this->assertEquals(6, $object->getBlurRadius());
-        $this->assertEquals(2, $object->getDistance());
-        $this->assertEquals(0, $object->getDirection());
-        $this->assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
-        $this->assertInstanceOf(Color::class, $object->getColor());
-        $this->assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
-        $this->assertEquals(50, $object->getAlpha());
+        self::assertFalse($object->isVisible());
+        self::assertEquals(6, $object->getBlurRadius());
+        self::assertEquals(2, $object->getDistance());
+        self::assertEquals(0, $object->getDirection());
+        self::assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
+        self::assertInstanceOf(Color::class, $object->getColor());
+        self::assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+        self::assertEquals(50, $object->getAlpha());
     }
 
     /**
@@ -53,10 +52,10 @@ class ShadowTest extends TestCase
     public function testSetGetAlignment(): void
     {
         $object = new Shadow();
-        $this->assertInstanceOf(Shadow::class, $object->setAlignment());
-        $this->assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
-        $this->assertInstanceOf(Shadow::class, $object->setAlignment(Shadow::SHADOW_CENTER));
-        $this->assertEquals(Shadow::SHADOW_CENTER, $object->getAlignment());
+        self::assertInstanceOf(Shadow::class, $object->setAlignment());
+        self::assertEquals(Shadow::SHADOW_BOTTOM_RIGHT, $object->getAlignment());
+        self::assertInstanceOf(Shadow::class, $object->setAlignment(Shadow::SHADOW_CENTER));
+        self::assertEquals(Shadow::SHADOW_CENTER, $object->getAlignment());
     }
 
     /**
@@ -65,11 +64,11 @@ class ShadowTest extends TestCase
     public function testSetGetAlpha(): void
     {
         $object = new Shadow();
-        $this->assertInstanceOf(Shadow::class, $object->setAlpha());
-        $this->assertEquals(0, $object->getAlpha());
+        self::assertInstanceOf(Shadow::class, $object->setAlpha());
+        self::assertEquals(0, $object->getAlpha());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf(Shadow::class, $object->setAlpha($value));
-        $this->assertEquals($value, $object->getAlpha());
+        self::assertInstanceOf(Shadow::class, $object->setAlpha($value));
+        self::assertEquals($value, $object->getAlpha());
     }
 
     /**
@@ -78,11 +77,11 @@ class ShadowTest extends TestCase
     public function testSetGetBlurRadius(): void
     {
         $object = new Shadow();
-        $this->assertInstanceOf(Shadow::class, $object->setBlurRadius());
-        $this->assertEquals(6, $object->getBlurRadius());
+        self::assertInstanceOf(Shadow::class, $object->setBlurRadius());
+        self::assertEquals(6, $object->getBlurRadius());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf(Shadow::class, $object->setBlurRadius($value));
-        $this->assertEquals($value, $object->getBlurRadius());
+        self::assertInstanceOf(Shadow::class, $object->setBlurRadius($value));
+        self::assertEquals($value, $object->getBlurRadius());
     }
 
     /**
@@ -91,11 +90,11 @@ class ShadowTest extends TestCase
     public function testSetGetColor(): void
     {
         $object = new Shadow();
-        $this->assertInstanceOf(Shadow::class, $object->setColor());
-        $this->assertNull($object->getColor());
-        $this->assertInstanceOf(Shadow::class, $object->setColor(new Color(Color::COLOR_BLUE)));
-        $this->assertInstanceOf(Color::class, $object->getColor());
-        $this->assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
+        self::assertInstanceOf(Shadow::class, $object->setColor());
+        self::assertNull($object->getColor());
+        self::assertInstanceOf(Shadow::class, $object->setColor(new Color(Color::COLOR_BLUE)));
+        self::assertInstanceOf(Color::class, $object->getColor());
+        self::assertEquals(Color::COLOR_BLUE, $object->getColor()->getARGB());
     }
 
     /**
@@ -104,11 +103,11 @@ class ShadowTest extends TestCase
     public function testSetGetDirection(): void
     {
         $object = new Shadow();
-        $this->assertInstanceOf(Shadow::class, $object->setDirection());
-        $this->assertEquals(0, $object->getDirection());
+        self::assertInstanceOf(Shadow::class, $object->setDirection());
+        self::assertEquals(0, $object->getDirection());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf(Shadow::class, $object->setDirection($value));
-        $this->assertEquals($value, $object->getDirection());
+        self::assertInstanceOf(Shadow::class, $object->setDirection($value));
+        self::assertEquals($value, $object->getDirection());
     }
 
     /**
@@ -117,11 +116,11 @@ class ShadowTest extends TestCase
     public function testSetGetDistance(): void
     {
         $object = new Shadow();
-        $this->assertInstanceOf(Shadow::class, $object->setDistance());
-        $this->assertEquals(2, $object->getDistance());
+        self::assertInstanceOf(Shadow::class, $object->setDistance());
+        self::assertEquals(2, $object->getDistance());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf(Shadow::class, $object->setDistance($value));
-        $this->assertEquals($value, $object->getDistance());
+        self::assertInstanceOf(Shadow::class, $object->setDistance($value));
+        self::assertEquals($value, $object->getDistance());
     }
 
     /**
@@ -132,7 +131,7 @@ class ShadowTest extends TestCase
         $object = new Shadow();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     /**
@@ -141,11 +140,11 @@ class ShadowTest extends TestCase
     public function testSetIsVisible(): void
     {
         $object = new Shadow();
-        $this->assertInstanceOf(Shadow::class, $object->setVisible());
-        $this->assertFalse($object->isVisible());
-        $this->assertInstanceOf(Shadow::class, $object->setVisible(false));
-        $this->assertFalse($object->isVisible());
-        $this->assertInstanceOf(Shadow::class, $object->setVisible(true));
-        $this->assertTrue($object->isVisible());
+        self::assertInstanceOf(Shadow::class, $object->setVisible());
+        self::assertFalse($object->isVisible());
+        self::assertInstanceOf(Shadow::class, $object->setVisible(false));
+        self::assertFalse($object->isVisible());
+        self::assertInstanceOf(Shadow::class, $object->setVisible(true));
+        self::assertTrue($object->isVisible());
     }
 }

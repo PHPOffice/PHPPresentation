@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -31,9 +30,6 @@ class MetaTest extends PhpPresentationTestCase
      * @dataProvider dataProviderCustomProperties
      *
      * @param mixed $propertyValue
-     * @param string|null $propertyType
-     * @param string $expectedValue
-     * @param string $expectedValueType
      */
     public function testCustomProperties($propertyValue, ?string $propertyType, string $expectedValue, string $expectedValueType): void
     {
@@ -50,9 +46,9 @@ class MetaTest extends PhpPresentationTestCase
     }
 
     /**
-     * @return array<array<bool|string|int|float|null>>
+     * @return array<array<null|bool|float|int|string>>
      */
-    public function dataProviderCustomProperties(): array
+    public static function dataProviderCustomProperties(): array
     {
         $valueTime = time();
 

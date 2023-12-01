@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,24 +35,24 @@ class MarkerTest extends TestCase
     {
         $object = new Marker();
 
-        $this->assertEquals(Marker::SYMBOL_NONE, $object->getSymbol());
-        $this->assertEquals(5, $object->getSize());
+        self::assertEquals(Marker::SYMBOL_NONE, $object->getSymbol());
+        self::assertEquals(5, $object->getSize());
     }
 
     public function testBorder(): void
     {
         $object = new Marker();
 
-        $this->assertInstanceOf(Border::class, $object->getBorder());
-        $this->assertInstanceOf(Marker::class, $object->setBorder(new Border()));
+        self::assertInstanceOf(Border::class, $object->getBorder());
+        self::assertInstanceOf(Marker::class, $object->setBorder(new Border()));
     }
 
     public function testFill(): void
     {
         $object = new Marker();
 
-        $this->assertInstanceOf(Fill::class, $object->getFill());
-        $this->assertInstanceOf(Marker::class, $object->setFill(new Fill()));
+        self::assertInstanceOf(Fill::class, $object->getFill());
+        self::assertInstanceOf(Marker::class, $object->setFill(new Fill()));
     }
 
     public function testSize(): void
@@ -61,8 +60,8 @@ class MarkerTest extends TestCase
         $object = new Marker();
         $value = mt_rand(1, 100);
 
-        $this->assertInstanceOf(Marker::class, $object->setSize($value));
-        $this->assertEquals($value, $object->getSize());
+        self::assertInstanceOf(Marker::class, $object->setSize($value));
+        self::assertEquals($value, $object->getSize());
     }
 
     public function testSymbol(): void
@@ -71,7 +70,7 @@ class MarkerTest extends TestCase
 
         $expected = Marker::$arraySymbol[array_rand(Marker::$arraySymbol)];
 
-        $this->assertInstanceOf(Marker::class, $object->setSymbol($expected));
-        $this->assertEquals($expected, $object->getSymbol());
+        self::assertInstanceOf(Marker::class, $object->setSymbol($expected));
+        self::assertEquals($expected, $object->getSymbol());
     }
 }

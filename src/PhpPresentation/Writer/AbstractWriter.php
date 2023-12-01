@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -41,12 +40,12 @@ abstract class AbstractWriter
     /**
      * Private PhpPresentation.
      *
-     * @var PhpPresentation|null
+     * @var null|PhpPresentation
      */
     protected $oPresentation;
 
     /**
-     * @var ZipInterface|null
+     * @var null|ZipInterface
      */
     protected $oZipAdapter;
 
@@ -69,11 +68,11 @@ abstract class AbstractWriter
     /**
      * Get PhpPresentation object.
      *
-     * @param PhpPresentation|null $pPhpPresentation PhpPresentation object
+     * @param null|PhpPresentation $pPhpPresentation PhpPresentation object
      *
      * @return self
      */
-    public function setPhpPresentation(PhpPresentation $pPhpPresentation = null)
+    public function setPhpPresentation(?PhpPresentation $pPhpPresentation = null)
     {
         $this->oPresentation = $pPhpPresentation;
 
@@ -111,7 +110,7 @@ abstract class AbstractWriter
 
         // Get an array of all slide layouts
         $aSlideLayouts = [];
-        array_walk_recursive($aSlideMasterLayouts, function ($oSlideLayout) use (&$aSlideLayouts) {
+        array_walk_recursive($aSlideMasterLayouts, function ($oSlideLayout) use (&$aSlideLayouts): void {
             $aSlideLayouts[] = $oSlideLayout;
         });
 

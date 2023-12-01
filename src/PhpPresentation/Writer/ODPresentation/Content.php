@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -179,7 +178,7 @@ class Content extends AbstractDecoratorWriter
                         $oAlign = $item['oAlign_' . $level];
                         // text:list-level-style-bullet
                         $objWriter->startElement('text:list-level-style-bullet');
-                        $objWriter->writeAttribute('text:level', intval($level) + 1);
+                        $objWriter->writeAttribute('text:level', (int) $level + 1);
                         $objWriter->writeAttribute('text:bullet-char', $oStyle->getBulletChar());
                         // style:list-level-properties
                         $objWriter->startElement('style:list-level-properties');
@@ -235,21 +234,27 @@ class Content extends AbstractDecoratorWriter
                 switch ($item->getAlignment()->getHorizontal()) {
                     case Alignment::HORIZONTAL_LEFT:
                         $objWriter->writeAttribute('fo:text-align', 'left');
+
                         break;
                     case Alignment::HORIZONTAL_RIGHT:
                         $objWriter->writeAttribute('fo:text-align', 'right');
+
                         break;
                     case Alignment::HORIZONTAL_CENTER:
                         $objWriter->writeAttribute('fo:text-align', 'center');
+
                         break;
                     case Alignment::HORIZONTAL_JUSTIFY:
                         $objWriter->writeAttribute('fo:text-align', 'justify');
+
                         break;
                     case Alignment::HORIZONTAL_DISTRIBUTED:
                         $objWriter->writeAttribute('fo:text-align', 'justify');
+
                         break;
                     default:
                         $objWriter->writeAttribute('fo:text-align', 'left');
+
                         break;
                 }
                 $objWriter->writeAttribute(
@@ -278,6 +283,7 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttributeIf($item->getFont()->isBold(), 'fo:font-weight', 'bold');
                         $objWriter->writeAttribute('fo:language', ($item->getLanguage() ? $item->getLanguage() : 'en'));
                         $objWriter->writeAttribute('style:script-type', 'latin');
+
                         break;
                     case Font::FORMAT_EAST_ASIAN:
                         $objWriter->writeAttribute('style:font-family-asian', $item->getFont()->getName());
@@ -285,6 +291,7 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-asian', 'bold');
                         $objWriter->writeAttribute('style:language-asian', ($item->getLanguage() ? $item->getLanguage() : 'en'));
                         $objWriter->writeAttribute('style:script-type', 'asian');
+
                         break;
                     case Font::FORMAT_COMPLEX_SCRIPT:
                         $objWriter->writeAttribute('style:font-family-complex', $item->getFont()->getName());
@@ -292,6 +299,7 @@ class Content extends AbstractDecoratorWriter
                         $objWriter->writeAttributeIf($item->getFont()->isBold(), 'style:font-weight-complex', 'bold');
                         $objWriter->writeAttribute('style:language-complex', ($item->getLanguage() ? $item->getLanguage() : 'en'));
                         $objWriter->writeAttribute('style:script-type', 'complex');
+
                         break;
                 }
 
@@ -318,7 +326,7 @@ class Content extends AbstractDecoratorWriter
             $pSlide = $this->getPresentation()->getSlide($i);
             $objWriter->startElement('draw:page');
             $name = $pSlide->getName();
-            if (!is_null($name)) {
+            if (null !== $name) {
                 $objWriter->writeAttribute('draw:name', $name);
             }
             $objWriter->writeAttribute('draw:master-page-name', 'Standard');
@@ -549,7 +557,7 @@ class Content extends AbstractDecoratorWriter
             } elseif ('bullet' == $paragraph->getBulletStyle()->getBulletType()) {
                 $bCstShpHasBullet = true;
                 // Open the bullet list
-                if ('bullet' != $sCstShpLastBullet || ($sCstShpLastBullet == $paragraph->getBulletStyle()->getBulletType() && $iCstShpLastBulletLvl < $paragraph->getAlignment()->getLevel())) {
+                if ('bullet' != $sCstShpLastBullet || $iCstShpLastBulletLvl < $paragraph->getAlignment()->getLevel()) {
                     // text:list
                     $objWriter->startElement('text:list');
                     $objWriter->writeAttribute('text:style-name', 'L_' . $paragraph->getBulletStyle()->getHashCode());
@@ -633,9 +641,7 @@ class Content extends AbstractDecoratorWriter
      */
     protected function writeShapeComment(XMLWriter $objWriter, Comment $oShape): void
     {
-        /*
-         * Note : This element is not valid in the Schema 1.2
-         */
+        // Note : This element is not valid in the Schema 1.2
         // officeooo:annotation
         $objWriter->startElement('officeooo:annotation');
         $objWriter->writeAttribute('svg:x', number_format(CommonDrawing::pixelsToCentimeters((int) $oShape->getOffsetX()), 2, '.', '') . 'cm');
@@ -874,15 +880,18 @@ class Content extends AbstractDecoratorWriter
             case Fill::FILL_GRADIENT_PATH:
                 $objWriter->writeAttribute('draw:fill', 'gradient');
                 $objWriter->writeAttribute('draw:fill-gradient-name', 'gradient_' . $shape->getFill()->getHashCode());
+
                 break;
             case Fill::FILL_SOLID:
                 $objWriter->writeAttribute('draw:fill', 'solid');
                 $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
+
                 break;
             case Fill::FILL_NONE:
             default:
                 $objWriter->writeAttribute('draw:fill', 'none');
                 $objWriter->writeAttribute('draw:fill-color', '#' . $shape->getFill()->getStartColor()->getRGB());
+
                 break;
         }
         // Border
@@ -894,6 +903,7 @@ class Content extends AbstractDecoratorWriter
             switch ($shape->getBorder()->getDashStyle()) {
                 case Border::DASH_SOLID:
                     $objWriter->writeAttribute('draw:stroke', 'solid');
+
                     break;
                 case Border::DASH_DASH:
                 case Border::DASH_DASHDOT:
@@ -907,9 +917,11 @@ class Content extends AbstractDecoratorWriter
                 case Border::DASH_SYSDOT:
                     $objWriter->writeAttribute('draw:stroke', 'dash');
                     $objWriter->writeAttribute('draw:stroke-dash', 'strokeDash_' . $shape->getBorder()->getDashStyle());
+
                     break;
                 default:
                     $objWriter->writeAttribute('draw:stroke', 'none');
+
                     break;
             }
         }
@@ -995,12 +1007,15 @@ class Content extends AbstractDecoratorWriter
         switch ($shape->getBorder()->getLineStyle()) {
             case Border::LINE_NONE:
                 $objWriter->writeAttribute('draw:stroke', 'none');
+
                 break;
             case Border::LINE_SINGLE:
                 $objWriter->writeAttribute('draw:stroke', 'solid');
+
                 break;
             default:
                 $objWriter->writeAttribute('draw:stroke', 'none');
+
                 break;
         }
         $objWriter->writeAttribute('svg:stroke-color', '#' . $shape->getBorder()->getColor()->getRGB());
@@ -1034,9 +1049,7 @@ class Content extends AbstractDecoratorWriter
                 $objWriter->writeAttribute('style:name', 'gr' . $this->shapeId . 'r' . $keyRow . 'c' . $keyCell);
                 $objWriter->writeAttribute('style:family', 'table-cell');
 
-                /*
-                 * Note : This element is not valid in the Schema 1.2
-                 */
+                // Note : This element is not valid in the Schema 1.2
                 // style:graphic-properties
                 if (Fill::FILL_NONE != $shapeCell->getFill()->getFillType()) {
                     $objWriter->startElement('style:graphic-properties');
@@ -1157,166 +1170,214 @@ class Content extends AbstractDecoratorWriter
         // style:style/style:drawing-page-properties
         $objWriter->startElement('style:drawing-page-properties');
         $objWriter->writeAttributeIf(!$slide->isVisible(), 'presentation:visibility', 'hidden');
-        if (!is_null($oTransition = $slide->getTransition())) {
+        if (null !== ($oTransition = $slide->getTransition())) {
             $objWriter->writeAttribute('presentation:duration', 'PT' . number_format($oTransition->getAdvanceTimeTrigger() / 1000, 6, '.', '') . 'S');
             $objWriter->writeAttributeIf($oTransition->hasManualTrigger(), 'presentation:transition-type', 'manual');
             $objWriter->writeAttributeIf($oTransition->hasTimeTrigger(), 'presentation:transition-type', 'automatic');
             switch ($oTransition->getSpeed()) {
                 case Transition::SPEED_FAST:
                     $objWriter->writeAttribute('presentation:transition-speed', 'fast');
+
                     break;
                 case Transition::SPEED_MEDIUM:
                     $objWriter->writeAttribute('presentation:transition-speed', 'medium');
+
                     break;
                 case Transition::SPEED_SLOW:
                     $objWriter->writeAttribute('presentation:transition-speed', 'slow');
+
                     break;
             }
 
-            /*
-             * http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#property-presentation_transition-style
-             */
+            // http://docs.oasis-open.org/office/v1.2/os/OpenDocument-v1.2-os-part1.html#property-presentation_transition-style
             switch ($oTransition->getTransitionType()) {
                 case Transition::TRANSITION_BLINDS_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'horizontal-stripes');
+
                     break;
                 case Transition::TRANSITION_BLINDS_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'vertical-stripes');
+
                     break;
                 case Transition::TRANSITION_CHECKER_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'horizontal-checkerboard');
+
                     break;
                 case Transition::TRANSITION_CHECKER_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'vertical-checkerboard');
+
                     break;
                 case Transition::TRANSITION_CIRCLE:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_COMB_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_COMB_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_COVER_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-bottom');
+
                     break;
                 case Transition::TRANSITION_COVER_LEFT:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-left');
+
                     break;
                 case Transition::TRANSITION_COVER_LEFT_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-lowerleft');
+
                     break;
                 case Transition::TRANSITION_COVER_LEFT_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-upperleft');
+
                     break;
                 case Transition::TRANSITION_COVER_RIGHT:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-right');
+
                     break;
                 case Transition::TRANSITION_COVER_RIGHT_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-lowerright');
+
                     break;
                 case Transition::TRANSITION_COVER_RIGHT_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-upperright');
+
                     break;
                 case Transition::TRANSITION_COVER_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'uncover-to-top');
+
                     break;
                 case Transition::TRANSITION_CUT:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_DIAMOND:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_DISSOLVE:
                     $objWriter->writeAttribute('presentation:transition-style', 'dissolve');
+
                     break;
                 case Transition::TRANSITION_FADE:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-center');
+
                     break;
                 case Transition::TRANSITION_NEWSFLASH:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_PLUS:
                     $objWriter->writeAttribute('presentation:transition-style', 'close');
+
                     break;
                 case Transition::TRANSITION_PULL_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-bottom');
+
                     break;
                 case Transition::TRANSITION_PULL_LEFT:
                     $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-left');
+
                     break;
                 case Transition::TRANSITION_PULL_RIGHT:
                     $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-right');
+
                     break;
                 case Transition::TRANSITION_PULL_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'stretch-from-top');
+
                     break;
                 case Transition::TRANSITION_PUSH_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'roll-from-bottom');
+
                     break;
                 case Transition::TRANSITION_PUSH_LEFT:
                     $objWriter->writeAttribute('presentation:transition-style', 'roll-from-left');
+
                     break;
                 case Transition::TRANSITION_PUSH_RIGHT:
                     $objWriter->writeAttribute('presentation:transition-style', 'roll-from-right');
+
                     break;
                 case Transition::TRANSITION_PUSH_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'roll-from-top');
+
                     break;
                 case Transition::TRANSITION_RANDOM:
                     $objWriter->writeAttribute('presentation:transition-style', 'random');
+
                     break;
                 case Transition::TRANSITION_RANDOMBAR_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'horizontal-lines');
+
                     break;
                 case Transition::TRANSITION_RANDOMBAR_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'vertical-lines');
+
                     break;
                 case Transition::TRANSITION_SPLIT_IN_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'close-horizontal');
+
                     break;
                 case Transition::TRANSITION_SPLIT_OUT_HORIZONTAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'open-horizontal');
+
                     break;
                 case Transition::TRANSITION_SPLIT_IN_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'close-vertical');
+
                     break;
                 case Transition::TRANSITION_SPLIT_OUT_VERTICAL:
                     $objWriter->writeAttribute('presentation:transition-style', 'open-vertical');
+
                     break;
                 case Transition::TRANSITION_STRIPS_LEFT_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_STRIPS_LEFT_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_STRIPS_RIGHT_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_STRIPS_RIGHT_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_WEDGE:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_WIPE_DOWN:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-bottom');
+
                     break;
                 case Transition::TRANSITION_WIPE_LEFT:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-left');
+
                     break;
                 case Transition::TRANSITION_WIPE_RIGHT:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-right');
+
                     break;
                 case Transition::TRANSITION_WIPE_UP:
                     $objWriter->writeAttribute('presentation:transition-style', 'fade-from-top');
+
                     break;
                 case Transition::TRANSITION_ZOOM_IN:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
                 case Transition::TRANSITION_ZOOM_OUT:
                     $objWriter->writeAttribute('presentation:transition-style', 'none');
+
                     break;
             }
         }
@@ -1347,10 +1408,12 @@ class Content extends AbstractDecoratorWriter
             case Fill::FILL_SOLID:
                 $objWriter->writeAttribute('draw:fill', 'solid');
                 $objWriter->writeAttribute('draw:fill-color', '#' . $oFill->getStartColor()->getRGB());
+
                 break;
             case Fill::FILL_NONE:
             default:
                 $objWriter->writeAttribute('draw:fill', 'none');
+
                 break;
         }
     }

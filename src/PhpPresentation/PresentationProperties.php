@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -71,7 +70,7 @@ class PresentationProperties
     protected $markAsFinal = false;
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $thumbnail;
 
@@ -111,8 +110,6 @@ class PresentationProperties
 
     /**
      * Return the thumbnail file path.
-     *
-     * @return string|null
      */
     public function getThumbnailPath(): ?string
     {
@@ -121,10 +118,6 @@ class PresentationProperties
 
     /**
      * Define the path for the thumbnail file / preview picture.
-     *
-     * @param string $path
-     *
-     * @return self
      */
     public function setThumbnailPath(string $path = ''): self
     {
@@ -147,8 +140,6 @@ class PresentationProperties
 
     /**
      * Return if this document is marked as final.
-     *
-     * @return bool
      */
     public function isMarkedAsFinal(): bool
     {
@@ -173,11 +164,6 @@ class PresentationProperties
         return $this->zoom;
     }
 
-    /**
-     * @param string $value
-     *
-     * @return self
-     */
     public function setLastView(string $value = self::VIEW_SLIDE): self
     {
         if (in_array($value, $this->arrayView)) {
@@ -187,9 +173,6 @@ class PresentationProperties
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLastView(): string
     {
         return $this->lastView;
@@ -207,19 +190,11 @@ class PresentationProperties
         return $this->isCommentVisible;
     }
 
-    /**
-     * @return string
-     */
     public function getSlideshowType(): string
     {
         return $this->slideshowType;
     }
 
-    /**
-     * @param string $value
-     *
-     * @return self
-     */
     public function setSlideshowType(string $value = self::SLIDESHOW_TYPE_PRESENT): self
     {
         if (in_array($value, $this->arraySlideshowTypes)) {

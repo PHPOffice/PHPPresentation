@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -57,11 +56,11 @@ class Run extends TextElement implements TextElementInterface
     /**
      * Set font.
      *
-     * @param Font|null $pFont Font
+     * @param null|Font $pFont Font
      *
      * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
      */
-    public function setFont(Font $pFont = null)
+    public function setFont(?Font $pFont = null)
     {
         $this->font = $pFont;
 

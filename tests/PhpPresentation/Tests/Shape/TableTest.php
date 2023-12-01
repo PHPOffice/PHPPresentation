@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,8 +34,8 @@ class TableTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Table();
-        $this->assertEmpty($object->getRows());
-        $this->assertFalse($object->isResizeProportional());
+        self::assertEmpty($object->getRows());
+        self::assertFalse($object->isResizeProportional());
     }
 
     public function testNumColums(): void
@@ -44,19 +43,19 @@ class TableTest extends TestCase
         $value = mt_rand(1, 100);
         $object = new Table();
 
-        $this->assertEquals(1, $object->getNumColumns());
-        $this->assertInstanceOf(Table::class, $object->setNumColumns($value));
-        $this->assertEquals($value, $object->getNumColumns());
+        self::assertEquals(1, $object->getNumColumns());
+        self::assertInstanceOf(Table::class, $object->setNumColumns($value));
+        self::assertEquals($value, $object->getNumColumns());
     }
 
     public function testRows(): void
     {
         $object = new Table();
 
-        $this->assertInstanceOf(Row::class, $object->createRow());
-        $this->assertCount(1, $object->getRows());
+        self::assertInstanceOf(Row::class, $object->createRow());
+        self::assertCount(1, $object->getRows());
 
-        $this->assertInstanceOf(Row::class, $object->getRow(0));
+        self::assertInstanceOf(Row::class, $object->getRow(0));
     }
 
     public function testGetRowException(): void
@@ -71,9 +70,9 @@ class TableTest extends TestCase
     public function testHashCode(): void
     {
         $object = new Table();
-        $this->assertEquals(md5(get_class($object)), $object->getHashCode());
+        self::assertEquals(md5(get_class($object)), $object->getHashCode());
 
         $row = $object->createRow();
-        $this->assertEquals(md5($row->getHashCode() . get_class($object)), $object->getHashCode());
+        self::assertEquals(md5($row->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

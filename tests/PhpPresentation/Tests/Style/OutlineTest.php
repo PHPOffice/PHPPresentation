@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,8 +36,8 @@ class OutlineTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Outline();
-        $this->assertEquals(1, $object->getWidth());
-        $this->assertInstanceOf(Fill::class, $object->getFill());
+        self::assertEquals(1, $object->getWidth());
+        self::assertInstanceOf(Fill::class, $object->getFill());
     }
 
     /**
@@ -47,9 +46,9 @@ class OutlineTest extends TestCase
     public function testSetGetFill(): void
     {
         $object = new Outline();
-        $this->assertInstanceOf(Fill::class, $object->getFill());
-        $this->assertInstanceOf(Outline::class, $object->setFill(new Fill()));
-        $this->assertInstanceOf(Fill::class, $object->getFill());
+        self::assertInstanceOf(Fill::class, $object->getFill());
+        self::assertInstanceOf(Outline::class, $object->setFill(new Fill()));
+        self::assertInstanceOf(Fill::class, $object->getFill());
     }
 
     /**
@@ -58,9 +57,9 @@ class OutlineTest extends TestCase
     public function testSetGetWidth(): void
     {
         $object = new Outline();
-        $this->assertEquals(1, $object->getWidth());
+        self::assertEquals(1, $object->getWidth());
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf(Outline::class, $object->setWidth($value));
-        $this->assertEquals($value, $object->getWidth());
+        self::assertInstanceOf(Outline::class, $object->setWidth($value));
+        self::assertEquals($value, $object->getWidth());
     }
 }

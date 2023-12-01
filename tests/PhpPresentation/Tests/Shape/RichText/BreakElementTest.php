@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,25 +35,25 @@ class BreakElementTest extends TestCase
     public function testText(): void
     {
         $object = new BreakElement();
-        $this->assertEquals("\r\n", $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setText());
-        $this->assertEquals("\r\n", $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setText('AAA'));
-        $this->assertEquals("\r\n", $object->getText());
+        self::assertEquals("\r\n", $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setText());
+        self::assertEquals("\r\n", $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setText('AAA'));
+        self::assertEquals("\r\n", $object->getText());
     }
 
     public function testFont(): void
     {
         $object = new BreakElement();
-        $this->assertNull($object->getFont());
+        self::assertNull($object->getFont());
     }
 
     public function testLanguage(): void
     {
         $object = new BreakElement();
-        $this->assertNull($object->getLanguage());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setLanguage('en-US'));
-        $this->assertNull($object->getLanguage());
+        self::assertNull($object->getLanguage());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $object->setLanguage('en-US'));
+        self::assertNull($object->getLanguage());
     }
 
     /**
@@ -63,6 +62,6 @@ class BreakElementTest extends TestCase
     public function testHashCode(): void
     {
         $object = new BreakElement();
-        $this->assertEquals(md5(get_class($object)), $object->getHashCode());
+        self::assertEquals(md5(get_class($object)), $object->getHashCode());
     }
 }

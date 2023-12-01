@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -81,8 +80,6 @@ class Row implements ComparableInterface
      * Get cell.
      *
      * @param int $cell Cell number
-     *
-     * @throws OutOfBoundsException
      */
     public function getCell(int $cell = 0): Cell
     {
@@ -101,8 +98,6 @@ class Row implements ComparableInterface
      * Get cell.
      *
      * @param int $cell Cell number
-     *
-     * @return bool
      */
     public function hasCell(int $cell): bool
     {
@@ -121,10 +116,6 @@ class Row implements ComparableInterface
 
     /**
      * Next cell (moves one cell to the right).
-     *
-     * @return Cell
-     *
-     * @throws OutOfBoundsException
      */
     public function nextCell(): Cell
     {
@@ -144,8 +135,6 @@ class Row implements ComparableInterface
 
     /**
      * Get fill.
-     *
-     * @return Fill
      */
     public function getFill(): Fill
     {
@@ -154,8 +143,6 @@ class Row implements ComparableInterface
 
     /**
      * Set fill.
-     *
-     * @return self
      */
     public function setFill(Fill $fill): self
     {
@@ -166,8 +153,6 @@ class Row implements ComparableInterface
 
     /**
      * Get height.
-     *
-     * @return int
      */
     public function getHeight(): int
     {
@@ -176,10 +161,6 @@ class Row implements ComparableInterface
 
     /**
      * Set height.
-     *
-     * @param int $value
-     *
-     * @return self
      */
     public function setHeight(int $value = 0): self
     {
@@ -209,7 +190,7 @@ class Row implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

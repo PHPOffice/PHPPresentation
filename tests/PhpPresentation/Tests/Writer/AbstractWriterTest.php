@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -45,9 +44,9 @@ class AbstractWriterTest extends TestCase
         /** @var ZipInterface $oStubZip */
         $oStubZip = $this->getMockForAbstractClass(ZipInterface::class);
 
-        $this->assertNull($oStubWriter->getZipAdapter());
-        $this->assertInstanceOf(AbstractWriter::class, $oStubWriter->setZipAdapter($oStubZip));
-        $this->assertInstanceOf(ZipInterface::class, $oStubWriter->getZipAdapter());
+        self::assertNull($oStubWriter->getZipAdapter());
+        self::assertInstanceOf(AbstractWriter::class, $oStubWriter->setZipAdapter($oStubZip));
+        self::assertInstanceOf(ZipInterface::class, $oStubWriter->getZipAdapter());
     }
 
     /**
@@ -69,6 +68,6 @@ class AbstractWriterTest extends TestCase
         $writer->setPhpPresentation($presentation);
 
         $drawings = $writer->allDrawings();
-        $this->assertCount(2, $drawings, 'Number of drawings should equal two: one from normal slide and one from master slide');
+        self::assertCount(2, $drawings, 'Number of drawings should equal two: one from normal slide and one from master slide');
     }
 }

@@ -46,15 +46,19 @@ for ($inc = 1; $inc <= 4; ++$inc) {
     switch ($inc) {
         case 1:
             $shape->getFill()->setFillType(Fill::FILL_NONE);
+
             break;
         case 2:
             $shape->getFill()->setFillType(Fill::FILL_GRADIENT_LINEAR)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF000000'));
+
             break;
         case 3:
             $shape->getFill()->setFillType(Fill::FILL_GRADIENT_PATH)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF000000'));
+
             break;
         case 4:
             $shape->getFill()->setFillType(Fill::FILL_SOLID)->setRotation(90)->setStartColor(new Color('FF4672A8'))->setEndColor(new Color('FF4672A8'));
+
             break;
     }
 

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -39,20 +38,20 @@ class RowTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Row();
-        $this->assertCount(1, $object->getCells());
-        $this->assertInstanceOf(Fill::class, $object->getFill());
+        self::assertCount(1, $object->getCells());
+        self::assertInstanceOf(Fill::class, $object->getFill());
 
         $value = mt_rand(1, 100);
         $object = new Row($value);
-        $this->assertCount($value, $object->getCells());
-        $this->assertInstanceOf(Fill::class, $object->getFill());
+        self::assertCount($value, $object->getCells());
+        self::assertInstanceOf(Fill::class, $object->getFill());
     }
 
     public function testGetCell(): void
     {
         $object = new Row();
 
-        $this->assertInstanceOf(Cell::class, $object->getCell(0));
+        self::assertInstanceOf(Cell::class, $object->getCell(0));
     }
 
     public function testGetCellException(): void
@@ -68,7 +67,7 @@ class RowTest extends TestCase
     {
         $object = new Row(2);
 
-        $this->assertInstanceOf(Cell::class, $object->nextCell());
+        self::assertInstanceOf(Cell::class, $object->nextCell());
     }
 
     public function testNextCellException(): void
@@ -89,26 +88,26 @@ class RowTest extends TestCase
         $object = new Row();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     public function testGetSetFill(): void
     {
         $object = new Row();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setFill(new Fill()));
-        $this->assertInstanceOf(Fill::class, $object->getFill());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setFill(new Fill()));
+        self::assertInstanceOf(Fill::class, $object->getFill());
     }
 
     public function testGetSetHeight(): void
     {
         $object = new Row();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setHeight());
-        $this->assertEquals(0, $object->getHeight());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setHeight());
+        self::assertEquals(0, $object->getHeight());
 
         $value = mt_rand(1, 100);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setHeight($value));
-        $this->assertEquals($value, $object->getHeight());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Table\\Row', $object->setHeight($value));
+        self::assertEquals($value, $object->getHeight());
     }
 }

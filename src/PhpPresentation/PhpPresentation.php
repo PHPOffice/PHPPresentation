@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -118,8 +117,6 @@ class PhpPresentation
 
     /**
      * Set presentation properties.
-     *
-     * @return PhpPresentation
      */
     public function setPresentationProperties(PresentationProperties $value): self
     {
@@ -179,8 +176,6 @@ class PhpPresentation
      * Remove slide by index.
      *
      * @param int $index Slide index
-     *
-     * @throws OutOfBoundsException
      */
     public function removeSlideByIndex(int $index = 0): self
     {
@@ -196,8 +191,6 @@ class PhpPresentation
      * Get slide by index.
      *
      * @param int $index Slide index
-     *
-     * @throws OutOfBoundsException
      */
     public function getSlide(int $index = 0): Slide
     {
@@ -257,8 +250,6 @@ class PhpPresentation
      * Set active slide index.
      *
      * @param int $index Active slide index
-     *
-     * @throws OutOfBoundsException
      */
     public function setActiveSlideIndex(int $index = 0): Slide
     {
@@ -316,7 +307,7 @@ class PhpPresentation
     /**
      * Copy presentation (!= clone!).
      */
-    public function copy(): PhpPresentation
+    public function copy(): self
     {
         $copied = clone $this;
 

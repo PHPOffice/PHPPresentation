@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -131,12 +130,14 @@ class DocumentLayout
                 $this->layout = $pValue;
                 $this->dimensionX = $this->dimension[$this->layout]['cx'];
                 $this->dimensionY = $this->dimension[$this->layout]['cy'];
+
                 break;
             case self::LAYOUT_CUSTOM:
             default:
                 $this->layout = self::LAYOUT_CUSTOM;
                 $this->dimensionX = $pValue['cx'];
                 $this->dimensionY = $pValue['cy'];
+
                 break;
         }
 
@@ -196,18 +197,23 @@ class DocumentLayout
         switch ($fromUnit) {
             case self::UNIT_MILLIMETER:
                 $value *= 36000;
+
                 break;
             case self::UNIT_CENTIMETER:
                 $value *= 360000;
+
                 break;
             case self::UNIT_INCH:
                 $value *= 914400;
+
                 break;
             case self::UNIT_PIXEL:
                 $value = Drawing::pixelsToEmu($value);
+
                 break;
             case self::UNIT_POINT:
                 $value *= 12700;
+
                 break;
             case self::UNIT_EMU:
             default:
@@ -218,22 +224,27 @@ class DocumentLayout
         switch ($toUnit) {
             case self::UNIT_MILLIMETER:
                 $value /= 36000;
+
                 break;
             case self::UNIT_CENTIMETER:
                 $value /= 360000;
+
                 break;
             case self::UNIT_INCH:
                 $value /= 914400;
+
                 break;
             case self::UNIT_PIXEL:
                 $value = Drawing::emuToPixels((int) $value);
+
                 break;
             case self::UNIT_POINT:
                 $value /= 12700;
+
                 break;
             case self::UNIT_EMU:
             default:
-            // no changes
+                // no changes
         }
 
         return $value;

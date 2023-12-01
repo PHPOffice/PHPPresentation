@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -29,11 +28,15 @@ use LibXMLError;
 use PhpOffice\PhpPresentation\IOFactory;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PHPUnit\Framework\TestCase;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
+use SplFileInfo;
+use ZipArchive;
 
 class PhpPresentationTestCase extends TestCase
 {
     /**
-     * @var PhpPresentation|null
+     * @var null|PhpPresentation
      */
     protected $oPresentation;
 
@@ -55,19 +58,19 @@ class PhpPresentationTestCase extends TestCase
     /**
      * DOMDocument object.
      *
-     * @var DOMDocument|null
+     * @var null|DOMDocument
      */
     private $xmlDom;
 
     /**
-     * @var DOMXPath|null
+     * @var null|DOMXPath
      */
     private $xmlXPath;
 
     /**
      * File name.
      *
-     * @var string|null
+     * @var null|string
      */
     private $xmlFile;
 
@@ -204,7 +207,7 @@ class PhpPresentationTestCase extends TestCase
         $xmlWriter = IOFactory::createWriter($oPhpPresentation, $writerName);
         $xmlWriter->save($this->filePath);
 
-        $zip = new \ZipArchive();
+        $zip = new ZipArchive();
         $res = $zip->open($this->filePath);
         if (true === $res) {
             $zip->extractTo($this->workDirectory);
@@ -406,10 +409,10 @@ class PhpPresentationTestCase extends TestCase
     {
         // validate all XML files
         $path = realpath($this->workDirectory . '/ppt');
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
 
         foreach ($iterator as $file) {
-            /** @var \SplFileInfo $file */
+            /** @var SplFileInfo $file */
             if ('xml' !== $file->getExtension()) {
                 continue;
             }
@@ -433,10 +436,10 @@ class PhpPresentationTestCase extends TestCase
     {
         // validate all XML files
         $path = realpath($this->workDirectory . '/ppt');
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
 
         foreach ($iterator as $file) {
-            /** @var \SplFileInfo $file */
+            /** @var SplFileInfo $file */
             if ('xml' !== $file->getExtension()) {
                 continue;
             }
@@ -479,11 +482,11 @@ class PhpPresentationTestCase extends TestCase
 
         // validate all XML files
         $path = realpath($this->workDirectory);
-        $iterator = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator($path));
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
 
         $isValid = true;
         foreach ($iterator as $file) {
-            /** @var \SplFileInfo $file */
+            /** @var SplFileInfo $file */
             if ('xml' !== $file->getExtension()) {
                 continue;
             }
@@ -530,15 +533,19 @@ class PhpPresentationTestCase extends TestCase
         switch ($error->level) {
             case LIBXML_ERR_WARNING:
                 $errorType = 'warning';
+
                 break;
             case LIBXML_ERR_ERROR:
                 $errorType = 'error';
+
                 break;
             case LIBXML_ERR_FATAL:
                 $errorType = 'fatal';
+
                 break;
             default:
                 $errorType = 'Error';
+
                 break;
         }
         $errorLine = (int) $error->line;

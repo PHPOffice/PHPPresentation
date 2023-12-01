@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -27,7 +26,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
  */
 class Shadow implements ComparableInterface
 {
-    /* Shadow alignment */
+    // Shadow alignment
     public const SHADOW_BOTTOM = 'b';
     public const SHADOW_BOTTOM_LEFT = 'bl';
     public const SHADOW_BOTTOM_RIGHT = 'br';
@@ -73,7 +72,7 @@ class Shadow implements ComparableInterface
     private $alignment = self::SHADOW_BOTTOM_RIGHT;
 
     /**
-     * @var Color|null
+     * @var null|Color
      */
     private $color;
 
@@ -200,7 +199,7 @@ class Shadow implements ComparableInterface
     /**
      * Set Color.
      */
-    public function setColor(Color $pValue = null): self
+    public function setColor(?Color $pValue = null): self
     {
         $this->color = $pValue;
 
@@ -241,7 +240,7 @@ class Shadow implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

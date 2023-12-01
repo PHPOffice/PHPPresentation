@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -53,24 +52,29 @@ class ODPresentation implements ReaderInterface
      * @var PhpPresentation
      */
     protected $oPhpPresentation;
+
     /**
      * Output Object.
      *
-     * @var \ZipArchive
+     * @var ZipArchive
      */
     protected $oZip;
+
     /**
-     * @var array<string, array{alignment: Alignment|null, background: null, shadow: Shadow|null, fill: Fill|null, spacingAfter: int|null, spacingBefore: int|null, lineSpacingMode: null, lineSpacing: null, font: null, listStyle: null}>
+     * @var array<string, array{alignment: null|Alignment, background: null, shadow: null|Shadow, fill: null|Fill, spacingAfter: null|int, spacingBefore: null|int, lineSpacingMode: null, lineSpacing: null, font: null, listStyle: null}>
      */
     protected $arrayStyles = [];
+
     /**
-     * @var array<string, array<string, string|null>>
+     * @var array<string, array<string, null|string>>
      */
     protected $arrayCommonStyles = [];
+
     /**
      * @var \PhpOffice\Common\XMLReader
      */
     protected $oXMLReader;
+
     /**
      * @var int
      */
@@ -86,8 +90,6 @@ class ODPresentation implements ReaderInterface
 
     /**
      * Does a file support UnserializePhpPresentation ?
-     *
-     * @throws FileNotFoundException
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
@@ -111,14 +113,12 @@ class ODPresentation implements ReaderInterface
 
     /**
      * Loads PhpPresentation Serialized file.
-     *
-     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new InvalidFileFormatException($pFilename, ODPresentation::class);
+            throw new InvalidFileFormatException($pFilename, self::class);
         }
 
         return $this->loadFile($pFilename);
@@ -157,7 +157,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Document Properties
+     * Read Document Properties.
      */
     protected function loadDocumentProperties(): void
     {
@@ -198,18 +198,22 @@ class ODPresentation implements ReaderInterface
             switch ($propertyType) {
                 case 'boolean':
                     $propertyType = DocumentProperties::PROPERTY_TYPE_BOOLEAN;
+
                     break;
                 case 'float':
                     $propertyType = filter_var($propertyValue, FILTER_VALIDATE_INT) === false
                         ? DocumentProperties::PROPERTY_TYPE_FLOAT
                         : DocumentProperties::PROPERTY_TYPE_INTEGER;
+
                     break;
                 case 'date':
                     $propertyType = DocumentProperties::PROPERTY_TYPE_DATE;
+
                     break;
                 case 'string':
                 default:
                     $propertyType = DocumentProperties::PROPERTY_TYPE_STRING;
+
                     break;
             }
             $properties->setCustomProperty($propertyName, $propertyValue, $propertyType);
@@ -217,7 +221,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Extract all slides
+     * Extract all slides.
      */
     protected function loadSlides(): void
     {
@@ -244,7 +248,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Extract style
+     * Extract style.
      */
     protected function loadStyle(DOMElement $nodeStyle): bool
     {
@@ -306,6 +310,7 @@ class ODPresentation implements ReaderInterface
                     case 'none':
                         $oFill = new Fill();
                         $oFill->setFillType(Fill::FILL_NONE);
+
                         break;
                     case 'solid':
                         $oFill = new Fill();
@@ -315,6 +320,7 @@ class ODPresentation implements ReaderInterface
                             $oColor->setRGB(substr($nodeGraphicProps->getAttribute('draw:fill-color'), 1));
                             $oFill->setStartColor($oColor);
                         }
+
                         break;
                 }
             }
@@ -378,12 +384,15 @@ class ODPresentation implements ReaderInterface
                 switch ($nodeTextProperties->getAttribute('style:script-type')) {
                     case 'latin':
                         $oFont->setFormat(Font::FORMAT_LATIN);
+
                         break;
                     case 'asian':
                         $oFont->setFormat(Font::FORMAT_EAST_ASIAN);
+
                         break;
                     case 'complex':
                         $oFont->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+
                         break;
                 }
             }
@@ -414,11 +423,13 @@ class ODPresentation implements ReaderInterface
                     case 'tb-lr':
                     case 'lr':
                         $oAlignment->setIsRTL(false);
+
                         break;
                     case 'rl-tb':
                     case 'tb-rl':
                     case 'rl':
                         $oAlignment->setIsRTL(false);
+
                         break;
                     case 'tb':
                     case 'page':
@@ -487,7 +498,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Slide
+     * Read Slide.
      */
     protected function loadSlide(DOMElement $nodeSlide): bool
     {
@@ -507,10 +518,12 @@ class ODPresentation implements ReaderInterface
             if ($oNodeFrame instanceof DOMElement) {
                 if ($this->oXMLReader->getElement('draw:image', $oNodeFrame)) {
                     $this->loadShapeDrawing($oNodeFrame);
+
                     continue;
                 }
                 if ($this->oXMLReader->getElement('draw:text-box', $oNodeFrame)) {
                     $this->loadShapeRichText($oNodeFrame);
+
                     continue;
                 }
             }
@@ -520,7 +533,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Shape Drawing
+     * Read Shape Drawing.
      */
     protected function loadShapeDrawing(DOMElement $oNodeFrame): void
     {
@@ -577,7 +590,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Shape RichText
+     * Read Shape RichText.
      */
     protected function loadShapeRichText(DOMElement $oNodeFrame): void
     {
@@ -608,7 +621,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Paragraph
+     * Read Paragraph.
      */
     protected function readParagraph(RichText $oShape, DOMElement $oNodeParent): void
     {
@@ -646,7 +659,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read Paragraph Item
+     * Read Paragraph Item.
      */
     protected function readParagraphItem(Paragraph $oParagraph, DOMElement $oNodeParent): void
     {
@@ -673,7 +686,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read List
+     * Read List.
      */
     protected function readList(RichText $oShape, DOMElement $oNodeParent): void
     {
@@ -692,7 +705,7 @@ class ODPresentation implements ReaderInterface
     }
 
     /**
-     * Read List Item
+     * Read List Item.
      */
     protected function readListItem(RichText $oShape, DOMElement $oNodeParent, DOMElement $oNodeParagraph): void
     {
@@ -726,11 +739,6 @@ class ODPresentation implements ReaderInterface
         }
     }
 
-    /**
-     * @param string $expr
-     *
-     * @return string
-     */
     private function getExpressionUnit(string $expr): string
     {
         if (substr($expr, -1) == '%') {
@@ -740,11 +748,6 @@ class ODPresentation implements ReaderInterface
         return substr($expr, -2);
     }
 
-    /**
-     * @param string $expr
-     *
-     * @return string
-     */
     private function getExpressionValue(string $expr): string
     {
         if (substr($expr, -1) == '%') {

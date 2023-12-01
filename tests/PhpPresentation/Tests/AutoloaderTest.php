@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -34,7 +33,7 @@ class AutoloaderTest extends TestCase
     public function testRegister(): void
     {
         Autoloader::register();
-        $this->assertContains(
+        self::assertContains(
             ['PhpOffice\\PhpPresentation\\Autoloader', 'autoload'],
             spl_autoload_functions()
         );
@@ -48,9 +47,9 @@ class AutoloaderTest extends TestCase
         $declared = get_declared_classes();
         $declaredCount = count($declared);
         Autoloader::autoload('Foo');
-        $this->assertEquals(
+        self::assertCount(
             $declaredCount,
-            count(get_declared_classes()),
+            get_declared_classes(),
             'PhpOffice\\PhpPresentation\\Autoloader::autoload() is trying to load ' .
             'classes outside of the PhpOffice\\PhpPresentation namespace'
         );

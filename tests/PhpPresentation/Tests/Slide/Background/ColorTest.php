@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -33,10 +32,10 @@ class ColorTest extends TestCase
         $oStyleColor = new StyleColor();
         $oStyleColor->setRGB('123456');
 
-        $this->assertNull($object->getColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Color', $object->setColor($oStyleColor));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Color', $object->setColor());
-        $this->assertNull($object->getColor());
+        self::assertNull($object->getColor());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Color', $object->setColor($oStyleColor));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Background\\Color', $object->setColor());
+        self::assertNull($object->getColor());
     }
 }

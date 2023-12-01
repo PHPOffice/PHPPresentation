@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -66,24 +65,29 @@ class PowerPoint2007 implements ReaderInterface
      * @var PhpPresentation
      */
     protected $oPhpPresentation;
+
     /**
      * Output Object.
      *
-     * @var \ZipArchive
+     * @var ZipArchive
      */
     protected $oZip;
+
     /**
      * @var array<string, array<string, array<string, string>>>
      */
     protected $arrayRels = [];
+
     /**
      * @var SlideLayout[]
      */
     protected $arraySlideLayouts = [];
+
     /**
      * @var string
      */
     protected $filename;
+
     /**
      * @var string
      */
@@ -99,8 +103,6 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Does a file support UnserializePhpPresentation ?
-     *
-     * @throws FileNotFoundException
      */
     public function fileSupportsUnserializePhpPresentation(string $pFilename = ''): bool
     {
@@ -124,14 +126,12 @@ class PowerPoint2007 implements ReaderInterface
 
     /**
      * Loads PhpPresentation Serialized file.
-     *
-     * @throws InvalidFileFormatException
      */
     public function load(string $pFilename): PhpPresentation
     {
         // Unserialize... First make sure the file supports it!
         if (!$this->fileSupportsUnserializePhpPresentation($pFilename)) {
-            throw new InvalidFileFormatException($pFilename, PowerPoint2007::class);
+            throw new InvalidFileFormatException($pFilename, self::class);
         }
 
         return $this->loadFile($pFilename);
@@ -184,7 +184,7 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadDocumentLayout(string $sPart): void
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             foreach ($xmlReader->getElements('/p:presentation/p:sldSz') as $oElement) {
                 if (!($oElement instanceof DOMElement)) {
@@ -211,7 +211,7 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadDocumentProperties(string $sPart): void
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             $arrayProperties = [
                 '/cp:coreProperties/dc:creator' => 'setCreator',
@@ -246,7 +246,7 @@ class PowerPoint2007 implements ReaderInterface
     {
         $xmlReader = new XMLReader();
         $sPart = str_replace(' xmlns="http://schemas.openxmlformats.org/officeDocument/2006/custom-properties"', '', $sPart);
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             foreach ($xmlReader->getElements('/Properties/property[@fmtid="{D5CDD505-2E9C-101B-9397-08002B2CF9AE}"]') as $element) {
                 if (!$element->hasAttribute('name')) {
@@ -289,12 +289,12 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Read Presentation Properties
+     * Read Presentation Properties.
      */
     protected function loadPresentationProperties(string $sPart): void
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             $element = $xmlReader->getElement('/p:presentationPr/p:showPr');
             if ($element instanceof DOMElement) {
@@ -328,25 +328,25 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadViewProperties(string $sPart): void
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             $pathZoom = '/p:viewPr/p:slideViewPr/p:cSldViewPr/p:cViewPr/p:scale/a:sx';
             $oElement = $xmlReader->getElement($pathZoom);
             if ($oElement instanceof DOMElement) {
                 if ($oElement->hasAttribute('d') && $oElement->hasAttribute('n')) {
-                    $this->oPhpPresentation->getPresentationProperties()->setZoom($oElement->getAttribute('n') / $oElement->getAttribute('d'));
+                    $this->oPhpPresentation->getPresentationProperties()->setZoom((int) $oElement->getAttribute('n') / (int) $oElement->getAttribute('d'));
                 }
             }
         }
     }
 
     /**
-     * Extract all slides
+     * Extract all slides.
      */
     protected function loadSlides(string $sPart): void
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             $fileRels = 'ppt/_rels/presentation.xml.rels';
             $this->loadRels($fileRels);
@@ -377,7 +377,7 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Extract all MasterSlides
+     * Extract all MasterSlides.
      */
     protected function loadMasterSlides(XMLReader $xmlReader, string $fileRels): void
     {
@@ -401,12 +401,12 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Extract data from slide
+     * Extract data from slide.
      */
     protected function loadSlide(string $sPart, string $baseFile): void
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             // Core
             $oSlide = $this->oPhpPresentation->createSlide();
@@ -449,8 +449,7 @@ class PowerPoint2007 implements ReaderInterface
                         $pathImage = explode('/', $pathImage);
                         foreach ($pathImage as $key => $partPath) {
                             if ('..' == $partPath) {
-                                unset($pathImage[$key - 1]);
-                                unset($pathImage[$key]);
+                                unset($pathImage[$key - 1], $pathImage[$key]);
                             }
                         }
                         $pathImage = implode('/', $pathImage);
@@ -480,6 +479,7 @@ class PowerPoint2007 implements ReaderInterface
                     if (array_key_exists($layoutBasename, $this->arraySlideLayouts)) {
                         $oSlide->setSlideLayout($this->arraySlideLayouts[$layoutBasename]);
                     }
+
                     break;
                 }
             }
@@ -489,7 +489,7 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadMasterSlide(string $sPart, string $baseFile): void
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             // Core
             $oSlideMaster = $this->oPhpPresentation->createMasterSlide();
@@ -533,7 +533,7 @@ class PowerPoint2007 implements ReaderInterface
                     } else {
                         $level = str_replace('a:lvl', '', $oElementLvl->nodeName);
                         $level = str_replace('pPr', '', $level);
-                        $level = intval($level);
+                        $level = (int) $level;
                     }
 
                     if ($oElementLvl->hasAttribute('algn')) {
@@ -557,7 +557,7 @@ class PowerPoint2007 implements ReaderInterface
                     $oElementLvlDefRPR = $xmlReader->getElement('a:defRPr', $oElementLvl);
                     if ($oElementLvlDefRPR instanceof DOMElement) {
                         if ($oElementLvlDefRPR->hasAttribute('sz')) {
-                            $oRTParagraph->getFont()->setSize((int) ($oElementLvlDefRPR->getAttribute('sz') / 100));
+                            $oRTParagraph->getFont()->setSize((int) ((int) $oElementLvlDefRPR->getAttribute('sz') / 100));
                         }
                         if ($oElementLvlDefRPR->hasAttribute('b') && 1 == $oElementLvlDefRPR->getAttribute('b')) {
                             $oRTParagraph->getFont()->setBold(true);
@@ -578,12 +578,15 @@ class PowerPoint2007 implements ReaderInterface
                     switch ($oElementTxStyle->nodeName) {
                         case 'p:bodyStyle':
                             $oSlideMaster->getTextStyles()->setBodyStyleAtLvl($oRTParagraph, $level);
+
                             break;
                         case 'p:otherStyle':
                             $oSlideMaster->getTextStyles()->setOtherStyleAtLvl($oRTParagraph, $level);
+
                             break;
                         case 'p:titleStyle':
                             $oSlideMaster->getTextStyles()->setTitleStyleAtLvl($oRTParagraph, $level);
+
                             break;
                     }
                 }
@@ -596,6 +599,7 @@ class PowerPoint2007 implements ReaderInterface
                     if (false !== $pptTheme) {
                         $this->loadTheme($pptTheme, $oSlideMaster);
                     }
+
                     break;
                 }
             }
@@ -625,7 +629,7 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadLayoutSlide(string $sPart, string $baseFile, SlideMaster $oSlideMaster): ?SlideLayout
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             // Core
             $oSlideLayout = new SlideLayout($oSlideMaster);
@@ -660,14 +664,15 @@ class PowerPoint2007 implements ReaderInterface
 
             return $oSlideLayout;
         }
-        /* @phpstan-ignore-next-line */
+
+        // @phpstan-ignore-next-line
         return null;
     }
 
     protected function loadTheme(string $sPart, SlideMaster $oSlideMaster): void
     {
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             $oElements = $xmlReader->getElements('/a:theme/a:themeElements/a:clrScheme/*');
             foreach ($oElements as $oElement) {
@@ -726,8 +731,7 @@ class PowerPoint2007 implements ReaderInterface
                 $pathImage = explode('/', $pathImage);
                 foreach ($pathImage as $key => $partPath) {
                     if ('..' == $partPath) {
-                        unset($pathImage[$key - 1]);
-                        unset($pathImage[$key]);
+                        unset($pathImage[$key - 1], $pathImage[$key]);
                     }
                 }
                 $pathImage = implode('/', $pathImage);
@@ -748,7 +752,7 @@ class PowerPoint2007 implements ReaderInterface
     {
         $sPart = $this->oZip->getFromName('ppt/notesSlides/' . $baseFile);
         $xmlReader = new XMLReader();
-        /* @phpstan-ignore-next-line */
+        // @phpstan-ignore-next-line
         if ($xmlReader->getDomFromString($sPart)) {
             $oNote = $oSlide->getNote();
 
@@ -791,8 +795,7 @@ class PowerPoint2007 implements ReaderInterface
                 $pathImage = explode('/', $pathImage);
                 foreach ($pathImage as $key => $partPath) {
                     if ('..' == $partPath) {
-                        unset($pathImage[$key - 1]);
-                        unset($pathImage[$key]);
+                        unset($pathImage[$key - 1], $pathImage[$key]);
                     }
                 }
                 $pathImage = implode('/', $pathImage);
@@ -1115,20 +1118,20 @@ class PowerPoint2007 implements ReaderInterface
             $oElementLineSpacingPoints = $document->getElement('a:lnSpc/a:spcPts', $oSubElement);
             if ($oElementLineSpacingPoints instanceof DOMElement) {
                 $oParagraph->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_POINT);
-                $oParagraph->setLineSpacing($oElementLineSpacingPoints->getAttribute('val') / 100);
+                $oParagraph->setLineSpacing((int) $oElementLineSpacingPoints->getAttribute('val') / 100);
             }
             $oElementLineSpacingPercent = $document->getElement('a:lnSpc/a:spcPct', $oSubElement);
             if ($oElementLineSpacingPercent instanceof DOMElement) {
                 $oParagraph->setLineSpacingMode(Paragraph::LINE_SPACING_MODE_PERCENT);
-                $oParagraph->setLineSpacing($oElementLineSpacingPercent->getAttribute('val') / 1000);
+                $oParagraph->setLineSpacing((int) $oElementLineSpacingPercent->getAttribute('val') / 1000);
             }
             $oElementSpacingBefore = $document->getElement('a:spcBef/a:spcPts', $oSubElement);
             if ($oElementSpacingBefore instanceof DOMElement) {
-                $oParagraph->setSpacingBefore($oElementSpacingBefore->getAttribute('val') / 100);
+                $oParagraph->setSpacingBefore((int) $oElementSpacingBefore->getAttribute('val') / 100);
             }
             $oElementSpacingAfter = $document->getElement('a:spcAft/a:spcPts', $oSubElement);
             if ($oElementSpacingAfter instanceof DOMElement) {
-                $oParagraph->setSpacingAfter($oElementSpacingAfter->getAttribute('val') / 100);
+                $oParagraph->setSpacingAfter((int) $oElementSpacingAfter->getAttribute('val') / 100);
             }
 
             $oParagraph->getBulletStyle()->setBulletType(Bullet::TYPE_NONE);
@@ -1194,7 +1197,7 @@ class PowerPoint2007 implements ReaderInterface
                         $oText->getFont()->setStrikethrough('noStrike' == $oElementrPr->getAttribute('strike') ? false : true);
                     }
                     if ($oElementrPr->hasAttribute('sz')) {
-                        $oText->getFont()->setSize((int) ($oElementrPr->getAttribute('sz') / 100));
+                        $oText->getFont()->setSize((int) ((int) $oElementrPr->getAttribute('sz') / 100));
                     }
                     if ($oElementrPr->hasAttribute('u')) {
                         $oText->getFont()->setUnderline($oElementrPr->getAttribute('u'));
@@ -1264,7 +1267,7 @@ class PowerPoint2007 implements ReaderInterface
     protected function loadStyleBorder(XMLReader $xmlReader, DOMElement $oElement, Border $oBorder): void
     {
         if ($oElement->hasAttribute('w')) {
-            $oBorder->setLineWidth((int) ($oElement->getAttribute('w') / 12700));
+            $oBorder->setLineWidth((int) ((int) $oElement->getAttribute('w') / 12700));
         }
         if ($oElement->hasAttribute('cmpd')) {
             $oBorder->setLineStyle($oElement->getAttribute('cmpd'));
@@ -1292,7 +1295,7 @@ class PowerPoint2007 implements ReaderInterface
         $oColor->setRGB($oElement->getAttribute('val'));
         $oElementAlpha = $xmlReader->getElement('a:alpha', $oElement);
         if ($oElementAlpha instanceof DOMElement && $oElementAlpha->hasAttribute('val')) {
-            $alpha = strtoupper(dechex((($oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
+            $alpha = strtoupper(dechex((((int) $oElementAlpha->getAttribute('val') / 1000) / 100) * 255));
             $oColor->setRGB($oElement->getAttribute('val'), $alpha);
         }
 
@@ -1347,7 +1350,7 @@ class PowerPoint2007 implements ReaderInterface
         $sPart = $this->oZip->getFromName($fileRels);
         if (false !== $sPart) {
             $xmlReader = new XMLReader();
-            /* @phpstan-ignore-next-line */
+            // @phpstan-ignore-next-line
             if ($xmlReader->getDomFromString($sPart)) {
                 foreach ($xmlReader->getElements('*') as $oNode) {
                     if (!($oNode instanceof DOMElement)) {
@@ -1366,8 +1369,6 @@ class PowerPoint2007 implements ReaderInterface
      * @param AbstractSlide|Note $oSlide
      * @param DOMNodeList<DOMNode> $oElements
      *
-     * @throws FeatureNotImplementedException
-     *
      * @internal param $baseFile
      */
     protected function loadSlideShapes($oSlide, DOMNodeList $oElements, XMLReader $xmlReader): void
@@ -1379,12 +1380,15 @@ class PowerPoint2007 implements ReaderInterface
             switch ($oNode->tagName) {
                 case 'p:graphicFrame':
                     $this->loadShapeTable($xmlReader, $oNode, $oSlide);
+
                     break;
                 case 'p:pic':
                     $this->loadShapeDrawing($xmlReader, $oNode, $oSlide);
+
                     break;
                 case 'p:sp':
                     $this->loadShapeRichText($xmlReader, $oNode, $oSlide);
+
                     break;
                 default:
                     //throw new FeatureNotImplementedException();
