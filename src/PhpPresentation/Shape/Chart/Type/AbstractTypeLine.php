@@ -19,7 +19,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Shape\Chart\Type;
 
-class AbstractTypeLine extends AbstractType
+abstract class AbstractTypeLine extends AbstractType
 {
     /**
      * Is Line Smooth?
