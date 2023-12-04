@@ -10518,12 +10518,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Outline\u003A\u003AgetWidth\u0028\u0029",
             "name": "getWidth",
-            "summary": "",
+            "summary": "Value\u0020in\u0020pixels.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Outline.html#method_getWidth"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Outline\u003A\u003AsetWidth\u0028\u0029",
             "name": "setWidth",
-            "summary": "Value\u0020in\u0020points.",
+            "summary": "Value\u0020in\u0020pixels.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Outline.html#method_setWidth"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Outline\u003A\u003A\u0024fill",
