@@ -4436,6 +4436,11 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_CROSSES_MAX"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003ADEFAULT_FORMAT_CODE",
+            "name": "DEFAULT_FORMAT_CODE",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#constant_DEFAULT_FORMAT_CODE"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024title",
             "name": "title",
             "summary": "Title.",
