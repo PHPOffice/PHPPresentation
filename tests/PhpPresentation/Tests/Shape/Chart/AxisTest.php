@@ -92,8 +92,9 @@ class AxisTest extends TestCase
     public function testFormatCode(): void
     {
         $object = new Axis();
+        self::assertEquals(Axis::DEFAULT_FORMAT_CODE, $object->getFormatCode());
         self::assertInstanceOf(Axis::class, $object->setFormatCode());
-        self::assertEquals('', $object->getFormatCode());
+        self::assertEquals(Axis::DEFAULT_FORMAT_CODE, $object->getFormatCode());
         self::assertInstanceOf(Axis::class, $object->setFormatCode('AAAA'));
         self::assertEquals('AAAA', $object->getFormatCode());
     }
