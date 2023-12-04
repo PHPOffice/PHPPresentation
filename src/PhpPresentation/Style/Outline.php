@@ -30,7 +30,7 @@ class Outline
     protected $fill;
 
     /**
-     * @var float
+     * @var int
      */
     protected $width = 1;
 
@@ -51,15 +51,18 @@ class Outline
         return $this;
     }
 
-    public function getWidth(): float
+    /**
+     * Value in pixels.
+     */
+    public function getWidth(): int
     {
         return $this->width;
     }
 
     /**
-     * Value in points.
+     * Value in pixels.
      */
-    public function setWidth(float $pValue = 1): self
+    public function setWidth(int $pValue = 1): self
     {
         $this->width = $pValue;
 

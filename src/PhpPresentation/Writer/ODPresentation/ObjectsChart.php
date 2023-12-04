@@ -775,7 +775,7 @@ class ObjectsChart extends AbstractDecoratorWriter
             if ($oOutline instanceof Outline) {
                 $outlineWidth = $oOutline->getWidth();
                 if (!empty($outlineWidth)) {
-                    $outlineWidth = number_format(CommonDrawing::pointsToCentimeters($outlineWidth), 3, '.', '');
+                    $outlineWidth = number_format(CommonDrawing::pixelsToCentimeters($outlineWidth), 3, '.', '');
                 }
                 $outlineColor = $oOutline->getFill()->getStartColor()->getRGB();
             }
