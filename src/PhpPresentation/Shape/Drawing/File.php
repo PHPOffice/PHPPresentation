@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -43,10 +42,6 @@ class File extends AbstractDrawingAdapter
      *
      * @param string $pValue File path
      * @param bool $pVerifyFile Verify file
-     *
-     * @throws FileNotFoundException
-     *
-     * @return self
      */
     public function setPath(string $pValue = '', bool $pVerifyFile = true): self
     {
@@ -59,7 +54,7 @@ class File extends AbstractDrawingAdapter
 
         if ($pVerifyFile) {
             if (0 == $this->width && 0 == $this->height) {
-                list($this->width, $this->height) = getimagesize($this->getPath());
+                [$this->width, $this->height] = getimagesize($this->getPath());
             }
         }
 
@@ -76,9 +71,6 @@ class File extends AbstractDrawingAdapter
         return pathinfo($this->getPath(), PATHINFO_EXTENSION);
     }
 
-    /**
-     * @throws FileNotFoundException
-     */
     public function getMimeType(): string
     {
         if (!CommonFile::fileExists($this->getPath())) {

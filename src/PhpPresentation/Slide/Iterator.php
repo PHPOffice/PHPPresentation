@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -49,18 +48,10 @@ class Iterator extends IteratorIterator
     }
 
     /**
-     * Destructor.
-     */
-    public function __destruct()
-    {
-        unset($this->subject);
-    }
-
-    /**
      * Rewind iterator.
      */
     #[\ReturnTypeWillChange]
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
@@ -70,6 +61,7 @@ class Iterator extends IteratorIterator
      *
      * @return \PhpOffice\PhpPresentation\Slide
      */
+    #[\ReturnTypeWillChange]
     public function current()
     {
         return $this->subject->getSlide($this->position);
@@ -80,6 +72,7 @@ class Iterator extends IteratorIterator
      *
      * @return int
      */
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
@@ -89,7 +82,7 @@ class Iterator extends IteratorIterator
      * Next value.
      */
     #[\ReturnTypeWillChange]
-    public function next()
+    public function next(): void
     {
         ++$this->position;
     }

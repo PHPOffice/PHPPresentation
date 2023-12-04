@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -110,7 +109,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $oLine->addSeries($oSeries);
         $oShape->getPlotArea()->setType($oLine);
 
-        $this->assertTrue($oShape->hasIncludedSpreadsheet());
+        self::assertTrue($oShape->hasIncludedSpreadsheet());
 
         $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
         $this->assertZipFileExists('ppt/embeddings/' . $oShape->getIndexedFilename() . '.xlsx');
@@ -153,7 +152,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->resetPresentationFile();
         $oShape->setIncludeSpreadsheet(false);
 
-        $this->assertFalse($oShape->hasIncludedSpreadsheet());
+        self::assertFalse($oShape->hasIncludedSpreadsheet());
 
         $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
         $this->assertZipFileNotExists('ppt/charts/_rels/' . $oShape->getIndexedFilename() . '.rels');
@@ -199,11 +198,11 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->setType($oLine);
 
         // Default
-        $this->assertTrue($oShape->getTitle()->isVisible());
+        self::assertTrue($oShape->getTitle()->isVisible());
 
         // Set Visible : TRUE
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
-        $this->assertTrue($oShape->getTitle()->isVisible());
+        self::assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(true));
+        self::assertTrue($oShape->getTitle()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
         $this->assertIsSchemaECMA376Valid();
@@ -219,8 +218,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->setType($oLine);
 
         // Set Visible : FALSE
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
-        $this->assertFalse($oShape->getTitle()->isVisible());
+        self::assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Title', $oShape->getTitle()->setVisible(false));
+        self::assertFalse($oShape->getTitle()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
         $this->assertIsSchemaECMA376Valid();
@@ -334,12 +333,12 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->setType($oLine);
 
         // default
-        $this->assertFalse($oShape->getPlotArea()->getAxisX()->isReversedOrder());
+        self::assertFalse($oShape->getPlotArea()->getAxisX()->isReversedOrder());
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', 'minMax');
         $this->assertIsSchemaECMA376Valid();
 
         // reversed order
-        $this->assertInstanceOf(Axis::class, $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(true));
+        self::assertInstanceOf(Axis::class, $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(true));
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -347,7 +346,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
 
         // reset reversed order
-        $this->assertInstanceOf(Axis::class, $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(false));
+        self::assertInstanceOf(Axis::class, $oShape->getPlotArea()->getAxisX()->setIsReversedOrder(false));
         $this->resetPresentationFile();
 
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
@@ -538,7 +537,7 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeNotExists($pathShape, $element, 'rot');
 
         $this->resetPresentationFile();
-        $value = rand(0, 360);
+        $value = mt_rand(0, 360);
         $oShape->getPlotArea()->getAxisX()->setTitleRotation($value);
 
         $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
@@ -558,8 +557,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $oShape->getPlotArea()->setType($oLine);
 
         // Set Visible : FALSE
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(false));
-        $this->assertFalse($oShape->getPlotArea()->getAxisX()->isVisible());
+        self::assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(false));
+        self::assertFalse($oShape->getPlotArea()->getAxisX()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '1');
 
@@ -568,8 +567,8 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->resetPresentationFile();
 
         // Set Visible : TRUE
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(true));
-        $this->assertTrue($oShape->getPlotArea()->getAxisX()->isVisible());
+        self::assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Axis', $oShape->getPlotArea()->getAxisX()->setIsVisible(true));
+        self::assertTrue($oShape->getPlotArea()->getAxisX()->isVisible());
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', '0');
 
@@ -777,7 +776,7 @@ class PptChartsTest extends PhpPresentationTestCase
     public function testTypeDoughnut(): void
     {
         $randHoleSize = mt_rand(10, 90);
-        $randSeparator = chr(rand(ord('A'), ord('Z')));
+        $randSeparator = chr(mt_rand(ord('A'), ord('Z')));
 
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape = $oSlide->createChartShape();
@@ -1565,7 +1564,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @return array<array<string>>
      */
-    public function dataProviderMarkerSymbol(): iterable
+    public static function dataProviderMarkerSymbol(): iterable
     {
         foreach (Marker::$arraySymbol as $symbol) {
             if ($symbol === Marker::SYMBOL_NONE) {

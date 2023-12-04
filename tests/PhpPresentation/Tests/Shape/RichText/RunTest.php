@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,40 +36,40 @@ class RunTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Run();
-        $this->assertEquals('', $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        self::assertEquals('', $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
 
         $object = new Run('BBB');
-        $this->assertEquals('BBB', $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        self::assertEquals('BBB', $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
     public function testFont(): void
     {
         $object = new Run();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setFont(new Font()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setFont(new Font()));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Font', $object->getFont());
     }
 
     public function testLanguage(): void
     {
         $object = new Run();
-        $this->assertNull($object->getLanguage());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setLanguage('en-US'));
-        $this->assertEquals('en-US', $object->getLanguage());
+        self::assertNull($object->getLanguage());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setLanguage('en-US'));
+        self::assertEquals('en-US', $object->getLanguage());
     }
 
     public function testText(): void
     {
         $object = new Run();
-        $this->assertEquals('', $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setText());
-        $this->assertEquals('', $object->getText());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setText('AAA'));
-        $this->assertEquals('AAA', $object->getText());
+        self::assertEquals('', $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setText());
+        self::assertEquals('', $object->getText());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\Run', $object->setText('AAA'));
+        self::assertEquals('AAA', $object->getText());
 
         $object = new Run('BBB');
-        $this->assertEquals('BBB', $object->getText());
+        self::assertEquals('BBB', $object->getText());
     }
 
     /**
@@ -79,6 +78,6 @@ class RunTest extends TestCase
     public function testHashCode(): void
     {
         $object = new Run();
-        $this->assertEquals(md5($object->getFont()->getHashCode() . get_class($object)), $object->getHashCode());
+        self::assertEquals(md5($object->getFont()->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

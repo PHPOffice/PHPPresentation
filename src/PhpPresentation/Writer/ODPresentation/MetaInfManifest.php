@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -27,9 +26,6 @@ use PhpOffice\PhpPresentation\Slide\Background\Image;
 
 class MetaInfManifest extends AbstractDecoratorWriter
 {
-    /**
-     * @return ZipInterface
-     */
     public function render(): ZipInterface
     {
         // Create XML writer

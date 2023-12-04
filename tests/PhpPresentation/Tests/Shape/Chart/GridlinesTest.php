@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,7 +29,7 @@ class GridlinesTest extends TestCase
     {
         $object = new Gridlines();
 
-        $this->assertInstanceOf(Outline::class, $object->getOutline());
+        self::assertInstanceOf(Outline::class, $object->getOutline());
     }
 
     public function testGetSetOutline(): void
@@ -40,8 +39,8 @@ class GridlinesTest extends TestCase
         /** @var Outline $oStub */
         $oStub = $this->getMockBuilder(Outline::class)->getMock();
 
-        $this->assertInstanceOf(Outline::class, $object->getOutline());
-        $this->assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Gridlines', $object->setOutline($oStub));
-        $this->assertInstanceOf(Outline::class, $object->getOutline());
+        self::assertInstanceOf(Outline::class, $object->getOutline());
+        self::assertInstanceOf('PhpOffice\PhpPresentation\Shape\Chart\Gridlines', $object->setOutline($oStub));
+        self::assertInstanceOf(Outline::class, $object->getOutline());
     }
 }

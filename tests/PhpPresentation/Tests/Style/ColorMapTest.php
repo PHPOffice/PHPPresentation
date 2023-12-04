@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -28,28 +27,28 @@ class ColorMapTest extends TestCase
     public function testConstruct(): void
     {
         $object = new ColorMap();
-        $this->assertIsArray($object->getMapping());
-        $this->assertEquals(ColorMap::$mappingDefault, $object->getMapping());
+        self::assertIsArray($object->getMapping());
+        self::assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
     public function testMapping(): void
     {
         $object = new ColorMap();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping([]));
-        $this->assertIsArray($object->getMapping());
-        $this->assertCount(0, $object->getMapping());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping([]));
+        self::assertIsArray($object->getMapping());
+        self::assertCount(0, $object->getMapping());
         $array = ColorMap::$mappingDefault;
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping($array));
-        $this->assertIsArray($object->getMapping());
-        $this->assertEquals(ColorMap::$mappingDefault, $object->getMapping());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->setMapping($array));
+        self::assertIsArray($object->getMapping());
+        self::assertEquals(ColorMap::$mappingDefault, $object->getMapping());
     }
 
     public function testModifier(): void
     {
         $object = new ColorMap();
         $key = array_rand(ColorMap::$mappingDefault);
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->changeColor($key, 'AlphaBeta'));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\ColorMap', $object->changeColor($key, 'AlphaBeta'));
         $array = $object->getMapping();
-        $this->assertEquals('AlphaBeta', $array[$key]);
+        self::assertEquals('AlphaBeta', $array[$key]);
     }
 }

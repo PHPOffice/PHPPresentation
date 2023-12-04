@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -24,7 +23,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
 
 class Fill implements ComparableInterface
 {
-    /* Fill types */
+    // Fill types
     public const FILL_NONE = 'none';
     public const FILL_SOLID = 'solid';
     public const FILL_GRADIENT_LINEAR = 'linear';
@@ -93,8 +92,6 @@ class Fill implements ComparableInterface
 
     /**
      * Get Fill Type.
-     *
-     * @return string
      */
     public function getFillType(): string
     {
@@ -105,8 +102,6 @@ class Fill implements ComparableInterface
      * Set Fill Type.
      *
      * @param string $pValue Fill type
-     *
-     * @return self
      */
     public function setFillType(string $pValue = self::FILL_NONE): self
     {
@@ -117,8 +112,6 @@ class Fill implements ComparableInterface
 
     /**
      * Get Rotation.
-     *
-     * @return float
      */
     public function getRotation(): float
     {
@@ -127,10 +120,6 @@ class Fill implements ComparableInterface
 
     /**
      * Set Rotation.
-     *
-     * @param float $pValue
-     *
-     * @return self
      */
     public function setRotation(float $pValue = 0): self
     {
@@ -141,8 +130,6 @@ class Fill implements ComparableInterface
 
     /**
      * Get Start Color.
-     *
-     * @return Color
      */
     public function getStartColor(): Color
     {
@@ -153,10 +140,6 @@ class Fill implements ComparableInterface
 
     /**
      * Set Start Color.
-     *
-     * @param Color $pValue
-     *
-     * @return self
      */
     public function setStartColor(Color $pValue): self
     {
@@ -167,8 +150,6 @@ class Fill implements ComparableInterface
 
     /**
      * Get End Color.
-     *
-     * @return Color
      */
     public function getEndColor(): Color
     {
@@ -179,10 +160,6 @@ class Fill implements ComparableInterface
 
     /**
      * Set End Color.
-     *
-     * @param Color $pValue
-     *
-     * @return self
      */
     public function setEndColor(Color $pValue): self
     {
@@ -213,7 +190,7 @@ class Fill implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

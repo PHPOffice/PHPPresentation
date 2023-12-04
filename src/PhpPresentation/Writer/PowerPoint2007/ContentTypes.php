@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -93,6 +92,7 @@ class ContentTypes extends AbstractDecoratorWriter
                 if ($oShape instanceof Comment) {
                     $this->writeOverrideContentType($objWriter, '/ppt/comments/comment' . ($i + 1) . '.xml', 'application/vnd.openxmlformats-officedocument.presentationml.comments+xml');
                     $hasComments = true;
+
                     break;
                 }
             }

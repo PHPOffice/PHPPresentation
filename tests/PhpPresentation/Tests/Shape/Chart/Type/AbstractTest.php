@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,8 +35,8 @@ class AbstractTest extends TestCase
     {
         $object = new Scatter();
 
-        $this->assertTrue($object->hasAxisX());
-        $this->assertTrue($object->hasAxisY());
+        self::assertTrue($object->hasAxisX());
+        self::assertTrue($object->hasAxisY());
     }
 
     public function testHashIndex(): void
@@ -45,25 +44,25 @@ class AbstractTest extends TestCase
         $object = new Scatter();
         $value = mt_rand(1, 100);
 
-        $this->assertEmpty($object->getHashIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter', $object->setHashIndex($value));
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEmpty($object->getHashIndex());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter', $object->setHashIndex($value));
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     public function testSeries(): void
     {
         /** @var AbstractType $stub */
         $stub = $this->getMockForAbstractClass(AbstractType::class);
-        $this->assertEmpty($stub->getSeries());
-        $this->assertIsArray($stub->getSeries());
+        self::assertEmpty($stub->getSeries());
+        self::assertIsArray($stub->getSeries());
 
         $arraySeries = [
             new Series(),
             new Series(),
         ];
-        $this->assertInstanceOf(AbstractType::class, $stub->setSeries($arraySeries));
-        $this->assertIsArray($stub->getSeries());
-        $this->assertCount(count($arraySeries), $stub->getSeries());
+        self::assertInstanceOf(AbstractType::class, $stub->setSeries($arraySeries));
+        self::assertIsArray($stub->getSeries());
+        self::assertCount(count($arraySeries), $stub->getSeries());
     }
 
     public function testClone(): void
@@ -80,8 +79,8 @@ class AbstractTest extends TestCase
         $stub->setSeries($arraySeries);
         $clone = clone $stub;
 
-        $this->assertInstanceOf(AbstractType::class, $clone);
-        $this->assertIsArray($stub->getSeries());
-        $this->assertCount(count($arraySeries), $stub->getSeries());
+        self::assertInstanceOf(AbstractType::class, $clone);
+        self::assertIsArray($stub->getSeries());
+        self::assertCount(count($arraySeries), $stub->getSeries());
     }
 }

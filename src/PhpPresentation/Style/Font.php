@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -27,7 +26,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
  */
 class Font implements ComparableInterface
 {
-    /* Underline types */
+    // Underline types
     public const UNDERLINE_NONE = 'none';
     public const UNDERLINE_DASH = 'dash';
     public const UNDERLINE_DASHHEAVY = 'dashHeavy';
@@ -122,7 +121,7 @@ class Font implements ComparableInterface
     private $characterSpacing = 0;
 
     /**
-     * Format
+     * Format.
      *
      * @var string
      */
@@ -141,9 +140,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get Name
-     *
-     * @return string
+     * Get Name.
      */
     public function getName(): string
     {
@@ -151,11 +148,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set Name
-     *
-     * @param string $pValue
-     *
-     * @return self
+     * Set Name.
      */
     public function setName(string $pValue = 'Calibri'): self
     {
@@ -169,8 +162,6 @@ class Font implements ComparableInterface
 
     /**
      * Get Character Spacing.
-     *
-     * @return float
      */
     public function getCharacterSpacing(): float
     {
@@ -180,10 +171,6 @@ class Font implements ComparableInterface
     /**
      * Set Character Spacing
      * Value in pt.
-     *
-     * @param float $pValue
-     *
-     * @return self
      */
     public function setCharacterSpacing(float $pValue = 0): self
     {
@@ -212,8 +199,6 @@ class Font implements ComparableInterface
 
     /**
      * Get Bold.
-     *
-     * @return bool
      */
     public function isBold(): bool
     {
@@ -232,8 +217,6 @@ class Font implements ComparableInterface
 
     /**
      * Get Italic.
-     *
-     * @return bool
      */
     public function isItalic(): bool
     {
@@ -252,8 +235,6 @@ class Font implements ComparableInterface
 
     /**
      * Get SuperScript.
-     *
-     * @return bool
      */
     public function isSuperScript(): bool
     {
@@ -294,8 +275,6 @@ class Font implements ComparableInterface
 
     /**
      * Get Underline.
-     *
-     * @return string
      */
     public function getUnderline(): string
     {
@@ -306,8 +285,6 @@ class Font implements ComparableInterface
      * Set Underline.
      *
      * @param string $pValue Underline type
-     *
-     * @return self
      */
     public function setUnderline(string $pValue = self::UNDERLINE_NONE): self
     {
@@ -321,8 +298,6 @@ class Font implements ComparableInterface
 
     /**
      * Get Strikethrough.
-     *
-     * @return bool
      */
     public function isStrikethrough(): bool
     {
@@ -358,9 +333,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Get format
-     *
-     * @return string
+     * Get format.
      */
     public function getFormat(): string
     {
@@ -368,11 +341,7 @@ class Font implements ComparableInterface
     }
 
     /**
-     * Set format
-     *
-     * @param string $value
-     *
-     * @return self
+     * Set format.
      */
     public function setFormat(string $value = self::FORMAT_LATIN): self
     {
@@ -415,7 +384,7 @@ class Font implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

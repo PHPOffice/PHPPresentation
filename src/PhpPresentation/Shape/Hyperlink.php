@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -44,14 +43,14 @@ class Hyperlink
      *
      * @var int
      */
-    private $slideNumber = null;
+    private $slideNumber;
 
     /**
      * Slide relation ID (should not be used by user code!).
      *
      * @var string
      */
-    public $relationId = null;
+    public $relationId;
 
     /**
      * Hash index.
@@ -61,7 +60,7 @@ class Hyperlink
     private $hashIndex;
 
     /**
-     * If true, uses the text color, instead of theme color
+     * If true, uses the text color, instead of theme color.
      *
      * @var bool
      */
@@ -81,8 +80,6 @@ class Hyperlink
 
     /**
      * Get URL.
-     *
-     * @return string
      */
     public function getUrl(): string
     {
@@ -91,10 +88,6 @@ class Hyperlink
 
     /**
      * Set URL.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function setUrl(string $value = ''): self
     {
@@ -105,8 +98,6 @@ class Hyperlink
 
     /**
      * Get tooltip.
-     *
-     * @return string
      */
     public function getTooltip(): string
     {
@@ -115,10 +106,6 @@ class Hyperlink
 
     /**
      * Set tooltip.
-     *
-     * @param string $value
-     *
-     * @return self
      */
     public function setTooltip(string $value = ''): self
     {
@@ -129,8 +116,6 @@ class Hyperlink
 
     /**
      * Get slide number.
-     *
-     * @return int
      */
     public function getSlideNumber(): int
     {
@@ -139,10 +124,6 @@ class Hyperlink
 
     /**
      * Set slide number.
-     *
-     * @param int $value
-     *
-     * @return self
      */
     public function setSlideNumber(int $value = 1): self
     {
@@ -154,8 +135,6 @@ class Hyperlink
 
     /**
      * Is this hyperlink internal? (to another slide).
-     *
-     * @return bool
      */
     public function isInternal(): bool
     {
@@ -178,7 +157,7 @@ class Hyperlink
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {
@@ -218,10 +197,6 @@ class Hyperlink
      * Set whether or not to use text color for a hyperlink, instead of theme color.
      *
      * @see https://docs.microsoft.com/en-us/openspecs/office_standards/ms-odrawxml/014fbc20-3705-4812-b8cd-93f5af05b504
-     *
-     * @param bool $isTextColorUsed
-     *
-     * @return self
      */
     public function setIsTextColorUsed(bool $isTextColorUsed): self
     {

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -36,6 +35,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Tests\PhpPresentationTestCase;
+use ReflectionClass;
 
 class PptSlidesTest extends PhpPresentationTestCase
 {
@@ -1093,7 +1093,7 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spd', 'slow');
         $this->assertIsSchemaECMA376Valid();
 
-        $rcTransition = new \ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
+        $rcTransition = new ReflectionClass('PhpOffice\PhpPresentation\Slide\Transition');
         $arrayConstants = $rcTransition->getConstants();
         foreach ($arrayConstants as $key => $value) {
             if (0 !== strpos($key, 'TRANSITION_')) {
@@ -1106,144 +1106,191 @@ class PptSlidesTest extends PhpPresentationTestCase
             switch ($key) {
                 case 'TRANSITION_BLINDS_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:blinds[@dir=\'horz\']');
+
                     break;
                 case 'TRANSITION_BLINDS_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:blinds[@dir=\'vert\']');
+
                     break;
                 case 'TRANSITION_CHECKER_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:checker[@dir=\'horz\']');
+
                     break;
                 case 'TRANSITION_CHECKER_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:checker[@dir=\'vert\']');
+
                     break;
                 case 'TRANSITION_CIRCLE':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:circle');
+
                     break;
                 case 'TRANSITION_COMB_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:comb[@dir=\'horz\']');
+
                     break;
                 case 'TRANSITION_COMB_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:comb[@dir=\'vert\']');
+
                     break;
                 case 'TRANSITION_COVER_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'d\']');
+
                     break;
                 case 'TRANSITION_COVER_LEFT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'l\']');
+
                     break;
                 case 'TRANSITION_COVER_LEFT_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'ld\']');
+
                     break;
                 case 'TRANSITION_COVER_LEFT_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'lu\']');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'r\']');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'rd\']');
+
                     break;
                 case 'TRANSITION_COVER_RIGHT_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'ru\']');
+
                     break;
                 case 'TRANSITION_COVER_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cover[@dir=\'u\']');
+
                     break;
                 case 'TRANSITION_CUT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:cut');
+
                     break;
                 case 'TRANSITION_DIAMOND':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:diamond');
+
                     break;
                 case 'TRANSITION_DISSOLVE':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:dissolve');
+
                     break;
                 case 'TRANSITION_FADE':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:fade');
+
                     break;
                 case 'TRANSITION_NEWSFLASH':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:newsflash');
+
                     break;
                 case 'TRANSITION_PLUS':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:plus');
+
                     break;
                 case 'TRANSITION_PULL_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:pull[@dir=\'d\']');
+
                     break;
                 case 'TRANSITION_PULL_LEFT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:pull[@dir=\'l\']');
+
                     break;
                 case 'TRANSITION_PULL_RIGHT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:pull[@dir=\'r\']');
+
                     break;
                 case 'TRANSITION_PULL_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:pull[@dir=\'u\']');
+
                     break;
                 case 'TRANSITION_PUSH_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:push[@dir=\'d\']');
+
                     break;
                 case 'TRANSITION_PUSH_LEFT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:push[@dir=\'l\']');
+
                     break;
                 case 'TRANSITION_PUSH_RIGHT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:push[@dir=\'r\']');
+
                     break;
                 case 'TRANSITION_PUSH_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:push[@dir=\'u\']');
+
                     break;
                 case 'TRANSITION_RANDOM':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:random');
+
                     break;
                 case 'TRANSITION_RANDOMBAR_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:randomBar[@dir=\'horz\']');
+
                     break;
                 case 'TRANSITION_RANDOMBAR_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:randomBar[@dir=\'vert\']');
+
                     break;
                 case 'TRANSITION_SPLIT_IN_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:split[@dir=\'in\'][@orient=\'horz\']');
+
                     break;
                 case 'TRANSITION_SPLIT_OUT_HORIZONTAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:split[@dir=\'out\'][@orient=\'horz\']');
+
                     break;
                 case 'TRANSITION_SPLIT_IN_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:split[@dir=\'in\'][@orient=\'vert\']');
+
                     break;
                 case 'TRANSITION_SPLIT_OUT_VERTICAL':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:split[@dir=\'out\'][@orient=\'vert\']');
+
                     break;
                 case 'TRANSITION_STRIPS_LEFT_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:strips[@dir=\'ld\']');
+
                     break;
                 case 'TRANSITION_STRIPS_LEFT_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:strips[@dir=\'lu\']');
+
                     break;
                 case 'TRANSITION_STRIPS_RIGHT_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:strips[@dir=\'rd\']');
+
                     break;
                 case 'TRANSITION_STRIPS_RIGHT_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:strips[@dir=\'ru\']');
+
                     break;
                 case 'TRANSITION_WEDGE':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wedge');
+
                     break;
                 case 'TRANSITION_WIPE_DOWN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wipe[@dir=\'d\']');
+
                     break;
                 case 'TRANSITION_WIPE_LEFT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wipe[@dir=\'l\']');
+
                     break;
                 case 'TRANSITION_WIPE_RIGHT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wipe[@dir=\'r\']');
+
                     break;
                 case 'TRANSITION_WIPE_UP':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:wipe[@dir=\'u\']');
+
                     break;
                 case 'TRANSITION_ZOOM_IN':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:zoom[@dir=\'in\']');
+
                     break;
                 case 'TRANSITION_ZOOM_OUT':
                     $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element . '/p:zoom[@dir=\'out\']');
+
                     break;
             }
             $this->assertIsSchemaECMA376Valid();

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,26 +34,26 @@ class AreaTest extends TestCase
     {
         $object = new Area();
 
-        $this->assertIsArray($object->getSeries());
-        $this->assertEmpty($object->getSeries());
+        self::assertIsArray($object->getSeries());
+        self::assertEmpty($object->getSeries());
 
         $array = [
             new Series(),
             new Series(),
         ];
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setSeries());
-        $this->assertEmpty($object->getSeries());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setSeries($array));
-        $this->assertCount(count($array), $object->getSeries());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setSeries());
+        self::assertEmpty($object->getSeries());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->setSeries($array));
+        self::assertCount(count($array), $object->getSeries());
     }
 
     public function testSeries(): void
     {
         $object = new Area();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->addSeries(new Series()));
-        $this->assertCount(1, $object->getSeries());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Area', $object->addSeries(new Series()));
+        self::assertCount(1, $object->getSeries());
     }
 
     public function testHashCode(): void
@@ -64,6 +63,6 @@ class AreaTest extends TestCase
         $object = new Area();
         $object->addSeries($oSeries);
 
-        $this->assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
+        self::assertEquals(md5($oSeries->getHashCode() . get_class($object)), $object->getHashCode());
     }
 }

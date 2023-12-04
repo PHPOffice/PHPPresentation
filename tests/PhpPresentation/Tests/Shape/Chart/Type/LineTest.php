@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,35 +34,35 @@ class LineTest extends TestCase
     {
         $object = new Line();
 
-        $this->assertIsArray($object->getSeries());
-        $this->assertEmpty($object->getSeries());
+        self::assertIsArray($object->getSeries());
+        self::assertEmpty($object->getSeries());
 
         $array = [
             new Series(),
             new Series(),
         ];
 
-        $this->assertInstanceOf(Line::class, $object->setSeries());
-        $this->assertEmpty($object->getSeries());
-        $this->assertInstanceOf(Line::class, $object->setSeries($array));
-        $this->assertCount(count($array), $object->getSeries());
+        self::assertInstanceOf(Line::class, $object->setSeries());
+        self::assertEmpty($object->getSeries());
+        self::assertInstanceOf(Line::class, $object->setSeries($array));
+        self::assertCount(count($array), $object->getSeries());
     }
 
     public function testSeries(): void
     {
         $object = new Line();
 
-        $this->assertInstanceOf(Line::class, $object->addSeries(new Series()));
-        $this->assertCount(1, $object->getSeries());
+        self::assertInstanceOf(Line::class, $object->addSeries(new Series()));
+        self::assertCount(1, $object->getSeries());
     }
 
     public function testSmooth(): void
     {
         $object = new Line();
 
-        $this->assertFalse($object->isSmooth());
-        $this->assertInstanceOf(Line::class, $object->setIsSmooth(true));
-        $this->assertTrue($object->isSmooth());
+        self::assertFalse($object->isSmooth());
+        self::assertInstanceOf(Line::class, $object->setIsSmooth(true));
+        self::assertTrue($object->isSmooth());
     }
 
     public function testHashCode(): void
@@ -73,7 +72,7 @@ class LineTest extends TestCase
         $object = new Line();
         $object->addSeries($series);
 
-        $this->assertEquals(
+        self::assertEquals(
             md5(md5($object->isSmooth() ? '1' : '0') . $series->getHashCode() . get_class($object)),
             $object->getHashCode()
         );

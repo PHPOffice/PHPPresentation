@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,10 +34,10 @@ class View3DTest extends TestCase
         $object = new View3D();
         $value = mt_rand(20, 20000);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setDepthPercent());
-        $this->assertEquals(100, $object->getDepthPercent());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setDepthPercent($value));
-        $this->assertEquals($value, $object->getDepthPercent());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setDepthPercent());
+        self::assertEquals(100, $object->getDepthPercent());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setDepthPercent($value));
+        self::assertEquals($value, $object->getDepthPercent());
     }
 
     public function testHashIndex(): void
@@ -46,9 +45,9 @@ class View3DTest extends TestCase
         $object = new View3D();
         $value = mt_rand(1, 100);
 
-        $this->assertEmpty($object->getHashIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setHashIndex($value));
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEmpty($object->getHashIndex());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setHashIndex($value));
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     public function testHeightPercent(): void
@@ -56,10 +55,10 @@ class View3DTest extends TestCase
         $object = new View3D();
         $value = mt_rand(5, 500);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setHeightPercent());
-        $this->assertEquals(100, $object->getHeightPercent());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setHeightPercent($value));
-        $this->assertEquals($value, $object->getHeightPercent());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setHeightPercent());
+        self::assertEquals(100, $object->getHeightPercent());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setHeightPercent($value));
+        self::assertEquals($value, $object->getHeightPercent());
     }
 
     public function testPerspective(): void
@@ -67,22 +66,22 @@ class View3DTest extends TestCase
         $object = new View3D();
         $value = mt_rand(0, 100);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setPerspective());
-        $this->assertEquals(30, $object->getPerspective());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setPerspective($value));
-        $this->assertEquals($value, $object->getPerspective());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setPerspective());
+        self::assertEquals(30, $object->getPerspective());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setPerspective($value));
+        self::assertEquals($value, $object->getPerspective());
     }
 
     public function testRightAngleAxes(): void
     {
         $object = new View3D();
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRightAngleAxes());
-        $this->assertTrue($object->hasRightAngleAxes());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRightAngleAxes(true));
-        $this->assertTrue($object->hasRightAngleAxes());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRightAngleAxes(false));
-        $this->assertFalse($object->hasRightAngleAxes());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRightAngleAxes());
+        self::assertTrue($object->hasRightAngleAxes());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRightAngleAxes(true));
+        self::assertTrue($object->hasRightAngleAxes());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRightAngleAxes(false));
+        self::assertFalse($object->hasRightAngleAxes());
     }
 
     public function testRotationX(): void
@@ -90,10 +89,10 @@ class View3DTest extends TestCase
         $object = new View3D();
         $value = mt_rand(-90, 90);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationX());
-        $this->assertEquals(0, $object->getRotationX());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationX($value));
-        $this->assertEquals($value, $object->getRotationX());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationX());
+        self::assertEquals(0, $object->getRotationX());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationX($value));
+        self::assertEquals($value, $object->getRotationX());
     }
 
     public function testRotationY(): void
@@ -101,9 +100,9 @@ class View3DTest extends TestCase
         $object = new View3D();
         $value = mt_rand(-90, 90);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationY());
-        $this->assertEquals(0, $object->getRotationY());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationY($value));
-        $this->assertEquals($value, $object->getRotationY());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationY());
+        self::assertEquals(0, $object->getRotationY());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Chart\\View3D', $object->setRotationY($value));
+        self::assertEquals($value, $object->getRotationY());
     }
 }

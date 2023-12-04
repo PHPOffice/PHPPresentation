@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -34,7 +33,7 @@ class FileTest extends TestCase
     public function testConstruct(): void
     {
         $object = new File();
-        $this->assertEmpty($object->getPath());
+        self::assertEmpty($object->getPath());
     }
 
     public function testPathBasic(): void
@@ -43,15 +42,15 @@ class FileTest extends TestCase
         $this->expectExceptionMessage('The file "" doesn\'t exist');
 
         $object = new File();
-        $this->assertInstanceOf(File::class, $object->setPath());
+        self::assertInstanceOf(File::class, $object->setPath());
     }
 
     public function testPathWithoutVerifyFile(): void
     {
         $object = new File();
 
-        $this->assertInstanceOf(File::class, $object->setPath('', false));
-        $this->assertEmpty($object->getPath());
+        self::assertInstanceOf(File::class, $object->setPath('', false));
+        self::assertEmpty($object->getPath());
     }
 
     public function testPathWithRealFile(): void
@@ -60,10 +59,10 @@ class FileTest extends TestCase
 
         $imagePath = dirname(__DIR__, 4) . '/resources/images/PhpPresentationLogo.png';
 
-        $this->assertInstanceOf(File::class, $object->setPath($imagePath, false));
-        $this->assertEquals($imagePath, $object->getPath());
-        $this->assertEquals(0, $object->getWidth());
-        $this->assertEquals(0, $object->getHeight());
+        self::assertInstanceOf(File::class, $object->setPath($imagePath, false));
+        self::assertEquals($imagePath, $object->getPath());
+        self::assertEquals(0, $object->getWidth());
+        self::assertEquals(0, $object->getHeight());
     }
 
     /**
@@ -72,14 +71,14 @@ class FileTest extends TestCase
     public function testMimeType(string $pathFile, string $mimeType): void
     {
         $object = new File();
-        $this->assertInstanceOf(File::class, $object->setPath($pathFile));
-        $this->assertEquals($mimeType, $object->getMimeType());
+        self::assertInstanceOf(File::class, $object->setPath($pathFile));
+        self::assertEquals($mimeType, $object->getMimeType());
     }
 
     /**
      * @return array<array<string>>
      */
-    public function dataProviderMimeType(): array
+    public static function dataProviderMimeType(): array
     {
         return [
             [

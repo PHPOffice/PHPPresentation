@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -20,6 +19,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
+use ArrayObject;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\PhpPresentation;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
@@ -37,20 +37,24 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
      * @var array<SlideLayout>
      */
     protected $slideLayouts = [];
+
     /**
      * Mapping of colors to the theme.
      *
      * @var ColorMap
      */
     public $colorMap;
+
     /**
      * @var TextStyle
      */
     protected $textStyles;
+
     /**
      * @var array<SchemeColor>
      */
     protected $arraySchemeColor = [];
+
     /**
      * @var array<string, string>
      */
@@ -72,14 +76,14 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
     /**
      * Create a new slideMaster.
      */
-    public function __construct(PhpPresentation $pParent = null)
+    public function __construct(?PhpPresentation $pParent = null)
     {
         // Set parent
         $this->parent = $pParent;
         // Shape collection
-        $this->shapeCollection = new \ArrayObject();
+        $this->shapeCollection = new ArrayObject();
         // Set identifier
-        $this->identifier = md5(rand(0, 9999) . time());
+        $this->identifier = md5(mt_rand(0, 9999) . time());
         // Set a basic colorMap
         $this->colorMap = new ColorMap();
         // Set a white background
@@ -98,8 +102,6 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
 
     /**
      * Create a slideLayout and add it to this presentation.
-     *
-     * @return SlideLayout
      */
     public function createSlideLayout(): SlideLayout
     {
@@ -111,12 +113,8 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
 
     /**
      * Add slideLayout.
-     *
-     * @param SlideLayout|null $slideLayout
-     *
-     * @return SlideLayout
      */
-    public function addSlideLayout(SlideLayout $slideLayout = null): SlideLayout
+    public function addSlideLayout(?SlideLayout $slideLayout = null): SlideLayout
     {
         $this->slideLayouts[] = $slideLayout;
 
@@ -131,17 +129,11 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
         return $this->slideLayouts;
     }
 
-    /**
-     * @return TextStyle
-     */
     public function getTextStyles(): TextStyle
     {
         return $this->textStyles;
     }
 
-    /**
-     * @return self
-     */
     public function setTextStyles(TextStyle $textStyle): self
     {
         $this->textStyles = $textStyle;
@@ -149,9 +141,6 @@ class SlideMaster extends AbstractSlide implements ComparableInterface, ShapeCon
         return $this;
     }
 
-    /**
-     * @return self
-     */
     public function addSchemeColor(SchemeColor $schemeColor): self
     {
         $this->arraySchemeColor[$schemeColor->getValue()] = $schemeColor;

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -37,14 +36,14 @@ class BordersTest extends TestCase
     public function testConstruct(): void
     {
         $object = new Borders();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getBottom());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getLeft());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getRight());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getTop());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getDiagonalDown());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getDiagonalUp());
-        $this->assertEquals(Border::LINE_NONE, $object->getDiagonalDown()->getLineStyle());
-        $this->assertEquals(Border::LINE_NONE, $object->getDiagonalUp()->getLineStyle());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getBottom());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getLeft());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getRight());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getTop());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getDiagonalDown());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Border', $object->getDiagonalUp());
+        self::assertEquals(Border::LINE_NONE, $object->getDiagonalDown()->getLineStyle());
+        self::assertEquals(Border::LINE_NONE, $object->getDiagonalUp()->getLineStyle());
     }
 
     /**
@@ -55,7 +54,7 @@ class BordersTest extends TestCase
         $object = new Borders();
         $value = mt_rand(1, 100);
         $object->setHashIndex($value);
-        $this->assertEquals($value, $object->getHashIndex());
+        self::assertEquals($value, $object->getHashIndex());
     }
 
     /**
@@ -64,7 +63,7 @@ class BordersTest extends TestCase
     public function testGetHashCode(): void
     {
         $object = new Borders();
-        $this->assertEquals(
+        self::assertEquals(
             md5(
                 $object->getLeft()->getHashCode() .
                 $object->getRight()->getHashCode() .

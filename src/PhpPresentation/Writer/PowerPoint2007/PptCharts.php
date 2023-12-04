@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -48,9 +47,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class PptCharts extends AbstractDecoratorWriter
 {
-    /**
-     * @throws FileRemoveException
-     */
     public function render(): ZipInterface
     {
         for ($i = 0; $i < $this->getDrawingHashTable()->count(); ++$i) {
@@ -229,8 +225,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write chart to XML format.
      *
      * @return string String output
-     *
-     * @throws FileRemoveException
      */
     protected function writeSpreadsheet(PhpPresentation $presentation, Chart $chart, string $tempName): string
     {
@@ -244,9 +238,11 @@ class PptCharts extends AbstractDecoratorWriter
         }
         $spreadsheet->getProperties()
             ->setCreator(
-                $presentation->getDocumentProperties()->getCreator())->setLastModifiedBy(
-                    $presentation->getDocumentProperties()->getLastModifiedBy()
-                )
+                $presentation->getDocumentProperties()->getCreator()
+            )
+            ->setLastModifiedBy(
+                $presentation->getDocumentProperties()->getLastModifiedBy()
+            )
             ->setTitle($title);
 
         // Add chart data
@@ -368,7 +364,7 @@ class PptCharts extends AbstractDecoratorWriter
                 // c:pt
                 $objWriter->startElement('c:pt');
                 $objWriter->writeAttribute('idx', $i);
-                $objWriter->writeElement('c:v', strval($values[$i]));
+                $objWriter->writeElement('c:v', (string) ($values[$i]));
                 $objWriter->endElement();
             }
         } else {
@@ -386,7 +382,7 @@ class PptCharts extends AbstractDecoratorWriter
                 // c:pt
                 $objWriter->startElement('c:pt');
                 $objWriter->writeAttribute('idx', $i);
-                $objWriter->writeElement('c:v', strval($values[$i]));
+                $objWriter->writeElement('c:v', (string) ($values[$i]));
                 $objWriter->endElement();
             }
 
@@ -397,7 +393,7 @@ class PptCharts extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Title
+     * Write Title.
      */
     protected function writeTitle(XMLWriter $objWriter, Title $subject): void
     {
@@ -494,8 +490,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Plot Area.
      *
      * @param XMLWriter $objWriter XML Writer
-     *
-     * @throws UndefinedChartTypeException
      */
     protected function writePlotArea(XMLWriter $objWriter, PlotArea $subject, Chart $chart): void
     {
@@ -700,7 +694,6 @@ class PptCharts extends AbstractDecoratorWriter
      *
      * @param XMLWriter $objWriter XML Writer
      * @param Chart\Type\Area $subject
-     * @param bool $includeSheet
      */
     protected function writeTypeArea(XMLWriter $objWriter, Area $subject, bool $includeSheet = false): void
     {
@@ -802,7 +795,6 @@ class PptCharts extends AbstractDecoratorWriter
      *
      * @param XMLWriter $objWriter XML Writer
      * @param Chart\Type\Bar $subject
-     * @param bool $includeSheet
      */
     protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, bool $includeSheet = false): void
     {
@@ -1014,7 +1006,6 @@ class PptCharts extends AbstractDecoratorWriter
      *
      * @param XMLWriter $objWriter XML Writer
      * @param Chart\Type\Bar3D $subject
-     * @param bool $includeSheet
      */
     protected function writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, bool $includeSheet = false): void
     {
@@ -1206,8 +1197,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Type Pie.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Doughnut $subject
-     * @param bool $includeSheet
      */
     protected function writeTypeDoughnut(XMLWriter $objWriter, Doughnut $subject, bool $includeSheet = false): void
     {
@@ -1365,8 +1354,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Type Pie.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Pie $subject
-     * @param bool $includeSheet
      */
     protected function writeTypePie(XMLWriter $objWriter, Pie $subject, bool $includeSheet = false): void
     {
@@ -1530,8 +1517,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Type Pie3D.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Pie3D $subject
-     * @param bool $includeSheet
      */
     protected function writeTypePie3D(XMLWriter $objWriter, Pie3D $subject, bool $includeSheet = false): void
     {
@@ -1689,8 +1674,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Type Line.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Line $subject
-     * @param bool $includeSheet
      */
     protected function writeTypeLine(XMLWriter $objWriter, Line $subject, bool $includeSheet = false): void
     {
@@ -1855,11 +1838,9 @@ class PptCharts extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Type Radar
+     * Write Type Radar.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Radar $subject
-     * @param bool $includeSheet
      */
     protected function writeTypeRadar(XMLWriter $objWriter, Radar $subject, bool $includeSheet = false): void
     {
@@ -2026,11 +2007,7 @@ class PptCharts extends AbstractDecoratorWriter
     }
 
     /**
-     * Write Type Scatter
-     *
-     * @param XMLWriter $objWriter
-     * @param Scatter $subject
-     * @param bool $includeSheet
+     * Write Type Scatter.
      */
     protected function writeTypeScatter(XMLWriter $objWriter, Scatter $subject, bool $includeSheet = false): void
     {
@@ -2206,8 +2183,6 @@ class PptCharts extends AbstractDecoratorWriter
     /**
      * Write chart relationships to XML format.
      *
-     * @param Chart $pChart
-     *
      * @return string XML Output
      */
     protected function writeChartRelationships(Chart $pChart): string
@@ -2233,10 +2208,6 @@ class PptCharts extends AbstractDecoratorWriter
         return $objWriter->getData();
     }
 
-    /**
-     * @param XMLWriter $objWriter
-     * @param Chart\Marker $marker
-     */
     protected function writeSeriesMarker(XMLWriter $objWriter, Chart\Marker $marker): void
     {
         // c:marker
@@ -2276,12 +2247,6 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-    /**
-     * @param XMLWriter $objWriter
-     * @param Chart\Axis $oAxis
-     * @param string $typeAxis
-     * @param Chart\Type\AbstractType $typeChart
-     */
     protected function writeAxis(XMLWriter $objWriter, Chart\Axis $oAxis, string $typeAxis, Chart\Type\AbstractType $typeChart): void
     {
         if (Chart\Axis::AXIS_X != $typeAxis && Chart\Axis::AXIS_Y != $typeAxis) {
@@ -2539,10 +2504,6 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->endElement();
     }
 
-    /**
-     * @param XMLWriter $objWriter
-     * @param Gridlines $oGridlines
-     */
     protected function writeAxisGridlines(XMLWriter $objWriter, Gridlines $oGridlines): void
     {
         // c:spPr

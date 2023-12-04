@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -68,7 +67,7 @@ abstract class AbstractGraphic extends AbstractShape implements ComparableInterf
      *
      * @var string
      */
-    public $relationId = null;
+    public $relationId;
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Slide\AbstractDrawing.

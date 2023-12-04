@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -29,8 +28,6 @@ class Relationships extends AbstractDecoratorWriter
 {
     /**
      * Add relationships to ZIP file.
-     *
-     * @return ZipInterface
      */
     public function render(): ZipInterface
     {
@@ -134,6 +131,7 @@ class Relationships extends AbstractDecoratorWriter
                     continue;
                 }
                 $this->writeRelationship($objWriter, $relationId++, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/commentAuthors', 'commentAuthors.xml');
+
                 break 2;
             }
         }

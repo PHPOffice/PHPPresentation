@@ -7,7 +7,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 
 include_once 'Sample_Header.php';
 
-function fnSlideRichText(PhpPresentation $objPHPPresentation)
+function fnSlideRichText(PhpPresentation $objPHPPresentation): void
 {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide' . EOL;
@@ -35,7 +35,7 @@ function fnSlideRichText(PhpPresentation $objPHPPresentation)
     $textRun->getFont()->setColor(new Color('FF000000'));
 }
 
-function fnSlideRichTextLineSpacing(PhpPresentation $objPHPPresentation)
+function fnSlideRichTextLineSpacing(PhpPresentation $objPHPPresentation): void
 {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide' . EOL;
@@ -81,7 +81,7 @@ function fnSlideRichTextLineSpacing(PhpPresentation $objPHPPresentation)
     $shape->createTextRun('Line Spacing 300');
 }
 
-function fnSlideRichTextShadow(PhpPresentation $objPHPPresentation)
+function fnSlideRichTextShadow(PhpPresentation $objPHPPresentation): void
 {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide' . EOL;
@@ -101,7 +101,7 @@ function fnSlideRichTextShadow(PhpPresentation $objPHPPresentation)
     $textRun->getFont()->setColor(new Color('FF000000'));
 }
 
-function fnSlideRichTextList(PhpPresentation $objPHPPresentation)
+function fnSlideRichTextList(PhpPresentation $objPHPPresentation): void
 {
     // Create templated slide
     echo date('H:i:s') . ' Create templated slide' . EOL;

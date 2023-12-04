@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -33,12 +32,15 @@ class Media extends File implements ComparableInterface
         switch (strtolower($this->getExtension())) {
             case 'mp4':
                 $mimetype = 'video/mp4';
+
                 break;
             case 'ogv':
                 $mimetype = 'video/ogg';
+
                 break;
             case 'wmv':
                 $mimetype = 'video/x-ms-wmv';
+
                 break;
             default:
                 $mimetype = 'application/octet-stream';

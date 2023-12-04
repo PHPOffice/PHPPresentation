@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -28,6 +27,7 @@ use PhpOffice\PhpPresentation\Exception\FileRemoveException;
 use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\HashTable;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use ReflectionClass;
 
 /**
  * ODPresentation writer.
@@ -55,10 +55,8 @@ class ODPresentation extends AbstractWriter implements WriterInterface
 
     /**
      * Create a new \PhpOffice\PhpPresentation\Writer\ODPresentation.
-     *
-     * @param PhpPresentation $pPhpPresentation
      */
-    public function __construct(PhpPresentation $pPhpPresentation = null)
+    public function __construct(?PhpPresentation $pPhpPresentation = null)
     {
         // Assign PhpPresentation
         $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
@@ -74,10 +72,6 @@ class ODPresentation extends AbstractWriter implements WriterInterface
 
     /**
      * Save PhpPresentation to file.
-     *
-     * @throws FileCopyException
-     * @throws FileRemoveException
-     * @throws InvalidParameterException
      */
     public function save(string $pFilename): void
     {
@@ -105,14 +99,14 @@ class ODPresentation extends AbstractWriter implements WriterInterface
         $arrayChart = [];
 
         $arrayFiles = [];
-        $oDir = new DirectoryIterator(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'ODPresentation');
+        $oDir = new DirectoryIterator(__DIR__ . DIRECTORY_SEPARATOR . 'ODPresentation');
         foreach ($oDir as $oFile) {
             if (!$oFile->isFile()) {
                 continue;
             }
 
             $class = __NAMESPACE__ . '\\ODPresentation\\' . $oFile->getBasename('.php');
-            $class = new \ReflectionClass($class);
+            $class = new ReflectionClass($class);
 
             if ($class->isAbstract() || !$class->isSubclassOf('PhpOffice\PhpPresentation\Writer\ODPresentation\AbstractDecoratorWriter')) {
                 continue;
@@ -160,18 +154,15 @@ class ODPresentation extends AbstractWriter implements WriterInterface
     /**
      * Set use disk caching where possible?
      *
-     * @param bool $pValue
      * @param string $directory Disk caching directory
-     *
-     * @throws DirectoryNotFoundException
      *
      * @return \PhpOffice\PhpPresentation\Writer\ODPresentation
      */
-    public function setUseDiskCaching(bool $pValue = false, string $directory = null)
+    public function setUseDiskCaching(bool $pValue = false, ?string $directory = null)
     {
         $this->useDiskCaching = $pValue;
 
-        if (!is_null($directory)) {
+        if (null !== $directory) {
             if (!is_dir($directory)) {
                 throw new DirectoryNotFoundException($directory);
             }

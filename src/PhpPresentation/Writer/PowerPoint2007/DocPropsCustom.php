@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -68,20 +67,25 @@ class DocPropsCustom extends AbstractDecoratorWriter
             switch ($propertyType) {
                 case DocumentProperties::PROPERTY_TYPE_INTEGER:
                     $objWriter->writeElement('vt:i4', (string) $propertyValue);
+
                     break;
                 case DocumentProperties::PROPERTY_TYPE_FLOAT:
                     $objWriter->writeElement('vt:r8', (string) $propertyValue);
+
                     break;
                 case DocumentProperties::PROPERTY_TYPE_BOOLEAN:
                     $objWriter->writeElement('vt:bool', $propertyValue ? 'true' : 'false');
+
                     break;
                 case DocumentProperties::PROPERTY_TYPE_DATE:
                     $objWriter->startElement('vt:filetime');
                     $objWriter->writeRaw(date(DATE_W3C, (int) $propertyValue));
                     $objWriter->endElement();
+
                     break;
                 default:
                     $objWriter->writeElement('vt:lpwstr', (string) $propertyValue);
+
                     break;
             }
             $objWriter->endElement();

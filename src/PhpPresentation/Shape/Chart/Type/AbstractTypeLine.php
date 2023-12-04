@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -31,8 +30,6 @@ class AbstractTypeLine extends AbstractType
 
     /**
      * Is Line Smooth?
-     *
-     * @return bool
      */
     public function isSmooth(): bool
     {
@@ -40,13 +37,9 @@ class AbstractTypeLine extends AbstractType
     }
 
     /**
-     * Set Line Smoothness
-     *
-     * @param bool $value
-     *
-     * @return AbstractTypeLine
+     * Set Line Smoothness.
      */
-    public function setIsSmooth(bool $value = true): AbstractTypeLine
+    public function setIsSmooth(bool $value = true): self
     {
         $this->isSmooth = $value;
 

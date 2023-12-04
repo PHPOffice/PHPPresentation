@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -81,22 +80,26 @@ class Transition
      * @var bool
      */
     protected $hasManualTrigger = false;
+
     /**
      * @var bool
      */
     protected $hasTimeTrigger = false;
+
     /**
-     * @var int|null
+     * @var null|int
      */
-    protected $advanceTimeTrigger = null;
+    protected $advanceTimeTrigger;
+
     /**
-     * @var string|null
+     * @var null|string
      */
-    protected $speed = null;
+    protected $speed;
+
     /**
-     * @var string|null
+     * @var null|string
      */
-    protected $transitionType = null;
+    protected $transitionType;
 
     public function setSpeed(?string $speed = self::SPEED_MEDIUM): self
     {
@@ -144,7 +147,7 @@ class Transition
         return $this->advanceTimeTrigger;
     }
 
-    public function setTransitionType(string $type = null): self
+    public function setTransitionType(?string $type = null): self
     {
         $this->transitionType = $type;
 

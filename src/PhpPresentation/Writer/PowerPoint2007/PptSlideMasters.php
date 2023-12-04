@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,9 +29,6 @@ use PhpOffice\PhpPresentation\Style\SchemeColor;
 
 class PptSlideMasters extends AbstractSlide
 {
-    /**
-     * @return ZipInterface
-     */
     public function render(): ZipInterface
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oMasterSlide) {
@@ -93,7 +89,7 @@ class PptSlideMasters extends AbstractSlide
         // Relationship theme/theme1.xml
         $this->writeRelationship($objWriter, $relId, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme', '../theme/theme' . $oMasterSlide->getRelsIndex() . '.xml');
         $objWriter->endElement();
-        // Return
+
         return $objWriter->getData();
     }
 
@@ -178,7 +174,7 @@ class PptSlideMasters extends AbstractSlide
         // p:sldMaster\p:sldLayoutIdLst
         $objWriter->startElement('p:sldLayoutIdLst');
         foreach ($pSlide->getAllSlideLayouts() as $layout) {
-            /* @var $layout Slide\SlideLayout */
+            // @var $layout Slide\SlideLayout
             $objWriter->startElement('p:sldLayoutId');
             $objWriter->writeAttribute('id', $layout->layoutId);
             $objWriter->writeAttribute('r:id', $layout->relationId);
@@ -237,7 +233,7 @@ class PptSlideMasters extends AbstractSlide
         $objWriter->endElement();
         // p:sldMaster\p:txStyles\
 
-        if (!is_null($pSlide->getTransition())) {
+        if (null !== $pSlide->getTransition()) {
             $this->writeSlideTransition($objWriter, $pSlide->getTransition());
         }
 

@@ -38,15 +38,19 @@ for ($inc = 1; $inc <= 4; ++$inc) {
     switch ($inc) {
         case 1:
             $shape->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_SOLID)->setLineStyle(Border::LINE_DOUBLE);
+
             break;
         case 2:
             $shape->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_DASH)->setLineStyle(Border::LINE_SINGLE);
+
             break;
         case 3:
             $shape->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_DOT)->setLineStyle(Border::LINE_THICKTHIN);
+
             break;
         case 4:
             $shape->getBorder()->setColor(new Color('FF4672A8'))->setDashStyle(Border::DASH_LARGEDASHDOT)->setLineStyle(Border::LINE_THINTHICK);
+
             break;
     }
 

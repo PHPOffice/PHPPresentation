@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -27,7 +26,7 @@ use PhpOffice\PhpPresentation\Style\Outline;
 
 class Series implements ComparableInterface
 {
-    /* Label positions */
+    // Label positions
     public const LABEL_BESTFIT = 'bestFit';
     public const LABEL_BOTTOM = 'b';
     public const LABEL_CENTER = 'ctr';
@@ -50,20 +49,20 @@ class Series implements ComparableInterface
      *
      * @var string
      */
-    protected $DlblNumFormat = '';
+    protected $dlblNumFormat = '';
 
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $separator;
 
     /**
-     * @var Fill|null
+     * @var null|Fill
      */
     protected $fill;
 
     /**
-     * @var Font|null
+     * @var null|Font
      */
     protected $font;
 
@@ -78,7 +77,7 @@ class Series implements ComparableInterface
     protected $marker;
 
     /**
-     * @var Outline|null
+     * @var null|Outline
      */
     protected $outline;
 
@@ -134,7 +133,7 @@ class Series implements ComparableInterface
     /**
      * Values (key/value).
      *
-     * @var array<string, string|null>
+     * @var array<string, null|string>
      */
     private $values = [];
 
@@ -146,8 +145,7 @@ class Series implements ComparableInterface
     private $hashIndex;
 
     /**
-     * @param string $title
-     * @param array<string, string|null> $values
+     * @param array<string, null|string> $values
      */
     public function __construct(string $title = 'Series Title', array $values = [])
     {
@@ -184,7 +182,7 @@ class Series implements ComparableInterface
      */
     public function getDlblNumFormat(): string
     {
-        return $this->DlblNumFormat;
+        return $this->dlblNumFormat;
     }
 
     /**
@@ -192,7 +190,7 @@ class Series implements ComparableInterface
      */
     public function hasDlblNumFormat(): bool
     {
-        return !empty($this->DlblNumFormat);
+        return !empty($this->dlblNumFormat);
     }
 
     /**
@@ -200,20 +198,17 @@ class Series implements ComparableInterface
      */
     public function setDlblNumFormat(string $value = ''): self
     {
-        $this->DlblNumFormat = $value;
+        $this->dlblNumFormat = $value;
 
         return $this;
     }
 
-    /**
-     * @return Fill
-     */
     public function getFill(): ?Fill
     {
         return $this->fill;
     }
 
-    public function setFill(Fill $fill = null): self
+    public function setFill(?Fill $fill = null): self
     {
         $this->fill = $fill;
 
@@ -243,7 +238,7 @@ class Series implements ComparableInterface
     /**
      * Get Values.
      *
-     * @return array<string, string|null>
+     * @return array<string, null|string>
      */
     public function getValues(): array
     {
@@ -253,7 +248,7 @@ class Series implements ComparableInterface
     /**
      * Set Values.
      *
-     * @param array<string, string|null> $values
+     * @param array<string, null|string> $values
      */
     public function setValues(array $values = []): self
     {
@@ -264,11 +259,6 @@ class Series implements ComparableInterface
 
     /**
      * Add Value.
-     *
-     * @param string $key
-     * @param string|null $value
-     *
-     * @return self
      */
     public function addValue(string $key, ?string $value): self
     {
@@ -369,7 +359,7 @@ class Series implements ComparableInterface
 
     public function hasShowSeparator(): bool
     {
-        return !is_null($this->separator);
+        return null !== $this->separator;
     }
 
     public function setSeparator(?string $pValue): self
@@ -408,8 +398,6 @@ class Series implements ComparableInterface
 
     /**
      * Get font.
-     *
-     * @return Font
      */
     public function getFont(): ?Font
     {
@@ -419,9 +407,9 @@ class Series implements ComparableInterface
     /**
      * Set font.
      *
-     * @param Font|null $pFont Font
+     * @param null|Font $pFont Font
      */
-    public function setFont(Font $pFont = null): self
+    public function setFont(?Font $pFont = null): self
     {
         $this->font = $pFont;
 
@@ -477,7 +465,7 @@ class Series implements ComparableInterface
      */
     public function getHashCode(): string
     {
-        return md5((is_null($this->fill) ? 'null' : $this->fill->getHashCode()) . (is_null($this->font) ? 'null' : $this->font->getHashCode()) . var_export($this->values, true) . var_export($this, true) . __CLASS__);
+        return md5((null === $this->fill ? 'null' : $this->fill->getHashCode()) . (null === $this->font ? 'null' : $this->font->getHashCode()) . var_export($this->values, true) . var_export($this, true) . __CLASS__);
     }
 
     /**
@@ -486,7 +474,7 @@ class Series implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

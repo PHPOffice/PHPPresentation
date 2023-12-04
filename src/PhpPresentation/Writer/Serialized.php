@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,10 +34,8 @@ class Serialized extends AbstractWriter implements WriterInterface
 {
     /**
      * Create a new \PhpOffice\PhpPresentation\Writer\Serialized.
-     *
-     * @param \PhpOffice\PhpPresentation\PhpPresentation $pPhpPresentation
      */
-    public function __construct(PhpPresentation $pPhpPresentation = null)
+    public function __construct(?PhpPresentation $pPhpPresentation = null)
     {
         // Set PhpPresentation
         $this->setPhpPresentation($pPhpPresentation ?? new PhpPresentation());
@@ -49,9 +46,6 @@ class Serialized extends AbstractWriter implements WriterInterface
 
     /**
      * Save PhpPresentation to file.
-     *
-     * @throws DirectoryNotFoundException
-     * @throws InvalidParameterException
      */
     public function save(string $pFilename): void
     {
@@ -93,12 +87,11 @@ class Serialized extends AbstractWriter implements WriterInterface
     /**
      * Serialize PhpPresentation object to XML.
      *
-     * @param PhpPresentation|null $pPhpPresentation
      * @param string $pFilename
      *
      * @return string XML Output
      */
-    protected function writeSerialized(PhpPresentation $pPhpPresentation = null, $pFilename = '')
+    protected function writeSerialized(?PhpPresentation $pPhpPresentation = null, $pFilename = '')
     {
         // Clone $pPhpPresentation
         $pPhpPresentation = clone $pPhpPresentation;

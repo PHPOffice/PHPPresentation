@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -142,9 +141,6 @@ class AbstractTypeBar extends AbstractType
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getOverlapWidthPercent(): int
     {
         return $this->overlapWidthPercent;
@@ -152,8 +148,6 @@ class AbstractTypeBar extends AbstractType
 
     /**
      * @param int $value overlap width percentage
-     *
-     * @return self
      */
     public function setOverlapWidthPercent(int $value): self
     {

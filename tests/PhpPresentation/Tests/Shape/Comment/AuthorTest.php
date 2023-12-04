@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -34,9 +33,9 @@ class AuthorTest extends TestCase
     {
         $object = new Author();
 
-        $this->assertNull($object->getName());
-        $this->assertNull($object->getIndex());
-        $this->assertNull($object->getInitials());
+        self::assertNull($object->getName());
+        self::assertNull($object->getIndex());
+        self::assertNull($object->getInitials());
     }
 
     public function testGetSetIndex(): void
@@ -44,9 +43,9 @@ class AuthorTest extends TestCase
         $expectedVal = mt_rand(1, 100);
 
         $object = new Author();
-        $this->assertNull($object->getIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment\\Author', $object->setIndex($expectedVal));
-        $this->assertEquals($expectedVal, $object->getIndex());
+        self::assertNull($object->getIndex());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment\\Author', $object->setIndex($expectedVal));
+        self::assertEquals($expectedVal, $object->getIndex());
     }
 
     public function testGetSetInitials(): void
@@ -54,9 +53,9 @@ class AuthorTest extends TestCase
         $expectedVal = 'AABBCCDD';
 
         $object = new Author();
-        $this->assertNull($object->getInitials());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment\\Author', $object->setInitials($expectedVal));
-        $this->assertEquals($expectedVal, $object->getInitials());
+        self::assertNull($object->getInitials());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment\\Author', $object->setInitials($expectedVal));
+        self::assertEquals($expectedVal, $object->getInitials());
     }
 
     public function testGetSetName(): void
@@ -64,8 +63,8 @@ class AuthorTest extends TestCase
         $expectedVal = 'AABBCCDD';
 
         $object = new Author();
-        $this->assertNull($object->getName());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment\\Author', $object->setName($expectedVal));
-        $this->assertEquals($expectedVal, $object->getName());
+        self::assertNull($object->getName());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\Comment\\Author', $object->setName($expectedVal));
+        self::assertEquals($expectedVal, $object->getName());
     }
 }

@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -42,30 +41,30 @@ class PhpPresentationTest extends TestCase
         $object = new PhpPresentation();
         $slide = $object->getSlide();
 
-        $this->assertEquals(new DocumentProperties(), $object->getDocumentProperties());
-        $this->assertEquals(new DocumentLayout(), $object->getLayout());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getSlide());
-        $this->assertCount(1, $object->getAllSlides());
-        $this->assertEquals(0, $object->getIndex($slide));
-        $this->assertEquals(1, $object->getSlideCount());
-        $this->assertEquals(0, $object->getActiveSlideIndex());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Iterator', $object->getSlideIterator());
+        self::assertEquals(new DocumentProperties(), $object->getDocumentProperties());
+        self::assertEquals(new DocumentLayout(), $object->getLayout());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide', $object->getSlide());
+        self::assertCount(1, $object->getAllSlides());
+        self::assertEquals(0, $object->getIndex($slide));
+        self::assertEquals(1, $object->getSlideCount());
+        self::assertEquals(0, $object->getActiveSlideIndex());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\Slide\\Iterator', $object->getSlideIterator());
     }
 
     public function testProperties(): void
     {
         $object = new PhpPresentation();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setDocumentProperties(new DocumentProperties()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setDocumentProperties(new DocumentProperties()));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\DocumentProperties', $object->getDocumentProperties());
     }
 
     public function testPresentationProperties(): void
     {
         $object = new PhpPresentation();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->getPresentationProperties());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setPresentationProperties(new PresentationProperties()));
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->getPresentationProperties());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->getPresentationProperties());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->setPresentationProperties(new PresentationProperties()));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PresentationProperties', $object->getPresentationProperties());
     }
 
     /**
@@ -78,7 +77,7 @@ class PhpPresentationTest extends TestCase
         $object = new PhpPresentation();
         $object->addExternalSlide($slide);
 
-        $this->assertEquals(2, $object->getSlideCount());
+        self::assertEquals(2, $object->getSlideCount());
     }
 
     /**
@@ -87,7 +86,7 @@ class PhpPresentationTest extends TestCase
     public function testCopy(): void
     {
         $object = new PhpPresentation();
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->copy());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->copy());
     }
 
     /**

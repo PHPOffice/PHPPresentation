@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -40,7 +39,7 @@ class IOFactoryTest extends TestCase
     {
         $class = 'PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007';
 
-        $this->assertInstanceOf($class, IOFactory::createWriter(new PhpPresentation()));
+        self::assertInstanceOf($class, IOFactory::createWriter(new PhpPresentation()));
     }
 
     /**
@@ -50,7 +49,7 @@ class IOFactoryTest extends TestCase
     {
         $class = 'PhpOffice\\PhpPresentation\\Reader\\ReaderInterface';
 
-        $this->assertInstanceOf($class, IOFactory::createReader('Serialized'));
+        self::assertInstanceOf($class, IOFactory::createReader('Serialized'));
     }
 
     /**
@@ -65,7 +64,7 @@ class IOFactoryTest extends TestCase
 
     public function testLoad(): void
     {
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'serialized.phppt'));
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', IOFactory::load(PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'files' . DIRECTORY_SEPARATOR . 'serialized.phppt'));
     }
 
     /**

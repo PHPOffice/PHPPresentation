@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -48,22 +47,27 @@ class ObjectsChart extends AbstractDecoratorWriter
      * @var XMLWriter
      */
     protected $xmlContent;
+
     /**
      * @var mixed
      */
     protected $arrayData;
+
     /**
      * @var mixed
      */
     protected $arrayTitle;
+
     /**
      * @var int
      */
     protected $numData;
+
     /**
      * @var int
      */
     protected $numSeries;
+
     /**
      * @var string
      */
@@ -326,15 +330,18 @@ class ObjectsChart extends AbstractDecoratorWriter
         switch ($axis->getTickLabelPosition()) {
             case Axis::TICK_LABEL_POSITION_NEXT_TO:
                 $this->xmlContent->writeAttribute('chart:axis-label-position', 'near-axis');
+
                 break;
             case Axis::TICK_LABEL_POSITION_HIGH:
                 $this->xmlContent->writeAttribute('chart:axis-position', '0');
                 $this->xmlContent->writeAttribute('chart:axis-label-position', 'outside-end');
+
                 break;
             case Axis::TICK_LABEL_POSITION_LOW:
                 $this->xmlContent->writeAttribute('chart:axis-position', '0');
                 $this->xmlContent->writeAttribute('chart:axis-label-position', 'outside-start');
                 $this->xmlContent->writeAttribute('chart:tick-mark-position', 'at-axis');
+
                 break;
         }
         $this->xmlContent->writeAttributeIf($chartType instanceof Radar && $styleName == 'styleAxisX', 'chart:reverse-direction', 'true');
@@ -449,19 +456,24 @@ class ObjectsChart extends AbstractDecoratorWriter
         switch ($chart->getLegend()->getPosition()) {
             case Chart\Legend::POSITION_BOTTOM:
                 $position = 'bottom';
+
                 break;
             case Chart\Legend::POSITION_LEFT:
                 $position = 'start';
+
                 break;
             case Chart\Legend::POSITION_TOP:
                 $position = 'top';
+
                 break;
             case Chart\Legend::POSITION_TOPRIGHT:
                 $position = 'top-end';
+
                 break;
             case Chart\Legend::POSITION_RIGHT:
             default:
                 $position = 'end';
+
                 break;
         }
         $this->xmlContent->writeAttribute('chart:legend-position', $position);
@@ -573,12 +585,15 @@ class ObjectsChart extends AbstractDecoratorWriter
         switch ($chart->getDisplayBlankAs()) {
             case Chart::BLANKAS_ZERO:
                 $this->xmlContent->writeAttribute('chart:treat-empty-cells', 'use-zero');
+
                 break;
             case Chart::BLANKAS_GAP:
                 $this->xmlContent->writeAttribute('chart:treat-empty-cells', 'leave-gap');
+
                 break;
             case Chart::BLANKAS_SPAN:
                 $this->xmlContent->writeAttribute('chart:treat-empty-cells', 'ignore');
+
                 break;
         }
         if ($chartType instanceof AbstractTypeBar) {
@@ -706,27 +721,27 @@ class ObjectsChart extends AbstractDecoratorWriter
         }
         if ($chartType instanceof Line || $chartType instanceof Scatter) {
             $oMarker = $series->getMarker();
-            /*
-             * @link : http://www.datypic.com/sc/odf/a-chart_symbol-type.html
-             */
+            // @link : http://www.datypic.com/sc/odf/a-chart_symbol-type.html
             $this->xmlContent->writeAttributeIf(Chart\Marker::SYMBOL_NONE == $oMarker->getSymbol(), 'chart:symbol-type', 'none');
-            /*
-             * @link : http://www.datypic.com/sc/odf/a-chart_symbol-name.html
-             */
+            // @link : http://www.datypic.com/sc/odf/a-chart_symbol-name.html
             $this->xmlContent->writeAttributeIf(Chart\Marker::SYMBOL_NONE != $oMarker->getSymbol(), 'chart:symbol-type', 'named-symbol');
             if (Chart\Marker::SYMBOL_NONE != $oMarker->getSymbol()) {
                 switch ($oMarker->getSymbol()) {
                     case Chart\Marker::SYMBOL_DASH:
                         $symbolName = 'horizontal-bar';
+
                         break;
                     case Chart\Marker::SYMBOL_DOT:
                         $symbolName = 'circle';
+
                         break;
                     case Chart\Marker::SYMBOL_TRIANGLE:
                         $symbolName = 'arrow-up';
+
                         break;
                     default:
                         $symbolName = $oMarker->getSymbol();
+
                         break;
                 }
                 $this->xmlContent->writeAttribute('chart:symbol-name', $symbolName);
@@ -880,13 +895,13 @@ class ObjectsChart extends AbstractDecoratorWriter
                     // table:table-cell
                     $this->xmlContent->startElement('table:table-cell');
 
-                    $cellValueTypeFloat = is_null($cell) ? true : is_numeric($cell);
+                    $cellValueTypeFloat = null === $cell ? true : is_numeric($cell);
                     $this->xmlContent->writeAttributeIf(!$cellValueTypeFloat, 'office:value-type', 'string');
                     $this->xmlContent->writeAttributeIf($cellValueTypeFloat, 'office:value-type', 'float');
-                    $this->xmlContent->writeAttributeIf($cellValueTypeFloat, 'office:value', is_null($cell) ? 'NaN' : $cell);
+                    $this->xmlContent->writeAttributeIf($cellValueTypeFloat, 'office:value', null === $cell ? 'NaN' : $cell);
                     // text:p
                     $this->xmlContent->startElement('text:p');
-                    $this->xmlContent->text(is_null($cell) ? 'NaN' : (string) $cell);
+                    $this->xmlContent->text(null === $cell ? 'NaN' : (string) $cell);
                     $this->xmlContent->endElement();
                     // > table:table-cell
                     $this->xmlContent->endElement();

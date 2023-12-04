@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -43,9 +42,9 @@ class ODPresentationTest extends PhpPresentationTestCase
         $this->oPresentation->getActiveSlide()->createDrawingShape();
         $object = new ODPresentation($this->oPresentation);
 
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
-        $this->assertEquals('./', $object->getDiskCachingDirectory());
-        $this->assertInstanceOf('PhpOffice\\PhpPresentation\\HashTable', $object->getDrawingHashTable());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->getPhpPresentation());
+        self::assertEquals('./', $object->getDiskCachingDirectory());
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\HashTable', $object->getDrawingHashTable());
     }
 
     /**
@@ -66,7 +65,7 @@ class ODPresentationTest extends PhpPresentationTestCase
         $object = new ODPresentation($this->oPresentation);
         $object->save($filename);
 
-        $this->assertTrue(file_exists($filename));
+        self::assertFileExists($filename);
 
         unlink($filename);
     }
@@ -89,11 +88,11 @@ class ODPresentationTest extends PhpPresentationTestCase
     public function testSetGetUseDiskCaching(): void
     {
         $object = new ODPresentation($this->oPresentation);
-        $this->assertFalse($object->hasDiskCaching());
+        self::assertFalse($object->hasDiskCaching());
 
         $object->setUseDiskCaching(true, sys_get_temp_dir());
-        $this->assertTrue($object->hasDiskCaching());
-        $this->assertEquals(sys_get_temp_dir(), $object->getDiskCachingDirectory());
+        self::assertTrue($object->hasDiskCaching());
+        self::assertEquals(sys_get_temp_dir(), $object->getDiskCachingDirectory());
     }
 
     /**

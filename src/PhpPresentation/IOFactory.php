@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -40,9 +39,6 @@ class IOFactory
 
     /**
      * Create writer.
-     *
-     * @param PhpPresentation $phpPresentation
-     * @param string $name
      */
     public static function createWriter(PhpPresentation $phpPresentation, string $name = 'PowerPoint2007'): WriterInterface
     {
@@ -51,8 +47,6 @@ class IOFactory
 
     /**
      * Create reader.
-     *
-     * @param string $name
      */
     public static function createReader(string $name): ReaderInterface
     {
@@ -61,8 +55,6 @@ class IOFactory
 
     /**
      * Loads PhpPresentation from file using automatic ReaderInterface resolution.
-     *
-     * @throws InvalidFileFormatException
      */
     public static function load(string $pFilename): PhpPresentation
     {
@@ -76,23 +68,17 @@ class IOFactory
 
         throw new InvalidFileFormatException(
             $pFilename,
-            IOFactory::class,
+            self::class,
             'Could not automatically determine the good ' . ReaderInterface::class
         );
     }
 
     /**
-     * Load class
-     *
-     * @param string $class
-     * @param string $type
-     * @param PhpPresentation|null $phpPresentation
+     * Load class.
      *
      * @return object
-     *
-     * @throws InvalidClassException
      */
-    private static function loadClass(string $class, string $type, PhpPresentation $phpPresentation = null)
+    private static function loadClass(string $class, string $type, ?PhpPresentation $phpPresentation = null)
     {
         if (!class_exists($class)) {
             throw new InvalidClassException($class, $type . ': The class doesn\'t exist');
@@ -100,7 +86,7 @@ class IOFactory
         if (!self::isConcreteClass($class)) {
             throw new InvalidClassException($class, $type . ': The class is an abstract class or an interface');
         }
-        if (is_null($phpPresentation)) {
+        if (null === $phpPresentation) {
             return new $class();
         }
 

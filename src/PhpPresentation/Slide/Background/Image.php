@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -49,8 +48,6 @@ class Image extends AbstractBackground
 
     /**
      * Get Path.
-     *
-     * @return string
      */
     public function getPath(): ?string
     {
@@ -63,8 +60,6 @@ class Image extends AbstractBackground
      * @param string $pValue File path
      * @param bool $pVerifyFile Verify file
      *
-     * @throws FileNotFoundException
-     *
      * @return self
      */
     public function setPath(string $pValue = '', bool $pVerifyFile = true)
@@ -76,7 +71,7 @@ class Image extends AbstractBackground
 
             if (0 == $this->width && 0 == $this->height) {
                 // Get width/height
-                list($this->width, $this->height) = getimagesize($pValue);
+                [$this->width, $this->height] = getimagesize($pValue);
             }
         }
         $this->path = $pValue;
@@ -86,8 +81,6 @@ class Image extends AbstractBackground
 
     /**
      * Get Filename.
-     *
-     * @return string
      */
     public function getFilename(): string
     {
@@ -96,8 +89,6 @@ class Image extends AbstractBackground
 
     /**
      * Get Extension.
-     *
-     * @return string
      */
     public function getExtension(): string
     {

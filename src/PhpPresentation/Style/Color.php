@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -27,7 +26,7 @@ use PhpOffice\PhpPresentation\ComparableInterface;
  */
 class Color implements ComparableInterface
 {
-    /* Colors */
+    // Colors
     public const COLOR_BLACK = 'FF000000';
     public const COLOR_WHITE = 'FFFFFFFF';
     public const COLOR_RED = 'FFFF0000';
@@ -94,8 +93,6 @@ class Color implements ComparableInterface
     /**
      * Get the alpha % of the ARGB
      * Will return 100 if no ARGB.
-     *
-     * @return int
      */
     public function getAlpha(): int
     {
@@ -110,8 +107,6 @@ class Color implements ComparableInterface
 
     /**
      * Set the alpha % of the ARGB.
-     *
-     * @param int $alpha
      *
      * @return $this
      */
@@ -140,9 +135,9 @@ class Color implements ComparableInterface
     {
         if (6 == strlen($this->argb)) {
             return $this->argb;
-        } else {
-            return substr($this->argb, 2);
         }
+
+        return substr($this->argb, 2);
     }
 
     /**
@@ -185,7 +180,7 @@ class Color implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {

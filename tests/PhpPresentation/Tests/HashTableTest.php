@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -35,11 +34,11 @@ class HashTableTest extends TestCase
     {
         $object = new HashTable();
 
-        $this->assertEquals(0, $object->count());
-        $this->assertNull($object->getByIndex());
-        $this->assertNull($object->getByHashCode());
-        $this->assertIsArray($object->toArray());
-        $this->assertEmpty($object->toArray());
+        self::assertEquals(0, $object->count());
+        self::assertNull($object->getByIndex());
+        self::assertNull($object->getByHashCode());
+        self::assertIsArray($object->toArray());
+        self::assertEmpty($object->toArray());
     }
 
     public function testConstructSource(): void
@@ -49,9 +48,9 @@ class HashTableTest extends TestCase
             new Slide(),
         ]);
 
-        $this->assertEquals(2, $object->count());
-        $this->assertIsArray($object->toArray());
-        $this->assertCount(2, $object->toArray());
+        self::assertEquals(2, $object->count());
+        self::assertIsArray($object->toArray());
+        self::assertCount(2, $object->toArray());
     }
 
     public function testAdd(): void
@@ -63,22 +62,22 @@ class HashTableTest extends TestCase
         $object->addFromSource();
         // Add From Source : Array
         $object->addFromSource([$oSlide]);
-        $this->assertIsArray($object->toArray());
-        $this->assertCount(1, $object->toArray());
+        self::assertIsArray($object->toArray());
+        self::assertCount(1, $object->toArray());
         // Clear
         $object->clear();
-        $this->assertEmpty($object->toArray());
+        self::assertEmpty($object->toArray());
         // Add Object
         $object->add($oSlide);
-        $this->assertCount(1, $object->toArray());
+        self::assertCount(1, $object->toArray());
         $object->clear();
         // Add Object w/Hash Index
-        $oSlide->setHashIndex(rand(1, 100));
+        $oSlide->setHashIndex(mt_rand(1, 100));
         $object->add($oSlide);
-        $this->assertCount(1, $object->toArray());
+        self::assertCount(1, $object->toArray());
         // Add Object w/the same Hash Index
         $object->add($oSlide);
-        $this->assertCount(1, $object->toArray());
+        self::assertCount(1, $object->toArray());
     }
 
     public function testIndex(): void
@@ -91,10 +90,10 @@ class HashTableTest extends TestCase
         $object->add($oSlide1);
         $object->add($oSlide2);
         // Index
-        $this->assertEquals(0, $object->getIndexForHashCode($oSlide1->getHashCode()));
-        $this->assertEquals(1, $object->getIndexForHashCode($oSlide2->getHashCode()));
-        $this->assertEquals($oSlide1, $object->getByIndex(0));
-        $this->assertEquals($oSlide2, $object->getByIndex(1));
+        self::assertEquals(0, $object->getIndexForHashCode($oSlide1->getHashCode()));
+        self::assertEquals(1, $object->getIndexForHashCode($oSlide2->getHashCode()));
+        self::assertEquals($oSlide1, $object->getByIndex(0));
+        self::assertEquals($oSlide2, $object->getByIndex(1));
     }
 
     public function testRemove(): void
@@ -110,8 +109,8 @@ class HashTableTest extends TestCase
         $object->add($oSlide3);
         // Remove
         $object->remove($oSlide2);
-        $this->assertCount(2, $object->toArray());
+        self::assertCount(2, $object->toArray());
         $object->remove($oSlide3);
-        $this->assertCount(1, $object->toArray());
+        self::assertCount(1, $object->toArray());
     }
 }

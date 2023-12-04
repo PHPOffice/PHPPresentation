@@ -21,7 +21,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Shadow;
 
-function fnSlide_Area(PhpPresentation $objPHPPresentation)
+function fnSlide_Area(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -71,7 +71,7 @@ function fnSlide_Area(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar(PhpPresentation $objPHPPresentation)
+function fnSlide_Bar(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -125,7 +125,7 @@ function fnSlide_Bar(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation)
+function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -161,7 +161,7 @@ function fnSlide_BarHorizontal(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_BarStacked(PhpPresentation $objPHPPresentation)
+function fnSlide_BarStacked(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -223,7 +223,7 @@ function fnSlide_BarStacked(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation)
+function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -302,7 +302,7 @@ function fnSlide_BarPercentStacked(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar3D(PhpPresentation $objPHPPresentation)
+function fnSlide_Bar3D(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -356,7 +356,7 @@ function fnSlide_Bar3D(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation)
+function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -395,7 +395,7 @@ function fnSlide_Bar3DHorizontal(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Doughnut(PhpPresentation $objPHPPresentation)
+function fnSlide_Doughnut(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -450,7 +450,7 @@ function fnSlide_Doughnut(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->setPosition(Legend::POSITION_LEFT);
 }
 
-function fnSlide_Pie3D(PhpPresentation $objPHPPresentation)
+function fnSlide_Pie3D(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -499,7 +499,7 @@ function fnSlide_Pie3D(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Pie(PhpPresentation $objPHPPresentation)
+function fnSlide_Pie(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -550,7 +550,7 @@ function fnSlide_Pie(PhpPresentation $objPHPPresentation)
     $shape->getLegend()->getFont()->setItalic(true);
 }
 
-function fnSlide_Radar(PhpPresentation $objPHPPresentation)
+function fnSlide_Radar(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;
@@ -607,7 +607,7 @@ function fnSlide_Radar(PhpPresentation $objPHPPresentation)
         ->setStartColor(new Color(Color::COLOR_BLUE)); // 0000FF
 }
 
-function fnSlide_Scatter(PhpPresentation $objPHPPresentation)
+function fnSlide_Scatter(PhpPresentation $objPHPPresentation): void
 {
     global $oFill;
     global $oShadow;

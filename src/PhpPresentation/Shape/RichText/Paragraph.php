@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -50,7 +49,7 @@ class Paragraph implements ComparableInterface
     /**
      * Font.
      *
-     * @var Font|null
+     * @var null|Font
      */
     private $font;
 
@@ -127,9 +126,9 @@ class Paragraph implements ComparableInterface
     /**
      * Set font.
      *
-     * @param Font|null $pFont Font
+     * @param null|Font $pFont Font
      */
-    public function setFont(Font $pFont = null): self
+    public function setFont(?Font $pFont = null): self
     {
         $this->font = $pFont;
 
@@ -145,9 +144,9 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Set bullet style
+     * Set bullet style.
      */
-    public function setBulletStyle(Bullet $style = null): self
+    public function setBulletStyle(?Bullet $style = null): self
     {
         $this->bulletStyle = $style;
 
@@ -170,9 +169,9 @@ class Paragraph implements ComparableInterface
     /**
      * Add text.
      *
-     * @param TextElementInterface|null $pText Rich text element
+     * @param null|TextElementInterface $pText Rich text element
      */
-    public function addText(TextElementInterface $pText = null): self
+    public function addText(?TextElementInterface $pText = null): self
     {
         $this->richTextElements[] = $pText;
 
@@ -276,7 +275,7 @@ class Paragraph implements ComparableInterface
      * Note that this index may vary during script execution! Only reliable moment is
      * while doing a write of a workbook and when changes are not allowed.
      *
-     * @return int|null Hash index
+     * @return null|int Hash index
      */
     public function getHashIndex(): ?int
     {
@@ -300,20 +299,15 @@ class Paragraph implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getLineSpacing(): int
     {
         return $this->lineSpacing;
     }
 
     /**
-     * Value in points
+     * Value in points.
      *
      * @param int $lineSpacing
-     *
-     * @return self
      */
     public function setLineSpacing($lineSpacing): self
     {
@@ -322,19 +316,11 @@ class Paragraph implements ComparableInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getLineSpacingMode(): string
     {
         return $this->lineSpacingMode;
     }
 
-    /**
-     * @param string $lineSpacingMode
-     *
-     * @return self
-     */
     public function setLineSpacingMode(string $lineSpacingMode): self
     {
         if (in_array($lineSpacingMode, [
@@ -348,9 +334,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Value in points
-     *
-     * @return int
+     * Value in points.
      */
     public function getSpacingBefore(): int
     {
@@ -358,11 +342,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Value in points
-     *
-     * @param int $spacingBefore
-     *
-     * @return self
+     * Value in points.
      */
     public function setSpacingBefore(int $spacingBefore): self
     {
@@ -372,9 +352,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Value in points
-     *
-     * @return int
+     * Value in points.
      */
     public function getSpacingAfter(): int
     {
@@ -382,11 +360,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Value in points
-     *
-     * @param int $spacingAfter
-     *
-     * @return self
+     * Value in points.
      */
     public function setSpacingAfter(int $spacingAfter): self
     {

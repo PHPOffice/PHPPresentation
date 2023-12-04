@@ -12,7 +12,6 @@
  *
  * @see        https://github.com/PHPOffice/PHPPresentation
  *
- * @copyright   2009-2015 PHPPresentation contributors
  * @license     http://www.gnu.org/licenses/lgpl.txt LGPL version 3
  */
 
@@ -30,9 +29,6 @@ use PhpOffice\PhpPresentation\Style\ColorMap;
 
 class PptSlideLayouts extends AbstractSlide
 {
-    /**
-     * @return ZipInterface
-     */
     public function render(): ZipInterface
     {
         foreach ($this->oPresentation->getAllMasterSlides() as $oSlideMaster) {
@@ -181,7 +177,7 @@ class PptSlideLayouts extends AbstractSlide
         // p:sldLayout\p:clrMapOvr\
         $objWriter->endElement();
 
-        if (!is_null($pSlideLayout->getTransition())) {
+        if (null !== $pSlideLayout->getTransition()) {
             $this->writeSlideTransition($objWriter, $pSlideLayout->getTransition());
         }
 
