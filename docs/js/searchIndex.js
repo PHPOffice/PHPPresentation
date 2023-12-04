@@ -113,12 +113,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\AbstractShape\u003A\u003AgetHyperlink\u0028\u0029",
             "name": "getHyperlink",
-            "summary": "Get\u0020Hyperlink",
+            "summary": "Get\u0020Hyperlink.",
             "url": "classes/PhpOffice-PhpPresentation-AbstractShape.html#method_getHyperlink"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\AbstractShape\u003A\u003AsetHyperlink\u0028\u0029",
             "name": "setHyperlink",
-            "summary": "Set\u0020Hyperlink",
+            "summary": "Set\u0020Hyperlink.",
             "url": "classes/PhpOffice-PhpPresentation-AbstractShape.html#method_setHyperlink"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\AbstractShape\u003A\u003AgetHashCode\u0028\u0029",
@@ -413,7 +413,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003A__construct\u0028\u0029",
             "name": "__construct",
-            "summary": "Create\u0020a\u0020new\u0020\\PhpOffice\\PhpPresentation\\DocumentProperties",
+            "summary": "Create\u0020a\u0020new\u0020\\PhpOffice\\PhpPresentation\\DocumentProperties.",
             "url": "classes/PhpOffice-PhpPresentation-DocumentProperties.html#method___construct"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\DocumentProperties\u003A\u003AgetCreator\u0028\u0029",
@@ -863,7 +863,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\IOFactory\u003A\u003AloadClass\u0028\u0029",
             "name": "loadClass",
-            "summary": "Load\u0020class",
+            "summary": "Load\u0020class.",
             "url": "classes/PhpOffice-PhpPresentation-IOFactory.html#method_loadClass"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\IOFactory\u003A\u003AisConcreteClass\u0028\u0029",
@@ -1223,12 +1223,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadDocumentProperties\u0028\u0029",
             "name": "loadDocumentProperties",
-            "summary": "Read\u0020Document\u0020Properties",
+            "summary": "Read\u0020Document\u0020Properties.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_loadDocumentProperties"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadSlides\u0028\u0029",
             "name": "loadSlides",
-            "summary": "Extract\u0020all\u0020slides",
+            "summary": "Extract\u0020all\u0020slides.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_loadSlides"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadPresentationProperties\u0028\u0029",
@@ -1238,42 +1238,42 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadStyle\u0028\u0029",
             "name": "loadStyle",
-            "summary": "Extract\u0020style",
+            "summary": "Extract\u0020style.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_loadStyle"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadSlide\u0028\u0029",
             "name": "loadSlide",
-            "summary": "Read\u0020Slide",
+            "summary": "Read\u0020Slide.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_loadSlide"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadShapeDrawing\u0028\u0029",
             "name": "loadShapeDrawing",
-            "summary": "Read\u0020Shape\u0020Drawing",
+            "summary": "Read\u0020Shape\u0020Drawing.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_loadShapeDrawing"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadShapeRichText\u0028\u0029",
             "name": "loadShapeRichText",
-            "summary": "Read\u0020Shape\u0020RichText",
+            "summary": "Read\u0020Shape\u0020RichText.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_loadShapeRichText"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AreadParagraph\u0028\u0029",
             "name": "readParagraph",
-            "summary": "Read\u0020Paragraph",
+            "summary": "Read\u0020Paragraph.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_readParagraph"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AreadParagraphItem\u0028\u0029",
             "name": "readParagraphItem",
-            "summary": "Read\u0020Paragraph\u0020Item",
+            "summary": "Read\u0020Paragraph\u0020Item.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_readParagraphItem"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AreadList\u0028\u0029",
             "name": "readList",
-            "summary": "Read\u0020List",
+            "summary": "Read\u0020List.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_readList"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AreadListItem\u0028\u0029",
             "name": "readListItem",
-            "summary": "Read\u0020List\u0020Item",
+            "summary": "Read\u0020List\u0020Item.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-ODPresentation.html#method_readListItem"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\ODPresentation\u003A\u003AloadStylesFile\u0028\u0029",
@@ -1363,7 +1363,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadPresentationProperties\u0028\u0029",
             "name": "loadPresentationProperties",
-            "summary": "Read\u0020Presentation\u0020Properties",
+            "summary": "Read\u0020Presentation\u0020Properties.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint2007.html#method_loadPresentationProperties"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadViewProperties\u0028\u0029",
@@ -1373,17 +1373,17 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadSlides\u0028\u0029",
             "name": "loadSlides",
-            "summary": "Extract\u0020all\u0020slides",
+            "summary": "Extract\u0020all\u0020slides.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint2007.html#method_loadSlides"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadMasterSlides\u0028\u0029",
             "name": "loadMasterSlides",
-            "summary": "Extract\u0020all\u0020MasterSlides",
+            "summary": "Extract\u0020all\u0020MasterSlides.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint2007.html#method_loadMasterSlides"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadSlide\u0028\u0029",
             "name": "loadSlide",
-            "summary": "Extract\u0020data\u0020from\u0020slide",
+            "summary": "Extract\u0020data\u0020from\u0020slide.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint2007.html#method_loadSlide"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint2007\u003A\u003AloadMasterSlide\u0028\u0029",
@@ -1508,12 +1508,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint97\u003A\u003AloadFile\u0028\u0029",
             "name": "loadFile",
-            "summary": "Load\u0020PhpPresentation\u0020Serialized\u0020file",
+            "summary": "Load\u0020PhpPresentation\u0020Serialized\u0020file.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint97.html#method_loadFile"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint97\u003A\u003AloadOLE\u0028\u0029",
             "name": "loadOLE",
-            "summary": "Read\u0020OLE\u0020Part",
+            "summary": "Read\u0020OLE\u0020Part.",
             "url": "classes/PhpOffice-PhpPresentation-Reader-PowerPoint97.html#method_loadOLE"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Reader\\PowerPoint97\u003A\u003AloadPicturesStream\u0028\u0029",
@@ -3218,7 +3218,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\AutoShape",
             "name": "AutoShape",
-            "summary": "AutoShape\u0020shape",
+            "summary": "AutoShape\u0020shape.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-AutoShape.html"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\AutoShape\u003A\u003A__construct\u0028\u0029",
@@ -4343,7 +4343,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetHashCode\u0028\u0029",
             "name": "getHashCode",
-            "summary": "Get\u0020hash\u0020code",
+            "summary": "Get\u0020hash\u0020code.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_getHashCode"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetHashIndex\u0028\u0029",
@@ -4448,7 +4448,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024formatCode",
             "name": "formatCode",
-            "summary": "Format\u0020code",
+            "summary": "Format\u0020code.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_formatCode"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024font",
@@ -5256,10 +5256,10 @@ Search.appendIndex(
             "summary": "DataPointFills\u0020\u0028key\/value\u0029.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Series.html#property_dataPointFills"
         },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Series\u003A\u003A\u0024DlblNumFormat",
-            "name": "DlblNumFormat",
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Series\u003A\u003A\u0024dlblNumFormat",
+            "name": "dlblNumFormat",
             "summary": "Data\u0020Label\u0020Number\u0020Format.",
-            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Series.html#property_DlblNumFormat"
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Series.html#property_dlblNumFormat"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Series\u003A\u003A\u0024separator",
             "name": "separator",
@@ -5648,7 +5648,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeLine\u003A\u003AsetIsSmooth\u0028\u0029",
             "name": "setIsSmooth",
-            "summary": "Set\u0020Line\u0020Smoothness",
+            "summary": "Set\u0020Line\u0020Smoothness.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-AbstractTypeLine.html#method_setIsSmooth"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\AbstractTypeLine\u003A\u003AgetHashCode\u0028\u0029",
@@ -5778,7 +5778,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Radar\u003A\u003AgetHashCode\u0028\u0029",
             "name": "getHashCode",
-            "summary": "Get\u0020hash\u0020code",
+            "summary": "Get\u0020hash\u0020code.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Type-Radar.html#method_getHashCode"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Type\\Scatter",
@@ -5928,7 +5928,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AgetDisplayBlankAs\u0028\u0029",
             "name": "getDisplayBlankAs",
-            "summary": "How\u0020missing\/blank\u0020values\u0020are\u0020displayed\u0020on\u0020chart\u0020\u0028dispBlanksAs\u0020property\u0029",
+            "summary": "How\u0020missing\/blank\u0020values\u0020are\u0020displayed\u0020on\u0020chart\u0020\u0028dispBlanksAs\u0020property\u0029.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_getDisplayBlankAs"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AgetTitle\u0028\u0029",
@@ -5958,7 +5958,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AsetDisplayBlankAs\u0028\u0029",
             "name": "setDisplayBlankAs",
-            "summary": "Define\u0020a\u0020way\u0020to\u0020display\u0020missing\/blank\u0020values\u0020\u0028dispBlanksAs\u0020property\u0029",
+            "summary": "Define\u0020a\u0020way\u0020to\u0020display\u0020missing\/blank\u0020values\u0020\u0028dispBlanksAs\u0020property\u0029.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart.html#method_setDisplayBlankAs"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\u003A\u003AsetIncludeSpreadsheet\u0028\u0029",
@@ -6638,7 +6638,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Hyperlink\u003A\u003A\u0024isTextColorUsed",
             "name": "isTextColorUsed",
-            "summary": "If\u0020true,\u0020uses\u0020the\u0020text\u0020color,\u0020instead\u0020of\u0020theme\u0020color",
+            "summary": "If\u0020true,\u0020uses\u0020the\u0020text\u0020color,\u0020instead\u0020of\u0020theme\u0020color.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Hyperlink.html#property_isTextColorUsed"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Hyperlink\u003A\u003AsetIsTextColorUsed\u0028\u0029",
@@ -6853,7 +6853,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003AsetBulletStyle\u0028\u0029",
             "name": "setBulletStyle",
-            "summary": "Set\u0020bullet\u0020style",
+            "summary": "Set\u0020bullet\u0020style.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setBulletStyle"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003AcreateText\u0028\u0029",
@@ -6918,7 +6918,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003AsetLineSpacing\u0028\u0029",
             "name": "setLineSpacing",
-            "summary": "Value\u0020in\u0020points",
+            "summary": "Value\u0020in\u0020points.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setLineSpacing"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003AgetLineSpacingMode\u0028\u0029",
@@ -6933,22 +6933,22 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003AgetSpacingBefore\u0028\u0029",
             "name": "getSpacingBefore",
-            "summary": "Value\u0020in\u0020points",
+            "summary": "Value\u0020in\u0020points.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getSpacingBefore"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003AsetSpacingBefore\u0028\u0029",
             "name": "setSpacingBefore",
-            "summary": "Value\u0020in\u0020points",
+            "summary": "Value\u0020in\u0020points.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setSpacingBefore"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003AgetSpacingAfter\u0028\u0029",
             "name": "getSpacingAfter",
-            "summary": "Value\u0020in\u0020points",
+            "summary": "Value\u0020in\u0020points.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_getSpacingAfter"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003AsetSpacingAfter\u0028\u0029",
             "name": "setSpacingAfter",
-            "summary": "Value\u0020in\u0020points",
+            "summary": "Value\u0020in\u0020points.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html#method_setSpacingAfter"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\\Paragraph\u003A\u003ALINE_SPACING_MODE_PERCENT",
@@ -7358,12 +7358,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\u003A\u003AgetColumnSpacing\u0028\u0029",
             "name": "getColumnSpacing",
-            "summary": "Get\u0020spacing\u0020between\u0020columns",
+            "summary": "Get\u0020spacing\u0020between\u0020columns.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText.html#method_getColumnSpacing"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\u003A\u003AsetColumnSpacing\u0028\u0029",
             "name": "setColumnSpacing",
-            "summary": "Set\u0020spacing\u0020between\u0020columns",
+            "summary": "Set\u0020spacing\u0020between\u0020columns.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText.html#method_setColumnSpacing"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\u003A\u003AgetHashCode\u0028\u0029",
@@ -7458,7 +7458,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\u003A\u003A\u0024columnSpacing",
             "name": "columnSpacing",
-            "summary": "The\u0020spacing\u0020between\u0020columns",
+            "summary": "The\u0020spacing\u0020between\u0020columns.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-RichText.html#property_columnSpacing"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\RichText\u003A\u003A\u0024bottomInset",
@@ -8175,11 +8175,6 @@ Search.appendIndex(
             "name": "__construct",
             "summary": "Create\u0020a\u0020new\u0020slide\u0020iterator.",
             "url": "classes/PhpOffice-PhpPresentation-Slide-Iterator.html#method___construct"
-        },                {
-            "fqsen": "\\PhpOffice\\PhpPresentation\\Slide\\Iterator\u003A\u003A__destruct\u0028\u0029",
-            "name": "__destruct",
-            "summary": "Destructor.",
-            "url": "classes/PhpOffice-PhpPresentation-Slide-Iterator.html#method___destruct"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Slide\\Iterator\u003A\u003Arewind\u0028\u0029",
             "name": "rewind",
@@ -9028,7 +9023,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Alignment\u003A\u003A\u0024isRTL",
             "name": "isRTL",
-            "summary": "RTL\u0020Direction\u0020Support",
+            "summary": "RTL\u0020Direction\u0020Support.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Alignment.html#property_isRTL"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Alignment\u003A\u003AsetIsRTL\u0028\u0029",
@@ -10208,12 +10203,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetName\u0028\u0029",
             "name": "getName",
-            "summary": "Get\u0020Name",
+            "summary": "Get\u0020Name.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_getName"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AsetName\u0028\u0029",
             "name": "setName",
-            "summary": "Set\u0020Name",
+            "summary": "Set\u0020Name.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_setName"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetCharacterSpacing\u0028\u0029",
@@ -10308,12 +10303,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetFormat\u0028\u0029",
             "name": "getFormat",
-            "summary": "Get\u0020format",
+            "summary": "Get\u0020format.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_getFormat"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AsetFormat\u0028\u0029",
             "name": "setFormat",
-            "summary": "Set\u0020format",
+            "summary": "Set\u0020format.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_setFormat"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetHashCode\u0028\u0029",
@@ -10488,7 +10483,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A\u0024format",
             "name": "format",
-            "summary": "Format",
+            "summary": "Format.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#property_format"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A\u0024hashIndex",
@@ -11388,7 +11383,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractDecoratorWriter\u003A\u003AwriteOutline\u0028\u0029",
             "name": "writeOutline",
-            "summary": "Write\u0020Outline",
+            "summary": "Write\u0020Outline.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractDecoratorWriter.html#method_writeOutline"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractDecoratorWriter\u003A\u003AabsoluteZipPath\u0028\u0029",
@@ -11448,12 +11443,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractSlide\u003A\u003AwriteShapeAutoShape\u0028\u0029",
             "name": "writeShapeAutoShape",
-            "summary": "Write\u0020AutoShape",
+            "summary": "Write\u0020AutoShape.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShapeAutoShape"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractSlide\u003A\u003AwriteShapeChart\u0028\u0029",
             "name": "writeShapeChart",
-            "summary": "Write\u0020chart",
+            "summary": "Write\u0020chart.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShapeChart"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractSlide\u003A\u003AwriteShapePic\u0028\u0029",
@@ -11593,7 +11588,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts\u003A\u003AwriteTitle\u0028\u0029",
             "name": "writeTitle",
-            "summary": "Write\u0020Title",
+            "summary": "Write\u0020Title.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-PptCharts.html#method_writeTitle"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts\u003A\u003AwritePlotArea\u0028\u0029",
@@ -11648,12 +11643,12 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts\u003A\u003AwriteTypeRadar\u0028\u0029",
             "name": "writeTypeRadar",
-            "summary": "Write\u0020Type\u0020Radar",
+            "summary": "Write\u0020Type\u0020Radar.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-PptCharts.html#method_writeTypeRadar"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts\u003A\u003AwriteTypeScatter\u0028\u0029",
             "name": "writeTypeScatter",
-            "summary": "Write\u0020Type\u0020Scatter",
+            "summary": "Write\u0020Type\u0020Scatter.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-PptCharts.html#method_writeTypeScatter"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\PptCharts\u003A\u003AwriteChartRelationships\u0028\u0029",
@@ -11908,7 +11903,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\WriterInterface\u003A\u003Asave\u0028\u0029",
             "name": "save",
-            "summary": "Save\u0020PhpPresentation\u0020to\u0020file",
+            "summary": "Save\u0020PhpPresentation\u0020to\u0020file.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-WriterInterface.html#method_save"
         },                {
             "fqsen": "\\",
