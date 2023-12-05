@@ -448,6 +448,14 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'strike', 'sngStrike');
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'u', Font::UNDERLINE_NONE);
 
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr/a:latin';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'typeface', 'Calibri');
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:catAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr/a:ea';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'typeface', 'Calibri');
+
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr/a:solidFill/a:srgbClr';
         $this->assertZipXmlElementExists($pathShape, $element);
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'val', '00FF00');
@@ -458,6 +466,14 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'sz', 1600);
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'strike', 'noStrike');
         $this->assertZipXmlAttributeEquals($pathShape, $element, 'u', Font::UNDERLINE_DASH);
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr/a:latin';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'typeface', 'Calibri');
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:title/c:tx/c:rich/a:p/a:pPr/a:defRPr/a:ea';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'typeface', 'Calibri');
 
         $this->assertIsSchemaECMA376Valid();
     }
@@ -498,6 +514,26 @@ class PptChartsTest extends PhpPresentationTestCase
         $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:spPr/a:ln/a:solidFill/a:srgbClr';
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'val', $expectedColorY);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testAxisTickLabelFont(): void
+    {
+        $oLine = new Line();
+        $oLine->addSeries(new Series('Downloads', $this->seriesData));
+        $oShape = $this->oPresentation->getActiveSlide()->createChartShape();
+        $oShape->getPlotArea()->setType($oLine);
+        $oShape->getPlotArea()->getAxisY()->getTickLabelFont()->setName('RandomFont');
+
+        $pathShape = 'ppt/charts/' . $oShape->getIndexedFilename();
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:txPr/a:p/a:pPr/a:defRPr/a:latin';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'typeface', 'RandomFont');
+
+        $element = '/c:chartSpace/c:chart/c:plotArea/c:valAx/c:txPr/a:p/a:pPr/a:defRPr/a:ea';
+        $this->assertZipXmlElementExists($pathShape, $element);
+        $this->assertZipXmlAttributeEquals($pathShape, $element, 'typeface', 'RandomFont');
 
         $this->assertIsSchemaECMA376Valid();
     }
@@ -712,6 +748,52 @@ class PptChartsTest extends PhpPresentationTestCase
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMin, 'val', $value);
         $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax);
         $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $elementMax, 'val', $value);
+
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    /**
+     * @dataProvider dataProviderFont
+     */
+    public function testSeriesFont(string $chartType, string $chartElementName): void
+    {
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oShape = $oSlide->createChartShape();
+        $oShape->setResizeProportional(false)->setHeight(550)->setWidth(700)->setOffsetX(120)->setOffsetY(80);
+        /** @var AbstractType $oChart */
+        $oChart = new $chartType();
+        $oChart->addSeries(new Series('Downloads', $this->seriesData));
+        $oShape->getPlotArea()->setType($oChart);
+
+        $this->assertZipFileExists('ppt/charts/' . $oShape->getIndexedFilename());
+
+        $element = '/p:sld/p:cSld/p:spTree/p:graphicFrame/a:graphic/a:graphicData';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+
+        $chartBaseXmlPath = sprintf(
+            '/c:chartSpace/c:chart/c:plotArea/%s%s',
+            $chartElementName,
+            $chartType === Doughnut::class ? '' : '/c:ser'
+        );
+        $element = $chartBaseXmlPath;
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = $chartBaseXmlPath . '/c:dLbls';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = $chartBaseXmlPath . '/c:dLbls/c:txPr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = $chartBaseXmlPath . '/c:dLbls/c:txPr/a:p';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = $chartBaseXmlPath . '/c:dLbls/c:txPr/a:p/a:pPr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = $chartBaseXmlPath . '/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $element = $chartBaseXmlPath . '/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr/a:latin';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'typeface', 'Calibri');
+        $element = $chartBaseXmlPath . '/c:dLbls/c:txPr/a:p/a:pPr/a:defRPr/a:ea';
+        $this->assertZipXmlElementExists('ppt/charts/' . $oShape->getIndexedFilename(), $element);
+        $this->assertZipXmlAttributeEquals('ppt/charts/' . $oShape->getIndexedFilename(), $element, 'typeface', 'Calibri');
+        $this->assertIsSchemaECMA376Valid();
 
         $this->assertIsSchemaECMA376Valid();
     }
@@ -1638,6 +1720,25 @@ class PptChartsTest extends PhpPresentationTestCase
                 continue;
             }
             yield [$symbol];
+        }
+    }
+
+    /**
+     * @return array<array<int, string>>
+     */
+    public function dataProviderFont(): iterable
+    {
+        foreach ([
+            [Bar::class, 'c:barChart'],
+            [Bar3D::class, 'c:bar3DChart'],
+            [Doughnut::class, 'c:doughnutChart'],
+            [Pie::class, 'c:pieChart'],
+            [Pie3D::class, 'c:pie3DChart'],
+            [Line::class, 'c:lineChart'],
+            [Radar::class, 'c:radarChart'],
+            [Scatter::class, 'c:scatterChart'],
+        ] as $chartType) {
+            yield $chartType;
         }
     }
 

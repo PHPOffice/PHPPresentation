@@ -156,6 +156,17 @@ class AxisTest extends TestCase
         self::assertInstanceOf(Outline::class, $object->getOutline());
     }
 
+    public function testTickLabelFont(): void
+    {
+        $object = new Axis();
+
+        self::assertInstanceOf(Font::class, $object->getTickLabelFont());
+        self::assertInstanceOf(Axis::class, $object->setTickLabelFont());
+        self::assertNull($object->getTickLabelFont());
+        self::assertInstanceOf(Axis::class, $object->setTickLabelFont(new Font()));
+        self::assertInstanceOf(Font::class, $object->getTickLabelFont());
+    }
+
     public function testTickLabelPosition(): void
     {
         $object = new Axis();

@@ -165,7 +165,8 @@ $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisX()->getOutline()->setWidth(10);
 $shape->getPlotArea()->getAxisX()->getOutline()->getFill()->setFillType(Fill::FILL_SOLID)->setStartColor(new Color(Color::COLOR_BLUE));
 ```
-#### Tick Label Position
+#### Tick Label
+##### Position
 
 You can define the tick label position with the `setTickLabelPosition` method.
 For resetting it, you pass `Axis::TICK_LABEL_POSITION_NEXT_TO` as parameter to this method.
@@ -187,6 +188,28 @@ $shape = $slide->createChartShape();
 $shape->getPlotArea()->setType($line);
 $shape->getPlotArea()->getAxisY()->setTickLabelPosition(Axis::TICK_LABEL_POSITION_LOW);
 ```
+
+##### Font
+
+You can define the tick label font with the `setTickLabelFont` method.
+For resetting it, you pass `null` as parameter to this method.
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Shape\Chart\Axis;
+use PhpOffice\PhpPresentation\Style\Color;
+use PhpOffice\PhpPresentation\Style\Font;
+
+$line = new Line();
+$font = new Font();
+$font->setColor(new Color('C00000'))
+
+$shape = $slide->createChartShape();
+$shape->getPlotArea()->setType($line);
+$shape->getPlotArea()->getAxisY()->setTickLabelFont($font);
+```
+
 #### Tick Marks
 
 For Axis Y, you can define tick mark with `setMinorTickMark` & `setMajorTickMark` methods.
