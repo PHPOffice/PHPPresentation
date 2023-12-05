@@ -681,11 +681,35 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tick-label-position" class="md-nav__link">
+  <a href="#tick-label" class="md-nav__link">
     <span class="md-ellipsis">
-      Tick Label Position
+      Tick Label
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Tick Label">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position" class="md-nav__link">
+    <span class="md-ellipsis">
+      Position
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#font" class="md-nav__link">
+    <span class="md-ellipsis">
+      Font
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -750,7 +774,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#font" class="md-nav__link">
+  <a href="#font_1" class="md-nav__link">
     <span class="md-ellipsis">
       Font
     </span>
@@ -1708,11 +1732,35 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#tick-label-position" class="md-nav__link">
+  <a href="#tick-label" class="md-nav__link">
     <span class="md-ellipsis">
-      Tick Label Position
+      Tick Label
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Tick Label">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position" class="md-nav__link">
+    <span class="md-ellipsis">
+      Position
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#font" class="md-nav__link">
+    <span class="md-ellipsis">
+      Font
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -1777,7 +1825,7 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#font" class="md-nav__link">
+  <a href="#font_1" class="md-nav__link">
     <span class="md-ellipsis">
       Font
     </span>
@@ -2162,7 +2210,8 @@ To reset this effect, the axis intersection point on the other axis must be set 
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOutline</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setWidth</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisX</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getOutline</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getFill</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setFillType</span><span class="p">(</span><span class="nx">Fill</span><span class="o">::</span><span class="na">FILL_SOLID</span><span class="p">)</span><span class="o">-&gt;</span><span class="na">setStartColor</span><span class="p">(</span><span class="k">new</span> <span class="nx">Color</span><span class="p">(</span><span class="nx">Color</span><span class="o">::</span><span class="na">COLOR_BLUE</span><span class="p">));</span>
 </code></pre></div>
-<h4 id="tick-label-position">Tick Label Position</h4>
+<h4 id="tick-label">Tick Label</h4>
+<h5 id="position">Position</h5>
 <p>You can define the tick label position with the <code>setTickLabelPosition</code> method.
 For resetting it, you pass <code>Axis::TICK_LABEL_POSITION_NEXT_TO</code> as parameter to this method.</p>
 <p>Differents types are available:</p>
@@ -2180,6 +2229,23 @@ For resetting it, you pass <code>Axis::TICK_LABEL_POSITION_NEXT_TO</code> as par
 <span class="nv">$shape</span> <span class="o">=</span> <span class="nv">$slide</span><span class="o">-&gt;</span><span class="na">createChartShape</span><span class="p">();</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setType</span><span class="p">(</span><span class="nv">$line</span><span class="p">);</span>
 <span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisY</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setTickLabelPosition</span><span class="p">(</span><span class="nx">Axis</span><span class="o">::</span><span class="na">TICK_LABEL_POSITION_LOW</span><span class="p">);</span>
+</code></pre></div>
+<h5 id="font">Font</h5>
+<p>You can define the tick label font with the <code>setTickLabelFont</code> method.
+For resetting it, you pass <code>null</code> as parameter to this method.</p>
+<div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
+
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Shape\Chart\Axis</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Style\Color</span><span class="p">;</span>
+<span class="k">use</span> <span class="nx">PhpOffice\PhpPresentation\Style\Font</span><span class="p">;</span>
+
+<span class="nv">$line</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Line</span><span class="p">();</span>
+<span class="nv">$font</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Font</span><span class="p">();</span>
+<span class="nv">$font</span><span class="o">-&gt;</span><span class="na">setColor</span><span class="p">(</span><span class="k">new</span> <span class="nx">Color</span><span class="p">(</span><span class="s1">&#39;C00000&#39;</span><span class="p">))</span>
+
+<span class="nv">$shape</span> <span class="o">=</span> <span class="nv">$slide</span><span class="o">-&gt;</span><span class="na">createChartShape</span><span class="p">();</span>
+<span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setType</span><span class="p">(</span><span class="nv">$line</span><span class="p">);</span>
+<span class="nv">$shape</span><span class="o">-&gt;</span><span class="na">getPlotArea</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">getAxisY</span><span class="p">()</span><span class="o">-&gt;</span><span class="na">setTickLabelFont</span><span class="p">(</span><span class="nv">$font</span><span class="p">);</span>
 </code></pre></div>
 <h4 id="tick-marks">Tick Marks</h4>
 <p>For Axis Y, you can define tick mark with <code>setMinorTickMark</code> &amp; <code>setMajorTickMark</code> methods.
@@ -2244,7 +2310,7 @@ For hiding it, you define its visibility to false.</p>
 <span class="nv">$series</span><span class="o">-&gt;</span><span class="na">setShowSeriesName</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
 <span class="nv">$series</span><span class="o">-&gt;</span><span class="na">setShowValue</span><span class="p">(</span><span class="k">true</span><span class="p">);</span>
 </code></pre></div>
-<h4 id="font">Font</h4>
+<h4 id="font_1">Font</h4>
 <p>You can custom the font of a serie.</p>
 <div class="highlight"><pre><span></span><code><span class="cp">&lt;?php</span>
 

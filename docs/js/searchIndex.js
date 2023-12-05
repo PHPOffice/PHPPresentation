@@ -4206,6 +4206,16 @@ Search.appendIndex(
             "summary": "Get\u0020font.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_getFont"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AsetTickLabelFont\u0028\u0029",
+            "name": "setTickLabelFont",
+            "summary": "Set\u0020tick\u0020label\u0020font.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_setTickLabelFont"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AgetTickLabelFont\u0028\u0029",
+            "name": "getTickLabelFont",
+            "summary": "Get\u0020tick\u0020label\u0020font.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#method_getTickLabelFont"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003AsetFont\u0028\u0029",
             "name": "setFont",
             "summary": "Set\u0020font.",
@@ -4460,6 +4470,11 @@ Search.appendIndex(
             "name": "font",
             "summary": "Font.",
             "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_font"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024tickLabelFont",
+            "name": "tickLabelFont",
+            "summary": "Tick\u0020lable\u0020font.",
+            "url": "classes/PhpOffice-PhpPresentation-Shape-Chart-Axis.html#property_tickLabelFont"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Shape\\Chart\\Axis\u003A\u003A\u0024majorGridlines",
             "name": "majorGridlines",
