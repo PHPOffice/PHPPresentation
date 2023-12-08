@@ -706,6 +706,16 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Exception-InvalidParameterException.html#method___construct"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Exception\\NotAllowedValueException",
+            "name": "NotAllowedValueException",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Exception-NotAllowedValueException.html"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Exception\\NotAllowedValueException\u003A\u003A__construct\u0028\u0029",
+            "name": "__construct",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Exception-NotAllowedValueException.html#method___construct"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Exception\\OutOfBoundsException",
             "name": "OutOfBoundsException",
             "summary": "",
@@ -10291,6 +10301,16 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_setSubScript"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetCapitalization\u0028\u0029",
+            "name": "getCapitalization",
+            "summary": "Get\u0020Capitalization.",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_getCapitalization"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AsetCapitalization\u0028\u0029",
+            "name": "setCapitalization",
+            "summary": "Set\u0020Capitalization.",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#method_setCapitalization"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003AgetUnderline\u0028\u0029",
             "name": "getUnderline",
             "summary": "Get\u0020Underline.",
@@ -10451,6 +10471,21 @@ Search.appendIndex(
             "summary": "",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#constant_FORMAT_COMPLEX_SCRIPT"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003ACAPITALIZATION_NONE",
+            "name": "CAPITALIZATION_NONE",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#constant_CAPITALIZATION_NONE"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003ACAPITALIZATION_SMALL",
+            "name": "CAPITALIZATION_SMALL",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#constant_CAPITALIZATION_SMALL"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003ACAPITALIZATION_ALL",
+            "name": "CAPITALIZATION_ALL",
+            "summary": "",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#constant_CAPITALIZATION_ALL"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A\u0024name",
             "name": "name",
             "summary": "Name.",
@@ -10480,6 +10515,11 @@ Search.appendIndex(
             "name": "subScript",
             "summary": "Subscript.",
             "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#property_subScript"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A\u0024capitalization",
+            "name": "capitalization",
+            "summary": "Capitalization.",
+            "url": "classes/PhpOffice-PhpPresentation-Style-Font.html#property_capitalization"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Style\\Font\u003A\u003A\u0024underline",
             "name": "underline",
