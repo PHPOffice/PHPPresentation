@@ -332,6 +332,22 @@ class ODPresentation implements ReaderInterface
             if ($nodeTextProperties->hasAttribute('fo:color')) {
                 $oFont->getColor()->setRGB(substr($nodeTextProperties->getAttribute('fo:color'), -6));
             }
+            if ($nodeTextProperties->hasAttribute('fo:text-transform')) {
+                switch ($nodeTextProperties->getAttribute('fo:text-transform')) {
+                    case 'none':
+                        $oFont->setCapitalization(Font::CAPITALIZATION_NONE);
+
+                        break;
+                    case 'lowercase':
+                        $oFont->setCapitalization(Font::CAPITALIZATION_SMALL);
+
+                        break;
+                    case 'uppercase':
+                        $oFont->setCapitalization(Font::CAPITALIZATION_ALL);
+
+                        break;
+                }
+            }
             // Font Latin
             if ($nodeTextProperties->hasAttribute('fo:font-family')) {
                 $oFont

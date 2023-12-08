@@ -875,6 +875,27 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testStyleCapitalization(): void
+    {
+        $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('pText');
+        // Default : $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_NONE);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cap', 'none');
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setCapitalization(Font::CAPITALIZATION_ALL);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'cap', 'all');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testStyleCharacterSpacing(): void
     {
         $element = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr';

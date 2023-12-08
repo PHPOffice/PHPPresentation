@@ -276,6 +276,20 @@ class Content extends AbstractDecoratorWriter
                 // style:style > style:text-properties
                 $objWriter->startElement('style:text-properties');
                 $objWriter->writeAttribute('fo:color', '#' . $item->getFont()->getColor()->getRGB());
+                switch ($item->getFont()->getCapitalization()) {
+                    case Font::CAPITALIZATION_NONE:
+                        $objWriter->writeAttribute('fo:text-transform', 'none');
+
+                        break;
+                    case Font::CAPITALIZATION_ALL:
+                        $objWriter->writeAttribute('fo:text-transform', 'uppercase');
+
+                        break;
+                    case Font::CAPITALIZATION_SMALL:
+                        $objWriter->writeAttribute('fo:text-transform', 'lowercase');
+
+                        break;
+                }
                 switch ($item->getFont()->getFormat()) {
                     case Font::FORMAT_LATIN:
                         $objWriter->writeAttribute('fo:font-family', $item->getFont()->getName());

@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\NotAllowedValueException;
 
 /**
  * \PhpOffice\PhpPresentation\Style\Font.
@@ -49,6 +50,10 @@ class Font implements ComparableInterface
     public const FORMAT_LATIN = 'latin';
     public const FORMAT_EAST_ASIAN = 'ea';
     public const FORMAT_COMPLEX_SCRIPT = 'cs';
+
+    public const CAPITALIZATION_NONE = 'none';
+    public const CAPITALIZATION_SMALL = 'small';
+    public const CAPITALIZATION_ALL = 'all';
 
     /**
      * Name.
@@ -91,6 +96,13 @@ class Font implements ComparableInterface
      * @var bool
      */
     private $subScript = false;
+
+    /**
+     * Capitalization.
+     *
+     * @var string
+     */
+    private $capitalization = self::CAPITALIZATION_NONE;
 
     /**
      * Underline.
@@ -269,6 +281,31 @@ class Font implements ComparableInterface
         if (true === $pValue) {
             $this->superScript = false;
         }
+
+        return $this;
+    }
+
+    /**
+     * Get Capitalization.
+     */
+    public function getCapitalization(): string
+    {
+        return $this->capitalization;
+    }
+
+    /**
+     * Set Capitalization.
+     */
+    public function setCapitalization(string $pValue = self::CAPITALIZATION_NONE): self
+    {
+        if (!in_array(
+            $pValue,
+            [self::CAPITALIZATION_NONE, self::CAPITALIZATION_ALL, self::CAPITALIZATION_SMALL]
+        )) {
+            throw new NotAllowedValueException($pValue, [self::CAPITALIZATION_NONE, self::CAPITALIZATION_ALL, self::CAPITALIZATION_SMALL]);
+        }
+
+        $this->capitalization = $pValue;
 
         return $this;
     }

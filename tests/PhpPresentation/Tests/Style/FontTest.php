@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
+use PhpOffice\PhpPresentation\Exception\NotAllowedValueException;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Font;
 use PHPUnit\Framework\TestCase;
@@ -45,8 +46,34 @@ class FontTest extends TestCase
         self::assertFalse($object->isStrikethrough());
         self::assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
         self::assertEquals(0, $object->getCharacterSpacing());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $object->getCapitalization());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
         self::assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+    }
+
+    /**
+     * Test get/set Capitalization.
+     */
+    public function testCapitalization(): void
+    {
+        $object = new Font();
+        self::assertEquals(Font::CAPITALIZATION_NONE, $object->getCapitalization());
+        self::assertInstanceOf(Font::class, $object->setCapitalization(Font::CAPITALIZATION_ALL));
+        self::assertEquals(Font::CAPITALIZATION_ALL, $object->getCapitalization());
+        self::assertInstanceOf(Font::class, $object->setCapitalization());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $object->getCapitalization());
+    }
+
+    /**
+     * Test get/set Capitalization exception.
+     */
+    public function testCapitalizationException(): void
+    {
+        $this->expectException(NotAllowedValueException::class);
+        $this->expectExceptionMessage('The value "Invalid" is not in allowed values ("none", "all", "small")');
+
+        $object = new Font();
+        $object->setCapitalization('Invalid');
     }
 
     /**

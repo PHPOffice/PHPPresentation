@@ -159,6 +159,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 1 : Shape 2 : Paragraph 2
         $oRichText = $arrayRichText[1];
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $oRichText);
@@ -171,6 +172,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
 
         // Slide 2
         $oSlide2 = $oPhpPresentation->getSlide(1);
@@ -213,6 +215,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 2 : Shape 3
         /** @var RichText $oShape */
         $oShape = $arrayShape[2];
@@ -239,6 +242,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 2 : Shape 3 : Paragraph 2
         $oParagraph = $arrayParagraphs[1];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -255,6 +259,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 2 : Shape 3 : Paragraph 3
         $oParagraph = $arrayParagraphs[2];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -271,6 +276,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 2 : Shape 3 : Paragraph 4
         $oParagraph = $arrayParagraphs[3];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -287,6 +293,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
 
         // Slide 3
         $oSlide2 = $oPhpPresentation->getSlide(2);
@@ -333,6 +340,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 3 : Shape 2
         /** @var RichText $oShape */
         $oShape = $arrayShape[2];
@@ -360,6 +368,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 3 : Shape 3 : Paragraph 2
         $oParagraph = $arrayParagraphs[1];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -377,6 +386,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 3 : Shape 3 : Paragraph 3
         $oParagraph = $arrayParagraphs[2];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -394,6 +404,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 3 : Shape 3 : Paragraph 4
         $oParagraph = $arrayParagraphs[3];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -411,6 +422,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 3 : Shape 3 : Paragraph 5
         $oParagraph = $arrayParagraphs[4];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -428,6 +440,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 3 : Shape 3 : Paragraph 6
         $oParagraph = $arrayParagraphs[5];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -445,6 +458,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 3 : Shape 3 : Paragraph 7
         $oParagraph = $arrayParagraphs[6];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -462,6 +476,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 3 : Shape 3 : Paragraph 8
         $oParagraph = $arrayParagraphs[7];
         self::assertEquals(Alignment::HORIZONTAL_LEFT, $oParagraph->getAlignment()->getHorizontal());
@@ -479,6 +494,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
 
         // Slide 4
         $oSlide3 = $oPhpPresentation->getSlide(3);
@@ -525,6 +541,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 4 : Shape 3
         /** @var RichText $oShape */
         $oShape = $arrayShape[2];
@@ -553,6 +570,7 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('FF000000', $oRichText->getFont()->getColor()->getARGB());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
         // Slide 4 : Shape 3 : Paragraph 2
         $oRichText = $arrayRichText[1];
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Shape\\RichText\\BreakElement', $oRichText);
@@ -570,6 +588,7 @@ class PowerPoint2007Test extends TestCase
         self::assertFalse($oRichText->getHyperlink()->isTextColorUsed());
         self::assertEquals('Calibri', $oRichText->getFont()->getName());
         self::assertEquals(Font::FORMAT_LATIN, $oRichText->getFont()->getFormat());
+        self::assertEquals(Font::CAPITALIZATION_NONE, $oRichText->getFont()->getCapitalization());
     }
 
     public function testMarkAsFinal(): void

@@ -102,6 +102,28 @@ echo $alignment->isRTL();
 - `underline`
 - `strikethrough`
 - `color`
+- `capitalization`
+
+### Capitalization
+
+Some formats are available : 
+
+* `Font::CAPITALIZATION_NONE`
+* `Font::CAPITALIZATION_ALL`
+* `Font::CAPITALIZATION_SMALL`
+
+``` php
+<?php
+
+use PhpOffice\PhpPresentation\Style\Font;
+
+$font = new Font();
+
+// Set capitalization of font
+$font->setCapitalization(Font::CAPITALIZATION_ALL);
+// Get capitalization of font
+echo $font->getCapitalization();
+```
 
 ### Format
 
