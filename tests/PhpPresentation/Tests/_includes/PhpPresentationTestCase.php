@@ -107,7 +107,9 @@ class PhpPresentationTestCase extends TestCase
      */
     protected function setUp(): void
     {
-        $this->xmlDisableEntityLoader = libxml_disable_entity_loader(false);
+        if (\PHP_VERSION_ID < 80000) {
+            $this->xmlDisableEntityLoader = libxml_disable_entity_loader(false);
+        }
         $this->workDirectory = sys_get_temp_dir() . '/PhpPresentation_Unit_Test/';
         $this->oPresentation = new PhpPresentation();
         $this->filePath = tempnam(sys_get_temp_dir(), 'PhpPresentation');
@@ -125,7 +127,9 @@ class PhpPresentationTestCase extends TestCase
      */
     protected function tearDown(): void
     {
-        libxml_disable_entity_loader($this->xmlDisableEntityLoader);
+        if (\PHP_VERSION_ID < 80000) {
+            libxml_disable_entity_loader($this->xmlDisableEntityLoader);
+        }
         libxml_use_internal_errors($this->xmlInternalErrors);
         $this->oPresentation = null;
         $this->resetPresentationFile();

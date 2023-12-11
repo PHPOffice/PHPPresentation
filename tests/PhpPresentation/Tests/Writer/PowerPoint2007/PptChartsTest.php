@@ -1796,7 +1796,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @return array<array<int, string>>
      */
-    public function dataProviderFont(): iterable
+    public static function dataProviderFont(): iterable
     {
         foreach ([
             [Bar::class, 'c:barChart'],
@@ -1815,7 +1815,7 @@ class PptChartsTest extends PhpPresentationTestCase
     /**
      * @return array<array<int, string>>
      */
-    public function dataProviderIncludedSpreadsheet(): iterable
+    public static function dataProviderIncludedSpreadsheet(): iterable
     {
         foreach ([
             [Area::class, 'c:areaChart'],
