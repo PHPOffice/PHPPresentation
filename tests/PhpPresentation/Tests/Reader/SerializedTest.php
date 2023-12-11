@@ -85,7 +85,7 @@ class SerializedTest extends TestCase
         ));
 
         $oArchive = new ZipArchive();
-        $oArchive->open($file, ZipArchive::CREATE);
+        $oArchive->open($file, ZipArchive::OVERWRITE);
         $oArchive->addFromString('PhpPresentation.xml', '');
         $oArchive->close();
 

@@ -30,7 +30,7 @@ echo date('H:i:s') . ' Create a shape (drawing)' . EOL;
 $shape = $currentSlide->createDrawingShape();
 $shape->setName('PHPPresentation logo')
     ->setDescription('PHPPresentation logo')
-    ->setPath('./resources/phppowerpoint_logo.gif')
+    ->setPath(__DIR__ . '/resources/phppowerpoint_logo.gif')
     ->setHeight(36)
     ->setOffsetX(10)
     ->setOffsetY(10);
@@ -55,11 +55,11 @@ $textRun->getFont()->setBold(true)
 $basename = basename(__FILE__, '.php');
 echo date('H:i:s') . ' Write to serialized format' . EOL;
 $objWriter = IOFactory::createWriter($objPHPPresentation, 'Serialized');
-$objWriter->save('results/' . basename(__FILE__, '.php') . '.phppt');
+$objWriter->save(__DIR__ . '/results/' . basename(__FILE__, '.php') . '.phppt');
 
 // Read from serialized file
 echo date('H:i:s') . ' Read from serialized format' . EOL;
-$objPHPPresentationLoaded = IOFactory::load('results/' . basename(__FILE__, '.php') . '.phppt');
+$objPHPPresentationLoaded = IOFactory::load(__DIR__ . '/results/' . basename(__FILE__, '.php') . '.phppt');
 
 // Save file
 echo write($objPHPPresentationLoaded, basename(__FILE__, '.php'), $writers);
