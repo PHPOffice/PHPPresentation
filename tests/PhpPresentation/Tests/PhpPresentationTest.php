@@ -86,7 +86,12 @@ class PhpPresentationTest extends TestCase
     public function testCopy(): void
     {
         $object = new PhpPresentation();
-        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $object->copy());
+        $object->createSlide();
+
+        $copy = $object->copy();
+
+        self::assertInstanceOf('PhpOffice\\PhpPresentation\\PhpPresentation', $copy);
+        self::assertEquals(2, $copy->getSlideCount());
     }
 
     /**
