@@ -330,6 +330,8 @@
     <span>
                                 &nbsp;: void    </span>
 </dt>
+<dd>Note : $shapeId needs to start to 1
+ The animation is applied to the shape which is next to the target shape.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShapeGroup">writeShapeGroup()</a>
@@ -1154,7 +1156,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">772</span>
+    <span class="phpdocumentor-element-found-in__line">775</span>
 
     </aside>
 
@@ -1205,7 +1207,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">803</span>
+    <span class="phpdocumentor-element-found-in__line">806</span>
 
     </aside>
 
@@ -1300,7 +1302,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">506</span>
+    <span class="phpdocumentor-element-found-in__line">509</span>
 
     </aside>
 
@@ -1491,7 +1493,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">738</span>
+    <span class="phpdocumentor-element-found-in__line">741</span>
 
     </aside>
 
@@ -1540,7 +1542,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1089</span>
+    <span class="phpdocumentor-element-found-in__line">1092</span>
 
     </aside>
 
@@ -1598,7 +1600,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1184</span>
+    <span class="phpdocumentor-element-found-in__line">1187</span>
 
     </aside>
 
@@ -1656,14 +1658,16 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">125</span>
+    <span class="phpdocumentor-element-found-in__line">128</span>
 
     </aside>
 
-    
+        <p class="phpdocumentor-summary">Note : $shapeId needs to start to 1
+ The animation is applied to the shape which is next to the target shape.</p>
+
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">writeShapeCollection</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\PhpOffice\Common\XMLWriter">XMLWriter</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$objWriter</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;|<abbr title="\ArrayObject">ArrayObject</abbr>&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$shapes</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$shapeId</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">0</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+                    <span class="phpdocumentor-signature__name">writeShapeCollection</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\PhpOffice\Common\XMLWriter">XMLWriter</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$objWriter</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;|<abbr title="\ArrayObject">ArrayObject</abbr>&lt;int, <a href="classes/PhpOffice-PhpPresentation-AbstractShape.html"><abbr title="\PhpOffice\PhpPresentation\AbstractShape">AbstractShape</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$shapes</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">[]</span><span> ]</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">int&nbsp;</span><span class="phpdocumentor-signature__argument__reference-operator">&amp;</span><span class="phpdocumentor-signature__argument__name">$shapeId</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">1</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1687,7 +1691,7 @@
                     <dt class="phpdocumentor-argument-list__entry">
                 <span class="phpdocumentor-signature__argument__name">$shapeId</span>
                 : <span class="phpdocumentor-signature__argument__return-type">int</span>
-                 = <span class="phpdocumentor-signature__argument__default-value">0</span>            </dt>
+                 = <span class="phpdocumentor-signature__argument__default-value">1</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
                 
             </dd>
@@ -1711,7 +1715,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1410</span>
+    <span class="phpdocumentor-element-found-in__line">1413</span>
 
     </aside>
 
@@ -1769,7 +1773,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">648</span>
+    <span class="phpdocumentor-element-found-in__line">651</span>
 
     </aside>
 
@@ -1827,7 +1831,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1242</span>
+    <span class="phpdocumentor-element-found-in__line">1245</span>
 
     </aside>
 
@@ -1885,7 +1889,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">310</span>
+    <span class="phpdocumentor-element-found-in__line">313</span>
 
     </aside>
 
@@ -1943,7 +1947,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">160</span>
+    <span class="phpdocumentor-element-found-in__line">163</span>
 
     </aside>
 
@@ -2099,7 +2103,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1459</span>
+    <span class="phpdocumentor-element-found-in__line">1462</span>
 
     </aside>
 
@@ -2197,7 +2201,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1527</span>
+    <span class="phpdocumentor-element-found-in__line">1530</span>
 
     </aside>
 
@@ -2314,7 +2318,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1815</span>
+    <span class="phpdocumentor-element-found-in__line">1818</span>
 
     </aside>
 

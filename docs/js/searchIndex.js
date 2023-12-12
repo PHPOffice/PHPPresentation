@@ -11463,7 +11463,7 @@ Search.appendIndex(
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractSlide\u003A\u003AwriteShapeCollection\u0028\u0029",
             "name": "writeShapeCollection",
-            "summary": "",
+            "summary": "Note\u0020\u003A\u0020\u0024shapeId\u0020needs\u0020to\u0020start\u0020to\u00201\n\u0020The\u0020animation\u0020is\u0020applied\u0020to\u0020the\u0020shape\u0020which\u0020is\u0020next\u0020to\u0020the\u0020target\u0020shape.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShapeCollection"
         },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractSlide\u003A\u003AwriteShapeText\u0028\u0029",
