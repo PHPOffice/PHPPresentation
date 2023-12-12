@@ -119,10 +119,13 @@ abstract class AbstractSlide extends AbstractDecoratorWriter
     }
 
     /**
+     * Note : $shapeId needs to start to 1
+     *  The animation is applied to the shape which is next to the target shape.
+     *
      * @param array<int, AbstractShape>|ArrayObject<int, AbstractShape> $shapes
      * @param int $shapeId
      */
-    protected function writeShapeCollection(XMLWriter $objWriter, $shapes = [], &$shapeId = 0): void
+    protected function writeShapeCollection(XMLWriter $objWriter, $shapes = [], &$shapeId = 1): void
     {
         if (0 == count($shapes)) {
             return;

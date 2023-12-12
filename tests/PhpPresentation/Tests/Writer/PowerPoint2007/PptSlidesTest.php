@@ -130,7 +130,7 @@ class PptSlidesTest extends PhpPresentationTestCase
     {
         $oSlide = $this->oPresentation->getActiveSlide();
         $oShape1 = $oSlide->createRichTextShape();
-        $oShape2 = $oSlide->createRichTextShape();
+        $oShape2 = $oSlide->createLineShape(10, 10, 10, 10);
         $oAnimation = new Animation();
         $oAnimation->addShape($oShape1);
         $oAnimation->addShape($oShape2);
@@ -142,6 +142,12 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
         $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par';
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par[1]/p:cTn/p:childTnLst/p:set/p:cBhvr/p:tgtEl/p:spTgt';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spid', 2);
+        $element = '/p:sld/p:timing/p:tnLst/p:par/p:cTn/p:childTnLst/p:seq/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par/p:cTn/p:childTnLst/p:par[2]/p:cTn/p:childTnLst/p:set/p:cBhvr/p:tgtEl/p:spTgt';
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $element);
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $element, 'spid', 3);
         $this->assertIsSchemaECMA376Valid();
     }
 
