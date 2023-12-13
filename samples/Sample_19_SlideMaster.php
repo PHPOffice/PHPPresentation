@@ -55,7 +55,7 @@ $shape->getActiveParagraph()->getAlignment()
     ->setVertical(Alignment::VERTICAL_BASE);
 $shape->setAutoFit(RichText::AUTOFIT_NORMAL);
 $textRun = $shape->createTextRun('01-02-2000')->getFont()->setSize(18);
-$shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_DATETIME))->getPlaceholder()->setIdx(10);
+$shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_DATETIME));
 // Footer placeholder
 $shape = $oMasterSlide->createRichTextShape();
 $shape->setWidthAndHeight(468, 38)->setOffsetX(246)->setOffsetY(680);
@@ -64,7 +64,7 @@ $shape->getActiveParagraph()->getAlignment()
     ->setVertical(Alignment::VERTICAL_BASE);
 $shape->setAutoFit(RichText::AUTOFIT_NORMAL);
 $textRun = $shape->createTextRun('Placeholder for Footer')->getFont()->setSize(18);
-$shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_FOOTER))->getPlaceholder()->setIdx(11);
+$shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_FOOTER));
 // Slidenumber placeholder
 $shape = $oMasterSlide->createRichTextShape();
 $shape->setWidthAndHeight(140, 38)->setOffsetX(770)->setOffsetY(680);
@@ -72,8 +72,8 @@ $shape->getActiveParagraph()->getAlignment()
     ->setHorizontal(Alignment::HORIZONTAL_RIGHT)
     ->setVertical(Alignment::VERTICAL_BASE);
 $shape->setAutoFit(RichText::AUTOFIT_NORMAL);
-$textRun = $shape->createTextRun('')->getFont()->setSize(18);
-$shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_SLIDENUM))->getPlaceholder()->setIdx(12);
+$textRun = $shape->createTextRun('')->getFont()->setSize(10);
+$shape->setPlaceHolder(new Placeholder(Placeholder::PH_TYPE_SLIDENUM));
 
 // Create a shape (drawing)
 echo date('H:i:s') . ' Create a shape (drawing)' . EOL;

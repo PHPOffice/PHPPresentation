@@ -61,7 +61,9 @@
             "php samples/Sample_17_Comment.php",
             "php samples/Sample_18_Animation.php",
             "php samples/Sample_19_SlideMaster.php",
-            "php samples/Sample_20_ExternalSlide.php"
+            "php samples/Sample_20_SlideLayout.php",
+            "php samples/Sample_21_AutoShape.php",
+            "php samples/Sample_22_ExternalSlide.php"
         ]
     }
 }
