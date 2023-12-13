@@ -290,6 +290,13 @@
 <dd>Write paragraphs.</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeParagraphStyles">writeParagraphStyles()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
+<dd>Write Paragraph Styles (a:pPr).</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractDecoratorWriter.html#method_writePatternFill">writePatternFill()</a>
     <span>
                                 &nbsp;: void    </span>
@@ -302,6 +309,13 @@
                                 &nbsp;: void    </span>
 </dt>
 <dd>Write relationship.</dd>
+
+            <dt class="phpdocumentor-table-of-contents__entry -method -protected">
+    <a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeRunStyles">writeRunStyles()</a>
+    <span>
+                                &nbsp;: void    </span>
+</dt>
+<dd>Write RichTextElement Styles (a:pPr).</dd>
 
             <dt class="phpdocumentor-table-of-contents__entry -method -protected">
     <a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShadow">writeShadow()</a>
@@ -1148,7 +1162,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">775</span>
+    <span class="phpdocumentor-element-found-in__line">814</span>
 
     </aside>
 
@@ -1199,7 +1213,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">806</span>
+    <span class="phpdocumentor-element-found-in__line">845</span>
 
     </aside>
 
@@ -1294,7 +1308,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">509</span>
+    <span class="phpdocumentor-element-found-in__line">527</span>
 
     </aside>
 
@@ -1302,7 +1316,7 @@
 
     <code class="phpdocumentor-code phpdocumentor-signature ">
     <span class="phpdocumentor-signature__visibility">protected</span>
-                    <span class="phpdocumentor-signature__name">writeParagraphs</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\PhpOffice\Common\XMLWriter">XMLWriter</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$objWriter</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Paragraph">Paragraph</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$paragraphs</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$bIsPlaceholder</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+                    <span class="phpdocumentor-signature__name">writeParagraphs</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\PhpOffice\Common\XMLWriter">XMLWriter</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$objWriter</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type">array&lt;string|int, <a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Paragraph">Paragraph</abbr></a>&gt;&nbsp;</span><span class="phpdocumentor-signature__argument__name">$paragraphs</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
 
     <div class="phpdocumentor-label-line">
         </div>
@@ -1325,8 +1339,57 @@
             <dd class="phpdocumentor-argument-list__definition">
                 
             </dd>
+            </dl>
+
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
+    <h4 class="phpdocumentor-element__name" id="method_writeParagraphStyles">
+        writeParagraphStyles()
+        <a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeParagraphStyles" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">568</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Write Paragraph Styles (a:pPr).</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">writeParagraphStyles</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\PhpOffice\Common\XMLWriter">XMLWriter</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$objWriter</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Paragraph">Paragraph</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$paragraph</span></span><span class="phpdocumentor-signature__argument"><span>[</span><span>, </span><span class="phpdocumentor-signature__argument__return-type">bool&nbsp;</span><span class="phpdocumentor-signature__argument__name">$isPlaceholder</span><span> = </span><span class="phpdocumentor-signature__argument__default-value">false</span><span> ]</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
                     <dt class="phpdocumentor-argument-list__entry">
-                <span class="phpdocumentor-signature__argument__name">$bIsPlaceholder</span>
+                <span class="phpdocumentor-signature__argument__name">$objWriter</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\PhpOffice\Common\XMLWriter">XMLWriter</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$paragraph</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Paragraph.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Paragraph">Paragraph</abbr></a></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$isPlaceholder</span>
                 : <span class="phpdocumentor-signature__argument__return-type">bool</span>
                  = <span class="phpdocumentor-signature__argument__default-value">false</span>            </dt>
             <dd class="phpdocumentor-argument-list__definition">
@@ -1477,6 +1540,55 @@
             -protected
                                                         "
 >
+    <h4 class="phpdocumentor-element__name" id="method_writeRunStyles">
+        writeRunStyles()
+        <a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeRunStyles" class="headerlink"><i class="fas fa-link"></i></a>
+
+    </h4>
+    <aside class="phpdocumentor-element-found-in">
+    <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
+    :
+    <span class="phpdocumentor-element-found-in__line">642</span>
+
+    </aside>
+
+        <p class="phpdocumentor-summary">Write RichTextElement Styles (a:pPr).</p>
+
+    <code class="phpdocumentor-code phpdocumentor-signature ">
+    <span class="phpdocumentor-signature__visibility">protected</span>
+                    <span class="phpdocumentor-signature__name">writeRunStyles</span><span>(</span><span class="phpdocumentor-signature__argument"><span class="phpdocumentor-signature__argument__return-type"><abbr title="\PhpOffice\Common\XMLWriter">XMLWriter</abbr>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$objWriter</span></span><span class="phpdocumentor-signature__argument"><span>, </span><span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Run.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Run">Run</abbr></a>&nbsp;</span><span class="phpdocumentor-signature__argument__name">$element</span></span><span>)</span><span> : </span><span class="phpdocumentor-signature__response_type">void</span></code>
+
+    <div class="phpdocumentor-label-line">
+        </div>
+    
+        <h5 class="phpdocumentor-argument-list__heading">Parameters</h5>
+    <dl class="phpdocumentor-argument-list">
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$objWriter</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><abbr title="\PhpOffice\Common\XMLWriter">XMLWriter</abbr></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+                    <dt class="phpdocumentor-argument-list__entry">
+                <span class="phpdocumentor-signature__argument__name">$element</span>
+                : <span class="phpdocumentor-signature__argument__return-type"><a href="classes/PhpOffice-PhpPresentation-Shape-RichText-Run.html"><abbr title="\PhpOffice\PhpPresentation\Shape\RichText\Run">Run</abbr></a></span>
+                            </dt>
+            <dd class="phpdocumentor-argument-list__definition">
+                
+            </dd>
+            </dl>
+
+    
+
+    
+</article>
+                    <article
+        class="phpdocumentor-element
+            -method
+            -protected
+                                                        "
+>
     <h4 class="phpdocumentor-element__name" id="method_writeShadow">
         writeShadow()
         <a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShadow" class="headerlink"><i class="fas fa-link"></i></a>
@@ -1485,7 +1597,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">741</span>
+    <span class="phpdocumentor-element-found-in__line">784</span>
 
     </aside>
 
@@ -1534,7 +1646,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1092</span>
+    <span class="phpdocumentor-element-found-in__line">1131</span>
 
     </aside>
 
@@ -1592,7 +1704,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1187</span>
+    <span class="phpdocumentor-element-found-in__line">1226</span>
 
     </aside>
 
@@ -1707,7 +1819,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1413</span>
+    <span class="phpdocumentor-element-found-in__line">1452</span>
 
     </aside>
 
@@ -1765,7 +1877,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">651</span>
+    <span class="phpdocumentor-element-found-in__line">694</span>
 
     </aside>
 
@@ -1823,7 +1935,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1245</span>
+    <span class="phpdocumentor-element-found-in__line">1284</span>
 
     </aside>
 
@@ -1881,7 +1993,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">313</span>
+    <span class="phpdocumentor-element-found-in__line">331</span>
 
     </aside>
 
@@ -1997,7 +2109,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1462</span>
+    <span class="phpdocumentor-element-found-in__line">1501</span>
 
     </aside>
 
@@ -2145,7 +2257,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1530</span>
+    <span class="phpdocumentor-element-found-in__line">1569</span>
 
     </aside>
 
@@ -2262,7 +2374,7 @@
     <aside class="phpdocumentor-element-found-in">
     <abbr class="phpdocumentor-element-found-in__file" title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php"><a href="files/src-phppresentation-writer-powerpoint2007-abstractslide.html"><abbr title="src/PhpPresentation/Writer/PowerPoint2007/AbstractSlide.php">AbstractSlide.php</abbr></a></abbr>
     :
-    <span class="phpdocumentor-element-found-in__line">1818</span>
+    <span class="phpdocumentor-element-found-in__line">1857</span>
 
     </aside>
 
@@ -2422,8 +2534,10 @@
                                             <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeNote">writeNote()</a></li>
                                             <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractDecoratorWriter.html#method_writeOutline">writeOutline()</a></li>
                                             <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeParagraphs">writeParagraphs()</a></li>
+                                            <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeParagraphStyles">writeParagraphStyles()</a></li>
                                             <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractDecoratorWriter.html#method_writePatternFill">writePatternFill()</a></li>
                                             <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractDecoratorWriter.html#method_writeRelationship">writeRelationship()</a></li>
+                                            <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeRunStyles">writeRunStyles()</a></li>
                                             <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShadow">writeShadow()</a></li>
                                             <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShapeAutoShape">writeShapeAutoShape()</a></li>
                                             <li><a href="classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeShapeChart">writeShapeChart()</a></li>

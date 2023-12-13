@@ -11481,6 +11481,16 @@ Search.appendIndex(
             "summary": "Write\u0020paragraphs.",
             "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeParagraphs"
         },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractSlide\u003A\u003AwriteParagraphStyles\u0028\u0029",
+            "name": "writeParagraphStyles",
+            "summary": "Write\u0020Paragraph\u0020Styles\u0020\u0028a\u003ApPr\u0029.",
+            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeParagraphStyles"
+        },                {
+            "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractSlide\u003A\u003AwriteRunStyles\u0028\u0029",
+            "name": "writeRunStyles",
+            "summary": "Write\u0020RichTextElement\u0020Styles\u0020\u0028a\u003ApPr\u0029.",
+            "url": "classes/PhpOffice-PhpPresentation-Writer-PowerPoint2007-AbstractSlide.html#method_writeRunStyles"
+        },                {
             "fqsen": "\\PhpOffice\\PhpPresentation\\Writer\\PowerPoint2007\\AbstractSlide\u003A\u003AwriteShapeLine\u0028\u0029",
             "name": "writeShapeLine",
             "summary": "Write\u0020Line\u0020Shape.",
