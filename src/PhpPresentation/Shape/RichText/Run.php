@@ -29,27 +29,18 @@ class Run extends TextElement implements TextElementInterface
     /**
      * Font.
      *
-     * @var \PhpOffice\PhpPresentation\Style\Font
+     * @var Font
      */
     private $font;
 
     /**
-     * List of effect apply to paragraph
-     * @var array \PhpOffice\PhpPresentation\Style\Effect[]
-     */
-    protected ?array $effectCollection = null;
-
-    /**
-     * Create a new \PhpOffice\PhpPresentation\Shape\RichText\Run instance
-     *
      * @param string $pText Text
      */
     public function __construct($pText = '')
     {
-        // Initialise variables
+        // Initialize variables
         $this->setText($pText);
         $this->font = new Font();
-        $this->effectCollection = null;
     }
 
     /**
@@ -63,9 +54,7 @@ class Run extends TextElement implements TextElementInterface
     /**
      * Set font.
      *
-     * @param null|Font $pFont Font
-     *
-     * @return \PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface
+     * @return self
      */
     public function setFont(?Font $pFont = null)
     {
@@ -75,49 +64,7 @@ class Run extends TextElement implements TextElementInterface
     }
 
     /**
-     * Add an effect to the shpae
-     * 
-     * @param \PhpOffice\PhpPresentation\Style\Effect $effect
-     * @return $this
-     */
-    public function addEffect(Shape\Effect $effect)
-    {
-      if (!isset($this->effectCollection)) {
-        $this->effectCollection = array();
-      }
-      $this->effectCollection[] = $effect;
-      return $this;
-    }
-    
-    /**
-     * Get the effect collection
-     * 
-     * @return array \PhpOffice\PhpPresentation\Style\Effect[]
-     */
-    public function getEffectCollection():?array
-    {
-      return $this->effectCollection;
-    }
-    
-    /**
-     * Set the effect collection
-     * 
-     * @param array \PhpOffice\PhpPresentation\Style\Effect $effectCollection
-     * @return $this
-     */
-    public function setEffectCollection(array $effectCollection)
-    {
-      if (   isset($effectCollection)
-          && is_array($effectCollection)) {
-        $this->effectCollection = $effectCollection;
-      }
-      return $this;
-    }
-
-    /**
-     * Get hash code
-     *
-     * @return string Hash code
+     * Get hash code.
      */
     public function getHashCode(): string
     {

@@ -130,14 +130,36 @@ class PresentationPropertiesTest extends TestCase
 
         $object = new PresentationProperties();
         self::assertNull($object->getThumbnailPath());
-        self::assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath('AAAA'));
+        self::assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath('AAAA', PresentationProperties::THUMBNAIL_FILE));
         self::assertNull($object->getThumbnailPath());
         self::assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath());
         self::assertNull($object->getThumbnailPath());
-        self::assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath($imagePath));
+        self::assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath($imagePath, PresentationProperties::THUMBNAIL_FILE));
         self::assertEquals($imagePath, $object->getThumbnailPath());
+        self::assertIsString($object->getThumbnail());
         self::assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath());
         self::assertEquals($imagePath, $object->getThumbnailPath());
+        self::assertIsString($object->getThumbnail());
+    }
+
+    public function testThumbnailFileNotExisting(): void
+    {
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'NotExistingFile.png';
+
+        $object = new PresentationProperties();
+        self::assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath($imagePath, PresentationProperties::THUMBNAIL_FILE));
+        self::assertNull($object->getThumbnailPath());
+        self::assertNull($object->getThumbnail());
+    }
+
+    public function testThumbnailFileData(): void
+    {
+        $imagePath = PHPPRESENTATION_TESTS_BASE_DIR . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'PhpPresentationLogo.png';
+
+        $object = new PresentationProperties();
+        self::assertInstanceOf(PresentationProperties::class, $object->setThumbnailPath($imagePath, PresentationProperties::THUMBNAIL_DATA, file_get_contents($imagePath)));
+        self::assertEquals('', $object->getThumbnailPath());
+        self::assertIsString($object->getThumbnail());
     }
 
     public function testZoom(): void

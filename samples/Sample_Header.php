@@ -31,7 +31,7 @@ if (is_file(dirname(__DIR__) . '/vendor/autoload.php')) {
 } else {
     if (is_file(__DIR__ . '/../../Common/src/Common/Autoloader.php')) {
         include_once __DIR__ . '/../../Common/src/Common/Autoloader.php';
-        \PhpOffice\Common\Autoloader::register();
+        PhpOffice\Common\Autoloader::register();
     } else {
         throw new Exception('Can not find the vendor or the common folder!');
     }
@@ -109,7 +109,7 @@ if ($handle = opendir('.')) {
 /**
  * Write documents.
  *
- * @param \PhpOffice\PhpPresentation\PhpPresentation $phpPresentation
+ * @param PhpPresentation $phpPresentation
  * @param string $filename
  * @param array $writers
  *
@@ -180,7 +180,7 @@ function getEndingNotes($writers)
 /**
  * Creates a templated slide.
  */
-function createTemplatedSlide(PHPPresentation $objPHPPresentation): Slide
+function createTemplatedSlide(PhpPresentation $objPHPPresentation): Slide
 {
     // Create slide
     $slide = $objPHPPresentation->createSlide();
@@ -326,7 +326,7 @@ class Sample_Header
                 }
             }
             $oNote = $oSlide->getNote();
-            if ($oNote->getShapeCollection()->count() > 0) {
+            if (count($oNote->getShapeCollection()) > 0) {
                 $this->append('<dt>Notes</dt>');
                 foreach ($oNote->getShapeCollection() as $oShape) {
                     if ($oShape instanceof RichText) {
@@ -366,11 +366,11 @@ class Sample_Header
             $this->append('<dd>None</dd>');
         } else {
             switch ($oShape->getFill()->getFillType()) {
-                case \PhpOffice\PhpPresentation\Style\Fill::FILL_NONE:
+                case PhpOffice\PhpPresentation\Style\Fill::FILL_NONE:
                     $this->append('<dd>None</dd>');
 
                     break;
-                case \PhpOffice\PhpPresentation\Style\Fill::FILL_SOLID:
+                case PhpOffice\PhpPresentation\Style\Fill::FILL_SOLID:
                     $this->append('<dd>Solid (');
                     $this->append('Color : #' . $oShape->getFill()->getStartColor()->getRGB());
                     $this->append(' - Alpha : ' . $oShape->getFill()->getStartColor()->getAlpha() . '%');
@@ -442,6 +442,7 @@ class Sample_Header
                         $this->append('<abbr title="Italic">Italic</abbr> : ' . ($oRichText->getFont()->isItalic() ? 'Y' : 'N') . ' - ');
                         $this->append('<abbr title="Underline">Underline</abbr> : Underline::' . $this->getConstantName('\PhpOffice\PhpPresentation\Style\Font', $oRichText->getFont()->getUnderline()) . ' - ');
                         $this->append('<abbr title="Strikethrough">Strikethrough</abbr> : ' . ($oRichText->getFont()->isStrikethrough() ? 'Y' : 'N') . ' - ');
+                        $this->append('<abbr title="Baseline">Baseline</abbr> : ' . $oRichText->getFont()->getBaseline() . ' - ');
                         $this->append('<abbr title="SubScript">SubScript</abbr> : ' . ($oRichText->getFont()->isSubScript() ? 'Y' : 'N') . ' - ');
                         $this->append('<abbr title="SuperScript">SuperScript</abbr> : ' . ($oRichText->getFont()->isSuperScript() ? 'Y' : 'N'));
                         $this->append('</dd>');

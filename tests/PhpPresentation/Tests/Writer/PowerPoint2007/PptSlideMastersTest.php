@@ -62,7 +62,7 @@ class PptSlideMastersTest extends TestCase
             ->willReturn($layouts);
 
         /** @var ArrayObject<int, ShapeDrawingFile> $collection */
-        $collection = new ArrayObject();
+        $collection = [];
         $collection[] = new ShapeDrawingFile();
         $collection[] = new ShapeDrawingFile();
         $collection[] = new ShapeDrawingFile();

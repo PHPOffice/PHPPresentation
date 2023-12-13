@@ -311,7 +311,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->writeGridlineStyle($chart->getPlotArea()->getAxisY()->getMinorGridlines(), 'styleAxisYGridlinesMinor');
     }
 
-    protected function writeAxisMainStyle(Chart\Axis $axis, string $styleName, AbstractType $chartType): void
+    protected function writeAxisMainStyle(Axis $axis, string $styleName, AbstractType $chartType): void
     {
         // style:style
         $this->xmlContent->startElement('style:style');
@@ -363,7 +363,7 @@ class ObjectsChart extends AbstractDecoratorWriter
         $this->xmlContent->endElement();
     }
 
-    protected function writeAxisTitleStyle(Chart\Axis $axis, string $styleName): void
+    protected function writeAxisTitleStyle(Axis $axis, string $styleName): void
     {
         // style:style
         $this->xmlContent->startElement('style:style');

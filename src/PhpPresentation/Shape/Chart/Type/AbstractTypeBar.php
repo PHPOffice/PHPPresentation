@@ -67,7 +67,7 @@ abstract class AbstractTypeBar extends AbstractType
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar
+     * @return AbstractTypeBar
      */
     public function setBarDirection($value = self::DIRECTION_VERTICAL)
     {
@@ -91,7 +91,7 @@ abstract class AbstractTypeBar extends AbstractType
      *
      * @param string $value
      *
-     * @return \PhpOffice\PhpPresentation\Shape\Chart\Type\AbstractTypeBar
+     * @return AbstractTypeBar
      */
     public function setBarGrouping($value = self::GROUPING_CLUSTERED)
     {

@@ -46,6 +46,8 @@ class DocumentPropertiesTest extends TestCase
             'keywords' => '',
             'category' => '',
             'company' => '',
+            'revision' => '',
+            'status' => '',
         ];
 
         foreach ($properties as $key => $val) {

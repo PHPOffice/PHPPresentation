@@ -321,6 +321,18 @@ class PhpPresentationTestCase extends TestCase
     }
 
     /**
+     * @param string $filePath
+     * @param string $xPath
+     * @param mixed $value
+     */
+    public function assertZipXmlElementNotEquals($filePath, $xPath, $value): void
+    {
+        $this->writePresentationFile($this->oPresentation, $this->writerName);
+        $nodeList = $this->getXmlNodeList($filePath, $xPath);
+        self::assertNotEquals($nodeList->item(0)->nodeValue, $value);
+    }
+
+    /**
      * @param mixed $value
      */
     public function assertZipXmlElementAtIndexEquals(string $filePath, string $xPath, int $index, $value): void

@@ -21,12 +21,17 @@ namespace PhpOffice\PhpPresentation\Exception;
 
 class InvalidParameterException extends PhpPresentationException
 {
-    public function __construct(string $parameter, string $value)
+    public function __construct(string $parameter, string $value, ?string $error = null)
     {
-        parent::__construct(sprintf(
+        $message = sprintf(
             'The parameter %s can\'t have the value "%s"',
             $parameter,
             $value
-        ));
+        );
+        if ($error) {
+            $message = sprintf('%s (Validation: %s)', $message, $error);
+        }
+
+        parent::__construct($message);
     }
 }

@@ -868,6 +868,53 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertIsSchemaECMA376Valid();
     }
 
+    public function testRichTextRunFontCharset(): void
+    {
+        $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
+        $eastAsianElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:ea';
+        $complexScriptElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:cs';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+        $oRun->getFont()->setCharset(18);
+
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'charset');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'charset', '12');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'charset');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'charset', '12');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'charset');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'charset', '12');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
     public function testRichTextRunFontFormat(): void
     {
         $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
@@ -904,6 +951,100 @@ class PptSlidesTest extends PhpPresentationTestCase
         $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
         $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
         $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testRichTextRunFontPanose(): void
+    {
+        $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
+        $eastAsianElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:ea';
+        $complexScriptElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:cs';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+        $oRun->getFont()->setPanose('4494D72242');
+
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'panose');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'panose', '040409040D0702020402');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'panose');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'panose', '040409040D0702020402');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'panose');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'panose', '040409040D0702020402');
+        $this->assertIsSchemaECMA376Valid();
+    }
+
+    public function testRichTextRunFontPitchFamily(): void
+    {
+        $latinElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:latin';
+        $eastAsianElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:ea';
+        $complexScriptElement = '/p:sld/p:cSld/p:spTree/p:sp/p:txBody/a:p/a:r/a:rPr/a:cs';
+
+        $oSlide = $this->oPresentation->getActiveSlide();
+        $oRichText = $oSlide->createRichTextShape();
+        $oRun = $oRichText->createTextRun('MyText');
+        $oRun->getFont()->setPitchFamily(42);
+
+        $oRun->getFont()->setFormat(Font::FORMAT_LATIN);
+
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $latinElement, 'pitchFamily');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $latinElement, 'pitchFamily', '42');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_EAST_ASIAN);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $eastAsianElement, 'pitchFamily');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $eastAsianElement, 'pitchFamily', '42');
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertIsSchemaECMA376Valid();
+
+        $oRun->getFont()->setFormat(Font::FORMAT_COMPLEX_SCRIPT);
+        $this->resetPresentationFile();
+
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $latinElement);
+        $this->assertZipXmlElementNotExists('ppt/slides/slide1.xml', $eastAsianElement);
+        $this->assertZipXmlElementExists('ppt/slides/slide1.xml', $complexScriptElement);
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'typeface');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'typeface', 'Calibri');
+        $this->assertZipXmlAttributeExists('ppt/slides/slide1.xml', $complexScriptElement, 'pitchFamily');
+        $this->assertZipXmlAttributeEquals('ppt/slides/slide1.xml', $complexScriptElement, 'pitchFamily', '42');
         $this->assertIsSchemaECMA376Valid();
     }
 

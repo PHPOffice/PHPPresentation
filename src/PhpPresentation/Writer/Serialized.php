@@ -66,12 +66,11 @@ class Serialized extends AbstractWriter implements WriterInterface
         // Add media
         $slideCount = $oPresentation->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
-            for ($j = 0; $j < $oPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                    $imgTemp = $oPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
+            foreach ($oPresentation->getSlide($i)->getShapeCollection() as $shape) {
+                if ($shape instanceof AbstractDrawingAdapter) {
                     $objZip->addFromString(
-                        'media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME),
-                        file_get_contents($imgTemp->getPath())
+                        'media/' . $shape->getImageIndex() . '/' . pathinfo($shape->getPath(), PATHINFO_BASENAME),
+                        file_get_contents($shape->getPath())
                     );
                 }
             }
@@ -99,14 +98,13 @@ class Serialized extends AbstractWriter implements WriterInterface
         // Update media links
         $slideCount = $pPhpPresentation->getSlideCount();
         for ($i = 0; $i < $slideCount; ++$i) {
-            for ($j = 0; $j < $pPhpPresentation->getSlide($i)->getShapeCollection()->count(); ++$j) {
-                if ($pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j) instanceof AbstractDrawingAdapter) {
-                    $imgTemp = $pPhpPresentation->getSlide($i)->getShapeCollection()->offsetGet($j);
-                    $imgPath = 'zip://' . $pFilename . '#media/' . $imgTemp->getImageIndex() . '/' . pathinfo($imgTemp->getPath(), PATHINFO_BASENAME);
-                    if ($imgTemp instanceof File) {
-                        $imgTemp->setPath($imgPath, false);
+            foreach ($pPhpPresentation->getSlide($i)->getShapeCollection() as $shape) {
+                if ($shape instanceof AbstractDrawingAdapter) {
+                    $imgPath = 'zip://' . $pFilename . '#media/' . $shape->getImageIndex() . '/' . pathinfo($shape->getPath(), PATHINFO_BASENAME);
+                    if ($shape instanceof File) {
+                        $shape->setPath($imgPath, false);
                     } else {
-                        $imgTemp->setPath($imgPath);
+                        $shape->setPath($imgPath);
                     }
                 }
             }

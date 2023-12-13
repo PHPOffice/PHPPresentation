@@ -19,8 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Slide;
 
-use ArrayObject;
-use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
 use PhpOffice\PhpPresentation\GeometryCalculator;
 use PhpOffice\PhpPresentation\PhpPresentation;
@@ -31,9 +29,12 @@ use PhpOffice\PhpPresentation\Shape\Line;
 use PhpOffice\PhpPresentation\Shape\RichText;
 use PhpOffice\PhpPresentation\Shape\Table;
 use PhpOffice\PhpPresentation\ShapeContainerInterface;
+use PhpOffice\PhpPresentation\Traits\ShapeCollection;
 
 abstract class AbstractSlide implements ComparableInterface, ShapeContainerInterface
 {
+    use ShapeCollection;
+
     /**
      * @var string
      */
@@ -43,13 +44,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * @var null|Transition
      */
     protected $slideTransition;
-
-    /**
-     * Collection of shapes.
-     *
-     * @var array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    protected $shapeCollection = [];
 
     /**
      * Extent Y.
@@ -106,56 +100,6 @@ abstract class AbstractSlide implements ComparableInterface, ShapeContainerInter
      * @var AbstractBackground
      */
     protected $background;
-
-    /**
-     * Get collection of shapes.
-     *
-     * @return array<int, AbstractShape>|ArrayObject<int, AbstractShape>
-     */
-    public function getShapeCollection()
-    {
-        return $this->shapeCollection;
-    }
-
-    /**
-     * Search into collection of shapes for a name (eventually filtered by type ex: RichText)
-     *
-     * @param string $name The name to find into the shape collection
-     * @param PhpOffice\PhpPresentation\Shape\RichText | PhpOffice\PhpPresentation\Shape\... $type Type of the class
-     * @return \ArrayObject|\PhpOffice\PhpPresentation\AbstractShape[]
-     */
-    public function searchShapeByName(string $name, ?string $type=null)
-    {
-      if (isset($this->shapeCollection)) {
-        foreach ($this->shapeCollection as $shape) {
-          if ($shape->getName() == $name) {
-            if (!isset($type) || get_class($shape) == $type) {
-              return $shape;
-      }}}}
-      return null;
-    }
-
-    /**
-     * Get collection of shapes
-     *
-     * @return AbstractSlide
-     */
-    public function setShapeCollection($shapeCollection = [])
-    {
-        $this->shapeCollection = $shapeCollection;
-
-        return $this;
-    }
-
-    /**
-     * Add shape to slide.
-     */
-    public function addShape(AbstractShape $shape): AbstractShape
-    {
-        $shape->setContainer($this);
-
-        return $shape;
-    }
 
     /**
      * Get X Offset.

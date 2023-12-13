@@ -19,7 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation;
 
-use ArrayObject;
 use PhpOffice\PhpPresentation\Slide\AbstractSlide;
 use PhpOffice\PhpPresentation\Slide\Note;
 use PhpOffice\PhpPresentation\Slide\SlideLayout;
@@ -74,8 +73,6 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     {
         // Set parent
         $this->parent = $pParent;
-        // Shape collection
-        $this->shapeCollection = new ArrayObject();
         // Set identifier
         $this->identifier = md5(mt_rand(0, mt_getrandmax()) . time());
         // Set Slide Layout
@@ -123,7 +120,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
      *
      * @param int $masterId
      *
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      */
     public function setSlideMasterId($masterId = 1)
     {
@@ -132,33 +129,26 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
         return $this;
     }
 
-
     public function __clone()
     {
-      // Set parent
-      $this->parent = clone $this->parent;
-      // Shape collection
-      if (isset($this->shapeCollection)) {
-        $this->shapeCollection = clone $this->shapeCollection;
+        // Set parent
+        $this->parent = clone $this->parent;
+        // Shape collection
         foreach ($this->shapeCollection as &$shape) {
-          $shape = clone $shape;
+            $shape = clone $shape;
         }
-      }
-      // Transition object
-      if (isset($this->slideTransition)) {
-        $this->slideTransition = clone $this->slideTransition;
-      }
-      // Note object
-      if (isset($this->slideNote)) {
+        // Transition
+        if (isset($this->slideTransition)) {
+            $this->slideTransition = clone $this->slideTransition;
+        }
+        // Note
         $this->slideNote = clone $this->slideNote;
-      }
-      
     }
 
     /**
      * Copy slide (!= clone!).
      *
-     * @return \PhpOffice\PhpPresentation\Slide
+     * @return Slide
      */
     public function copy()
     {
@@ -221,7 +211,7 @@ class Slide extends AbstractSlide implements ComparableInterface, ShapeContainer
     /**
      * Add an animation to the slide.
      *
-     * @param \PhpOffice\PhpPresentation\Slide\Animation $animation
+     * @param Slide\Animation $animation
      *
      * @return Slide
      */

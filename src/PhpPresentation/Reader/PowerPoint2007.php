@@ -51,6 +51,7 @@ use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Fill;
 use PhpOffice\PhpPresentation\Style\Font;
 use PhpOffice\PhpPresentation\Style\SchemeColor;
+use PhpOffice\PhpPresentation\Style\Shadow;
 use PhpOffice\PhpPresentation\Style\TextStyle;
 use ZipArchive;
 
@@ -230,7 +231,7 @@ class PowerPoint2007 implements ReaderInterface
                 '/cp:coreProperties/dcterms:modified' => 'setModified',
                 '/cp:coreProperties/cp:revision' => 'setRevision',
                 '/cp:coreProperties/cp:contentStatus' => 'setStatus',
-            );
+            ];
             $oProperties = $this->oPhpPresentation->getDocumentProperties();
             foreach ($arrayProperties as $path => $property) {
                 $oElement = $xmlReader->getElement($path);
@@ -247,28 +248,24 @@ class PowerPoint2007 implements ReaderInterface
     }
 
     /**
-     * Read information of the document thumbnail
-     * @param string $sPart Content of XML file for retrieving data
+     * Read information of the document thumbnail.
      */
-    protected function loadThumbnailProperties($sPart)
+    protected function loadThumbnailProperties(string $sPart): void
     {
         $xmlReader = new XMLReader();
-        if ($xmlReader->getDomFromString($sPart)) {
-          $oElement = $xmlReader->getElement('*[@Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail"]');
-          if ($oElement instanceof \DOMElement) {
+        $xmlReader->getDomFromString($sPart);
+
+        $oElement = $xmlReader->getElement('*[@Type="http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail"]');
+        if ($oElement instanceof DOMElement) {
             $path = $oElement->getAttribute('Target');
             $this->oPhpPresentation
-                 ->getPresentationProperties()
-                 ->setThumbnailPath($path
-                 , \PhpOffice\PhpPresentation\PresentationProperties::THUMBNAIL_ZIP
-                 , $this->oZip->getFromName($path));
-          }
+                ->getPresentationProperties()
+                ->setThumbnailPath('', PresentationProperties::THUMBNAIL_DATA, $this->oZip->getFromName($path));
         }
     }
 
     /**
-     * Read Custom Properties
-     * @param string $sPart
+     * Read Custom Properties.
      */
     protected function loadCustomProperties(string $sPart): void
     {
@@ -878,79 +875,62 @@ class PowerPoint2007 implements ReaderInterface
             }
         }
         // Load shape effects
-        $oEffect = $document->getElement('p:spPr/a:effectLst', $node);
-        if ($oEffect instanceof \DOMElement) {
-          $aEffect = $this->loadEffect($document, $oEffect);
-          if (isset($aEffect) && is_array($aEffect)) {
-            $oShape->setEffectCollection($aEffect);
-          }
+        $oElement = $document->getElement('p:spPr/a:effectLst', $node);
+        if ($oElement instanceof DOMElement) {
+            $oShape->setShadow(
+                $this->loadShadow($document, $oElement)
+            );
         }
         $oSlide->addShape($oShape);
     }
-    
+
     /**
-     * Load Effect for shape or paragraph
-     * 
-     * @param XMLReader $document
-     * @param \DOMElement $node
-     * @return array \PhpOffice\PhpPresentation\Style\Effect[]
+     * Load Shadow for shape or paragraph.
      */
-    protected function loadEffect(XMLReader $document, \DOMElement $nodeEffect)
+    protected function loadShadow(XMLReader $document, DOMElement $node): ?Shadow
     {
-        $aEffect = null;
-        if ($nodeEffect instanceof \DOMElement) {
+        if ($node instanceof DOMElement) {
+            $aNodes = $document->getElements('*', $node);
+            foreach ($aNodes as $nodeShadow) {
+                $type = explode(':', $nodeShadow->tagName);
+                $type = array_pop($type);
+                if ($type == Shadow::TYPE_SHADOW_INNER || $type == Shadow::TYPE_SHADOW_OUTER || $type == Shadow::TYPE_REFLECTION) {
+                    $oShadow = new Shadow();
+                    $oShadow->setVisible(true);
+                    $oShadow->setType($type);
+                    if ($nodeShadow->hasAttribute('blurRad')) {
+                        $oShadow->setBlurRadius(CommonDrawing::emuToPixels((int) $nodeShadow->getAttribute('blurRad')));
+                    }
+                    if ($nodeShadow->hasAttribute('dist')) {
+                        $oShadow->setDistance(CommonDrawing::emuToPixels((int) $nodeShadow->getAttribute('dist')));
+                    }
+                    if ($nodeShadow->hasAttribute('dir')) {
+                        $oShadow->setDirection((int) CommonDrawing::angleToDegrees((int) $nodeShadow->getAttribute('dir')));
+                    }
+                    if ($nodeShadow->hasAttribute('algn')) {
+                        $oShadow->setAlignment($node->getAttribute('algn'));
+                    }
 
-          $aNodes = $document->getElements('*', $nodeEffect);
-          foreach ($aNodes as $node) {
-            
-            $type = explode(':', $node->tagName);
-            $type = array_pop($type);
-            if (   $type == 'outerShdw'
-                || $type == 'innerShdw') {
-// @TODO                || $type == 'reflection') {
-              
-              // Create a new effect
-              $effect = new \PhpOffice\PhpPresentation\Style\Effect($type);
-              // load blur radius
-              if ($node->hasAttribute('blurRad')) {
-                  $effect->setBlurRadius(CommonDrawing::emuToPixels($node->getAttribute('blurRad')));
-              }
-              // load distance
-              if ($node->hasAttribute('dist')) {
-                  $effect->setDistance(CommonDrawing::emuToPixels($node->getAttribute('dist')));
-              }
-              // load direction
-              if ($node->hasAttribute('dir')) {
-                  $effect->setDirection(CommonDrawing::angleToDegrees($node->getAttribute('dir')));
-              }
-              // load alignment
-              if ($node->hasAttribute('algn')) {
-                  $effect->setAlignment($node->getAttribute('algn'));
-              }
-              
-              // Get color define by prstClr
-              $oSubElement = $document->getElement('a:prstClr', $node);
-              if ($oSubElement instanceof \DOMElement && $oSubElement->hasAttribute('val')) {
-                  $oColor = new Color();
-                  $oColor->setRGB($oSubElement->getAttribute('val'));
-                  $effect->setColor($oColor);
-                  // Get Alpha
-                  $oSubElt = $document->getElement('a:alpha', $oSubElement);
-                  if ($oSubElt instanceof \DOMElement && $oSubElt->hasAttribute('val')) {
-                      $effect->setAlpha((int)$oSubElt->getAttribute('val') / 1000);
-                  }
-              }
-              // Load reflection atributs
-// @TODO future implementation
-              if ($node->tagName == 'a:reflection') {
-              }
+                    // Get color define by prstClr
+                    $oSubElement = $document->getElement('a:prstClr', $nodeShadow);
+                    if ($oSubElement instanceof DOMElement && $oSubElement->hasAttribute('val')) {
+                        $oColor = new Color();
+                        $oColor->setRGB($oSubElement->getAttribute('val'));
 
-              if (!isset($aEffect)) $aEffect = array();
-              $aEffect[] = $effect;
+                        $oSubElt = $document->getElement('a:alpha', $oSubElement);
+                        if ($oSubElt instanceof DOMElement && $oSubElt->hasAttribute('val')) {
+                            $oColor->setAlpha((int) $oSubElt->getAttribute('val') / 1000);
+                        }
+
+                        $oShadow->setColor($oColor);
+                    }
+
+                    return $oShadow;
+                }
             }
-          }
         }
-        return $aEffect;
+
+        return null;
     }
 
     /**
@@ -967,8 +947,9 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         $oElement = $document->getElement('p:nvSpPr/p:cNvPr', $node);
-        if ($oElement instanceof \DOMElement)
+        if ($oElement instanceof DOMElement) {
             $oShape->setName($oElement->hasAttribute('name') ? $oElement->getAttribute('name') : '');
+        }
 
         $oElement = $document->getElement('p:spPr/a:xfrm', $node);
         if ($oElement instanceof DOMElement && $oElement->hasAttribute('rot')) {
@@ -1004,33 +985,31 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         // Load shape effects
-        $oEffect = $document->getElement('p:spPr/a:effectLst', $node);
-        if ($oEffect instanceof \DOMElement) {
-          $aEffect = $this->loadEffect($document, $oEffect);
-          if (isset($aEffect) && is_array($aEffect)) {
-            $oShape->setEffectCollection($aEffect);
-          }
+        $oElement = $document->getElement('p:spPr/a:effectLst', $node);
+        if ($oElement instanceof DOMElement) {
+            $oShape->setShadow(
+                $this->loadShadow($document, $oElement)
+            );
         }
 
-// FBU-20210202+ Read body definitions
+        // FBU-20210202+ Read body definitions
         $bodyPr = $document->getElement('p:txBody/a:bodyPr', $node);
-        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('lIns')) {
-            $oShape->setInsetLeft((int)$bodyPr->getAttribute('lIns'));
-        }
-        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('tIns')) {
-            $oShape->setInsetTop((int)$bodyPr->getAttribute('tIns'));
-        }
-        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('rIns')) {
-            $oShape->setInsetRight((int)$bodyPr->getAttribute('rIns'));
-        }
-        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('bIns')) {
-            $oShape->setInsetBottom((int)$bodyPr->getAttribute('bIns'));
-        }
-        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('anchor')) {
-            $oShape->setVerticalAlignment($bodyPr->getAttribute('anchor'));
-        }
-        if (($bodyPr instanceof \DOMElement) && $bodyPr->hasAttribute('anchorCtr')) {
-            $oShape->setVerticalAlignCenter((int)$bodyPr->getAttribute('anchorCtr'));
+        if ($bodyPr instanceof DOMElement) {
+            if ($bodyPr->hasAttribute('lIns')) {
+                $oShape->setInsetLeft((int) $bodyPr->getAttribute('lIns'));
+            }
+            if ($bodyPr->hasAttribute('tIns')) {
+                $oShape->setInsetTop((int) $bodyPr->getAttribute('tIns'));
+            }
+            if ($bodyPr->hasAttribute('rIns')) {
+                $oShape->setInsetRight((int) $bodyPr->getAttribute('rIns'));
+            }
+            if ($bodyPr->hasAttribute('bIns')) {
+                $oShape->setInsetBottom((int) $bodyPr->getAttribute('bIns'));
+            }
+            if ($bodyPr->hasAttribute('anchorCtr')) {
+                $oShape->setVerticalAlignCenter((int) $bodyPr->getAttribute('anchorCtr'));
+            }
         }
 
         $arrayElements = $document->getElements('p:txBody/a:p', $node);
@@ -1041,9 +1020,10 @@ class PowerPoint2007 implements ReaderInterface
         }
 
         $oElement = $document->getElement('p:spPr', $node);
-        if ($oElement instanceof \DOMElement) {
-            $oFill = $this->loadStyleFill($document, $oElement);
-            $oShape->setFill($oFill);
+        if ($oElement instanceof DOMElement) {
+            $oShape->setFill(
+                $this->loadStyleFill($document, $oElement)
+            );
         }
 
         if (count($oShape->getParagraphs()) > 0) {
@@ -1316,11 +1296,7 @@ class PowerPoint2007 implements ReaderInterface
                         $oText->setLanguage($oElementrPr->getAttribute('lang'));
                     }
                     if ($oElementrPr->hasAttribute('baseline')) {
-                        if ((int)$oElementrPr->getAttribute('baseline')>0) {
-                            $oText->getFont()->setSuperScript((int)$oElementrPr->getAttribute('baseline'));
-                        } else if ((int)$oElementrPr->getAttribute('baseline')<0) {
-                            $oText->getFont()->setSubScript((int)$oElementrPr->getAttribute('baseline'));
-                        }
+                        $oText->getFont()->setBaseline((int) $oElementrPr->getAttribute('baseline'));
                     }
                     // Color
                     $oElementSrgbClr = $document->getElement('a:solidFill/a:srgbClr', $oElementrPr);
@@ -1358,28 +1334,20 @@ class PowerPoint2007 implements ReaderInterface
                     }
                     // Font definition
                     $oElementFont = $document->getElement('a:latin', $oElementrPr);
-                    if (is_object($oElementFont) && $oElementFont->hasAttribute('typeface')) {
-                        $oText->getFont()->setName($oElementFont->getAttribute('typeface'));
+                    if ($oElementFont instanceof DOMElement) {
+                        if ($oElementFont->hasAttribute('typeface')) {
+                            $oText->getFont()->setName($oElementFont->getAttribute('typeface'));
+                        }
+                        if ($oElementFont->hasAttribute('panose')) {
+                            $oText->getFont()->setPanose($oElementFont->getAttribute('panose'));
+                        }
+                        if ($oElementFont->hasAttribute('pitchFamily')) {
+                            $oText->getFont()->setPitchFamily((int) $oElementFont->getAttribute('pitchFamily'));
+                        }
+                        if ($oElementFont->hasAttribute('charset')) {
+                            $oText->getFont()->setCharset((int) $oElementFont->getAttribute('charset'));
+                        }
                     }
-                    if (($oElementFont instanceof \DOMElement) && $oElementFont->hasAttribute('panose')) {
-                        $oText->getFont()->setPanose($oElementFont->getAttribute('panose'));
-                    }
-                    if (($oElementFont instanceof \DOMElement) && $oElementFont->hasAttribute('pitchFamily')) {
-                        $oText->getFont()->setPitchFamily($oElementFont->getAttribute('pitchFamily'));
-                    }
-                    if (($oElementFont instanceof \DOMElement) && $oElementFont->hasAttribute('charset')) {
-                        $oText->getFont()->setCharset($oElementFont->getAttribute('charset'));
-                    }
-                    // Load shape effects
-                    $oEffect = $document->getElement('a:effectLst', $oElementrPr);
-                    if ($oEffect instanceof \DOMElement) {
-                      $aEffect = $this->loadEffect($document, $oEffect);
-                      if (isset($aEffect) && is_array($aEffect)) {
-                        $oText->setEffectCollection($aEffect);
-                      }
-                    }
-                     //} else {
-                    // $oText = $oParagraph->createText();
 
                     $oSubSubElement = $document->getElement('a:t', $oSubElement);
                     $oText->setText($oSubSubElement->nodeValue);

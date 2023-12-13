@@ -19,7 +19,6 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Writer;
 
-use ArrayIterator;
 use PhpOffice\Common\Adapter\Zip\ZipInterface;
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\HashTable;
@@ -116,7 +115,7 @@ abstract class AbstractWriter
 
         // Loop through PhpPresentation
         foreach (array_merge($this->getPhpPresentation()->getAllSlides(), $aSlideMasters, $aSlideLayouts) as $oSlide) {
-            $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection()->getIterator());
+            $arrayReturn = $this->iterateCollection($oSlide->getShapeCollection());
             $aDrawings = array_merge($aDrawings, $arrayReturn);
         }
 
@@ -124,28 +123,23 @@ abstract class AbstractWriter
     }
 
     /**
-     * @param ArrayIterator<int, AbstractShape> $oIterator
+     * @param array<int, AbstractShape> $collection
      *
      * @return array<int, AbstractShape>
      */
-    private function iterateCollection(ArrayIterator $oIterator): array
+    private function iterateCollection(array $collection): array
     {
         $arrayReturn = [];
-        if ($oIterator->count() <= 0) {
-            return $arrayReturn;
-        }
 
-        while ($oIterator->valid()) {
-            $oShape = $oIterator->current();
+        foreach ($collection as $oShape) {
             if ($oShape instanceof AbstractDrawingAdapter) {
                 $arrayReturn[] = $oShape;
             } elseif ($oShape instanceof Chart) {
                 $arrayReturn[] = $oShape;
             } elseif ($oShape instanceof Group) {
-                $arrayGroup = $this->iterateCollection($oShape->getShapeCollection()->getIterator());
+                $arrayGroup = $this->iterateCollection($oShape->getShapeCollection());
                 $arrayReturn = array_merge($arrayReturn, $arrayGroup);
             }
-            $oIterator->next();
         }
 
         return $arrayReturn;

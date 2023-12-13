@@ -100,14 +100,21 @@ class DocumentProperties
      * @var string
      */
     private $company;
-    
+
     /**
-     * revision
+     * Revision.
      *
      * @var string
      */
     private $revision;
-    
+
+    /**
+     * Status.
+     *
+     * @var string
+     */
+    private $status;
+
     /**
      * Custom Properties.
      *
@@ -116,14 +123,7 @@ class DocumentProperties
     private $customProperties = [];
 
     /**
-     * status
-     *
-     * @var string
-     */
-    private $status;
-
-    /**
-     * Create a new \PhpOffice\PhpPresentation\DocumentProperties
+     * Create a new \PhpOffice\PhpPresentation\DocumentProperties.
      */
     public function __construct()
     {
@@ -139,7 +139,7 @@ class DocumentProperties
         $this->category = '';
         $this->company = 'Microsoft Corporation';
         $this->revision = '';
-        $this->status         = '';
+        $this->status = '';
     }
 
     /**
@@ -157,7 +157,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setCreator($pValue = '')
     {
@@ -181,7 +181,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setLastModifiedBy($pValue = '')
     {
@@ -205,7 +205,7 @@ class DocumentProperties
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setCreated($pValue = null)
     {
@@ -232,7 +232,7 @@ class DocumentProperties
      *
      * @param int $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setModified($pValue = null)
     {
@@ -259,7 +259,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setTitle($pValue = '')
     {
@@ -283,7 +283,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setDescription($pValue = '')
     {
@@ -307,7 +307,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setSubject($pValue = '')
     {
@@ -331,7 +331,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setKeywords($pValue = '')
     {
@@ -355,7 +355,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setCategory($pValue = '')
     {
@@ -379,7 +379,7 @@ class DocumentProperties
      *
      * @param string $pValue
      *
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * @return DocumentProperties
      */
     public function setCompany($pValue = '')
     {
@@ -470,7 +470,7 @@ class DocumentProperties
         return $this;
     }
 
-    /*
+    /**
      * Get Revision.
      */
     public function getRevision(): string
@@ -479,7 +479,7 @@ class DocumentProperties
     }
 
     /**
-     * Set Revision
+     * Set Revision.
      */
     public function setRevision(string $pValue = ''): self
     {
@@ -489,22 +489,17 @@ class DocumentProperties
     }
 
     /**
-     * Get Status
-     *
-     * @return string
+     * Get Status.
      */
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
     /**
-     * Set Status
-     *
-     * @param  string                           $pValue
-     * @return \PhpOffice\PhpPresentation\DocumentProperties
+     * Set Status.
      */
-    public function setStatus($pValue = '')
+    public function setStatus(string $pValue = ''): self
     {
         $this->status = $pValue;
 

@@ -93,8 +93,8 @@ class Gd extends AbstractDrawingAdapter
 
         if (null !== $this->imageResource) {
             // Get width/height
-            $this->width  = (int)@imagesx($this->imageResource);
-            $this->height = (int)@imagesy($this->imageResource);
+            $this->width = imagesx($this->imageResource);
+            $this->height = imagesy($this->imageResource);
         }
 
         return $this;

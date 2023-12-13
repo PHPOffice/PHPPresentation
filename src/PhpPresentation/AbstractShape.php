@@ -20,6 +20,7 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation;
 
 use PhpOffice\PhpPresentation\Exception\ShapeContainerAlreadyAssignedException;
+use PhpOffice\PhpPresentation\Shape\Group;
 use PhpOffice\PhpPresentation\Shape\Hyperlink;
 use PhpOffice\PhpPresentation\Shape\Placeholder;
 use PhpOffice\PhpPresentation\Style\Border;
@@ -103,27 +104,21 @@ abstract class AbstractShape implements ComparableInterface
     protected $placeholder;
 
     /**
-     * List of effect apply to shape
-     * @var array \PhpOffice\PhpPresentation\Style\Effect[]
-     */
-    protected ?array $effectCollection = null;
-
-    /**
-     * Hash index
+     * Hash index.
      *
      * @var int
      */
     private $hashIndex;
 
     /**
-     * Name
+     * Name.
      *
      * @var string
      */
     protected $name = '';
-    
+
     /**
-     * Create a new self
+     * Create a new self.
      */
     public function __construct()
     {
@@ -131,9 +126,8 @@ abstract class AbstractShape implements ComparableInterface
         $this->fill = new Fill();
         $this->shadow = new Shadow();
         $this->border = new Border();
-        $this->effectCollection = null;
 
-        $this->border->setLineStyle(Style\Border::LINE_NONE);
+        $this->border->setLineStyle(Border::LINE_NONE);
     }
 
     /**
@@ -143,26 +137,19 @@ abstract class AbstractShape implements ComparableInterface
     {
         $this->container = null;
         $this->name = $this->name;
+        $this->border = clone $this->border;
         if (isset($this->fill)) {
-          $this->fill = clone $this->fill;
-        }
-        if (isset($this->border)) {
-          $this->border = clone $this->border;
+            $this->fill = clone $this->fill;
         }
         if (isset($this->shadow)) {
-          $this->shadow = clone $this->shadow;
+            $this->shadow = clone $this->shadow;
         }
         if (isset($this->placeholder)) {
-          $this->placeholder = clone $this->placeholder;
+            $this->placeholder = clone $this->placeholder;
         }
         if (isset($this->hyperlink)) {
-          $this->hyperlink = clone $this->hyperlink;
+            $this->hyperlink = clone $this->hyperlink;
         }
-        // Clone each effect
-        if (isset($this->effectCollection)) {
-          foreach ($this->effectCollection as &$effect) {
-            $effect = clone $effect;
-        }}
     }
 
     /**
@@ -186,21 +173,18 @@ abstract class AbstractShape implements ComparableInterface
             // Add drawing to ShapeContainerInterface
             $this->container = $pValue;
             if (null !== $this->container) {
-                $this->container->getShapeCollection()->append($this);
+                $this->container->addShape($this);
             }
         } else {
             if ($pOverrideOld) {
                 // Remove drawing from old ShapeContainerInterface
-                $iterator = $this->container->getShapeCollection()->getIterator();
-
-                while ($iterator->valid()) {
-                    if ($iterator->current()->getHashCode() == $this->getHashCode()) {
-                        $this->container->getShapeCollection()->offsetUnset($iterator->key());
+                foreach ($this->container->getShapeCollection() as $key => $shape) {
+                    if ($shape->getHashCode() == $this->getHashCode()) {
+                        $this->container->unsetShape($key);
                         $this->container = null;
 
                         break;
                     }
-                    $iterator->next();
                 }
 
                 // Set new \PhpOffice\PhpPresentation\Slide
@@ -214,31 +198,27 @@ abstract class AbstractShape implements ComparableInterface
     }
 
     /**
-     * Get Name
-     *
-     * @return string
+     * Get Name.
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
 
     /**
-     * Set Name
+     * Set Name.
      *
-     * @param  string                          $pValue
-     * @return \PhpOffice\PhpPresentation\Shape\AbstractGraphic
+     * @return static
      */
-    public function setName($pValue = '')
+    public function setName(string $pValue = ''): self
     {
         $this->name = $pValue;
+
         return $this;
     }
 
     /**
-     * Get OffsetX
-     *
-     * @return int
+     * Get OffsetX.
      */
     public function getOffsetX(): int
     {
@@ -422,46 +402,6 @@ abstract class AbstractShape implements ComparableInterface
         $this->hyperlink = $pHyperlink;
 
         return $this;
-    }
-    
-    /**
-     * Add an effect to the shpae
-     * 
-     * @param \PhpOffice\PhpPresentation\Style\Effect $effect
-     * @return $this
-     */
-    public function addEffect(Shape\Effect $effect)
-    {
-      if (!isset($this->effectCollection)) {
-        $this->effectCollection = array();
-      }
-      $this->effectCollection[] = $effect;
-      return $this;
-    }
-    
-    /**
-     * Get the effect collection
-     * 
-     * @return array \PhpOffice\PhpPresentation\Style\Effect[]
-     */
-    public function getEffectCollection():?array
-    {
-      return $this->effectCollection;
-    }
-    
-    /**
-     * Set the effect collection
-     * 
-     * @param array \PhpOffice\PhpPresentation\Style\Effect $effectCollection
-     * @return $this
-     */
-    public function setEffectCollection(array $effectCollection)
-    {
-      if (   isset($effectCollection)
-          && is_array($effectCollection)) {
-        $this->effectCollection = $effectCollection;
-      }
-      return $this;
     }
 
     /**

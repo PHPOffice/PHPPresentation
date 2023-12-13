@@ -63,29 +63,18 @@ class Relationships extends AbstractDecoratorWriter
         $this->writeRelationship($objWriter, 4, 'http://schemas.openxmlformats.org/officeDocument/2006/relationships/custom-properties', 'docProps/custom.xml');
 
         $idxRelation = 5;
-        // Thumbnail
-        $path = $this->getPresentation()->getPresentationProperties()->getThumbnailPath();
-        $type = $this->getPresentation()->getPresentationProperties()->getThumbnailType();
-        // From local file
-        if ($path && $type == \PhpOffice\PhpPresentation\PresentationProperties::THUMBNAIL_FILE) {
-            $pathThumbnail = file_get_contents($path);
-            $gdImage = imagecreatefromstring($pathThumbnail);
+
+        // Relationship docProps/thumbnail.jpeg
+        $thumnbail = $this->getPresentation()->getPresentationProperties()->getThumbnail();
+        if ($thumnbail) {
+            $gdImage = imagecreatefromstring($thumnbail);
             if ($gdImage) {
                 imagedestroy($gdImage);
                 // Relationship docProps/thumbnail.jpeg
                 $this->writeRelationship($objWriter, $idxRelation, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
+                // $idxRelation++;
             }
         }
-        // From ZIP original file
-        if ($path && $type == \PhpOffice\PhpPresentation\PresentationProperties::THUMBNAIL_ZIP) {
-            $gdImage = imagecreatefromstring($this->getPresentation()->getPresentationProperties()->getThumbnail());
-            if ($gdImage) {
-                imagedestroy($gdImage);
-                // Relationship docProps/thumbnail.jpeg
-                $this->writeRelationship($objWriter, $idxRelation, 'http://schemas.openxmlformats.org/package/2006/relationships/metadata/thumbnail', 'docProps/thumbnail.jpeg');
-            }
-        }
-        // ++$idxRelation
 
         $objWriter->endElement();
 

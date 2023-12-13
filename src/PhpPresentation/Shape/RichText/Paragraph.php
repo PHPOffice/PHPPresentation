@@ -66,14 +66,6 @@ class Paragraph implements ComparableInterface
     private $lineSpacing = 100;
 
     /**
-     * List of effect apply to paragraph
-     * @var array \PhpOffice\PhpPresentation\Style\Effect[]
-     */
-    protected ?array $effectCollection = null;
-
-    /**
-     * Hash index
-     *
      * @var string
      */
     private $lineSpacingMode = self::LINE_SPACING_MODE_PERCENT;
@@ -103,30 +95,21 @@ class Paragraph implements ComparableInterface
         $this->alignment = new Alignment();
         $this->font = new Font();
         $this->bulletStyle = new Bullet();
-        $this->effectCollection = null;
     }
 
     /**
-     * Magic Method : clone
+     * Magic Method : clone.
      */
     public function __clone()
     {
-      // Clone each text
-      if (isset($this->richTextElements)) {
-        foreach ($this->richTextElements as &$txtElt) {
-          $txtElt = clone $txtElt;
-      }}
-      // Clone each effect
-      if (isset($this->effectCollection)) {
-        foreach ($this->effectCollection as &$effect) {
-          $effect = clone $effect;
-      }}
+        // Clone each text
+        foreach ($this->richTextElements as &$rtElement) {
+            $rtElement = clone $rtElement;
+        }
     }
 
     /**
-     * Get alignment
-     *
-     * @return \PhpOffice\PhpPresentation\Style\Alignment
+     * Get alignment.
      */
     public function getAlignment(): Alignment
     {
@@ -283,47 +266,7 @@ class Paragraph implements ComparableInterface
     }
 
     /**
-     * Add an effect to the shpae
-     * 
-     * @param \PhpOffice\PhpPresentation\Style\Effect $effect
-     * @return $this
-     */
-    public function addEffect(Shape\Effect $effect)
-    {
-      if (!isset($this->effectCollection)) {
-        $this->effectCollection = array();
-      }
-      $this->effectCollection[] = $effect;
-      return $this;
-    }
-    
-    /**
-     * Get the effect collection
-     * 
-     * @return array \PhpOffice\PhpPresentation\Style\Effect[]
-     */
-    public function getEffectCollection():?array
-    {
-      return $this->effectCollection;
-    }
-    
-    /**
-     * Set the effect collection
-     * 
-     * @param array \PhpOffice\PhpPresentation\Style\Effect $effectCollection
-     * @return $this
-     */
-    public function setEffectCollection(array $effectCollection)
-    {
-      if (   isset($effectCollection)
-          && is_array($effectCollection)) {
-        $this->effectCollection = $effectCollection;
-      }
-      return $this;
-    }
-
-    /**
-     * Get hash code
+     * Get hash code.
      *
      * @return string Hash code
      */

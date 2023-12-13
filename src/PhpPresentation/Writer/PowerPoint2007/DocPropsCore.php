@@ -70,18 +70,17 @@ class DocPropsCore extends AbstractDecoratorWriter
         // cp:keywords
         $objWriter->writeElement('cp:keywords', $this->oPresentation->getDocumentProperties()->getKeywords());
 
+        // cp:category
+        $objWriter->writeElement('cp:category', $this->oPresentation->getDocumentProperties()->getCategory());
+
         // cp:revision
         $objWriter->writeElement('cp:revision', $this->oPresentation->getDocumentProperties()->getRevision());
 
         // cp:contentStatus
-        $objWriter->writeElement('cp:contentStatus', $this->oPresentation->getDocumentProperties()->getStatus());
-
-        // cp:category
-        $objWriter->writeElement('cp:category', $this->oPresentation->getDocumentProperties()->getCategory());
-
         if ($this->oPresentation->getPresentationProperties()->isMarkedAsFinal()) {
-            // cp:contentStatus = Final
             $objWriter->writeElement('cp:contentStatus', 'Final');
+        } else {
+            $objWriter->writeElement('cp:contentStatus', $this->oPresentation->getDocumentProperties()->getStatus());
         }
 
         $objWriter->endElement();

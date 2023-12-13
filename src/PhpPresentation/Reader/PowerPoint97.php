@@ -1796,7 +1796,7 @@ class PowerPoint97 implements ReaderInterface
                                     $arrayIdxSlide = array_flip($this->arrayNotes);
                                     if ($this->currentNote > 0 && isset($arrayIdxSlide[$this->currentNote])) {
                                         $oSlide = $this->oPhpPresentation->getSlide($arrayIdxSlide[$this->currentNote]);
-                                        if (0 == $oSlide->getNote()->getShapeCollection()->count()) {
+                                        if (0 == count($oSlide->getNote()->getShapeCollection())) {
                                             $oSlide->getNote()->addShape($fileBlock['shape']);
                                         }
                                     }

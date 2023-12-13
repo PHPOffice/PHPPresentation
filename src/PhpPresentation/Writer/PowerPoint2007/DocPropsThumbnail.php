@@ -25,26 +25,9 @@ class DocPropsThumbnail extends AbstractDecoratorWriter
 {
     public function render(): ZipInterface
     {
-        $pathThumbnail = $this->getPresentation()->getPresentationProperties()->getThumbnailPath();
-        $type = $this->getPresentation()->getPresentationProperties()->getThumbnailType();
-
-        // From local file
-        if ($pathThumbnail && $type == \PhpOffice\PhpPresentation\PresentationProperties::THUMBNAIL_FILE) {
-            $fileThumbnail = file_get_contents($pathThumbnail);
-            $gdImage = imagecreatefromstring($fileThumbnail);
-            if ($gdImage) {
-                ob_start();
-                imagejpeg($gdImage);
-                $imageContents = ob_get_contents();
-                ob_end_clean();
-                imagedestroy($gdImage);
-                $this->getZip()->addFromString('docProps/thumbnail.jpeg', $imageContents);
-            }
-        }
-  
-        // From ZIP original file
-        if ($pathThumbnail && $type == \PhpOffice\PhpPresentation\PresentationProperties::THUMBNAIL_ZIP) {
-            $gdImage = imagecreatefromstring($this->getPresentation()->getPresentationProperties()->getThumbnail());
+        $thumnbail = $this->getPresentation()->getPresentationProperties()->getThumbnail();
+        if ($thumnbail) {
+            $gdImage = imagecreatefromstring($thumnbail);
             if ($gdImage) {
                 ob_start();
                 imagejpeg($gdImage);

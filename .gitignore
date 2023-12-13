@@ -9,6 +9,7 @@ Desktop.ini
 ### Continuous Integration
 build/
 phpunit.xml
+php-cs-fixer.phar
 .php-cs-fixer.cache
 .phpunit.result.cache
 composer.phar

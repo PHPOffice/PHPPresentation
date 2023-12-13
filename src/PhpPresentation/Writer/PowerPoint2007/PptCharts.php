@@ -447,11 +447,10 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->writeAttribute('dirty', '0');
         $objWriter->writeAttribute('b', ($subject->getFont()->isBold() ? 'true' : 'false'));
         $objWriter->writeAttribute('i', ($subject->getFont()->isItalic() ? 'true' : 'false'));
-        $objWriter->writeAttribute('strike', ($subject->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('strike', $subject->getFont()->getStrikethrough());
         $objWriter->writeAttribute('sz', ($subject->getFont()->getSize() * 100));
         $objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
-        $objWriter->writeAttributeIf($subject->getFont()->isSuperScript(), 'baseline', '300000');
-        $objWriter->writeAttributeIf($subject->getFont()->isSubScript(), 'baseline', '-250000');
+        $objWriter->writeAttributeIf($subject->getFont()->getBaseline() !== 0, 'baseline', $subject->getFont()->getBaseline());
         $objWriter->writeAttribute('cap', $subject->getFont()->getCapitalization());
 
         // Font - a:solidFill
@@ -550,7 +549,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Legend.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Chart\Legend $subject
      */
     protected function writeLegend(XMLWriter $objWriter, Legend $subject): void
     {
@@ -609,11 +607,10 @@ class PptCharts extends AbstractDecoratorWriter
 
         $objWriter->writeAttribute('b', ($subject->getFont()->isBold() ? 'true' : 'false'));
         $objWriter->writeAttribute('i', ($subject->getFont()->isItalic() ? 'true' : 'false'));
-        $objWriter->writeAttribute('strike', ($subject->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('strike', $subject->getFont()->getStrikethrough());
         $objWriter->writeAttribute('sz', ($subject->getFont()->getSize() * 100));
         $objWriter->writeAttribute('u', $subject->getFont()->getUnderline());
-        $objWriter->writeAttributeIf($subject->getFont()->isSuperScript(), 'baseline', '300000');
-        $objWriter->writeAttributeIf($subject->getFont()->isSubScript(), 'baseline', '-250000');
+        $objWriter->writeAttributeIf($subject->getFont()->getBaseline() !== 0, 'baseline', $subject->getFont()->getBaseline());
 
         // Font - a:solidFill
         $objWriter->startElement('a:solidFill');
@@ -703,7 +700,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Type Area.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Chart\Type\Area $subject
      */
     protected function writeTypeArea(XMLWriter $objWriter, Area $subject, bool $includeSheet = false): void
     {
@@ -804,7 +800,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Type Bar.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Chart\Type\Bar $subject
      */
     protected function writeTypeBar(XMLWriter $objWriter, Bar $subject, bool $includeSheet = false): void
     {
@@ -895,11 +890,10 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('a:defRPr');
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
             // a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1018,7 +1012,6 @@ class PptCharts extends AbstractDecoratorWriter
      * Write Type Bar3D.
      *
      * @param XMLWriter $objWriter XML Writer
-     * @param Chart\Type\Bar3D $subject
      */
     protected function writeTypeBar3D(XMLWriter $objWriter, Bar3D $subject, bool $includeSheet = false): void
     {
@@ -1102,11 +1095,10 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1311,11 +1303,10 @@ class PptCharts extends AbstractDecoratorWriter
             $objWriter->startElement('a:defRPr');
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
             // c:dLbls\c:txPr\a:p\a:pPr\a:defRPr\a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1454,11 +1445,10 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1618,11 +1608,10 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1771,11 +1760,10 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -1947,11 +1935,10 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '30000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-25000');
+            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -2113,11 +2100,10 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->writeAttribute('b', ($series->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($series->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($series->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $series->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($series->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $series->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($series->getFont()->isSuperScript(), 'baseline', '300000');
-            $objWriter->writeAttributeIf($series->getFont()->isSubScript(), 'baseline', '-250000');
+            $objWriter->writeAttributeIf($series->getFont()->getBaseline() !== 0, 'baseline', $series->getFont()->getBaseline());
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -2392,11 +2378,10 @@ class PptCharts extends AbstractDecoratorWriter
 
             $objWriter->writeAttribute('b', ($oAxis->getFont()->isBold() ? 'true' : 'false'));
             $objWriter->writeAttribute('i', ($oAxis->getFont()->isItalic() ? 'true' : 'false'));
-            $objWriter->writeAttribute('strike', ($oAxis->getFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+            $objWriter->writeAttribute('strike', $oAxis->getFont()->getStrikethrough());
             $objWriter->writeAttribute('sz', ($oAxis->getFont()->getSize() * 100));
             $objWriter->writeAttribute('u', $oAxis->getFont()->getUnderline());
-            $objWriter->writeAttributeIf($oAxis->getFont()->isSuperScript(), 'baseline', '300000');
-            $objWriter->writeAttributeIf($oAxis->getFont()->isSubScript(), 'baseline', '-250000');
+            $objWriter->writeAttributeIf($oAxis->getFont()->getBaseline() !== 0, 'baseline', $oAxis->getFont()->getBaseline());
 
             // Font - a:solidFill
             $objWriter->startElement('a:solidFill');
@@ -2496,11 +2481,10 @@ class PptCharts extends AbstractDecoratorWriter
         $objWriter->startElement('a:defRPr');
         $objWriter->writeAttribute('b', ($oAxis->getTickLabelFont()->isBold() ? 'true' : 'false'));
         $objWriter->writeAttribute('i', ($oAxis->getTickLabelFont()->isItalic() ? 'true' : 'false'));
-        $objWriter->writeAttribute('strike', ($oAxis->getTickLabelFont()->isStrikethrough() ? 'sngStrike' : 'noStrike'));
+        $objWriter->writeAttribute('strike', $oAxis->getFont()->getStrikethrough());
         $objWriter->writeAttribute('sz', ($oAxis->getTickLabelFont()->getSize() * 100));
         $objWriter->writeAttribute('u', $oAxis->getTickLabelFont()->getUnderline());
-        $objWriter->writeAttributeIf($oAxis->getTickLabelFont()->isSuperScript(), 'baseline', '300000');
-        $objWriter->writeAttributeIf($oAxis->getTickLabelFont()->isSubScript(), 'baseline', '-250000');
+        $objWriter->writeAttributeIf($oAxis->getTickLabelFont()->getBaseline() !== 0, 'baseline', $oAxis->getTickLabelFont()->getBaseline());
 
         // Font - a:solidFill
         $objWriter->startElement('a:solidFill');

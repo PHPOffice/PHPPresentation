@@ -19,6 +19,7 @@ declare(strict_types=1);
 
 namespace PhpOffice\PhpPresentation\Tests\Style;
 
+use PhpOffice\PhpPresentation\Exception\InvalidParameterException;
 use PhpOffice\PhpPresentation\Exception\NotAllowedValueException;
 use PhpOffice\PhpPresentation\Style\Color;
 use PhpOffice\PhpPresentation\Style\Font;
@@ -49,6 +50,18 @@ class FontTest extends TestCase
         self::assertEquals(Font::CAPITALIZATION_NONE, $object->getCapitalization());
         self::assertInstanceOf('PhpOffice\\PhpPresentation\\Style\\Color', $object->getColor());
         self::assertEquals(Color::COLOR_BLACK, $object->getColor()->getARGB());
+        self::assertEquals(0, $object->getBaseline());
+    }
+
+    /**
+     * Test get/set Baseline.
+     */
+    public function testBaseline(): void
+    {
+        $object = new Font();
+        self::assertEquals(0, $object->getBaseline());
+        self::assertInstanceOf(Font::class, $object->setBaseline(Font::BASELINE_SUBSCRIPT));
+        self::assertEquals(Font::BASELINE_SUBSCRIPT, $object->getBaseline());
     }
 
     /**
@@ -74,6 +87,17 @@ class FontTest extends TestCase
 
         $object = new Font();
         $object->setCapitalization('Invalid');
+    }
+
+    /**
+     * Test get/set charset.
+     */
+    public function testCharset(): void
+    {
+        $object = new Font();
+        self::assertEquals(Font::CHARSET_DEFAULT, $object->getCharset());
+        self::assertInstanceOf(Font::class, $object->setCharset(12));
+        self::assertEquals(12, $object->getCharset());
     }
 
     /**
@@ -135,6 +159,52 @@ class FontTest extends TestCase
     }
 
     /**
+     * Test get/set panose.
+     */
+    public function testPanose(): void
+    {
+        $object = new Font();
+        self::assertEquals('', $object->getPanose());
+        self::assertInstanceOf(Font::class, $object->setPanose('4494D72242'));
+        self::assertEquals('4494D72242', $object->getPanose());
+    }
+
+    /**
+     * Test get/set panose (Exception : Invalid Length).
+     */
+    public function testPanoseExceptionInvalidLength(): void
+    {
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('The parameter pValue can\'t have the value "12345" (Validation: The length is not equals to 10)');
+
+        $object = new Font();
+        $object->setPanose('12345');
+    }
+
+    /**
+     * Test get/set panose (Exception : Invalid Char).
+     */
+    public function testPanoseExceptionInvalidChar(): void
+    {
+        $this->expectException(InvalidParameterException::class);
+        $this->expectExceptionMessage('The parameter pValue can\'t have the value "4494D7224X" (Validation: The character "X" is not allowed)');
+
+        $object = new Font();
+        $object->setPanose('4494D7224X');
+    }
+
+    /**
+     * Test get/set pitch family.
+     */
+    public function testPitchFamily(): void
+    {
+        $object = new Font();
+        self::assertEquals(0, $object->getPitchFamily());
+        self::assertInstanceOf(Font::class, $object->setPitchFamily(12));
+        self::assertEquals(12, $object->getPitchFamily());
+    }
+
+    /**
      * Test get/set size.
      */
     public function testSize(): void
@@ -154,11 +224,11 @@ class FontTest extends TestCase
     {
         $object = new Font();
         self::assertInstanceOf(Font::class, $object->setUnderline());
-        self::assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
+        self::assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
         self::assertInstanceOf(Font::class, $object->setUnderline(''));
-        self::assertEquals(FONT::UNDERLINE_NONE, $object->getUnderline());
-        self::assertInstanceOf(Font::class, $object->setUnderline(FONT::UNDERLINE_DASH));
-        self::assertEquals(FONT::UNDERLINE_DASH, $object->getUnderline());
+        self::assertEquals(Font::UNDERLINE_NONE, $object->getUnderline());
+        self::assertInstanceOf(Font::class, $object->setUnderline(Font::UNDERLINE_DASH));
+        self::assertEquals(Font::UNDERLINE_DASH, $object->getUnderline());
     }
 
     /**
@@ -197,10 +267,18 @@ class FontTest extends TestCase
         $object = new Font();
         self::assertInstanceOf(Font::class, $object->setStrikethrough());
         self::assertFalse($object->isStrikethrough());
+        self::assertEquals(Font::STRIKE_NONE, $object->getStrikethrough());
+        // boolean
         self::assertInstanceOf(Font::class, $object->setStrikethrough(false));
         self::assertFalse($object->isStrikethrough());
+        self::assertEquals(Font::STRIKE_NONE, $object->getStrikethrough());
         self::assertInstanceOf(Font::class, $object->setStrikethrough(true));
         self::assertTrue($object->isStrikethrough());
+        self::assertEquals(Font::STRIKE_SINGLE, $object->getStrikethrough());
+        // string
+        self::assertInstanceOf(Font::class, $object->setStrikethrough(Font::STRIKE_DOUBLE));
+        self::assertTrue($object->isStrikethrough());
+        self::assertEquals(Font::STRIKE_DOUBLE, $object->getStrikethrough());
     }
 
     /**

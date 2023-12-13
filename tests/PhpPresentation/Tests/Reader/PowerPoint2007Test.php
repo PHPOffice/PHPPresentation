@@ -101,6 +101,8 @@ class PowerPoint2007Test extends TestCase
         self::assertEquals('Sample 02 Description', $oPhpPresentation->getDocumentProperties()->getDescription());
         self::assertEquals('office 2007 openxml libreoffice odt php', $oPhpPresentation->getDocumentProperties()->getKeywords());
         self::assertEquals('Sample Category', $oPhpPresentation->getDocumentProperties()->getCategory());
+        self::assertEquals('', $oPhpPresentation->getDocumentProperties()->getRevision());
+        self::assertEquals('', $oPhpPresentation->getDocumentProperties()->getStatus());
         self::assertIsArray($oPhpPresentation->getDocumentProperties()->getCustomProperties());
         self::assertCount(0, $oPhpPresentation->getDocumentProperties()->getCustomProperties());
 

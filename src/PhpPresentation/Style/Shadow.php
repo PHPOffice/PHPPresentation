@@ -20,12 +20,17 @@ declare(strict_types=1);
 namespace PhpOffice\PhpPresentation\Style;
 
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\NotAllowedValueException;
 
 /**
  * \PhpOffice\PhpPresentation\Style\Shadow.
  */
 class Shadow implements ComparableInterface
 {
+    public const TYPE_SHADOW_INNER = 'innerShdw';
+    public const TYPE_SHADOW_OUTER = 'outerShdw';
+    public const TYPE_REFLECTION = 'reflection';
+
     // Shadow alignment
     public const SHADOW_BOTTOM = 'b';
     public const SHADOW_BOTTOM_LEFT = 'bl';
@@ -80,6 +85,11 @@ class Shadow implements ComparableInterface
      * @var int
      */
     private $alpha = 50;
+
+    /**
+     * @var string
+     */
+    private $type = self::TYPE_SHADOW_OUTER;
 
     /**
      * Hash index.
@@ -225,13 +235,38 @@ class Shadow implements ComparableInterface
     }
 
     /**
+     * Get Type.
+     */
+    public function getType(): string
+    {
+        return $this->type;
+    }
+
+    /**
+     * Set Type.
+     */
+    public function setType(string $pValue = self::TYPE_SHADOW_OUTER): self
+    {
+        if (!in_array(
+            $pValue,
+            [self::TYPE_REFLECTION, self::TYPE_SHADOW_INNER, self::TYPE_SHADOW_OUTER]
+        )) {
+            throw new NotAllowedValueException($pValue, [self::TYPE_REFLECTION, self::TYPE_SHADOW_INNER, self::TYPE_SHADOW_OUTER]);
+        }
+
+        $this->type = $pValue;
+
+        return $this;
+    }
+
+    /**
      * Get hash code.
      *
      * @return string Hash code
      */
     public function getHashCode(): string
     {
-        return md5(($this->visible ? 't' : 'f') . $this->blurRadius . $this->distance . $this->direction . $this->alignment . $this->color->getHashCode() . $this->alpha . __CLASS__);
+        return md5(($this->visible ? 't' : 'f') . $this->blurRadius . $this->distance . $this->direction . $this->alignment . $this->type . $this->color->getHashCode() . $this->alpha . __CLASS__);
     }
 
     /**

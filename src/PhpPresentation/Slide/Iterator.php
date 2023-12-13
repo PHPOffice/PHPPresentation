@@ -21,6 +21,7 @@ namespace PhpOffice\PhpPresentation\Slide;
 
 use IteratorIterator;
 use PhpOffice\PhpPresentation\PhpPresentation;
+use ReturnTypeWillChange;
 
 // @phpstan-ignore-next-line
 class Iterator extends IteratorIterator
@@ -50,7 +51,7 @@ class Iterator extends IteratorIterator
     /**
      * Rewind iterator.
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function rewind(): void
     {
         $this->position = 0;
@@ -61,7 +62,7 @@ class Iterator extends IteratorIterator
      *
      * @return \PhpOffice\PhpPresentation\Slide
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         return $this->subject->getSlide($this->position);
@@ -72,7 +73,7 @@ class Iterator extends IteratorIterator
      *
      * @return int
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
@@ -81,7 +82,7 @@ class Iterator extends IteratorIterator
     /**
      * Next value.
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function next(): void
     {
         ++$this->position;
@@ -92,7 +93,7 @@ class Iterator extends IteratorIterator
      *
      * @return bool
      */
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function valid()
     {
         return $this->position < $this->subject->getSlideCount();

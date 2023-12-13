@@ -21,6 +21,7 @@ namespace PhpOffice\PhpPresentation\Shape;
 
 use PhpOffice\PhpPresentation\AbstractShape;
 use PhpOffice\PhpPresentation\ComparableInterface;
+use PhpOffice\PhpPresentation\Exception\NotAllowedValueException;
 use PhpOffice\PhpPresentation\Exception\OutOfBoundsException;
 use PhpOffice\PhpPresentation\Shape\RichText\Paragraph;
 use PhpOffice\PhpPresentation\Shape\RichText\TextElementInterface;
@@ -43,22 +44,17 @@ class RichText extends AbstractShape implements ComparableInterface
     /** Overflow */
     public const OVERFLOW_CLIP = 'clip';
     public const OVERFLOW_OVERFLOW = 'overflow';
-    
-    /** Vertical alignment */
-    const VALIGN_TOP = 't';
-    const VALIGN_MIDDLE = 'ctr';
-    const VALIGN_BOTTOM = 'b';
-    
+
     /** Vertical alignment center */
-    const VALIGN_CENTER = 1;
-    const VALIGN_NOTCENTER = 0;
+    public const VALIGN_CENTER = 1;
+    public const VALIGN_NOTCENTER = 0;
 
     /**
      * Rich text paragraphs.
      *
      * @var array<Paragraph>
      */
-    private $richTextParagraphs;
+    private $richTextParagraphs = [];
 
     /**
      * Active paragraph.
@@ -178,14 +174,10 @@ class RichText extends AbstractShape implements ComparableInterface
      * @var null|float
      */
     private $lnSpcReduction;
-    
+
     /**
-     * Define vertical text position into shape (top,center,bottom)
-     * @var string
-     */
-    private $verticalAlign = self::VALIGN_TOP;
-    /**
-     * Define vertical text center position into shape (center,not center)
+     * Define vertical text center position into shape (center,not center).
+     *
      * @var int
      */
     private $verticalAlignCenter = self::VALIGN_NOTCENTER;
@@ -205,23 +197,20 @@ class RichText extends AbstractShape implements ComparableInterface
     }
 
     /**
-     * Magic Method : clone
+     * Magic Method : clone.
      */
     public function __clone()
     {
         // Call perent clonage for heritage
         parent::__clone();
         // Clone each paragraph
-        if (isset($this->richTextParagraphs)) {
-          foreach ($this->richTextParagraphs as &$paragraph) {
+        foreach ($this->richTextParagraphs as &$paragraph) {
             $paragraph = clone $paragraph;
-        }}
+        }
     }
 
     /**
-     * Get active paragraph index
-     *
-     * @return int
+     * Get active paragraph index.
      */
     public function getActiveParagraphIndex(): int
     {
@@ -506,58 +495,34 @@ class RichText extends AbstractShape implements ComparableInterface
 
         return $this;
     }
-    
-    /**
-     * Define the vertical alignment
-     * 
-     * @param string|null $value top,center,bottom
-     * @return $this
-     * @see self::VALIGN_TOP, self::VALIGN_MIDLE, self::VALIGN_BOTTOM
-     */
-    public function setVerticalAlignment(?string $value)
-    {
-      if (isset($value)) {
-        $this->verticalAlign = $value;
-      } else {
-        $this->verticalAlign = self::VALIGN_TOP;
-      }
-      return $this;
-    }
-    
-    /**
-     * Get the vertical alignment
-     * 
-     * @return string
-     * @see self::VALIGN_TOP, self::VALIGN_MIDLE, self::VALIGN_BOTTOM
-     */
-    public function getVerticalAlignment():string
-    {
-      return $this->verticalAlign;
-    }
 
     /**
-     * Define the vertical alignment if centered or not
-     * @param int|null $value 1=center 0=not center
-     * @return $this
+     * Define the vertical alignment if centered or not.
+     *
+     * @param int $value 1=center 0=not
+     *
      * @see self::VALIGN_CENTER, self::VALIGN_NOTCENTER
      */
-    public function setVerticalAlignCenter(?int $value)
+    public function setVerticalAlignCenter(int $value): self
     {
-      if (isset($value)) {
+        if (!in_array(
+            $value,
+            [self::VALIGN_CENTER, self::VALIGN_NOTCENTER]
+        )) {
+            throw new NotAllowedValueException((string) $value, [(string) self::VALIGN_CENTER, (string) self::VALIGN_NOTCENTER]);
+        }
+
         $this->verticalAlignCenter = $value;
-      } else {
-        $this->verticalAlignCenter = self::VALIGN_NOTCENTER;
-      }
-      return $this;
+
+        return $this;
     }
 
     /**
-     * Get the vertical alignment center
-     * @return int
+     * Get the vertical alignment center.
      */
-    public function getVerticalAlignCenter():int
+    public function getVerticalAlignCenter(): int
     {
-      return $this->verticalAlignCenter;
+        return $this->verticalAlignCenter;
     }
 
     /**
@@ -730,6 +695,7 @@ class RichText extends AbstractShape implements ComparableInterface
             . $this->leftInset
             . $this->rightInset
             . $this->topInset
+            . $this->verticalAlignCenter
             . parent::getHashCode()
             . __CLASS__
         );
